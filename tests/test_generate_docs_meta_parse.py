@@ -224,6 +224,54 @@ class GenerateDocsMetaParseTest(unittest.TestCase):
             self.assertIn("Test Paper", content)
             self.assertIn("* Other", content)
 
+    def test_update_sidebar_handles_template_without_trailing_newline(self):
+        with tempfile.TemporaryDirectory() as d:
+            sidebar_path = Path(d) / "_sidebar.md"
+            sidebar_path.write_text("* Daily Papers", encoding="utf-8")
+
+            self.mod.update_sidebar(
+                str(sidebar_path),
+                "20260522",
+                [("202605/22/test-paper", "Test Paper", [])],
+                [],
+                {},
+                "2026-05-22",
+            )
+
+            content = sidebar_path.read_text(encoding="utf-8")
+            self.assertIn("* Daily Papers\n  * 2026-05-22", content)
+            self.assertNotIn("* Daily Papers  * 2026-05-22", content)
+
+    def test_update_sidebar_repairs_existing_same_line_daily_item(self):
+        with tempfile.TemporaryDirectory() as d:
+            sidebar_path = Path(d) / "_sidebar.md"
+            sidebar_path.write_text(
+                "\n".join(
+                    [
+                        "* Daily Papers  * 2026-05-22",
+                        "    * 旧条目",
+                        "* Other",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            self.mod.update_sidebar(
+                str(sidebar_path),
+                "20260522",
+                [("202605/22/test-paper", "Test Paper", [])],
+                [],
+                {},
+                "2026-05-22",
+            )
+
+            content = sidebar_path.read_text(encoding="utf-8")
+            self.assertIn("* Daily Papers\n  * 2026-05-22", content)
+            self.assertNotIn("* Daily Papers  * 2026-05-22", content)
+            self.assertNotIn("旧条目", content)
+            self.assertIn("* Other", content)
+
 
 if __name__ == "__main__":
     unittest.main()
