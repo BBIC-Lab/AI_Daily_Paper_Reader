@@ -1,0 +1,124 @@
+﻿## 📰 News
+
+* **2026-05-22** 🧮 增强论文报告页公式渲染容错，修复中文逗号、双 `$$` 与公式中夹中文说明时的 KaTeX 渲染错误。
+* **2026-05-21** 🧮 修复论文报告页 LaTeX 数学公式渲染兼容问题，并做了少量页面美化。
+* **2026-05-21** 🧹 推荐选择按 arXiv base ID 去重，遇到 v1/v2 等版本更新时只保留最高版本，避免日报精读/速读区重复同一论文。
+* **2026-05-20** 💬 Paper Copilot AI 问答面板完成微调美化，阅读报告与问答抽屉的并列体验更清爽。
+* **2026-05-20** 🖼️ 论文页插图轮播改为按 PDF 页码排序，同页多图再按原文 Figure/Table 编号排序，避免早页插图被排到后面。
+* **2026-05-19** 💬 论文页 AI 问答改为右侧抽屉，可通过醒目按钮推出/收回，展开后报告内容自动左移并保持合理阅读宽度。
+* **2026-05-19** ✨ 网页标题与侧边栏顶层入口美化，使用教程分三入口导航并补齐完整分步教程。
+* **2026-05-19** 🧭 侧边栏 Daily Papers 日期行现在可直接打开当日日报，同时可展开/收起论文列表；首页改为仅展示「最新日报」。
+* **2026-05-19** 🎚️ 「修改查询」支持精读区/速读区两个独立候选文章上限，默认均为 10，超出后按各区评分分别截取。
+* **2026-05-18** 🎚️ 「修改查询」新增每日候选上限配置，默认每个查询最多保留 10 篇，优先保留精读区高分论文，再用剩余额度截取速读区。
+* **2026-05-18** 🧩 新配置指引第二步支持“大模型一键设置 / 分场景配置”，可分别为默认、改写、筛选和总结 Secret 指定模型。
+* **2026-05-18** ⚡ DeepSeek 兼容接口会直接使用 `json_object` JSON 模式，避免先尝试不支持的 Structured Outputs `json_schema` 而浪费一次请求。
+* **2026-05-18** 🧠 新增 DeepSeek V4 模型分工建议：高频筛选/改写优先 `deepseek-v4-flash`，深度总结/报告生成优先 `deepseek-v4-pro`。
+* **2026-05-18** ✨ 新增网页「快速抓取」区域的“立即生成今日日报”按钮，可一键触发 1 天标准抓取并生成当日报告。
+
+
+
+## ✨ Why AI Daily Paper Reader?
+
+* **🔎 Daily Paper Radar**：每日自动抓取 arXiv 新论文，持续追踪研究前沿。
+* **🎯 Personalized Feed**：基于关键词、研究方向与兴趣生成个性化推荐流。
+* **📖 Read in Context**：支持摘要、原文、速览、长总结在同一页面串联阅读。
+* **💬 Ask While Reading**：支持 AI 论文问答，边读边问，沉淀私人讨论记录。
+* **🚀 Zero-Server Deployment**：依托 GitHub Actions 自动更新、GitHub Pages 部署，无需额外服务器。
+* **🛠️ Fork-and-Run**：Fork 后完成少量配置，即可上线自己的论文主页。
+
+## 🧭 适用场景
+
+* **🎓 个人论文雷达**：持续追踪自己研究方向的新论文。
+* **🧪 实验室论文主页**：沉淀团队关注的论文脉络与阅读结果。
+* **📚 日常阅读工作台**：把发现、阅读、问答、总结集中到一个入口。
+
+
+
+## 🚀 快速启动
+
+> \[!TIP]
+> 先准备一个大模型 API Key 和一个 GitHub PAT 密钥，然后依次完成 Fork、开启 Actions、开启 Pages，即可跑通完整流程。
+
+### 1\) 🔑 准备大模型 API Key
+
+本项目默认使用 **OpenAI-compatible Chat Completions** 工作流模型。你需要准备：
+
+* 🔐 API Key
+* 🌐 Base URL（例如 `https://api.openai.com/v1` 或其它兼容服务的 `/v1` 地址）
+* 🧠 模型名（例如 `gpt-5.4`、`deepseek-v4-pro`，以你的服务商实际支持为准）
+
+保存配置后，工作流会写入 `DPR\_LLM\_API\_KEY`、`DPR\_LLM\_BASE\_URL`、`DPR\_LLM\_MODEL` 等 GitHub Secrets。当前版本默认不依赖专用 `/rerank` API，而是使用 BM25 + embedding + RRF + LLM refine 完成推荐。
+
+#### DeepSeek V4 推荐配置
+
+如果使用 DeepSeek 兼容接口，建议按任务拆分模型，避免所有阶段都使用高成本模型：
+
+* `DPR_LLM_MODEL=deepseek-v4-flash`：作为默认兜底模型，覆盖未单独指定的任务。
+* `DPR_LLM_REWRITE_MODEL=deepseek-v4-flash`：用于订阅词改写，追求低延迟和低成本。
+* `DPR_LLM_FILTER_MODEL=deepseek-v4-flash`：用于 Step 4 LLM refine 批量 JSON 打分，任务量大、已有重试和校验，优先选 Flash。
+* `DPR_LLM_SUMMARY_MODEL=deepseek-v4-pro`：用于 Step 6 精读总结、日报生成等长文本综合；如果只跑速览或成本敏感，也可改为 `deepseek-v4-flash`。
+
+### 2\) 🪪 准备 GitHub PAT
+
+打开 [GitHub 新建 PAT 页面](https://github.com/settings/tokens/new?type=beta&scopes=repo,workflow,gist)，勾选以下权限（默认已勾选）：
+
+* ✅ `repo`
+* ✅ `workflow`
+* ✅ `gist`
+
+### 3\) 🍴 Fork 本仓库
+
+* Fork 到自己的 GitHub 账号下 <a href="https://github.com/Jurio0304/AI_Daily_Paper_Reader/fork"><img src="https://img.shields.io/badge/Fork%20on-GitHub-24292f?style=flat\&logo=github" alt="Fork on GitHub" height="20" align="absmiddle" /></a>
+* 建议仓库名保持不变
+
+### 4\) ▶️ 开启 GitHub Actions
+
+进入你 Fork 的仓库，点击顶部 [`Actions`](../../actions)，启用 `AI\_Daily\_Paper\_Reader` 工作流。
+
+### 5\) 🌍 开启 GitHub Pages
+
+进入你 Fork 的仓库，进入 `Settings → Pages`：
+
+* ⚙️ Source 选择 `Deploy from a branch`
+* 🌿 Branch 选择 `main`
+* 📁 Folder 选择 `/(root)`
+
+保存后等待约 1 分钟，站点地址会显示在页面顶部。
+
+### 6\) ✅ 打开站点验收
+
+访问：
+
+```text
+https://<你的用户名>.github.io/AI\_Daily\_Paper\_Reader
+```
+
+
+
+## ❓ FAQ
+
+### 💻 需要服务器吗？
+
+不需要。项目基于 **GitHub Actions + GitHub Pages** 运行和部署。
+
+### 🎛️ 可以做哪些个性化配置？
+
+你可以调整订阅关键词、研究方向、查询意图与日常阅读偏好，构建自己的论文推荐流。
+
+### 👨‍🔬 适合实验室或团队一起用吗？
+
+可以。它很适合做实验室公共论文面板，或者作为团队内部的论文发现与阅读入口。
+
+
+## 🧾 TODO
+
+详见 [TODO LIST](TODO.md)：
+
+- [x] Codex Skills 封装
+- [ ] 多源论文推荐接入
+- [ ] 扩展日报-周报-月报科研动态工作流
+
+
+## 📌 参考
+
+> 非常感谢 **@ziwenhahaha** 的开源项目：[https://github.com/ziwenhahaha/daily-paper-reader](https://github.com/ziwenhahaha/daily-paper-reader)
