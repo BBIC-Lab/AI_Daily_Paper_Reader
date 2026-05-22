@@ -1,0 +1,94 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-003.webp",
+      "caption": "Figure 1. Overview of the REALM framework for causal LFP-based behavior decoding. Left: Experimental configuration. A rhesus macaque performs a 2D motor task: continuous random-target reaching for Makin or center-out reaching for Flint, manipulating a control device to drive a cursor toward visual targets while local field potentials are recorded from primary motor cortex (M1) via a chronically implanted 96-channel Utah array (4mm × 4mm). Right: Causal behavior-decoding pipeline. Raw multi-channel LFP signals are converted into neural tokens by the Neural Tokenizer, encoded into temporally-causal latent representations by the REALM encoder, which was distilled from a non-causal teacher, and mapped to 2D cursor velocity by the Behavior Decoding Head. The full causal student is designed for real-time deployment on edge hardware, illustrated here on the NVIDIA Jetson Orin Nano or Raspberry Pi 5.",
+      "page": 2,
+      "index": 3,
+      "width": 898,
+      "height": 363
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-006.webp",
+      "caption": "Figure 2. Tokenization pipeline for multi-session LFP signals. Raw signals are first segmented into 500-timestep windows. A per-channel 1D convolution followed by an efficient channel attention (ECA) module produces channel-attended features of shape (B, 96, dch, T ). These features are then mapped through a shared value embedding and a session-specific spatial embedding, whose sum yields the final token representations.",
+      "page": 4,
+      "index": 6,
+      "width": 908,
+      "height": 294
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-010.webp",
+      "caption": "Figure 3. The architecture of the multi-session pretrained BiMamba-2 model. As the self-supervised pretraining objective, the model is asked to reconstruct the LFP raw signals from their latent representations using continuous masked autoencoding (CMAE). This allows the model to learn generalizable representations across datasets recorded during diverse experimental tasks. We use a light decoder/predictor (1 layer) compared with the REALM encoder (8 layers) for the CMAE objective. MSE: mean-squared error.",
+      "page": 5,
+      "index": 10,
+      "width": 900,
+      "height": 279
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-009.webp",
+      "caption": "Figure 5. Causal behavior decoding performance of REALM compared with causal baselines and ablations. (a, b) Per-session decoding R2 on the held-out Makin (a, N = 5) and Flint (b, N = 3) sessions, comparing two classical regressors (Linear SSM, Wiener Filter) and three causal sequence models (LSTM, LSTM-5M, REALM). Markers denote mean ± std across three seeds. (c) REALM compared against two control variants: REALM RI (random-initialized backbone, no pretraining or distillation) and REALM PT (pretrained CMAE backbone without distillation). Boxes show inter-quartile range and whiskers the full range across the eight held-out sessions × three seeds; points show individual session means. (d, e) Example decoded cursor velocity traces (vx, top; vy , bottom) from REALM (orange) overlaid on ground truth (grey) for one representative Makin (d) and Flint (e) session. (f) Aggregated R2 for all five causal methods pooled across the eight held-out sessions and three seeds.",
+      "page": 9,
+      "index": 9,
+      "width": 889,
+      "height": 543
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-004.webp",
+      "caption": "Figure 6. Representational alignment between the bidirectional teacher and the causal student (REALM) is induced by retrospective distillation, but absent in a randomly-initialized control (REALM-RI). (a) Segment-level cosine similarity matrices between final-layer teacher and student embeddings, evaluated on N = 800 held-out segments grouped by session (gray lines): cos(Teacher, REALM) (left) and cos(Teacher, REALM-RI) (right). (b) Per-layer Pearson correlation between teacher and student representations, plotted as a function of student-layer index. (c) Layer-wise centered kernel alignment (CKA) between the 10-layer teacher and the 8-layer student: CKA(Teacher, REALM) (left) and CKA(Teacher, REALM-RI) (right). (d) Participation ratio (effective dimensionality) of layer-wise representations as a function of depth, for the teacher, REALM, and REALM-RI.",
+      "page": 10,
+      "index": 4,
+      "width": 804,
+      "height": 605
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-001.webp",
+      "caption": "Figure 7. 5-fold stacking provides a consistent improvement over single-fold REALM models. (a, b) Per-session decoding R2 of the 5-fold stacked ensemble for the three causal REALM variants (REALM-S, REALM, REALM-L) on the held-out Makin (a) and Flint (b) sessions. (c) Scatter of stacked R2 vs. base-model R2 across all (architecture × held-out session) combinations (n = 24); the dashed line denotes y = x. (d, e) Example decoded velocity traces (vx, top; vy , bottom) comparing ground truth (grey), the 5-fold ensemble prediction (orange), and a single base model (blue), shown for one Makin (d) and one Flint (e) session. (f) Per-architecture lift ∆R2 = R2 stacked −R2 base aggregated across the eight held-out sessions; bars show mean ± SEM and points show individual sessions.",
+      "page": 11,
+      "index": 1,
+      "width": 780,
+      "height": 472
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-008.webp",
+      "caption": "Figure 8. Real-time streaming inference benchmarks of REALM across hardware platforms and optimization stacks. (a) Average throughput (fps) for the three causal REALM variants under six platform/optimization configurations on Raspberry Pi 5 and Jetson Orin Nano. (b) Average throughput on Jetson Orin Nano comparing single-fold against 5-fold ensemble inference, for CUDA Graphs and TensorRT FP16 backends. (c, d) Per-step p95 latency (log scale) for the same configurations as (a, b). The dashed line marks the 10 ms / 100 Hz BCI streaming requirement.",
+      "page": 12,
+      "index": 8,
+      "width": 663,
+      "height": 662
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-005.webp",
+      "caption": "Figure 9. Bidirectional behavior decoding performance of REALM-bi compared with non-causal baselines and ablations. (a, b) Per-session decoding R2 on the held-out Makin (a, N = 5) and Flint (b, N = 3) sessions, comparing two classical regressors with bidirectional input access (Linear SSM (bi), Wiener (bi)) and three non-causal sequence models (BiLSTM, BiLSTM-5M, REALM-bi). Markers denote mean ± std across three seeds. (c) REALM-bi compared against two control variants: REALM-bi RI (random-initialized backbone, no pretraining or distillation) and REALM PT (pretrained CMAE backbone without distillation, shared with the causal pipeline). Boxes show inter-quartile range and whiskers the full range across the eight held-out sessions × three seeds; points show individual session means. (d, e) Example decoded cursor velocity traces (vx, top; vy , bottom) from REALM-bi (orange) overlaid on ground truth (grey) for one representative Makin (d) and Flint (e) session. (f) Aggregated R2 for all five non-causal methods pooled across the eight held-out sessions and three seeds.",
+      "page": 14,
+      "index": 5,
+      "width": 882,
+      "height": 558
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-002.webp",
+      "caption": "Figure 10. Scaling behavior of REALM compared to CrossModalDistill (CMD) on the eight held-out sessions. (a) Per-session decoding R2 for three causal REALM students (REALM-S, REALM, REALM-L), two bidirectional teachers (REALM-bi, REALM-Lbi), and two CrossModal baselines (CrossModal Sup; CrossModal Full Sup). Boxes show inter-quartile range and whiskers the full range across the eight held-out sessions × three seeds; points show individual session means. (b) Scaling curves of R2 vs. parameter count for REALM (purple, causal) and REALM-bi (blue, bidirectional). The dashed teal line marks CrossModal Full Sup at its 10.6M parameter point. (c, d) Per-model performance deficit ∆R2 = R2 REALM −R2 CMD averaged across the eight held-out sessions; bars show mean ± SEM across three seeds. (c) vs. CrossModal Sup. (d) vs. CrossModal Full Sup.",
+      "page": 15,
+      "index": 2,
+      "width": 501,
+      "height": 566
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-011.webp",
+      "caption": "Figure 11. Unsupervised REALM closes most of the gap to supervised decoding, while fully-unsupervised MAE+probe baselines lag substantially. (a, b) Per-session decoding R2 on the held-out Makin (a, N = 5) and Flint (b, N = 3) sessions for four unsupervised variants: Unsup REALM (2.1 M, causal), Unsup REALM-bi (5M, bidirectional), Full Unsup REALM (5M MAE + linear probe), and Full Unsup REALM context (5 M MAE + MLP probe with ±10-step context). Markers denote mean ± std across three seeds. (c) Aggregated R2 across the eight held-out sessions × three seeds. (d, e) Example decoded velocity traces (vx, top; vy , bottom) for one Makin (d) and one Flint (e) session, comparing ground truth (grey), Unsup REALM-bi (orange), and Full Unsup REALM (blue). (f) Per-session performance deficit relative to the matched supervised baseline, ∆R2 = R2 unsup −R2 sup. Bars show the mean across eight sessions; points show individual sessions.",
+      "page": 16,
+      "index": 11,
+      "width": 868,
+      "height": 580
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14867v1/fig-007.webp",
+      "caption": "Figure 12. Few-shot data efficiency of REALM compared with ablation baselines on Makin (a, b) and Flint (c, d). (a, c) Decoding R2 as a function of per-session training-data ratio (5%, 10%, 20%, 50%, 80%) for four causal variants: REALM RI (random-initialized backbone, no pretraining or distillation), REALM PT (pretrained CMAE backbone without distillation), REALM (causal student distilled from the bidirectional teacher), and REALMbi (the bidirectional teacher itself). Markers denote mean across three random seeds; shaded bands show ±1 SD. (b, d) Data-efficiency summary: R2 retention at 20% training data, defined as R2(20%)/R2(80%)× 100%. Higher values indicate that the model recovers most of its full-data performance from a quarter of the supervision. Bars show mean and points show individual seeds (N=3). On both datasets, the two distillation-based variants (REALMbi, REALM) retain ≥ 86% of their 80%-data R2 when finetuned on only 20% of session-specific training data, whereas the non-distilled controls drop to 70% (REALM PT) and 58–63% (REALM RI). The gap is largest on Makin, where REALM RI shows substantially higher across-seed variance than the distillation-based variants, indicating that retrospective distillation not only yields higher mean performance under data scarcity but also makes the resulting models more reliable across seeds.",
+      "page": 17,
+      "index": 7,
+      "width": 528,
+      "height": 477
+    }
+  ]
+}

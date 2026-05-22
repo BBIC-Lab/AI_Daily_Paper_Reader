@@ -1,0 +1,817 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-22T10:08:37.125157+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 112,
+    "deep_cap": 6,
+    "deep_selected": 10,
+    "quick_candidates": 174,
+    "quick_skim_target": 11,
+    "quick_selected": 10,
+    "deep_selected_before_profile_limit": 38,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 10,
+        "quick": 10
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 28,
+        "quick": 1
+      }
+    },
+    "profile_limit_dropped": 29
+  },
+  "deep_dive": [
+    {
+      "id": "2605.16923v3",
+      "source": "arxiv",
+      "title": "Neuroscience-inspired Staged Representation Learning with Disentangled Coarse- and Fine-Grained Semantics for EEG Visual Decoding",
+      "abstract": "Decoding visual information from electroencephalography (EEG) signals remains a fundamental challenge in brain-computer interfaces and medical rehabilitation. Existing EEG visual decoding methods mainly focus on learning a single global EEG embedding for cross-modal alignment, but they largely overlook the staged and hierarchical characteristics of human visual processing. To address this limitation, we propose a neuroscience-inspired staged representation learning framework that reformulates EEG visual decoding as a stage-specific representation decomposition problem. The proposed framework organizes EEG representation learning into three complementary phases: low-level visual representation learning, high-level semantic representation learning, and integrative information fusion. To strengthen semantic modeling, we further introduce a multimodal dual-level semantic learning mechanism that separates coarse label-level semantics from fine image-level visual-semantic information. In addition, semantic latent channels are introduced as computational representation channels generated from observed visual EEG signals, expanding the channel-level semantic representation space for structured semantic abstraction and cross-modal alignment. Extensive experiments on the THINGS-EEG benchmark demonstrate that the proposed method achieves superior performance under subject-dependent zero-shot evaluation and improved exact retrieval under subject-independent zero-shot evaluation. Additional analyses, including layer-wise retrieval, temporal accumulation, expanded multi-image retrieval, and ablation studies, further support the effectiveness of staged decomposition and structured semantic modeling. These results suggest that explicitly modeling staged perceptual, semantic, and integrative representations provides an effective neuroscience-inspired framework for EEG-based visual decoding.",
+      "authors": [
+        "Xiang Gao",
+        "Hui Tian",
+        "Yanming Zhu",
+        "Xuefei Yin",
+        "Alan Wee-Chung Liew"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-16T10:30:33+00:00",
+      "link": "https://arxiv.org/pdf/2605.16923v3",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "decoding EEG signals into visual representations",
+      "llm_evidence_cn": "从EEG信号解码视觉表征",
+      "llm_evidence": "从EEG信号解码视觉表征",
+      "canonical_evidence": "从EEG信号解码视觉表征",
+      "llm_tldr_en": "Neuroscience-inspired staged representation learning for EEG visual decoding achieves disentangled semantics.",
+      "llm_tldr_cn": "受神经科学启发的分阶段表示学习用于EEG视觉解码，实现解缠语义。",
+      "llm_tldr": "受神经科学启发的分阶段表示学习用于EEG视觉解码，实现解缠语义。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.19048v1",
+      "source": "arxiv",
+      "title": "Conserved Kinematic Representations enable Zero-Shot Decoding in Handwriting BCIs",
+      "abstract": "While intracortical Brain-Computer Interfaces (iBCIs) that decode imagined handwriting have achieved high communication rates for Latin scripts, they rely on observing every character in the alphabet during training. This poses a challenge in scaling to logographic languages (e.g., Chinese, Japanese), where the character set exceeds thousands of classes. The limitation highlights a fundamental question in motor neuroscience: does the motor cortex represent handwriting through the composition of shared kinematic primitives, that can be exploited by decoders? We introduce a computational framework for aligning neural activity to imagined kinematics in large datasets, enabling the training of a zero-shot capable machine learning algorithm for decoding unseen characters. Our model achieves 64% hits@3 retrieval on unseen letters, suggesting that neural representations of kinematic strokes are robustly conserved across different character contexts. This study provides a framework for dissecting conserved neural dynamics in large-scale intracortical datasets and offers strong evidence for a compositional basis of complex motor control. It also establishes a new paradigm for open-vocabulary iBCI communication with minimal recalibration burden on the user, crucial to increasing adoption of neuroprosthetics in logographic languages.",
+      "authors": [
+        "Srinivas Ravishankar",
+        "Virginia de Sa"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC"
+      ],
+      "published": "2026-05-18T19:13:42+00:00",
+      "link": "https://arxiv.org/pdf/2605.19048v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "zero-shot decoding of imagined handwriting from neural activity",
+      "llm_evidence_cn": "从神经活动零样本解码想象手写",
+      "llm_evidence": "从神经活动零样本解码想象手写",
+      "canonical_evidence": "从神经活动零样本解码想象手写",
+      "llm_tldr_en": "Enables zero-shot handwriting decoding in BCIs by aligning neural activity to kinematic primitives.",
+      "llm_tldr_cn": "通过对齐神经活动与运动基元，实现BCI零样本手写解码。",
+      "llm_tldr": "通过对齐神经活动与运动基元，实现BCI零样本手写解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.13293v1",
+      "source": "arxiv",
+      "title": "Img2CADSeq: Image-to-CAD Generation via Sequence-Based Diffusion",
+      "abstract": "Boundary Representation (BRep) is the standard format for Computer-Aided Design (CAD), yet reconstructing high-quality BReps from single-view images remains challenging due to the complexity of topological constraints and operation sequences. We present Img2CADSeq, a multi-stage pipeline that overcomes these limitations by encoding CAD sequences into a three-level hierarchical codebook. Guided by an importance prioritization, this strategy values profiles over details, compressing long sequences into a stable discrete latent space. To bridge the modality gap, we leverage a coarse-to-fine point cloud intermediate, aligning 2D visual features with 3D CAD sequences via contrastive learning to condition a VQ-Diffusion model. Supported by newly introduced CAD-220K and PrintCAD datasets, our approach ensures robust industrial domain adaptation. Extensive experiments demonstrate that Img2CADSeq significantly outperforms state-of-the-art methods, producing standard STEP files that can be directly used in commercial CAD software.",
+      "authors": [
+        "Shiyu Tan",
+        "Zixuan Zhao",
+        "Hao Gao",
+        "Zhiheng Chen",
+        "Xiaolong Yin",
+        "Enya Shen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-13T10:06:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.13293v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "converts images to CAD sequences via diffusion model",
+      "llm_evidence_cn": "通过扩散模型将图像转换为CAD序列",
+      "llm_evidence": "通过扩散模型将图像转换为CAD序列",
+      "canonical_evidence": "通过扩散模型将图像转换为CAD序列",
+      "llm_tldr_en": "Proposes Img2CADSeq for image-to-CAD generation using hierarchical codebook and VQ-Diffusion.",
+      "llm_tldr_cn": "提出Img2CADSeq，使用分层码本和VQ扩散实现图像到CAD的生成。",
+      "llm_tldr": "提出Img2CADSeq，使用分层码本和VQ扩散实现图像到CAD的生成。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.13711v1",
+      "source": "arxiv",
+      "title": "MILM: Large Language Models for Multimodal Irregular Time Series with Informative Sampling",
+      "abstract": "Multimodal irregular time series (MITS) consist of asynchronous and irregularly sampled observations from heterogeneous numerical and textual channels. In healthcare, for example, patients' electronic health records (EHR) include irregular lab measurements and clinical notes. The irregular timing and channel patterns of observations carry predictive signal alongside the numerical values and textual content. LLMs are natural candidates for processing such heterogeneous data, given their extensive pretrained knowledge spanning textual and numerical domains. We introduce MILM (Multimodal Irregular time series Language Model), which represents MITS as time-ordered triplets in Extensible Markup Language (XML) format and fine-tunes an LLM through a two-stage strategy for MITS classification. The first stage trains on value-redacted MITS to predict from sampling patterns alone, and the second stage trains on full MITS to jointly model sampling patterns and observed values. Our two-stage model (MILM-2S) and its single-stage counterpart (MILM-Direct) achieve the best and second-best average performance on multiple EHR datasets. Further value redaction evaluations confirm that sampling patterns carry predictive signal and that MILM-2S learns to exploit them. In the value pending evaluation we introduce, where some values are unavailable at prediction time, MILM-2S outperforms MILM-Direct by a larger margin compared to standard evaluation. For MILM-2S, preserving the time and channel of value-pending observations as additional sampling information further improves in-hospital mortality prediction.",
+      "authors": [
+        "Hsing-Huan Chung",
+        "Shijun Li",
+        "Yoav Wald",
+        "Xing Han",
+        "Suchi Saria",
+        "Joydeep Ghosh"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-13T15:58:42+00:00",
+      "link": "https://arxiv.org/pdf/2605.13711v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "LLM for irregular time series modeling and prediction",
+      "llm_evidence_cn": "LLM用于不规则时间序列建模和预测",
+      "llm_evidence": "LLM用于不规则时间序列建模和预测",
+      "canonical_evidence": "LLM用于不规则时间序列建模和预测",
+      "llm_tldr_en": "MILM fine-tunes LLMs on irregular time series for predictive tasks",
+      "llm_tldr_cn": "MILM在不规则时间序列上微调LLM以进行预测任务",
+      "llm_tldr": "MILM在不规则时间序列上微调LLM以进行预测任务",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.13923v1",
+      "source": "arxiv",
+      "title": "Vision-Based Runtime Monitoring under Varying Specifications using Semantic Latent Representations",
+      "abstract": "We study certified runtime monitoring of past-time signal temporal logic (ptSTL) from visual observations under partial observability. The monitor must infer safety-relevant quantities from images and provide finite-sample guarantees, while being \\emph{reusable}: once trained and calibrated, it should certify any formula in a target fragment without per-formula retraining. For fragments induced by a finite dictionary of temporal atoms, we prove that the \\emph{semantic basis}, the vector of atom robustness scores, is the minimum prediction target within the class of monotone, 1-Lipschitz reusable interfaces: any formula is evaluated by a deterministic decoder derived from the parse tree, and a single conformal calibration pass certifies the entire fragment with no union bound. We also introduce a \\emph{rolling prediction monitor} that predicts only current predicate values and reconstructs temporal history online; this is easier to learn but grows conservative at long horizons. On a pedestrian-crossroad benchmark, rolling achieves tighter certified bounds at short horizons while the semantic-basis monitor is up to 4-times tighter at long horizons. We validate the presented monitors on real-world Waymo driving data, where both monitors satisfy the conformal coverage guarantee empirically.",
+      "authors": [
+        "Bardh Hoxha",
+        "Oliver Schön",
+        "Hideki Okamoto",
+        "Lars Lindemann",
+        "Georgios Fainekos"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV",
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-05-13T14:22:25+00:00",
+      "link": "https://arxiv.org/pdf/2605.13923v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "monitors past-time signal temporal logic using semantic latent representations",
+      "llm_evidence_cn": "使用语义潜在表示监控过去时间信号时序逻辑",
+      "llm_evidence": "使用语义潜在表示监控过去时间信号时序逻辑",
+      "canonical_evidence": "使用语义潜在表示监控过去时间信号时序逻辑",
+      "llm_tldr_en": "Uses semantic latent representations for reusable runtime monitoring of temporal logic.",
+      "llm_tldr_cn": "利用语义潜在表示进行可复用的时序逻辑运行时监控。",
+      "llm_tldr": "利用语义潜在表示进行可复用的时序逻辑运行时监控。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.14048v3",
+      "source": "arxiv",
+      "title": "Network-Aware Bilinear Tokenization for Brain Functional Connectivity Representation Learning",
+      "abstract": "Masked autoencoders (MAEs) have recently shown promise for self-supervised representation learning of resting-state brain functional connectivity (FC). However, a fundamental question remains unresolved: how should FC matrices be tokenized to align with the intrinsic modular organization of large-scale brain networks? Existing approaches typically adopt region-centric or graph-based schemes that treat FC as structurally homogeneous elements and overlook the large-scale network brain organization. We introduce NERVE (Network-Aware Representations of Brain Functional Connectivity via Bilinear Tokenization), a self-supervised learning framework that redefines FC tokenization by partitioning FC matrices into patches of intra- and inter-network connectivity blocks. Unlike image-based MAE, where fixed-size patches share a common tokenizer, FC patches defined by network pairs are heterogeneous in size and correspond to distinct functional roles. To resolve this problem, NERVE embeds FC patches through a novel structured bilinear factorization. This formulation preserves network identity and reduces parameter complexity from quadratic to linear scaling in the number of networks. We evaluate NERVE across three large-scale developmental cohorts (ABCD, PNC, and CCNP) for behavior and psychopathology prediction. Compared to structurally agnostic MAE variants and graph-based self-supervised baselines, the proposed network-aware formulation yields more stable and transferable representations, particularly in cross-cohort evaluation. Ablation studies confirm that the proposed bilinear network embedding and anatomically grounded parcellation are critical for performance. These findings highlight the importance of incorporating domain-specific structural priors into self-supervised learning for functional connectomics. Code is available at: https://github.com/leomlck/NERVE.",
+      "authors": [
+        "Leo Milecki",
+        "Qingyu Hu",
+        "Bahram Jafrasteh",
+        "Mert R. Sabuncu",
+        "Qingyu Zhao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-05-13T19:09:44+00:00",
+      "link": "https://arxiv.org/pdf/2605.14048v3",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "representation learning for brain functional connectivity",
+      "llm_evidence_cn": "脑功能连接表征学习",
+      "llm_evidence": "脑功能连接表征学习",
+      "canonical_evidence": "脑功能连接表征学习",
+      "llm_tldr_en": "NERVE learns network-aware representations of brain functional connectivity using bilinear tokenization.",
+      "llm_tldr_cn": "NERVE通过双线性分词学习脑功能连接的网络感知表征.",
+      "llm_tldr": "NERVE通过双线性分词学习脑功能连接的网络感知表征.",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.14073v1",
+      "source": "arxiv",
+      "title": "AttnGen: Attention-Guided Saliency Learning for Interpretable Genomic Sequence Classification",
+      "abstract": "Deep neural networks have achieved strong performance in genomic sequence classification; however, relating their predictions to biologically meaningful sequence patterns remains challenging. In this work, we present AttnGen, an attention-guided training framework that embeds interpretability directly into the optimization process. AttnGen computes nucleotide-level importance scores using an attention mechanism and progressively suppresses low-contribution positions during training. This encourages the model to focus its predictions on a compact set of informative regions while reducing reliance on noisy sequence elements. We evaluate AttnGen on the standardized demo_human_or_worm benchmark, a binary classification task over 200-nucleotide sequences. With moderate masking, AttnGen achieves a validation accuracy of 96.73%, outperforming a conventional CNN baseline with 95.83% accuracy, while also exhibiting faster convergence and improved training stability. To assess whether the learned importance scores reflect functionally relevant signal, we conduct perturbation-based analysis by removing high-saliency nucleotides. This causes accuracy to drop from 96.9% to near chance level on a 3,000-sequence evaluation set, indicating that the model relies on a relatively small subset of informative positions. Our analysis shows that masking 10--20% of positions provides the most favorable trade-off between predictive performance and interpretability. These results suggest that attention-guided masking not only improves classification performance but also reshapes how models distribute importance across sequence positions. Although this study focuses on short genomic sequences, the proposed approach may extend to more complex interpretable sequence modeling settings.",
+      "authors": [
+        "Rayhaneh Shabani Nia",
+        "Ali Karkehabadi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-13T19:49:40+00:00",
+      "link": "https://arxiv.org/pdf/2605.14073v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "computes nucleotide-level importance scores using attention mechanism",
+      "llm_evidence_cn": "使用注意力机制计算核苷酸级重要性分数",
+      "llm_evidence": "使用注意力机制计算核苷酸级重要性分数",
+      "canonical_evidence": "使用注意力机制计算核苷酸级重要性分数",
+      "llm_tldr_en": "AttnGen uses attention to compute nucleotide-level importance scores for interpretable genomic sequence classification.",
+      "llm_tldr_cn": "AttnGen使用注意力计算核苷酸级重要性分数，实现可解释的基因组序列分类。",
+      "llm_tldr": "AttnGen使用注意力计算核苷酸级重要性分数，实现可解释的基因组序列分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.14606v1",
+      "source": "arxiv",
+      "title": "MambaRain: Multi-Scale Mamba-Attention Framework for 0-3 Hour Precipitation Nowcasting",
+      "abstract": "Accurate precipitation nowcasting over extended horizons (0-3 hours) is essential for disaster mitigation and operational decision-making, yet remains a critical challenge in the field. Existing deterministic approaches are predominantly constrained to shorter prediction windows (0-2 hours), exhibiting severe performance degradation beyond 90 minutes owing to their inherent difficulty in capturing long-range spatiotemporal dependencies from radar-derived observations. To address these fundamental limitations, we propose MambaRain, a novel multi-scale encoder-decoder architecture that synergistically integrates Mamba's linear-complexity long-range temporal modeling with self-attention mechanisms for explicit spatial correlation capture. The core innovation lies in a hybrid design paradigm wherein Mamba blocks leverage selective state space mechanisms to model global temporal dynamics across extended sequences with computational efficiency, while self-attention modules explicitly characterize spatial correlations within precipitation fields - a capability inherently absent in Mamba's sequential processing paradigm. This complementary synergy enables comprehensive spatiotemporal representation learning, effectively extending the viable forecasting horizon to 2-3 hours with substantial accuracy improvements. Furthermore, we introduce a spectral loss formulation to mitigate blurring artifacts characteristic of chaotic precipitation systems, thereby preserving fine-scale motion details critical for nowcasting accuracy. Experimental validation demonstrates that MambaRain substantially outperforms existing deterministic methodologies in 0-3 hour nowcasting tasks, with particularly pronounced performance gains in the challenging 2-3 hour prediction range.",
+      "authors": [
+        "Chunlei Shi",
+        "Cui Wu",
+        "Xiang Xu",
+        "Hao Li",
+        "Ni Fan",
+        "Xue Han",
+        "Yongchao Feng",
+        "Yufeng Zhu",
+        "Boyu Liu",
+        "Zengliang Zang",
+        "Hongbin Wang",
+        "Yanlan Yang",
+        "Dan Niu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-14T09:23:12+00:00",
+      "link": "https://arxiv.org/pdf/2605.14606v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Long-range temporal modeling for precipitation nowcasting",
+      "llm_evidence_cn": "用于降水预报的长时间序列建模",
+      "llm_evidence": "用于降水预报的长时间序列建模",
+      "canonical_evidence": "用于降水预报的长时间序列建模",
+      "llm_tldr_en": "MambaRain integrates Mamba and attention for accurate 0-3 hour precipitation nowcasting.",
+      "llm_tldr_cn": "MambaRain结合Mamba和注意力机制实现0-3小时精确降水预报。",
+      "llm_tldr": "MambaRain结合Mamba和注意力机制实现0-3小时精确降水预报。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.14867v1",
+      "source": "arxiv",
+      "title": "REALM: Retrospective Encoder Alignment for LFP Modeling",
+      "abstract": "Spike activity has been the dominant neural signal for behavior decoding due to its high spatial and temporal resolution. However, as brain-computer interfaces (BCIs) move toward high channel counts and wireless operation, the high sampling frequency of spike signals becomes a bottleneck due to high power and bandwidth requirements. Local field potentials (LFPs) represent a different spatial-temporal scale of brain activity compared to spikes, offering key advantages including improved long-term stability, reduced energy consumption, and lower bandwidth requirement. Despite these benefits, LFP-based decoding models typically show reduced accuracy and often rely on non-causal architectures that are unsuitable for real-time deployment. To address these challenges, we propose REALM: a retrospective distillation framework that enables causal LFP decoding. Inspired by offline-to-online distillation strategies in speech recognition, REALM transfers representational knowledge from a pretrained multi-session bidirectional LFP model to a causal version for real-time deployment. We first pretrain a bidirectional Mamba-2 teacher model using a masked autoencoding objective. We then distill this teacher model into a compact student model via a combined objective of representation alignment and task supervision. REALM consistently outperforms both causal and non-causal LFP-based SOTA methods for behavior decoding. Notably, our REALM improves decoding performance while achieving a $2\\times$ reduction in parameter count and a $10\\times$ reduction in training time. These results demonstrate that retrospective distillation effectively bridges the gap between offline and real-time neural decoding. REALM shows that LFP-only models can achieve competitive decoding performance without reliance on spike signals, offering a practical and scalable alternative for next-generation wireless implantable BCIs.",
+      "authors": [
+        "Peicheng Wu",
+        "Zhenyu Bu",
+        "Runze Ma",
+        "Lin Du"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "q-bio.NC"
+      ],
+      "published": "2026-05-14T14:16:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.14867v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "LFP-based neural decoding for brain-computer interfaces",
+      "llm_evidence_cn": "基于LFP的脑机接口神经解码",
+      "llm_evidence": "基于LFP的脑机接口神经解码",
+      "canonical_evidence": "基于LFP的脑机接口神经解码",
+      "llm_tldr_en": "Proposes REALM for LFP modeling to improve neural decoding accuracy in BCIs.",
+      "llm_tldr_cn": "提出REALM用于LFP建模，提升脑机接口中的神经解码准确性。",
+      "llm_tldr": "提出REALM用于LFP建模，提升脑机接口中的神经解码准确性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.15154v1",
+      "source": "arxiv",
+      "title": "RoSHAP: A Distributional Framework and Robust Metric for Stable Feature Attribution",
+      "abstract": "Feature attribution analysis is critical for interpreting machine learning models and supporting reliable data-driven decisions. However, feature attribution measures often exhibit stochastic variation: different train--test splits, random seeds, or model-fitting procedures can produce substantially different attribution values and feature rankings. This paper proposes a framework for incorporating stochastic nature of feature attribution and a robust attribution metric, RoSHAP, for stable feature ranking based on the SHAP metric. The proposed framework models the distribution of feature attribution scores and estimates it through bootstrap resampling and kernel density estimation. We show that, under mild regularity conditions, the aggregated feature attribution score is asymptotically Gaussian, which greatly reduces the computational cost of distribution estimation. The RoSHAP summarizes the distribution of SHAP into a robust feature-ranking criterion that simultaneously rewards features that are active, strong, and stable. Through simulations and real-data experiments, the proposed framework and RoSHAP outperform standard single-run attribution measures in identifying signal features. In addition, models built using RoSHAP-selected features achieve predictive performance comparable to full-feature models while using substantially fewer predictors. The proposed RoSHAP approach improves the stability and interpretability of machine learning models, enabling reliable and consistent insights for analysis.",
+      "authors": [
+        "Lanxin Xiang",
+        "Liang Shi",
+        "Youhui Ye",
+        "Boyu Jiang",
+        "Dawei Zhou",
+        "Feng Guo"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-05-14T17:51:09+00:00",
+      "link": "https://arxiv.org/pdf/2605.15154v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "robust feature attribution metric RoSHAP",
+      "llm_evidence_cn": "鲁棒的特征归因指标RoSHAP",
+      "llm_evidence": "鲁棒的特征归因指标RoSHAP",
+      "canonical_evidence": "鲁棒的特征归因指标RoSHAP",
+      "llm_tldr_en": "Proposes RoSHAP for stable and robust feature attribution in model interpretation.",
+      "llm_tldr_cn": "提出RoSHAP用于模型解释中稳定鲁棒的特征归因。",
+      "llm_tldr": "提出RoSHAP用于模型解释中稳定鲁棒的特征归因。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.13373v1",
+      "source": "arxiv",
+      "title": "Exploiting Pre-trained Encoder-Decoder Transformers for Sequence-to-Sequence Constituent Parsing",
+      "abstract": "To achieve deep natural language understanding, syntactic constituent parsing plays a crucial role and is widely required by many artificial intelligence systems for processing both text and speech. A recent approach involves using standard sequence-to-sequence models to handle constituent parsing as a machine translation problem, moving away from traditional task-specific parsers. These models are typically initialized with pre-trained encoder-only language models like BERT or RoBERTa. However, the use of pre-trained encoder-decoder language models for constituency parsing has not been thoroughly explored. To bridge this gap, we extend the sequence-to-sequence framework by investigating parsers built on pre-trained encoder-decoder architectures, including BART, mBART, and T5. We fine-tune them to generate linearized parse trees and extensively evaluate them on different linearization strategies across both continuous treebanks and more complex discontinuous benchmarks. Our results demonstrate that our approach outperforms all prior sequence-to-sequence models and performs competitively with leading task-specific constituent parsers on continuous constituent parsing.",
+      "authors": [
+        "Daniel Fernández-González",
+        "Cristina Outeiriño Cid"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-13T11:28:56+00:00",
+      "link": "https://arxiv.org/pdf/2605.13373v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "converting model outputs into sequences via pre-trained encoder-decoder",
+      "llm_evidence_cn": "通过预训练编码器-解码器将模型输出转换为序列",
+      "llm_evidence": "通过预训练编码器-解码器将模型输出转换为序列",
+      "canonical_evidence": "通过预训练编码器-解码器将模型输出转换为序列",
+      "llm_tldr_en": "Investigates pre-trained encoder-decoder transformers for sequence-to-sequence constituent parsing",
+      "llm_tldr_cn": "探索预训练编码器-解码器Transformer用于序列到序列的句法分析",
+      "llm_tldr": "探索预训练编码器-解码器Transformer用于序列到序列的句法分析",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.13415v2",
+      "source": "arxiv",
+      "title": "KIT-TIP-NLP at MultiPride: Continual Learning with Multilingual Foundation Model",
+      "abstract": "This paper presents a multi-stage framework for detecting reclaimed slurs in multilingual social media discourse. It addresses the challenge of identifying reclamatory versus non-reclamatory usage of LGBTQ+-related slurs across English, Spanish, and Italian tweets. The framework handles three intertwined methodological challenges like data scarcity, class imbalance, and cross-linguistic variation in sentiment expression. It integrates data-driven model selection via cross-validation, semantic-preserving augmentation through back-translation, inductive transfer learning with dynamic epoch-level undersampling, and domain-specific knowledge injection via masked language modeling. Eight multilingual embedding models were evaluated systematically, with XLM-RoBERTa selected as the foundation model based on macro-averaged F1 score. Data augmentation via GPT-4o-mini back-translation to alternate languages effectively tripled the training corpus while preserving semantic content and class distribution ratios. The framework produces four final runs for the evaluation purposes where RUN 1 is inductive transfer learning with augmentation and undersampling, RUN 2 with masked language modeling pre-training, RUN 3 and RUN 4 are previous predictions refined via language-specific decision thresholds optimized via ROC analysis. Language-specific threshold refinement reveals that optimal decision boundaries vary significantly across languages. This reflects distributional differences in model confidence scores and linguistic variation in reclamatory language usage. The threshold-based optimization yields 2-5% absolute F1 improvement without requiring model retraining. The methodology is fully reproducible, with all code and experimental setup available at https://github.com/rbg-research/MultiPRIDE-Evalita-2026.",
+      "authors": [
+        "Barathi Ganesh HB",
+        "Michal Ptaszynski",
+        "Rene Melendez",
+        "Juuso Eronen"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-05-13T12:10:47+00:00",
+      "link": "https://arxiv.org/pdf/2605.13415v2",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "transfer learning with data scarcity and augmentation",
+      "llm_evidence_cn": "利用数据增强和迁移学习应对数据稀缺",
+      "llm_evidence": "利用数据增强和迁移学习应对数据稀缺",
+      "canonical_evidence": "利用数据增强和迁移学习应对数据稀缺",
+      "llm_tldr_en": "Multilingual framework for reclaiming slurs using transfer learning",
+      "llm_tldr_cn": "使用迁移学习的多语言框架用于检测平反性污名化用语",
+      "llm_tldr": "使用迁移学习的多语言框架用于检测平反性污名化用语",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.13485v1",
+      "source": "arxiv",
+      "title": "Effective Context in Transformers: An Analysis of Fragmentation and Tokenization",
+      "abstract": "Transformers predict over a representation of a sequence. The same data can be written as bytes, characters, or subword tokens, and these representations may be lossless. Yet, under a fixed context window, they need not expose the same information to the model. This raises a basic question: how does the choice of representation change what a finite-context predictor can achieve?   We study this question on Markov sources and uncover two complementary phenomena. First, we observe that moving to smaller representation units can hurt prediction even when the context window is enlarged to cover the relevant source history. To explain this, we introduce fragmentation: a lossless recoding that replaces each source symbol by several smaller units. We prove that fragmentation can strictly increase the optimal finite-context log-loss, showing that the gap is not merely an optimization or capacity issue, but can be intrinsic to the representation. This gives a theoretical account of the finite-context gap observed in byte- and character-level models such as ByT5 and CANINE relative to subword-tokenized models. Second, we study the opposite direction: greedy tokenization -- BPE, WordPiece, and related methods -- which groups source symbols into larger units. We show that tokenization can make a short token window behave like a longer source-context window, and we give a loss guarantee describing when this is achievable. The guarantee depends on how reliably token windows span the needed source history, together with the compression rate of the tokenizer. This also yields a simple diagnostic for real tokenizers: measuring how much source context a fixed token window reliably contains. Together, the two directions establish a finite-context information-theoretic framework for reasoning about representation choices in Transformers.",
+      "authors": [
+        "Amirmehdi Jafari Fesharaki",
+        "Mohammadamin Rami",
+        "Aslan Tchamkerten"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL",
+        "cs.IT"
+      ],
+      "published": "2026-05-13T13:08:08+00:00",
+      "link": "https://arxiv.org/pdf/2605.13485v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "analyzes how tokenization affects sequence prediction in transformers",
+      "llm_evidence_cn": "分析标记化如何影响Transformer的序列预测",
+      "llm_evidence": "分析标记化如何影响Transformer的序列预测",
+      "canonical_evidence": "分析标记化如何影响Transformer的序列预测",
+      "llm_tldr_en": "Studies fragmentation and tokenization effects on finite-context sequence prediction.",
+      "llm_tldr_cn": "研究碎片化和标记化对有限上下文序列预测的影响",
+      "llm_tldr": "研究碎片化和标记化对有限上下文序列预测的影响",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.13678v1",
+      "source": "arxiv",
+      "title": "Three-Stage Learning Unlocks Strong Performance in Simple Models for Long-Term Time Series Forecasting",
+      "abstract": "Recent studies on long-term time series forecasting have shown that simple linear models and MLP-based predictors can achieve strong performance without increasingly complex architectures. However, many competitive baselines still rely on structural priors such as frequency-domain modeling, explicit decomposition, multi-scale mixing, or sophisticated cross-variable interaction modules, while paying less attention to how simple temporal mappings should be trained and organized. In this paper, we propose STAIR, short for Stagewise Temporal Adaptation via Individualization and Residual Learning, a training paradigm for long-term time series forecasting that aims to unlock the capacity of simple temporal mapping models without introducing complex architectural modules. STAIR decomposes forecasting ability into three progressive stages: it first learns common temporal dynamics across variables through a shared temporal mapping, then adapts the shared model to each variable via channel-wise fine-tuning to capture variable-specific patterns, and finally complements the backbone with cross-variable information through residual learning. We further introduce Shared-to-Individual Fine-tuning and alpha-RevIN to mitigate the limitations of strict channel independence and the overly strong normalization prior induced by standard RevIN. This design gradually increases modeling flexibility while keeping the core temporal predictor as a shallow MLP in the main experiments, with linear variants analyzed separately. Experiments on nine long-term forecasting benchmarks show that STAIR matches or outperforms recent strong baselines while preserving a simple temporal backbone, providing a concise and effective modeling perspective for long-term time series forecasting.",
+      "authors": [
+        "Zhenan Yu",
+        "Guangxin Jiang",
+        "Jin Yang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-13T15:36:46+00:00",
+      "link": "https://arxiv.org/pdf/2605.13678v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "training paradigm for long-term time series forecasting",
+      "llm_evidence_cn": "长期时间序列预测的训练范式",
+      "llm_evidence": "长期时间序列预测的训练范式",
+      "canonical_evidence": "长期时间序列预测的训练范式",
+      "llm_tldr_en": "STAIR unlocks strong performance in simple models for long-term time series forecasting.",
+      "llm_tldr_cn": "STAIR 解锁简单模型在长期时间序列预测中的强大性能。",
+      "llm_tldr": "STAIR 解锁简单模型在长期时间序列预测中的强大性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.13540v1",
+      "source": "arxiv",
+      "title": "Decoupled and Divergence-Conditioned Prompt for Multi-domain Dynamic Graph Foundation Models",
+      "abstract": "Dynamic graphs are ubiquitous in real-world systems, and building generalizable dynamic Graph Foundation Models has become a frontier in graph learning. However, dynamic graphs from different domains pose fundamental challenges to unified modeling, as their semantic and temporal patterns are inherently inconsistent, making the multi-domain pre-training difficult. Consequently, the widely used \"pretrain-then-finetune\" paradigm often suffers from severe negative knowledge transfer. To the best of our knowledge, there exists no multi-domain dynamic GFM. In this work, we propose DyGFM, a Dynamic Graph Foundation Model over multiple domains based on decoupled and divergence-conditioned prompting. To disentangle transferable semantics from the domain-specific dynamics, we introduce a dual-branch pre-training strategy with semantic-temporal decoupling. To alleviate negative transfer during domain adaptation, we further develop a cross-domain routing mechanism with divergence-aware expert selection. To enable efficient downstream fine-tuning, we design a divergence-conditioned prompt generator that injects lightweight, learnable graph prompts tailored to semantic and temporal traits. Extensive experiments on continuous dynamic graph benchmarks demonstrate that DyGFM consistently outperforms 12 state-of-the-art baselines on both node classification and link prediction tasks, achieving superior effectiveness and efficiency.",
+      "authors": [
+        "Haonan Yuan",
+        "Qingyun Sun",
+        "Junhua Shi",
+        "Xingcheng Fu",
+        "Jianxin Li",
+        "Philip S. Yu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-13T13:50:03+00:00",
+      "link": "https://arxiv.org/pdf/2605.13540v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "pretrained dynamic graph foundation model with prompting",
+      "llm_evidence_cn": "基于提示的预训练动态图基础模型",
+      "llm_evidence": "基于提示的预训练动态图基础模型",
+      "canonical_evidence": "基于提示的预训练动态图基础模型",
+      "llm_tldr_en": "DyGFM is a multi-domain dynamic graph foundation model that uses decoupled prompts to avoid negative transfer.",
+      "llm_tldr_cn": "DyGFM是多领域动态图基础模型，使用解耦提示避免负迁移。",
+      "llm_tldr": "DyGFM是多领域动态图基础模型，使用解耦提示避免负迁移。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.13612v1",
+      "source": "arxiv",
+      "title": "Deep Learning as Neural Low-Degree Filtering: A Spectral Theory of Hierarchical Feature Learning",
+      "abstract": "Understanding how deep neural networks learn useful internal representations from data remains a central open problem in the theory of deep learning. We introduce Neural Low-Degree Filtering (Neural LoFi), a stylized limit of gradient-based training in which hierarchical feature learning becomes an explicit iterative spectral procedure. In this limit, the dynamics at each layer decouple: given the current representation, the next layer selects directions with maximal accessible low-degree correlation to the label. This yields a tractable surrogate mechanism for deep learning, together with a natural kernel-space interpretation. Neural LoFi provides a mathematically explicit framework for studying multi-layer feature learning beyond the lazy regime. It predicts how representations are selected layer by layer, explains how emergence of concepts arises with given sample complexity,and gives a concrete mechanism by which depth progressively constructs new features from old ones through low-degree compositionality. We complement the theory with mechanistic experiments on fully connected and convolutional architectures, showing that Neural LoFi improves over lazy random-feature baselines, recovers meaningful structured filters, and predicts representations aligned with early gradient-descent feature discovery with real datasets.",
+      "authors": [
+        "Yatin Dandi",
+        "Matteo Vilucchio",
+        "Luca Arnaboldi",
+        "Hugo Tabanelli",
+        "Florent Krzakala"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cond-mat.dis-nn",
+        "stat.ML"
+      ],
+      "published": "2026-05-13T14:44:06+00:00",
+      "link": "https://arxiv.org/pdf/2605.13612v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Theoretical framework for hierarchical feature learning",
+      "llm_evidence_cn": "层级特征学习的理论框架",
+      "llm_evidence": "层级特征学习的理论框架",
+      "canonical_evidence": "层级特征学习的理论框架",
+      "llm_tldr_en": "Neural LoFi explains feature learning as iterative spectral filtering for representation learning.",
+      "llm_tldr_cn": "Neural LoFi将特征学习解释为表示学习的迭代谱过滤。",
+      "llm_tldr": "Neural LoFi将特征学习解释为表示学习的迭代谱过滤。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.13681v1",
+      "source": "arxiv",
+      "title": "Sampling from Flow Language Models via Marginal-Conditioned Bridges",
+      "abstract": "Flow Language Models (FLMs) are a recently introduced class of language models which adapt continuous flow matching for one-hot encoded token sequences. Their denoisers have a special structure absent from generic continuous diffusion models: each block of the denoising mean is a posterior marginal distribution over the clean token at that position. Standard DDPM-style samplers collapse these marginals to a single conditional-mean endpoint and bridge toward this simplex-valued point, which is generally not a valid one-hot sequence. We argue that the natural sampler for an FLM is instead posterior-predictive. At each reverse step, we sample a clean one-hot endpoint from the factorized posterior defined by the FLM token marginals, and then sample the next continuous state from the analytic Ornstein--Uhlenbeck bridge conditioned on that endpoint. The method is training-free, uses the same model evaluations as standard sampling, and gives a principled interface for token-level decoding controls such as temperature scaling and nucleus truncation. We show that, under exact posterior marginals, the endpoint approximation error is exactly the conditional multi-information among token positions. The induced one-step bridge kernel preserves all token-wise posterior-predictive marginals and loses only the residual cross-position dependence. Finally, we prove a Girsanov path-space comparison showing that the marginal-conditioned bridge has a no-larger denoising-error term than the frozen conditional-mean bridge, with strict improvement whenever intermediate coordinate-wise bridge observations reveal additional information about the clean token. Experiments with FLMs show that the sampler improves the quality--diversity tradeoff. Code is available at: github.com/imbirik/mcb.",
+      "authors": [
+        "Iskander Azangulov",
+        "Leo Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-05-13T15:38:48+00:00",
+      "link": "https://arxiv.org/pdf/2605.13681v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sampling method for token sequence generation",
+      "llm_evidence_cn": "用于生成token序列的采样方法",
+      "llm_evidence": "用于生成token序列的采样方法",
+      "canonical_evidence": "用于生成token序列的采样方法",
+      "llm_tldr_en": "Proposes marginal-conditioned bridges for sampling from flow language models.",
+      "llm_tldr_cn": "提出边际条件桥接方法从流语言模型中采样。",
+      "llm_tldr": "提出边际条件桥接方法从流语言模型中采样。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.13835v1",
+      "source": "arxiv",
+      "title": "Unlocking Patch-Level Features for CLIP-Based Class-Incremental Learning",
+      "abstract": "Class-Incremental Learning (CIL) enables models to continuously integrate new knowledge while mitigating catastrophic forgetting. Driven by the remarkable generalization of CLIP, leveraging pre-trained vision-language models has become a dominant paradigm in CIL. However, current work primarily focuses on aligning global image embeddings (i.e., [CLS] token) with their corresponding text prompts (i.e., [EOS] token). Despite their good performance, we find that they discard the rich patch-level semantic information inherent in CLIP's encoders. For instance, when recognizing a rabbit, local patches may encode its distinctive cues, such as long ears and a fluffy tail, which can provide complementary evidence for recognition. Based on the above observation, we propose SPA (Semantic-guided Patch-level Alignment) for CLIP-based CIL, which aims to awaken long-neglected local representations within CLIP. Specifically, for each class, we first construct representative and diverse visual samples and feed them to GPT-5 as visual guidance to generate class-wise semantic descriptions. These descriptions are used to guide the selection of discriminative patch-level visual features. Building upon these selected patches, we further employ optimal transport to align selected patch tokens with semantic tokens from class-wise descriptions, yielding a structured cross-modal alignment that improves recognition. Furthermore, we introduce task-specific projectors for effective adaptation to downstream incremental tasks, and sample pseudo-features from stored class-wise Gaussian statistics to calibrate old-class representations, thereby mitigating catastrophic forgetting. Extensive experiments demonstrate that SPA achieves state-of-the-art performance.",
+      "authors": [
+        "Hao Sun",
+        "Zi-Jun Ding",
+        "Da-Wei Zhou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-13T17:56:23+00:00",
+      "link": "https://arxiv.org/pdf/2605.13835v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Leveraging CLIP pretrained model for class-incremental learning",
+      "llm_evidence_cn": "利用CLIP预训练模型进行类增量学习",
+      "llm_evidence": "利用CLIP预训练模型进行类增量学习",
+      "canonical_evidence": "利用CLIP预训练模型进行类增量学习",
+      "llm_tldr_en": "Unlocks patch-level features from CLIP to improve class-incremental learning.",
+      "llm_tldr_cn": "从CLIP中解锁补丁级特征以改进类增量学习。",
+      "llm_tldr": "从CLIP中解锁补丁级特征以改进类增量学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.13784v1",
+      "source": "arxiv",
+      "title": "Attention Once Is All You Need: Efficient Streaming Inference with Stateful Transformers",
+      "abstract": "Conventional transformer inference engines are request-driven, paying an O(n) prefill cost on every query. In streaming workloads, where data arrives continuously and queries probe an ever-growing context, this cost is prohibitive. We introduce a data-driven computational model centred on stateful sessions: a persistent KV cache advanced incrementally as new data arrives, so prefill is moved off the critical path and query latency becomes O(|q|), independent of accumulated context size. Building on this, Flash Queries reclaim idle GPU cycles between data arrivals to pre-evaluate registered questions and return cached answers before the user asks, a pattern that is structurally impossible in stateless engines because they discard intermediate state between requests. A multi-tenant continuous-batching scheduler with cell-budget admission and prefix-aware grouped prefill lets dozens of stateful sessions coexist on a single GPU while preserving full quadratic self-attention. On streaming market-data benchmarks the reference implementation achieves up to 5.9x speedup over conventional inference engines (vLLM, SGLang, TensorRT-LLM, llama.cpp), holding query latency constant as accumulated context grows.",
+      "authors": [
+        "Victor Norgren"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-13T17:06:15+00:00",
+      "link": "https://arxiv.org/pdf/2605.13784v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "efficient streaming inference with stateful transformers",
+      "llm_evidence_cn": "带状态Transformer的高效流式推理",
+      "llm_evidence": "带状态Transformer的高效流式推理",
+      "canonical_evidence": "带状态Transformer的高效流式推理",
+      "llm_tldr_en": "Proposes stateful sessions to reduce prefill cost in streaming transformer inference.",
+      "llm_tldr_cn": "提出有状态会话以减少流式Transformer推理中的预填充成本。",
+      "llm_tldr": "提出有状态会话以减少流式Transformer推理中的预填充成本。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.13842v1",
+      "source": "arxiv",
+      "title": "From DES to KiDS: Domain adaptation for cross-survey detection of low-surface-brightness galaxies",
+      "abstract": "Low-surface-brightness galaxies (LSBGs) are vital for understanding galaxy formation, but their diffuse nature makes them challenging to detect. Upcoming large-scale surveys are expected to uncover large numbers of LSBGs, requiring robust automated methods to identify them across heterogeneous datasets. As a precursor to the Legacy Survey of Space and Time (LSST) and Euclid, we explore domain adaptation techniques for cross-survey LSBG identification. Using models trained on the Dark Energy Survey (DES), we search for LSBGs in the Kilo-Degree Survey Data Release 5 (KiDS DR5). We used an ensemble consisting of one convolutional neural network (CNN) and two transformer models trained on DES cutouts and applied to KiDS DR5 imaging data. Structural parameters were estimated with galfitm, and photometric redshifts and stellar population properties were estimated through spectral energy distribution fitting with CIGALE. We identify 20,180 LSBGs and 434 ultra-diffuse galaxies (UDGs) in KiDS DR5. Their structural parameters are similar to known LSBGs from DES and the Hyper Suprime-Cam SSP Survey (HSC-SSP). The KiDS-LSBGs follow a continuous size-luminosity relation connecting classical dwarf galaxies and UDGs, and their colours are bimodal ($\\sim73\\%$ blue, $\\sim27\\%$ red). Cross-matching with spectroscopic and cluster catalogues provides redshifts for 4,913 systems, enabling a systematic characterisation of the star-forming main sequence of LSBGs. Strong environmental trends are evident, with cluster LSBGs and UDGs exhibiting redder colours and reduced star formation compared to non-cluster systems. We demonstrate that domain adaptation enables robust cross-survey LSBG identification with deep learning models, providing a scalable pathway for constructing homogeneous LSBG catalogues for the LSST and Euclid era.",
+      "authors": [
+        "Hareesh Thuruthipilly",
+        "Krzysztof Lisiecki",
+        " Junais",
+        "Katarzyna Małek",
+        "Agnieszka Pollo",
+        "William J. Pearson",
+        "Antonio Vanzanella",
+        "Saptarshi Pal",
+        "Miguel Figueira",
+        "Pratik Dabhade",
+        "Anna Durkalec",
+        "Aidan P. Cotter",
+        "Unnikrishnan Sureshkumar",
+        "Nandini Hazra",
+        "Patryk Matera",
+        "Subhrata Dey",
+        "Michal Vrábel",
+        "Anirban Dutta",
+        "Henry Willems",
+        "Nicola Principi Cavaterra",
+        "Natalia Dobrowolska",
+        "Wojciech Knop"
+      ],
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA",
+        "astro-ph.IM"
+      ],
+      "published": "2026-05-13T17:58:55+00:00",
+      "link": "https://arxiv.org/pdf/2605.13842v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "domain adaptation for cross-survey detection",
+      "llm_evidence_cn": "跨巡天检测中的域自适应技术",
+      "llm_evidence": "跨巡天检测中的域自适应技术",
+      "canonical_evidence": "跨巡天检测中的域自适应技术",
+      "llm_tldr_en": "Applies domain adaptation to transfer galaxy detection across surveys, relevant to adapting models to new domains.",
+      "llm_tldr_cn": "应用域自适应跨巡天检测星系，相关于将模型适配到新领域。",
+      "llm_tldr": "应用域自适应跨巡天检测星系，相关于将模型适配到新领域。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
