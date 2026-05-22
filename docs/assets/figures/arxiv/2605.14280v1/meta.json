@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-010.webp",
+      "caption": "Figure 1: Left panel: The λ-smoothed density ratio wλ(x) = q(x)",
+      "page": 5,
+      "index": 10,
+      "width": 517,
+      "height": 233
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-007.webp",
+      "caption": "Figure 2: TILT improves target-domain regression under covariate shift. A In the one-dimensional misspecified linear-regression problem, target-test MSE is reported as the source distribution moves away from the fixed target distribution. Exact importance weighting (IW), exact relative least-squares importance fitting (RuLSIF), and TILT are shown; source ERM is omitted for scale. B In the same linear setting at corruption level 0.7, the target-test MSE of TILT is plotted as a function of λ, with the source ERM reference shown for comparison. C In the 4096-dimensional neural problem, target-test MSE is reported as the Gaussian source mean moves away from the fixed target distribution. All methods in C use the same weak ReLU target class and the same effective weight decay for the deployed predictor f ; a small labeled target validation set is used only to tune allowed hyperparameters. Curves show means over trials and shaded bands show interquartile ranges.",
+      "page": 9,
+      "index": 7,
+      "width": 955,
+      "height": 305
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-004.webp",
+      "caption": "Figure 3: Point-mass nonparametric rate. Left: oracle-tuned TILT under PL = L−1Unif[0, 1]+(1−L−1)δ0 for a β = 2 sine-series regression function. Right: source ERM on the same n/L axis ascends as L increases. The dotted line has slope (n/L)−4/5.",
+      "page": 10,
+      "index": 4,
+      "width": 677,
+      "height": 321
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-001.webp",
+      "caption": "Figure 4: KD-TILT and KL-TILT consistently improve shifted-test performance over source-only baselines on CIFAR-100. A ResNet-20 teacher is trained on clean CIFAR-100 (source), and a weak CNN student is distilled under covariate shift induced by a deterministic combination of brightness, contrast, color, and Gaussian-blur perturbations on the target domain, parameterized by the target shift strength on the horizontal axis. A shows the deterministic target-shift path for one representative CIFAR-100 test image with the label “rocket”; the leftmost image is the clean source image at shift strength 0. B reports top-1 accuracy on the shifted target-test set; C reports the corresponding target-test cross-entropy loss. D shows the target-test cross-entropy of KL-TILT as a function of λ at shift strengths 0 and 1.5; dashed horizontal lines mark the corresponding source-ERM losses, and missing large-λ points indicate NaN training runs. We compare Source ERM (student trained with cross-entropy on source only), KD (vanilla knowledge distillation), KD-TILT (KD with the TILT target-side regularizer), and KL-TILT (the KL-divergence tilted variant). The penalty strength λ for KD-TILT and KL-TILT is selected per shift strength on a labeled target-validation split. Solid curves show means over seeds and shaded bands indicate ±1 standard deviation; B and C use ten seeds, while D uses seven seeds. Both TILT variants clearly dominate Source ERM and KD at moderate-to-high shift strengths, and the KL-TILT loss curve remains robust over a broad intermediate range of λ values.",
+      "page": 11,
+      "index": 1,
+      "width": 959,
+      "height": 507
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-005.webp",
+      "caption": "Figure 5: Regularization sensitivity in the one-dimensional synthetic regression experiment. Each panel fixes a source corruption level and plots target-test MSE as a function of λ. Curves show means over trials and shaded bands show interquartile ranges. The TILT and exact RuLSIF curves have visibly different λ dependence, and the favorable range for TILT changes with the source corruption level.",
+      "page": 28,
+      "index": 5,
+      "width": 835,
+      "height": 618
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-003.webp",
+      "caption": "Figure 6: Auxiliary-component diagnostics for the synthetic regression experiment. For the same one-dimensional synthetic problem as in Figure 2, A shows diagnostic quantities for the learned auxiliary component b at corruption level 0. In the matched-domain case, all quantities involving b remain small, and increasing λ keeps the target-side contribution controlled. B repeats the diagnostics at corruption level 1. Under the large shift, the source- and target-side quantities separate strongly, consistent with b fitting source-specific residual structure while the target penalty limits its effect on the deployed component f .",
+      "page": 29,
+      "index": 3,
+      "width": 905,
+      "height": 347
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-002.webp",
+      "caption": "Figure 7: Finite-linear λ sweep under bounded density ratio. The four panels reproduce the first four diagnostics from the dimension sweep, except that the second panel reports (1 + λ)E2 λ rather than the raw E2 λ. When df = 20, the task is effectively well specified for the deployed class. In this case, a smaller auxiliary class keeps the small-λ solution closer to source ERM, whereas a rich auxiliary class can be worse at small λ. When df = 8, the deployed class is misspecified and a richer auxiliary class improves performance in this sweep.",
+      "page": 30,
+      "index": 2,
+      "width": 932,
+      "height": 740
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-008.webp",
+      "caption": "Figure 8: Well-specified beta-product neural control. Target MSE is reported for a 16-dimensional betaproduct covariate-shift problem with a fixed ReLU-teacher regression function. Unlike the high-dimensional weak-class experiment in Figure 2, the deployed neural class is sufficiently rich for this lower-dimensional task. Source ERM and kernel-estimated RuLSIF therefore perform similarly to TILT in this setting.",
+      "page": 31,
+      "index": 8,
+      "width": 397,
+      "height": 402
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-009.webp",
+      "caption": "Figure 9: Top-5 accuracy on the CIFAR-100 covariate-shift experiment. This figure complements Figure 4 by reporting top-5 accuracy on the shifted target-test set for the same source ERM, KD, KD-TILT, and KL-TILT methods. Solid curves show means over seeds and shaded bands indicate ±1 standard deviation.",
+      "page": 31,
+      "index": 9,
+      "width": 480,
+      "height": 344
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14280v1/fig-006.webp",
+      "caption": "Figure 10: Target-test cross-entropy under single-corruption CIFAR-100 shifts. This figure repeats the CIFAR-100 distillation experiment while varying the target corruption type one at a time. The top grid visualizes the same CIFAR-100 test image under Gaussian blur, defocus blur, contrast, and pixelate corruptions; columns correspond to the severity values used in the sweep. The bottom panels report target-test cross-entropy. The teacher curve is the source-trained ResNet-20 evaluated directly on the shifted target-test set. The KD and KL-TILT curves show means over three seeds with ±1 standard-deviation bands; KL-TILT denotes the validation-selected Bregman-IIW/KL-TILT model.",
+      "page": 32,
+      "index": 6,
+      "width": 632,
+      "height": 928
+    }
+  ]
+}

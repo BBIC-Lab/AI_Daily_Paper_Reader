@@ -1,0 +1,2820 @@
+Title: Language-Induced Priors for Domain Adaptation
+
+URL Source: https://arxiv.org/pdf/2605.14301v1
+
+Published Time: Fri, 15 May 2026 00:31:12 GMT
+
+Number of Pages: 31
+
+Markdown Content:
+# Language-Induced Priors for Domain Adaptation 
+
+Qiyuan Chen 
+
+Industrial and Operations Engineering University of Michigan Ann Arbor, MI 48109 
+
+cqiyuan@umich.edu 
+
+Jiayu Zhou 
+
+School of Information University of Michigan Ann Arbor, MI 48109 
+
+jiayuz@umich.edu 
+
+Raed Al Kontar 
+
+Industrial and Operations Engineering University of Michigan Ann Arbor, MI 48109 
+
+alkontar@umich.edu 
+
+## Abstract 
+
+Domain adaptation faces a fundamental paradox in the cold-start regime. When target data is scarce, statistical methods fail to distinguish relevant source domains from irrelevant ones, which often leads to negative transfer. In this paper, we address this challenge by leveraging expert textual descriptions of the target do-main, a resource that is often available but overlooked. We propose a probabilistic framework that translates these semantic descriptions into a choice model, namely a Language-Induced Prior (LIP), that learns the preferences from a pretrained Large Language Model (LLM). The LIP is then integrated into an Expectation-Maximization algorithm to identify source relevance. Methodologically, this frame-work is compatible with any parametric model where a likelihood is available. It allows the LIP to guide the selection of sources when target signals are weak, while gradually refining these choices as samples accumulate. Theoretically, we prove that the estimator roughly matches an oracle cold-start MSE under a correct prior, while remaining asymptotically consistent regardless of the quality of the LIP. Empirically, we validated the framework on a descriptive (Gaussian estimation), a predictive (C-MAPSS dataset), and a prescriptive task (MuJoCo hopper). 
+
+## 1 Introduction 
+
+The success of modern machine learning is driven by the abundance of data, but it can be fragile in the cold-start regime. When an agent starts its task in a new environment, whether it is a new machine deployed to an assembly line or a diagnostic model for a new patient, it becomes statistically challenging to estimate an accurate model from the limited observations. The standard remedy for this problem is Domain Adaptation (DA). DA leverages the abundant data from existing agents that potentially operate under different environments. These environments from which data are borrowed are called source domains, while the new environment we care about is called the target domain. However, the mere existence of source data is not enough. In realistic settings, source domains are usually heterogeneous, including both relevant and irrelevant domains. If an agent indiscriminately pools data from all available machines, it can suffer from negative transfer, where the borrowed knowledge biases the model and results in even worse performance compared to a simple model trained on the limited target data alone. For example, the corrosion of a machine operating in a humid environment can occur faster compared to one operating in a dry environment. If we train a model 
+
+> Preprint.
+> arXiv:2605.14301v1 [cs.LG] 14 May 2026
+
+for a humid environment with the degradation data generated in a dry one, the remaining life can be significantly longer than its actual value. Although identifying the relevant sources is important for DA, it is not easier than learning a good model with limited data. In fact, if one can correctly identify the relevant sources, then an accurate model can be trained using the data from these sources. This creates a paradox in the cold-start regime. To reliably borrow data from the source domains, the agent needs a reliable understanding of the target domain, which is unrealistic given the limited data. Fundamentally, regardless of how rich the source datasets are, the performance of the resulting model is bottle-necked by the limited information regarding the target domain, which calls for attention beyond the source datasets. Fortunately, strictly numerical data is rarely the only information available when deploying a new agent. In many practical applications, we usually have some contextual information about the target domain. This contextual information, usually taking the form of expert textual descriptions, is a rich modality of information that has been overlooked in the DA literature. A maintenance log might note that a machine is “vibrating more than usual,” or a clinical chart might describe a patient as “working irregular night shifts”. While these descriptions do not contain labeled training samples, they induce a strong prior regarding the underlying physics of the environment. Humans naturally evade the cold-start paradox by leveraging this context. An engineer need not observe a hundred failure events to know that a vibrating machine fails more often. Semantic descriptions immediately remind us of relevant prior experiences. In this paper, we bridge the gap between semantic reasoning and statistical learning. Our contributions are summarized as follows. • Language-Induced Prior (LIP). To the best of our knowledge, this is the first work to define and leverage LIP for identifying source relevance in DA (see related work in the Appendix A). We use a choice model to quantify the relevance of the sources, which guides DA in a cold-start setting. • LIP-aided EM. LIP is integrated into MDA through a Bayesian hierarchical model with latent source relevance, which is solved by an Expectation-Maximization (EM) algorithm. This allows the model to be guided by expert intuition when the target signals are weak, while automatically refining the source relevance as data accumulates. • Theoretical guarantees. Our theory verifies the methodological claims. Theorem 4.1 shows that EM behaves as if it is trained on all the relevant sources under a correct prior, demonstrating why and how semantic knowledge helps. The fall-back analysis shows that both the E-step (Theorem 4.3) and the M-step (Theorem 4.2) are consistent under any LIP, including the incorrect ones. • Empirical validation. We empirically validate our approach on three tasks: an illustrative example of Gaussian estimation (both 1-d and 2-d); a case study on the C-MAPSS dataset when no approximations are needed; and a deep reinforcement learning example for MuJoCo hopper. In all cases, our LIP-aided EM shows superior performance, especially when the target data is scarce. Our code is available at https://github.com/Chen-Qiyuan/LIP-EM .
+
+## 2 Setting 
+
+Problem Formulation Consider K +1 independent agents indexed by k, where each agent operates under a corresponding domain k whose behavior is controlled by a set of latent parameters θk of dimension d. Without loss of generality, we let domain k = 0 , where agent k = 0 operates, be the target domain, and the rest of the agents k ∈ { 1, . . . , K } are considered the source domains. For each domain k, we denote their historical dataset as {D k}Kk=1 , where each Dk contains Nk i.i.d. data points generated by parameter θk. Note that the source domains are purely for borrowing knowledge, and we care only about the performance in the target domain, which boils down to the estimation of 
+
+θ0. We note that this problem setup is a general framework for any parameter estimation problem. We model the data generating process of a multi-source domain adaptation (MDA) problem as a Bayesian hierarchical model shown in Fig. 1. A prior πk generates a latent indicator variable 
+
+ck ∈ { 0, 1}, determining whether a source domain k shares a similar distribution with the target, i.e., 
+
+θk ∼
+
+N (θ0, τ 2I) ck = 1 
+
+ϕnull ck = 0 (1) If ck = 1 , then the parameter of domain k is sampled from an isotropic normal distribution centered at θ0 with per-coordinate variance τ 2, where the hyperparameter τ is a small number that defines how 2πk ck θk Dk    
+
+> θ0D0ϕnull
+> N(θ0, τ 2I)
+> k= 1 , . . . , K
+
+Figure 1: Generative Directed Acyclic Graph similar the relevant domains are. In the special case where τ = 0 , it is enforced that all the relevant source domains should have the exact same parameter θk = θ0. If ck = 0 , the agent operates under a domain-specific noise parameter θk generated by the noise component ϕnull .
+
+Motivation of the LIP As highlighted earlier, determining membership ck in a cold-start regime presents a circular challenge: when N0 is scarce, identifying relevant sources requires a reliable estimate of θ0, yet estimating θ0 requires knowing which sources to borrow from. We break this dilemma by supplying additional information through a Language-Induced Prior (LIP) π =(π1, . . . , π K ), where πk = P(ck = 1) . LIP leverages a textual description of the target domain to encode source relevance before any target data is processed. We note that our framework requires a text description only for the target environment. This reflects how such information arises in practice: domain experts typically describe the current system of interest (e.g., “the machine is vibrating abnormally”), but equivalent descriptions for historical source datasets are rarely recorded and are infeasible to reconstruct retrospectively. While experts could, in principle, assess each source’s relevance from the target description, doing so manually is costly and does not scale with size K.We propose to use pretrained LLMs as a practical alternative, leveraging their reasoning ability and broad pretrained knowledge to parse the description and assess relevance. 
+
+## 3 Methodology 
+
+3.1 LIP Construction 
+
+To construct the LIP, we use Empirical Bayes to find the prior that maximizes the likelihood of LLM responses. In this step, one can be creative in the elicitation method, and any prior (even one that is not created by an LLM) is compatible with the proposed EM algorithm in the next section. Here, we propose one exemplary method through subgroup selection (see details in Appendix B). Roughly, this consists of two steps (see Fig. 2). First, we elicit a comparison dataset M from an LLM judge. Then, the LIP π is fitted by maximizing its likelihood on M .
+
+Subgroup Preference Elicitation We pose the problem to the LLM as a multiple choice question. For each query m = 1 , . . . , N M , we sample a subgroup Sm ⊆ { 1, . . . , K } and ask the LLM to select the most relevant source from Sm given sufficient background knowledge about the data structure, 𝒟 1 𝓓 𝟑 𝒟 2 𝓓 𝟒  ···  𝓓 𝑲                                        
+
+> Selection Agent (LLM)
+> Background :
+> Each source dataset contains a time
+> series of a machine sensor’s reading s.
+> Description :
+> The machine is vibrating a lot .
+> Selection
+> 𝑘 𝑚 =3
+> 𝑆 1,𝑘 1
+> ⋮
+> 3,4,𝐾 ,3
+> 𝑆 𝑁 𝑀 ,𝑘 𝑁 𝑀
+> LIP
+> 𝜋 =𝜋 1,…,𝜋ₖ
+> repeat 𝑚 =1,…,𝑁 𝑀
+> Prompt :
+> Select the source that matches the
+> description best (or 0 if none matches ).
+> ⋮
+> Queried Dataset
+> 𝑀 =𝑆 𝑚 ,𝑘 𝑚 𝑚 =1
+> 𝑁 𝑀
+> 𝓓 𝟑 𝓓 𝟒 𝓓 𝑲
+> Subgroup Generator
+> 𝑆 1,𝑆 2,…,𝑆 𝑁 𝑀
+> 𝑆 𝑚 =3,4,𝐾 MLE
+> Source Datase ts
+
+Figure 2: LIP Pipeline 3the target description h, and the corresponding datasets {Dk}k∈Sm , or return km = 0 if no candidate is deemed relevant. We record the responses as M = {(Sm, k m)}NM
+
+> m=1
+
+.
+
+Empirical Bayes for LIP We now estimate the prior probability distribution by maximizing its likelihood on M . LIP is parameterized as πk = σ(αk), where αk is a real-valued latent variable associated with the source k. Because the LLM is restricted to selecting at most one candidate per query, we model its choice as a conditional logit with an outside option [McFadden, 1974, Luce et al., 1959]. The null option is a virtual alternative whose worth α0 represents the selection threshold. Concretely, the probability that the LLM returns choice km ∈ Sm ∪ { 0} given subgroup Sm is 
+
+p(km | Sm) = eαkm 
+
+eα0 + P 
+
+> j∈Sm
+
+eαj , (2) where αkm = α0 when km = 0 (the null is selected) and αkm = αk when a source k is selected. To find the most probable LIP, we minimize the regularized negative log-likelihood: 
+
+min 
+
+> α0,α 1,...,α K
+
+−
+
+> NM
+
+X
+
+> m=1
+
+log p(km | Sm) + ϵ
+
+> K
+
+X
+
+> k=1
+
+
+
+αk − log p0
+
+1 − p0
+
+2
+
+, (3) where ϵ is an L2 regularization coefficient and p0 is the default probability for a uniform prior. 
+
+3.2 Optimization with LIP-aided EM 
+
+Recall that the goal in our problem setup is to estimate an accurate θ0. At this stage, we have both the LIP π and the observed data O := {D 0, . . . , DK }. Under a probabilistic model with latent parameters, a natural choice to infer the memberships is EM. We denote the latent memberships as 
+
+c := {c1, . . . , c K } and optimize them jointly with θ0 by maximizing the complete-data likelihood 
+
+p(O, c | θ) = L(θ; D0)
+
+> K
+
+Y
+
+> k=1
+
+p(Dk | ck = 1 , θ )ck p(Dk | ck = 0) 1−ck πck 
+
+> k
+
+(1 − πk)1−ck . (4) EM alternates between an E-step (updating the posterior of c) and an M-step (maximizing over θ), where each iteration aims to maximize the expectation of the complete-data log-likelihood with respect to the posterior of c, conditional on the current iterate: 
+
+θ(t+1) ← arg max 
+
+> θ
+
+Ec|O,θ (t) [log p(O, c | θ)] . (5) 
+
+3.2.1 The E-Step (Expectation) 
+
+To optimize (5) , we need to first compute the objective. Using the Bernoulli form of ck (P(ck) = 
+
+πck 
+
+> k
+
+(1 − πk)1−ck ) and dropping θ-independent terms (see Appendix D.1), we can reduce (5) to 
+
+max  
+
+> θ
+
+log L(θ; D0) + 
+
+> K
+
+X
+
+> k=1
+
+w(t) 
+
+> k
+
+log p(Dk | ck = 1 , θ ), (6) where the objective function in (5) can be written as a weighted sum of likelihoods with weights 
+
+w(t) 
+
+> k
+
+:= E[ck | D k, θ (t)] = P(ck = 1 | D k, θ (t)). To compute these weights w(t) 
+
+> k
+
+, we apply Bayes’ rule and write it in a numerically stable sigmoid form: 
+
+w(t) 
+
+> k
+
+= σ
+
+
+
+log p(Dk | ck = 1 , θ (t))
+
+p(Dk | ck = 0) + log πk
+
+1 − πk
+
+
+
+, (7) where σ is the sigmoid function. In a nutshell, the log-Likelihood Ratio (log-LR) log[ p(Dk | ck =1, θ (t))/p (Dk | ck = 0)] corrects the prior πk by the empirical evidence. When the relevant likelihood 
+
+p(Dk | ck = 1 , θ (t)) is larger than the null likelihood p(Dk | ck = 0) , the ratio is positive and raises the weight and conversely lowers it. Now what remains is computing these two likelihoods. 4Relevant Likelihood Given θ(t), p(Dk | ck = 1 , θ (t)) can be computed by marginalizing out θk
+
+p(Dk | ck = 1 , θ (t)) = 
+
+Z
+
+L(θk; Dk) N (θk | θ(t), τ 2I) dθ k,
+
+which is generally intractable. For low-dimensional θk, one may efficiently approximate the integral using Monte Carlo methods with θs ∼ N . However, when d is large, sampling θs can be inefficient, so we approximate the likelihood with a second-order Taylor expansion of log L( · ; Dk) at θ(t).
+
+log L(θ; Dk) ≈ log L(θ(t); Dk) + g(t)
+
+> k
+> ⊺
+
+(θ − θ(t)) − 12 (θ − θ(t))⊺H(t) 
+
+> k
+
+(θ − θ(t)), (8) where g(t) 
+
+> k
+
+:= ∇θ log L(θ; Dk)|θ=θ(t) and H(t) 
+
+> k
+
+:= −∇ 2 
+
+> θ
+
+log L(θ; Dk)|θ=θ(t) . Under this approxima-tion, the relevant likelihood can be approximated by (9) (Proposition 3.1, proved in the Appendix). 
+
+Proposition 3.1. Fix τ > 0 and θ(t) ∈ Rd, and assume H(t) 
+
+> k
+
+⪰ 0. Approximation (8) yields 
+
+log p(Dk | ck = 1 , θ (t)) ≈ log L(θ(t); Dk) + τ 2 
+
+> 2
+
+g(t)
+
+> k
+> ⊺
+
+(I + τ 2H(t) 
+
+> k
+
+)−1g(t) 
+
+> k
+
+− 12 log det( I + τ 2H(t) 
+
+> k
+
+).
+
+(9) 
+
+Remark 3.2 (Zero-shift limit) . At τ = 0 , both sides of (9) reduce to log L(θ(t); Dk), so the approxi-mation holds with equality. 
+
+Remark 3.3 (Exactness for Gaussian likelihood) . Suppose p(x | θk) = N (x; θk, Σk) with known 
+
+Σk ≻ 0. Then (8) holds with equality at every θ(t), and consequently (9) holds with equality. Remarks 3.2 and 3.3 are proved in the Appendix. When τ is small, the approximation in (9) is justified even for non-Gaussian likelihoods. Note that a larger τ relaxes the relevance criterion and includes more sources, but at the cost of additional estimation error (see the discussion in Sec. 4). 
+
+Null Likelihood p(Dk | ck = 0) is determined by the null prior ϕnull , a user-specified hyperparam-eter that acts as a background noise level, where a source k is deemed relevant only if its likelihood exceeds this threshold. The precise choice of ϕnull is uncritical when Nk is large, as the relevance weight commits to the correct value regardless (Theorem 4.3). However, a null floor set too low fails to suppress irrelevant sources and triggers negative transfer. It is therefore safer to err on the side of a slightly larger null likelihood. Two practical methods for setting ϕnull are discussed in Appendix D.2. 
+
+3.2.2 The M-Step (Maximization) 
+
+Having computed the relevance weights w(t) 
+
+> k
+
+in the E-step, we can now solve the maximization problem in (6). The objective Q-function with respect to θ is 
+
+Q(θ | θ(t)) = log L(θ; D0) + 
+
+> K
+
+X
+
+> k=1
+
+w(t) 
+
+> k
+
+log p(Dk | ck = 1 , θ ). (10) Replacing the relevant log-likelihood with (9) gives 
+
+max 
+
+> θ(t+1)
+
+log L(θ(t+1) ; D0) + X
+
+> k
+
+w(t) 
+
+> k
+
+log L(θ(t+1) ; Dk)+ X
+
+> k
+
+w(t)
+
+> k
+
+ τ 2
+
+2 g(t+1)  
+
+> k
+> ⊺
+
+
+
+I + τ 2H(t+1) 
+
+> k
+
+−1
+
+g(t+1)  
+
+> k
+
+− 12 log det 
+
+
+
+I + τ 2H(t+1) 
+
+> k
+
+
+
+, (11) which can be interpreted as maximizing the log likelihood regularized by a τ 2-weighted term. Yet, solving (11) exactly requires computing the gradient gk and inverting a costly d × d matrix, which is not practical for high-dimensional θ0. As such, we introduce two approaches for fast computations. First, if we re-expand each log L( · ; Dk) around the local Maximum Likelihood Estimation (MLE) 
+
+ˆθk := arg max θk L(θk; Dk) rather than around the current iterate θ(t). This shift of the expansion center kills the gradient term (since the gradient is 0 at MLE) and replaces the iteration-dependent Hessian H(t) 
+
+> k
+
+with the iteration-independent Hessian at the MLE: 
+
+log L(θ; Dk) ≈ const − 12 (θ − ˆθk)⊺HMLE  
+
+> k
+
+(θ − ˆθk),
+
+5where HMLE  
+
+> k
+
+:= −∇ 2 
+
+> θ
+
+log L(θ; Dk)|θ=ˆθk . Hereafter, we drop the superscript and write Hk := HMLE 
+
+> k
+
+when the expansion center is unambiguous. Marginalizing over θk as in Proposition 3.1 gives 
+
+log p(Dk | ck = 1 , θ ) ≈ const − 12 (θ − ˆθk)⊺(I + τ 2Hk)−1Hk(θ − ˆθk).
+
+This expansion makes the objective quadratic, which admits a closed-form update 
+
+θ(t+1) =
+
+
+
+I +
+
+> K
+
+X
+
+> k=1
+
+Λ(t)
+
+> k
+
+−1ˆθ0 +
+
+> K
+
+X
+
+> k=1
+
+Λ(t) 
+
+> k
+
+ˆθk
+
+
+
+, Λ(t) 
+
+> k
+
+:= w(t) 
+
+> k
+
+H−10 (I + τ 2Hk)−1Hk. (12) The update is a relative-precision-weighted blend of the source MLEs that requires no gradient-descent inner loop. Because ˆθk, g k, H k depend only on Dk and not on the EM iterate, they are computed only once and reused across iterations t.Second, when τ is a small number, its square is numerically negligible in practice. We further approximate HMLE  
+
+> k
+
+∼ NkI and HMLE 0 ∼ N0I using the expected Fisher information, which reduces (12) to a clean weighted average of source MLEs (Appendix C): 
+
+θ(t+1) = N0 ˆθ0 + PKk=1 w(t) 
+
+> k
+
+Nk ˆθk
+
+N0 + PKk=1 w(t) 
+
+> k
+
+Nk
+
+, (13) For over-parameterized models like neural networks, weight-space averaging is meaningless, so we directly perform gradient ascent on (11) . Appendices C and D provide the pseudocode for all variants. 
+
+Bayesian Tempering in EM The E-step weight (7) can be unstable in early iterations when θ(t) is a poor estimate of θ0 because the log-likelihood ratio in (7) can have high variance and overwhelm the LIP correction (see detailed discussion in Appendix C.2). To mitigate this, we introduce a tempering schedule that suppresses the log-likelihood ratio in early iterations and gradually increases it as the EM iterations approach θ0. This is achieved by multiplying the log-likelihood ratio by a tempering parameter β(t) 
+
+> k
+
+that grows with t and shrinks inversely with the standard deviation of the log-likelihood ratio. As a result, EM relies more on the LIP when the estimate is noisy and delegates to data otherwise. The effect of tempering will be discussed in the theoretical analysis in Sec. 4. 
+
+## 4 Theoretical Results 
+
+This section provides two complementary guarantees for LIP-aided EM. First, when the LIP is well-calibrated, the MSE of the surrogate update (13) matches an oracle cold-start MSE (Sec. 4.1). Second, even when the LIP is misspecified, the algorithm remains asymptotically consistent (Sec. 4.2). The first result formalizes the role of LIP in cold start, while the second part serves as a safety net. 
+
+4.1 Finite-sample cold-start MSE under a correct LIP 
+
+We consider the Gaussian-mean estimation problem where each source k has Nk = N i.i.d. samples from pk ≜ N (θk, σ 2I), the null prior ϕnull determines the null density q(x) ≜ p(x | ck = 0) , and 
+
+R ≜ {k : ck = 1 }, ¯R ≜ {k : ck = 0 } denote the relevant and irrelevant sets. Define the per-sample log-LR of the relevant model against the null on a single observation, i.e., ℓ(x; θ) ≜ log p(x|θ) 
+
+> q(x)
+
+, and its expectation under pk at the truth θ0,
+
+ρk(θ(t)) ≜ Ex∼pk
+
+h
+
+ℓ(x; θ(t))
+
+i
+
+= KL( pk ∥ q) − KL( pk ∥ p(· | θ(t))) . (14) Arguably, the overarching oracle one can aim for in a cold start identifies all the relevant sources: 
+
+θ⋆ ≜ N0 ˆθ0 + N P 
+
+> k∈R
+
+ˆθk
+
+N0 + N |R| . (15) Under our model assumption in Fig. 1, Proposition E.6 in Appendix characterizes the oracle MSE as 
+
+MSE ⋆ ≜ E∥θ⋆ − θ0∥2 = dσ 2
+
+N0 + N |R| + dτ 2 N 2|R|
+
+(N0 + N |R|)2 , (16) 6which is much smaller than the target-only MSE dσ 2/N 0 when N |R| ≫ N0. The second term is the irreducible τ -shift contribution from the relevant cluster spread (variance τ 2 per coordinate, 
+
+|R| relevant sources averaged). Motivated by (16) , the rest of the analysis specialize to τ = 0 .The general τ > 0 case follows the same arguments with the additive dτ 2N 2|R|/(N0 + N |R|)2
+
+correction in the oracle term and an analogous correction term in the resulting theorem. Theorem 4.1 below rests on four assumptions, deferred to Appendix E.4: E.1 fixes τ = 0 and assumes a null prior ϕnull with a finite second moment ¯D2 ≜ Eθ∼ϕnull ∥θ − θ0∥2; E.2 states Fisher-information regularity and V -sub-Gaussian and L-Lipschitz per-sample log-LR; E.3 requires probabilistic sep-aration Pθ∼ϕnull (∥θ − θ0∥ < r sep ) ≤ α; and E.4 assumes an identifiability margin ∆∗ > 0 such that min k |ρk| ≥ ∆∗ on the well-separated event S ≜ {∥ θk − θ0∥ ≥ rsep for all k ∈ ¯R}. With the assumptions, we show that LIP-aided EM matches the oracle MSE up to terms that are exponentially small in N . An unconditional result that removes the conditioning on the well-separated event S (see Corollary E.13) also holds at an extra price of Kαr 2sep .
+
+Theorem 4.1 (Cold-start MSE under a correct LIP) . Under Assumptions E.1–E.4, suppose the EM iterate of (13) enters and remains in the basin {∥ θ − θ0∥ ≤ c1∆∗/L } across iterations. Let 
+
+B ≜ max k | log[ πk/(1 − πk)] |. Then, there exist absolute constants c1, c 2, c 3 > 0 such that with probability at least 1 − Kα over the prior draw of {θk}Kk=1 , the EM fixed point θ(∞) satisfies 
+
+E θ(∞) − θ0 
+
+> 2
+
+≤ 2dσ 2
+
+N0 + N |R|
+
+| {z }
+
+> oracle rate
+
++ C1 e−c2βN ∆∗
+
+| {z }
+
+> weight-error residual
+
++ C2 e−c3N (∆ ∗)2/V 2
+
+| {z }
+
+> concentration failure
+
+, (17) 
+
+where C1 = O K2(N/N 0)2 ( ¯D2 + dσ 2/N ) e2B  and C2 = O K5/2(N/N 0)2 ( ¯D2 + dσ 2/N ).
+
+At first glance, one may question the necessity of a correct LIP since the theorem is seemingly unrelated to LIP correctness. The connection lies in the basin-entry hypothesis: the EM iterate must enter {∥ θ − θ0∥ ≤ c1∆∗/L }, and the LIP determines whether the very first M-step does. Under the Bayesian-tempering schedule of Sec. C.2, the E-step weights collapse to w(0)  
+
+> k
+
+= πk, and therefore 
+
+θ(1) − θ0 =
+
+P  
+
+> k∈¯R
+
+πk (θk − θ0)
+
+N0/N + P 
+
+> k
+
+πk
+
+| {z }   
+
+> bias ,∥·∥ =O(1) in N
+
++ N0(ˆθ0 − θ0) + P 
+
+> k
+
+N π k(ˆθk − θk)
+
+N0 + N P 
+
+> k
+
+πk
+
+| {z }   
+
+> noise: mean 0,E∥·∥ 2=O(dσ 2/N )
+
+. (18) When the LIP is correct, πk puts higher emphasis on relevant sources, so the bias is small and noise from the irrelevant sources is also suppressed. As such, under a correct LIP, basin-entry failure decays exponentially in the source size N rather than the target size N0 (per the last two terms of (17)). 
+
+4.2 Asymptotic consistency under any LIP 
+
+Under the unfortunate scenario where the LIP is misspecified, such that the EM iterates fail to enter the basin of attraction of θ0, finite-sample MSE bounds become intractable. That said, asymptotic consistency still holds in two regimes that are robust to arbitrary LIP. 
+
+Theorem 4.2 (Consistency as N0 → ∞ ). Fix any iterate t, sizes {Nk}, and prior π. Under the standard regularity conditions of [Van der Vaart, 1998, Theorem 5.39] for the target log-likelihood, both the exact M-step iterate (12) and the surrogate iterate (13) satisfy θ(t+1) p
+
+−→ θ0 as N0 → ∞ .
+
+At τ = 0 , p(Dk | ck = 1 , θ ) = Q 
+
+> i
+
+p(xi | θ) (Remark 3.2), so the E-step weight reduces to a per-sample log-LR. 
+
+Theorem 4.3 (Asymptotic dichotomy of weights) . Fix iteration t, source k, and prior πk ∈ (0 , 1) .Assume Ex∼pk | log p(x | θ(t))| < ∞ and Ex∼pk | log q(x)| < ∞, so that ρk(θ(t)) in (14) is finite. If 
+
+ρk(θ(t))̸ = 0 , the relevance weight satisfies w(t)
+
+> kp
+
+−→ 1 ρk(θ(t)) > 0 as Nk → ∞ .
+
+Theorem 4.3 shows that the relevance weight w(t) 
+
+> k
+
+asymptotically commits to 1 if the relevant model better explains the source data than the null and commits to 0 if the null is better. This also echoes our discussion in the null model selection: when source k is relevant, the second KL divergence eventually vanishes, so any null density q̸ = pk yields ρk(θ(t)) > 0 and w(t) 
+
+> k
+
+→ 1.75 Empirical Results 
+
+We evaluate our method on three tasks: descriptive, predictive, and prescriptive. Details about benchmark methods and hyperparameter settings are provided in Appendix F.1 and F.2. 
+
+5.1 1-d and 2-d Gaussian Estimation 
+
+Our first experiment is to estimate Gaussian distributions. Data points are drawn from 1-d (Fig. 3a) and 2-d (Fig. 3b) Gaussian distributions. The target samples are labeled with black crosses. For both experiments, we pick three source domains (plotted as histograms labeled in purple, red, and green), while only the green one matches the target. To simulate the cold-start regime, we take Nk = 200 
+
+samples from each source and 4 from each target. As a proof of concept, we provide unambiguous descriptions to the LLM, such that any reasonable LLM can label the relevant source. In the 1-d case, we provide the description: “ The target domain has a larger mean ”. In the 2-d case, we provide the description: “ The target domain has a larger x mean ”. The results show the significant role of using the LIP. LIP-aided EM (purple curve) effectively identifies the relevant domain with the help of the language prior compared to EM with a uniform prior of p0 (denoted as Uniform EM, orange curve). As a result, the fitted distribution almost recovers the ground truth (black dashed curve). In comparison, when relying solely on the scarce target data (Target Only, gray curve), the estimator suffers from high variance, yielding a high deviation. Meanwhile, indiscriminately pooling all the data (Pooled, brown curve) suffers from negative transfer and is biased towards irrelevant sources. Src 0 
+
+> Src 1
+> Src 2
+> Target Data
+> True Distribution
+> Uniform EM
+> LIP EM
+> Target Only
+> Pooled
+
+(a) 1-d Gaussian mean estimation. Src 0  
+
+> Src 1
+> Src 2
+> Target Data
+> Uniform EM
+> LIP EM
+> Target Only
+> Pooled
+> True Target
+
+(b) 2-d Gaussian estimation. 
+
+Figure 3: Gaussian estimation. LIP-aided EM (in purple) best fits the target (in black dashed curve). 
+
+5.2 Case Study on C-MAPSS Dataset 
+
+To evaluate our method on real-world physical systems, we apply the LIP-aided EM framework to the NASA Commercial Modular Aero-Propulsion System Simulation (C-MAPSS) dataset FD001 [Saxena et al., 2008]. The dataset consists of 100 run-to-failure time-series trajectories simulating the life cycles of various turbofan engines under heterogeneous operational conditions. The source trajectories vary in length as they terminate when their Remaining Useful Life (RUL) reaches zero. In this case study, the task is to predict the physical core speed (sensor 9) of the High-Pressure Compressor (HPC) over time (measured in flight cycles). Each machine is treated as one domain. Among the 100 machines, we select one engine from the pile that exhibits a fast decay trend as the target domain, with its first N0 cycles of physical core speed used to predict its physical core speed in the future. The rest of the 99 machines are treated as sources, where we have their full trajectory of physical core speed until RUL reaches zero. We provide the following language prompt that hints at a fast degradation in HPC efficiency: This aircraft is operating in a desert environment. Routine visual inspections confirm severe aerodynamic degradation of the high-pressure compressor, likely due to continuously ingesting fine, dry abrasives at high velocities. The original paper [Saxena et al., 2008] that produced this dataset is provided alongside the text description to the LLM to help understand the underlying physics. The target domains in our 10 replications are labeled in red in Fig. 4. For each selected engine, we test the performance of benchmark algorithms for different percentages of RULs (measured in Root Mean Square Error, RMSE). For example, 70% RUL means the target has only seen the first 30% 
+
+8of the data, which is a typical cold-start scenario. A Generalized Linear Model (GLM), namely a natural cubic spline, is used as the backbone statistical model for all the benchmark methods [Yue et al., 2024]. GLM naturally admits Gaussian likelihood and does not need approximation, so we use the no approximation version (Algorithm 1 in Appendix D). The experimental results are summarized in Table 1. Here, LIP-G means running EM with LIP generated by Gemini 3 Flash API, and LIP-C means running EM with LIP generated by Claude Opus 4.7 local agent (see Appendix F.4.1). Again, LIP significantly reduced the prediction error during the cold-start phase (RUL = 90% , 70% , 50% ). We report the mean of the 10 replications, along with their standard error in parentheses. As an example, we plot the predictions of engine 80 at its 70% 
+
+RUL. At the early stage of a machine RUL, the machine is still operating under relatively healthy conditions, and the degradation trend is statistically hidden by the noise. As such, with only the target data, one might confuse it with a healthy machine and predict relatively stable HPC (see gray, brown, and yellow lines). This indicates the importance of leveraging language as a modality in DA. 0 50 100 150 200 250 300 350 
+
+> Cycle
+> 9050
+> 9100
+> 9150
+> 9200
+> 9250
+> Physical Core Speed (rpm)
+> All Sources
+> Selected Targets
+
+Figure 4: Selected Sources 0 25 50 75 100 125 150 175  
+
+> Time (Cycle)
+> 9040
+> 9060
+> 9080
+> 9100
+> 9120
+> 9140
+> 9160
+> Core Speed (RPM)
+> Observed (target)
+> True future
+> Target-Only OLS
+> Pooled OLS
+> Uniform EM
+> LIP-EM
+> Cutoff (RUL 70%)
+
+Figure 5: Engine 80 at 70% RUL Table 1: C-MAPSS core speed RMSE                               
+
+> RUL LIP-C LIP-G Uniform EM Pooled Target Only 90% 14.3 (2.0) 15.0 (3.3) 21.4 (3.0) 33.9 (2.6) 43.7 (2.7) 70% 15.9 (2.0) 15.2 (3.6) 35.2 (3.1) 38.1 (3.0) 58.7 (10.8) 50% 17.7 (3.5) 17.9 (6.1) 24.9 (4.4) 44.7 (3.5) 36.6 (5.1) 30% 20.1 (3.2) 16.5 (3.3) 15.2 (2.2) 56.5 (4.4) 27.0 (5.8) 10% 11.5 (1.6) 9.0 (1.3) 7.3 (0.8) 82.9 (6.5) 10.1 (2.7)
+
+Table 2: MuJoCo hopper reward                               
+
+> N0LIP-C LIP-G Uniform EM Pooled Target Only 128 2670 (57) 1627 (69) 1283 (34) 1610 (48) 19 (0) 256 2539 (61) 1647 (70) 1578 (51) 1298 (32) 24 (4) 512 2586 (55) 1760 (76) 2491 (57) 1364 (38) 223 (3) 1024 2599 (57) 2636 (56) 2604 (55) 1336 (33) 179 (9) 2048 2607 (56) 2607 (56) 2666 (56) 1496 (42) 164 (13)
+
+5.3 Case Study on MuJoCo Hopper Dynamics 
+
+To validate the our framework in deep neural networks, we apply the LIP-aided EM algorithm to a deep reinforcement learning task in the MuJoCo hopper environment [Todorov et al., 2012]. MuJoCo allows users to change the simulation environment of a hopper (a three joint jumping robot). The agent in this task is deployed to a new “planet” (the target environment). It only has a small dataset 
+
+D0 collected in the deployment environment and a much larger dataset {D k}10  
+
+> k=1
+
+collected under 10 
+
+different gravities g ∈ { 1, 2, . . . , 10 } m/s2. For each source dataset, we collect a replay dataset of one million transitions by running soft actor-critic (SAC) [Haarnoja et al., 2018] from scratch and saving the entire training replay buffer. It is worth noting that for the target dataset D0, not only is the dataset small, but the data quality is also poor in the sense that most of the early explorations of the SAC are falling off, making domain adaptation more critical. The target domain is selected to have gravity similar to that of Venus ( g = 8 .87m /s2). We give the target description: The hopper is deployed to a planet with Venus-like gravity . We then follow Sec. 3.1 by asking the LLM to select one source from the sampled subgroups with which physics is most consistent with the description. We chose IQL [Kostrikov et al., 2022] as our backbone algorithm for this experiment due to the well-known fact that model-free RL performs empirically better than model-based RL [Yu et al., 2020] when the offline dataset is abundant. However, model-free RL does not natively provide the likelihood function L needed for our framework, so we first follow the standard practice of Model-based RL [Yu et al., 2020] and model the dynamics as a Gaussian distribution whose mean and variance are parameterized by a Multi-layer Perceptron, optimizing it using MLE. With the dynamics model, we 9run our EM and extract the weights wk at convergence. Then, in the second step, we run IQL on the wk-weighted source dataset and the unweighted target dataset to train RL policies. We used Algorithm 3 in Appendix D for the EM iterations. Thanks to the efficient approximation proposed in Appendix C, the EM itself converges within a few minutes on a single GPU (see Appendix F.3). Table 2 reports the mean episodic rewards over 200 evaluation episodes, along with the standard error. Again, LIP-C achieves a substantially better return in the cold start phase ( N0 ∈ { 128 , 256 }). Interestingly, LIP-G uses a false LIP produced due to limited reasoning capabilities (see failure mode in Appendix F.4.2). This false LIP prefers g = 7 m /s2 over the closer matches g ∈ { 8, 9, 10 } m/s2
+
+to Venus’s gravity. This false prior helps outperform the uniform prior in the cold start, but at the price of a slower recovery (see N0 = 512 ). This again emphasizes the quality of the prior, but also showcases the auto-correcting mechanism of EM, echoing our theoretical analysis. 
+
+## 6 Discussion 
+
+We have shown that textual descriptions of a target domain carry information that statistical methods cannot recover from scarce target data. A pretrained LLM can translate this information into a Bayesian prior (LIP) over source relevance. Theoretically, a correct LIP yields a finite-sample MSE that matches the oracle precision-weighted rate, while any LIP, even misspecified, still maintains asymptotic consistency via EM. These theoretical claims are verified by our experiments. Nonetheless, the quality of the LIP is crucial for cold-start (see Appendix F.4). Future work includes exploring more sophisticated elicitation methods, relaxing the basin-entry hypothesis in Theorem 4.1, and extending the framework to non-parametric models and to models without explicit likelihood functions. 
+
+## References 
+
+Sivaraman Balakrishnan, Martin J. Wainwright, and Bin Yu. Statistical guarantees for the EM algorithm: From population to sample-based analysis. The Annals of Statistics , 45(1):77–120, 2017. Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et al. Language models are few-shot learners. Advances in neural information processing systems , 33:1877–1901, 2020. Alexander Capstick, Rahul Krishnan, and Payam Barnaghi. Autoelicit: Using large language models for expert prior elicitation in predictive modelling. In Forty-second International Conference on Machine Learning , 2025. URL https://openreview.net/forum?id=GekXB58ZS7 .Paul H Garthwaite, Joseph B Kadane, and Anthony O’Hagan. Statistical methods for eliciting probability distributions. Journal of the American Statistical Association , 100(470):680–701, 2005. Bowen Gu, Rishi J Desai, Kueiyu Joshua Lin, and Jie Yang. Probabilistic medical predictions of large language models. npj Digital Medicine , 7(1):367, 2024. Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, and Sergey Levine. Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. In International conference on machine learning , pages 1861–1870. Pmlr, 2018. Judy Hoffman, Brian Kulis, Trevor Darrell, and Kate Saenko. Discovering latent domains for multisource domain adaptation. In European Conference on Computer Vision (ECCV) , pages 702–715. Springer, 2012. Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large language models are zero-shot reasoners. Advances in neural information processing systems , 35: 22199–22213, 2022. Raed Kontar, Garvesh Raskutti, and Shiyu Zhou. Minimizing negative transfer of knowledge in multivariate gaussian processes: A scalable and regularized approach. IEEE Transactions on Pattern Analysis and Machine Intelligence , 43(10):3508–3522, 2021. 10 Ilya Kostrikov, Ashvin Nair, and Sergey Levine. Offline reinforcement learning with implicit q-learning. In International Conference on Learning Representations , 2022. R Duncan Luce et al. Individual choice behavior , volume 4. Wiley New York, 1959. Yishay Mansour, Mehryar Mohri, and Afshin Rostamizadeh. Domain adaptation with multiple sources. In Advances in Neural Information Processing Systems (NeurIPS) , volume 21, 2008. Cristina Mata, Kanchana Ranasinghe, and Michael S Ryoo. Copt: Unsupervised domain adaptive segmentation using domain-agnostic text embeddings. In European conference on computer vision ,pages 424–440. Springer, 2024. Daniel McFadden. Conditional logit analysis of qualitative choice behavior. In P. Zarembka, editor, 
+
+Frontiers in Econometrics , pages 105–142. Academic Press, New York, 1974. Anthony O’Hagan, Caitlin E Buck, Alireza Daneshkhah, J Richard Eiser, Paul H Garthwaite, David J Jenkinson, Jeremy E Oakley, and Tim Rakow. Uncertain judgements: eliciting experts’ probabili-ties . John Wiley & Sons, 2006. Sinno Jialin Pan and Qiang Yang. A survey on transfer learning. IEEE Transactions on knowledge and data engineering , 22(10):1345–1359, 2009. Xingchao Peng, Qinxun Bai, Xide Xia, Zijun Huang, Kate Saenko, and Bo Wang. Moment matching for multi-source domain adaptation. In Proceedings of the IEEE/CVF international conference on computer vision , pages 1406–1415, 2019. Fabio Petroni, Tim Rocktäschel, Sebastian Riedel, Patrick Lewis, Anton Bakhtin, Yuxiang Wu, and Alexander Miller. Language models as knowledge bases? In Proceedings of the 2019 conference on empirical methods in natural language processing and the 9th international joint conference on natural language processing (EMNLP-IJCNLP) , pages 2463–2473, 2019. Abhinav Saxena, Kai Goebel, Don Simon, and Neil Eklund. Damage propagation modeling for aircraft engine run-to-failure simulation. In 2008 international conference on prognostics and health management , pages 1–9. IEEE, 2008. Nikola Sekulovski, Meike Waaijers, and Giuseppe Arena. Llm-based prior elicitation for bayesian graphical modeling. British Journal of Mathematical and Statistical Psychology , 2026. Qian Sun, Rita Chattopadhyay, Sethuraman Panchanathan, and Jieping Ye. A two-stage weighting framework for multi-source domain adaptation. Advances in neural information processing systems ,24, 2011. Katherine Tian, Eric Mitchell, Allan Zhou, Archit Sharma, Rafael Rafailov, Huaxiu Yao, Chelsea Finn, and Christopher D Manning. Just ask for calibration: Strategies for eliciting calibrated confidence scores from language models fine-tuned with human feedback. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing , pages 5433–5442, 2023. Emanuel Todorov, Tom Erez, and Yuval Tassa. Mujoco: A physics engine for model-based control. In 2012 IEEE/RSJ international conference on intelligent robots and systems , pages 5026–5033. IEEE, 2012. Naonori Ueda and Ryohei Nakano. Deterministic annealing EM algorithm. Neural Networks , 11(2): 271–282, 1998. Aad W Van der Vaart. Asymptotic Statistics , volume 3. Cambridge University Press, 1998. Zhenbin Wang, Lei Zhang, Lituan Wang, and Minjuan Zhu. Landa: Language-guided multi-source domain adaptation. IEEE Transactions on Artificial Intelligence , 2025. Zirui Wang, Zihang Dai, Barnabás Póczos, and Jaime Carbonell. Characterizing and avoiding negative transfer. Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,pages 11293–11302, 2019. 11 Junfeng Wen, Russell Greiner, and Dale Schuurmans. Domain aggregation networks for multi-source domain adaptation. In International conference on machine learning , pages 10214–10224. PMLR, 2020. Caiming Xiong, Scott McCloskey, Shao-Hang Hsieh, and Jason Corso. Latent domains modeling for visual domain adaptation. Proceedings of the AAAI Conference on Artificial Intelligence , 28(1), 2014. Huaxiu Yao, Xinyu Yang, Xinyi Pan, Shengchao Liu, Pang Wei Koh, and Chelsea Finn. Improving domain generalization with domain relations. In The Twelfth International Conference on Learning Representations (ICLR) , 2024. Tianhe Yu, Garrett Thomas, Lantao Yu, Stefano Ermon, James Y Zou, Sergey Levine, Chelsea Finn, and Tengyu Ma. Mopo: Model-based offline policy optimization. Advances in neural information processing systems , 33:14129–14142, 2020. Xubo Yue, Raed Al Kontar, and Ana Maria Estrada Gomez. Federated data analytics: A study on linear models. IISE Transactions , 56(1):16–28, 2024. Wen Zhang, Lingfei Deng, Lei Zhang, and Dongrui Wu. A survey on negative transfer. IEEE/CAA Journal of Automatica Sinica , 10(2):305–329, 2022. Han Zhao, Shanghang Zhang, Guanhang Wu, José MF Moura, Joao P Costeira, and Geoffrey J Gordon. Adversarial multiple source domain adaptation. Advances in neural information processing systems ,31, 2018. Sicheng Zhao, Hui Chen, Hu Huang, Pengfei Xu, and Guiguang Ding. More is better: deep domain adaptation with multiple sources. In Proceedings of the Thirty-Third International Joint Conference on Artificial Intelligence , pages 8354–8362, 2024. Yilun Zhu, Naihao Deng, Naichen Shi, Aditya Gangrade, and Clayton Scott. Domain generalization under posterior drift. arXiv preprint arXiv:2510.04441 , 2026. 
+
+## A Related Work 
+
+Our work sits at an unexplored intersection of three lines, namely multi-source domain adaptation, LLM-based knowledge elicitation, and metadata-aware domain generalization. We are the first to model source relevance as a binary latent variable in a Bayesian hierarchical EM, with the prior over this indicator elicited from a pretrained LLM via subgroup-restricted preference queries , and using 
+
+target-domain context only as input. The four paragraphs below organize prior work along these three axes of differentiation. 
+
+Multi-Source Domain Adaptation. Our problem setup is closest to Multi-Source Domain Adap-tation (MDA), which leverages labeled data from K distinct source domains to learn a model for a target domain. A fundamental challenge in MDA is negative transfer , where the inclusion of irrelevant or adversarial sources degrades target performance [Pan and Yang, 2009, Wang et al., 2019, Kontar et al., 2021, Zhang et al., 2022, Zhao et al., 2024]. Two prior lines distinguish sources by exploiting target features. The first reweights sources by feature proximity [Sun et al., 2011], moment alignment [Peng et al., 2019], adversarial training [Zhao et al., 2018], generalization bounds [Wen et al., 2020], or theoretically optimal convex combinations [Mansour et al., 2008]. The second uses EM-style alternation to discover unknown domain structure within source data [Hoffman et al., 2012, Xiong et al., 2014]. Both lines are data-driven and become unreliable when target data is scarce, since the discrepancies and latent clusters they rely on cannot be reliably estimated from a small target sample. We instead model source relevance as a binary latent indicator and place a non-data prior on it, which lets source selection proceed in the cold-start regime where existing methods are bottle-necked by the target sample size. 12 LLMs as Expert Reasoners. Historically, translating qualitative expert intuition into quantitative probability distributions required extensive manual labor [Garthwaite et al., 2005, O’Hagan et al., 2006]. The premise of leveraging natural language for statistical inference is rooted in treating LLMs as implicit knowledge bases and expert reasoners [Petroni et al., 2019]. Because LLMs are pretrained on a vast corpus of digital textual knowledge, they exhibit strong zero-shot reasoning capabilities across specialized domains [Brown et al., 2020, Kojima et al., 2022]. The closest precursor is AutoElicit [Capstick et al., 2025], which queries an LLM directly for the numerical values of a prior over linear-model parameters. Our elicitation primitive is fundamentally different. We ask the LLM to answer a multiple choice question over subgroups of sources rather than directly producing numerical probabilities. We then fit a conditional-logit-with-null choice model to the resulting preference data to recover the prior. The multiple-choice route exploits the well-documented fact that LLMs are more reliable at discrete classification than at numerical estimation [Gu et al., 2024, Tian et al., 2023], and produces a calibrated prior even when the LLM cannot articulate explicit numbers, as similarly observed in concurrent work using LLM-elicited binary judgments for Bayesian graphical modeling [Sekulovski et al., 2026]. 
+
+Domain Generalization with Metadata. Closely related to our motivation of using contextual information is Domain Generalization (DG) with metadata. Unlike standard DG, which seeks a purely data-driven domain-invariant representation, metadata-driven DG leverages supplementary domain attributes to capture inter-domain relationships. Zhu et al. [2026] demonstrate the necessity of metadata when the physics of the domain changes, showing that pooling-ERM is provably suboptimal under posterior shift, and incorporate domain metadata as an additional input during training and inference. Other methods such as D3G [Yao et al., 2024] establish domain similarity matrices from structured metadata to reweigh domain-specific models. These works share a structural assumption that we relax: metadata must be consistently available across all training domains. In engineering practice, such records exist only for the present target system, while historical source datasets predate the metadata convention. Our framework operates on unstructured natural language descriptions available only for the target and delegates the relevance reasoning to the LLM rather than to a similarity computation over fixed metadata fields. 
+
+Language-Guided Domain Adaptation. The emergence of Vision-Language Models (VLMs) like CLIP has enabled adaptation methods to use natural language as a bridge between domains. Recent works such as LangDA [Wang et al., 2025] and CoPT [Mata et al., 2024] demonstrate the efficacy of using text descriptions to guide visual alignment by treating text as a feature embedding aligned with image features in a shared space. Two structural commitments distinguish these methods from ours. First, like domain generalization with metadata, they also require text descriptions for source domains as well as for the target, which is impractical when the source datasets predate the natural-language pipeline. Second, this field is built upon massive VLM architectures, making the methods task-specific and restricted to modalities that the VLM was pretrained on. We instead use the LLM as a reasoning agent producing discrete preferences, require text only for the target, and remain model-agnostic, applicable to general parameter estimation tasks beyond vision-language alignment. 
+
+## B LIP Construction via Subgroup Preference Elicitation 
+
+B.1 Subgroup Preference Elicitation 
+
+Directly prompting an LLM for numerical probabilities πk can sometimes be unreliable due to the context window constraint, just as it is not an easy task for human experts either. To keep the cognitive task as simple and reliable as possible, we constrain the LLM to select at most one candidate per query: which source domain, among a set of candidates, is more likely to satisfy the contextual information of the target domain? Effectively, we are asking a prompted LLM to act as a judge in selecting the relevant source domains. It either returns the single most relevant source from the presented subgroup, or it returns nothing if no candidate satisfies the contextual description. To perform this selection, the LLM is provided with sufficient background knowledge h, which includes the text that describes the target domain and background information about the task, including relevant technical reports. 13 Formally, we denote the LLM judge equipped with contextual knowledge h as fLLM (· ; h). For each query m = 1 , . . . , N M , we sample a subgroup Sm ⊆ [K] of source-domain indices and present the corresponding datasets {D k}k∈Sm to the LLM. The LLM returns a choice km ∈ Sm ∪ { 0},where km ∈ Sm identifies the selected source and km = 0 denotes the null option (no candidate is considered relevant). We collect these responses into a dataset M = {(Sm, k m)}NM
+
+> m=1
+
+. The choice of subgroup size |Sm| and composition can be altered per application and is independent of our proposed method. In practice, |Sm| is bounded only by the LLM’s context window and its ability to reliably compare many candidates at once. 
+
+B.2 Empirical Bayes for LIP 
+
+Empirical Bayes is a category of methods that defines a prior based on data. With these collected LLM preferences M , we now estimate the prior probability distribution by maximizing its likelihood. To avoid numerical issues in the downstream Bayesian model, we parameterize πk = σ(αk) so that 
+
+πk ∈ (0 , 1) , where αk is a real-valued latent variable associated with source k.Because the LLM is restricted to selecting at most one candidate per query, we model its choice as a 
+
+conditional logit with an outside option [McFadden, 1974, Luce et al., 1959]. The null option is a virtual alternative whose worth α0 represents the threshold above which a candidate is considered relevant: a source k is selected only if its worth αk exceeds both α0 and the worths of the other candidates in S in the LLM’s judgment. Concretely, the probability that the LLM returns choice 
+
+km ∈ Sm ∪ { 0} given the presented subgroup Sm is the single softmax (2) reproduced here: 
+
+p(km | Sm) = eαkm 
+
+eα0 + P 
+
+> j∈Sm
+
+eαj ,
+
+where αkm = α0 when km = 0 (the null is selected) and αkm = αk when a particular source k is selected. To find the most probable LIP, we minimize the regularized negative log-likelihood (3): 
+
+min 
+
+> α0,α 1,...,α K
+
+−
+
+> NM
+
+X
+
+> m=1
+
+log p(km | Sm) + ϵ
+
+> K
+
+X
+
+> k=1
+
+
+
+αk − log p0
+
+1 − p0
+
+2
+
+,
+
+where ϵ is an L2 regularization coefficient and p0 is the default probability for a uniform prior. The objective is the sum of a convex conditional-logit log-likelihood and a strictly convex quadratic regularizer in α1, . . . , α K ; together with the conditional-logit Hessian’s positive-definiteness in the 
+
+α0 direction (which holds whenever M contains at least one null choice and one source choice), the full objective is strongly convex in (α0, α 1, . . . , α K ), admitting a unique global optimum. The regularization term serves three functions. First, it provides an anchor for the LIP. The conditional-logit likelihood is invariant under a common additive shift of all αk (including the null α0), so 
+
+πk = σ(αk) is, on its own, gauge-dependent — only the differences αk − α0 enter the choice probabilities. The quadratic regularizer fixes the gauge by anchoring each αk near log[ p0/(1 − p0)] ,which makes πk = σ(αk) a meaningful probability that recovers the uniform prior p0 when M is empty. Second, the regularization prevents numerical instability in the optimization. If a source k
+
+wins every subgroup in which it appears, the unregularized problem would drive αk to infinity. Third, the regularization absorbs occasional noise in the dataset M caused by LLM hallucinations. The null-option worth α0 is left unregularized and serves as the implicit reference level against which the 
+
+αk are measured. 
+
+## C Practical Implementation of the EM Algorithm 
+
+C.1 Hessian Approximation 
+
+One natural concern of the described method is its computational complexity. Evaluating the exact posterior weights w(t) 
+
+> k
+
+in the E-step and optimizing the global parameter in the M-step requires the explicit computation and inversion of the local Hessian matrices ( H(t) 
+
+> k
+
+, Hk, and H0) for every source domain at every iteration. As the parameter dimension d grows, this O(Kd 3) operation becomes a significant bottleneck. To circumvent this computational burden, we specialize to τ = 0 throughout 14 this appendix; for sufficiently small τ > 0, the same formulas hold up to O(τ 2) corrections that are numerically negligible. We start with the E-step. By Remark 3.2, at τ = 0 the second and third terms in the marginal log-likelihood approximation (the quadratic gradient and log-determinant penalty) vanish exactly: 
+
+log p(Dk | ck = 1 , θ (t)) = log L(θ(t); Dk). (19) Consequently, the relevance weight (7) reduces to a standard likelihood ratio: 
+
+w(t) 
+
+> k
+
+= σ
+
+
+
+log L(θ(t); Dk)
+
+p(Dk | ck = 0) + log πk
+
+1 − πk
+
+
+
+. (20) In the M-step, we leverage the approximation Hk ≈ NkI and H0 ≈ N0I, where I is the expected per-sample Fisher Information matrix. This simplifies the relative precision matrix to Λ(t) 
+
+> k
+
+≈
+
+w(t) 
+
+> kNk
+> N0
+
+(I + τ 2NkI)−1. For a sufficiently small τ 2 such that the term τ 2Nkλmax (I) ≪ 1, the matrix inverse (I + τ 2NkI)−1 approaches the identity matrix I. Interestingly, since (I + τ 2NkI)−1 ⪯ I,by approximating (I + τ 2NkI)−1 with I, the resulting objective function essentially serves as a lower bound of the original likelihood. The EM algorithm itself can be considered a sub-class of the MM (Minorize-Maximize) algorithm that maximizes an evidence lower bound. The resulting approximation further lowers the evidence lower bound, echoing the same logic of EM algorithm. Finally, by substituting both the E and M step updates, the global parameter estimation reduces to a simple weighted average of the local MLEs: 
+
+θ(t+1) = N0 ˆθ0 + PKk=1 w(t) 
+
+> k
+
+Nk ˆθk
+
+N0 + PKk=1 w(t) 
+
+> k
+
+Nk
+
+. (21) This formulation reduces the computational complexity to O(d), where the influence of each source domain is governed by its sample size Nk and its current relevance w(t) 
+
+> k
+
+.
+
+C.2 Bayesian Tempering 
+
+Although the convergence of EM iterations is well-established, it only guarantees convergence to a locally optimal solution. In a cold-start regime, the initial estimation of the target parameter ˆθ0 is anchored on an extremely small dataset D0 of size N0. When the relevance weights w(t) 
+
+> k
+
+are small, the estimate ˆθ0 depends almost exclusively on this target dataset and suffers from high variance. This volatility may sometimes drive the algorithm into an undesired trivial local optimum where all the relevance weights w(t) 
+
+> k
+
+are zero. To avoid being absorbed by this degenerate solution, we apply a Bayesian tempering mechanism. Structurally, this is in the deterministic-annealing-EM tradition [Ueda and Nakano, 1998], which multiplies the log-likelihood term by a temperature parameter that anneals from low (prior-dominated) to high (data-dominated) over iterations. Our specialization is a per-source variance-calibrated schedule β(t) 
+
+> k
+
+∝ 1/ε k, where εk is the per-source cold-start log-LR error scale derived below. To systematically analyze how the estimation error of ˆθ0 affects the posterior likelihood, we approx-imate log L(ˆθ0; Dk) − log L(θ0; Dk) by a first-order Taylor expansion around the true parameter 
+
+θ0:
+
+log L(ˆθ0; Dk) − log L(θ0; Dk) ≈ (ˆθ0 − θ0)⊺∇θ log L(θ; Dk) θ=θ0
+
+. (22) This error magnitude is governed by the inner product of two independent random vectors. Assuming the asymptotic normality of the MLE estimator, the target parameter error (ˆθ0 − θ0) has a covariance matrix approximated by the inverse target Hessian, H−10 . Meanwhile, ∇θ log L(θ; Dk)|θ=θ0 is the score function evaluated at the true parameter, whose covariance is approximated by Hk. As such, the variance of this inner product is given by the trace of their coupled covariances: ε2 
+
+> k
+
+= Tr( H−10 Hk).To evaluate this variance, we may apply the same expected Fisher Information approximation established in Sec. C.1, where Hk ≈ NkI. By substituting H0 ≈ N0I and Hk ≈ NkI, the variance simplifies to ε2 
+
+> k
+
+≈ d Nk 
+
+> N0
+
+.
+
+15 Therefore, we can see that the variance of the estimation error in the evidence term scales strictly with O (Nk/N 0). In the cold-start regime, the source domains are typically much richer than the target domain ( Nk ≫ N0). Consequently, this un-tempered likelihood error can easily overwhelm the effect of the prior, forcing the algorithm to discard all source domains to minimize variance. To stabilize this variance and prevent degenerate behavior, we explicitly multiply the likelihood term in the E-step by a tempering parameter β(t) 
+
+> k
+
+:
+
+w(t) 
+
+> k
+
+= σ
+
+
+
+β(t) 
+
+> k
+
+· log p(Dk | ck = 1 , θ (t))
+
+p(Dk | ck = 0) + log πk
+
+1 − πk
+
+
+
+, (23) where β(t) 
+
+> k
+
+= O (1 − e−νt )/ε k
+
+ and ν > 0 controls how fast β(t) 
+
+> k
+
+converges to its asymptote 1/ε k.This tempering parameter operates via two parallel mechanisms. The scale 1/ε k brings the variance of the log-likelihood error back to O(1) . When the target dataset is scarce, this ratio remains small, inherently emphasizing the prior over the volatile data-dependent posterior. For a relatively rich target dataset, the temperature increases and naturally shifts the emphasis back to the data. Meanwhile, the temporal component, 1 − exp( −νt ), ensures that the effect of the likelihood is released gradually. When t is small, the β(t) 
+
+> k
+
+is also small, so the likelihood relies more on the prior. This protects the EM algorithm from being absorbed by the trivial solution. As the EM loop iterates, this temporal component disappears exponentially fast, recovering the scale εk for sufficiently large 
+
+t. Pseudocode for the exact, small-τ approximate, and neural-network variants of the procedure is given in Appendix D. 
+
+## D LIP-aided EM Algorithms 
+
+D.1 EM Derivation 
+
+Using the Bernoulli form P(ck) = πck 
+
+> k
+
+(1 − πk)1−ck , the complete-data log-likelihood splits as 
+
+log p(O, c | θ) = log L(θ; D0) + 
+
+> K
+
+X
+
+> k=1
+
+ck log p(Dk | ck = 1 , θ )
+
+| {z } 
+
+> terms involving θ
+
++
+
+> K
+
+X
+
+> k=1
+
+(1 − ck) log p(Dk | ck = 0) + ck log πk + (1 − ck) log(1 − πk)
+
+| {z } 
+
+> terms not involving θ
+
+. (24) Dropping the θ-independent terms in (24) reduces (5) to (6) (reproduced below for convenience): 
+
+max  
+
+> θ
+
+log L(θ; D0) + 
+
+> K
+
+X
+
+> k=1
+
+w(t) 
+
+> k
+
+log p(Dk | ck = 1 , θ ).
+
+D.2 Heuristics for Null Likelihood Selection 
+
+This analysis in 3.2.2 motivates two practical choices. 
+
+Empirical Bayes with Monte Carlo When source domains are abundant and assumed to be drawn from ϕnull , we approximate ϕnull by the empirical distribution of source MLEs and use the corresponding mixture as the null density: 
+
+p(x | ck = 0) ≈ 1
+
+K − 1
+
+X 
+
+> j̸=k
+
+(1 − wj ) L(ˆθj ; x), (25) where ˆθk ≜ arg max θk L(θk; Dk) is the per-source MLE. As a Monte-Carlo estimator, this option is more fragile when the sources are few or contaminated by relevant ones. 16 Parametric Null When sources are few or potentially contaminated, we fit a parametric pooled model θpool ≜ arg max θ L(θ; S 
+
+> k
+
+Dk) on the combined source data and set p(x | ck = 0) ≜
+
+L(θpool ; x). The resulting null is a smoothed version of the source empirical distribution, and the log-ratio in (7) then measures how much better θ(t) explains Dk than the pooled model does. A source that fails this test adds no value beyond the pooled model and is safely excluded. 
+
+D.3 Pseudocode Algorithm 
+
+We collect three pseudocode versions of the procedure described in Sec. 3.2 and Sec. C.2: the closed-form Hessian-reuse implementation (Algorithm 1), the small-τ approximation that admits a closed-form M-step (Algorithm 2), and the neural-network variant that replaces the closed form with gradient ascent (Algorithm 3). 
+
+Hessian reuse across iterations. For tractability, Algorithm 1 computes Hessians once at the local MLEs ˆθk and reuses them across iterations: it identifies the iteration-dependent H(t) 
+
+> k
+
+in (9) with the frozen Hk = −∇ 2 
+
+> θ
+
+log L(θ; Dk) ˆθk
+
+. This identification is exact at θ(t) = ˆθk and an O(∥θ(t) − ˆθk∥)
+
+approximation in its neighborhood; the same identification is built into the closed-form M-step (12) .A truly Hessian-recomputing variant would redo the Hessian inversion at every iterate at O(Kd 3)
+
+per step. 
+
+Algorithm 1 LIP-aided EM with Bayesian Tempering (Hessian-reuse implementation) 
+
+Require: Target data D0, source data {D k}Kk=1 , LIP π, null prior ϕnull , prior variance τ , tempering rate ν 
+
+> 1:
+
+Compute target MLE ˆθ0 = arg max θ L(θ; D0) and Hessian H0 = −∇ 2 
+
+> θ
+
+log L(θ; D0) θ=ˆθ0 
+
+> 2:
+
+for k = 1 , . . . , K do  
+
+> 3:
+
+Compute source MLE ˆθk = arg max θ L(θ; Dk) 
+
+> 4:
+
+Compute source Hessian Hk = −∇ 2 
+
+> θ
+
+log L(θ; Dk) θ=ˆθk
+
+// frozen and reused across itera-tions  
+
+> 5:
+
+Compute tempering scale ε2 
+
+> k
+
+= Tr( H−10 Hk) 
+
+> 6:
+
+end for  
+
+> 7:
+
+Initialize θ(0) ←⃗ 0, t ← 0 // at t = 0 , β(0)  
+
+> k
+
+= 0 gives w(0)  
+
+> k
+
+= πk regardless of θ(0)  
+
+> 8:
+
+while not converged do  
+
+> 9:
+
+Tempering schedule: β(t) 
+
+> k
+
+← (1 − e−νt )/ε k for each k 
+
+> 10:
+
+▷ E-step  
+
+> 11:
+
+for k = 1 , . . . , K do  
+
+> 12:
+
+Compute relevant likelihood p(Dk | ck = 1 , θ (t)) via (9)  
+
+> 13:
+
+Compute null likelihood p(Dk | ck = 0) via ϕnull  
+
+> 14:
+
+Compute relevance weight w(t) 
+
+> k
+
+via (23)  
+
+> 15:
+
+end for  
+
+> 16:
+
+▷ M-step  
+
+> 17:
+
+Update the global parameter θ(t+1) via (12)  
+
+> 18:
+
+t ← t + 1  
+
+> 19:
+
+end while  
+
+> 20:
+
+return θ(t)
+
+17 Algorithm 2 LIP-aided EM with Bayesian Tempering and small-τ approximation 
+
+Require: Target data D0, source data {D k}Kk=1 , LIP π, null density p(· | ck = 0) , tempering rate ν 
+
+> 1:
+
+Compute target MLE ˆθ0 = arg max θ L(θ; D0) 
+
+> 2:
+
+for k = 1 , . . . , K do  
+
+> 3:
+
+Compute source MLE ˆθk = arg max θ L(θ; Dk) 
+
+> 4:
+
+Set tempering scale ε2 
+
+> k
+
+= d N k/N 0 // assumes Hk ≈ NkI and H0 ≈ N0I with a common 
+
+I 
+
+> 5:
+
+end for  
+
+> 6:
+
+Initialize θ(0) ←⃗ 0, t ← 0 
+
+> 7:
+
+while not converged do  
+
+> 8:
+
+Tempering schedule: β(t) 
+
+> k
+
+← (1 − e−νt )/ε k for each k 
+
+> 9:
+
+▷ E-step  
+
+> 10:
+
+for k = 1 , . . . , K do  
+
+> 11:
+
+w(t) 
+
+> k
+
+← σ
+
+
+
+β(t) 
+
+> k
+
+log L(θ(t);Dk )   
+
+> p(Dk|ck=0)
+
++ log πk
+
+> 1−πk
+
+ 
+
+> 12:
+
+end for  
+
+> 13:
+
+▷ M-step  
+
+> 14:
+
+θ(t+1) ← N0 ˆθ0 + PKk=1 w(t) 
+
+> k
+
+Nk ˆθk
+
+N0 + PKk=1 w(t) 
+
+> k
+
+Nk
+
+(13)  
+
+> 15:
+
+t ← t + 1  
+
+> 16:
+
+end while  
+
+> 17:
+
+return θ(t)
+
+Algorithm 3 LIP-aided EM for Neural Networks (gradient-based M-step) 
+
+Require: Target data D0, source data {D k}Kk=1 , LIP π, tempering rate ν, M-step optimizer SGD  
+
+> 1:
+
+Train pooled model θpool ← arg max θ L
+
+
+
+θ; SKk=1 Dk
+
+
+
+on the combined source data  
+
+> 2:
+
+for k = 1 , . . . , K do  
+
+> 3:
+
+Pre-compute null likelihood p(Dk | ck = 0) ← L (θpool ; Dk) 
+
+> 4:
+
+Set tempering scale ε2 
+
+> k
+
+= d N k/N 0 // assumes Hk ≈ NkI and H0 ≈ N0I with a common 
+
+I 
+
+> 5:
+
+end for  
+
+> 6:
+
+Initialize θ(0) ← θpool , t ← 0 
+
+> 7:
+
+while not converged do  
+
+> 8:
+
+Tempering schedule: β(t) 
+
+> k
+
+← (1 − e−νt )/ε k for each k 
+
+> 9:
+
+▷ E-step  
+
+> 10:
+
+for k = 1 , . . . , K do  
+
+> 11:
+
+w(t) 
+
+> k
+
+← σ
+
+
+
+β(t) 
+
+> k
+
+log L(θ(t);Dk )   
+
+> p(Dk|ck=0)
+
++ log πk
+
+> 1−πk
+
+ 
+
+> 12:
+
+end for  
+
+> 13:
+
+▷ M-step (gradient ascent on the weighted log-likelihood)  
+
+> 14:
+
+θ(t+1) ← SGD 
+
+
+
+θ(t); log L(θ; D0) + PKk=1 w(t) 
+
+> k
+
+log L(θ; Dk)
+
+ 
+
+> 15:
+
+t ← t + 1  
+
+> 16:
+
+end while  
+
+> 17:
+
+return θ(t)
+
+## E Proof of Theorems 
+
+E.1 Proof of Proposition 3.1 
+
+Proof. The marginal-likelihood integral is 
+
+p(Dk | ck = 1 , θ (t)) = 
+
+Z
+
+p(Dk | θk) N (θk | θ(t), τ 2I) dθ k. (26) 18 Exponentiating (8), 
+
+p(Dk | θk) ≈ L (θ(t); Dk) exp 
+
+
+
+g(t)
+
+> k
+> ⊺
+
+(θk − θ(t)) − 12 (θk − θ(t))⊺H(t) 
+
+> k
+
+(θk − θ(t))
+
+
+
+,
+
+substituting into (26), and pulling the constant L(θ(t); Dk) outside the integral gives 
+
+p(Dk | ck = 1 , θ (t)) ≈ L (θ(t); Dk)
+
+Z
+
+exp 
+
+
+
+g(t)
+
+> k
+> ⊺
+
+(θk − θ(t)) − 12 (θk − θ(t))⊺H(t) 
+
+> k
+
+(θk − θ(t))
+
+
+
+N (θk | θ(t), τ 2I) dθ k.
+
+(27) Let u ≜ θk − θ(t), which has Jacobian 1. Writing the Gaussian density explicitly as N (θk |
+
+θ(t), τ 2I) = (2 πτ 2)−d/ 2 exp( − 12τ 2 u⊺u), the integrand of (27) becomes 
+
+(2 πτ 2)−d/ 2 exp 
+
+
+
+g(t)
+
+> k
+> ⊺
+
+u − 12 u⊺H(t) 
+
+> k
+
+u − 12τ 2 u⊺u
+
+
+
+.
+
+The two quadratic terms combine into a single quadratic form via the algebraic identity u⊺H(t) 
+
+> k
+
+u +
+
+τ −2u⊺u = u⊺A u with 
+
+A ≜ H(t) 
+
+> k
+
++ τ −2I. 
+
+Since H(t) 
+
+> k
+
+⪰ 0 by hypothesis and τ −2I ≻ 0, the sum A ≻ 0. Equation (27) therefore becomes 
+
+p(Dk | ck = 1 , θ (t)) ≈ L (θ(t); Dk) (2 πτ 2)−d/ 2
+
+Z
+
+> Rd
+
+exp 
+
+
+
+g(t)
+
+> k
+> ⊺
+
+u − 12 u⊺A u 
+
+
+
+du. (28) For any A ≻ 0 and b ∈ Rd, completing the square in u 7 → u − A−1b gives 
+
+Z
+
+> Rd
+
+exp  b⊺u − 12 u⊺Au  du = (2 π)d/ 2(det A)−1/2 exp   12 b⊺A−1b , (29) where the prefactor (2 π)d/ 2(det A)−1/2 is the normalizing constant of the density N (A−1b, A −1).Applying (29) with b = g(t) 
+
+> k
+
+to (28), 
+
+p(Dk | ck = 1 , θ (t)) ≈ L (θ(t); Dk) ( τ 2)−d/ 2(det A)−1/2 exp 
+
+ 12 g(t)
+
+> k
+> ⊺
+
+A−1g(t)
+
+> k
+
+
+
+, (30) where the (2 π)d/ 2 factors from the prefactor in (28) and from (29) cancel. Using det( αM ) = αd det M for a scalar α and d × d matrix M ,
+
+(τ 2)−d/ 2 (det A)−1/2 = det  τ 2A−1/2 = det  τ 2H(t) 
+
+> k
+
++ I−1/2, (31) where the last equality uses τ 2A = τ 2H(t) 
+
+> k
+
++ I.Factoring τ −2 out of A,
+
+A = τ −2(I + τ 2H(t) 
+
+> k
+
+),
+
+so by (αM )−1 = α−1M −1,
+
+A−1 = τ 2  I + τ 2H(t)
+
+> k
+
+−1. (32) Inserting (31) and (32) into (30), 
+
+p(Dk | ck = 1 , θ (t)) ≈ L (θ(t); Dk) det  I + τ 2H(t)
+
+> k
+
+−1/2 exp 
+
+ τ 2 
+
+> 2
+
+g(t)
+
+> k
+> ⊺
+
+ I + τ 2H(t)
+
+> k
+
+−1g(t)
+
+> k
+
+
+
+.
+
+Taking the natural logarithm of both sides yields (9). The only approximation enters through (8). If that holds with equality, so does (9). 19 E.2 Proof of Remark 3.2 
+
+Proof. We evaluate both sides of (9) at τ = 0 .The prior N (θ(t), τ 2I) at τ = 0 is the Dirac measure δθ(t) . Substituting into the marginal-likelihood integral and using the defining property of the Dirac measure, 
+
+p(Dk | ck = 1 , θ (t)) = 
+
+Z
+
+p(Dk | θk) δθ(t) (θk) dθ k = p(Dk | θ(t)) = L(θ(t); Dk).
+
+Taking the log gives log L(θ(t); Dk).The two correction terms in (9) both vanish at τ = 0 :• The quadratic term carries a multiplicative factor τ 2: substituting τ = 0 algebraically,   
+
+> τ2
+> 2
+
+g(t)
+
+> k
+> ⊺
+
+ I + τ 2H(t)
+
+> k
+
+−1g(t)  
+
+> kτ=0
+
+= 0 · g(t)
+
+> k
+> ⊺
+
+I−1g(t) 
+
+> k
+
+= 0 .
+
+• The log-determinant evaluates to 
+
+− 12 log det  I + τ 2H(t)
+
+> k
+
+ 
+
+> τ=0
+
+= − 12 log det( I) = − 12 log 1 = 0 .
+
+The right-hand side therefore reduces to log L(θ(t); Dk), which equals the left-hand side. Hence, (9) holds with equality. 
+
+E.3 Proof of Remark 3.3 
+
+Proof. Under the Gaussian likelihood model p(x | θk) = N (x; θk, Σk) with fixed Σk ≻ 0, the per-sample log-density is 
+
+log p(xi | θk) = − 12 (xi − θk)⊺Σ−1 
+
+> k
+
+(xi − θk) − 12 log det(2 πΣk).
+
+The first term is a quadratic polynomial in θk and the second is constant in θk. Summing over the Nk
+
+samples preserves the quadratic structure: 
+
+log L(θk; Dk) = − 12
+
+> Nk
+
+X
+
+> i=1
+
+(xi − θk)⊺Σ−1 
+
+> k
+
+(xi − θk) + Ck,
+
+where Ck is a constant independent of θk.The function θk 7 → log L(θk; Dk) is a polynomial of total degree at most 2. By Taylor’s theorem with the Lagrange remainder, the second-order Taylor expansion of a C∞ function at any expansion point θ(t) has remainder 
+
+R2(θk) = 16
+
+X
+
+> |α|=3
+
+∂α log L(ξ; Dk) ( θk − θ(t))α
+
+for some ξ on the segment between θ(t) and θk. Since log L(θk; Dk) is a polynomial of degree 
+
+≤ 2, all third- and higher-order partial derivatives vanish identically, so R2 ≡ 0. The expansion (8) therefore holds with equality at every θ(t).
+
+E.4 Setup, Statements, and Proofs for the Finite-Sample Analysis 
+
+This appendix collects the supporting setup, assumptions, lemmas, and proofs for the finite-sample bound in Sec. 4.1. Throughout, each source k has equal sample size Nk = N and data Dk =
+
+{x(k) 
+
+> i
+
+}Ni=1 drawn i.i.d. from pk ≜ N (θk, σ 2I). The null density q(x) ≜ p(x | ck = 0) = R p(x |
+
+θk, c k = 0) ϕnull (θk) dθ k is determined by ϕnull and treated as a known function of x. Let σ2 be the per-sample noise variance, R ≜ {k : ck = 1 } the relevant set, ¯R ≜ {k : ck = 0 } the irrelevant set, 
+
+∆k ≜ θk − θ0 for k ∈ ¯R, and ∆max ≜ max k∈ ¯R ∥∆k∥.20 E.4.1 Assumptions Assumption E.1 (Generative model with τ = 0 ). The source parameters satisfy θk = θ0 for k ∈ R
+
+(ck = 1 ) and θk | ck = 0 ∼ ϕnull for a known density ϕnull on Rd with finite second moment around 
+
+θ0:
+
+¯D2 ≜ Eθ∼ϕnull ∥θ − θ0∥2 < ∞. (33) Conditional on θk, the data Dk = {x(k) 
+
+> i
+
+}Ni=1 is i.i.d. from pk = N (θk, σ 2I). (This is the τ = 0 
+
+specialization of the general N (θ0, τ 2I) relevant-prior model, justified by the oracle Mean Squared Error (MSE) motivation in Sec. 4.1; the general case adds an additive dτ 2N 2|R|/(N0 + N |R|)2
+
+correction throughout.) 
+
+Assumption E.2 (Regularity) . The Fisher information I(θ0) is positive definite with eigenvalues bounded by 0 < λ min (I) ≤ λmax (I) < ∞. The per-sample log-likelihood ratio ℓ(x; θ) ≜ log[ p(x |
+
+θ)/q (x)] satisfies, on a neighborhood of θ0: (i) for each k and each θ, ℓ(x; θ) − ρk(θ) is sub-Gaussian under pk with parameter V 2; (ii) θ 7 → ρk(θ) ≜ Ex∼pk [ℓ(x; θ)] is L-Lipschitz for every k.
+
+Assumption E.3 (Probabilistic separation of the null prior) . There exist a separation radius rsep > 0
+
+and a tail probability α ∈ [0 , 1] such that 
+
+Pθ∼ϕnull 
+
+ ∥θ − θ0∥ < r sep 
+
+ ≤ α. (34) 
+
+Assumption E.4 (Identifiability margin) . There exists a margin ∆∗ > 0 such that, on the well-separated event S ≜ {∥ θk − θ0∥ ≥ rsep for all k ∈ ¯R}, the per-source expected log-LR satisfies 
+
+min  
+
+> k=1 ,...,K
+
+|ρk(θ0)| ≥ ∆∗. (35) 
+
+Remark E.5 (Sufficient condition via Fisher expansion) . For the Gaussian-mean model with p(·| θ0) = 
+
+N (θ0, σ 2I), the Fisher-information expansion gives KL( pk∥p(·| θ0)) = 12 (θk − θ0)⊺I(θ0)( θk −
+
+θ0) + o(∥θk − θ0∥2). Assume two-sided KL bounds on the null density that distinguish relevant and irrelevant sources: • ( Relevant lower bound ) For k ∈ R (where θk = θ0), KL( pk∥q) ≥ κR for some κR > 0.• ( Irrelevant upper bound ) For k ∈ ¯R on S, KL( pk∥q) ≤ κ ¯R for some κ ¯R ≥ 0.The relevant lower bound says q does not match the relevant likelihood (i.e., q is far from p(·| θ0) in KL); the irrelevant upper bound says q does fit the dispersed irrelevant sources at least to within κ ¯R.Then ρk(θ0) ≥ κR for k ∈ R (since KL( pk∥p(·| θ0)) = 0 ), and for k ∈ ¯R on S:
+
+ρk(θ0) ≤ κ ¯R − 12 r2sep λmin (I).
+
+The identifiability margin min k |ρk(θ0)| ≥ ∆∗ therefore holds with 
+
+∆∗ = min 
+
+
+
+κR, 12 r2sep λmin (I) − κ ¯R
+
+
+
+> 0
+
+whenever r2sep λmin (I) > 2κ ¯R. This requires the separation radius to be large relative to the null’s worst-case fit on irrelevant sources. For τ > 0 the relevant-side bound becomes κR − 12 τ 2dλ max (I),with the additional requirement κR > 12 τ 2dλ max (I).
+
+E.4.2 Notation for the analysis 
+
+Define the per-sample log-likelihood ratio and its empirical and population averages: 
+
+ℓ(x; θ) ≜ log p(x | θ)
+
+q(x) , ¯sk(θ) ≜ 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+ℓ(x(k) 
+
+> i
+
+; θ), ρk(θ) ≜ Ex∼pk [ℓ(x; θ)] .
+
+We abuse notation and set ρk ≜ ρk(θ0), the population per-sample log-LR at the truth, which matches (14) . Under Assumption E.1 ( τ = 0 ), the joint marginal p(· | ck = 1 , θ ) equals the per-sample density p(x | θ) exactly by Remark 3.2. 21 Tempering scalar. The body uses a per-source per-iteration tempering schedule β(t) 
+
+> k
+
+(Sec. C.2). For the analysis below, we treat β as a single scalar equal to the asymptotic limit of β(t) 
+
+> k
+
+to be consistent with the asymptotic analysis of basin entry and weight concentration. Per-source variations β(t) 
+
+> k
+
+→ β
+
+enter only through model-dependent constants C1, C 2.The total log-LR is sk(θ) ≜ N ¯sk(θ) = log[ p(Dk | θ)/q (Dk)] . Under the Gaussian relevant likelihood, sk(θ) = − N 
+
+> 2σ2
+
+∥ˆθk − θ∥2 + ξk for some θ-independent ξk depending on Dk and q. The surrogate update (13) specializes to 
+
+w(t) 
+
+> k
+
+= σ
+
+
+
+β s k(θ(t)) + log πk
+
+> 1−πk
+
+
+
+, (36) 
+
+θ(t+1) = N0 ˆθ0 + N P 
+
+> k
+
+w(t) 
+
+> k
+
+ˆθk
+
+T (t) , T (t) ≜ N0 + N X
+
+> k
+
+w(t) 
+
+> k
+
+, (37) and the oracle iterate θ⋆ is defined in (15). 
+
+E.4.3 Oracle MSE MSE ⋆: a finite-sample bias–variance identity Proposition E.6 (Conditional MSE of the surrogate update with fixed weights) . For deterministic weights w ∈ [0 , 1] K and any source parameters {θk}Kk=1 , the surrogate update (37) satisfies 
+
+E
+
+h
+
+∥θ(1) − θ0∥2 {θk}
+
+i
+
+= dσ 2 Neff 
+
+T 2 +
+
+PKk=1 wk N (θk − θ0)
+
+T
+
+> 2
+
+, (38) 
+
+where T ≜ N0 + N P 
+
+> k
+
+wk and Neff ≜ N0 + N P 
+
+> k
+
+w2
+
+> k
+
+.Proof. Decompose θ(1) − θ0 as 
+
+θ(1) − θ0 = 1
+
+T
+
+h
+
+N0(ˆθ0 − θ0) + 
+
+> K
+
+X
+
+> k=1
+
+wk N (ˆθk − θ0)
+
+i
+
+.
+
+Conditional on θk, ˆθk − θ0 = ( ˆθk − θk) + ( θk − θ0) has mean θk − θ0 and covariance σ2I/N ; the target term has mean zero and covariance σ2I/N 0. Independence across sources (and target) yields 
+
+E
+
+h
+
+θ(1) − θ0 | { θk}
+
+i
+
+= 1
+
+T
+
+> K
+
+X
+
+> k=1
+
+wk N (θk − θ0),
+
+Cov 
+
+
+
+θ(1) | { θk}
+
+
+
+= 1
+
+T 2
+
+h
+
+N 20 · σ2IN0 + X
+
+> k
+
+(wkN )2 · σ2IN
+
+i
+
+= σ2 Neff 
+
+T 2 I. 
+
+Summing trace and squared conditional bias yields (38). Specializing to oracle weights wk = 1R(k) gives Neff = T = N0 + N |R|. Under Assumption E.1 (τ = 0 ), θk = θ0 for k ∈ R, so the bias term vanishes and the oracle MSE collapses to the standard precision-weighted rate: 
+
+MSE ⋆ = dσ 2
+
+N0 + N |R| . (39) For the general τ > 0 case, the prior expectation E∥ P
+
+> k∈R
+
+(θk − θ0)∥2 = |R|τ 2d adds a 
+
+dτ 2N 2|R|/(N0 + N |R|)2 correction, recovering (16). 
+
+E.4.4 Per-step decomposition with random weights 
+
+Let γ(t) 
+
+> k
+
+≜ w(t) 
+
+> k
+
+− 1R(k) denote the deviation of the EM weights from the oracle weights. The following identity reduces the analysis of the EM iterate to controlling E[( γ(t) 
+
+> k
+
+)2].22 Lemma E.7 (Oracle decomposition) . For every t ≥ 0,
+
+θ(t+1) − θ⋆ = NT (t)
+
+> K
+
+X
+
+> k=1
+
+γ(t)
+
+> k
+
+ ˆθk − θ⋆. (40) 
+
+Consequently, with T (t) ≥ N0,
+
+E θ(t+1) − θ0 
+
+> 2
+
+≤ 2 MSE ⋆ + 2 K
+
+ NN0
+
+2 KX
+
+> k=1
+
+E
+
+h
+
+(γ(t) 
+
+> k
+
+)2 ∥ˆθk − θ⋆∥2i
+
+. (41) 
+
+Proof. Let γk ≜ w(t) 
+
+> k
+
+− 1R(k) and TR ≜ N0 + N |R|, so T (t) = TR + N P 
+
+> k
+
+γk. Multiply (37) by 
+
+T (t) and (15) by TR:
+
+T (t)θ(t+1) = N0 ˆθ0 + N X
+
+> k
+
+w(t) 
+
+> k
+
+ˆθk, TRθ⋆ = N0 ˆθ0 + N X
+
+> k∈R
+
+ˆθk.
+
+Subtract: 
+
+T (t)θ(t+1) − TRθ⋆ = N X
+
+> k
+
+γk ˆθk.
+
+Since T (t) = TR + N P 
+
+> k
+
+γk, the left-hand side equals TR(θ(t+1) − θ⋆) + N (P 
+
+> k
+
+γk)θ(t+1) . Substi-tuting and rearranging, 
+
+TR(θ(t+1) − θ⋆) = N X
+
+> k
+
+γk(ˆθk − θ(t+1) ).
+
+Repeating the same step starting from T (t)θ(t+1) = T (t)θ⋆ + ( T (t)θ(t+1) − T (t)θ⋆) and using 
+
+T (t)θ⋆ = TRθ⋆ + N (P γk)θ⋆ yields the symmetric identity 
+
+T (t)(θ(t+1) − θ⋆) = N X
+
+> k
+
+γk(ˆθk − θ⋆), (42) which is (40) . For the MSE bound, (a + b)2 ≤ 2a2 + 2 b2 applied to θ(t+1) − θ0 = ( θ(t+1) − θ⋆) + (θ⋆ − θ0) gives 
+
+E∥θ(t+1) − θ0∥2 ≤ 2MSE ⋆ + 2 E∥θ(t+1) − θ⋆∥2.
+
+By (42) and T (t) ≥ N0,
+
+∥θ(t+1) − θ⋆∥2 ≤
+
+ NN0
+
+2X 
+
+> k
+
+|γk| ∥ ˆθk − θ⋆∥
+
+2
+
+≤ K
+
+ NN0
+
+2 X
+
+> k
+
+γ2 
+
+> k
+
+∥ˆθk − θ⋆∥2
+
+by Cauchy–Schwarz. Take expectations to conclude. 
+
+E.4.5 Margin condition and weight concentration Definition E.8 (Classification margin on the well-separated event) . Let ρk = ρk(θ0) denote the per-source expected log-LR (14) , and let S ≜ {∥ θk −θ0∥ ≥ rsep for all k ∈ ¯R} be the well-separated event under Assumption E.3. On S, the population classification margin is min k |ρk|. Assumption E.4 posits the existence of ∆∗ > 0 that lower-bounds this margin on S and the high-probability relevant-cluster ball; Remark E.5 gives a sufficient Fisher-information condition for the Gaussian-mean model. The next theorem bounds E[( γ(t) 
+
+> k
+
+)2] under the margin and a basin-entry condition on θ(t).
+
+Theorem E.9 (Weight concentration) . Let B ≜ max k | log πk 
+
+> 1−πk
+
+| and assume ∆∗ > 0. Set c1 = 1 /4,
+
+c2 = 1 /2, c3 = 1 /32 . On the event 
+
+E ≜
+
+n
+
+∥θ(t) − θ0∥ ≤ c1∆∗/L 
+
+o
+
+∩
+
+> K
+
+\
+
+> k=1
+
+n
+
+¯sk(θ(t)) − ρk(θ(t)) ≤ ∆∗/4
+
+o
+
+, (43) 
+
+the sigmoid input in (36) has the correct sign with magnitude 
+
+ 21R(k) − 1 βs k(θ(t)) + log πk
+
+> 1−πk
+
+ ≥ c2 βN ∆∗ − B, (44) 23 and consequently |γ(t) 
+
+> k
+
+| ≤ exp  −c2βN ∆∗ + B provided c2βN ∆∗ > B . Combined with sub-Gaussian concentration of the per-sample log-LR sums under Assumption E.2, 
+
+E(γ(t) 
+
+> k
+
+)2 ≤ exp  −2c2βN ∆∗ + 2 B + 2 K exp  −c3N (∆ ∗)2/V 2, (45) 
+
+provided ∥θ(t) − θ0∥ ≤ c1∆∗/L .
+
+The first term in (45) is the residual sigmoid mass when the input has correct sign, and the second is the failure probability of the concentration event E. We prove Theorem E.9 by combining a Lipschitz bound on ρk(θ) with sub-Gaussian concentration of the empirical log-LR, following the population-to-sample EM analysis template of Balakrishnan et al. [2017], specialized to our sigmoid-weighted setting with per-source binary latent indicators. 
+
+Lemma E.10 (Lipschitz drift of ρk in the basin) . Under the Lipschitz clause of Assumption E.2, for any θ with ∥θ − θ0∥ ≤ ∆∗/(4 L),
+
+ρk(θ) − ρk ≤ L∥θ − θ0∥ ≤ ∆∗/4.
+
+In particular, ρk(θ) · sign( ρk) ≥ | ρk| − ∆∗/4 ≥ 3∆ ∗/4 for every k (using |ρk| ≥ ∆∗). Proof. Direct application of the Lipschitz clause in Assumption E.2 and the definition of ∆∗.
+
+Lemma E.11 (Sub-Gaussian concentration of the empirical log-LR) . Under the sub-Gaussian clause of Assumption E.2, for any fixed θ in the basin and t > 0,
+
+PDk ∼p⊗Nk
+
+  |¯sk(θ) − ρk(θ)| > t  ≤ 2 exp  −N t 2/(2 V 2).
+
+Proof. ¯sk(θ) = N −1 P 
+
+> i
+
+ℓ(x(k) 
+
+> i
+
+; θ) is the sample mean of i.i.d. sub-Gaussian random variables with parameter V 2; this is the standard Hoeffding-type sub-Gaussian tail bound. 
+
+Proof of Theorem E.9. On E, decompose 
+
+¯sk(θ(t)) = ρk + ρk(θ(t)) − ρk
+
+ + ¯sk(θ(t)) − ρk(θ(t)).
+
+By Lemma E.10 the first bracket is at most ∆∗/4 in absolute value, and by the second clause of E the second bracket is at most ∆∗/4. Hence 
+
+¯sk(θ(t)) − ρk ≤ ∆∗/2,
+
+and since |ρk| ≥ ∆∗, ¯sk(θ(t)) has the same sign as ρk with magnitude ≥ ∆∗/2. Multiplying by N ,
+
+ 21R(k) − 1 sk(θ(t)) ≥ N ∆∗/2 = c2N ∆∗.
+
+Multiplying by β and adding the bounded prior shift log[ πk/(1 − πk)] (whose absolute value is at most B, so |(2 1R(k) − 1) log[ πk/(1 − πk)] | ≤ B) gives (44) . The sigmoid satisfies σ(z) ≤ e−| z|
+
+on the side of decay, so for k ∈ R (where 1R(k) = 1 and w∗ 
+
+> k
+
+= 1 ), 
+
+|γ(t) 
+
+> k
+
+| = 1 − w(t) 
+
+> k
+
+= σ −(βs k(θ(t)) + log πk 
+
+> 1−πk
+
+) ≤ exp  −c2βN ∆∗ + B,
+
+and analogously for k ∈ ¯R. Squaring gives the first term of (45). For the failure probability, Lemma E.11 applied with t = ∆ ∗/4 and a union bound over the K source concentration events gives 
+
+P(Ec) ≤ 2K exp  −N (∆ ∗/4) 2/(2 V 2) = 2 K exp  −c3N (∆ ∗)2/V 2
+
+with c3 = 1 /32 (the basin condition on θ(t) is part of the standing assumption, not an additional event). On Ec, |γk| ≤ 1, contributing at most P(Ec) to E[γ2 
+
+> k
+
+]. Adding gives the second term of (45). 24 E.4.6 Proof of Theorem 4.1 and Corollary E.13 
+
+Proof of Theorem 4.1. Throughout this proof, “with probability at least 1 − Kα over the prior draw” refers to the well-separated event S ≜ {∥ θk − θ0∥ ≥ rsep for all k ∈ ¯R}, which by Assumption E.3 and a union bound satisfies P(S) ≥ 1 − Kα . The expectation on the left-hand side of (17) is taken over the source data given the prior realization {θk}Kk=1 . We work on the event S throughout. On S, Assumption E.4 gives min k |ρk| ≥ ∆∗ > 0 (Definition E.8), so the basin and margin hypotheses of Theorem E.9 hold. Lemma E.7 yields, in conditional expectation given {θk} ∈ S ,
+
+E∥θ(t+1) − θ0∥2 ≤ 2 MSE ⋆ + 2 K
+
+ NN0
+
+2 KX
+
+> k=1
+
+Eγ2 
+
+> k
+
+∥ˆθk − θ⋆∥2, (46) where MSE ⋆ is the oracle MSE (39) and the conditioning on {θk} ∈ S is implicit on both sides; the conditional/unconditional MSE differ by at most a factor 1/P(S) ≤ 1/(1 − Kα ) ≤ 2 for Kα ≤ 1/2,absorbed into the constant 2. The crucial step is to bound the cross-moment E[γ2 
+
+> k
+
+∥ˆθk − θ⋆∥2] without splitting it as a product of marginals — γk and ˆθk both depend on Dk, so they are not independent. Let E be the concentration event of Theorem E.9. On E ∩{ basin }, that theorem yields the deterministic bound |γk| ≤ GE ≜ e−c2βN ∆∗+B . On Ec, |γk| ≤ 1 trivially. Under Assumption E.1 ( τ = 0 ), the in-expectation moment bound 
+
+M 2 
+
+> k
+
+≜ E∥ˆθk − θ⋆∥2 ≤ 2 E∥ˆθk − θ0∥2 + 2 MSE ⋆ ≤ 2  ¯D2 + dσ 2/N  + 2 MSE ⋆
+
+holds (using E∥ˆθk − θ0∥2 ≤ ¯D2 + dσ 2/N for k ∈ ¯R and ≤ dσ 2/N for k ∈ R). Splitting the cross moment on E vs. Ec:
+
+Eγ2 
+
+> k
+
+∥ˆθk − θ⋆∥2 = Eγ2 
+
+> k
+
+∥ˆθk − θ⋆∥21E
+
+ + Eγ2 
+
+> k
+
+∥ˆθk − θ⋆∥21Ec
+
+
+
+≤ G2 
+
+> E
+
+· M 2 
+
+> k
+
++
+
+q
+
+E∥ˆθk − θ⋆∥4 · P(Ec),
+
+where the first inequality uses |γk| ≤ GE deterministically on E and the second uses Cauchy–Schwarz on Ec. The fourth moment E∥ˆθk − θ⋆∥4 is bounded by O(( ¯D2 + dσ 2/N )2) using Gaussian moments and Assumption E.1. By Theorem E.9, P(Ec) ≤ 2K e −c3N (∆ ∗)2/V 2
+
+, contributing a √K factor through pP(Ec). Summing over the K sources picks up another factor of K, and the leading K from the per-step decomposition (46) gives a total K2 on the first exponential and K5/2 on the second. Absorbing ¯D2, (N/N 0)2, and the e2B factor into the model-dependent constants C1, C 2:
+
+2K
+
+ NN0
+
+2 X
+
+> k
+
+Eγ2 
+
+> k
+
+∥ˆθk − θ⋆∥2 ≤ C1 e−c2βN ∆∗
+
++ C2 e−c3N (∆ ∗)2/(2 V 2),
+
+with C1 = O(K2(N/N 0)2( ¯D2 + dσ 2/N )e2B ) and C2 = O(K5/2(N/N 0)2( ¯D2 + dσ 2/N )) . This gives the second and third bracketed terms in (17) (after redefining c3 ← c3/2). Substituting back into (46) yields (17) on S. Since P(S) ≥ 1 − Kα , the bound holds with probability at least 1 − Kα 
+
+over the prior. 
+
+Remark E.12 . Basin-invariance The basin-invariance assumption (the iterate stays in {∥ θ − θ0∥ ≤ 
+
+c1∆∗/L } across all iterations) is critical to our analysis. The in-expectation MSE bound at any fixed 
+
+t does not, by itself, propagate to t + 1 without an additional concentration argument that would close the loop. We treat basin invariance as a standing hypothesis, with the LIP-correctness condition characterizing when basin entry occurs at t = 0 .
+
+Corollary E.13 (Unconditional MSE) . Under the same assumptions as Theorem 4.1, integrating 
+
+(17) over the prior gives the unconditional bound 
+
+E θ(∞) − θ0 
+
+> 2
+
+≤ 2dσ 2
+
+N0 + N |R| + 3 Kα r 2sep + C1 e−c2βN ∆∗
+
++ C2 e−c3N (∆ ∗)2/V 2
+
+. (47) 
+
+Proof of Corollary E.13 (integrating over the prior). Let V ≜ {k ∈ ¯R : ∥θk − θ0∥ < r sep } be the violating subset, so Sc = {V̸ = ∅} . By Assumption E.3 and a union bound, P(Sc) ≤ Kα . The law of total expectation gives 
+
+E∥θ(∞) − θ0∥2 = E
+
+h
+
+∥θ(∞) − θ0∥2 S
+
+i
+
+P(S) + E
+
+h
+
+∥θ(∞) − θ0∥2 Sci
+
+P(Sc). (48) 25 The first term is bounded by Theorem 4.1: that theorem’s high-probability statement (with probability 
+
+≥ 1 − Kα over the prior, E∥θ(∞) − θ0∥2 ≤ B) is equivalent, by averaging over {θk} ∈ S , to the conditional MSE bound E[∥θ(∞) −θ0∥2 | S ] ≤ B, where B = 2 dσ 2/(N0 +N |R|)+ C1e−c2βN ∆∗
+
++
+
+C2e−c3N (∆ ∗)2/V 2
+
+. Multiplied by P(S) ≤ 1, this yields the same upper bound for the first term of (48). On Sc, the M-step is the convex combination 
+
+θ(∞) − θ0 = N0(ˆθ0 − θ0) + PKk=1 w(∞) 
+
+> k
+
+N (ˆθk − θ0)
+
+N0 + P 
+
+> k
+
+w(∞) 
+
+> k
+
+N ,
+
+which lies in the convex hull of {ˆθ0 − θ0} ∪ { ˆθk − θ0}Kk=1 with weights ∝ N0, N w (∞) 
+
+> k
+
+. Partitioning the source contributions by membership in V, R, and ¯R \ V :• For k ∈ R: θk = θ0 exactly under Assumption E.1, so ∥ˆθk − θ0∥ = ∥ˆθk − θk∥ = Op(σpd/N ).• For k ∈ V : ∥θk − θ0∥ < r sep by definition of violation. • For k ∈ ¯R \ V : ∥θk − θ0∥ ≥ rsep , so the per-source margin still holds and Theorem E.9 applied per source gives E[w(∞) 
+
+> k
+
+] ≤ C e −c2βN ∆∗
+
+, exponentially small in N . Their contribution to the convex combination is at most P  
+
+> k∈¯R\V
+
+E[w(∞) 
+
+> k
+
+∥ˆθk − θ0∥], whose Cauchy–Schwarz bound is 
+
+KC e −c2βN ∆∗ p ¯D2 + dσ 2/N .Combining via the triangle inequality, taking the maximum across the three contributions, and using 
+
+∥ˆθ0 − θ0∥, ∥ˆθk − θk∥ = Op(σpd/ min( N0, N )) on Gaussian noise, 
+
+∥θ(∞) − θ0∥ ≤ rsep + Op
+
+ σpd/N 0
+
+ + KC 
+
+q ¯D2 + dσ 2/N e −c2βN ∆∗
+
+.
+
+Squaring (using (a + b + c)2 ≤ 3( a2 + b2 + c2)) and conditioning on Sc:
+
+E
+
+h
+
+∥θ(∞) − θ0∥2 Sci
+
+P(Sc) ≤ 3Kα r 2sep + ( lower-order ), (49) where the lower-order O(σ2dKα/N 0) term is absorbed into the leading 3Kαr 2sep penalty (since 
+
+r2sep ≫ σ2d/N 0 under Assumption E.3 on the working scale of rsep ), and the K2C2( ¯D2 +
+
+dσ 2/N ) e−2c2βN ∆∗
+
+term is absorbed into the weight-error residual C1e−c2βN ∆∗
+
+.Substituting the conditional bound (17) (Theorem 4.1) and the violation bound (49) into (48) yields (47). 
+
+E.5 Proof of Theorem 4.2 
+
+We prove convergence of both update rules by showing each is a continuous function of inputs that converge to limits that recover θ0.
+
+Exact M-step (12) . The regularity conditions give H0/N 0
+
+> p
+
+−→ I (θ0) with I(θ0) ≻ 0. Matrix inver-sion is continuous on the open set of positive-definite symmetric matrices, so by the continuous mapping theorem (H0/N 0)−1 p
+
+−→ I (θ0)−1. The deterministic identity H−10 = N −10 (H0/N 0)−1
+
+combined with Slutsky’s theorem (a deterministic null sequence times a sequence converging in probability to a finite limit converges in probability to zero) gives H−10
+
+> p
+
+−→ 0.By assumption, Dk has fixed size Nk independent of N0, so ˆθk and Hk are random objects whose distributions do not depend on N0. The relevance weight satisfies w(t) 
+
+> k
+
+∈ [0 , 1] by construction, so 
+
+Ck ≜ (I + τ 2Hk)−1Hk has ∥Ck∥op finite a.s. and independent of N0. By submultiplicativity of the operator norm, 
+
+Λ(t)  
+
+> kop
+
+= w(t) 
+
+> k
+
+H−10 Ck op ≤ ∥ H−10 ∥op · ∥ Ck∥op .
+
+By Slutsky’s theorem the right-hand side converges to 0 in probability, so Λ(t)
+
+> kp
+
+−→ 0.26 The source MLEs ˆθk for k ≥ 1 have fixed sample size Nk and so are bounded in probability with distributions independent of N0. Combined with Λ(t)
+
+> kp
+
+−→ 0 from Step 2, Slutsky’s theorem yields 
+
+Λ(t) 
+
+> k
+
+ˆθkp
+
+−→ 0 and I + P 
+
+> k
+
+Λ(t)
+
+> kp
+
+−→ I. The mapping A 7 → A−1 is continuous at A = I, so by the continuous mapping theorem (I + P 
+
+> k
+
+Λ(t) 
+
+> k
+
+)−1 p
+
+−→ I. Substituting these limits and ˆθ0
+
+> p
+
+−→ θ0 into the M-step (12): 
+
+θ(t+1) =
+
+
+
+I +
+
+> K
+
+X
+
+> k=1
+
+Λ(t)
+
+> k
+
+−1ˆθ0 +
+
+> K
+
+X
+
+> k=1
+
+Λ(t) 
+
+> k
+
+ˆθk
+
+ p
+
+−→ I−1 θ0 + 0  = θ0.
+
+Surrogate update (13) . Define r(t) 
+
+> k
+
+≜ w(t) 
+
+> k
+
+Nk/N 0 for each k. Dividing the numerator and denomi-nator of (13) by N0 gives 
+
+θ(t+1) = ˆθ0 + PKk=1 r(t) 
+
+> k
+
+ˆθk
+
+1 + PKk=1 r(t)
+
+> k
+
+. (50) Since w(t) 
+
+> k
+
+∈ [0 , 1] a.s. and Nk is fixed, 
+
+0 ≤ r(t) 
+
+> k
+
+≤ Nk/N 0
+
+> N0→∞
+
+−−−−−→ 0,
+
+so the squeeze theorem gives r(t)
+
+> ka.s.
+
+−−→ 0, hence in probability. Combined with ˆθ0
+
+> p
+
+−→ θ0 and the constancy of ˆθk in N0, the continuous mapping theorem applied to (50) ’s numerator and denominator gives, with the denominator limit 1 bounded away from zero, 
+
+θ(t+1) p
+
+−→ θ0 + P 
+
+> k
+
+0 · ˆθk
+
+1 + P 
+
+> k
+
+0 = θ0.
+
+E.6 Proof of Theorem 4.3 
+
+Proof. The relevance weight (20) reads 
+
+w(t) 
+
+> k
+
+= σ
+
+
+
+log L(θ(t); Dk)
+
+p(Dk | ck = 0) + log πk
+
+1 − πk
+
+
+
+,
+
+where L(θ; Dk) = Q 
+
+> i
+
+p(xi | θ) is the per-sample relevant likelihood (by Remark 3.2 at τ = 0 ). The null factor p(Dk | ck = 0) = Q 
+
+> i
+
+q(xi) factorizes because q is a fixed density. Hence the log-ratio factorizes as PNk 
+
+> i=1
+
+log[ p(xi | θ(t))/q (xi)] . Define 
+
+ANk ≜
+
+> Nk
+
+X
+
+> i=1
+
+log p(xi | θ(t))
+
+q(xi) + log πk
+
+1 − πk
+
+, (51) so w(t) 
+
+> k
+
+= σ(ANk ).The triangle inequality and the hypothesis give 
+
+Epk log[ p(· | θ(t))/q ] ≤ Epk | log p(· | θ(t))| + Epk | log q| < ∞.
+
+Linearity of expectation gives Epk
+
+log[ p(· | θ(t))/q ] = ρk(θ(t)), the quantity in (14). Conditional on θ(t) (a function of past iterates and data), the samples {x(k) 
+
+> i
+
+}Nk 
+
+> i=1
+
+are i.i.d. under pk
+
+and the per-sample log-ratio is integrable; the unconditional almost-sure convergence below follows by the law of total expectation. The strong law of large numbers gives 
+
+> Nk
+
+X
+
+> i=1
+
+log p(xi | θ(t))
+
+q(xi) = Nk
+
+ ρk(θ(t)) + δNk
+
+ a.s., (52) where δNk
+
+> a.s.
+
+−−→ 0.Substituting (52) into (51), 
+
+ANk = Nk
+
+ ρk(θ(t)) + δNk
+
+ + log πk
+
+1 − πk
+
+a.s. 27 The last term is a finite constant under πk ∈ (0 , 1) . Eventually |δNk | < |ρk(θ(t))|/2 a.s., so the leading term dominates: ANk → +∞ a.s. when ρk(θ(t)) > 0, and ANk → −∞ a.s. when 
+
+ρk(θ(t)) < 0.The sigmoid extends continuously to the extended real line via σ(±∞ ) ∈ { 0, 1}, so 
+
+w(t) 
+
+> k
+
+= σ(ANk ) a.s. 
+
+−−→ 1{ρk(θ(t)) > 0}.
+
+Almost-sure convergence implies convergence in probability. 
+
+## F Experimental Results 
+
+F.1 Benchmark Methods 
+
+In all the experiments, we compare the following estimators: • Target-Only: An estimator trained exclusively on the limited target dataset D0;• Naive Pooling: An estimator trained indiscriminately on the union of the target dataset and all available source datasets Dk;• LIP-G (Gemini 3 Flash): Our proposed method (LIP estimation and EM) leverages a Gemini 3 Flash API to generate a prior over source relevance using contextual descriptions; • LIP-C (Claude Opus 4.7): The same LIP estimation and EM as LIP-G but with the LIP elicited from the Anthropic Claude Code local agent mode instead of calling Google’s Gemini API; • EM with a Non-informative Prior: An EM estimator that assumes a uniform initial prior across all source domains, acting as a purely data-driven approach without textual information. 
+
+F.2 Detailed Experimental Setup 
+
+All three experiments share the same LIP construction protocol and EM convergence criterion. We use the Claude Code Opus 4.7 local agent and Google gemini-3-flash-preview model (temperature 
+
+0, JSON-constrained outputs) as the elicitation oracle. The conditional-logit-with-null likelihood (2) is fit by L-BFGS with strong-Wolfe line search. EM iterates until ∥w(t) − w(t−1) ∥∞ ≤ 10 −3 for five consecutive iterations or a hard cap is reached. All experiments use random seed 42 unless otherwise stated. 
+
+F.2.1 C-MAPSS Data. We use the FD001 subset [Saxena et al., 2008], treating each of the 100 engines as one domain. Ten target engines are sampled (machines {4, 9, 18 , 26 , 27 , 48 , 51 , 53 , 55 , 80 }) and the remaining 99 
+
+engines serve as the source pool for each target. We predict the high-pressure-compressor physical core speed (sensor 9) from the cycle index. The backbone is a generalized linear model with a natural cubic regression spline basis: 5 knots placed uniformly on [0 , 300] in cycle space and the truncated-power form constrained to remain linear outside the boundary knots. We sweep nine cold-start cutoffs corresponding to RUL levels {90% , 80% , . . . , 10% }.
+
+LIP construction. A NASA technical report on engine damage propagation [Saxena et al., 2008] is uploaded once as the LLM context, and the target description is the dust-ingestion paragraph reproduced verbatim in our open-source release. We issue 200 subgroup queries with |Sm| ∈ { 3, 4, 5}
+
+sampled uniformly, executed with 10 parallel workers and a 429 -aware retry policy. The fitted LIP uses p0 = 0 .01 and ε = 0 .1; the same response set is reused across all ten target engines by dropping queries that contain the chosen target and re-indexing. We report two LIPs constructed identically but elicited from gemini-3-flash-preview and Anthropic Claude. 
+
+EM. EM uses the closed-form M-step on the GLM coefficients with τ = 10 −3, ν = 0 .05 , the exact 
+
+τ 2-corrected E-step, and the empirical-Bayes null with self-exclusion. The outer loop is capped at 
+
+1000 iterations; the convergence criterion follows the shared protocol. Pooled-OLS and Target-Only baselines use ridge regression ( λ = 10 4, intercept un-penalized) so that the truncated-power basis remains numerically stable at intermediate cutoffs. 28 F.2.2 MuJoCo Hopper Data. The source pool is K = 10 replay buffers collected by training Soft Actor-Critic [Haarnoja et al., 2018] in Hopper-v5 with gravity g ∈ { 1, 2, . . . , 10 } m/s2 (one buffer per grav-ity, ∼10 6 transitions each). The target environment uses Venus-like gravity g = 8 .87 m /s2,and the target dataset is a separate SAC replay buffer of ∼10 6 transitions from which we draw 
+
+N0 ∈ { 128 , 256 , 512 , 1024 , 2048 , 4096 } samples for each cell of the table. 
+
+Pool dynamics ( θpool ). The dynamics model is a multivariate Gaussian distribution parametrized with hidden width 512 , 4 residual blocks (Linear + LayerNorm + SiLU), input/output normalization buffers, and learned softplus clamps on the log-variance head. We pretrain θpool on the union of all 
+
+10 source replay buffers for 1000 epochs (batch 1024 , AdamW with weight decay 10 −4, learning rate 3×10 −4 with cosine decay to 10 −5, gradient clipping at 1.0), holding out 20 ,000 transitions per source for diagnostics. The terminal learning rate 10 −5 matches the EM M-step’s constant rate, so the M-step continues training without a fresh LR peak. 
+
+LIP construction. The technical report passed to the LLM describes the hopper environment and gravity-driven dynamics; the target description is “the hopper is deployed to a planet with Venus-like gravity.” Source datasets are anonymized as source_NN.csv (state-summary excerpts) under a random source-to-gravity mapping, so the LLM does not see the gravity value. We issue 50 subgroup queries with concurrency 3 and a 120 -second fire interval. The fitted LIP uses p0 = 0 .01 and 
+
+ε = 1 .0. We additionally fit a “False LIP” from the responses of Gemini 3 Flash. It uses identical hyperparameters but argmax at g = 7 m /s2 instead of g = 9 m /s2; this corresponds to LIP-G in the body and serves as the misspecified-prior ablation. 
+
+EM. For neural-network dynamics, the closed-form weighted-average M-step is meaningless across re-parameterizations, so we use the gradient-based generalized-EM (Algorithm 3 from Appendix D). At iterate θ(t), the M-step takes 100 minibatch gradient steps on the weighted negative log-likelihood 
+
+L(θ) = − log p(D0 | θ) − X
+
+> k
+
+w(t) 
+
+> k
+
+log p(Dk | θ),
+
+with batch size 1024 , AdamW (weight decay 10 −4), and a constant learning rate 10 −5 that matches the pool’s terminal LR. The outer loop runs at most 100 iterations with ∥∆w∥∞ ≤ 10 −3 patience-5
+
+convergence. The tempering schedule uses ν = 0 .1 and β(t) 
+
+> k
+
+= (1 − e−νt )/pdeff Nk/N 0, where deff 
+
+is the trainable parameter count of θpool . The null model is a single global density log p(Dk | θpool ),computed once before the EM loop and held fixed; this replaces the empirical-Bayes leave-one-out null, which is unstable in the over-parameterized regime. 
+
+Weighted IQL. After EM, we train Implicit Q-Learning [Kostrikov et al., 2022] on the mixture sampling distribution p(target ) ∝ N0, p(source k) ∝ w(∞) 
+
+> k
+
+Nk. We use a tanh-squashed Gaussian policy and twin Q-networks each with hidden width 256 and LayerNorm, 200 ,000 training steps, batch 256 , Adam at 3 × 10 −4 with cosine decay to zero, target soft-update τ = 0 .005 , discount 
+
+γ = 0 .99 , expectile 0.7, AWR temperature β = 3 .0, and AWR weight clamp 100 . The reported policy returns are the mean over 200 evaluation episodes at g = 8 .87 m /s2.
+
+F.3 Hardware and Training Time. 
+
+All experiments run on a single workstation with an NVIDIA RTX 5090 GPU, an AMD Ryzen 9 9950X3D CPU, and 64 GB of RAM. The Gaussian and C-MAPSS pipelines complete in seconds on CPU. Pool dynamics training takes ∼14 hours, each EM completes in 1 ∼ 3 minutes , and the IQL over 6 × 5 cells completes in roughly 5 hours. 
+
+F.4 Assessment of LLM-Generated Priors via Reasoning Analysis 
+
+As we observed in the experiments, the quality of the LIP generated by the LLM has a significant impact on the EM algorithm’s convergence and final performance. In practice, we suggest the best way to audit the quality of the LIP is to directly inspect the LLM’s reasoning and check its logic. We provide a detailed analysis of the LLM’s reasoning in the hopper experiment, where we observed 29 three significant failure modes in the Gemini 3 Flash model. We also analyzed the reasoning patterns of Claude Code Opus 4.7 to understand why it produced a more accurate LIP. 
+
+F.4.1 Using Local Agent for Relevance Assessment 
+
+For Claude Code Opus 4.7, we used Local Agent Assessment , where a local agent, designed to mimic human reasoning, evaluates the relevance of each source based on the contextual information and provides a more structured analysis. One huge advantage of this approach is that the dataset does not need to be directly uploaded to the LLM, which can be a significant bottleneck in terms of both time and cost. In the hopper experiment, the 10 sources adds up to 1 GB data, which we could only sample a few trajectories to upload to Gemini. Instead of uploading the entire dataset, the local agent can analyze the dataset and extract relevant features or summaries that are then fed into the LLM for relevance assessment. We now summarize the key steps of the Local Agent approach. The agent (Claude Code Opus 4.7) is given filesystem access and a Python execution tool, but no internet access and no exposure to the source-to-gravity mapping. 
+
+Step 1: Read context. The agent reads three input files: a task specification, a technical report describing the hopper telemetry ( z, ˙z, joint angles/velocities, actions, terminal flag at ∆t = 0 .008 s), and a target description identifying the goal as Venus-like gravity ( ∼8.87 m /s2). 
+
+Step 2: Inspect the source data. The agent lists the data directory and inspects the column format of the 10 anonymized CSV files ( source_01.csv , . . . , source_10.csv ). 
+
+Step 3: Estimate gravity per source. The agent iteratively writes and runs six gravity-estimation scripts and compare their performance. The methods are: 1. average ¨z at hop apex (where ˙z ≈ 0 and z is high); 2. histogram mode of ¨z over high-z samples; 3. short-window quadratic fit to z(t) in a ±5-step window around each apex; 4. joint-motion-minimal filter, restricting to samples whose joint velocities are small and z is high; 5. approximate centre-of-mass acceleration from link kinematics; 6. long-flight ballistic fit over runs of ≥ 20 consecutive high-z timesteps with RMSE < 5 cm. Methods 1–3 disagreed on source_04 (e.g., apex 5.02 vs. mode 8.19 m /s2). Method 4 was inconclusive due to perpetual joint motion in source_10 . Method 5 was also inconclusive due to an inaccurate kinematic-chain approximation. Method 6 yielded tight per-source standard deviations (0.16 –0.84 ) and resolved the residual ambiguities, resulting in source_10 at 9.10 m /s2 (Venus-closest) and source_08 at 9.50 m /s2 (Earth-closer). 
+
+F.4.2 Failure Modes of Gemini 3 Flash on hopper 
+
+This subsection catalogs three recurring reasoning errors observed in Gemini 3 Flash subgroup queries that produced the “False LIP” (LIP-G) used in the hopper ablation. Although our framework is provably robust to such errors as data accumulates, a false LIP can cause the slower cold-start recovery in Table 2. We document them here as the errors are not random noise but specific reasoning patterns that recur across queries. 
+
+Failure mode 1: Anchoring bias on Earth gravity This is the dominant systematic error. Gemini 3 Flash picks one source from the subgroup, assumes it represents Earth ( g = 9 .81 m /s2), and then identifies the source approximately 1 m /s2 below it as Venus. Such selection rule clearly stands on no physical or statistical principle. When the anchor is wrong, the entire chain of inference is wrong. In Q11 the subgroup contained 
+
+source_10 (true g = 9 ), source_04 (true g = 8 ), and source_08 (true g = 10 ):           
+
+> source_04 has the lowest gravity, with source_10 being 1.0 m /s2higher and source_08
+> being 2.0 m /s2higher. Given that Venus gravity ( 8.87 m /s2) is approximately 1.0 m /s2less
+
+30 than Earth gravity ( 9.81 m /s2), source_04 is the most dynamically consistent candidate for a Venus-like environment, assuming source_10 represents the Earth baseline. 
+
+Even worse, in Q48, the subgroup was [g=1 , g =4 , g =5 , g =10] , in which source_08 (g = 10 ) is the only proximate match for Venus. Gemini 3 Flash nonetheless picked source_05 (g = 4 ): 
+
+Source 05 consistently shows an acceleration 1.0 m /s2 greater (less negative) than 
+
+Source 07 . Assuming Source 07 represents Earth gravity ( 9.81 m /s2), Source 05 ’s grav-ity is approximately 8.81 m /s2.
+
+Failure mode 2: Single-row noisy selection A correct estimate of gravity from the replay buffer requires aggregating across many free-fall transitions. Gemini 3 Flash sometimes commits to a single row whose acceleration matches the target, ignoring the rest of the trajectory. In Q27, the subgroup was [g=8 , g =5 , g =2] and Gemini 3 Flash chose g = 2 :
+
+In source_09 , analyzing Episode 19 from step 7 to 8, the vertical velocity ( ˙z) changes from −0.1471 m /s to −0.2181 m /s over a 0.008 s interval, yielding an acceleration of 
+
+−8.875 m /s2, which is dynamically consistent with the target environment. 
+
+Failure mode 3: Arithmetic errors mid-reasoning. Even when the measured statistics are correct, Gemini 3 Flash sometimes makes arithmetic errors in its own chain of thought and does not notice. Example from Q06: 
+
+source_01 has an az of −7.425 m /s2, source_02 has −8.425 m /s2, and source_10 
+
+has −10 .425 m /s2. These differences of exactly 1.0 and 3.0 m /s2 indicate that source_02 
+
+uses Earth gravity ( 9.81 m /s2). . . 
+
+31

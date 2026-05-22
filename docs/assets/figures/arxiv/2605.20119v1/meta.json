@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-007.webp",
+      "caption": "Figure 2 Toto 2.0 architecture. Left: training and inference protocol: CPM training applies variable-length contiguous masked spans to the input; at inference the horizon is filled with mask tokens and decoded in a single forward pass. Center: forward pass: a decoder-only transformer with alternating time-axis (causal) and variate-axis (full) attention, retained from Toto 1.0. The input scaler, patch projections, masking strategy, and output head are all improvements on the Toto 1.0 backbone. Right: input and output heads: a robust causal scaler (arcsinh normalization) on the input side, and a quantile output head producing nine quantile levels.",
+      "page": 3,
+      "index": 7,
+      "width": 976,
+      "height": 426
+    },
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-001.webp",
+      "caption": "Figure 3 Training data composition for Toto 1.0 (2.36 T points) and Toto 2.0 (5.04 T points for the 313m, 1B, and 2.5B; 3.40 T points for the 4m and 22m). Left: Toto 2.0 composition shown is for the 5.04 T mix used by the three largest models; the 3.40 T mix used by the 4m and 22m holds the relative proportions constant. Toto 2.0 drops public data entirely; internal observability metrics roughly double, and synthetic data nearly quadruples compared to Toto 1.0. Right: sampling-interval breakdown of the internal observability portion only (2.14 T points of Toto 2.0, vs. the corresponding Toto 1.0 subset); percentages are within this subset rather than the full training mix. Toto 2.0 rebalances away from high-frequency intervals: 5 m+ data rises from 5% to 35%, while 10 s data drops from 78.5% to 47.1%.",
+      "page": 6,
+      "index": 1,
+      "width": 986,
+      "height": 392
+    },
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-004.webp",
+      "caption": "Figure 4 u-µP makes optimal hyperparameters independent of model width. We tune parameters on a small proxy model, select the best configuration (depicted with a black outline here) and directly transfer the same configuration to any larger target model with no retuning required.",
+      "page": 7,
+      "index": 4,
+      "width": 964,
+      "height": 419
+    },
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-005.webp",
+      "caption": "Figure 5 BOOM results across CRPS rank, CRPS, and MASE; lower is better. All five Toto 2.0 sizes outrank every other foundation model on every metric. Toto 2.0 22m matches or beats Toto 1.0 across all three with roughly 7× fewer parameters. Toto 2.0 models are shaded in purple.",
+      "page": 10,
+      "index": 5,
+      "width": 986,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-002.webp",
+      "caption": "Figure 6 GIFT-Eval results, filtered to foundation models only (i.e., excluding finetuned, ensemble, and agentic systems), across CRPS rank, MASE rank, CRPS, and MASE; lower is better. Toto 2.0 sizes are highlighted in purple. Toto 2.0 sizes claim the top three spots on CRPS rank; the 2.5B alone leads on MASE rank.",
+      "page": 11,
+      "index": 2,
+      "width": 986,
+      "height": 575
+    },
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-009.webp",
+      "caption": "Figure 7 GIFT-Eval leaderboard showing all submission types: foundation models, finetuned models, ensembles, and agentic systems together. On this leaderboard, “finetuned” is used as an umbrella term for any model that uses the GIFT-Eval training split, including ensemble and agentic systems. Our finetuned and ensemble models are highlighted in pink. The Toto 2.0 FnF ensemble ranks first on every metric (tied on raw CRPS), and the finetuned Toto 2.0 2.5B ranks second on the rank metrics and third on the raw metrics.",
+      "page": 12,
+      "index": 9,
+      "width": 986,
+      "height": 550
+    },
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-008.webp",
+      "caption": "Figure 8 Results on TIME across CRPS rank, MASE rank, CRPS, and MASE; lower is better. Toto 2.0 sizes are highlighted in purple. Toto 2.0 sizes take the top three slots on every metric. The 2.5B leads on CRPS rank, MASE rank, and CRPS; the 313m leads on MASE and edges out the 1B on the two rank metrics, the one place the family departs from the otherwise clear size-vs.-quality trend.",
+      "page": 13,
+      "index": 8,
+      "width": 986,
+      "height": 539
+    },
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-006.webp",
+      "caption": "Figure 9 Left: forward pass latency vs. parameter count at forecast length=1,024. Every Toto 2.0 size is significantly faster than Toto 1.0. Right: forward pass latency vs. forecast horizon (log scale). Toto 2.0 stays flat in single-pass mode up to a 768-point forecast length, which we found best on synthetic signals. At a forecast horizon of 4,096 steps, 2.5B in single-pass mode remains faster than Chronos-2.",
+      "page": 14,
+      "index": 6,
+      "width": 981,
+      "height": 364
+    },
+    {
+      "url": "assets/figures/arxiv/2605.20119v1/fig-003.webp",
+      "caption": "Figure 10 Forecasts on a synthetic multi-scale signal (superimposed periods of 500, 100, and 20 timesteps) at three forecast horizons (2,048, 4,096, and 8,192 steps). Each row is a model, each column a horizon. Ground truth is plotted in gray; model forecasts in color. Larger Toto 2.0 sizes maintain coherent multi-scale structure at 8,192 steps; smaller sizes and prior-generation models lose structure progressively. Pearson correlation against ground truth is shown in each panel. Toto 2.0 forecasts use block decoding (Section 2.1). This experiment is illustrative: it measures stability beyond the training horizon on synthetic signals, not extrapolation to genuinely novel dynamics.",
+      "page": 15,
+      "index": 3,
+      "width": 986,
+      "height": 644
+    }
+  ]
+}

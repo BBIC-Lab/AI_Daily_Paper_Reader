@@ -1,0 +1,94 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-003.webp",
+      "caption": "Figure 1: Polar probes linearly read out semantic structures from LLM activations. A: A natural-language description specifies a set of entities and their typed relations (illustrated here for spatial layout , where entities are objects and relations are spatial predicates (left of/right, top of/ below). B: The description corresponds to a semantic structure, formalized as a relational graph whose nodes are entities and whose edges are typed, directed relations. C: The LLM contextualizes each entity token, yielding a high-dimensional entity representation in its residual stream. D: A polar probe, a learned linear transformation from activation space to a probe-space recovers the relational graph: Euclidean distance between entity representations codes for edge existence, while relative direction codes for relation type. Bottom panels: The same scheme applies to four additional domains: spatial layouts, family trees, metro maps, and thematic roles.",
+      "page": 2,
+      "index": 3,
+      "width": 815,
+      "height": 237
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-005.webp",
+      "caption": "Figure 2: Polar probe geometry mirrors the gold semantic structure. Top: Expected polar probe geometry for semantic structures from every domain. Bottom: 2D PCA of probe-space entity representations from 10 different descriptions of a semantic structure in the test set; large markers denote entity centroids and lines indicate gold relations. The projections tend to follow the polar code: direction encodes relation type, and Euclidean distance encodes relation existence and proximity between entities in the relational graph.",
+      "page": 3,
+      "index": 5,
+      "width": 817,
+      "height": 286
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-008.webp",
+      "caption": "Figure 3: Semantic structures are most linearly decodable in the middle layers, only in pretrained LLMs. Spearman’s ρ for relation existence (blue) and type (orange) decoded by a polar probe from Llama3-8B across layers in five domains. In pretrained models (solid), decoding peaks around layers 12–15 and remains high in late layers. In randomly initialized models (dashed), both scores remain close to chance across all layers and domains.",
+      "page": 4,
+      "index": 8,
+      "width": 826,
+      "height": 309
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-001.webp",
+      "caption": "Figure 4: Polar probe performance grows with pretraining, falls with the number of entities in the relational graph, and degrades with out-of-distribution (OOD) entities and relation surface forms. Top: Spearman’s ρ for relation existence (blue) and type (orange) vs. pretraining steps at the best layer of OLMo-7B. Middle: Polar probe performance vs. number of entities in the graph at the best layer of Llama3.1-8B. Bottom: Generalization analysis on the best layer of Llama3.1-8B to OOD relation surface forms, OOD entity names, and without domain-specific prompting.",
+      "page": 6,
+      "index": 1,
+      "width": 826,
+      "height": 582
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-004.webp",
+      "caption": "Figure 5: Polar probe performance increases with model size and saturates at low probe rank. Top: Spearman’s ρ for relation existence (blue) and type (orange) as a function of model size across the Pythia family, at the middle layer. Solid lines indicate pretrained models; dashed lines indicate randomly initialized ones. Bottom: Polar probe relation existence and type scores as a function of probe rank at the best layer of Llama3.1-8B.",
+      "page": 7,
+      "index": 4,
+      "width": 826,
+      "height": 513
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-010.webp",
+      "caption": "Figure 8: Type probe errors predict LLM’s downstream performance. Layerwise Spearman correlation between existence (blue) and type (orange) probe-space errors and logit of the correct answer on a Question-Answering task over semantic structures.",
+      "page": 17,
+      "index": 10,
+      "width": 396,
+      "height": 324
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-011.webp",
+      "caption": "Figure 9: Semantic structures are encoded in linear subspaces of LLM activations. Training prototype vectors with a fixed identity probe yields Existence scores close to chance. Type scores are high in the spatial layout and family tree domains but remain near chance elsewhere. Finally, the linear baseline, shown as a horizontal line, performs very close to chance across all domains.",
+      "page": 17,
+      "index": 11,
+      "width": 818,
+      "height": 190
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-007.webp",
+      "caption": "Figure 10: Polar probes trained on the Spatial Layout controlled dataset generalize to a naturalistic and multilingual sentences. Polar probes are trained on the controlled Spatial Layout dataset and evaluated on an LLM-generated naturalistic dataset within the same semantic domain. Probe performance substantially exceeds both chance level and the untrained baseline.",
+      "page": 18,
+      "index": 7,
+      "width": 649,
+      "height": 265
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-006.webp",
+      "caption": "Figure 11: Interventions along polar probe directions causally modulate model predictions, with the strongest effects in middle layers.. Probability of the correct token under positive and negative direction steering. In middle layers, positive-prototype interventions reliably increase the probability and negative-prototype interventions decrease it.",
+      "page": 18,
+      "index": 6,
+      "width": 804,
+      "height": 263
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-009.webp",
+      "caption": "Figure 13: Semantic domain subspaces and uncontextualized embeddings are disjoint. Cross-domain alignment at the best layer of Llama3-8B, quantified via the principal angles in LLM space (higher = more overlap)",
+      "page": 19,
+      "index": 9,
+      "width": 437,
+      "height": 356
+    },
+    {
+      "url": "assets/figures/arxiv/2605.14125v2/fig-002.webp",
+      "caption": "Table 1: Entity names, relations and prompt used for each semantic domain",
+      "page": 21,
+      "index": 2,
+      "width": 871,
+      "height": 577
+    }
+  ]
+}

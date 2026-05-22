@@ -1,0 +1,929 @@
+Title: Polar probe linearly decodes semantic structures from LLMs
+
+URL Source: https://arxiv.org/pdf/2605.14125v2
+
+Published Time: Tue, 19 May 2026 00:54:50 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+Preprint. Under review. 
+
+# Polar probe linearly decodes semantic structures from LLMs 
+
+Pablo J. Diego-Sim ´ on 1∗ Pierre Orhan 2 Emmanuel Chemla 3 Yair Lakretz 1 Jean-R´ emi King 41 LSCP, ENS, PSL, EHESS, CNRS, Paris, France  
+
+> 2
+
+Paris Brain Institute, Paris, France  
+
+> 3
+
+Earth Species Project, Berkeley, California, USA  
+
+> 4
+
+Meta AI, Paris, France 
+
+Abstract 
+
+How do artificial neural networks bind concepts to form complex semantic structures? Here, we propose a simple neural code, whereby the existence and the type of relations between entities are represented by the distance and the direction between their embeddings, respectively. We test this hypothesis in a variety of Large Language Models (LLMs), each input with natural-language descriptions of minimalist tasks from five different domains: arithmetic, visual scenes, family trees, metro maps and social interactions. Results show that the true semantic structures can be linearly recovered with a Polar Probe targeting a subspace of LLMs’ layer activa-tions. Second, this code emerges mostly in middle layers and improves with LLM performance. Third, these Polar Probes successfully generalize to new entities and relation types, but degrades with the size of the semantic structure. Finally, the quality of the polar representation correlates with the LLM’s ability to answer questions about the semantic structure, and intervening on this subspace causally shifts the model’s predictions. To-gether, these findings suggest that LLMs learn to build complex semantic structures by binding representations with a simple geometrical principle. 
+
+1 Introduction 
+
+Compositional representations. Human languages constantly require combining words into rich semantic structures – such as family ties, spatial arrangements, or part-whole con-nections. Consider the sentence ‘ Bob is Alice’s father, and Mary is her mother ’: understanding it requires constructing, on the fly, a representation of the underlying family tree. Yet, simply allocating a one-hot feature for each possible combination quickly becomes impractical, and indeed prevents generalization (Fodor & Pylyshyn, 1988). As large language models become increasingly able to combine new concepts (Brown et al., 2020), it is thus critical to understand how the geometry of their activations bind entities to represent compositional structures. 
+
+Probing syntactic structures. A simple binding principle has recently been evidenced in the context of syntactic representations. Indeed, Hewitt & Manning (2019) showed with a 
+
+Structural Probe that words that are linked syntactically (e.g., subject - verb) are represented more closely in a specific subspace of the LLMs’ activations than words that aren’t (e.g., subject - object). Building on this proposal, Diego-Simon et al. (2024) further showed with a Polar Probe that the type of syntactic relation can be recovered from the relative direction 
+
+between the two words in this subspace. In sum, the structure of syntax can be explicitly represented through the relative distances and directions between contextualized word embeddings. 
+
+Remaining challenge. This binding principle, however, is currently limited to syntax 
+
+(M ¨uller-Eberstein et al., 2022; Eisape et al., 2022; Limisiewicz & Mare ˇcek, 2021). Conse-quently, it is unclear whether a similar principle may also be at play in semantic binding. 
+
+> ∗
+
+Correspondence: pablo-diego.simon@psl.eu 
+
+1
+
+> arXiv:2605.14125v2 [cs.CL] 16 May 2026
+
+Preprint. Under review. next on line B next on line A The pub is one stop after the lake on line B. The lake is one stop after the studio on line A. The studio is one stop after the hospital on line A. is one stop after is one stop after is one stop after next stop line B next stop line A next stop line A Spatial layout Variable ordinality Metro map Thematic roles scientist The student is helped by the scientist. The teacher helps the pilot. The teacher is followed by the student. The student follows the farmer. The pilot follows the scientist. student farmer helps follows follows follows helps helps follows Semantic structure Textual description LLM activations Polar probe Ja AMJo PIAmelia is the mom of Joseph. Peter is the son of Isabella. Michael is the brother of Peter. Isabella is the mom of Michael. Peter is the son of Joseph. Joseph is the son of James. Joseph is the dad of Michael. is the mom of is the son of is the mom of P Ja AMIJo dad of mom of IPM AJa Jo A Ja P MI Jo mom of brother of dad of mom of dad of mom of dad of Family tree Joseph Joseph Joseph Joseph Michael Michael Michael James Isabella Isabella Peter Peter Amelia is the son of is the son of is the dad of Peter cyezfjy is less than f. z is greater than j. e is less than c. j is greater than f. y is greater than c. y ffyzejjccis less than is less than is greater than is greater than is greater than fyzcgreater than egreater than greater than greater than greater than jgreater than cyezfjfye c j zd-dim space A B C Dright of top of top of ball shirt plane ring d-dim space right of top of The shirt is on top of the ball. The plane is to the left of the ball. The ring is on top of the shirt. on top shirt shirt plane ring on top to the left of ball ball student scientist scientist pilot pilot teacher teacher is helped by helps follows is followed by follows pub lake lake studio studio hospital on line A on line A on line B student 
+
+Figure 1: Polar probes linearly read out semantic structures from LLM activations. A: Anatural-language description specifies a set of entities and their typed relations (illustrated here for spatial layout , where entities are objects and relations are spatial predicates (left of/right, top of/ below). B: The description corresponds to a semantic structure, formal-ized as a relational graph whose nodes are entities and whose edges are typed, directed relations. C: The LLM contextualizes each entity token, yielding a high-dimensional entity representation in its residual stream. D: A polar probe, a learned linear transformation from activation space to a probe-space recovers the relational graph: Euclidean distance between entity representations codes for edge existence , while relative direction codes for relation 
+
+type . Bottom panels: The same scheme applies to four additional domains: spatial layouts, family trees, metro maps, and thematic roles. 
+
+Approach. To test this hypothesis, we evaluate whether LLMs build subspaces of activa-tions where the relative distance and direction between word embeddings linearly represent the corresponding semantic structure. To evaluate the generality of our approach, we introduce a synthetic dataset spanning five semantic domains: variable ordinality, spatial layouts, thematic roles, family trees and metro maps, each with distinctive properties. Each sample in the dataset consists of a text that describes a semantic structure (e.g., The dog is to the left of the cat. The cat is below the table. etc). For each semantic structure, we generate multiple valid textual descriptions , where we randomize the order of relations and entities, to break any correlation between word order and graph structure. We then input these text descriptions to a variety of LLMs, differing in size and pretraining stage, and train a Polar Probe (Diego-Simon et al., 2024) on their activations, one per layer and per domain. To verify that the identified representations effectively generalize, we evaluate out-of-domain (OOD) samples with new entity names and relation surface forms. Finally, to evaluate the functional role of the polar probe, we test whether the quality of these polar representations predicts the LLMs’ ability to answer questions about the semantic structure. 
+
+2 Methods 
+
+2.1 Problem formalization Semantic structures as directed graphs. We formalize a semantic structure as a relational graph with labeled nodes (entities) and typed directed edges (relations). 2Preprint. Under review. PCA 1 PCA 2  fcyze j         
+
+> PCA 1 PCA 2  ball ring plane shirt coin
+> PCA 1 PCA 2  farmer scientist teacher pilot student
+> PCA 1 PCA 2
+> James Peter Michael Joseph Amelia Isabella
+> PCA 1 PCA 2 studio pub lake hospital mall
+> right of top of  ball ring plane shirt coin
+> Spatial layout
+> helps follows  farmer scientist student
+> Thematic roles
+> teacher
+> dad of mom of
+> Family tree
+> James Peter Amelia Isabella
+> Family tree
+> next stop on line B next stop on line A
+> Metro map
+> greater than fcyzej
+> Variable ordinality
+> pilot Joseph Michael
+> pub mall
+> lake
+> hospital
+> studio
+
+Figure 2: Polar probe geometry mirrors the gold semantic structure. Top: Expected polar probe geometry for semantic structures from every domain. Bottom: 2D PCA of probe-space entity representations from 10 different descriptions of a semantic structure in the test set; large markers denote entity centroids and lines indicate gold relations. The projections tend to follow the polar code: direction encodes relation type , and Euclidean distance encodes relation existence and proximity between entities in the relational graph. Let V = {v1, . . . , v|V | } be a finite set of entities and T = {t1, . . . , t|T | } a finite set of relation types. Define 
+
+E = {(vi, vj, tr ) ∈ V × V × T : i̸ = j}.A semantic structure is then a graph G = ( VG, EG, TG ), where VG ⊆ V , TG ⊆ T , and 
+
+EG = {(vi, vj, tr ) ∈ E : vi, vj ∈ V G, tr ∈ T G }.We represent G algebraically by two objects. First, the distance matrix 
+
+Mρ
+
+G ∈ N|V G |×|V G |
+
+0 , (Mρ
+
+G )ij = dG (vi, vj),where dG is the shortest-path distance. Second, the incidence tensor 
+
+Mϕ
+
+G ∈ {− 1, 0, 1 }|V G |×|V G |×|T | , (Mϕ
+
+G )ijr = 1[( vi, vj, tr ) ∈ E G ] − 1[( vj, vi, tr ) ∈ E G ].
+
+Semantic structures as LLM activations. A semantic structure G can also be described in natural language. For simplicity, we consider that each entity vi ∈ V G is represented by a unique token wi. If an LLMs input with such a textual description represents G, then this structure should be retrievable from its hidden activations hi ∈ Rd (Vaswani et al., 2017). In sum, we seek to identify how the symbolic/graphical representations of semantic struc-tures are represented in the vectorial activations of neural networks. 
+
+Polar Probe. The probed pairwise distance matrix ˆMρ
+
+G ∈ R|V G |×|V G | is computed as 
+
+( ˆMρ
+
+G )ij = ∥δij ∥2,where ∥·∥ 2 is the ℓ2-norm. To assign each relation to a specific direction of the probed space, we learn a prototype vector 
+
+pr for each relation type r ∈ T and train the probe so that, whenever a relation of type r
+
+holds between (vi, vj), the probed difference δij aligns with pr. The probed incidence tensor ˆMϕ
+
+G ∈ R|V G |×|V G |×|T | records, for each token pair (wi, wj), the cosine similarity between δij 
+
+and every prototype vector: 
+
+( ˆMϕ
+
+G )ijr = δij · pr
+
+∥δij ∥2 ∥pr ∥2
+
+.3Preprint. Under review. 0 6 12 18 24 30                     
+
+> Layer
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Spearman
+> Variable ordinality
+> 0612 18 24 30
+> Layer
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Spatial layout
+> 0612 18 24 30
+> Layer
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Thematic roles
+> 0612 18 24 30
+> Layer
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Family tree
+> 0612 18 24 30
+> Layer
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Metro map
+> Existence (trained LLM)
+> Existence (untrained LLM)
+> Type (trained LLM)
+> Type (untrained LLM)
+
+Figure 3: Semantic structures are most linearly decodable in the middle layers, only in pretrained LLMs. Spearman’s ρ for relation existence (blue) and type (orange) decoded by a polar probe from Llama3-8B across layers in five domains. In pretrained models (solid), decoding peaks around layers 12–15 and remains high in late layers. In randomly initialized models (dashed), both scores remain close to chance across all layers and domains. 
+
+Learning objective. Consequently, the loss of the Polar Probe consists of two loss terms. The structural loss Ls (Hewitt & Manning, 2019) is 
+
+Ls = 1
+
+|B| ∑
+
+> G∈B
+
+ 1 − Ψ( ˆMρ
+
+> G
+
+, Mρ 
+
+> G
+
+).
+
+Ψ(·, ·) is the differentiable Spearman rank correlation over the vectorized upper-triangular entries of the two distance ( Mρ 
+
+> G
+
+and ˆMρ
+
+> G
+
+); ranks are computed via the Sinkhorn-based soft-sorting operator of Blondel et al. (2020). Ψ assesses agreement in relative distance orderings (higher is better) and does not assume a common scale or equal-interval spacing between distances. The angular loss La (Diego-Simon et al., 2024) is 
+
+La = 1
+
+|B| ∑
+
+> G∈B
+
+1
+
+|EG | |T | ∑
+
+> (i,j)∈EG
+
+## ∑
+
+> r∈T
+
+ ( ˆMϕ 
+
+> G
+
+)ijr − (Mϕ 
+
+> G
+
+)ijr 
+
+2.The polar probe and the relation prototypes are jointly trained to minimize a weighted (λ ∈ R) sum of the structural ( Ls) and angular ( La) losses: 
+
+(B∗, {p∗ 
+
+> r
+
+}r∈T ) = arg min  
+
+> B,{pr}r∈T
+
+ Ls + λLa
+
+, λ > 0. 
+
+Implementation details. For simplicity, we systematically train and evaluate the Polar Probe independently on each of the layers of a given LLM. 1 After a grid search, we set 
+
+λ = 5.0 and the learning rate to 1 × 10 −5. Training runs for 100 epochs, and the probe rank is 512 by default unless stated otherwise. For each semantic domain, the training set contains 30 graphs, each described in 20 distinct ways. The validation set contains 50 unseen graphs, each with described 20 times. All graphs in a dataset have a fixed number of entities; entity names are drawn from a pool of 13 items. A disjoint pool of 13 entities and relation surface forms is reserved for OOD evaluation. 
+
+2.2 Datasets Semantic domains. We synthesize five datasets, each containing relational graphs from a different semantic domain. We group semantic domains into Euclidean (spatial layouts, variable ordinality and thematic roles) and non-Euclidean (metro networks and family trees). The criterion is whether the graphs can be faithfully coded with a polar code in a flat (zero–curvature) space, or instead require nonzero curvature. 
+
+> 1
+
+Code and data will be made publicly available with the camera-ready version of the paper. 
+
+4Preprint. Under review. 
+
+Prompting. We use a short, domain-specific prompt to introduce the LLM to the semantic domain and to incline it to infer the relations between entities. For more details refer to Table 1. For example, (e.g., I am going to describe a family tree, you need to understand the how all family members relate to each other ). After this prompt, the relations in the graph are exhaustively described in a random order. For each relation, the order of the entities is also randomized between both equivalent options (e.g., James is the dad of Joseph or Joseph is the son of James ). Therefore, for a given relational graph, there exists multiple textual descriptions. 
+
+Post-prompt. Entities that are related tend to be relatively close in the textual descriptions, because we do not have any sentences that describes lack of relations. Consequently, to ensure that the distance between probed entities is not confounded by the distance between words, we append the list of entities in a fixed order (e.g., Who are James, Joseph, and Amelia? )and use those as probed tokens. To guarantee a one-to-one mapping between entities and tokens, entity names where chose to ensure that they are coded by a single-token. 
+
+2.2.1 Euclidean graphs. 
+
+We generate Euclidean relational graphs for three semantic domains via Algorithm 1. 
+
+Arithmetic (Variable ordinality). First, we investigate ordinality of mathematical variables, such semantic domain consists of a single relation type. Different variable names are randomly placed on a magnitude axis. Relational graphs are constructed where entities are mathematical variables (e.g., x, y, z) and relations denote relative order between adjacent variables (e.g., greater than/less than). “x is greater than z. z is less than y.” 
+
+Spatial arrangement (2D layouts). Second, we investigate spatial layouts in two dimen-sions. Such layouts consist of placing objects on a two-dimensional regular grid. Relational graphs are constructed where entities are objects (e.g., ball , shirt , plane ) and relations denote relative position between adjacent objects (e.g., left of/right of; above/below). “The ball is left of the plane . The ball is below the shirt .” 
+
+Social interaction (Thematic roles). Third, we turn to abstract social interactions, consid-ering only cases where the relational graph admits an exact two-dimensional Euclidean embedding under a polar code. We model thematic roles that capture agent–patient in-teractions within a group of people. Relational graphs are constructed where entities are professionals (e.g., farmer , pilot , teacher ), and relations denote interaction types between an agent and a patient (e.g., follows/followed by; helps/helped by). “The pilot follows the teacher . The farmer is helped by the teacher ”
+
+2.2.2 Non-Euclidean graphs. 
+
+Some semantic domains are not exactly representable in an Euclidean space following a polar code. This occurs in two settings; (1) when relation composition is non-commutative (2) when relations are many-to-many or (3) when the underlying graph has non-Euclidean topology. Nevertheless, we ask whether a polar code can hold locally —within small neigh-borhoods—even when if not globally coherent. 
+
+Family trees. Then, we study a semantic domain with non-commutative and many-to-many relations: family trees. Parent relations compose non-commutatively (e.g., mother ◦
+
+father ̸ = father ◦ mother ), and kinship ties such as sibling of are many-to-many (e.g., three sisters are each siblings of the others). Relational graphs are constructed where entities are people (e.g., Joseph , Amelia , James , Emily ) and relations are kinship ties (e.g., mother of/father of; daughter of/son of; sister of/brother of). Valid relational graphs are sampled while enforcing classical genealogical constraints (no cycles through parent links, consistent parentage, and gendered inverse relations). For the “sibling of” relation, because of its many-to-many nature, we do not assign it to a prototypical direction; however, we include 5Preprint. Under review. 10 1 10 3 10 5
+
+> Training step
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Spearman
+
+Variable ordinality   
+
+> 10 110 310 5
+> Training step
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+
+Spatial layout   
+
+> 10 110 310 5
+> Training step
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+
+Thematic roles   
+
+> 10 110 310 5
+> Training step
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+
+Family tree   
+
+> 10 110 310 5
+> Training step
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+
+Metro map                
+
+> 678
+> Number of entities
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> Spearman
+> 456
+> Number of entities
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 456
+> Number of entities
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 567
+> Number of entities
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 456
+> Number of entities
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> IID OOD
+> relations
+> OOD
+> entities
+> w/o
+> prompt
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Spearman
+> IID OOD
+> relations
+> OOD
+> entities
+> w/o
+> prompt
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> IID OOD
+> relations
+> OOD
+> entities
+> w/o
+> prompt
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> IID OOD
+> relations
+> OOD
+> entities
+> w/o
+> prompt
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> IID OOD
+> relations
+> OOD
+> entities
+> w/o
+> prompt
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+
+Existence Type 
+
+Figure 4: Polar probe performance grows with pretraining, falls with the number of entities in the relational graph, and degrades with out-of-distribution (OOD) entities and relation surface forms. Top: Spearman’s ρ for relation existence (blue) and type (orange) vs. pretraining steps at the best layer of OLMo-7B. Middle: Polar probe performance vs. number of entities in the graph at the best layer of Llama3.1-8B. Bottom: Generalization analysis on the best layer of Llama3.1-8B to OOD relation surface forms, OOD entity names, and without domain-specific prompting. it in the structural loss computation. “Amelia is the mother of James . Joseph is the father of James . Emily is the sister of James ”
+
+Metro maps. Finally, we investigate a semantic domain where the graph’s distance metric is not Euclidean. Metro networks are a canonical example, since the distance between two stops on different lines is determined by network path length rather than Euclidean geometry. Relational graphs are constructed where entities are metro stops corresponding to city landmarks (e.g., lake , mall , hospital ) and relations denote the line and direction connecting adjacent stops (e.g., next on line A / previous on line A; next on line B / previous on line B). Transfer hubs occur where the lines intersect, and distances follow shortest-path length along the metro lines (including transfers). “The mall is one stop after the lake on line A. The hospital is one stop before the mall on line B” 
+
+2.3 Evaluation details 
+
+The test set for each dataset comprises 50 held-out graphs, each described 30 times. We report Spearman’s ρ, following prior work (Hewitt & Manning, 2019), for (i) relation existence 
+
+predictions (rank correlation between the vectorized upper triangle of predicted vs. gold pairwise distance matrices) and (ii) relation type predictions (rank correlation between the vectorized prototype-based predicted incidence tensor vs. the gold incidence tensor). 
+
+2.4 Correlation with downstream predictions. 
+
+We evaluate whether probe-space errors correlate with LLM downstream performance on a Question-Answering task. We present 500 relational graphs one-by-one to the LLM and, in each graph, query a specific relation (e.g., Which variable is immediately greater than y ?). For each query, we record the logit assigned to the correct answer. To account for varying graph complexity, we normalize probe errors within each graph and report Spearman’s ρ between 6Preprint. Under review. 14M 
+
+> 70M
+> 140M
+> 410M
+> 1B
+> 1.4B
+> 2.8B
+> 6.9B
+> Parameter count
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Spearman
+> Variable ordinality
+> 14M
+> 70M
+> 140M
+> 410M
+> 1B
+> 1.4B
+> 2.8B
+> 6.9B
+> Parameter count
+> Spatial layout
+> 14M
+> 70M
+> 140M
+> 410M
+> 1B
+> 1.4B
+> 2.8B
+> 6.9B
+> Parameter count
+> Thematic roles
+> 14M
+> 70M
+> 140M
+> 410M
+> 1B
+> 1.4B
+> 2.8B
+> 6.9B
+> Parameter count
+> Family tree
+> 14M
+> 70M
+> 140M
+> 410M
+> 1B
+> 1.4B
+> 2.8B
+> 6.9B
+> Parameter count
+> Metro map
+> 2
+> 4
+> 8
+> 16
+> 32
+> 64
+> 128
+> 256
+> 512
+> 1024
+> Probe rank
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Spearman
+> 2
+> 4
+> 8
+> 16
+> 32
+> 64
+> 128
+> 256
+> 512
+> 1024
+> Probe rank
+> 2
+> 4
+> 8
+> 16
+> 32
+> 64
+> 128
+> 256
+> 512
+> 1024
+> Probe rank
+> 2
+> 4
+> 8
+> 16
+> 32
+> 64
+> 128
+> 256
+> 512
+> 1024
+> Probe rank
+> 2
+> 4
+> 8
+> 16
+> 32
+> 64
+> 128
+> 256
+> 512
+> 1024
+> Probe rank
+> Existence (trained LLM)
+> Existence (untrained LLM)
+> Type (trained LLM)
+> Type (untrained LLM)
+
+Figure 5: Polar probe performance increases with model size and saturates at low probe rank. Top: Spearman’s ρ for relation existence (blue) and type (orange) as a function of model size across the Pythia family, at the middle layer. Solid lines indicate pretrained models; dashed lines indicate randomly initialized ones. Bottom: Polar probe relation existence and type scores as a function of probe rank at the best layer of Llama3.1-8B. the normalized probe error and the correct answer’s logit. A statistically significant negative correlation (Spearman’s ρ < 0) would be consistent with larger probe errors being associated with lower logit values, suggesting that probe errors may provide a partial diagnostic of the model’s reasoning performance. 
+
+Causal interventions Beyond correlations, we test whether the geometric structure identi-fied by the Polar Probe can causally steer model behavior (Nanda et al., 2023; Turner et al., 2025). We use the same QA setup as in the correlation analysis and measure the probability of predicting the correct entity token. Given a Polar Probe B, we map a prototype vector 
+
+pr back to model space via v = B†pr. We then intervene on the hidden state of the correct token by adding a scaled direction: h ← h + α s v, where α and s control the intervention strength and the directionality of the intervention respectively. We compare two conditions: (i) positive-prototype steering ( s = 1), (ii) negative-prototype steering ( s = −1). 
+
+2.5 Pretrained Large Language Models. 
+
+We use publicly available, text-only LLMs. Most analyses are conducted with Llama3.1-8B (Grattafiori et al., 2024). For the emergence analysis, we use OLMo-7B (Groeneveld et al., 2024), whose training checkpoints are publicly available . For model-size analyses, we consider members of the Pythia family (Biderman et al., 2023) with varying parameter counts ranging from 10 million to 6.8 billion. 
+
+3 Results 
+
+Layer analysis. Across domains, polar probes decode semantic structures most accurately from the middle layers of Llama3-8B (Grattafiori et al., 2024) (Figure 3). Spearman’s ρ
+
+for relation existence peaks at ∼ 0.80 and for relation type at ∼ 0.50–0.70 around layers 12–15. Probes trained on a randomly initialized Llama3-8B yield scores near 0.0 across layers, matching a random baseline (see also additional baselines in Figure 9). Unlike prior results in syntax (Hewitt & Manning, 2019; Diego-Simon et al., 2024), performance does not fully collapse in deeper layers. Domain-wise, type scores diverge: family trees reach 7Preprint. Under review. comparatively high type accuracy already in shallow layers, likely reflecting lexical gender cues in names (encoded in the vocabulary embeddings), whereas metro maps show lower type scores overall and peak later, consistent with their non-Euclidean, network-based structure. We observe similar results when evaluating polar probes on both naturalistic and multilingual variants of the spatial layouts domain (Figure 10) 
+
+Emergence during pretraining. How does training shape their subspaces to represent semantic structures? To address this issue, we apply the Polar Probe to 9 checkpoints of OLMo-7B (Groeneveld et al., 2024). Polar probe performance increases with pretraining steps at the best-performing layer of OLMo-7B (Figure 4). Scores for both relation existence and type strengthen gradually and remain largely unsaturated across available checkpoints, suggesting further gains with longer pretraining. Consistent with the depth analysis, decoding for metro maps emerges later during pretraining than for other domains and attains lower type scores overall. Overall, these results suggests that the polar coordinate principle is not a trivial property of high dimensional connectionist models, but directly depends on their ability to learn to store, represent, and manipulate knowledge. 
+
+Graph complexity. Are all semantic structures equally represented in the LLMs? To ad-dress this question we train and evaluate polar probes on relational graphs with varying number of entities. Both existence and type scores decline as the number of entities in the relational graph increases (measured at the best-performing layer of Llama3-8B) (Fig-ure 4). The drop is especially pronounced for relation type in thematic roles and metro maps, exceeding 50% when just two entities are added. As the entity count grows, the combinatorial space of possible graphs expands rapidly, making the decoding problem substantially harder. 
+
+Generalization to new entities and relations. While the above analyses are systematically evaluated on semantic structures absent from the training set, the Polar Probe may learn some relations by heart (e.g. plane left of ball = dimension 42). Consequently, we perform the same analyses on semantic structures, for which every entity name or relation surface form is absent from the training set. Figure 4 shows that, at the best-performing layer of Llama3-8B, polar probe performance degrades only modestly when the domain-specific prompt is removed. Using OOD relation surface forms produces an additional but modest drop. In contrast, OOD entity names have a substantially larger impact. Across all settings, polar probe performance remains well above the random baseline, which thus indicates that this polar coordinate system reliably generalizes to new structures. 0 20 40 
+
+> Steering parameter
+> 0.10
+> 0.15
+> 0.20
+> Probability of correct answer
+> Positive prototype
+> Negative prototype
+
+Figure 6: Polar probe prototypes steer LLM predictions : Probability of a correct answer under steering at layer 11 of Llama3-8B. 
+
+LLM size. To evaluate whether the capacity of the LLMs influenced the geometry of semantic struc-tures, we trained and evaluated polar probes on models from the Pythia suite spanning 14M–6.9B parameters (Biderman et al., 2023). Polar probe per-formance increases with model size, for each of the 5 domains, even thought the probe size is fixed at 128 (Figure 5). This result is not trivially explained by the LLM dimensionality: when trained on randomly initialized LLMs, the polar probes remain close to chance across all sizes. 
+
+Polar probe rank. To assess whether the Polar Probe relies on dense or sparse representations, we trained and evaluated polar probes for each semantic domain with ranks logarithmically spaced from 2 to 1024. Polar probe performance saturates at low ranks for both relation existence and type scores. Across domains, a rank of roughly 32 captures most of the achieved performance (Figure 5). Notably, for vari-able ordinality, relation type scores peak with only 2 dimensions; beyond these values, 8Preprint. Under review. increasing rank yields no consistent gains. Overall, this suggests that semantic structures are represented in a compact subspace of the LLMs. 
+
+Causal interventions. To examine whether polar probes can causally influence downstream predictions, we intervene on Llama3-8B by steering its activations along the learned positive and negative prototype directions. Steering shifts the probability of a correct answer in a QA setting (Figure 6), with the strongest effects observed in the model’s middle layers (Figures 11 and 12). 
+
+Subspace superposition. Across domains, the learned subspaces are largely disjoint in the LLM’s activation space (Figure 7). A clear exception is a pronounced overlap between spatial layouts and variable ordinality, consistent with the superposition hypothesis (Elhage et al., 2022). 
+
+4 Discussion 
+
+Specific contributions. This work demonstrates that the textual description of a new semantic structure can be recovered from the hidden activations of a large language model (LLM) with a simple geometric principle. Specifically, the existence and the type of a semantic relation between two entities are encoded by the distance and the direction , respectively, between their embeddings in a subspace of the LLM. 
+
+Beyond syntactic trees. Our approach extends earlier work on syntactic tree representa-tions in LLMs (Hewitt & Manning, 2019; Diego-Simon et al., 2024), which focused exclusively on universal-dependency relations between words. By contrast, we here show that the Polar Probe is not limited to (1) syntax or to (2) to tree structures, but also extends to a broader class of structures, namely, directed and labeled Euclidean graphs. 
+
+Beyond knowledge retrieval. Linear probing of language models has been widely ex-plored (Humphrey et al., 1970; Georgopoulos et al., 1986; Alain & Bengio, 2017; Conneau et al., 2018), to show that a broad range of features are linearly decodable from their activa-tions: linguistic properties (Tenney et al., 2019; Jawahar et al., 2019; Liu et al., 2019), spatial and temporal knowledge (Gurnee & Tegmark, 2024; Chen et al., 2023), lexical semantics (Mikolov et al., 2013; Park et al., 2025b), political stances and factuality (Kim et al., 2025; Marks & Tegmark, 2024), and numeric values (Levy & Geva, 2025). These studies, however, primarily investigate how models retrieve knowledge acquired during training. By contrast, our present work targets compositional structures that, by design, could not be learned by heart during training. In this sense, this study closely relates to in-context learning (Brown et al., 2020; Park et al., 2025a) and binding (Feng & Steinhardt, 2024; Dai et al., 2024), pro-viding a geometric principle for how compositional representations may be structured in neural activations. 
+
+The limit of Euclidean graphs. As noted in Simon et al. (2025), the Polar Probe relies on linear distances, and is therefore tailored to capture Euclidean graphs , i.e., structures whose nodes and edges can be faithfully embedded in a flat vector space and where distances satisfy Euclidean geometry. As a result, our method cannot accurately represent entire non-commutative, many-to-many relations and shortest-path distances (e.g. family trees and metro networks). 
+
+Larger impact Overall, this study clarifies how symbolic structures can be represented within vectorial systems, thereby refining the solution to the long-standing — and sometimes overstated — tension between symbolic and connectionist approaches to AI (Fodor & Pylyshyn, 1988; Smolensky, 1991; Marcus, 2003; Gayler, 2004). 9Preprint. Under review. 
+
+5 Acknowledgments 
+
+This project was provided with computer and storage resources by GENCI at IDRIS thanks to the grant 2023-AD011014766 on the supercomputer Jean Zay’s the V100 and A100 partition (PDS). This project has received funding from the European Union’s Horizon 2020 research and innovation program under the Marie Sklodowska-Curie grant agreement No 945304 (PDS). This project received funding from PSL University under the grant agreement ANR-10-IDEX-0001-02 (EC). This project received funding from the D ´epartement d’ ´Etudes Cognitives (DEC) at ENS under the grant agreement FrontCog, ANR-17-EURE-0017 (EC). This project received funding from the French National Research Agency (ANR) under the grant agreement ComCogMean, Projet-ANR-23-CE28-0016 (EC). 
+
+References 
+
+Guillaume Alain and Yoshua Bengio. Understanding intermediate layers using linear classifier probes, 2017. URL https://openreview.net/forum?id=ryF7rTqgl .Stella Biderman, Hailey Schoelkopf, Quentin Anthony, Herbie Bradley, Kyle O’Brien, Eric Hallahan, Mohammad Aflah Khan, Shivanshu Purohit, USVSN Sai Prashanth, Edward Raff, Aviya Skowron, Lintang Sutawika, and Oskar Van Der Wal. Pythia: a suite for analyzing large language models across training and scaling. In Proceedings of the 40th International Conference on Machine Learning , ICML’23. JMLR.org, 2023. Mathieu Blondel, Olivier Teboul, Quentin Berthet, and Josip Djolonga. Fast differentiable sorting and ranking. In Proceedings of the 37th International Conference on Machine Learning ,ICML’20. JMLR.org, 2020. Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, Chris Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language models are few-shot learners. In H. Larochelle, M. Ranzato, R. Hadsell, M.F. Balcan, and H. Lin (eds.), Advances in Neural Information Processing Systems , volume 33, pp. 1877–1901. Curran Associates, Inc., 2020. URL https://proceedings.neurips.cc/paper files/paper/2020/ file/1457c0d6bfcb4967418bfb8ac142f64a-Paper.pdf .Yida Chen, Yixian Gan, Sijia Li, Li Yao, and Xiaohan Zhao. More than correlation: Do large language models learn causal representations of space? arXiv preprint arXiv:2312.16257 ,2023. Alexis Conneau, German Kruszewski, Guillaume Lample, Lo ¨ıc Barrault, and Marco Baroni. What you can cram into a single $&!#* vector: Probing sentence embeddings for linguistic properties. In Iryna Gurevych and Yusuke Miyao (eds.), Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) , pp. 2126– 2136, Melbourne, Australia, July 2018. Association for Computational Linguistics. doi: 10.18653/v1/P18-1198. URL https://aclanthology.org/P18-1198/ .Qin Dai, Benjamin Heinzerling, and Kentaro Inui. Representational analysis of binding in language models. In Yaser Al-Onaizan, Mohit Bansal, and Yun-Nung Chen (eds.), 
+
+Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing ,pp. 17468–17493, Miami, Florida, USA, November 2024. Association for Computational Linguistics. doi: 10.18653/v1/2024.emnlp-main.967. URL https://aclanthology.org/ 2024.emnlp-main.967/ .Pablo J. Diego-Simon, St´ ephane d’Ascoli, Emmanuel Chemla, Yair Lakretz, and Jean-Remi King. A polar coordinate system represents syntax in large language models. In The 
+
+10 Preprint. Under review. 
+
+Thirty-eighth Annual Conference on Neural Information Processing Systems , 2024. URL https: //openreview.net/forum?id=x2780VcMOI .Tiwalayo Eisape, Vineet Gangireddy, Roger Levy, and Yoon Kim. Probing for incremental parse states in autoregressive language models. In Yoav Goldberg, Zornitsa Kozareva, and Yue Zhang (eds.), Findings of the Association for Computational Linguistics: EMNLP 2022 , pp. 2801–2813, Abu Dhabi, United Arab Emirates, December 2022. Association for Computational Linguistics. doi: 10.18653/v1/2022.findings-emnlp.203. URL https: //aclanthology.org/2022.findings-emnlp.203/ .Nelson Elhage, Tristan Hume, Catherine Olsson, Nicholas Schiefer, Tom Henighan, Shauna Kravec, Zac Hatfield-Dodds, Robert Lasenby, Dawn Drain, Carol Chen, Roger Grosse, Sam McCandlish, Jared Kaplan, Dario Amodei, Martin Wattenberg, and Christopher Olah. Toy models of superposition. Transformer Circuits Thread , 2022. Jiahai Feng and Jacob Steinhardt. How do language models bind entities in context? In The Twelfth International Conference on Learning Representations , 2024. URL https://openreview. net/forum?id=zb3b6oKO77 .Jerry A. Fodor and Zenon W. Pylyshyn. Connectionism and cognitive architecture: A critical analysis. Cognition , 28(1):3–71, 1988. ISSN 0010-0277. doi: https://doi.org/ 10.1016/0010-0277(88)90031-5. URL https://www.sciencedirect.com/science/article/ pii/0010027788900315 .Ross W Gayler. Vector symbolic architectures answer jackendoff’s challenges for cognitive neuroscience. arXiv preprint cs/0412059 , 2004. Apostolos P. Georgopoulos, Andrew B. Schwartz, and Ronald E. Kettner. Neuronal popula-tion coding of movement direction. Science , 233(4771):1416–1419, September 1986. ISSN 1095-9203. doi: 10.1126/science.3749885. URL http://dx.doi.org/10.1126/science. 3749885 .Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Alex Vaughan, Amy Yang, Angela Fan, Anirudh Goyal, Anthony Hartshorn, Aobo Yang, Archi Mitra, Archie Sravankumar, Artem Korenev, Arthur Hinsvark, Arun Rao, Aston Zhang, Aurelien Ro-driguez, Austen Gregerson, Ava Spataru, Baptiste Roziere, Bethany Biron, Binh Tang, Bob-bie Chern, Charlotte Caucheteux, Chaya Nayak, Chloe Bi, Chris Marra, Chris McConnell, Christian Keller, Christophe Touret, Chunyang Wu, Corinne Wong, Cristian Canton Ferrer, Cyrus Nikolaidis, Damien Allonsius, Daniel Song, Danielle Pintz, Danny Livshits, Danny Wyatt, David Esiobu, Dhruv Choudhary, Dhruv Mahajan, Diego Garcia-Olano, Diego Perino, Dieuwke Hupkes, Egor Lakomkin, Ehab AlBadawy, Elina Lobanova, Emily Dinan, Eric Michael Smith, Filip Radenovic, Francisco Guzm ´an, Frank Zhang, Gabriel Synnaeve, Gabrielle Lee, Georgia Lewis Anderson, Govind Thattai, Graeme Nail, Gregoire Mialon, Guan Pang, Guillem Cucurell, Hailey Nguyen, Hannah Korevaar, Hu Xu, Hugo Touvron, Iliyan Zarov, Imanol Arrieta Ibarra, Isabel Kloumann, Ishan Misra, Ivan Evtimov, Jack Zhang, Jade Copet, Jaewon Lee, Jan Geffert, Jana Vranes, Jason Park, Jay Mahadeokar, Jeet Shah, Jelmer van der Linde, Jennifer Billock, Jenny Hong, Jenya Lee, Jeremy Fu, Jianfeng Chi, Jianyu Huang, Jiawen Liu, Jie Wang, Jiecao Yu, Joanna Bitton, Joe Spisak, Jongsoo Park, Joseph Rocca, Joshua Johnstun, Joshua Saxe, Junteng Jia, Kalyan Vasuden Alwala, Karthik Prasad, Kartikeya Upasani, Kate Plawiak, Ke Li, Kenneth Heafield, Kevin Stone, Khalid El-Arini, Krithika Iyer, Kshitiz Malik, Kuenley Chiu, Kunal Bhalla, Kushal Lakhotia, Lauren Rantala-Yeary, Laurens van der Maaten, Lawrence Chen, Liang Tan, Liz Jenkins, Louis Martin, Lovish Madaan, Lubo Malo, Lukas Blecher, Lukas Landzaat, Luke de Oliveira, Madeline Muzzi, Mahesh Pasupuleti, Mannat Singh, Manohar Paluri, Marcin Kardas, Maria Tsimpoukelli, Mathew Oldham, Mathieu Rita, Maya Pavlova, Melanie Kambadur, Mike Lewis, Min Si, Mitesh Kumar Singh, Mona Hassan, Naman Goyal, Narjes Torabi, Nikolay Bashlykov, Nikolay Bogoychev, Niladri Chatterji, Ning Zhang, Olivier Duchenne, Onur C¸ elebi, Patrick Alrassy, Pengchuan Zhang, Pengwei Li, Petar Vasic, Peter Weng, Prajjwal Bhargava, Pratik Dubal, Praveen Krishnan, Punit Singh Koura, Puxin Xu, Qing He, Qingxiao Dong, Ragavan Srinivasan, Raj Ganapathy, Ramon Calderer, 11 Preprint. Under review. Ricardo Silveira Cabral, Robert Stojnic, Roberta Raileanu, Rohan Maheswari, Rohit Gird-har, Rohit Patel, Romain Sauvestre, Ronnie Polidoro, Roshan Sumbaly, Ross Taylor, Ruan Silva, Rui Hou, Rui Wang, Saghar Hosseini, Sahana Chennabasappa, Sanjay Singh, Sean Bell, Seohyun Sonia Kim, Sergey Edunov, Shaoliang Nie, Sharan Narang, Sharath Ra-parthy, Sheng Shen, Shengye Wan, Shruti Bhosale, Shun Zhang, Simon Vandenhende, Soumya Batra, Spencer Whitman, Sten Sootla, Stephane Collot, Suchin Gururangan, Syd-ney Borodinsky, Tamar Herman, Tara Fowler, Tarek Sheasha, Thomas Georgiou, Thomas Scialom, Tobias Speckbacher, Todor Mihaylov, Tong Xiao, Ujjwal Karn, Vedanuj Goswami, Vibhor Gupta, Vignesh Ramanathan, Viktor Kerkez, Vincent Gonguet, Virginie Do, Vish Vogeti, V ´ıtor Albiero, Vladan Petrovic, Weiwei Chu, Wenhan Xiong, Wenyin Fu, Whitney Meers, Xavier Martinet, Xiaodong Wang, Xiaofang Wang, Xiaoqing Ellen Tan, Xide Xia, Xinfeng Xie, Xuchao Jia, Xuewei Wang, Yaelle Goldschlag, Yashesh Gaur, Yasmine Babaei, Yi Wen, Yiwen Song, Yuchen Zhang, Yue Li, Yuning Mao, Zacharie Delpierre Coudert, Zheng Yan, Zhengxing Chen, Zoe Papakipos, Aaditya Singh, Aayushi Srivastava, Abha Jain, Adam Kelsey, Adam Shajnfeld, Adithya Gangidi, Adolfo Victoria, Ahuva Goldstand, Ajay Menon, Ajay Sharma, Alex Boesenberg, Alexei Baevski, Allie Feinstein, Amanda Kallet, Amit Sangani, Amos Teo, Anam Yunus, Andrei Lupu, Andres Alvarado, Andrew Caples, Andrew Gu, Andrew Ho, Andrew Poulton, Andrew Ryan, Ankit Ramchandani, Annie Dong, Annie Franco, Anuj Goyal, Aparajita Saraf, Arkabandhu Chowdhury, Ashley Gabriel, Ashwin Bharambe, Assaf Eisenman, Azadeh Yazdan, Beau James, Ben Maurer, Benjamin Leonhardi, Bernie Huang, Beth Loyd, Beto De Paola, Bhargavi Paranjape, Bing Liu, Bo Wu, Boyu Ni, Braden Hancock, Bram Wasti, Brandon Spence, Brani Stojkovic, Brian Gamido, Britt Montalvo, Carl Parker, Carly Burton, Catalina Mejia, Ce Liu, Chang-han Wang, Changkyu Kim, Chao Zhou, Chester Hu, Ching-Hsiang Chu, Chris Cai, Chris Tindal, Christoph Feichtenhofer, Cynthia Gao, Damon Civin, Dana Beaty, Daniel Kreymer, Daniel Li, David Adkins, David Xu, Davide Testuggine, Delia David, Devi Parikh, Diana Liskovich, Didem Foss, Dingkang Wang, Duc Le, Dustin Holland, Edward Dowling, Eissa Jamil, Elaine Montgomery, Eleonora Presani, Emily Hahn, Emily Wood, Eric-Tuan Le, Erik Brinkman, Esteban Arcaute, Evan Dunbar, Evan Smothers, Fei Sun, Felix Kreuk, Feng Tian, Filippos Kokkinos, Firat Ozgenel, Francesco Caggioni, Frank Kanayet, Frank Seide, Gabriela Medina Florez, Gabriella Schwarz, Gada Badeer, Georgia Swee, Gil Halpern, Grant Herman, Grigory Sizov, Guangyi, Zhang, Guna Lakshminarayanan, Hakan Inan, Hamid Shojanazeri, Han Zou, Hannah Wang, Hanwen Zha, Haroun Habeeb, Harrison Rudolph, Helen Suk, Henry Aspegren, Hunter Goldman, Hongyuan Zhan, Ibrahim Damlaj, Igor Molybog, Igor Tufanov, Ilias Leontiadis, Irina-Elena Veliche, Itai Gat, Jake Weissman, James Geboski, James Kohli, Janice Lam, Japhet Asher, Jean-Baptiste Gaya, Jeff Marcus, Jeff Tang, Jennifer Chan, Jenny Zhen, Jeremy Reizenstein, Jeremy Teboul, Jessica Zhong, Jian Jin, Jingyi Yang, Joe Cummings, Jon Carvill, Jon Shepard, Jonathan McPhie, Jonathan Torres, Josh Ginsburg, Junjie Wang, Kai Wu, Kam Hou U, Karan Saxena, Kartikay Khandelwal, Katayoun Zand, Kathy Matosich, Kaushik Veeraraghavan, Kelly Michelena, Keqian Li, Kiran Jagadeesh, Kun Huang, Kunal Chawla, Kyle Huang, Lailin Chen, Lakshya Garg, Lavender A, Leandro Silva, Lee Bell, Lei Zhang, Liangpeng Guo, Licheng Yu, Liron Moshkovich, Luca Wehrstedt, Madian Khabsa, Manav Avalani, Manish Bhatt, Martynas Mankus, Matan Hasson, Matthew Lennie, Matthias Reso, Maxim Gro-shev, Maxim Naumov, Maya Lathi, Meghan Keneally, Miao Liu, Michael L. Seltzer, Michal Valko, Michelle Restrepo, Mihir Patel, Mik Vyatskov, Mikayel Samvelyan, Mike Clark, Mike Macey, Mike Wang, Miquel Jubert Hermoso, Mo Metanat, Mohammad Rastegari, Munish Bansal, Nandhini Santhanam, Natascha Parks, Natasha White, Navyata Bawa, Nayan Singhal, Nick Egebo, Nicolas Usunier, Nikhil Mehta, Nikolay Pavlovich Laptev, Ning Dong, Norman Cheng, Oleg Chernoguz, Olivia Hart, Omkar Salpekar, Ozlem Kalinli, Parkin Kent, Parth Parekh, Paul Saab, Pavan Balaji, Pedro Rittner, Philip Bon-trager, Pierre Roux, Piotr Dollar, Polina Zvyagina, Prashant Ratanchandani, Pritish Yuvraj, Qian Liang, Rachad Alao, Rachel Rodriguez, Rafi Ayub, Raghotham Murthy, Raghu Nayani, Rahul Mitra, Rangaprabhu Parthasarathy, Raymond Li, Rebekkah Hogan, Robin Battey, Rocky Wang, Russ Howes, Ruty Rinott, Sachin Mehta, Sachin Siby, Sai Jayesh Bondu, Samyak Datta, Sara Chugh, Sara Hunt, Sargun Dhillon, Sasha Sidorov, Satadru Pan, Saurabh Mahajan, Saurabh Verma, Seiji Yamamoto, Sharadh Ramaswamy, Shaun Lindsay, Shaun Lindsay, Sheng Feng, Shenghao Lin, Shengxin Cindy Zha, Shishir Patil, Shiva Shankar, Shuqiang Zhang, Shuqiang Zhang, Sinong Wang, Sneha Agarwal, Soji 12 Preprint. Under review. Sajuyigbe, Soumith Chintala, Stephanie Max, Stephen Chen, Steve Kehoe, Steve Satter-field, Sudarshan Govindaprasad, Sumit Gupta, Summer Deng, Sungmin Cho, Sunny Virk, Suraj Subramanian, Sy Choudhury, Sydney Goldman, Tal Remez, Tamar Glaser, Tamara Best, Thilo Koehler, Thomas Robinson, Tianhe Li, Tianjun Zhang, Tim Matthews, Timothy Chou, Tzook Shaked, Varun Vontimitta, Victoria Ajayi, Victoria Montanez, Vijai Mohan, Vinay Satish Kumar, Vishal Mangla, Vlad Ionescu, Vlad Poenaru, Vlad Tiberiu Mihailescu, Vladimir Ivanov, Wei Li, Wenchen Wang, Wenwen Jiang, Wes Bouaziz, Will Constable, Xiaocheng Tang, Xiaojian Wu, Xiaolan Wang, Xilun Wu, Xinbo Gao, Yaniv Kleinman, Yanjun Chen, Ye Hu, Ye Jia, Ye Qi, Yenda Li, Yilin Zhang, Ying Zhang, Yossi Adi, Youngjin Nam, Yu, Wang, Yu Zhao, Yuchen Hao, Yundi Qian, Yunlu Li, Yuzi He, Zach Rait, Zachary DeVito, Zef Rosnbrick, Zhaoduo Wen, Zhenyu Yang, Zhiwei Zhao, and Zhiyu Ma. The llama 3 herd of models, 2024. URL https://arxiv.org/abs/2407.21783 .Dirk Groeneveld, Iz Beltagy, Pete Walsh, Akshita Bhagia, Rodney Kinney, Oyvind Tafjord, Ananya Harsh Jha, Hamish Ivison, Ian Magnusson, Yizhong Wang, Shane Arora, David Atkinson, Russell Authur, Khyathi Chandu, Arman Cohan, Jennifer Dumas, Yanai Elazar, Yuling Gu, Jack Hessel, Tushar Khot, William Merrill, Jacob Morrison, Niklas Muen-nighoff, Aakanksha Naik, Crystal Nam, Matthew E. Peters, Valentina Pyatkin, Abhilasha Ravichander, Dustin Schwenk, Saurabh Shah, Will Smith, Nishant Subramani, Mitchell Wortsman, Pradeep Dasigi, Nathan Lambert, Kyle Richardson, Jesse Dodge, Kyle Lo, Luca Soldaini, Noah A. Smith, and Hannaneh Hajishirzi. Olmo: Accelerating the science of language models. Preprint , 2024. Wes Gurnee and Max Tegmark. Language models represent space and time. In The Twelfth International Conference on Learning Representations , 2024. URL https://openreview.net/ forum?id=jE8xbmvFin .John Hewitt and Christopher D. Manning. A structural probe for finding syntax in word representations. In Jill Burstein, Christy Doran, and Thamar Solorio (eds.), Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers) , pp. 4129–4138, Minneapolis, Minnesota, June 2019. Association for Computational Linguistics. doi: 10.18653/v1/N19-1419. URL https://aclanthology.org/N19-1419/ .Donald R. Humphrey, E. M. Schmidt, and W. D. Thompson. Predicting measures of motor performance from multiple cortical spike trains. Science , 170(3959):758–762, November 1970. ISSN 1095-9203. doi: 10.1126/science.170.3959.758. URL http://dx.doi.org/10. 1126/science.170.3959.758 .Ganesh Jawahar, Beno ˆıt Sagot, and Djam ´e Seddah. What does BERT learn about the structure of language? In Anna Korhonen, David Traum, and Llu ´ıs M `arquez (eds.), Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics , pp. 3651–3657, Florence, Italy, July 2019. Association for Computational Linguistics. doi: 10.18653/v1/P19-1356. URL https://aclanthology.org/P19-1356/ .Junsol Kim, James Evans, and Aaron Schein. Linear representations of political perspective emerge in large language models. In The Thirteenth International Conference on Learning Representations , 2025. URL https://openreview.net/forum?id=rwqShzb9li .Amit Arnold Levy and Mor Geva. Language models encode numbers using digit rep-resentations in base 10. In Luis Chiruzzo, Alan Ritter, and Lu Wang (eds.), Pro-ceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 2: Short Papers) ,pp. 385–395, Albuquerque, New Mexico, April 2025. Association for Computational Linguistics. ISBN 979-8-89176-190-2. doi: 10.18653/v1/2025.naacl-short.33. URL 
+
+https://aclanthology.org/2025.naacl-short.33/ .Tomasz Limisiewicz and David Mare ˇcek. Introducing orthogonal constraint in structural probes. In Chengqing Zong, Fei Xia, Wenjie Li, and Roberto Navigli (eds.), Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers) , pp. 13 Preprint. Under review. 428–442, Online, August 2021. Association for Computational Linguistics. doi: 10.18653/ v1/2021.acl-long.36. URL https://aclanthology.org/2021.acl-long.36/ .Nelson F. Liu, Matt Gardner, Yonatan Belinkov, Matthew E. Peters, and Noah A. Smith. Linguistic knowledge and transferability of contextual representations. In Jill Burstein, Christy Doran, and Thamar Solorio (eds.), Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Tech-nologies, Volume 1 (Long and Short Papers) , pp. 1073–1094, Minneapolis, Minnesota, June 2019. Association for Computational Linguistics. doi: 10.18653/v1/N19-1112. URL 
+
+https://aclanthology.org/N19-1112/ .Gary F Marcus. The algebraic mind: Integrating connectionism and cognitive science . MIT press, 2003. Samuel Marks and Max Tegmark. The geometry of truth: Emergent linear structure in large language model representations of true/false datasets. In First Conference on Language Modeling , 2024. URL https://openreview.net/forum?id=aajyHYjjsk .Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean. Efficient estimation of word representations in vector space. arXiv preprint arXiv:1301.3781 , 2013. Max M ¨uller-Eberstein, Rob van der Goot, and Barbara Plank. Probing for labeled de-pendency trees. In Smaranda Muresan, Preslav Nakov, and Aline Villavicencio (eds.), 
+
+Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) , pp. 7711–7726, Dublin, Ireland, May 2022. Association for Computational Linguistics. doi: 10.18653/v1/2022.acl-long.532. URL https://aclanthology.org/2022. acl-long.532/ .Neel Nanda, Andrew Lee, and Martin Wattenberg. Emergent linear representations in world models of self-supervised sequence models. In Yonatan Belinkov, Sophie Hao, Jaap Jumelet, Najoung Kim, Arya McCarthy, and Hosein Mohebbi (eds.), Proceedings of the 6th BlackboxNLP Workshop: Analyzing and Interpreting Neural Networks for NLP , pp. 16–30, Singapore, December 2023. Association for Computational Linguistics. doi: 10.18653/v1/ 2023.blackboxnlp-1.2. URL https://aclanthology.org/2023.blackboxnlp-1.2/ .Core Francisco Park, Andrew Lee, Ekdeep Singh Lubana, Yongyi Yang, Maya Okawa, Kento Nishi, Martin Wattenberg, and Hidenori Tanaka. ICLR: In-context learning of representations. In The Thirteenth International Conference on Learning Representations , 2025a. URL https://openreview.net/forum?id=pXlmOmlHJZ .Kiho Park, Yo Joong Choe, Yibo Jiang, and Victor Veitch. The geometry of categorical and hierarchical concepts in large language models. In The Thirteenth International Conference on Learning Representations , 2025b. URL https://openreview.net/forum?id=bVTM2QKYuA .Pablo J. Diego Simon, Emmanuel Chemla, Jean-Remi King, and Yair Lakretz. Probing syntax in large language models: Successes and remaining challenges. In Second Conference on Language Modeling , 2025. URL https://openreview.net/forum?id=nrZysNmJ0n .Paul Smolensky. Tensor Product Variable Binding and the Representation of Symbolic Structures in Connectionist Systems , pp. 159–216. The MIT Press, October 1991. ISBN 9780262256360. doi: 10.7551/mitpress/2102.003.0006. URL http://dx.doi.org/10.7551/mitpress/2102. 003.0006 .Ian Tenney, Dipanjan Das, and Ellie Pavlick. BERT rediscovers the classical NLP pipeline. In Anna Korhonen, David Traum, and Llu ´ıs M `arquez (eds.), Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics , pp. 4593–4601, Florence, Italy, July 2019. Association for Computational Linguistics. doi: 10.18653/v1/P19-1452. URL 
+
+https://aclanthology.org/P19-1452/ .Alexander Matt Turner, Lisa Thiergart, Gavin Leech, David Udell, Juan J Vazquez, Ulisse Mini, and Monte MacDiarmid. Steering language models with activation engineering, 2025. URL https://openreview.net/forum?id=2XBPdPIcFK .14 Preprint. Under review. Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Ł ukasz Kaiser, and Illia Polosukhin. Attention is all you need. In I. Guyon, U. Von Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Gar-nett (eds.), Advances in Neural Information Processing Systems , volume 30. Curran As-sociates, Inc., 2017. URL https://proceedings.neurips.cc/paper files/paper/2017/ file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf .˚Ake Bj ¨orck and Gene H. Golub. Numerical methods for computing angles between linear subspaces. Mathematics of Computation , 27(123):579–594, 1973. ISSN 00255718, 10886842. URL http://www.jstor.org/stable/2005662 .15 Preprint. Under review. 
+
+6 Appendix 
+
+6.1 Subspace alignment score. 
+
+Let Bi ∈ Rki ×d and Pi ∈ Rki ×T i be a trained polar probe and its prototype matrix (columns are prototype vectors). We project prototypes to model space: 
+
+Vi = B†
+
+i Pi ∈ Rd×T i ,and take the reduced QR factorization Vi = Qi Ri with Q⊤
+
+i Qi = ITi , Qi ∈ Rd×T i .We report the mean squared cosines of the principal angles between two subspaces ( ˚Ake Bj ¨ orck & Golub, 1973): Alignment (Bi, Bj) = 1
+
+N ∥Q⊤
+
+i Qj∥2
+
+F.where {θn} are the principal angles and N = min (T1, T2). This score lies in [0, 1 ], equals 0 for orthogonal subspaces, and increases with alignment. Spatial layout        
+
+> Family tree
+> Metro map
+> Variable ordinality
+> Family tree
+> Metro map
+> Variable ordinality
+> Thematic roles
+> 0.0009
+> 0.0007 0.0003
+> 0.0198 0.0003 0.0012
+> 0.0019 0.0002 0.0002 0.0012 0.0025
+> 0.0050
+> 0.0075
+> 0.0100
+> 0.0125
+> 0.0150
+> 0.0175
+> Subspace alignment
+
+Figure 7: Semantic domain subspaces are largely disjoint, with a spatial–ordinal overlap. 
+
+Cross-domain alignment at the best layer of Llama3-8B, quantified via the principal angles in LLM space (higher = more overlap). 
+
+6.2 Correlation with downstream predictions 
+
+To determine whether polar representations are merely epiphenomenal or instead reflect representations used by the LLM, we conduct a representation–behavior analysis. Specifi-cally, we compare the reliability of these representations (Polar Probe performance) to LLMs’ ability to effectively answer questions about the semantic structure. We find that higher type errors in probe-space correlate with the worse Llama3-8B downstream performance (Figure 8). No analogous correlation is observed for existence errors. 16 Preprint. Under review. 0 5 10 15 20 25 30 
+
+> Layer
+> 0.3
+> 0.2
+> 0.1
+> -0.0
+> -0.1
+> -0.2
+> -0.3
+> Spearman
+> Existence (significant)
+> Type (significant)
+> Non-significant
+
+Figure 8: Type probe errors predict LLM’s downstream performance. Layerwise Spearman correlation between existence (blue) and type (orange) probe-space errors and logit of the correct answer on a Question-Answering task over semantic structures. 
+
+6.3 Additional baselines 
+
+Figure 9: Semantic structures are encoded in linear subspaces of LLM activations. Training prototype vectors with a fixed identity probe yields Existence scores close to chance. Type scores are high in the spatial layout and family tree domains but remain near chance elsewhere. Finally, the linear baseline, shown as a horizontal line, performs very close to chance across all domains. 
+
+6.4 Naturalistic evaluation 
+
+We extend the evaluation to more naturalistic settings by synthesizing a dataset from the spatial layouts domain, in which relation surface forms vary. We further synthesize a multilingual version comprising Italian, Spanish, French, and English. 17 Preprint. Under review. 0 6 12 18 24 30 
+
+> Layer
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Spearman
+
+Naturalistic Spatial Layouts      
+
+> 0612 18 24 30
+> Layer
+
+Naturalistic Spatial Layouts (Multilingual) 
+
+> Existence (trained LLM)
+> Existence (untrained LLM)
+> Type (trained LLM)
+> Type (untrained LLM)
+
+Figure 10: Polar probes trained on the Spatial Layout controlled dataset generalize to a naturalistic and multilingual sentences. Polar probes are trained on the controlled Spatial Layout dataset and evaluated on an LLM-generated naturalistic dataset within the same semantic domain. Probe performance substantially exceeds both chance level and the untrained baseline. 
+
+6.5 Causal interventions 0 10 20 30 40 50              
+
+> 0.06
+> 0.08
+> 0.10
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> 0.20 Layer 1
+> 010 20 30 40 50
+> 0.06
+> 0.08
+> 0.10
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> 0.20 Layer 11
+> 010 20 30 40 50
+> 0.06
+> 0.08
+> 0.10
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> 0.20 Layer 29
+
+Steering parameter  
+
+> Probability of correct answer
+> Positive prototype Negative prototype
+
+Figure 11: Interventions along polar probe directions causally modulate model predic-tions, with the strongest effects in middle layers. . Probability of the correct token under positive and negative direction steering. In middle layers, positive-prototype interventions reliably increase the probability and negative-prototype interventions decrease it. 0 5 10 15 20 25 30 
+
+> Layer
+> 0.00
+> 0.01
+> 0.02
+> 0.03
+> 0.04
+> 0.05
+> Steering effect
+
+Figure 12: Middle layers show maximal response to causal interventions. Layerwise mean difference in probability between positive-signed and negative-signed prototypes. 18 Preprint. Under review. 
+
+6.6 Alignment with uncontextualized embeddings 
+
+Figure 13: Semantic domain subspaces and uncontextualized embeddings are disjoint. 
+
+Cross-domain alignment at the best layer of Llama3-8B, quantified via the principal angles in LLM space (higher = more overlap) 
+
+6.7 Predicted vs.Ground-truth distances 1 2 3 4 5 6
+
+> Semantic graph distance
+> 0.001
+> 0.002
+> 0.003
+> 0.004
+> 0.005
+> Probe distance
+> = 0.83
+
+Figure 14: Semantic distance and Probe distance used to calculate Spearman’s ρ
+
+19 Preprint. Under review. 
+
+6.8 Dataset generation Algorithm 1 Grid-based Euclidean graph sampler 
+
+Require: entities n, dimension d
+
+Ensure: G = ( VG, EG, TG ) 
+
+> 1:
+
+VG = {v1, . . . , vn} 
+
+> 2:
+
+TG = {t1, . . . , td} 
+
+> 3:
+
+Ud ← { e1, . . . , ed} ▷ positive unit steps  
+
+> 4:
+
+positions ← { 0} ▷ positions in Zd 
+
+> 5:
+
+while |positions | < n do ▷ random signed unit-step growth  
+
+> 6:
+
+pick x ∈ positions uniformly  
+
+> 7:
+
+pick u ∈ Ud uniformly  
+
+> 8:
+
+pick s ∈ {− 1, +1} uniformly  
+
+> 9:
+
+positions ← positions ∪ { x + su} ▷ reject if already occupied  
+
+> 10:
+
+end while  
+
+> 11:
+
+pick a bijection f : positions ∼
+
+−→ V G 
+
+> 12:
+
+pick a bijection g : Ud
+
+> ∼
+
+−→ T G 
+
+> 13:
+
+EG ← ∅ 
+
+> 14:
+
+for all ordered pairs (vi, vj) do  
+
+> 15:
+
+∆ ← f −1(vj) − f −1(vi) 
+
+> 16:
+
+if (∥∆∥2 = 1) ∧ (∆ ∈ Ud) then  
+
+> 17:
+
+t ← g−1(∆) ∈ T G 
+
+> 18:
+
+EG ← E G ∪ { (vi, vj, t)} ▷ Add to graph  
+
+> 19:
+
+end if  
+
+> 20:
+
+end for  
+
+> 21:
+
+return G = ( VG, EG, TG )
+
+20 Preprint. Under review. 
+
+6.9 Setup details 
+
+Table 1: Entity names, relations and prompt used for each semantic domain 
+
+Spatial layout Family tree Metro lines Variable ordinality Thematic roles Entity names Entity names Entity names Entity names Entity names 
+
+bag, ball, clock, lamp, ring, key, train, plane, boat, bus, bike, shirt, coin James, Henry, Peter, Ben, Michael, Joseph, Isabel, Al-ice, Amelia, Charlotte, Is-abella, Grace, Anna, market, studio, pub, park, Opera, court, college, lake, airport, church, restaurant, hospital, mall d, f, c, y, u, z, o, g, r, e, j, l, n tourist, farmer, mechanic, scientist, teacher, manager, pilot, waiter, firefighter, stu-dent, doctor, engineer, actor 
+
+Relations Relations Relations Relations Relations 
+
+to the right of / to the left of, on top of / below son of, daughter of, mom of, dad of, brother of, sister of one stop before / one stop after less than / greater than follows / is followed by, helps / is helped by 
+
+Entity names (OOD) Entity names (OOD) Entity names (OOD) Entity names (OOD) Entity names (OOD) 
+
+car, cat, dog, tree, house, chair, table, book, door, bed, phone, cup, shoe Victoria, Emily, Emma, Mary, Sarah, Lucy Leo, William, Paul, John, Bob, Mark, Daniel bar, hill, square, pool, gallery, school, river, shop, tower, station, forum, bridge, library w, b, h, x, i, m, v, t, s, k, q, a, pdriver, baker, dancer, neighbor, singer, librarian, lawyer, officer, artist, writer, chef, nurse, coach 
+
+Relations (OOD) Relations (OOD) Relations (OOD) Relations (OOD) Relations (OOD) 
+
+rightward of / leftward of, over / underneath offspring of, mother of, fa-ther of, sibling of one stop back from / one stop ahead of fewer than / larger than pursue / is pursued by, as-sists / is assisted by 
+
+Prompt Prompt Prompt Prompt Prompt 
+
+**Geometrical Layout** You will receive a descrip-tion of an abstract scene laid out on a regular square grid. **Vocabulary** The scene contains objects, named: [] **Relations** The following spatial relations are used to describe the relative position of the objects on the grid: (above, below, left of, right of) **Goal** Infer the grid coordinates of every ob-ject so that **all** spatial constraints are satisfied. **Scene description:** **Family Tree** You will receive a description of a family tree. **Vocabulary** The family tree contains people, named: [] **Rela-tions** The following fam-ily relations are used to describe link between two people in the family: (dad of, mom of, son of, daugh-ter of, brother of and sister of) **Goal** Infer the family relations among all mem-bers in the family so that **all** constraints are satis-fied. **Scene description:** **Metro Map** You will re-ceive a description of acity’s metro map. **Vocab-ulary** The metro can have lines [] which connect the following sites in the city []. **Relations** The fol-lowing relations are used to describe where each site is located on a given direc-tion of the metro line: (one stop before, one stop after) **Goal** Infer the position of each site on its corre-sponding metro line so that **all** constraints are satis-fied. **Scene description:** **Mathematical Variables** You will receive a descrip-tion of set of mathemati-cal constants, each associ-ated with an unknown real number. **Vocabulary** The constants are named ac-cording to []. **Relations** The following relations are used to describe the rela-tive position of a constant with respect to another one on the real axis: (greater than, less than) **Goal** In-fer the position of each con-stant on the real axis so that **all** constraints are satis-fied. **Scene description:** **Social Interactions** You will receive a description of an interaction between several people. **Vocab-ulary** The people poten-tially participating in the interaction are: [] **Rela-tions** The interaction type between two people can be: (follow - be followed by , help - be helped by) **Goal** Infer the interac-tions among participants so that **all** constraints are satisfied. **Scene descrip-tion:** 
+
+21
