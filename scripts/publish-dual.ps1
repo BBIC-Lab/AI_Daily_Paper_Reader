@@ -10,20 +10,23 @@ The script is intentionally conservative:
 - It aborts if the public worktree is dirty.
 - It uses per-command proxy overrides for pushes.
 - Use -DryRun to inspect the plan without staging, committing, or pushing.
+- For multiple explicit paths, use PowerShell array syntax:
+  -Paths README.md,scripts/publish-dual.ps1
 #>
 
-[CmdletBinding()]
+[CmdletBinding(PositionalBinding = $false)]
 param(
   [Parameter(Mandatory = $true)]
   [string]$Message,
-
-  [string[]]$Paths = @(),
 
   [string]$PrivateRemote = "origin",
   [string]$PublicRemote = "public",
   [string]$Branch = "main",
   [string]$PublicBranch = "codex/public-sync",
   [string]$PublicWorktree = (Join-Path $env:USERPROFILE ".codex\worktrees\AI_Daily_Paper_Reader_public_sync"),
+
+  [Parameter(ValueFromRemainingArguments = $true)]
+  [string[]]$Paths = @(),
 
   [switch]$DryRun,
   [switch]$SkipValidation,
@@ -195,6 +198,13 @@ $rootResult = Invoke-GitRead -GitArgs @("rev-parse", "--show-toplevel")
 $Root = ($rootResult.Output | Select-Object -First 1).ToString().Trim()
 if (-not $Root) { throw "Could not resolve repository root." }
 Set-Location $Root
+
+$Paths = @(
+  $Paths |
+    ForEach-Object { [string]$_ -split "," } |
+    ForEach-Object { $_.Trim() } |
+    Where-Object { $_ }
+)
 
 Write-Step "Repository"
 Write-Host "Root: $Root"
