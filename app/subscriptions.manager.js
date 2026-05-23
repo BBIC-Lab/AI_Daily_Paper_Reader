@@ -1008,13 +1008,6 @@ window.SubscriptionsManager = (function () {
                 <button id="arxiv-admin-open-workflow-panel-btn" class="arxiv-tool-btn dpr-settings-primary-btn" type="button">打开工作流面板</button>
               </div>
               <div class="dpr-workflow-settings-layout">
-                <div class="dpr-settings-card dpr-workflow-hero-card">
-                  <div class="dpr-workflow-hero-icon">▶</div>
-                  <div>
-                    <h3>从配置到报告，一条清晰路径</h3>
-                    <p>先确认检索配置已保存，再触发抓取任务；运行中可在面板里追踪最近记录、当前状态和每个 Job 步骤。</p>
-                  </div>
-                </div>
                 <div class="dpr-settings-card dpr-workflow-guide-card">
                   <div class="dpr-workflow-guide-step">
                     <span>1</span>
