@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.15676v1/fig-005.webp",
+      "caption": "Figure 1: Overview of DCDM. Left: The denoiser stacks N−1 DiT blocks on top of a single Chunking Attention layer that produces the content-defined partition consumed by all downstream blocks. Right: Operationally, the chunking attention takes the noisy input together with a noise mask and emits a per-token cluster assignment (color-coded as Green, Orange, Yellow), which induces the chunk-causal attention mask used by every subsequent layer of the denoiser.",
+      "page": 3,
+      "index": 5,
+      "width": 916,
+      "height": 373
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15676v1/fig-001.webp",
+      "caption": "Figure 2: Training loss against training steps for the three dense diffusion models. Final-step values confirm the ordering observed on downstream metrics.",
+      "page": 6,
+      "index": 1,
+      "width": 444,
+      "height": 371
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15676v1/fig-003.webp",
+      "caption": "Table 1: Downstream benchmark results for pretrained LLMs at the 0.5B and 1.5B scales. Numbers in parentheses indicate the number of in-context examples; entries without parentheses are zero-shot. † marks benchmarks for which the model has been fine-tuned on the corresponding training split. For DCDM (MoE), the Active Params row reports activated parameters per token with total parameters in parentheses; all other models activate all parameters at every token. Within each scale, the best result per row is shown in bold and the second-best is underlined. ∗ Average is computed over all nine reported benchmarks.",
+      "page": 7,
+      "index": 3,
+      "width": 975,
+      "height": 362
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15676v1/fig-006.webp",
+      "caption": "Table 2: Comparison against alternative block-partitioning strategies at the 1.5B scale on math (MATH, GSM8K) and code (HumanEval) benchmarks. Models are grouped by the type of block structure used at sampling time. Best per row in bold, second-best underlined. ∗Average is computed over the three reported benchmarks.",
+      "page": 8,
+      "index": 6,
+      "width": 714,
+      "height": 227
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15676v1/fig-007.webp",
+      "caption": "Figure 3: Scaling and training efficiency of the three dense diffusion models (MDLM, BDLM, DCDM) on the downstream benchmark suite. (a) Suite-average accuracy at three parameter scales (0.1B, 0.5B, 1.5B), each trained under our standard token budget. (b) Suite-average accuracy along the training trajectory at the 1.5B scale; shaded regions denote one standard deviation across runs.",
+      "page": 8,
+      "index": 7,
+      "width": 979,
+      "height": 423
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15676v1/fig-004.webp",
+      "caption": "Table 4: Training hyperparameters shared across all models.",
+      "page": 14,
+      "index": 4,
+      "width": 436,
+      "height": 304
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15676v1/fig-002.webp",
+      "caption": "Table 5: Model architectures. NL: number of decoder layers; d: hidden size; dff: dense FFN intermediate size; H/Hkv: query/KV attention heads; dh: per-head dimension; B: BDLM block size; K: number of DCDM chunks (Section 4.1); h: subspace dimension of the chunking clusers µk ∈ Rd×h; E/k: number of experts / experts per token; dmoe: per-expert intermediate size; dshared: shared-expert intermediate size.",
+      "page": 15,
+      "index": 2,
+      "width": 776,
+      "height": 474
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15676v1/fig-008.webp",
+      "caption": "Figure 4: Point (h = 1) vs. subspace (h = 48) chunking attention at the 0.1B scale; all other training settings are identical. Left: Diffusion training loss. The subspace variant reaches a lower final loss (2.304 vs. 2.544) and follows a smoother trajectory throughout training. Right: Cluster violation, a measure of deviation from uniform centroid usage (lower values indicate more uniform routing). The subspace variant drives violation to near zero within the first ∼10k steps and stays there; the point variant remains noisy throughout and rises sharply in the final 50k steps to 3.330, the qualitative signature of progressive centroid collapse.",
+      "page": 16,
+      "index": 8,
+      "width": 979,
+      "height": 413
+    }
+  ]
+}

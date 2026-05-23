@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.15433v1/fig-001.webp",
+      "caption": "Table 1: Macro-averaged classification performance (%) of traditional classifiers (QDA and Random Forest) and attention-based methods (Medformer, Reformer, and Conformer) on four EEG datasets. For each classifier, macroaveraged metrics are reported per dataset. The highest standard deviation found for the ML models were 2.35 (RF in ADFTD) and 1.32 for (Conformer in ADHD). We mark the best metric scores for each dataset in bold. Our results show that across the 4 EEG datasets, QDA has outperformed all other models in 3 datasets (RF outperforms QDA in TDBrain) with FFT DWT components aggregated on timestamps and channels. In general classical ML pipelines have comparable numbers with that of Transformer models in all the datasets. Among the Transformer models, TeCh produces strong numbers in the APAVA and TDBrain, Medformer outperforms the other Transformer models in ADFTD and ADHD. The high performance metrics obtained for the TDBrain and APAVA datasets by RF and QDA respectively can be attributed to the choice of the evaluation test set. However, to ensure comparability across the methods, we have chosen to preserve the same train/test split as reported in the Medformer paper [4].",
+      "page": 5,
+      "index": 1,
+      "width": 758,
+      "height": 652
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15433v1/fig-002.webp",
+      "caption": "Fig. 1: Holdout-set confusion matrices on ADFTD comparing a classical pipeline vs. a Transformer. Rows denote ground-truth labels (‘A’:Alzheimers, ‘C’:Healthy Controls, ‘F’:Dementia) and columns denote predicted labels; darker diagonal entries indicate better class-wise performance. Left: Quadratic Discriminant Analysis (QDA) trained on aggregated spectral features (Welch-FFT/DWT, channeland window-averaged) shows stronger separation between Healthy Controls (C) and Alzheimer’s disease (A) on the holdout subjects. Right: Conformer trained on rs-EEG time-series exhibits reduced true positives for Healthy Controls and Alzheimers. Overall, these matrices highlight that feature aggregation can provide a more stable signal-to-noise representation for classical models under limited rs-EEG data.",
+      "page": 6,
+      "index": 2,
+      "width": 644,
+      "height": 267
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15433v1/fig-003.webp",
+      "caption": "Table 3: Performance of Medformer with separate signals for (δ,θ,α,β,γ) bands. For each of the three rs-EEG datasets, we use the dataset specific configuration provided by Wang et al [4] and fine-tune augmentations, dropout and weight decay to adjust for validation loss fluctuations. For task-EEG (ADHD) we use the authors’ validated baseline configuration. The highest standard deviation observed across datasets was found to be 3.25 for ADFTD dataset. This table shows that the self-attention mechanism computes redundant query-key interactions for highly correlated signals across different frequencies. Consequently, the subtle, diseaserelevant biomarkers are effectively “masked” within the sparse attention space, as the query-key vectors become dominated by these redundant inter-frequency correlations.",
+      "page": 7,
+      "index": 3,
+      "width": 732,
+      "height": 424
+    }
+  ]
+}

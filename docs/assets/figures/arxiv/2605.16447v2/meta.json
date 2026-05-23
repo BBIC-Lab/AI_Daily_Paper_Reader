@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.16447v2/fig-004.webp",
+      "caption": "Figure 1. Diagram of NEST. (i) Spectral representation: Node-level time series are partitioned via spectral clustering to derive representative regional dynamics Z, which serve as macroscopic structural anchors for the system. (ii) Training phase: We process historical node signals Xt−L+1:t alongside future regional guidance Zt+1:t+P using decoupled encoders. To bridge the discrepancy between training and inference, we employ a scheduled sampling strategy: ground-truth regional features are provided via teacher-forcing with probability Ptf , while predicted rollouts Ẑt+1:t+P are utilized with probability 1− Ptf . Bidirectional information flow between scales is facilitated via cross-attention (MLP is omitted for clarity), which effectively bounds the interaction complexity to the number of clusters M (where M < N ), ensuring future-oriented guidance while maintaining linear scalability relative to the number of nodes.",
+      "page": 4,
+      "index": 4,
+      "width": 964,
+      "height": 563
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16447v2/fig-001.webp",
+      "caption": "Table 1. Performance comparison on GBA, GLA, and CA datasets. Red indicates the best results, and Blue indicates the second-best results. The row “Improv.” denotes the relative improvement of our method over the best baseline. NEST consistently outperforms prior methods across datasets and horizons.",
+      "page": 7,
+      "index": 1,
+      "width": 1017,
+      "height": 661
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16447v2/fig-003.webp",
+      "caption": "Figure 2. Illustration of the Nested Spatio-Temporal Forecasting mechanism. The left panel shows the spatial distribution of two learned latent regions. The right panels visualize the two-stage decoding process: (1) Macro Generation, where the model first predicts a stable regional trend (see top row); and (2) Micro Guidance, where this trend explicitly guides the forecasting of downstream nodes (bottom rows, indicated by arrows). As shown in the highlighted intervals, this mechanism enables NEST (red) to maintain robustness against local noise and align better with the Ground Truth (gray dashed) compared to PATCHSTG (green).",
+      "page": 8,
+      "index": 3,
+      "width": 1008,
+      "height": 498
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16447v2/fig-005.webp",
+      "caption": "Figure 4. Quantile forecasting under different noise regimes. We visualize the quantile prediction results using three quantile levels {0.1, 0.5, 0.9}, where the shaded region denotes the predictive distribution spanned by the lower and upper quantiles. In the high-noise case (left), the quantile band widens to reflect increased uncertainty and covers most of the ground-truth trajectory, indicating well-calibrated uncertainty estimation. In the low-noise case (right), the quantiles collapse into a narrow band and closely match the ground truth, suggesting that the model appropriately reduces uncertainty when the signal is stable.",
+      "page": 17,
+      "index": 5,
+      "width": 904,
+      "height": 293
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16447v2/fig-002.webp",
+      "caption": "Figure 5. Qualitative comparison of multi-step forecasting results on GBA dataset. We visualize the predictions for two distinct nodes: Node 3195 (Left) and Node 2264 (Right). (a) Top Panels: The macro-level regional trends predicted by our auxiliary module, which serve as guidance. (b) Bottom Panels: The comparison of fine-grained node predictions. The baseline PATCHSTG (blue dashed line) struggles to capture sharp transitions, leading to significant overestimation (Node 3195) or underestimation (Node 2264). By incorporating the macro-guidance, NEST (red solid line) effectively corrects these errors, yielding predictions that closely match the Ground Truth (grey solid line) across the entire horizon.",
+      "page": 18,
+      "index": 2,
+      "width": 1002,
+      "height": 374
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16447v2/fig-006.webp",
+      "caption": "Figure 6. Visual comparison between raw node sequences (exhibiting high-frequency noise) and their corresponding macro centroid features (preserving smooth trends).",
+      "page": 20,
+      "index": 6,
+      "width": 804,
+      "height": 478
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.16048v1/fig-004.webp",
+      "caption": "Figure 1: Left: Architecture setup of six independent unique layers ABCDEF, compared with different strategies to introduce recursive-depth into the architecture. Right: Looped architectures AAAAAA, ABABAB, and ABCABC with a classification head. Based on the supervision strategy, we either take only the final loss L∇ value or the mean of all the losses of the repeated block.",
+      "page": 4,
+      "index": 4,
+      "width": 662,
+      "height": 352
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16048v1/fig-001.webp",
+      "caption": "Table 1: Accuracy (%) on six time series classification benchmarks for four SSM time-recurrence models, comparing the independent 6-layer baseline (ABCDEF) against three depth-recurrence configurations (AAAAAA, ABABAB, ABCABC) under both final-layer supervision (Lfinal) and block-wise supervision (Lblock). The results are averaged over 5 seeds. Underlined: depth-recurrence model is comparable to the baseline, Bold: depth-recurrence model outperforms the baseline.",
+      "page": 7,
+      "index": 1,
+      "width": 825,
+      "height": 464
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16048v1/fig-003.webp",
+      "caption": "Table 3: Accuracy (%) on the three time series classification benchmarks which required input reshaping, for four SSM architectures, combining input reshaping with depth-recursion. The baseline (ABCDEF) is the reshaped independent 6-layer model; depth-recursive configurations (AAAAAA, ABABAB, ABCABC) are applied on top of the same reshaping. Underlined: depth-recurrence model is comparable to the baseline, Bold: depth-recurrence model outperforms the reshaped baseline.",
+      "page": 8,
+      "index": 3,
+      "width": 824,
+      "height": 258
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16048v1/fig-002.webp",
+      "caption": "Table 5: Parameter counts (in thousands) and training runtime (seconds per epoch) for each depthsharing configuration. Runtime is measured using LRU with Lfinal supervision on an A40 GPU. All looped configurations apply the same number of forward operations as the independent ABCDEF baseline, so runtime differences are negligible.",
+      "page": 14,
+      "index": 2,
+      "width": 823,
+      "height": 205
+    },
+    {
+      "url": "assets/figures/arxiv/2605.16048v1/fig-005.webp",
+      "caption": "Table 8: Accuracy (%) on the three time series classification benchmarks which do not necessarily require input reshaping, for four SSM architectures, combining input reshaping with depth-recursion. The baseline (ABCDEF) is the reshaped independent 6-layer model; depth-recursive configurations (AAAAAA, ABABAB, ABCABC) are applied on top of the same reshaping. Underlined: depth-recurrence model is comparable to the baseline, Bold: depth-recurrence model outperforms the reshaped baseline.",
+      "page": 16,
+      "index": 5,
+      "width": 825,
+      "height": 254
+    }
+  ]
+}
