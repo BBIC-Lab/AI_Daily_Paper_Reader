@@ -4723,20 +4723,23 @@ article.markdown-section {
 
 #arxiv-search-panel .dpr-entry-card {
   min-height: 0;
-  padding: 12px;
+  padding: 10px 12px;
 }
 
 #arxiv-search-panel .dpr-entry-top {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
 #arxiv-search-panel .dpr-entry-headline {
   flex-direction: column;
   align-items: stretch;
-  gap: 8px;
-  width: 100%;
+  flex: 1 1 auto;
+  gap: 6px;
+  width: auto;
 }
 
 #arxiv-search-panel .dpr-entry-title-row {
@@ -4753,8 +4756,15 @@ article.markdown-section {
 
 #arxiv-search-panel .dpr-entry-actions {
   flex: 0 0 auto;
-  width: 100%;
-  justify-content: flex-start;
+  width: auto;
+  justify-content: flex-end;
+  align-self: center;
+  white-space: nowrap;
+}
+
+#arxiv-search-panel .dpr-entry-actions .arxiv-tool-btn {
+  padding: 6px 10px;
+  font-size: 11px;
 }
 
 #arxiv-search-panel .dpr-entry-desc-inline {
@@ -4768,7 +4778,7 @@ article.markdown-section {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
   width: 100%;
 }
 
@@ -6514,12 +6524,13 @@ article.markdown-section {
     margin-top: 8px;
   }
   .dpr-entry-card {
-    padding: 8px;
+    padding: 9px;
   }
   .dpr-entry-top {
-    flex-direction: column;
-    align-items: stretch;
-    margin-bottom: 6px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
   }
   .dpr-entry-headline {
     display: flex;
@@ -6534,7 +6545,8 @@ article.markdown-section {
   }
   .dpr-entry-actions {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
+    flex: 0 0 auto;
   }
   .dpr-entry-run-panel.is-open {
     gap: 8px;
