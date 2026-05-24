@@ -107,6 +107,14 @@ function Resolve-NodeExe {
   return ""
 }
 
+function Resolve-PythonExe {
+  $bundled = Join-Path $env:USERPROFILE ".cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
+  if (Test-Path $bundled) { return $bundled }
+  $cmd = Get-Command python -ErrorAction SilentlyContinue
+  if ($cmd) { return $cmd.Source }
+  return ""
+}
+
 function Test-AnyPath {
   param([string[]]$Files, [string]$Pattern)
   foreach ($file in $Files) {
@@ -136,6 +144,9 @@ function Invoke-Validation {
   $node = Resolve-NodeExe
   if ($node -and (Test-AnyPath -Files $Files -Pattern "^app/docsify-plugin\.js$")) {
     Invoke-External -Exe $node -Args @("--check", "app\docsify-plugin.js") -Cwd $Cwd
+    if (Test-Path (Join-Path $Cwd "tests\test_docsify_markdown_math.js")) {
+      Invoke-External -Exe $node -Args @("tests\test_docsify_markdown_math.js") -Cwd $Cwd
+    }
   } elseif (Test-AnyPath -Files $Files -Pattern "^app/docsify-plugin\.js$") {
     Write-Host "WARN: node not found; skipped JS syntax check." -ForegroundColor Yellow
   }
@@ -155,6 +166,22 @@ function Invoke-Validation {
       "tests.test_generate_docs_meta_parse.GenerateDocsMetaParseTest.test_update_sidebar_repairs_existing_same_line_daily_item"
     ) -Cwd $Cwd
   }
+}
+
+function Invoke-PublicPrivacyGuard {
+  param([string]$Cwd)
+  $guard = Join-Path $Cwd "scripts\privacy_guard.py"
+  if (-not (Test-Path $guard)) {
+    Write-Host "WARN: scripts\privacy_guard.py not found; skipped public privacy guard." -ForegroundColor Yellow
+    return
+  }
+  $python = Resolve-PythonExe
+  if (-not $python) {
+    Write-Host "WARN: python not found; skipped public privacy guard." -ForegroundColor Yellow
+    return
+  }
+  Write-Step "Run public privacy guard"
+  Invoke-External -Exe $python -Args @("scripts\privacy_guard.py") -Cwd $Cwd
 }
 
 function Normalize-RepoPath {
@@ -180,6 +207,7 @@ function Is-AutoExcludedPath {
   param([string]$RepoPath)
   $patterns = @(
     "^TODO\.md$",
+    "^AGENTS\.md$",
     "^codex-httpserver\.(out|err)\.log$",
     "(^|/)__pycache__/",
     "(^|/)\.pytest_cache/",
@@ -325,6 +353,7 @@ $publicCommit = (Invoke-GitRead -GitArgs @("rev-parse", "--short", "HEAD") -Cwd 
 Write-Host "Public commit: $publicCommit"
 
 Invoke-Validation -Cwd $PublicWorktree -Files ([string[]]$publishFiles)
+Invoke-PublicPrivacyGuard -Cwd $PublicWorktree
 
 if (-not $NoPush) {
   Write-Step "Push public"

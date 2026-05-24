@@ -9,6 +9,10 @@
   --dpr-heading-color: #123E5A;
   --dpr-accent-color: #0F766E;
   --dpr-accent-color-hover: #0B5F58;
+  --dpr-sidebar-bg: #F4F8FA;
+  --dpr-sidebar-border: rgba(18, 62, 90, 0.14);
+  --dpr-sidebar-shadow: rgba(18, 62, 90, 0.08);
+  --dpr-sidebar-current-bg: rgba(15, 118, 110, 0.12);
   --dpr-sidebar-control-open-bg: rgba(15, 23, 42, 0.055);
   --dpr-sidebar-control-hover-bg: rgba(15, 23, 42, 0.035);
   --dpr-sidebar-control-focus: rgba(15, 118, 110, 0.42);
@@ -582,7 +586,12 @@ body.close #paper-chat-container::after {
     bottom: 0;
     width: var(--sidebar-width, 260px);
     height: 48px;
-    background: #ffffff;
+    background: linear-gradient(
+      to bottom,
+      rgba(244, 248, 250, 0),
+      var(--dpr-sidebar-bg) 45%,
+      var(--dpr-sidebar-bg)
+    );
     pointer-events: none;
     z-index: 1500;
   }
@@ -2532,6 +2541,39 @@ article.markdown-section {
   width: var(--sidebar-width, 260px) !important;
   min-width: var(--sidebar-min-width, 180px);
   max-width: var(--sidebar-max-width, 480px);
+  box-sizing: border-box;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  background:
+    linear-gradient(180deg, var(--dpr-sidebar-bg) 0%, #fbfdfd 100%) !important;
+  border-right: 1px solid var(--dpr-sidebar-border);
+  box-shadow: 10px 0 26px var(--dpr-sidebar-shadow);
+  z-index: 50;
+}
+
+.sidebar .sidebar-nav {
+  padding-bottom: 96px !important;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(18, 62, 90, 0.18);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+
+.sidebar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(18, 62, 90, 0.34);
 }
 
 /* 侧边栏字体：让中英文在同一套字体栈里更协调 */
@@ -2587,9 +2629,10 @@ article.markdown-section {
   border-radius: 10px;
   padding: 4px 8px;
   color: #243447;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.72);
   transition:
     background-color 150ms ease,
+    box-shadow 150ms ease,
     color 150ms ease,
     transform 150ms ease;
 }
@@ -2600,6 +2643,20 @@ article.markdown-section {
 .dpr-sidebar-fold-toggle.is-open,
 .sidebar-day-toggle.is-open {
   background: var(--dpr-sidebar-control-open-bg);
+}
+
+.sidebar-nav li:not(.sidebar-day-collapsed) > .sidebar-day-toggle {
+  background: linear-gradient(135deg, var(--dpr-sidebar-current-bg), rgba(255, 255, 255, 0.82));
+  box-shadow: inset 3px 0 0 var(--dpr-accent-color);
+}
+
+.sidebar-nav li.dpr-sidebar-daily-root > .dpr-sidebar-group-toggle.is-open {
+  background: linear-gradient(135deg, rgba(18, 62, 90, 0.1), rgba(255, 255, 255, 0.8));
+  box-shadow: inset 3px 0 0 var(--dpr-heading-color);
+}
+
+.sidebar-nav li.dpr-sidebar-section > .dpr-sidebar-group-toggle.is-open {
+  background: rgba(15, 118, 110, 0.08);
 }
 .dpr-sidebar-fold-toggle:focus-visible,
 .sidebar-day-toggle:focus-visible {
@@ -2859,7 +2916,7 @@ article.markdown-section {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: #f5f5f5; /* hover：浅灰 */
+  background-color: rgba(18, 62, 90, 0.08); /* hover：浅灰 */
   border-radius: 20px;
   opacity: 0;
   pointer-events: none;
@@ -2908,7 +2965,7 @@ article.markdown-section {
   width: 0;
   height: 0;
   border-radius: 20px;
-  background-color: #f0f0f0; /* 选中：深一点的灰色 */
+  background-color: rgba(15, 118, 110, 0.14); /* 选中：深一点的灰色 */
   pointer-events: none;
   z-index: 0; /* 放在内容之下，避免遮住文字/标签 */
   transform: translate3d(0, 0, 0);
