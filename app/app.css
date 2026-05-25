@@ -1164,11 +1164,11 @@ body.sidebar-resizing .sidebar::after {
 
 .sidebar-nav .dpr-sidebar-meta-line {
   margin-top: 2px;
-  min-height: 16px;
+  min-height: 24px;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-  overflow: hidden;
+  overflow: visible;
   gap: 6px;
 }
 
@@ -2886,7 +2886,7 @@ article.markdown-section {
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 4px;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
   /* 为椭圆背景预留左右内边距，避免文字紧贴边缘 */
   padding-left: 22px;
   padding-right: 20px;
@@ -2894,11 +2894,6 @@ article.markdown-section {
 }
 
 /* 悬停和选中时，文字区域收窄，为书签按钮腾出空间 */
-.sidebar-nav li.sidebar-paper-item:hover > a,
-.sidebar-nav li.sidebar-paper-item.active > a {
-  max-width: calc(100% - 26px);
-}
-
 /* hover 底色改为伪元素：让"滑动高亮层"可以盖住 hover（层级更深） */
 .sidebar-nav li.sidebar-paper-item::before {
   content: '';
@@ -2921,19 +2916,7 @@ article.markdown-section {
   position: relative;
 }
 .sidebar-nav .dpr-sidebar-active-indicator {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 0;
-  height: 0;
-  border-radius: 20px;
-  background-color: rgba(18, 62, 90, 0.1);
-  pointer-events: none;
-  z-index: 0; /* 放在内容之下，避免遮住文字/标签 */
-  transform: translate3d(0, 0, 0);
-  transition: transform var(--dpr-transition-ms, 320ms) ease-out,
-    height var(--dpr-transition-ms, 320ms) ease-out,
-    width var(--dpr-transition-ms, 320ms) ease-out;
+  display: none !important;
 }
 
 /* 选中态：如果该条目已打勾/打叉，则选中底色改为浅绿/浅红 */
@@ -3009,7 +2992,7 @@ article.markdown-section {
   gap: 6px;
   vertical-align: middle;
   pointer-events: none;
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
 .sidebar-paper-state-badge {
@@ -3061,22 +3044,14 @@ article.markdown-section {
 }
 
 .sidebar-paper-state-badge.marker {
-  width: 22px;
-  height: 22px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.98);
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--dpr-sidebar-marker-color, #64748b);
 }
 
 .sidebar-paper-state-badge.marker::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 2px;
-  background: var(--dpr-sidebar-marker-color, #64748b);
-  box-shadow:
-    9px 0 0 var(--dpr-sidebar-marker-color, #64748b),
-    0 9px 0 var(--dpr-sidebar-marker-color, #64748b),
-    9px 9px 0 var(--dpr-sidebar-marker-color, #64748b);
+  content: none;
 }
 
 #dpr-paper-actions-backdrop {
@@ -3098,7 +3073,6 @@ body.dpr-paper-actions-popover-open #paper-chat-container {
 }
 
 #dpr-paper-actions {
-  --dpr-paper-action-size: 44px;
   --dpr-paper-action-gap: 8px;
   position: fixed;
   right: max(22px, env(safe-area-inset-right, 0px) + 18px);
@@ -3110,14 +3084,17 @@ body.dpr-paper-actions-popover-open #paper-chat-container {
 
 body.dpr-chat-drawer-open #dpr-paper-actions {
   right: min(
-    calc(var(--dpr-chat-drawer-width) + 22px),
+    var(--dpr-paper-actions-drawer-right),
     calc(100vw - var(--dpr-paper-action-size) - 10px)
   );
 }
 
 @media (min-width: 768px) and (max-width: 1179px) {
   body.dpr-chat-drawer-open #dpr-paper-actions {
-    right: min(442px, calc(100vw - var(--dpr-paper-action-size) - 10px));
+    right: min(
+      var(--dpr-paper-actions-drawer-right),
+      calc(100vw - var(--dpr-paper-action-size) - 10px)
+    );
   }
 }
 
@@ -6935,9 +6912,15 @@ body.dpr-chat-drawer-open #dpr-paper-actions {
 /* Paper AI chat drawer: keep report reading and chat side-by-side on wide screens. */
 :root {
   --dpr-chat-drawer-width: clamp(380px, 31vw, 540px);
-  --dpr-chat-drawer-gap: 32px;
+  --dpr-paper-action-size: 44px;
+  --dpr-paper-action-drawer-gap: 8px;
+  --dpr-chat-drawer-panel-inset: 8px;
+  --dpr-paper-actions-drawer-right: calc(
+    var(--dpr-chat-drawer-width) + var(--dpr-chat-drawer-panel-inset) +
+      var(--dpr-paper-action-drawer-gap)
+  );
   --dpr-chat-drawer-offset: calc(
-    var(--dpr-chat-drawer-width) + var(--dpr-chat-drawer-gap)
+    var(--dpr-paper-actions-drawer-right) + var(--dpr-paper-action-size)
   );
 }
 
@@ -7598,12 +7581,13 @@ body.dpr-chat-drawer-open #paper-chat-container .paper-chat-panel,
 }
 
 @media (max-width: 1179px) {
-  body.dpr-chat-drawer-open .content {
-    padding-right: 0 !important;
+  :root {
+    --dpr-chat-drawer-width: min(420px, calc(100vw - 28px));
   }
 
-  #paper-chat-container {
-    --dpr-chat-drawer-width: min(420px, calc(100vw - 28px));
+  body.dpr-chat-drawer-open .content {
+    box-sizing: border-box !important;
+    padding-right: var(--dpr-chat-drawer-offset) !important;
   }
 
   #paper-chat-container.is-open .paper-chat-toggle-btn {
@@ -7613,6 +7597,10 @@ body.dpr-chat-drawer-open #paper-chat-container .paper-chat-panel,
 }
 
 @media (max-width: 767px) {
+  body.dpr-chat-drawer-open .content {
+    padding-right: 0 !important;
+  }
+
   #paper-chat-container .paper-chat-toggle-btn {
     top: auto;
     right: 14px;
