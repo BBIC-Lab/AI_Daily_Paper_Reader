@@ -911,8 +911,14 @@ window.PrivateDiscussionChat = (function () {
         const panelOpen = panel && panel.style.display !== 'none';
         const quickPanelOpen = quickPanel && quickPanel.style.display !== 'none';
         if (!panelOpen && !quickPanelOpen) return;
+        const clickedInsideQuickPanel =
+          quickPanel && e.target && quickPanel.contains
+            ? quickPanel.contains(e.target)
+            : false;
+        const clickedInsidePanel =
+          panel && e.target && panel.contains ? panel.contains(e.target) : false;
 
-        if (quickPanelOpen) {
+        if (quickPanelOpen && clickedInsideQuickPanel) {
           const quickClose =
             e.target && e.target.closest
               ? e.target.closest('.chat-quick-q-close')
@@ -987,7 +993,13 @@ window.PrivateDiscussionChat = (function () {
           }
         }
 
-        if (!panelOpen) return;
+        if ((quickPanelOpen || panelOpen) && !clickedInsideQuickPanel && !clickedInsidePanel) {
+          closeQuickQuestionsPanel(root);
+          closeQuestionsPanel(root);
+          return;
+        }
+
+        if (!panelOpen || !clickedInsidePanel) return;
 
         const closeBtn =
           e.target && e.target.closest ? e.target.closest('#chat-q-close') : null;
