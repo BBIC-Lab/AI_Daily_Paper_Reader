@@ -3522,6 +3522,14 @@ window.$docsify = {
           wrap.appendChild(label);
           a.appendChild(wrap);
         };
+        const setJumpLinkActive = (a, isActive) => {
+          if (!a) return;
+          a.classList.toggle('dpr-sidebar-static-active', !!isActive);
+          a.classList.toggle('active', !!isActive);
+          a.classList.toggle('router-link-active', !!isActive);
+          const li = a.closest('li');
+          if (li) li.classList.toggle('active', !!isActive);
+        };
 
         nav.querySelectorAll('a.dpr-sidebar-root-link').forEach((a) => {
           const raw = stripEmoji(a.dataset.dprRawLabel || a.textContent || '');
@@ -3531,20 +3539,14 @@ window.$docsify = {
           const href = a.getAttribute('data-dpr-hash') || a.getAttribute('href') || '';
           const target = normalizeHref(href);
           const isStaticActive = !!target && current === target;
-          a.classList.toggle('dpr-sidebar-static-active', isStaticActive);
-          if (a.classList.contains('dpr-sidebar-noactive-link')) {
-            a.classList.toggle('active', isStaticActive);
-            a.classList.toggle('router-link-active', isStaticActive);
-            const li = a.closest('li');
-            if (li) li.classList.toggle('active', isStaticActive);
-          }
+          setJumpLinkActive(a, isStaticActive);
         });
 
         nav.querySelectorAll('a.dpr-sidebar-brief-link').forEach((a) => {
           const raw = stripEmoji(a.dataset.dprRawLabel || a.textContent || '今日简报');
           setLinkLabel(a, '📝', raw || '今日简报');
           const target = normalizeHref(a.getAttribute('href') || '');
-          a.classList.toggle('dpr-sidebar-static-active', !!target && current === target);
+          setJumpLinkActive(a, !!target && current === target);
         });
       };
 
