@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-005.webp",
+      "caption": "Fig. 2. The Two-Stage GRPO Tuning Pipeline for TimeSRL. The proposed architecture uses the same model for both stages. In Stage 1, the TimeSRL-LLM is given a prompt with behavioral data to examine the numerical data and summarize the findings. The model leverages an explicit reasoning process to generate #K semantic abstracted summaries. Next, only the generated summaries are extracted, passing through the semantic bottleneck, and inserted into a prediction prompt. In Stage 2, the TimeSRL-LLM executes predictive outcome inference based on the summaries, producing #K outcome predictions. Finally, #K scores are extracted and evaluated using reward function(s) to compute a GRPO update that optimizes the base TimeSRL-LLM.",
+      "page": 8,
+      "index": 5,
+      "width": 809,
+      "height": 523
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-001.webp",
+      "caption": "Fig. 3. Example of the Two Stage Prompting used in the task of mental-health prediction. Starting from 14 days of tabular multi-variate time-series behavioral data, TimeSRL first constructs a semantic abstraction prompt in Stage 1 by organizing the data into a structured template, translating system feature names into descriptive labels, and converting raw sensor units into interpretable formats. This prompt guides the model to summarize behavioral patterns, trajectories, and notable fluctuations over the past two weeks in natural language. The resulting summary is then passed to the semantic inference prompt in Stage 2, which provides task-specific context and asks the model to infer the final mental-health score.",
+      "page": 11,
+      "index": 1,
+      "width": 895,
+      "height": 734
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-007.webp",
+      "caption": "Fig. 4. LOSO MAE on GLOBEM and College Experience anxiety and depression prediction. Bars denote mean MAE and error bars denote 95% percentile bootstrap SE. Star annotations report paired bootstrap significance tests versus TimeSRL, indicating significantly higher MAE than TimeSRL, and significance levels are marked as ∗𝑝 < 0.05, ∗∗𝑝 < 0.01, and ∗∗∗𝑝 < 0.001. Across both datasets and tasks, TimeSRL maintains top-tier performance, significantly outperforming all other LLM baselines and remaining highly competitive with or surpassing the best non-LLM behavioral models.",
+      "page": 17,
+      "index": 7,
+      "width": 840,
+      "height": 515
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-008.webp",
+      "caption": "Fig. 5. MAE reduction from TimeSRL tuning across four LLM backbones on GLOBEM (LOSO). Bars compare direct prompting against the TimeSRL-tuned variant for anxiety and depression; error bars denote standard error. TimeSRL consistently improves every backbone, with relative MAE reductions of 38.4–61.6% across all backbone–task combinations.",
+      "page": 17,
+      "index": 8,
+      "width": 881,
+      "height": 278
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-004.webp",
+      "caption": "Fig. 6. Cross-benchmark (Cross-BM) transfer results on GLOBEM and College Experience. Each panel evaluates transfer in one target benchmark split after training on the other benchmark; the rightmost bar shows the within-benchmark (In-BM) TimeSRL reference for the same target study. Stars denote statistical significance vs. the Cross-BM reference (paired bootstrap; 𝑝 < 0.05, 𝑝 < 0.01, 𝑝 < 0.001; n.s. = not significant). TimeSRL shows strong promise for cross-benchmark transfer, consistently outperforming both vanilla prompting and the strongest prior baseline overall (ReOrder), and sometimes matching or outperforming the In-BM.",
+      "page": 18,
+      "index": 4,
+      "width": 883,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-006.webp",
+      "caption": "Table 4. Ablation study of TimeSRL components. We vary two design axes—prompting strategy (direct vs. 2-Stage) and tuning (none vs. RL)—across Qwen3-4B and GPT-5.0 base models. MAE (↓) is reported with relative change (%) from TimeSRL; light red denotes <50% degradation, dark red denotes ≥50%. All differences are statistically significant (𝑝s < 0.001, paired bootstrap, 5 000 resamples). Combination of RL tuning and 2-Stage prompting outperforms both alone.",
+      "page": 19,
+      "index": 6,
+      "width": 689,
+      "height": 217
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-002.webp",
+      "caption": "Fig. 7. Qualitative comparison of intermediate summaries on a 14-day window. Model-generated summaries and predictions are presented alongside highlighted framing sentences (colored text) and annotated compression/preservation patterns (shaded boxes). Both untuned two-stage baselines (GPT-5.0, Qwen3-4B) compress the trajectory into a predominantly concern-heavy narrative, emphasizing salient irregularities while under representing stable or recovering periods. TimeSRL instead produces a more structured and temporally localized summary. Although only an excerpt is shown for readability, the full RL-tuned output preserves both concerning and stabilizing evidence, which leads to a calibrated prediction matching the gold label.",
+      "page": 21,
+      "index": 2,
+      "width": 895,
+      "height": 591
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-010.webp",
+      "caption": "Table 5. GLOBEM feature set used in all experiments. This table details the twelve daily passive-sensing features extracted via the GLOBEM/RAPIDS pipeline, categorized across five behavioral domains. For each 14-day window, the model receives these exact features, alongside their corresponding units and semantic descriptions, to formulate the Stage 1 input.",
+      "page": 31,
+      "index": 10,
+      "width": 895,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-009.webp",
+      "caption": "Fig. 8. Qualitative comparison on a 14-day CollegeExperience DS3 sample (gold anxiety score = 3). Model-generated summaries and predictions are presented alongside highlighted framing sentences (colored text) and annotated compression/preservation patterns (shaded boxes). Untuned two-stage baselines misconstrue localized irregularities (e.g., the D5/D6 sleep swing and D14 crash) as a pervasive anxiety pattern, resulting in overestimates (scores of 5 and 6). In contrast, TimeSRL flags these volatile points but localizes them temporally, preserving the relative stability of the remaining window to yield a calibrated moderate-band prediction that matches the ground truth.",
+      "page": 32,
+      "index": 9,
+      "width": 895,
+      "height": 621
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21295v1/fig-003.webp",
+      "caption": "Fig. 9. Qualitative comparison on a 14-day CollegeExperience DS2 depression sample (gold depression score = 2). Modelgenerated summaries and predictions are presented alongside highlighted framing sentences (colored text) and annotated compression/preservation patterns (shaded boxes). The untuned two-stage baselines compress the trajectory into a global decline-andwithdrawal narrative — GPT-5.0 hedges on confounders (exam/illness/sensor gaps) but still lands at 4, while Qwen3-4B maps the same evidence directly to the maximum (6). TimeSRL flags the D9 hypersomnia day and the D11 anomaly as discrete volatility points and preserves the relative stability of the surrounding window, yielding a calibrated mild-band prediction matching the ground truth.",
+      "page": 33,
+      "index": 3,
+      "width": 895,
+      "height": 652
+    }
+  ]
+}
