@@ -3530,7 +3530,14 @@ window.$docsify = {
           if (emoji) setLinkLabel(a, emoji, raw);
           const href = a.getAttribute('data-dpr-hash') || a.getAttribute('href') || '';
           const target = normalizeHref(href);
-          a.classList.toggle('dpr-sidebar-static-active', !!target && current === target);
+          const isStaticActive = !!target && current === target;
+          a.classList.toggle('dpr-sidebar-static-active', isStaticActive);
+          if (a.classList.contains('dpr-sidebar-noactive-link')) {
+            a.classList.toggle('active', isStaticActive);
+            a.classList.toggle('router-link-active', isStaticActive);
+            const li = a.closest('li');
+            if (li) li.classList.toggle('active', isStaticActive);
+          }
         });
 
         nav.querySelectorAll('a.dpr-sidebar-brief-link').forEach((a) => {
@@ -3546,15 +3553,16 @@ window.$docsify = {
         if (!nav) return;
         const links = nav.querySelectorAll('a.dpr-sidebar-noactive-link');
         links.forEach((a) => {
+          const keepStaticActive = a.classList.contains('dpr-sidebar-static-active');
           try {
-            a.classList.remove('active', 'router-link-active');
+            if (!keepStaticActive) a.classList.remove('active', 'router-link-active');
           } catch {
             // ignore
           }
           try {
             const li = a.closest('li');
             if (li) {
-              li.classList.remove('active');
+              li.classList.toggle('active', keepStaticActive);
             }
           } catch {
             // ignore
