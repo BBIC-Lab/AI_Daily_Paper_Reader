@@ -16,8 +16,9 @@
   --dpr-sidebar-control-open-bg: rgba(15, 23, 42, 0.055);
   --dpr-sidebar-control-hover-bg: rgba(15, 23, 42, 0.035);
   --dpr-sidebar-control-focus: rgba(15, 118, 110, 0.42);
-  --dpr-sidebar-footer-height: 48px;
-  --dpr-sidebar-footer-reserve: 58px;
+  --dpr-sidebar-active-rail-width: 5px;
+  --dpr-sidebar-footer-height: 64px;
+  --dpr-sidebar-footer-reserve: 78px;
 }
 
 /* 全局缩放重置为1 */
@@ -590,9 +591,9 @@ body.close #paper-chat-container::after {
     height: var(--dpr-sidebar-footer-height);
     box-sizing: border-box;
     background: linear-gradient(
-      to bottom,
-      rgba(244, 248, 250, 0),
-      var(--dpr-sidebar-bg) 45%,
+      180deg,
+      rgba(244, 248, 250, 0.98),
+      var(--dpr-sidebar-bg) 18%,
       var(--dpr-sidebar-bg)
     );
     border-top: 1px solid var(--dpr-sidebar-border);
@@ -1112,7 +1113,7 @@ body.sidebar-resizing .sidebar::after {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 10px;
+  padding: 6px 22px 6px 10px;
   margin: 2px 0;
   border-radius: 8px;
   text-decoration: none !important;
@@ -1144,11 +1145,15 @@ body.sidebar-resizing .sidebar::after {
   word-break: break-word;
 }
 
-.sidebar-nav li.sidebar-paper-item:hover .dpr-sidebar-link-line,
+.sidebar-nav li.sidebar-paper-item:hover .dpr-sidebar-link-line {
+  color: #3c3c3c;
+}
+
 .sidebar-nav li.sidebar-paper-item.active .dpr-sidebar-link-line,
 .sidebar-nav li.sidebar-paper-item > a.active .dpr-sidebar-link-line,
 .sidebar-nav li.active > a .dpr-sidebar-link-line {
-  color: #3c3c3c;
+  color: var(--dpr-accent-color-hover);
+  font-weight: 700;
 }
 
 .sidebar-nav .dpr-sidebar-score-empty {
@@ -2652,18 +2657,18 @@ article.markdown-section {
   background: var(--dpr-sidebar-control-open-bg);
 }
 
-.sidebar-nav li:not(.sidebar-day-collapsed) > .sidebar-day-toggle {
-  background: linear-gradient(135deg, var(--dpr-sidebar-current-bg), rgba(255, 255, 255, 0.82));
-  box-shadow: inset 3px 0 0 var(--dpr-accent-color);
-}
-
-.sidebar-nav li.dpr-sidebar-daily-root > .dpr-sidebar-group-toggle.is-open {
+.sidebar-nav li:not(.sidebar-day-collapsed) > .sidebar-day-toggle,
+.sidebar-nav li.dpr-sidebar-daily-root > .dpr-sidebar-group-toggle.is-open,
+.sidebar-nav li.dpr-sidebar-section > .dpr-sidebar-group-toggle.is-open {
+  color: var(--dpr-heading-color);
   background: linear-gradient(135deg, rgba(18, 62, 90, 0.1), rgba(255, 255, 255, 0.8));
   box-shadow: inset 3px 0 0 var(--dpr-heading-color);
 }
 
-.sidebar-nav li.dpr-sidebar-section > .dpr-sidebar-group-toggle.is-open {
-  background: rgba(15, 118, 110, 0.08);
+.sidebar-nav li:not(.sidebar-day-collapsed) > .sidebar-day-toggle .sidebar-day-toggle-label,
+.sidebar-nav li.dpr-sidebar-daily-root > .dpr-sidebar-group-toggle.is-open .dpr-sidebar-group-toggle-label,
+.sidebar-nav li.dpr-sidebar-section > .dpr-sidebar-group-toggle.is-open .dpr-sidebar-group-toggle-label {
+  font-weight: 800;
 }
 .dpr-sidebar-fold-toggle:focus-visible,
 .sidebar-day-toggle:focus-visible {
@@ -2843,27 +2848,64 @@ article.markdown-section {
   padding-left: 0 !important;
 }
 
+.sidebar-nav a.dpr-sidebar-root-link,
+.sidebar-nav a.dpr-sidebar-root-link:link,
+.sidebar-nav a.dpr-sidebar-root-link:visited,
 .sidebar-nav a.dpr-sidebar-brief-link,
 .sidebar-nav a.dpr-sidebar-brief-link:link,
 .sidebar-nav a.dpr-sidebar-brief-link:visited {
   display: block;
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   margin: 4px 0 5px 0 !important;
-  padding: 6px 8px !important;
+  padding: 6px 22px 6px 8px !important;
   border-radius: 10px;
   color: #355062 !important;
   background: transparent !important;
   font-size: 0.95rem;
   font-weight: 650;
   line-height: 1.25;
+  text-decoration: none !important;
 }
 
+.sidebar-nav a.dpr-sidebar-root-link.active,
+.sidebar-nav a.dpr-sidebar-root-link.router-link-active,
+.sidebar-nav a.dpr-sidebar-root-link.dpr-sidebar-static-active,
 .sidebar-nav a.dpr-sidebar-brief-link.active,
 .sidebar-nav a.dpr-sidebar-brief-link.router-link-active,
 .sidebar-nav a.dpr-sidebar-brief-link.dpr-sidebar-static-active {
   color: var(--dpr-accent-color-hover) !important;
-  background: rgba(15, 118, 110, 0.1) !important;
+  background: transparent !important;
+  border-right: 0 !important;
+  font-weight: 800;
+}
+
+.sidebar-nav a.dpr-sidebar-root-link::after,
+.sidebar-nav a.dpr-sidebar-brief-link::after,
+.sidebar-nav li.sidebar-paper-item > a.dpr-sidebar-item-link::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 2px;
+  bottom: 6px;
+  width: 0;
+  border-radius: 999px;
+  background: var(--dpr-accent-color);
+  opacity: 0;
+  transition: opacity 120ms ease, width 120ms ease;
+}
+
+.sidebar-nav a.dpr-sidebar-root-link.active::after,
+.sidebar-nav a.dpr-sidebar-root-link.router-link-active::after,
+.sidebar-nav a.dpr-sidebar-root-link.dpr-sidebar-static-active::after,
+.sidebar-nav a.dpr-sidebar-brief-link.active::after,
+.sidebar-nav a.dpr-sidebar-brief-link.router-link-active::after,
+.sidebar-nav a.dpr-sidebar-brief-link.dpr-sidebar-static-active::after,
+.sidebar-nav li.active.sidebar-paper-item > a.dpr-sidebar-item-link::after,
+.sidebar-nav li.sidebar-paper-item > a.dpr-sidebar-item-link.active::after {
+  width: var(--dpr-sidebar-active-rail-width);
+  opacity: 1;
 }
 
 /* 评价为“好”的论文（浅绿色文字，保持白底，仅文字变色） */
@@ -2876,7 +2918,21 @@ article.markdown-section {
   background-color: transparent;
 }
 
-/* 当前页面所在行：仅通过淡蓝色椭圆背景高亮，不再使用右侧绿色细边 */
+.sidebar-nav li.active.sidebar-paper-item > a.dpr-sidebar-item-link,
+.sidebar-nav li.sidebar-paper-item > a.dpr-sidebar-item-link.active {
+  color: var(--dpr-accent-color-hover) !important;
+  font-weight: 800;
+  background: transparent !important;
+  border-right: 0 !important;
+}
+
+.sidebar-nav li.active.sidebar-paper-item .dpr-sidebar-title,
+.sidebar-nav li.sidebar-paper-item > a.dpr-sidebar-item-link.active .dpr-sidebar-title {
+  color: var(--dpr-accent-color-hover);
+  font-weight: 800;
+}
+
+/* 当前跳转项统一用绿色文字和右侧竖线高亮；展开控制项另用 Daily Papers 风格。 */
 .sidebar-nav li.sidebar-paper-item {
   display: flex;
   align-items: center;
