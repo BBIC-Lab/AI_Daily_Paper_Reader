@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.21842v1/fig-005.webp",
+      "caption": "Table 1: Ablation on TinyShakespeare. All models on identical batches. ∆ = improvement over BASE (positive = better). Gap = val− train loss.",
+      "page": 5,
+      "index": 5,
+      "width": 644,
+      "height": 207
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21842v1/fig-001.webp",
+      "caption": "Figure 1: Validation loss curves for all ablation variants (left), final validation loss bar chart (center), and generalisation gap across training (right). EGA-1 (orange) consistently leads from step 500 onward and achieves the smallest generalisation gap of all models, confirming that energy gating improves both performance and generalisation efficiency.",
+      "page": 6,
+      "index": 1,
+      "width": 826,
+      "height": 231
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21842v1/fig-002.webp",
+      "caption": "Figure 2: Wavelet family comparison. Left: validation loss curves showing EGA-1 (orange) consistently below all wavelet variants. Center: final validation loss confirming the hierarchy: learned > Daubechies > Morlet. Right: taxonomy table summarising basis type and key mathematical properties. Note that EGA-DB2/DB4 use fixed hardcoded coefficients; a learned wavelet variant would likely narrow the gap to EGA-1.",
+      "page": 7,
+      "index": 2,
+      "width": 826,
+      "height": 231
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21842v1/fig-003.webp",
+      "caption": "Figure 3: Mean Morlet scalogram averaged across all 256 embedding dimensions. Bright vertical bands correspond to content words (“be”, “not”, “question”, “nobler”, “suffer”), spanning all scales simultaneously. These are the coherent structures of the embedding field — energetically dominant tokens that EGA learns to amplify. The global energy spectrum (right) shows near-uniform energy across the filter scales [3, 7, 15, 31], consistent with the near-uniform learned scale weights in EGA-C.",
+      "page": 8,
+      "index": 3,
+      "width": 826,
+      "height": 637
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21842v1/fig-004.webp",
+      "caption": "Figure 4: Left: mean Morlet scalogram averaged across all 256 embedding dimensions. The near-uniform horizontal bands confirm that linguistic energy is distributed across all scales [1, 316], consistent with the near-uniform learned scale weights ([0.226, 0.253, 0.260, 0.260]) found in EGA-C. Right: global energy spectrum showing Parseval energy per scale, with filter lengths [3, 7, 15, 31] marked as coloured dashed lines. All four filter lengths fall in the transition region of the spectrum where energy variation is highest, validating the filter bank design.",
+      "page": 9,
+      "index": 4,
+      "width": 790,
+      "height": 299
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.22759v1/fig-002.webp",
+      "caption": "Figure 1 | Scaling and Evaluating a Sensor Foundation Model (SensorFM) for Wearable Health. We present a versatile embedding model that scales with model and data capacity, and shows generalizability to a range of generative and discriminative tasks. (a)We pretrain this model on an unprecedented corpus of over one trillion minutes of sensor data drawn from five million participants and evaluate it on an independent set of data from 13,985 people featuring 35 clinical and behavioral discriminative tasks derived from three prospective studies. (b) The model is trained with a generative reconstruction objective with a latent “bottleneck” on features derived from five sensor modalities. We evaluate the model and present results on a set of (c) generative tasks – here the baseline represents daily estimates without generative infilling, and (d) predictive tasks – here we show relative performance improvement over a supervised model trained on engineered features. (e) Aggregated performance scores for pretraining and posttraining tasks show a linear correlation as pretrain data and model capacity are co-scaled by orders of magnitude, illustrating that a reconstruction based pretraining leads to scalable improvements in downstream tasks.",
+      "page": 3,
+      "index": 2,
+      "width": 971,
+      "height": 1011
+    },
+    {
+      "url": "assets/figures/arxiv/2605.22759v1/fig-005.webp",
+      "caption": "Figure 2 | Intelligent Search of Prediction Heads. We employ an LLM-driven architecture to efficiently search the space of solutions for each downstream task, mimicking the role of a machine learning expert. Specifically, (a) given a dataset of wearable embeddings, demographic features, and labels, (b) an instruction prompt, (c) a “classroom” of collaborative/competitive agents iteratively refines executable code solutions. (d) the learning progress for five “student” agents.",
+      "page": 5,
+      "index": 5,
+      "width": 976,
+      "height": 1238
+    },
+    {
+      "url": "assets/figures/arxiv/2605.22759v1/fig-001.webp",
+      "caption": "Figure 3 | Agentic Use of SensorFM as a Tool. (a) Architecture of the SensorFM-augmented workflow, which translates raw wearable sensor data into health predictions to provide context for the LLM’s response. (b)We extracted demographic information, aggregated fitbit metrics, model predictions and ground-truth data for 31 real patient profiles and used Gemini to generate health summaries. A panel of four clinicians evaluated the responses. (c) Average physician evaluation scores (Likert scale) plotted across five specific clinical rubric items (Harm, Context, Personalization, Justifiability, and Relevance) for the three evaluated conditions and stacked horizontal bar charts showing counts of Likert ratings across all rubric items. Example output is for illustrative purposes only.",
+      "page": 6,
+      "index": 1,
+      "width": 872,
+      "height": 1154
+    },
+    {
+      "url": "assets/figures/arxiv/2605.22759v1/fig-004.webp",
+      "caption": "Figure 4 | Discriminative Task Linear Probe Performance. Downstream performance across 35 discriminative tasks for SensorFM variants, pretrained with proportional data scales, and a supervised baseline trained with only demographics. In general performance improves with scale with B consistently achieving the best performance. SensorFM variants are post-trained with PCA-50 reduced embeddings. For each task, we report the average 5-fold cross validation performance. Average Receiver Operating Characteristic Area Under the Curve (ROC AUC) is calculated in the logit-transform space and back-transformed. Average Pearson correlation (𝑟) is calculated in the z-transform space and back-transformed. Error bars are standard deviations calculated in the transformed space and back-transformed to give asymmetric error values.",
+      "page": 9,
+      "index": 4,
+      "width": 975,
+      "height": 1108
+    },
+    {
+      "url": "assets/figures/arxiv/2605.22759v1/fig-003.webp",
+      "caption": "Figure 5 | Discriminative Task Agentic Classroom Solution Performance. Downstream performance across 35 discriminative tasks for SensorFM-B embeddings adapted with agentic classroom found solutions, linear probes of SensorFM variants, and a demographic baseline. In general the classroom found solutions improve upon simple linear probes. Linear probes use PCA-50 reduced embeddings, the classroom uses unreduced embeddings. For each task, we report the average 5-fold cross validation performance. Average 𝐹1 is calculated with an arithmetic mean. Average Pearson correlation (𝑟) is calculated in the z-transform space and back-transformed. Error bars are standard deviations calculated in the transformed space and back-transformed to give asymmetric error values.",
+      "page": 13,
+      "index": 3,
+      "width": 975,
+      "height": 1179
+    }
+  ]
+}

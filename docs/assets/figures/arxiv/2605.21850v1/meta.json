@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-002.webp",
+      "caption": "Figure 1: Overview of ACC. Multi-turn agent trajectories (Search, SWE, SQL) are compiled into long-context QA pairs by assembling tool responses and environment contexts.",
+      "page": 2,
+      "index": 2,
+      "width": 822,
+      "height": 502
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-009.webp",
+      "caption": "Figure 2: Search Agent Trajectory Compilation Example. The top section shows the original question and ground truth answer. The middle section shows the original agentic trajectory (documents visited are highlighted in blue, documents returned by search but never visited are highlighted in red). The bottom section shows the ACC compiled QA. Examples for SWE and SQL agents are provided in Appendix A.",
+      "page": 5,
+      "index": 9,
+      "width": 829,
+      "height": 916
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-001.webp",
+      "caption": "Table 2: Long-range dependency modeling benchmark results (avg@3). Numbers in parentheses show improvement over the Qwen3-30B-A3B-Thinking baseline. All results use default inference configurations without manual tuning of reasoning effort.",
+      "page": 6,
+      "index": 1,
+      "width": 736,
+      "height": 331
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-003.webp",
+      "caption": "Figure 4: Two-dimensional UMAP projection of training queries (Search, SWE, SQL) and evaluation benchmark questions. Both training and evaluation samples are represented by their question text only.",
+      "page": 7,
+      "index": 3,
+      "width": 451,
+      "height": 356
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-006.webp",
+      "caption": "Table 6: Agent-type and distractor ablations.",
+      "page": 8,
+      "index": 6,
+      "width": 381,
+      "height": 394
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-008.webp",
+      "caption": "Figure 5: Attention distance (top) and expert routing frequency (bottom) changes after ACC training (SFT minus baseline). (a–b) Attention: GraphWalks shows increased mass at nearby and far-distance bins. MRCR shows enhancement primarily at nearby bins. (c–d) Expert routing: GraphWalks distributes activation across several experts for distant tokens. MRCR concentrates activation in a small expert set.",
+      "page": 9,
+      "index": 8,
+      "width": 820,
+      "height": 469
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-007.webp",
+      "caption": "Table 7: Extended long-context benchmark results (avg@3). Numbers in parentheses show improvement over the Qwen3-30B-A3B-Thinking baseline.",
+      "page": 12,
+      "index": 7,
+      "width": 632,
+      "height": 201
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-005.webp",
+      "caption": "Figure 6: SWE Agent Trajectory Compilation Example. The top section shows the original question and ground truth answer. The middle section shows the original agentic trajectory. At each turn the agent opens a single file from the provided codebase snapshot and decides either to (Examine) it for understanding or to (Modify) it to fix the bug. The bottom section shows the ACC-compiled QA, where only the opened evidence is retained and an irrelevant distractor (a file present in the snapshot but never opened, highlighted in red) is shuffled into the provided long-context background.",
+      "page": 13,
+      "index": 5,
+      "width": 829,
+      "height": 1125
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21850v1/fig-004.webp",
+      "caption": "Figure 7: SQL Agent Trajectory Compilation Example. The top section shows the original question and ground truth answer. The middle section shows the original agentic trajectory, where the agent executes a recursive SQL query to traverse the referral graph. The bottom section shows the ACC-compiled QA, where the complete contents of the relevant database table are assembled into the provided long-context background. The ellipsis column (...) indicates additional fields that are present in the compiled context but omitted here for brevity.",
+      "page": 14,
+      "index": 4,
+      "width": 829,
+      "height": 1036
+    }
+  ]
+}

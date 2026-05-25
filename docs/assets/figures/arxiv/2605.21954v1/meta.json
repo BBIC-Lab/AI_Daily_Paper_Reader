@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-003.webp",
+      "caption": "Figure 1: MLLMs know when during prefill but forget during decoding. We visualize Qwen3VL’s cross-modal attention at inference. During prefill (left), attention from query tokens peaks at the ground-truth interval. During decoding (right), attention from the generated answer tokens drifts away to a visually salient but query-irrelevant segment, which aligns with the model’s erroneous prediction. Our method leverages the clean prefill signal to correct the final output.",
+      "page": 2,
+      "index": 3,
+      "width": 818,
+      "height": 327
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-009.webp",
+      "caption": "Figure 2: Grounding Contribution Score (GCS) of each attention head across three MLLMs. Each dot is one head, and the top-K heads are marked with stars.",
+      "page": 4,
+      "index": 9,
+      "width": 808,
+      "height": 253
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-014.webp",
+      "caption": "Figure 3: Overview of our two-stage framework. Stage 1 runs the MLLM once to obtain a baseline prediction [ŝ(1), ê(1)] and, in parallel, processes the prefill attention of the TG-Heads through (1) extraction, (2) entropy-based aggregation, (3) contrastive debiasing against a blank-video reference, and (4) high-attention interval detection. (5) A confidence gate decides whether the baseline prediction is already reliable. Stage 2 re-invokes the MLLM with its visual context restricted to the detected interval [fs, fe], via either (a) Hard Crop (re-read the cropped clip) or (b) Soft Mask (hide out-ofinterval visual tokens through the attention mask).",
+      "page": 5,
+      "index": 14,
+      "width": 820,
+      "height": 459
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-004.webp",
+      "caption": "Table 1: Main Results. “+Ours” denotes applying our inference-time framework to the backbone above. Gains are shown in green (↑). Entries marked with ∗ are taken from the TimeLens paper [37]. The rest are our reproductions under the same protocol.",
+      "page": 7,
+      "index": 4,
+      "width": 827,
+      "height": 437
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-008.webp",
+      "caption": "Figure 4: Qualitative results. Two examples where our method corrects an erroneous baseline prediction. Blue dashed boxes indicate the detected high-attention interval.",
+      "page": 8,
+      "index": 8,
+      "width": 746,
+      "height": 265
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-007.webp",
+      "caption": "Figure 6: Additional motivation example. Query attention (prefill) correctly focuses on the groundtruth interval, while answer attention (decoding) is distracted by a visually similar but query-irrelevant later segment.",
+      "page": 13,
+      "index": 7,
+      "width": 742,
+      "height": 375
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-006.webp",
+      "caption": "Figure 7: Additional motivation example. Query attention (prefill) sharply peaks at the ground-truth interval, but answer attention (decoding) is overwhelmed by the attention sink at the beginning of the video, causing the baseline to mispredict.",
+      "page": 14,
+      "index": 6,
+      "width": 740,
+      "height": 395
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-015.webp",
+      "caption": "Figure 8: Per-token attention distributions. Function and generic tokens (“A”, “man”) yield high-entropy, uninformative curves, while content tokens (“exercising”, “car”) yield low-entropy curves that sharply peak inside the ground-truth interval. Entropy-based weighting prioritizes these informative tokens.",
+      "page": 16,
+      "index": 15,
+      "width": 728,
+      "height": 534
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-012.webp",
+      "caption": "Figure 9: Effect of contrastive attention debiasing. Top: Positive attention on the real video exhibits both a correct peak near the ground-truth interval and a spurious peak at the beginning of the video (attention sink). Middle: Zero attention on a blank video reveals that the beginning-of-video peak is a content-independent bias intrinsic to the model. Bottom: After contrastive debiasing, the bias is removed and only the query-specific peak remains.",
+      "page": 17,
+      "index": 12,
+      "width": 693,
+      "height": 697
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-010.webp",
+      "caption": "Table 9: Final hyperparameter configuration used to produce the numbers in Table 1. FPS is the frame sampling rate, “Tokens” is the total visual-token budget, and “Stage 2” is the chosen Stage 2 variant. Most parameters use the defaults in Table 8; only δ and r vary with dataset duration, while the confidence thresholds are selected per backbone on the TimeLens-100K validation split.",
+      "page": 19,
+      "index": 10,
+      "width": 825,
+      "height": 234
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-011.webp",
+      "caption": "Figure 11: Grounding Contribution Score (GCS) for Qwen3-VL-4B and Qwen3-VL-32B. Consistent with the models reported in the main paper, the temporal grounding capability remains highly concentrated in a sparse set of TG-Heads, confirming that this heavy-tailed pattern generalizes across model scales.",
+      "page": 19,
+      "index": 11,
+      "width": 710,
+      "height": 311
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-013.webp",
+      "caption": "Figure 12: Successful correction (Example 1). The baseline predicts an overly broad interval that covers almost the entire video, while the TG-Head attention concentrates on a narrow high-attention region. Restricting the visual context to this region allows Stage 2 to localize the event much more precisely.",
+      "page": 20,
+      "index": 13,
+      "width": 653,
+      "height": 433
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-002.webp",
+      "caption": "Figure 13: Successful correction (Example 2). The baseline produces an inaccurate interval, while our method tightens it around the true event by leveraging the clean prefill attention signal.",
+      "page": 21,
+      "index": 2,
+      "width": 660,
+      "height": 410
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-001.webp",
+      "caption": "Figure 14: Successful correction (Example 3). The baseline already overlaps substantially with the ground truth but remains imprecise. By cropping to the high-attention interval, Stage 2 reduces the number of frames and increases per-frame resolution, yielding a prediction that aligns exactly with the ground-truth interval.",
+      "page": 21,
+      "index": 1,
+      "width": 660,
+      "height": 441
+    },
+    {
+      "url": "assets/figures/arxiv/2605.21954v1/fig-005.webp",
+      "caption": "Figure 16: Failure case 2 (absent attention at GT). The ground-truth interval receives near-zero attention, while both the baseline and our method predict a high-attention but incorrect segment. When TG-Head attention does not correlate with the ground truth, our framework cannot provide a correction.",
+      "page": 22,
+      "index": 5,
+      "width": 651,
+      "height": 448
+    }
+  ]
+}
