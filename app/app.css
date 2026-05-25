@@ -16,6 +16,8 @@
   --dpr-sidebar-control-open-bg: rgba(15, 23, 42, 0.055);
   --dpr-sidebar-control-hover-bg: rgba(15, 23, 42, 0.035);
   --dpr-sidebar-control-focus: rgba(15, 118, 110, 0.42);
+  --dpr-sidebar-footer-height: 48px;
+  --dpr-sidebar-footer-reserve: 58px;
 }
 
 /* 全局缩放重置为1 */
@@ -585,13 +587,16 @@ body.close #paper-chat-container::after {
     left: 0;
     bottom: 0;
     width: var(--sidebar-width, 260px);
-    height: 48px;
+    height: var(--dpr-sidebar-footer-height);
+    box-sizing: border-box;
     background: linear-gradient(
       to bottom,
       rgba(244, 248, 250, 0),
       var(--dpr-sidebar-bg) 45%,
       var(--dpr-sidebar-bg)
     );
+    border-top: 1px solid var(--dpr-sidebar-border);
+    box-shadow: 0 -8px 18px rgba(18, 62, 90, 0.06);
     pointer-events: none;
     z-index: 1500;
   }
@@ -2556,7 +2561,7 @@ article.markdown-section {
 }
 
 .sidebar .sidebar-nav {
-  padding-bottom: 96px !important;
+  padding-bottom: var(--dpr-sidebar-footer-reserve) !important;
 }
 
 .sidebar::-webkit-scrollbar {
