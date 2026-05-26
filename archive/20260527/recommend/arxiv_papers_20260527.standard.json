@@ -1,0 +1,781 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-26T21:33:04.246641+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 65,
+    "deep_cap": 6,
+    "deep_selected": 10,
+    "quick_candidates": 106,
+    "quick_skim_target": 11,
+    "quick_selected": 10,
+    "deep_selected_before_profile_limit": 29,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 10,
+        "quick": 10
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 19,
+        "quick": 1
+      }
+    },
+    "profile_limit_dropped": 20
+  },
+  "deep_dive": [
+    {
+      "id": "2605.25605v1",
+      "source": "arxiv",
+      "title": "Decoding Stimulus Reconstruction-Based Auditory Attention Robustly in Unbalanced EEG Datasets",
+      "abstract": "In the past decade, numerous studies have applied deep neural networks (DNNs) to decode auditory attention (AAD) from Electroencephalogram (EEG) signals via stimulus reconstruction. However, the influence of dataset balance on the decoding performance of stimulus reconstruction-based AAD remains unexplored. In this study, three publicly available EEG-AAD datasets - KUL, DTU, and NJU cEEGrid - are used to construct both balanced and unbalanced experimental conditions. We hypothesize and demonstrate that stimulus reconstruction-based DNN decoders tend to produce overestimated decoding performance on unbalanced datasets. To address this issue, we propose a leave-one-paired-envelope-out (LOPEO) cross-validation protocol. Experimental results confirm that LOPEO effectively prevents inflated decoding accuracy on unbalanced datasets. While balanced datasets are generally preferred in experimental design, LOPEO provides a principled evaluation framework for unbalanced datasets that have already been published, filling an important gap in the field.",
+      "authors": [
+        "Yuanming Zhang",
+        "Yayun Liang",
+        "Zhibin Lin",
+        "Jing Lu"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.LG"
+      ],
+      "published": "2026-05-25T08:58:19+00:00",
+      "link": "https://arxiv.org/pdf/2605.25605v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "decodes auditory attention from EEG via stimulus reconstruction",
+      "llm_evidence_cn": "通过刺激重建从EEG解码听觉注意力",
+      "llm_evidence": "通过刺激重建从EEG解码听觉注意力",
+      "canonical_evidence": "通过刺激重建从EEG解码听觉注意力",
+      "llm_tldr_en": "Decoding stimulus reconstruction-based AAD in unbalanced EEG datasets with LOPEO protocol",
+      "llm_tldr_cn": "使用LOPEO协议在不平衡EEG数据集中进行基于刺激重建的听觉注意力解码",
+      "llm_tldr": "使用LOPEO协议在不平衡EEG数据集中进行基于刺激重建的听觉注意力解码",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23080v1",
+      "source": "arxiv",
+      "title": "The Attribution Contract: Feature Attribution for Generative Language Models",
+      "abstract": "Feature attribution methods promise to identify which input features matter for a model output. In generative language models, however, it is often unclear what should count as a feature in the first place. In autoregressive language models, earlier generated tokens are both outputs of the model and inputs to later predictions. In diffusion language models, generation proceeds through iterative denoising or unmasking rather than fixed left-to-right prediction, so local explanation may target a state of diffusion rather than a next token. We argue that this ambiguity is not merely an implementation detail, but a conceptual limitation of carrying classifier-era feature attribution directly into generative language modeling. We introduce the Attribution Contract, a specification for feature-attribution claims that names what output is being explained, which features are eligible to receive attribution, what generative process is assumed, what is held fixed, and what model score is being attributed. The contract clarifies why the same attribution method can answer different questions depending on how it is instantiated. We argue that many disagreements about feature attribution in generative language models are not disagreements about attribution algorithms, but about unstated explanatory contracts. Using autoregressive and diffusion language models as case studies, we show when attribution to earlier generated tokens, intermediate states, or denoising stages is informative, when it is misleading, and why feature-attribution methods in generative language models should be evaluated as method-contract pairs.",
+      "authors": [
+        "Giang Nguyen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-21T22:27:04+00:00",
+      "link": "https://arxiv.org/pdf/2605.23080v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "feature attribution for generative language models",
+      "llm_evidence_cn": "生成式语言模型的特征归因",
+      "llm_evidence": "生成式语言模型的特征归因",
+      "canonical_evidence": "生成式语言模型的特征归因",
+      "llm_tldr_en": "Introduces the Attribution Contract framework for feature attribution in generative language models.",
+      "llm_tldr_cn": "提出了生成式语言模型特征归因的Attribution Contract框架。",
+      "llm_tldr": "提出了生成式语言模型特征归因的Attribution Contract框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23122v1",
+      "source": "arxiv",
+      "title": "Beyond Neural Activity Prediction: Probing Latent Representations in Mouse V1 Digital Twins",
+      "abstract": "Digital twins of sensory cortex serve as powerful response oracles. Although prediction accuracy is the central metric by which these models are evaluated, it provides limited insight into the latent representations that support those predictions. This becomes increasingly important as digital twins are used as in silico experimental systems for stimulus design and hypothesis generation: models with similar prediction accuracy may rely on different latent representations. We address this gap by systematically probing a family of digital twins of mouse V1 trained to predict neural activity from naturalistic videos recorded in freely moving mice. The models share the same training data and neural-prediction objective, but differ in visual-encoder architecture. For each frozen model, we characterize latent representations along three levels: (i) linear decodability from controlled visual probes of orientation, contrast, and motion; (ii) latent-unit tuning to canonical visual features including orientation selectivity, contrast response, spatial-frequency tuning; and (iii) population geometry of hidden-layer activity. Across architectures, better neural-response prediction correlates with stronger probe accuracy. Additionally, highly predictive models exhibit flatter hidden-population eigenspectra, indicating higher-dimensional representations closer to population-geometry signatures reported in mouse V1. Although these representational properties covary with prediction accuracy across architectures, digital twins with comparable prediction scores can still differ substantially in probe performance and latent-unit tuning. These results establish multi-level representational probing as a complement to standard neural-prediction evaluation, providing a framework for understanding digital twins not only as predictors, but also as substrates for studying visual computations.",
+      "authors": [
+        "Adriano Lima",
+        "Yuchen Hou",
+        "Michael Beyeler",
+        "Marius Schneider"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC"
+      ],
+      "published": "2026-05-22T00:45:35+00:00",
+      "link": "https://arxiv.org/pdf/2605.23122v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "probes latent representations in mouse V1 digital twins",
+      "llm_evidence_cn": "探测小鼠V1数字孪生的潜在表示",
+      "llm_evidence": "探测小鼠V1数字孪生的潜在表示",
+      "canonical_evidence": "探测小鼠V1数字孪生的潜在表示",
+      "llm_tldr_en": "Probes latent representations in mouse V1 models for neural activity prediction.",
+      "llm_tldr_cn": "探测小鼠V1模型中用于神经活动预测的潜在表示。",
+      "llm_tldr": "探测小鼠V1模型中用于神经活动预测的潜在表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23137v1",
+      "source": "arxiv",
+      "title": "STAMBRIDGE: Spectral-Temporal Amplitude-aware Mid-Feature Bridge for EEG Visual Decoding",
+      "abstract": "Electroencephalography (EEG) visual decoding remains challenging due to the modality gap between low-SNR neural signals and highly structured vision--language spaces, making direct cross-modal alignment unstable. To address this, we propose STAMBRIDGE, a versatile two-stage framework that sequentially tackles feature conditioning and cross-modal alignment. First, we introduce a Spectral-Temporal Amplitude-aware Modulation (STAM) to extract well-conditioned EEG representations. By replacing hard frequency masking with amplitude-derived soft channel weighting and multi-scale temporal convolutions, STAM explicitly preserves frequency-aware transients while reducing the risk of time-domain ringing artifacts. Building upon these robust neural features, we further introduce a model-agnostic Mid-Feature Semantic Bridge (MFSB) that constructs a regularized intermediate space through directed cross-modal interactions, enabling staged distillation and more stable semantic alignment. Experiments on the THINGS-EEG benchmark show competitive 200-way zero-shot retrieval performance, with 34.50\\% Top-1 and 65.95\\% Top-5 accuracy. In addition, embeddings learned by STAMBRIDGE produce semantically coherent image reconstructions with a diffusion model, demonstrating robust EEG-to-vision semantic alignment. The code is available at: https://github.com/thabeatmjh/STAMBRIDGE.",
+      "authors": [
+        "Jiahe Meng",
+        "Weiming Zeng",
+        "Yueyang Li",
+        "Bo Chai",
+        "Hongjie Yan",
+        "Zhiguo Zhang",
+        "Wai Ting Siok",
+        "Nizhuan Wang"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-05-22T01:21:45+00:00",
+      "link": "https://arxiv.org/pdf/2605.23137v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG visual decoding framework using spectral-temporal modulation and cross-modal alignment",
+      "llm_evidence_cn": "使用频谱时间调制和跨模态对齐的脑电解码视觉框架",
+      "llm_evidence": "使用频谱时间调制和跨模态对齐的脑电解码视觉框架",
+      "canonical_evidence": "使用频谱时间调制和跨模态对齐的脑电解码视觉框架",
+      "llm_tldr_en": "STAMBRIDGE decodes visual stimuli from EEG by conditioning features and bridging to vision-language space.",
+      "llm_tldr_cn": "STAMBRIDGE通过特征调节和桥接视觉-语言空间从脑电信号解码视觉刺激。",
+      "llm_tldr": "STAMBRIDGE通过特征调节和桥接视觉-语言空间从脑电信号解码视觉刺激。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23139v1",
+      "source": "arxiv",
+      "title": "CALAD: Channel-Aware contrastive Learning for multivariate time series Anomaly Detection",
+      "abstract": "Multivariate time series anomaly detection has become increasingly important in real-world applications, where labeled data are often scarce. Many existing approaches rely on unsupervised learning to model normal patterns, but they often treat all channels equally. This design can dilute anomaly-relevant signals, since not all channels contribute equally to anomaly detection. In this paper, we propose CALAD, a channel-aware contrastive learning framework for multivariate time series anomaly detection. CALAD governs the construction of contrastive samples using estimated channel relevance, allowing the learning process to reflect anomaly semantics rather than generic similarity. Channel relevance is estimated from reconstruction errors of a transformer-based autoencoder and is used to distinguish channels that are more influential to anomalous behaviors. Using this information, we design a channel-wise augmentation strategy in which positive and negative samples are constructed based on whether anomaly-relevant channels are preserved or perturbed. This encourages invariance to changes in irrelevant channels while being sensitive to changes in anomaly-relevant channels. Furthermore, CALAD combines contrastive learning and an auxiliary reconstruction head, allowing the model to learn discriminative representations while retaining normal structures. Experiments on multiple real-world datasets shows that CALAD consistently outperforms existing methods, particularly under distribution shift scenarios. We provide the code for reproducibility at https://github.com/hirundo1218/CALAD",
+      "authors": [
+        "Jaehyeop Hong",
+        "Youngbum Hur"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-22T01:38:05+00:00",
+      "link": "https://arxiv.org/pdf/2605.23139v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "channel-aware contrastive learning for time series anomaly detection",
+      "llm_evidence_cn": "基于通道感知的对比学习用于时间序列异常检测",
+      "llm_evidence": "基于通道感知的对比学习用于时间序列异常检测",
+      "canonical_evidence": "基于通道感知的对比学习用于时间序列异常检测",
+      "llm_tldr_en": "CALAD uses channel relevance to improve time series anomaly detection.",
+      "llm_tldr_cn": "CALAD利用通道相关性提升时间序列异常检测。",
+      "llm_tldr": "CALAD利用通道相关性提升时间序列异常检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23402v1",
+      "source": "arxiv",
+      "title": "Parametric Prior Mapping Framework for Non-stationary Probabilistic Time Series Forecasting",
+      "abstract": "Effectively modeling non-stationary dynamics in probabilistic multivariate time series(MTS) forecasting requires balancing expressiveness with robustness. Existing parametric approaches benefit from strong inductive biases but lack flexibility, whereas deep generative models struggle to capture complex temporal dependencies without extensive data and computation. We introduce Parametric Prior Mapping (PPM), a framework that injects parametric structural priors into a generative modeling process. Specifically, PPM utilizes a parametric estimator to derive a dynamic, adaptive prior that guides the learning of a complex predictive distribution via a learnable mapping. This design allows the model to retain the efficiency of parametric methods while exploiting the expressive power of generative models. Trained with a hybrid objective, PPM yields precise forecasts with well-calibrated uncertainty estimates. Empirical results show that PPM outperforms existing baselines in handling non-stationary data, offering a superior trade-off between accuracy and computational efficiency. The code is available at https://github.com/ljl8336/PPM.",
+      "authors": [
+        "Jinglin Li",
+        "Jun Tan",
+        "QI Fang",
+        "Ning Gui"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-22T09:13:29+00:00",
+      "link": "https://arxiv.org/pdf/2605.23402v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Non-stationary probabilistic time series forecasting with parametric priors",
+      "llm_evidence_cn": "基于参数先验的非平稳概率时间序列预测",
+      "llm_evidence": "基于参数先验的非平稳概率时间序列预测",
+      "canonical_evidence": "基于参数先验的非平稳概率时间序列预测",
+      "llm_tldr_en": "Parametric prior mapping for probabilistic time series forecasting handling non-stationarity.",
+      "llm_tldr_cn": "参数先验映射用于处理非平稳性的概率时间序列预测。",
+      "llm_tldr": "参数先验映射用于处理非平稳性的概率时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23470v1",
+      "source": "arxiv",
+      "title": "Learning Individual Dynamics from Sparse Cross-Sectional Snapshots",
+      "abstract": "Predicting how a dynamical unit evolves over time - how an individual ages, an epidemic spreads, or a physical system degrades - typically requires dense longitudinal tracking. When only extremely sparse or entirely cross-sectional data is available, inferring individualized, continuous-time trajectories is fundamentally ill-posed. Existing methods force a strict compromise: sequence models (e.g. latent ODEs) require dense longitudinal data, while cross-sectional methods (e.g. optimal transport, flow matching-based) map aggregate populations, losing individual dynamics. In this paper, we demonstrate that this dichotomy can be broken. We introduce CADENCE, a principled probabilistic framework that recovers continuous individual trajectories from isolated snapshots by anchoring latent dynamics to static, individual-level contexts. We provide novel identifiability guarantees for single-timepoint trajectory inference. By combining a score-based spatial encoder (bijective Probability Flow ODE) to eliminate diffeomorphic ambiguities with a Soft Mixture-of-Experts (SMoE) router, we show that individual dynamical parameters and routing function are jointly identifiable. Across a suite of benchmarks spanning physical systems to real-world biological data, CADENCE, trained strictly on extremely sparse snapshots with context structure, matches or exceeds the performance of state-of-the-art sequential models trained on dense, full-trajectory data.",
+      "authors": [
+        "Christian Lagemann",
+        "Kai Lagemann",
+        "Steven L. Brunton",
+        "Sach Mukherjee"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CE"
+      ],
+      "published": "2026-05-22T10:29:47+00:00",
+      "link": "https://arxiv.org/pdf/2605.23470v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "recovering continuous trajectories from sparse snapshots",
+      "llm_evidence_cn": "从稀疏快照恢复连续轨迹",
+      "llm_evidence": "从稀疏快照恢复连续轨迹",
+      "canonical_evidence": "从稀疏快照恢复连续轨迹",
+      "llm_tldr_en": "CADENCE recovers continuous individual trajectories from sparse cross-sectional data.",
+      "llm_tldr_cn": "CADENCE从稀疏截面数据恢复连续个体轨迹。",
+      "llm_tldr": "CADENCE从稀疏截面数据恢复连续个体轨迹。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23744v1",
+      "source": "arxiv",
+      "title": "Contrast to Detect: Dynamic Graph Contrastive Regularization for Unsupervised Anomaly Detection in Multivariate Time Series",
+      "abstract": "Anomaly detection in multivariate time series (MTS) is hindered by dynamic inter-variable dependencies and feature entanglement under spectral noise, and in practice, is further complicated by the absence of anomaly labels. Existing reconstruction-based detectors tend to recover anomalies as faithfully as normal patterns, while prevailing graph contrastive methods enforce invariance across views and thus assume a stationary relational structure, an assumption that breaks under structural drift in real systems. We propose ContrastAD, an unsupervised framework that turns structural evolution itself into a learning signal rather than suppressing it. A Multi-Perspective Embedder encodes inputs from temporal, attribute, and structural perspectives. A Frequency-Aware Attention Mixer then performs spectral top-K filtering before attention, preventing noise from leaking into query-key similarities. The core component, a Dynamic Graph Contrastive Learner, builds power-law-inspired sparse graph snapshots from batch-level DTW distances and contrasts the most divergent pair against a stable anchor, regularizing the latent space without imposing rigid invariance. Across five real-world benchmarks, ContrastAD attains the highest mean F1 on all five datasets and the highest AUC on three (SWaT 93.60, SMD 98.66, PSM 97.79), with statistically significant F1 and AUC margins over the strongest baseline on SWaT and PSM. On MSL and SMAP, it trails the AUC leader by under 0.7 points while still leading on F1. Ablation and sensitivity studies further confirm that the contrastive objective works best as a soft regularizer, supporting our claim that strict invariance is suboptimal under non-stationary dynamics.",
+      "authors": [
+        "Yunhua Pei",
+        "Zixing Song",
+        "Jin Zheng",
+        "John Cartlidge"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-22T15:18:53+00:00",
+      "link": "https://arxiv.org/pdf/2605.23744v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "unsupervised anomaly detection in multivariate time series using dynamic graph contrastive learning",
+      "llm_evidence_cn": "使用动态图对比学习的多元时间序列无监督异常检测",
+      "llm_evidence": "使用动态图对比学习的多元时间序列无监督异常检测",
+      "canonical_evidence": "使用动态图对比学习的多元时间序列无监督异常检测",
+      "llm_tldr_en": "ContrastAD detects anomalies in multivariate time series by learning from structural evolution via dynamic graph contrastive regularization.",
+      "llm_tldr_cn": "ContrastAD通过动态图对比正则化从结构演变中学习，检测多元时间序列异常。",
+      "llm_tldr": "ContrastAD通过动态图对比正则化从结构演变中学习，检测多元时间序列异常。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.24313v1",
+      "source": "arxiv",
+      "title": "End-to-End Intracortical Speech Decoding from Neural Activity",
+      "abstract": "Current high-performing intracortical speech neuroprostheses achieve low word error rates but typically rely on external language models during inference, increasing memory, computation, and latency. In this work, we investigate whether meaningful character-level decoding is achievable without such models. We propose an end-to-end Conformer-based neural decoder trained directly on intracortical recordings from a participant with amyotrophic lateral sclerosis (ALS). Without any external language model, the system achieves a character error rate (CER) of 23.80\\% on held-out validation data. Analysis shows that performance variability is driven by inter-session signal degradation, while dominant errors arise from incorrect word boundary segmentation. These results demonstrate that effective character-level decoding is possible in a fully end-to-end framework, providing a strong neural signal for downstream linguistic processing.",
+      "authors": [
+        "Owais Mujtaba Khanday",
+        "Jose A. Gonzalez-Lopez",
+        "Marc Ouellet",
+        "Alberto Galdon",
+        "Gonzalo Olivares Granados"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.HC"
+      ],
+      "published": "2026-05-23T00:39:59+00:00",
+      "link": "https://arxiv.org/pdf/2605.24313v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "end-to-end speech decoding from neural activity",
+      "llm_evidence_cn": "从神经活动端到端解码语音",
+      "llm_evidence": "从神经活动端到端解码语音",
+      "canonical_evidence": "从神经活动端到端解码语音",
+      "llm_tldr_en": "Proposes a conformer-based decoder for intracortical speech decoding without external language model.",
+      "llm_tldr_cn": "提出无需外部语言模型的端到端皮层内语音解码器。",
+      "llm_tldr": "提出无需外部语言模型的端到端皮层内语音解码器。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.24381v1",
+      "source": "arxiv",
+      "title": "Assessing the Operational Viability of Foundation Models for Time Series Forecasting",
+      "abstract": "Time series forecasting drives operational decisions in areas like finance, transportation, and energy. While supervised learning approaches achieve strong performance, they require domain-specific training, feature engineering, and ongoing maintenance. Large-scale foundation models have recently emerged as a zero-shot alternative, avoiding task-specific training much like LLMs. In this work, we evaluate foundation models against standard supervised approaches. Rather than focusing solely on aggregate accuracy, we analyze performance across four operational regimes: periodic human-centric systems, physically constrained processes, stochastic financial markets, and heterogeneous demand forecasting.   Our results characterize optimal deployment areas. Foundation models perform well in domains with transferable periodic structures and are efficient for cold-start or long-tail scenarios. Conversely, supervised specialists maintain higher precision in systems governed by strict physical constraints. In financial domains, newer foundation models are rapidly closing the performance gap with supervised specialists. We further quantify trade-offs in inference latency, data drift adaptability, and deployment constraints. Finally, we propose a Complexity Router that assigns each series to the optimal model class using empirical features. We demonstrate that this selective routing achieves higher accuracy and significantly lower inference costs compared to deploying a universal foundation model, providing a practical framework for balancing generalization and efficiency.",
+      "authors": [
+        "Kavin Soni",
+        "Debanshu Das",
+        "Vamshi Guduguntla"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "stat.AP",
+        "stat.ML"
+      ],
+      "published": "2026-05-23T03:40:44+00:00",
+      "link": "https://arxiv.org/pdf/2605.24381v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Foundation models for time series forecasting",
+      "llm_evidence_cn": "时间序列预测的基础模型",
+      "llm_evidence": "时间序列预测的基础模型",
+      "canonical_evidence": "时间序列预测的基础模型",
+      "llm_tldr_en": "Evaluates foundation models for zero-shot time series forecasting across operational regimes.",
+      "llm_tldr_cn": "评估基础模型在多种操作场景下的零样本时间序列预测性能。",
+      "llm_tldr": "评估基础模型在多种操作场景下的零样本时间序列预测性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.23111v1",
+      "source": "arxiv",
+      "title": "Contextual Role Modulates Object Representational Geometry in the Human Brain",
+      "abstract": "The human brain represents objects in a way that is both invariant across instances and flexible enough to support different contexts and tasks. Yet it remains unknown how object representations are dynamically remapped as the same object shifts across contextual roles. Here we combined fMRI with naturalistic movie viewing to investigate how the same objects are represented when they are passive elements in the scene versus the targets of goal-directed actions. When objects were action targets, they engaged a parietal action network centered in the supramarginal and postcentral gyri, while passive objects recruited a distributed occipito-temporal network involved in visual object recognition. Within the networks most strongly encoding objects in their respective contexts, representational geometry showed a double dissociation: target object representations were organized by action affordance and hand posture affordance dimensions, while passive object representations aligned with semantic dimensions. In addition, visual representational structure was invariant to context. Outside those context-specific brain networks, representational content retained context-invariance, indicating that flexibility and invariance operate at different levels of the same representational system. Together, these findings demonstrate neural remapping of object representational geometries in a manner that depends on moment-to-moment changes in the contextual relevance of objects within a naturalistic scene.",
+      "authors": [
+        "Julien Dirani",
+        "Shankar Chawla",
+        "Leila Wehbe",
+        "Bradford Z. Mahon"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC"
+      ],
+      "published": "2026-05-22T00:13:27+00:00",
+      "link": "https://arxiv.org/pdf/2605.23111v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "investigates object representational geometry in human brain using fMRI",
+      "llm_evidence_cn": "使用fMRI研究人脑中的物体表示几何",
+      "llm_evidence": "使用fMRI研究人脑中的物体表示几何",
+      "canonical_evidence": "使用fMRI研究人脑中的物体表示几何",
+      "llm_tldr_en": "Reveals how contextual role modulates object representations in human brain networks",
+      "llm_tldr_cn": "揭示上下文角色如何调节人脑网络中的物体表示",
+      "llm_tldr": "揭示上下文角色如何调节人脑网络中的物体表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.23105v1",
+      "source": "arxiv",
+      "title": "Conceptual Schema Inference for Tabular Datasets using Large Language Models",
+      "abstract": "Large collections of tabular data from data lakes, web tables and open data portals often originate from heterogeneous sources, leading to representational inconsistencies. Understanding and organizing such repositories therefore remains a major challenge. While prior work has primarily focused on dataset discovery and exploration, this paper addresses the complementary problem of conceptual schema inference: automatically deriving a conceptual schema that captures entity types, attributes and inter-type relationships directly from raw tables. We propose two large language model (LLM)-based approaches that use only column headers and cell values: GeSI uses generative LLMs to infer hierarchical types and their attributes from table- and column-level semantics, and to integrate them into a global schema that also captures relationships across types; EmSI employs LLM-based table embeddings to group tables by column-level semantics, infer attributes within each group, and construct hierarchical structures from shared attribute patterns. Finally, we report an experimental analysis demonstrating the effectiveness of our approaches in terms of the conciseness and structural quality of the inferred schema components, their scalability to large repositories, and a case study illustrating end-to-end schema inference.",
+      "authors": [
+        "Zhenyu Wu",
+        "Jiaoyan Chen",
+        "Norman W. Paton"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-05-21T23:51:00+00:00",
+      "link": "https://arxiv.org/pdf/2605.23105v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "inferring conceptual schema from raw tables using LLMs",
+      "llm_evidence_cn": "使用大语言模型从原始表格推断概念模式",
+      "llm_evidence": "使用大语言模型从原始表格推断概念模式",
+      "canonical_evidence": "使用大语言模型从原始表格推断概念模式",
+      "llm_tldr_en": "LLM-based approaches to automatically derive conceptual schemas from raw tabular data.",
+      "llm_tldr_cn": "基于大语言模型从原始表格数据自动推断概念模式。",
+      "llm_tldr": "基于大语言模型从原始表格数据自动推断概念模式。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.23144v1",
+      "source": "arxiv",
+      "title": "SLIP-RS: Structured-Attribute Language-Image Pre-Training for Remote Sensing Object Detection",
+      "abstract": "Existing language-image pre-training for remote sensing object detection is constrained by Monolithic Label Learning, which relies on exhaustively enumerating open-set categories via black-box data to acquire fine-grained representations, creating a dependency incompatible with the domain's inherent data scarcity. To transcend this bottleneck, we propose SLIP-RS, establishing a Structured-Attribute Decoupling Paradigm that maps the open-ended category space into a finite, physically meaningful attribute space, unlocking fine-grained discriminability via explicit structural logic. This paradigm is realized via two technical pillars: (1) Structured-Attribute Contrastive Learning, which enforces the learning of decoupled intrinsic visual logic via combinatorial attribute augmentation; and (2) Conformal Attribute Reliability Engine, which leverages conformal prediction theory to rigorously distill high-fidelity supervision from noisy sources, yielding RS-Attribute-15M, the largest dataset with over 15 million attribute annotations. Extensive experiments demonstrate that SLIP-RS establishes unprecedented performance in fine-grained detection and cross-domain generalization, validating structured attributes as a vital foundation for remote sensing. Code: https://github.com/facias914/SLIP-RS.",
+      "authors": [
+        "Chenxu Wang",
+        "Yuxuan Li",
+        "Yunheng Li",
+        "Xiang Li",
+        "Jingyuan Xia",
+        "Qibin Hou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-22T01:50:19+00:00",
+      "link": "https://arxiv.org/pdf/2605.23144v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "structured-attribute contrastive learning for fine-grained representations",
+      "llm_evidence_cn": "结构化属性对比学习用于细粒度表示",
+      "llm_evidence": "结构化属性对比学习用于细粒度表示",
+      "canonical_evidence": "结构化属性对比学习用于细粒度表示",
+      "llm_tldr_en": "SLIP-RS uses structured-attribute decoupling for fine-grained representation in remote sensing.",
+      "llm_tldr_cn": "SLIP-RS使用结构化属性解耦实现遥感细粒度表示。",
+      "llm_tldr": "SLIP-RS使用结构化属性解耦实现遥感细粒度表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.23115v1",
+      "source": "arxiv",
+      "title": "Robust OT-Guided Generative Residual Domain Adaptation for Bike-Sharing Demand Prediction under Temporal Domain Shift",
+      "abstract": "Bike-sharing models trained on historical station-hour data may degrade when deployed in later years because travel patterns change over time. This paper studies March Citi Bike demand prediction from 2021 to 2026 as a temporal domain adaptation problem and proposes Gen-ROTDA, a robust optimal transport-guided residual domain adaptation framework. The method fits a target-domain station-time anchor with a small labeled target subset, transfers residual rather than raw demand, applies a deterministic label-preserving residual feature generator, and trims high-cost transport matches before training the final residual predictor. Experiments compare Gen-ROTDA with anchor-only, source-only, target-only, fine-tuning, MMD adaptation, Sinkhorn OTDA, ROTDA, and Gen-OTDA. Gen-ROTDA achieves the lowest MAE on the main 2025 to 2026 task and is the best OT-family method on average across multi-year tasks, although fine-tuning and MMD adaptation remain strong overall baselines. Under abnormal target-unlabeled records, Gen-ROTDA is much more stable than non-robust OT variants, suggesting that robust transport is useful for noisy temporal transfer in bike-sharing demand prediction.",
+      "authors": [
+        "Yiming Ma"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-05-22T00:29:14+00:00",
+      "link": "https://arxiv.org/pdf/2605.23115v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "temporal domain adaptation for sequential demand prediction",
+      "llm_evidence_cn": "时间域自适应用于序列需求预测",
+      "llm_evidence": "时间域自适应用于序列需求预测",
+      "canonical_evidence": "时间域自适应用于序列需求预测",
+      "llm_tldr_en": "Gen-ROTDA adapts bike-sharing demand models across time using optimal transport and residual learning with limited target data.",
+      "llm_tldr_cn": "Gen-ROTDA使用最优传输和残差学习，在有限目标数据下跨时间适应共享单车需求模型。",
+      "llm_tldr": "Gen-ROTDA使用最优传输和残差学习，在有限目标数据下跨时间适应共享单车需求模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.23198v1",
+      "source": "arxiv",
+      "title": "Label-Efficient Dataset Pruning via Semi-Supervised Pseudo-Labeling",
+      "abstract": "Dataset pruning reduces the storage and training costs of deep learning by selecting an informative subset from a large dataset. However, most existing pruning methods require fully labeled data, which limits their applicability in realistic settings where unlabeled data are abundant and annotation is costly. Recent label-free pruning methods address this issue, but they rely on features from pretrained models to estimate example difficulty. This dependence can be unreliable when the target dataset differs substantially from the pretraining distribution. We propose SemiPrune, a label-efficient dataset pruning framework, using only a small randomly labeled subset, that uses semi-supervised learning to generate pseudo-labels for unlabeled data, allowing existing supervised pruning methods that require label information to be seamlessly applied to the resulting pseudo-labeled training pool. We then estimate example difficulty from pseudo-label-induced training dynamics and select a coreset. By learning directly from the target dataset, our method better captures the target distribution and provides more reliable signals for difficulty estimation and coreset selection. We validate our approach on domain-specific, image-corrupted, and long-tailed datasets, where it achieves state-of-the-art performance among label-free and label-efficient baselines, while also demonstrating competitive performance on standard benchmarks.",
+      "authors": [
+        "Yeseul Cho",
+        "Baekrok Shin",
+        "Changmin Kang",
+        "Chulhee Yun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-22T03:29:12+00:00",
+      "link": "https://arxiv.org/pdf/2605.23198v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "semi-supervised pseudo-labeling for dataset pruning with limited labeled data",
+      "llm_evidence_cn": "使用少量标注数据的半监督伪标签数据集剪枝",
+      "llm_evidence": "使用少量标注数据的半监督伪标签数据集剪枝",
+      "canonical_evidence": "使用少量标注数据的半监督伪标签数据集剪枝",
+      "llm_tldr_en": "SemiPrune prunes datasets using pseudo-labels from a small labeled subset, reducing annotation cost.",
+      "llm_tldr_cn": "SemiPrune使用来自少量标注子集的伪标签剪枝数据集，降低标注成本。",
+      "llm_tldr": "SemiPrune使用来自少量标注子集的伪标签剪枝数据集，降低标注成本。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.23180v1",
+      "source": "arxiv",
+      "title": "Self-Improving In-Context Learning",
+      "abstract": "We propose to improve in-context learning (ICL) by optimizing the continuous embeddings of a fixed few-shot prompt at test time. The key observation is that the log-probabilities a model assigns to its demonstrated outputs$\\unicode{x2013}$available from a single forward pass without generating any tokens$\\unicode{x2013}$provide a meaningful signal for how well the model has inferred the task from its demonstrations. We formalize this signal as a bounded, self-supervised confidence proxy and maximize it via zeroth-order optimization over the prompt embeddings, yielding a test-time calibration procedure. The approach requires no finetuning, no token generation, no predefined label set, and no external data, making it equally applicable to both classification and free-form generation tasks. Across a comprehensive suite of ICL tasks, the proposed calibration consistently matches or improves upon the base model and outperforms classification-specific baselines on most tasks. The statistically significant correlation between proxy improvement and downstream accuracy gain confirms that the proposed proxy encodes a reliable optimization signal for in-context learning.",
+      "authors": [
+        "Baturay Saglam",
+        "Dionysis Kalogerias"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-05-22T03:01:34+00:00",
+      "link": "https://arxiv.org/pdf/2605.23180v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "test-time prompt optimization for few-shot adaptation",
+      "llm_evidence_cn": "测试时提示优化用于少样本适应",
+      "llm_evidence": "测试时提示优化用于少样本适应",
+      "canonical_evidence": "测试时提示优化用于少样本适应",
+      "llm_tldr_en": "Optimizes prompt embeddings at test time to improve in-context learning without finetuning.",
+      "llm_tldr_cn": "在测试时优化提示嵌入以改进上下文学习，无需微调。",
+      "llm_tldr": "在测试时优化提示嵌入以改进上下文学习，无需微调。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.23258v1",
+      "source": "arxiv",
+      "title": "A Simple Plug-in for Improving Eviction-Based KV Cache Compression",
+      "abstract": "KV cache growth is a major bottleneck for long-context inference in large language models. Existing methods are often dominated by binary eviction or representation approximation, which may underutilize tokens that are not critical for exact retention but are still reconstructable. We present VECTOR, a plug-and-play augmentation for eviction-based pipelines that introduces three-way token routing: retention, approximation, and eviction. VECTOR combines an importance signal from the base scorer with a reconstructability signal from an offline-calibrated regression-based value estimation. By leveraging reconstructability, VECTOR recovers useful value information that would otherwise be irreversibly lost under binary eviction, while preserving key vectors for attention routing stability. Experimental results show that VECTOR improves quality-memory trade-offs under medium-to-high compression, with especially clear gains in stricter budget regimes.",
+      "authors": [
+        "Yuping Lin",
+        "Jiayuan Ding",
+        "Yue Xing",
+        "Pengfei He",
+        "Jiliang Tang",
+        "Subhabrata Mukherjee"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-22T06:00:15+00:00",
+      "link": "https://arxiv.org/pdf/2605.23258v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "computes importance and reconstructability signals for token routing in KV cache",
+      "llm_evidence_cn": "计算KV缓存中令牌路由的重要性和可重构性信号",
+      "llm_evidence": "计算KV缓存中令牌路由的重要性和可重构性信号",
+      "canonical_evidence": "计算KV缓存中令牌路由的重要性和可重构性信号",
+      "llm_tldr_en": "VECTOR uses importance and reconstructability to improve eviction-based KV cache compression.",
+      "llm_tldr_cn": "VECTOR利用重要性和可重构性改进基于驱逐的KV缓存压缩。",
+      "llm_tldr": "VECTOR利用重要性和可重构性改进基于驱逐的KV缓存压缩。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.23312v1",
+      "source": "arxiv",
+      "title": "Towards Generalizable and Efficient Large-Scale Generative Recommenders",
+      "abstract": "Generative recommendation models can model user behavior as sequences of events and provide a shared backbone for multiple recommendation tasks. In production, however, pre-training gains do not automatically translate into downstream application improvements: task headroom, repeated-training cost, serving latency, and item freshness all affect transfer. We describe our experience scaling a generative recommender from 2M to 1B backbone parameters, excluding embedding and decoding layers, in a production-scale title recommendation setting. Across multiple downstream tasks, we observe task-dependent scaling behavior: some tasks approach an empirical ceiling within the observed scale range, while others continue to benefit from additional capacity. This motivates using offset scaling-law fits as a diagnostic for where additional model scale may be more or less useful.   We then study production constraints that arise when applying the model in practice. Frequent retraining over trillions of behavior tokens makes training and decoding efficiency important; cached serving can make the immediate next-token target stale; and newly launched titles may need to be scored from semantic metadata before collaborative ID embeddings are reliable. We address these issues with multi-token prediction for serving-latency alignment, sampled softmax and a projected decoding head for efficient repeated training, and semantic item towers with collaborative-embedding masking for cold-start adaptation. In a one-week production-shadow evaluation over 1M users, the 1B-backbone model achieves higher MRR than the 2M-backbone baseline across all reported tasks. Overall, the results support treating model scale as one component of a production transfer problem, alongside task headroom, decoding cost, serving-latency alignment, and item generalization.",
+      "authors": [
+        "Qiuling Xu",
+        "Ko-Jen Hsiao",
+        "Moumita Bhattacharya"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-05-22T07:31:00+00:00",
+      "link": "https://arxiv.org/pdf/2605.23312v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "leveraging pretrained generative recommender for downstream tasks",
+      "llm_evidence_cn": "利用预训练生成式推荐模型进行下游任务迁移",
+      "llm_evidence": "利用预训练生成式推荐模型进行下游任务迁移",
+      "canonical_evidence": "利用预训练生成式推荐模型进行下游任务迁移",
+      "llm_tldr_en": "Scaling a generative recommender shows task-dependent transfer benefits from pretrained backbone",
+      "llm_tldr_cn": "缩放生成式推荐器显示从预训练骨干网络迁移的下游任务收益具有任务依赖性",
+      "llm_tldr": "缩放生成式推荐器显示从预训练骨干网络迁移的下游任务收益具有任务依赖性",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.23341v1",
+      "source": "arxiv",
+      "title": "Sparse Compositional Flow Matching by geometric assembly from motion primitives",
+      "abstract": "Embodied trajectories, such as the executable motion sequences of robotic manipulators, underwater vehicles, and mobile robots, are a fundamental output of embodied AI. Modern generative models often treat them as a dense, monolithic signal generated point by point, fitting an intricate high-dimensional posterior while leaving the data's latent structure unmodeled, the same sample inefficiency long identified by the structured generative model literature. We argue that a compositional latent structure is a natural choice: many embodied tasks share recurring motion fragments that can be made explicit as a finite repertoire of reusable motion primitives, and compositional units naturally align with subtask boundaries to support task decomposition. Existing compositional generators, however, compose in a latent space and rely on post-hoc decoding to relate sampled units to actual trajectory segments. We instead compose directly in the physical trajectory space through a flow-matching framework with two coupled designs. Motion-Primitive Dictionary Learning equips each atom with a learnable length mask and binary starting indicators so the atom itself is the primitive, reused verbatim wherever it is placed. Structural Sparse Flow Matching with Geometric Constraints then generates a binary placement matrix using duration-aware tokenization and a differentiable geometric loss that enforces spatial continuity and temporal contiguity where adjacent primitives meet. On Open X-Embodiment and 3DMoTraj, the framework attains state-of-the-art accuracy and reduces the FDE/ADE ratio from 1.8 to 1.07, improving ADE by 19.2% and FDE by 21.0% over the strongest baseline.",
+      "authors": [
+        "Yan Tang",
+        "Yuanbo Tang",
+        "Tingyu Cao",
+        "Shaolun Huang",
+        "Yang Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-05-22T07:55:48+00:00",
+      "link": "https://arxiv.org/pdf/2605.23341v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Generates motion sequences by assembling learned primitives",
+      "llm_evidence_cn": "通过组装学习到的运动基元生成运动序列",
+      "llm_evidence": "通过组装学习到的运动基元生成运动序列",
+      "canonical_evidence": "通过组装学习到的运动基元生成运动序列",
+      "llm_tldr_en": "Compositional flow matching that assembles reusable motion primitives into embodied trajectories.",
+      "llm_tldr_cn": "组合流匹配，将可复用运动基元组装成具身轨迹。",
+      "llm_tldr": "组合流匹配，将可复用运动基元组装成具身轨迹。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.23373v1",
+      "source": "arxiv",
+      "title": "AffectCodec: Emotion-Preserving Neural Speech Codec with Block-Diagonal Residual FSQ",
+      "abstract": "Neural speech codecs have become the discrete interface between raw audio and speech language models, yet they remain optimized primarily for acoustic reconstruction fidelity, which leaves emotion-relevant cues vulnerable to being discarded during quantization, limiting the affective capacity of downstream models. We trace this degradation to two mechanisms: reconstruction-driven bit allocation under limited bitrate and cross-stream leakage in concatenation-based codecs, where acoustic gradients can overwrite nominally emotion-reserved dimensions. We propose AffectCodec, an emotion-preserving neural speech codec built on Block-Diagonal Residual Finite Scalar Quantization (BD-RFSQ). By imposing block-diagonal input and output projections over emotion and acoustic subspaces, BD-RFSQ transforms bit allocation from implicit and loss-driven to explicit and structurally guaranteed, while still preserving a flat token interface for downstream speech language models. AffectCodec further combines this structurally constrained quantizer with multi-granularity emotion conditioning and multi-rate training, enabling robust affect preservation at low bitrates. Experiments across multiple emotional speech benchmarks show that AffectCodec substantially improves emotion preservation, especially in the low-bitrate regime, while maintaining competitive acoustic quality and intelligibility. These results suggest that structurally protected quantization is an effective principle for preserving emotion-relevant information and may provide a general route toward attribute-aware neural speech compression.",
+      "authors": [
+        "Zhaoyang Meng",
+        "Zhengyao Ma",
+        "Kecan Mao",
+        "Yingming Gao",
+        "Ya Li"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-05-22T08:37:38+00:00",
+      "link": "https://arxiv.org/pdf/2605.23373v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "emotion-preserving speech codec learning compact discrete representations from raw audio",
+      "llm_evidence_cn": "从原始音频学习紧凑离散表示的情感保留语音编解码器",
+      "llm_evidence": "从原始音频学习紧凑离散表示的情感保留语音编解码器",
+      "canonical_evidence": "从原始音频学习紧凑离散表示的情感保留语音编解码器",
+      "llm_tldr_en": "AffectCodec preserves emotion in neural speech codec via block-diagonal residual FSQ for compact representations.",
+      "llm_tldr_cn": "AffectCodec通过块对角残差FSQ在神经语音编解码器中保留情感以学习紧凑表示。",
+      "llm_tldr": "AffectCodec通过块对角残差FSQ在神经语音编解码器中保留情感以学习紧凑表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.23373v1/fig-003.webp",
+      "caption": "Figure 2: Left: Internal structure of a single BD-RFSQ stage. The residual rk−1 is projected to the compact FSQ space via a block-diagonal input matrix (red: emotion partition; blue: acoustic partition), affine-normalized, scalar-quantized by FSQ, affine-de-normalized, and mapped back to the latent space via a block-diagonal output matrix, yielding the stage reconstruction ûk. Center: BD-RFSQ chains K such stages with residual connections; each stage quantizes the current residual and subtracts its reconstruction before passing the remainder to the next stage. Right: AffectCodec architecture. A frozen emotion teacher and a DAC-style acoustic encoder form a dual-path front-end; the CEM module fuses coarse-grained emotion cues into the acoustic pathway, and the concatenated representation is discretized by BD-RFSQ. Separate acoustic and emotion decoders reconstruct the waveform and supervise the emotion partition, respectively.",
+      "page": 4,
+      "index": 3,
+      "width": 777,
+      "height": 417
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23373v1/fig-002.webp",
+      "caption": "Table 1: Emotion preservation comparison across bitrates and datasets. MEDR and WEDR denote Macro and Weighted Emotion Degradation Rate (%, lower is better). MSE reports V/A/D mean squared error (×10−3, lower is better). Best results are bolded, and second-best results are underlined. \"–\" indicates the model does not support that bitrate.",
+      "page": 8,
+      "index": 2,
+      "width": 764,
+      "height": 506
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23373v1/fig-006.webp",
+      "caption": "Table 2: Acoustic quality and intelligibility across bitrates and datasets. ViSQOL estimates perceptual quality on a MOS-like scale (higher is better). STOI measures short-time objective intelligibility (higher is better). WER (%) reports word error rate from Whisper-Large-v3 [19] (lower is better).",
+      "page": 9,
+      "index": 6,
+      "width": 768,
+      "height": 506
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23373v1/fig-005.webp",
+      "caption": "Table 3: Ablation study on IEMOCAP at 1.5 kbps. Each row modifies one component from the full model. For MEDR, WEDR, and VAD MSE, lower is better; for ViSQOL and STOI, higher is better.",
+      "page": 9,
+      "index": 5,
+      "width": 644,
+      "height": 223
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23373v1/fig-001.webp",
+      "caption": "Figure 3: Rate-distortion Pareto front for the emotion FSQ partition. Filled markers on the solid line are Pareto-optimal; grey markers are dominated configurations. The knee point (yellow star) marks where marginal efficiency drops by more than 50%; the selected operating point (green diamond, d=3, L=2) lies one step beyond the knee to provide a small reconstruction margin at a cost of only +2 bits/stage.",
+      "page": 14,
+      "index": 1,
+      "width": 516,
+      "height": 362
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23373v1/fig-007.webp",
+      "caption": "Table 6: Comparison of residual FSQ conditioning strategies for addressing residual magnitude decay.",
+      "page": 16,
+      "index": 7,
+      "width": 827,
+      "height": 207
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23373v1/fig-004.webp",
+      "caption": "Table 10: Parameter count breakdown. All values measured from loaded checkpoints.",
+      "page": 19,
+      "index": 4,
+      "width": 668,
+      "height": 296
+    }
+  ]
+}

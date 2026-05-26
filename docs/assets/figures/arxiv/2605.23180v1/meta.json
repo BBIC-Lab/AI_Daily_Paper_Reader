@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-006.webp",
+      "caption": "Table 1. Per-task exact-match accuracy on ICLEval (𝑛: number of test samples). Boldface indicates strict improvement over the base model; Δ denotes relative improvement (%). One-sided McNemar test (𝐻1: Ours > Base) across all 2,040 samples: 𝑝 = 0.001 for Llama 3.1-8B, 𝑝 = 0.038 for Qwen3-4B, 𝑝 < 0.001 for Gemma 2-2B. Baseline comparisons on the classification subset are reported in Table 2.",
+      "page": 8,
+      "index": 6,
+      "width": 940,
+      "height": 482
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-009.webp",
+      "caption": "Table 2. Baseline comparison on the classification subset of ICLEval. CC and DC-PMI require a single-token label",
+      "page": 9,
+      "index": 9,
+      "width": 978,
+      "height": 309
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-004.webp",
+      "caption": "Figure 1. Proxy improvement versus accuracy improvement across all 12 ICLEval tasks. A one-sided Spearman rank correlation test (𝐻1 ∶ 𝜌 > 0) yields a statistically significant positive association across all models and tasks combined.",
+      "page": 10,
+      "index": 4,
+      "width": 967,
+      "height": 271
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-005.webp",
+      "caption": "Figure 2. Ablation studies of the proposed three-component proxy (𝛼=0.6, 𝛽=0.3, 𝛾=0.1) and the perturbation domain used in end-to-end calibration. (a) Each proxy component is ablated by setting its coefficient to zero and renormalizing the remaining weights. (b) Accuracy difference between the default perturbation domain (demonstration embeddings only) and full-sequence perturbation that includes query positions. Results are reported for Qwen3-4B.",
+      "page": 10,
+      "index": 5,
+      "width": 965,
+      "height": 353
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-001.webp",
+      "caption": "Figure 3. Downstream accuracy under varying perturbation sample counts 𝑁 and perturbation scales, expressed as fractions of the optimal value 𝜇 = 0.004, with all other hyperparameters held fixed. Results are reported for Qwen3-4B, where (∗) indicates the values used in the main experiments.",
+      "page": 11,
+      "index": 1,
+      "width": 966,
+      "height": 517
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-008.webp",
+      "caption": "Table 3. Operational comparison of prior methods against the proposed approach. ✓ and ✗ indicate whether the property is satisfied or not. Test-time: no training or optimization of any module over a dataset. No hidden representations:",
+      "page": 24,
+      "index": 8,
+      "width": 979,
+      "height": 968
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-002.webp",
+      "caption": "Table 4. Dataset statistics for ICLEval. Classification (“Clf.”) tasks have a fixed label space; generation tasks require open-ended output. Dictionary (“Dict.”) Search comprises two subtasks (String and Number), which are merged into a single task in the main results (Table 1).",
+      "page": 25,
+      "index": 2,
+      "width": 986,
+      "height": 494
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-003.webp",
+      "caption": "Table 5. Model-specific tuned hyperparameters of our method along with the embedding (or hidden) dimensionality. For each model, we use the same set of hyperparameters across all samples.",
+      "page": 26,
+      "index": 3,
+      "width": 978,
+      "height": 786
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23180v1/fig-007.webp",
+      "caption": "Table 6. Mean number of optimization steps per task and model, averaged over all samples within each task. The corresponding runtimes range from roughly 10 to 60 seconds.",
+      "page": 27,
+      "index": 7,
+      "width": 586,
+      "height": 446
+    }
+  ]
+}

@@ -1,78 +1,78 @@
 ## 最新日报
-- 最新运行日期：2026-05-26
-- 运行时间：2026-05-26 05:05:37 北京时间
+- 最新运行日期：2026-05-27
+- 运行时间：2026-05-27 05:40:08 北京时间
 - 运行状态：成功
 - 本次总论文数：20
 - 精读区：10
 - 速读区：10
 
 ### 今日简报（AI）
-今日精选了Transformer注意力新范式与结构化因果发现两项高价值研究，并速览了模拟推理、安全对齐和医学影像表征等前沿进展。  
-核心看点：能量门控注意力用频谱显著性作归纳偏置，因果发现在等噪声方差下识别SVAR有理论突破。  
-建议读者深入阅读两篇精读论文，特别关注注意力机制的设计哲学与因果模型的可识别性条件。
-- 详情：[/202605/26/README](/202605/26/README)
+今天精读了两篇前沿研究，解码听觉注意力的鲁棒方法拿下满分，同时深入分析了生成式语言模型的特征归因契约。  
+最值得关注的是在不平衡脑电信号中稳定提取听觉注意的新思路，以及从生成模型内部揭示特征与输出的因果关系。  
+读者下一步可带着这两类问题的框架，去观察自己模型中的注意力或归因是否也存在类似的结构性偏差。
+- 详情：[/202605/27/README](/202605/27/README)
 
 ### 精读区论文标签
-1. [Energy-Gated Attention: Spectral Salience as an Inductive Bias for Transformer Attention](/202605/26/2605.21842v1-energy-gated-attention-spectral-salience-as-an-inductive-bias-for-transformer-attention)  
+1. [Decoding Stimulus Reconstruction-Based Auditory Attention Robustly in Unbalanced EEG Datasets](/202605/27/2605.25605v1-decoding-stimulus-reconstruction-based-auditory-attention-robustly-in-unbalanced-eeg-datasets)  
+   标签：评分：10.0/10、query:ndai
+   evidence：通过刺激重建从EEG解码听觉注意力
+2. [The Attribution Contract: Feature Attribution for Generative Language Models](/202605/27/2605.23080v1-the-attribution-contract-feature-attribution-for-generative-language-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于频谱显著性的注意力权重用于特征重要性
-2. [Causal Discovery in Structural VAR Models Under Equal Noise Variance](/202605/26/2605.21846v1-causal-discovery-in-structural-var-models-under-equal-noise-variance)  
+   evidence：生成式语言模型的特征归因
+3. [Beyond Neural Activity Prediction: Probing Latent Representations in Mouse V1 Digital Twins](/202605/27/2605.23122v1-beyond-neural-activity-prediction-probing-latent-representations-in-mouse-v1-digital-twins)  
    标签：评分：9.0/10、query:ndai
-   evidence：时间序列因果发现及神经数据应用
-3. [ACC: Compiling Agent Trajectories for Long-Context Training](/202605/26/2605.21850v1-acc-compiling-agent-trajectories-for-long-context-training)  
+   evidence：探测小鼠V1数字孪生的潜在表示
+4. [STAMBRIDGE: Spectral-Temporal Amplitude-aware Mid-Feature Bridge for EEG Visual Decoding](/202605/27/2605.23137v1-stambridge-spectral-temporal-amplitude-aware-mid-feature-bridge-for-eeg-visual-decoding)  
    标签：评分：9.0/10、query:ndai
-   evidence：将智能体轨迹编译为序列进行LLM训练
-4. [Temporal Coding as a Substrate for Sensorimotor Object Inference: A Spiking Reinterpretation of Thousand Brains Architecture](/202605/26/2605.22206v1-temporal-coding-as-a-substrate-for-sensorimotor-object-inference-a-spiking-reinterpretation-of-thousand-brains-architecture)  
+   evidence：使用频谱时间调制和跨模态对齐的脑电解码视觉框架
+5. [CALAD: Channel-Aware contrastive Learning for multivariate time series Anomaly Detection](/202605/27/2605.23139v1-calad-channel-aware-contrastive-learning-for-multivariate-time-series-anomaly-detection)  
    标签：评分：9.0/10、query:ndai
-   evidence：脉冲网络中的时间编码用于感知运动推理
-5. [Translating Signals to Languages for sEMG-Based Activity Recognition](/202605/26/2605.22403v1-translating-signals-to-languages-for-semg-based-activity-recognition)  
+   evidence：基于通道感知的对比学习用于时间序列异常检测
+6. [Parametric Prior Mapping Framework for Non-stationary Probabilistic Time Series Forecasting](/202605/27/2605.23402v1-parametric-prior-mapping-framework-for-non-stationary-probabilistic-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用LLM将sEMG信号解码为活动标签
-6. [Learning sequence timing and control of replay speed in networks of spiking neurons](/202605/26/2605.22523v1-learning-sequence-timing-and-control-of-replay-speed-in-networks-of-spiking-neurons)  
+   evidence：基于参数先验的非平稳概率时间序列预测
+7. [Learning Individual Dynamics from Sparse Cross-Sectional Snapshots](/202605/27/2605.23470v1-learning-individual-dynamics-from-sparse-cross-sectional-snapshots)  
    标签：评分：9.0/10、query:ndai
-   evidence：脉冲神经网络学习序列时序和回放速度
-7. [Dynamic Hypergraph Representation Learning for Multivariate Time Series without Prior Knowledge](/202605/26/2605.22540v1-dynamic-hypergraph-representation-learning-for-multivariate-time-series-without-prior-knowledge)  
+   evidence：从稀疏快照恢复连续轨迹
+8. [Contrast to Detect: Dynamic Graph Contrastive Regularization for Unsupervised Anomaly Detection in Multivariate Time Series](/202605/27/2605.23744v1-contrast-to-detect-dynamic-graph-contrastive-regularization-for-unsupervised-anomaly-detection-in-multivariate-time-series)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于多变量时间序列的动态超图表示
-8. [Towards a General Intelligence and Interface for Wearable Health Data](/202605/26/2605.22759v1-towards-a-general-intelligence-and-interface-for-wearable-health-data)  
+   evidence：使用动态图对比学习的多元时间序列无监督异常检测
+9. [End-to-End Intracortical Speech Decoding from Neural Activity](/202605/27/2605.24313v1-end-to-end-intracortical-speech-decoding-from-neural-activity)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于可穿戴传感器数据表征的预训练基础模型
-9. [Agentic-VLA: Efficient Online Adaptation for Vision-Language-Action Models](/202605/26/2605.22896v1-agentic-vla-efficient-online-adaptation-for-vision-language-action-models)  
+   evidence：从神经活动端到端解码语音
+10. [Assessing the Operational Viability of Foundation Models for Time Series Forecasting](/202605/27/2605.24381v1-assessing-the-operational-viability-of-foundation-models-for-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：VLA模型在线适应新环境
-10. [World Machine: Towards Generative World Modeling for Time-Series](/202605/26/2605.23025v1-world-machine-towards-generative-world-modeling-for-time-series)  
-   标签：评分：9.0/10、query:ndai
-   evidence：用于时间序列预测的生成式世界建模架构
+   evidence：时间序列预测的基础模型
 
 ### 速读区论文标签
-1. [Truncated Neural Likelihood Estimation for Simulation-Based Inference in State-Space Models](/202605/26/2605.21805v1-truncated-neural-likelihood-estimation-for-simulation-based-inference-in-state-space-models)  
+1. [Contextual Role Modulates Object Representational Geometry in the Human Brain](/202605/27/2605.23111v1-contextual-role-modulates-object-representational-geometry-in-the-human-brain)  
    标签：评分：8.0/10、query:ndai
-   evidence：状态空间模型的神经似然估计
-2. [Implicit Safety Alignment from Crowd Preferences](/202605/26/2605.21822v1-implicit-safety-alignment-from-crowd-preferences)  
+   evidence：使用fMRI研究人脑中的物体表示几何
+2. [Robust OT-Guided Generative Residual Domain Adaptation for Bike-Sharing Demand Prediction under Temporal Domain Shift](/202605/27/2605.23115v1-robust-ot-guided-generative-residual-domain-adaptation-for-bike-sharing-demand-prediction-under-temporal-domain-shift)  
    标签：评分：8.0/10、query:ndai
-   evidence：从人群偏好迁移安全技能到新领域
-3. [Universal CT Representations from Anatomy to Disease Phenotype through Agglomerative Pretraining](/202605/26/2605.21906v2-universal-ct-representations-from-anatomy-to-disease-phenotype-through-agglomerative-pretraining)  
+   evidence：时间域自适应用于序列需求预测
+3. [A Simple Plug-in for Improving Eviction-Based KV Cache Compression](/202605/27/2605.23258v1-a-simple-plug-in-for-improving-eviction-based-kv-cache-compression)  
    标签：评分：8.0/10、query:ndai
-   evidence：从原始CT体积中学习通用表示
-4. [Echo: Learning from Experience Data via User-Driven Refinement](/202605/26/2605.21984v1-echo-learning-from-experience-data-via-user-driven-refinement)  
+   evidence：计算KV缓存中令牌路由的重要性和可重构性信号
+4. [Sparse Compositional Flow Matching by geometric assembly from motion primitives](/202605/27/2605.23341v1-sparse-compositional-flow-matching-by-geometric-assembly-from-motion-primitives)  
    标签：评分：8.0/10、query:ndai
-   evidence：将原始经验转化为可学习知识的框架
-5. [Bridging the Cold-Start Gap: LLM-Powered Synthetic Data Generation for Natural Language Search at Airbnb](/202605/26/2605.21812v1-bridging-the-cold-start-gap-llm-powered-synthetic-data-generation-for-natural-language-search-at-airbnb)  
+   evidence：通过组装学习到的运动基元生成运动序列
+5. [Conceptual Schema Inference for Tabular Datasets using Large Language Models](/202605/27/2605.23105v1-conceptual-schema-inference-for-tabular-datasets-using-large-language-models)  
    标签：评分：7.0/10、query:ndai
-   evidence：冷启动领域适应中的合成数据生成
-6. [Learning Emergent Modular Representations in Multi-modality Medical Vision Foundation Models](/202605/26/2605.21861v1-learning-emergent-modular-representations-in-multi-modality-medical-vision-foundation-models)  
+   evidence：使用大语言模型从原始表格推断概念模式
+6. [Label-Efficient Dataset Pruning via Semi-Supervised Pseudo-Labeling](/202605/27/2605.23198v1-label-efficient-dataset-pruning-via-semi-supervised-pseudo-labeling)  
    标签：评分：7.0/10、query:ndai
-   evidence：从多模态数据学习模块化表示
-7. [MLLMs Know When Before Speaking: Revealing and Recovering Temporal Grounding via Attention Cues](/202605/26/2605.21954v1-mllms-know-when-before-speaking-revealing-and-recovering-temporal-grounding-via-attention-cues)  
+   evidence：使用少量标注数据的半监督伪标签数据集剪枝
+7. [Towards Generalizable and Efficient Large-Scale Generative Recommenders](/202605/27/2605.23312v1-towards-generalizable-and-efficient-large-scale-generative-recommenders)  
    标签：评分：7.0/10、query:ndai
-   evidence：利用多模态大模型注意力线索分析视频时序进行事件定位
-8. [Entropy-Guided Self-Supervised Learning for Medical Image Classification](/202605/26/2605.21970v1-entropy-guided-self-supervised-learning-for-medical-image-classification)  
+   evidence：利用预训练生成式推荐模型进行下游任务迁移
+8. [AffectCodec: Emotion-Preserving Neural Speech Codec with Block-Diagonal Residual FSQ](/202605/27/2605.23373v1-affectcodec-emotion-preserving-neural-speech-codec-with-block-diagonal-residual-fsq)  
    标签：评分：7.0/10、query:ndai
-   evidence：自监督和迁移学习用于表示学习
-9. [Residual Skill Optimization for Text-to-SQL Ensembles](/202605/26/2605.21792v1-residual-skill-optimization-for-text-to-sql-ensembles)  
+   evidence：从原始音频学习紧凑离散表示的情感保留语音编解码器
+9. [SLIP-RS: Structured-Attribute Language-Image Pre-Training for Remote Sensing Object Detection](/202605/27/2605.23144v1-slip-rs-structured-attribute-language-image-pre-training-for-remote-sensing-object-detection)  
    标签：评分：6.0/10、query:ndai
-   evidence：优化Text-to-SQL集成以生成SQL序列
-10. [Seizure-Semiology-Suite (S3): A Clinically Multimodal Dataset, Benchmark, and Models for Seizure Semiology Understanding](/202605/26/2605.21852v1-seizure-semiology-suite-s3-a-clinically-multimodal-dataset-benchmark-and-models-for-seizure-semiology-understanding)  
+   evidence：结构化属性对比学习用于细粒度表示
+10. [Self-Improving In-Context Learning](/202605/27/2605.23180v1-self-improving-in-context-learning)  
    标签：评分：6.0/10、query:ndai
-   evidence：从视频解码癫痫发作症状，与神经信号相关
+   evidence：测试时提示优化用于少样本适应
 

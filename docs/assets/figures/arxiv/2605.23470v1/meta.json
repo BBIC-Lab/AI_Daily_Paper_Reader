@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.23470v1/fig-004.webp",
+      "caption": "Figure 1: CADENCE overview. Stage 1 maps each high-dimensional observation xi ti to a latent state zi ti via a score-based bijective PF-ODE, Gaussian-pinning the latent space. Stage 2 routes the realization’s static context ci through the SMoE gating network to produce a convex expert mixture wi, which conditions the Neural ODE. Forward integration yields individual future trajectories.",
+      "page": 4,
+      "index": 4,
+      "width": 948,
+      "height": 404
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23470v1/fig-001.webp",
+      "caption": "Table 2: MAE and SW2 at prediction horizon H=20. Note asymmetric data access: to provide strong empirical upper bounds, all baselines are given an informational advantage and trained on full longitudinal trajectories (italicized), with the strongest oracle baseline (OT-CFM) underlined. CADENCE is trained on sparse cross-sectional data, yet achieves competitive performance.",
+      "page": 11,
+      "index": 1,
+      "width": 944,
+      "height": 265
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23470v1/fig-002.webp",
+      "caption": "Figure 2: BM1 results comparing CADENCE against published baselines. (a) Per-expert predicted trajectories vs. ground truth. (b) Mean routing accuracy matrix: diagonal confirms effective subgroup prediction. (c) RMSE across the prediction horizon.",
+      "page": 11,
+      "index": 2,
+      "width": 952,
+      "height": 426
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23470v1/fig-005.webp",
+      "caption": "Figure 3: BM6 results comparing CADENCE against published baselines. (a) Per-expert predicted trajectories vs. ground truth. (b) Mean routing accuracy matrix: diagonal confirms effective subgroup prediction. (c) RMSE across the prediction horizon.",
+      "page": 12,
+      "index": 5,
+      "width": 952,
+      "height": 425
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23470v1/fig-003.webp",
+      "caption": "Figure 4: BM7 (LARRY haematopoiesis) results comparing CADENCE against published baselines. (a) Fate prediction accuracy: CADENCE discovers Neutrophil vs. Monocyte fates unsupervised, outperforming all baselines including scDiffEq (67.8% vs. 58.5%). (b) Per-day Sinkhorn divergence: CADENCE achieves the lowest population-level distributional distance at all evaluation time points. (d) Fate probability Pearson correlation against clonal ground truth. (d) Comparison of observed and CADENCE predicted clonal evolution trajectories.",
+      "page": 13,
+      "index": 3,
+      "width": 952,
+      "height": 300
+    }
+  ]
+}

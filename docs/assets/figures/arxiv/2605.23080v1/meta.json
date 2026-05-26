@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.23080v1/fig-001.webp",
+      "caption": "Figure 1: The same attribution method produces different attribution maps under different settings. All three rows use the same model, prompt, generation, and attribution method (Integrated Gradients [13]). Only the setting differs. Top: a local next-token setting attributes the prediction of noir over both prompt and prefix tokens, and mass concentrates on the generated prefix Le chien est because it is predictive of the next token. Middle: a prompt-conditioned setting holds the generated prefix fixed (gray, hatched) and attributes only over prompt tokens. “Held fixed” means the prefix remains in the forward pass at its actual value but is removed from the attribution path, so mass that would have gone to the prefix is now distributed only among prompt tokens. The result concentrates on black, the prompt token most predictive of noir. Bottom: a span-level setting targets the full generated span Le chien est noir and attributes only over prompt tokens; the prefix is again held fixed (gray, hatched).",
+      "page": 2,
+      "index": 1,
+      "width": 707,
+      "height": 569
+    },
+    {
+      "url": "assets/figures/arxiv/2605.23080v1/fig-002.webp",
+      "caption": "Table 1: Seven feature-attribution settings, organized by Attribution Contract. The classifier row shows the classical setting where attribution is well-defined. Generative LMs have multiple contracts: three autoregressive and three diffusion. Columns follow the SCOPE ordering: S, C, O, P, E . A dash in the conditioning column indicates that no variable is held fixed.",
+      "page": 8,
+      "index": 2,
+      "width": 1052,
+      "height": 364
+    }
+  ]
+}

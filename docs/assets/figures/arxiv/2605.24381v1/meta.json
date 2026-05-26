@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-009.webp",
+      "caption": "Figure 1: Architectural Divergence in Time Series Foundation Models. (A) TimesFM aggregates continuous time points into dense vectors (‘Patches’), preserving local numerical semantics. (B) Chronos quantizes values into discrete bins. (C) Moirai utilizes ‘Any-variate’ attention to handle variable numbers of input series.",
+      "page": 5,
+      "index": 9,
+      "width": 979,
+      "height": 604
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-006.webp",
+      "caption": "Table 2: Quantitative Evaluation across seven models and four operational regimes. Foundation models (TFM 2.0, TFM 2.5, Chronos) are evaluated zero-shot; supervised models are trained per dataset. TimesFM 2.5 shows substantial improvement over 2.0 on Exchange and Energy. The regime-dependent pattern persists across both FM architectures. PatchTST and DLinear receive only raw value windows without temporal covariates, consistent with their standard evaluation protocol. Energy metrics are reported on unscaled data (◦C).",
+      "page": 8,
+      "index": 6,
+      "width": 977,
+      "height": 365
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-008.webp",
+      "caption": "Table 3: The Throughput Gap. The supervised XGBoost baseline delivers over three orders of magnitude higher throughput on cheaper CPU hardware compared to the Foundation Model on GPU (CFM ≈ 1000× CXGB).",
+      "page": 9,
+      "index": 8,
+      "width": 748,
+      "height": 227
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-003.webp",
+      "caption": "Figure 2: Traffic Flow Forecast. The fine-grained double-peak structure is captured by TimesFM 2.0, whereas XGBoost underestimates the extremes.",
+      "page": 10,
+      "index": 3,
+      "width": 976,
+      "height": 479
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-004.webp",
+      "caption": "Figure 3: Energy Forecast. Highlighting the mean reversion trade-off. XGBoost collapses to the mean, while TimesFM 2.0 observes a scale shift, exhibiting a visible discontinuity from the historical context (Grey) at T=0. (evaluated without test-time scaling).",
+      "page": 10,
+      "index": 4,
+      "width": 976,
+      "height": 483
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-001.webp",
+      "caption": "Figure 4: The Generalist vs. Specialist Regime Map. The X-axis represents the strength of periodicity and human-centric patterns. The Y-axis represents the intensity of physical constraints (Thermodynamics) or stochastic entropy (Finance). Foundation Models (Generalist) perform strongest in the lower-right quadrant (High Periodicity) where patterns are universal. XGBoost (Specialist) outperforms in the upper-left quadrant, where domain-specific physics or noise require feature-engineered inductive biases.",
+      "page": 11,
+      "index": 1,
+      "width": 976,
+      "height": 535
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-005.webp",
+      "caption": "Figure 5: The Cold Start Problem. Visualizing the Feature Starvation trade-off. With only 48 hours of history (Grey), XGBoost (Red) fails to capture seasonality due to undefined lag features. TimesFM 2.0 (Blue), leveraging pre-trained knowledge, instantly recognizes the daily cycle and produces a robust forecast.",
+      "page": 13,
+      "index": 5,
+      "width": 979,
+      "height": 473
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-002.webp",
+      "caption": "Figure 6: Proposed Hybrid Deployment Architecture. The Complexity Router computes four series-level features — spectral entropy, coefficient of variation, seasonal autocorrelation, and trend strength — to assign each incoming series to the optimal model class. Stable series are routed to CPU-based supervised models for low-latency inference; high-entropy or strongly periodic series are routed to the Foundation Model service.",
+      "page": 15,
+      "index": 2,
+      "width": 976,
+      "height": 390
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-010.webp",
+      "caption": "Figure 7: Empirical Routing Feature Analysis. FM win rate by decile for four series-level features across 5,089 series (Traffic + M4). Dashed red line marks 60% threshold. FM models: TimesFM 2.5, Chronos. Specialist models: PatchTST, DLinear. FM win rate rises with spectral entropy and coefficient of variation, peaks at both extremes of seasonal autocorrelation, and is highest at very low trend strength.",
+      "page": 16,
+      "index": 10,
+      "width": 962,
+      "height": 669
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24381v1/fig-007.webp",
+      "caption": "Figure 8: Cost-Accuracy Pareto Frontier. Complexity router MASE vs. relative inference cost as α varies from 0 (pure specialist) to 1 (pure FM). FM cost = 1,000× specialist. Orange dot marks the Pareto knee at α = 0.30, cost = 301×, MASE = 0.970. The Complexity router outperforms both pure deployments.",
+      "page": 17,
+      "index": 7,
+      "width": 956,
+      "height": 622
+    }
+  ]
+}
