@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.24455v1/fig-005.webp",
+      "caption": "Figure 1. Schematic of the Multi-source Domain Transfer Learning Framework. (a) Model Architecture. Crystalline structures and compositions are encoded into high-dimensional vectors via MAGPIE and processed by a Common Feature Extractor, which simultaneously feeds into three functional branches: a Label Predictor, a Material Classifier, and a Domain Alignment module to extract cross-domain invariant representations. (b) Multi-source integration strategies. Comparison of two knowledge fusion paradigms: (i) Feature Concatenation, which merges latent vectors for joint regression, and (ii) Model Ensemble, which combines source-specific regressors via dynamic, sample-adaptive weighting to forecast target attributes.",
+      "page": 4,
+      "index": 5,
+      "width": 869,
+      "height": 500
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24455v1/fig-002.webp",
+      "caption": "Table 1. Details of the source domains used in this study.",
+      "page": 7,
+      "index": 2,
+      "width": 873,
+      "height": 214
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24455v1/fig-003.webp",
+      "caption": "Figure 2. Performance Comparison of Multi-Source Domain Transfer Learning in Target Material Property Prediction. (a) This figure demonstrates the prediction performance of five single-source domains (S1–S5) and their integrated model across varying sample sizes in target domains. (b) The performance of different source domain combinations (S1+S3, S1+S3+S2, S1+S3+S2+S4) was compared with that of the fully integrated model on the target domain. (c) Four model strategies were compared: Naive Pooling, Weighted Ensemble, Naive Pooling + ATL, and Weighted Ensemble + ATL. (d) The importance of each source domain is evaluated by sequentially removing one domain at a time and comparing it with the fully integrated model. We performed a systematic study to test the performance of our multi-source transfer learning framework. As Figure 2 shows, the model was tested with different amounts of target data and different source combinations. The results clearly prove that our multi-source approach is much better than using only a single source or simple data mixing. Even when the target data size is very small, such as 90 samples, the ensemble model maintains a high R2 and a low MAE. This demonstrates that our framework can effectively extract useful physical information from many different systems to help with difficult 2D material tasks.",
+      "page": 7,
+      "index": 3,
+      "width": 869,
+      "height": 464
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24455v1/fig-001.webp",
+      "caption": "Figure 3. Extrapolation performance of multi-Domain adversarial transfer learning. (a) Parity plot of predicted vs. DFT average electron mobility. The train (gray), test-Single-source (black), and test-Multi-source (red) samples are plotted, with corresponding MAEs (0.09 for interpolation, 0.23 for extrapolation) labeled to show the model’s generalization ability across interpolation/extrapolation intervals. (b) Feature space distribution before/after domain adaptation. S1 (cyan), S3 (pink), and Target (gray) samples are visualized; the arrow indicates that the target domain distribution aligns with source domains after adaptation, verifying the domain alignment effect. (c) Sample density distribution of average electron mobility for Train (light blue) and Test (pink) sets, showing the coverage of the test set (including extrapolation regions beyond the training distribution). (d)-(g) Testing sets for four material properties: parity diagrams and source domain weight distributions. (d) hole mobility, (e) GW gap, (f) dielectric constant, and (g) exfoliation energy. The blue scatter points represent the predicted vs. DFT values (with R2 and MAE labeled to quantify prediction accuracy), and the green bar charts show the sample weight contribution of each source domain (S1-S5).",
+      "page": 11,
+      "index": 1,
+      "width": 869,
+      "height": 887
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24455v1/fig-004.webp",
+      "caption": "Figure 4. Large-scale Screening and Discovery of High-Mobility 2D Materials. (a) Screening results and structural evolution. Application of the model to 11,318 2D materials, identifying 55 candidates with mobility > 103 cm2V-1s-1 (including 36 exclusive n-type, 17 exclusive p-type, and 2 ambipolar candidate exhibiting both high electron and hole mobilities). (b) Electron and hole mobility of the ML screened 2D materials. Some common",
+      "page": 13,
+      "index": 4,
+      "width": 869,
+      "height": 594
+    }
+  ]
+}

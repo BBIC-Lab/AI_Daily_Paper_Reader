@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-004.webp",
+      "caption": "Figure 1. (a) Standard attention computes Nq ×N scores from Q and K, then multiplies by V to produce the output. (b) Interdomain attention maps queries and keys into a shared feature space to produce the kernel query matrix Fq (Nq × R). Keys and values are compressed via SSM recurrence into M interdomain states: U (M ×R, key feature projections), Γ (M × d, value projections), and η (M × 1, normalizing constants). State-space readout computes the output via the Nq ×M cross-covariance FqU ⊤.",
+      "page": 3,
+      "index": 4,
+      "width": 609,
+      "height": 403
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-001.webp",
+      "caption": "Figure 2. FineWeb-Edu validation perplexity vs. training compute (log–log scale), C = 6ND FLOPs for total parameters N and total training tokens D (Chinchilla convention (Hoffmann et al., 2022)). Each point is best-of-run perplexity at the Chinchilla-optimal token budget for that scale (2.5, 7, 15, 26 B tokens for 125 M, 350 M, 760 M, 1.3 B parameters).",
+      "page": 6,
+      "index": 1,
+      "width": 567,
+      "height": 236
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-005.webp",
+      "caption": "Table 4. Mechanism decomposition at 125 M / 2.5 B tokens. “vs Softmax” is the relative change in validation perplexity (positive = worse than softmax). Val. loss is best-of-run; Val. PPL is exp(Val. loss).",
+      "page": 13,
+      "index": 5,
+      "width": 983,
+      "height": 200
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-003.webp",
+      "caption": "Figure 3. Architecture across the four mechanism cells. (a) Full Interdomain uses both the dual key/value input zt = [ξ(kt), vt] and the Q-mediated projection ξ(qt)U ⊤ t Γt. (b) Dual KV input, linear projection keeps the dual input but removes Q from the projection, replacing it with a learned linear contraction. (c) Single input, Q-conditioned projection feeds the SSM a generic two-half input [at, bt] while retaining the Q-mediated projection. (d) S4D-only removes both Interdomain ingredients. Branches drawn in the subfigure colour are active; the dashed red curve marks the Q bypass; the amber complex-valued S4D core is identical across all four variants. The two “N+b” boxes denote the per-head input RMSNorm + learnable bias of Equation (12), applied independently to each SSM input half. (RoPE is the third, orthogonal axis; see Table 4.)",
+      "page": 14,
+      "index": 3,
+      "width": 964,
+      "height": 481
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-002.webp",
+      "caption": "Table 7. Per-task accuracy of the eight-task commonsense suite of Yang et al. (2025), evaluated on the 1.3 B / 26B-token runs via lm-evaluation-harness (Biderman et al., 2024). HellaSwag and ARC-c use length-normalized accuracy; all others use plain accuracy. The 8-task avg row corresponds to the headline column in Table 6.",
+      "page": 15,
+      "index": 2,
+      "width": 535,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-009.webp",
+      "caption": "Table 8. Per-corpus validation perplexity at context lengths L ∈ {4, 8, 14}K for the 1.3 B Softmax, Interdomain, and S4D-only models on PG19 (Rae et al., 2020), CodeParrot (Tunstall et al., 2022), GovReport (Huang et al., 2021), NarrativeQA (Kočiský et al., 2018), Qasper (Dasigi et al., 2021), and QMSum (Zhong et al., 2021). Training context is 4 K; 8K and 14K are out-of-distribution. NarrativeQA is reported here only and is excluded from the five-corpus aggregate of Table 2.",
+      "page": 16,
+      "index": 9,
+      "width": 425,
+      "height": 473
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-010.webp",
+      "caption": "Table 9. RULER single-needle-in-a-haystack (Hsieh et al., 2024) (S-NIAH-1, passkey retrieval), Phonebook exact-match retrieval (Jelassi et al., 2024), and Based zero-shot recall (Arora et al., 2024) (contains, case-insensitive accuracy, %) at 1.3 B. Within the training context, recall-heavy tasks favour softmax attention; state-based architectures (Interdomain, S4D) are much weaker at exact-string retrieval. The Based sub-block reports the six-task suite (SWDE, FDA, SQuAD, NQ, TriviaQA, DROP) together with the 6-task average.",
+      "page": 16,
+      "index": 10,
+      "width": 495,
+      "height": 472
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-006.webp",
+      "caption": "Figure 4. Steady-state decode latency vs. prefix length at varying batch sizes for the 1.3B model on a single RTX 6000 Ada (48 GB). Graphed interdomain (dashed red) is essentially prefix-flat in every panel; softmax (solid blue) is flat at B=1 but rises with L once the per-step KV-cache traffic saturates Ada’s ∼960 GB/s memory bandwidth (B=8, L=8K: 14ms → 22ms; similar steps at B=16, L=4K and B=32, L=2K). Eager interdomain (dotted orange) is also prefix-flat but slower than graphed by the kernel-launch overhead. Curves stop at the largest prefix length that ran to completion; max-fit lengths are summarized in Table 11. Chunked prefill enables interdomain decode through L=16,384 at B≤8 and L=4,096 at B=16, regions where softmax exhausts the 48GB.",
+      "page": 19,
+      "index": 6,
+      "width": 983,
+      "height": 583
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-007.webp",
+      "caption": "Table 11. Steady-state decode latency summary at 1.3B on RTX 6000 Ada. “Range” is the min–max over the prefix lengths that fit; “max-fit L” is the largest prefix length that ran without OOM or capture failure. Speedup = (median softmax) / (median graphed interdomain). Above B=8 the per-step compute starts to dominate kernel-launch overhead and the graph-capture advantage shrinks; at B≥8 graphed interdomain is comparable to or slower than softmax in absolute terms at short prefixes, but its prefix-flat profile keeps it lower at long prefixes and lets it reach (B,L) cells that softmax cannot fit.",
+      "page": 19,
+      "index": 7,
+      "width": 815,
+      "height": 181
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24330v1/fig-008.webp",
+      "caption": "Table 12. Peak VRAM (GB) during prefill at 1.3B on a single RTX 6000 Ada (48 GB), bfloat16 mixed precision (torch.autocast). “Softmax (SDPA)” and “Interdomain (non-chunked)” are the peak from a full-sequence prefill; “Chunked (C=2048)” is the peak from interdomain’s chunked prefill, which retains only the running SSM state across chunks and discards per-chunk activations. “OOM” denotes out-of-memory.",
+      "page": 20,
+      "index": 8,
+      "width": 685,
+      "height": 203
+    }
+  ]
+}

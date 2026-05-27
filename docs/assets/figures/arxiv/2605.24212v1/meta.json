@@ -1,0 +1,238 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-011.webp",
+      "caption": "Figure 1: Overview of the DRUM framework. Source data with complete observations (X,A, Y ) are used to estimate the conditional mean f̄ , while unlabeled target data with only X observed are used to train the worst-case generator g. The robustness parameter δ controls the allowable deviation from the source conditional distribution. The DRUM estimator m(x) uses only covariates X.",
+      "page": 3,
+      "index": 11,
+      "width": 979,
+      "height": 810
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-017.webp",
+      "caption": "Table 1: Baseline characteristics of the OHCA study populations. Continuous variables are presented as mean (SD) or median [IQR]; categorical variables as n (%). The prehospital care variables (A) were available only in the US-ROC source data.",
+      "page": 8,
+      "index": 17,
+      "width": 886,
+      "height": 677
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-015.webp",
+      "caption": "Figure 2: Estimation procedure for DRUM. Stage 1: a neural network f̂ψ(X,A) is trained on labeled source data to estimate f̄(x, a). Stage 2: with f̂ fixed, a worst-case generator is trained on unlabeled target covariates; the generator gϕ(X, ϵ) is conditional on X and constrained by the energy distance budget δ (in the unconstrained setting, gθ(ϵ) depends only on latent noise). Stage 3: the robust predictor m̂(x) averages f̂ over L Monte Carlo draws, producing predictions that use only X at deployment. A bias correction stage regresses pseudo-outcomes Fi on X to reduce sensitivity to estimation error in f̂ .",
+      "page": 13,
+      "index": 15,
+      "width": 976,
+      "height": 581
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-023.webp",
+      "caption": "Figure 3: Worst-case and mean normalized MSE across perturbation scales s for Setting I. Results are computed over 100 Monte Carlo test datasets at each scale. MSE is normalized by the source outcome variance V̂ar(Y S).",
+      "page": 17,
+      "index": 23,
+      "width": 964,
+      "height": 629
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-013.webp",
+      "caption": "Figure 4: Worst-case and mean normalized MSE across perturbation scales s for Setting II. Results are computed over 100 Monte Carlo test datasets at each scale. MSE is normalized by the source outcome variance V̂ar(Y S).",
+      "page": 18,
+      "index": 13,
+      "width": 964,
+      "height": 629
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-020.webp",
+      "caption": "Figure 5: Worst-case and mean normalized MSE across different dA with perturbation scales fixed at s = 1.8. Results are computed over 100 Monte Carlo test datasets at each scale. MSE is normalized by the source outcome variance V̂ar(Y S).",
+      "page": 19,
+      "index": 20,
+      "width": 964,
+      "height": 629
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-004.webp",
+      "caption": "Figure 6: Brier scores across three OHCA populations. Bars show Brier scores (lower is better) with 95% bootstrap CIs. Panel (a): target population (Singapore); panels (b)–(c): external validation sites. Dashed line = best baseline. Stars: paired bootstrap significance vs. best baseline (B = 2,000). PL = best pseudo-label imputation per site.",
+      "page": 21,
+      "index": 4,
+      "width": 959,
+      "height": 897
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-009.webp",
+      "caption": "Figure 7: Calibration plots across three OHCA populations. Points show mean predicted probability vs observed proportion in quantile bins (axes truncated for visibility). Diagonal = perfect calibration.",
+      "page": 22,
+      "index": 9,
+      "width": 924,
+      "height": 886
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-014.webp",
+      "caption": "Table 2: Expected calibration error (ECE) across three OHCA populations. Lower is better. ECE computed using quantile binning consistent with Figure 7 (10 bins). Best baseline selected per site from all 10 baselines (oracle selection). Bold indicates the lowest ECE at each site. 95% bootstrap CIs (B = 2,000).",
+      "page": 23,
+      "index": 14,
+      "width": 977,
+      "height": 227
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-025.webp",
+      "caption": "Table 3: Classification performance at fixed probability cutoffs across three OHCA populations. Best baseline is selected per site from all 10 baselines. Bold indicates the best value across all methods at each site.",
+      "page": 24,
+      "index": 25,
+      "width": 979,
+      "height": 825
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-021.webp",
+      "caption": "Table 5: Hyperparameter search grids for all methods in Setting I. ERM-based methods search over 12 configurations; DRO-based methods search over 72 configurations.",
+      "page": 51,
+      "index": 21,
+      "width": 860,
+      "height": 548
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-027.webp",
+      "caption": "Figure 8: Ablation comparison of all four DRUM variants alongside the standard baselines for Setting I. Results are computed over 100 Monte Carlo test datasets at each scale. MSE is normalized by the source outcome variance V̂ar(Y S).",
+      "page": 52,
+      "index": 27,
+      "width": 964,
+      "height": 629
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-003.webp",
+      "caption": "Table 6: Full numerical results for Setting I: Normalized worst-case and mean MSE across perturbation scales s, for all methods. Results are computed over 100 Monte Carlo test datasets at each scale. MSE is normalized by the source outcome variance V̂ar(Y S). Best performance in each column is in bold.",
+      "page": 53,
+      "index": 3,
+      "width": 660,
+      "height": 1052
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-016.webp",
+      "caption": "Table 7: Full numerical results for Setting II: Normalized worst-case and mean MSE across perturbation scales s, for all methods. Results are computed over 100 Monte Carlo test datasets at each scale. MSE is normalized by the source outcome variance V̂ar(Y S). Best performance in each column is in bold.",
+      "page": 55,
+      "index": 16,
+      "width": 660,
+      "height": 1052
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-024.webp",
+      "caption": "Figure 9: Ablation comparison of all four DRUM variants alongside the standard baselines for Setting II. Results are computed over 100 Monte Carlo test datasets at each scale. MSE is normalized by the source outcome variance V̂ar(Y S).",
+      "page": 56,
+      "index": 24,
+      "width": 964,
+      "height": 629
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-002.webp",
+      "caption": "Figure 10: Ablation comparison of all four DRUM variants alongside the standard baselines for Setting III. Results are computed over 100 Monte Carlo test datasets at each scale. MSE is normalized by the source outcome variance V̂ar(Y S).",
+      "page": 57,
+      "index": 2,
+      "width": 964,
+      "height": 629
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-005.webp",
+      "caption": "Table 8: Full numerical results for Setting III: Normalized worst-case and mean MSE across dimensions dA with fixed perturbation scale s = 1.8. Results are computed over 100 Monte Carlo test datasets at each dimension. MSE is normalized by the source outcome variance V̂ar(Y S). Best performance in each column is in bold.",
+      "page": 58,
+      "index": 5,
+      "width": 656,
+      "height": 1052
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-026.webp",
+      "caption": "Table 9: Hyperparameter search grids for Setting III. Baseline-ERM and Baseline-DRO include architecture search; all other baselines use a fixed [128, 128] architecture. ∗[256, 256, 128] included only for dA ≥ 8. †IW-KMM, IW-Classify, and all PL variants.",
+      "page": 59,
+      "index": 26,
+      "width": 826,
+      "height": 398
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-007.webp",
+      "caption": "Figure 11: Brier score of all methods across four OHCA populations. Bars show Brier scores (lower is better) with 95% bootstrap CIs for all baselines and four DRUM variants.",
+      "page": 61,
+      "index": 7,
+      "width": 621,
+      "height": 1192
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-006.webp",
+      "caption": "Table 10: Baseline characteristics of the OHCA study populations. Continuous variables are presented as mean (SD) or median [IQR]; categorical variables as n (%). The prehospital care variables (A) were available only in the US-ROC source data.",
+      "page": 62,
+      "index": 6,
+      "width": 998,
+      "height": 677
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-029.webp",
+      "caption": "Table 11: Hyperparameter search grids for the OHCA application. DRUM hyperparameters were initially guided by simulation settings and adjusted based on preliminary source validation; final values were confirmed on a held-out Singapore subset. Baseline hyperparameters were selected via source validation. External sites (Japan, Korea, Vietnam) were never used during any training or selection step.",
+      "page": 63,
+      "index": 29,
+      "width": 840,
+      "height": 903
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-019.webp",
+      "caption": "Figure 12: Calibration plots of all methods across four OHCA populations. Points show mean predicted probability vs observed proportion in quantile bins (axes truncated for visibility). Diagonal = perfect calibration.",
+      "page": 64,
+      "index": 19,
+      "width": 910,
+      "height": 923
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-012.webp",
+      "caption": "Figure 13: AUROC across all four Asian OHCA populations. Bars show AUROC (higher is better) with 95% bootstrap CIs. Dashed line = best baseline. Annotations: n.s. = not significantly different from the best baseline (p ≥ 0.05); † = significantly worse (paired bootstrap, B = 2,000).",
+      "page": 65,
+      "index": 12,
+      "width": 700,
+      "height": 1203
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-010.webp",
+      "caption": "Figure 14: AUPRC across four Asian OHCA populations. Bars show AUPRC (higher is better) with 95% bootstrap CIs. Dashed line = best baseline. Annotations: n.s. = not significantly different from the best baseline (p ≥ 0.05); † = significantly worse (paired bootstrap, B = 2,000).",
+      "page": 66,
+      "index": 10,
+      "width": 700,
+      "height": 1203
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-018.webp",
+      "caption": "Table 12: Classification performance at fixed probability cutoffs across four OHCA populations. Best baseline is selected per site from all 10 baselines (oracle selection). Bold indicates the best value across all methods at each site.",
+      "page": 67,
+      "index": 18,
+      "width": 1377,
+      "height": 817
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-022.webp",
+      "caption": "Figure 15: Marginal distributions of each structurally missing covariate A in the source (observed) compared with samples from the DRUM (unconstrained) and DRUM. Source A has approximately zero mean and unit standard deviation due to standardization.",
+      "page": 68,
+      "index": 22,
+      "width": 964,
+      "height": 236
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-028.webp",
+      "caption": "Table 13: Local feature importance (LIME) on Singapore (Target) and Japan. Values are mean absolute LIME coefficients averaged over 200 explained instances per site. Underline = top-ranked feature for that method.",
+      "page": 69,
+      "index": 28,
+      "width": 968,
+      "height": 1137
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-001.webp",
+      "caption": "Table 14: Local feature importance (LIME) on Korea and Vietnam (continued from Table 13). Same format and settings.",
+      "page": 70,
+      "index": 1,
+      "width": 968,
+      "height": 1138
+    },
+    {
+      "url": "assets/figures/arxiv/2605.24212v1/fig-008.webp",
+      "caption": "Table 15: Performance of local baseline models trained and evaluated on site-specific data (80/20 stratified split). Metrics are reported as point estimate (95% bootstrap CI). These models use local labeled data, unlike DRUM which uses no local labels.",
+      "page": 71,
+      "index": 8,
+      "width": 1017,
+      "height": 349
+    }
+  ]
+}

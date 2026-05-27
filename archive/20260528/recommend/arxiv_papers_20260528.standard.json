@@ -1,0 +1,440 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-27T20:52:08.990195+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 60,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 90,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 25,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 20,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 26
+  },
+  "deep_dive": [
+    {
+      "id": "2605.24389v1",
+      "source": "arxiv",
+      "title": "SinFormer: A Tailored Transformer for Robust Radio Frequency Fingerprint Identification",
+      "abstract": "With the rapid proliferation of wireless and Internet of Things (IoT) devices, ensuring secure and reliable device identification has become a significant challenge. Traditional security techniques, such as IP or MAC address-based authentication, are susceptible to spoofing, whereas Radio Frequency Fingerprint Identification (RFFI) offers a more secure alternative by exploiting the unique hardware imperfections in devices' RF signals. In this paper, we propose a novel deep learning-based framework for RFFI that enhances both accuracy and reliability in challenging RF environments. The core of our approach is the Signal Inception Transformer (SinFormer), which leverages a specialized multi-scale self-attention mechanism to effectively capture both large-scale and fine-grained fingerprints in signals, significantly improving identification accuracy. To further enhance robustness and reliability, we introduce a two-stage training strategy that enables the model to learn general signal features and maintain performance under adverse conditions, such as low Signal-to-Noise Ratio (SNR) or channel variations. The effectiveness of the proposed method is validated using a real-world dataset. Experimental results show that the SinFormer framework consistently outperforms existing methods in accuracy and robustness across diverse and challenging scenarios.",
+      "authors": [
+        "Liu Yang",
+        "Qiang Li",
+        "Xiaoyang Ren"
+      ],
+      "primary_category": "cs.IT",
+      "categories": [
+        "cs.IT",
+        "eess.SP"
+      ],
+      "published": "2026-05-23T04:18:32+00:00",
+      "link": "https://arxiv.org/pdf/2605.24389v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-scale self-attention for RF signal sequence modeling",
+      "llm_evidence_cn": "射频信号序列建模的多尺度自注意力",
+      "llm_evidence": "射频信号序列建模的多尺度自注意力",
+      "canonical_evidence": "射频信号序列建模的多尺度自注意力",
+      "llm_tldr_en": "SinFormer uses tailored multi-scale self-attention to robustly identify devices from RF signal sequences.",
+      "llm_tldr_cn": "SinFormer使用定制的多尺度自注意力从射频信号序列中稳健识别设备。",
+      "llm_tldr": "SinFormer使用定制的多尺度自注意力从射频信号序列中稳健识别设备。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.24523v1",
+      "source": "arxiv",
+      "title": "MindAlign: Bridging EEG, Vision, and Language for Zero-Shot Visual Decoding",
+      "abstract": "Visual decoding from brain signals is a key challenge at the intersection of computer vision and neuroscience, requiring methods that bridge neural representations and computational models of vision. We introduce a tri-modal contrastive framework for EEG-based visual decoding that aligns EEG, visual, and textual representations within a unified latent space. Our approach follows a two-stage design. First, we pre-train an EEG encoder via masked reconstruction on unlabeled trials, learning spatio-temporal regularities that transfer robustly to downstream tasks. Second, we jointly align EEG, image, and LLM-generated textual descriptions through contrastive learning, where text supervision acts as a semantic regularizer that injects linguistic structure into the shared space without overwhelming the primary EEG-image signal. The encoder integrates subject-specific adaptation, graph-attention over channels, and temporal-spatial convolutional embeddings. On the Things-EEG2 200-way zero-shot benchmark, our framework achieves 54.1% Top-1 and 83.4% Top-5 accuracy, substantially exceeding the strongest prior baseline (32.4% / 64.0%), with paired Wilcoxon tests confirming significance (p < 0.01) over all in-subject baselines. We validate generalization on Things-MEG. Analysis reveals that compact embedding geometries (CN-CLIP) outperform much larger backbones, and that decoding aligns with established neurophysiology of visual processing. This work is a critical step towards robust, semantically-grounded visual decoding from non-invasive temporal neural signals. The source code is publicly available in https://github.com/anon-eeg/eeg_image_decoding.",
+      "authors": [
+        "Zexuan Chen",
+        "Sichao Liu",
+        "Runhao Lu",
+        "Huichao Qi",
+        "Alexandra Woolgar",
+        "Xi Vincent Wang",
+        "Lihui Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL",
+        "q-bio.NC"
+      ],
+      "published": "2026-05-23T11:23:21+00:00",
+      "link": "https://arxiv.org/pdf/2605.24523v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "tri-modal framework for EEG-based visual decoding",
+      "llm_evidence_cn": "基于EEG的视觉解码三模态框架",
+      "llm_evidence": "基于EEG的视觉解码三模态框架",
+      "canonical_evidence": "基于EEG的视觉解码三模态框架",
+      "llm_tldr_en": "MindAlign aligns EEG, visual, and textual representations for zero-shot visual decoding from brain signals",
+      "llm_tldr_cn": "MindAlign对齐EEG、视觉和文本表示，实现脑信号零样本视觉解码",
+      "llm_tldr": "MindAlign对齐EEG、视觉和文本表示，实现脑信号零样本视觉解码",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.24524v1",
+      "source": "arxiv",
+      "title": "What Are We Actually Decoding? Source Attribution for Non-Invasive Brain-to-Language Retrieval",
+      "abstract": "In non-invasive neural language decoding, results can be inflated by sources that are not stimulus-evoked neural evidence: decoder priors, embedding-based metrics, and non-neural structural nuisances such as signal duration. The methodological challenge is therefore attribution: a reported gain is more informative when it can be traced to a specific source. We recast stimulus-locked MEG-to-audio retrieval as an auditing framework that separates apparent performance into three sources - structural shortcuts, window-level stimulus-locked evidence, and cross-window contextual aggregation - and provides a diagnostic for each. Signal-blind Gaussian noise reaches 66.3% Rank@1 (R@1) under variable-length decoding but collapses to near chance once fixed-duration windows and stimulus-identity splits are enforced, isolating structural leakage. Under these controls, fixed-window retrieval recovers measurable MEG-audio discriminability, while an oracle sentence-bucket diagnostic shows that 95.7% of Top-1 errors select the wrong sentence, localising the residual bottleneck to sentence-level competition. We audit this contextual source with Group Context Bias (GCB), an inference-time additive logit bias that pools sentence-consistent evidence across windows while leaving the base retrieval scores and candidate pool fixed. Used as a score-space intervention, GCB makes the contextual source measurable: R@1 shifts from 44% to 52% on Gwilliams and from 22% to 29% on MOUS under the same fixed setting. GCB is auditable under this design: its effect collapses under random-grouping perturbations and vanishes when local evidence is attenuated in MEG or is near chance in EEG, supporting its use as a controlled source-attribution intervention. These results suggest that brain-to-language performance should be source-attributed, not merely reported.",
+      "authors": [
+        "Xinyu Zhang",
+        "Sichao Liu",
+        "Runhao Lu",
+        "Alexandra Woolgar",
+        "Lihui Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL",
+        "q-bio.NC"
+      ],
+      "published": "2026-05-23T11:23:39+00:00",
+      "link": "https://arxiv.org/pdf/2605.24524v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "auditing framework for MEG-to-audio retrieval",
+      "llm_evidence_cn": "MEG到音频检索的归因审计框架",
+      "llm_evidence": "MEG到音频检索的归因审计框架",
+      "canonical_evidence": "MEG到音频检索的归因审计框架",
+      "llm_tldr_en": "Introduces source attribution for non-invasive brain-to-language decoding, isolating neural evidence.",
+      "llm_tldr_cn": "为无创脑到语言解码引入源归因，分离神经证据。",
+      "llm_tldr": "为无创脑到语言解码引入源归因，分离神经证据。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.24585v1",
+      "source": "arxiv",
+      "title": "Word Class Representations Spontaneously Emerge from Successor Representations Trained on Natural Language",
+      "abstract": "Language models are typically trained to predict the next token in a sequence. Here, we explore an alternative predictive principle from reinforcement learning: Successor Representations (SRs), which model the expected discounted distribution of future states rather than the immediate next state. We transfer this framework to natural language and train neural networks to predict future word distributions across multiple temporal horizons, thereby learning representations of long-range transition structure. We train a deep residual neural network on WikiText-103 (103 million tokens; 20,000-word vocabulary) and optimize successor representations as probability distributions using KL divergence. Without explicit linguistic supervision, structured language representations emerge spontaneously. After training, the learned space develops a clear geometric organization with respect to part-of-speech (POS) categories: nouns, verbs, and adjectives become separable and recoverable through unsupervised clustering. This organization depends systematically on predictive horizon, with short horizons producing the strongest syntactic structure and longer horizons increasingly integrating broader contextual and semantic information. At finer resolutions, additional interpretable lexical substructure emerges, revealing coherent subclasses within major word categories. These findings suggest that syntactic categories need not be explicitly encoded but may arise as a consequence of predictive sequence learning. To our knowledge, this work provides the first systematic application of successor representations to natural language and establishes a conceptual bridge between reinforcement learning, linguistics, and cognitive neuroscience.",
+      "authors": [
+        "Mathis Immertreu",
+        "Achim Schilling",
+        "Thomas Kinfe",
+        "Patrick Krauss"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "q-bio.NC"
+      ],
+      "published": "2026-05-23T13:55:09+00:00",
+      "link": "https://arxiv.org/pdf/2605.24585v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learning word representations via successor representations",
+      "llm_evidence_cn": "通过继任表征学习词表示",
+      "llm_evidence": "通过继任表征学习词表示",
+      "canonical_evidence": "通过继任表征学习词表示",
+      "llm_tldr_en": "Successor representations learn meaningful word embeddings from raw text",
+      "llm_tldr_cn": "继任表征从原始文本学习有意义的词嵌入",
+      "llm_tldr": "继任表征从原始文本学习有意义的词嵌入",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.24611v1",
+      "source": "arxiv",
+      "title": "Beyond Fixed Points: Superpolynomial Capacity of Asymmetric Hopfield Networks",
+      "abstract": "Classical Hopfield networks are limited to static patterns due to symmetric weights, whereas asymmetric networks can encode temporal sequences via limit-cycle attractors. Achieving high-capacity storage of long sequences in classical synchronous asymmetric networks, however, has remained a challenge. We present a simple and robust construction within the classical asymmetric Hopfield model with binary neurons and synchronous updates, that allows $n$ neurons to support $\\exp\\!\\big(Ω(n/(\\log n)^2)\\big)$ distinct limit-cycle attractors, each with period $\\exp\\!\\big(Ω(\\sqrt n/\\log n)\\big)$ and robust to random noise with flip probability up to $\\frac12-o(1)$, yielding superpolynomial capacity in both the number and length of stored sequences. This is the first demonstration of such capacity for asymmetric Hopfield networks, which we obtain by combining results from combinatorics, number theory and the analysis of opinion dynamics. Our findings show that synchronous asymmetric Hopfield networks possess a sequence-memory capacity which is larger and more robust than previously recognized, demonstrating that, in both biological and artificial neural systems, robust sequence representation can be achieved through coarse architectural motifs rather than complex nonlinearities.",
+      "authors": [
+        "Aakash Kumar",
+        "Anatoly Khina",
+        "Frederik Mallmann-Trenn",
+        "Emanuele Natale"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-23T14:46:49+00:00",
+      "link": "https://arxiv.org/pdf/2605.24611v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Asymmetric Hopfield networks for temporal sequence storage and retrieval",
+      "llm_evidence_cn": "非对称Hopfield网络用于时序序列存储和检索",
+      "llm_evidence": "非对称Hopfield网络用于时序序列存储和检索",
+      "canonical_evidence": "非对称Hopfield网络用于时序序列存储和检索",
+      "llm_tldr_en": "Shows superpolynomial capacity for storing long temporal sequences in asymmetric Hopfield networks.",
+      "llm_tldr_cn": "展示了非对称Hopfield网络存储长时序序列的超多项式容量。",
+      "llm_tldr": "展示了非对称Hopfield网络存储长时序序列的超多项式容量。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.24212v1",
+      "source": "arxiv",
+      "title": "Distributionally Robust Transfer Learning with Structurally Missing Covariates, with Application to Cross-National Cardiac Arrest Prediction",
+      "abstract": "Deploying clinical prediction models across healthcare systems often fails when key training covariates are unavailable at deployment and labeled outcomes are limited in the target domain. For example, high-performing models for out-of-hospital cardiac arrest (OHCA) rely on detailed prehospital measurements routinely collected in high-resource settings but unavailable in many international registries. Existing methods either discard missing covariates, sacrificing predictive information, or rely on untestable assumptions about their target distribution. We propose DRUM (\\underline{D}istributionally \\underline{R}obust \\underline{U}nsupervised transfer learning with structurally \\underline{M}issing covariates), a framework that transfers prediction models to target populations where certain covariates are structurally absent and outcome labels are unavailable. DRUM partitions covariates into shared components ($X$), observed across all settings, and missing components ($A$), observed only in the source. Rather than imputing missing covariates, DRUM optimizes worst-case predictive performance over the unknown target distribution of $A \\mid X$ using a neural network generator, with a robustness parameter controlling allowable deviation from the source conditional. We further develop a bias correction procedure that reduces sensitivity to nuisance estimation error. Simulations show substantial improvements in both mean and worst-case prediction error under distribution shift. Applied to cross-national OHCA prediction, transferring models from a US registry to multiple Asian registries where prehospital variables are unrecorded, DRUM yields better-calibrated predictions and improved clinical classification performance across sites.",
+      "authors": [
+        "Siqi Li",
+        "Chuan Hong",
+        "Ziye Tian",
+        "Benjamin Sieu-Hon Leong",
+        "Koshi Nakagawa",
+        "Hideharu Tanaka",
+        "Sang Do Shin",
+        "Khuong Quoc Dai",
+        "Do Ngoc Son",
+        "Marcus Eng Hock Ong",
+        "Nan Liu",
+        "Molei Liu"
+      ],
+      "primary_category": "stat.AP",
+      "categories": [
+        "stat.AP",
+        "cs.AI",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-05-22T20:53:04+00:00",
+      "link": "https://arxiv.org/pdf/2605.24212v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "transfer learning with limited labels and missing covariates",
+      "llm_evidence_cn": "在有限标签和缺失协变量下的迁移学习",
+      "llm_evidence": "在有限标签和缺失协变量下的迁移学习",
+      "canonical_evidence": "在有限标签和缺失协变量下的迁移学习",
+      "llm_tldr_en": "Proposes DRUM for distributionally robust transfer learning in cross-national prediction.",
+      "llm_tldr_cn": "提出DRUM用于跨国家预测中的分布鲁棒迁移学习。",
+      "llm_tldr": "提出DRUM用于跨国家预测中的分布鲁棒迁移学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.24302v1",
+      "source": "arxiv",
+      "title": "Cross-Modal Action Recognition in Egocentric Video Using Mamba: Integrating RGB and Hand Skeleton Streams via CLS Token Fusion Strategies",
+      "abstract": "Egocentric action recognition is a challenging task due to erratic camera motion, frequent hand occlusion, and the difficulty of maintaining consistent visual representations over time. In this work, we propose a cross-modal architecture that combines RGB video and temporal hand skeleton data within a unified Mamba-based framework, exploiting the linear time complexity of State Space Models (SSMs). Our architecture consists of three components: a VideoMamba module for visual feature extraction, a skeleton encoder built on a stack of Mamba blocks, and a fusion module that integrates both modalities into a single representation. A central contribution of this work is the design and evaluation of four Class (CLS) token mixing strategies for multimodal fusion: Naive, Average, Weighted and Context-based. These strategies differ in how the pretrained unimodal CLS tokens, which role is to act as information sinks concentrating learned representations, are leveraged to initialize the mixed CLS token used for final classification. We evaluate all strategies on the H2O dataset. Experimental results show that the Average strategy achieves the best performance, yielding gains of over 10% Top-1 accuracy in the Tiny configuration and 2% in the Small configuration over the VideoMamba baseline.",
+      "authors": [
+        "Juan Ignacio Bustos Gorostegui",
+        "Maria Elena Buemi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-23T00:13:27+00:00",
+      "link": "https://arxiv.org/pdf/2605.24302v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses Mamba SSM for temporal action recognition",
+      "llm_evidence_cn": "使用Mamba状态空间模型进行时序动作识别",
+      "llm_evidence": "使用Mamba状态空间模型进行时序动作识别",
+      "canonical_evidence": "使用Mamba状态空间模型进行时序动作识别",
+      "llm_tldr_en": "Cross-modal action recognition with Mamba-based temporal modeling and skeleton fusion.",
+      "llm_tldr_cn": "基于Mamba的跨模态动作识别，融合骨架信息与时序建模。",
+      "llm_tldr": "基于Mamba的跨模态动作识别，融合骨架信息与时序建模。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.24273v1",
+      "source": "arxiv",
+      "title": "Plume Segmentation from MethaneSAT with Cross-Sensor Transfer Learning and Physics-Informed Postprocessing",
+      "abstract": "Automated detection and masking of individual methane plumes from satellite imagery is important for operational emission attribution and quantification. We present a machine learning framework for plume detection from MethaneSAT retrieved column-averaged dry-air mole fractions of methane. We address two core challenges: the scarcity of labeled MethaneSAT data and the need for inference reliability across diverse atmospheric and surface conditions. We first demonstrate that Mask R-CNN with a ResNet-50 backbone outperforms U-Net semantic segmentation on both MethaneAIR (an airborne version of MethaneSAT) and MethaneSAT data, with pixel-level F1 score gains of 10.49 and 5.48 respectively. To address MethaneSAT data scarcity, we evaluate three cross-sensor transfer strategies leveraging MethaneAIR flights and synthetic plumes. Mask R-CNN with ResNet-50 fine-tuned from MethaneAIR pre-trained weights is the most effective strategy, achieving instance-level precision of 0.60 and a near-perfect recall of 0.98 at the baseline operating point. A physics-informed post-processing pipeline converts detections into two operationally distinct modes. The first is a high-sensitivity mode that applies morphological filtering and proximity-based merging for comprehensive emission screening, achieving precision of 0.71 and recall of 0.94. The second is a high-precision mode that additionally applies a distribution-based classifier for confident source attribution, achieving precision of 0.92 and recall of 0.70. Manual review of detections classified as false positives against our wavelet-based ground truth labels reveals that a meaningful fraction of cases correspond to real methane enhancements excluded by conservative labeling criteria, indicating that precision values reported are lower bounds on true detection performance... Our data and code are available at: https://doi.org/10.7910/DVN/FR959H",
+      "authors": [
+        "Manuel Pérez-Carrasco",
+        "Maya Nasr",
+        "Zhan Zhang",
+        "Apisada Chulakadabba",
+        "Javier Roger",
+        "Raia Ottenheimer",
+        "Sébastien Roche",
+        "Maryann Sargent",
+        "Chris Chan Miller",
+        "Daniel Varon",
+        "Jack Warren",
+        "Luis Guanter",
+        "Kang Sun",
+        "Jonathan Franklin",
+        "Jia Chen",
+        "Cecilia Garraffo",
+        "Xiong Liu",
+        "Ritesh Gautam",
+        "Steven Wofsy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "physics.ao-ph"
+      ],
+      "published": "2026-05-22T22:53:57+00:00",
+      "link": "https://arxiv.org/pdf/2605.24273v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "cross-sensor transfer learning addresses scarce labeled data",
+      "llm_evidence_cn": "跨传感器迁移学习应对标记数据稀缺",
+      "llm_evidence": "跨传感器迁移学习应对标记数据稀缺",
+      "canonical_evidence": "跨传感器迁移学习应对标记数据稀缺",
+      "llm_tldr_en": "Transfer learning from airborne to satellite data for limited label scenarios",
+      "llm_tldr_cn": "从航空到卫星的迁移学习用于少量标签场景",
+      "llm_tldr": "从航空到卫星的迁移学习用于少量标签场景",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.24330v1",
+      "source": "arxiv",
+      "title": "Interdomain Attention: Beyond Token-Level Key-Value Memory",
+      "abstract": "Transformers and deep state space models (SSMs) sit at opposite ends of a basic design choice: attention routes each query through a growing key-value (KV) cache by content-based matching at quadratic cost, while deep SSMs compress context into a fixed-size recurrent state that is not directly addressed by query-key matching. We propose Interdomain Attention, which integrates an SSM into an attention module through kernel methods: an attention kernel is approximated by a finite feature map, the resulting key features and values are projected onto a shared set of basis functions maintained by a single SSM recurrence, and each query attends to the compressed coefficients through its own feature map, recovering query-conditioned attention over a fixed-size state. The scalable layer is a learned relaxation of this derivation, and we validate its components through ablations. In a 125M to 1.3B autoregressive language-modeling study on FineWeb-Edu at matched recurrent-state budget, Interdomain Attention improves on an SSM token mixer at every scale, surpasses a same-recipe softmax baseline at 1.3B on validation perplexity and on the eight-task commonsense suite, and inherits the length-flat behavior of its fixed-state core out to 3.5x the training context. Ablations indicate that the query-conditioned projection is the main source of the gain.",
+      "authors": [
+        "Naoki Kiyohara",
+        "Harrison Bo Hua Zhu",
+        "Riccardo El Hassanin",
+        "Zhuo Sun",
+        "Wenlong Chen",
+        "Samir Bhatt",
+        "Yingzhen Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-23T01:18:00+00:00",
+      "link": "https://arxiv.org/pdf/2605.24330v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "novel attention-integrated SSM for sequential data",
+      "llm_evidence_cn": "将SSM集成到注意力中的序列建模新方法",
+      "llm_evidence": "将SSM集成到注意力中的序列建模新方法",
+      "canonical_evidence": "将SSM集成到注意力中的序列建模新方法",
+      "llm_tldr_en": "Proposes Interdomain Attention merging SSM and attention for efficient sequential modeling.",
+      "llm_tldr_cn": "提出Interdomain Attention，融合SSM与注意力实现高效序列建模。",
+      "llm_tldr": "提出Interdomain Attention，融合SSM与注意力实现高效序列建模。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.24455v1",
+      "source": "arxiv",
+      "title": "Multi-Source Domain Transfer Learning for Accurate Property Prediction in Two-Dimensional Materials",
+      "abstract": "Machine learning has revolutionized materials discovery, but data scarcity remains a critical bottleneck for complex functional properties. As emerging systems, two-dimensional (2D) materials possess limited overall data volumes. Evaluating their diverse functional properties requires time-consuming simulations, hindering unified high-throughput screening. Furthermore, restrictions in known structural prototypes lead to highly fragmented data distributions. To address these challenges, we propose a multi-source domain transfer learning framework to extract generalizable and complementary knowledge from diverse crystalline systems. To mitigate data scarcity, the framework employs a shared feature extractor that integrates adversarial transfer learning with maximum mean discrepancy, mapping crystal structures into a domain-invariant latent space while preserving underlying physical correlations. To resolve distribution fragmentation, a sample-adaptive weighted ensemble strategy is subsequently utilized to dynamically aggregate predictions from multiple source domains. Relying solely on crystal structures, the framework predicts 2D carrier mobilities with an R2 score exceeding 0.90. The framework successfully screened 55 novel high-mobility 2D semiconductors, which were validated via first-principles electron-phonon coupling analysis, confirming their exceptional transport properties and stability. This work can potentially accelerate machine learning-assisted materials design and discovery with less data restriction.",
+      "authors": [
+        "Huiyang Zhang",
+        "Xinyu Chen",
+        "Qionghua Zhou",
+        "Jinlan Wang"
+      ],
+      "primary_category": "cond-mat.mtrl-sci",
+      "categories": [
+        "cond-mat.mtrl-sci"
+      ],
+      "published": "2026-05-23T08:06:48+00:00",
+      "link": "https://arxiv.org/pdf/2605.24455v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multi-source domain transfer learning for property prediction with limited data",
+      "llm_evidence_cn": "多源域迁移学习用于有限数据下的性质预测",
+      "llm_evidence": "多源域迁移学习用于有限数据下的性质预测",
+      "canonical_evidence": "多源域迁移学习用于有限数据下的性质预测",
+      "llm_tldr_en": "Proposes multi-source domain transfer learning framework for accurate property prediction in 2D materials",
+      "llm_tldr_cn": "提出多源域迁移学习框架用于二维材料性质预测",
+      "llm_tldr": "提出多源域迁移学习框架用于二维材料性质预测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

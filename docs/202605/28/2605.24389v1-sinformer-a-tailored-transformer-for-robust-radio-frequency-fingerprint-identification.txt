@@ -1,0 +1,547 @@
+Title: SinFormer: A Tailored Transformer for Robust Radio Frequency Fingerprint Identification
+
+URL Source: https://arxiv.org/pdf/2605.24389v1
+
+Published Time: Tue, 26 May 2026 00:37:01 GMT
+
+Number of Pages: 35
+
+Markdown Content:
+## SinFormer: A Tailored Transformer for Robust Radio Frequency Fingerprint Identification 
+
+Liu Yang, Qiang Li ∗, Xiaoyang Ren 
+
+> School of Information and Communication Engineering, University of Electronic Science and Technology of China, Chengdu, China, 611731
+
+Abstract 
+
+With the rapid proliferation of wireless and Internet of Things (IoT) devices, ensuring secure and reliable device identification has become a significant challenge. Traditional security techniques, such as IP or MAC address-based authentication, are susceptible to spoofing, whereas Radio Frequency Fin-gerprint Identification (RFFI) offers a more secure alternative by exploiting the unique hardware imperfections in devices’ RF signals. In this paper, we propose a novel deep learning-based framework for RFFI that enhances both accuracy and reliability in challenging RF environments. The core of our approach is the Signal Inception Transformer (SinFormer), which leverages a specialized multi-scale self-attention mechanism to effectively capture both large-scale and fine-grained fingerprints in signals, significantly improving identification accuracy. To further enhance robustness and reliability, we in-troduce a two-stage training strategy that enables the model to learn general signal features and maintain performance under adverse conditions, such as low Signal-to-Noise Ratio (SNR) or channel variations. The effectiveness of the proposed method is validated using a real-world dataset. Experimental results show that the SinFormer framework consistently outperforms existing methods in accuracy and robustness across diverse and challenging scenarios. 
+
+Keywords: 
+
+Radio Frequency Fingerprint Identification, deep learning, Transformer   
+
+> ∗Corresponding author
+> Email address: lq@uestc.edu.cn (Qiang Li)
+> arXiv:2605.24389v1 [cs.IT] 23 May 2026
+
+1. Introduction 
+
+The rapid proliferation of wireless and Internet of Things (IoT) devices has made secure and reliable device identification a critical challenge. Tradi-tional security mechanisms rely on software-based identifiers, such as Internet Protocol (IP) and Media Access Control (MAC) addresses. However, these protocol-based identities are vulnerable to various attacks [1]. To enhance security, Radio Frequency Fingerprint Identification (RFFI) has emerged as a promising solution, offering secure and efficient device identification based on the unique hardware-level characteristics of RF signals. RFFI identifies devices by leveraging the intrinsic physical-layer features of their RF signals, often referred to as fingerprints. These fingerprints, rooted in hardware imperfections, provide a robust basis for device identi-fication, as they are difficult to forge. Figure 1 depicts the RFFI system workflow. Signals transmitted by multiple emitters are received and prepro-cessed to enhance RF fingerprint features. Subsequently, feature extraction and classification stages leverage these features to uniquely identify devices. Historically, RFFI has relied on manually engineered features such as Car-rier Frequency Offset (CFO) [2, 3, 4], In-phase/Quadrature (I/Q) imbal-ance [5, 6], power amplifier characteristics [7], and channel state informa-tion (CSI) [8, 9]. These hand-crafted features, illustrated in Figure 2, are used as inputs to machine learning models for classification. However, these approaches face significant limitations. Manual feature extraction is labor-intensive, relies heavily on expert knowledge, and often struggles to adapt to complex and dynamic electromagnetic environments. Consequently, such methods may fail to capture intricate RF signal patterns, resulting in reduced accuracy and robustness [10, 11]. Recently, Deep Learning (DL) has revolutionized fields like Natural Lan-guage Processing (NLP)[12], Computer Vision (CV)[13], and time series anal-ysis [14], offering end-to-end solutions that reduce the need for manual fea-ture engineering. This paradigm shift has inspired researchers to explore various off-the-shelf models for RFFI. For instance, Zeng et al. [15] lever-aged multi-channel neural features and ResNeXt [16] for device identifica-tion, while Shen et al. [11] utilized spectrograms and Convolutional Neural Networks (CNNs). Similarly, Ling et al. [17] employed Long Short-Term Memory (LSTM) networks to extract temporal features from RF signals. More recently, the success of Transformers [18] in NLP has motivated their application in RFFI, given their ability to capture long-term dependencies 2Receiver  Signal Processing     
+
+> Feature Extraction and Classification
+> RFFI
+> results
+> Signals
+> Emitter K
+> Emitter 1
+> Emitter 2
+> …Figure 1: The block diagram of the RFFI system begins with signal transmission from various emitters, represented by green, blue, and red antenna symbols. These signals are received by a receiver, where they undergo signal processing, including filtering, am-plification, and analog-to-digital conversion. Following this, the feature extraction and classification stage is applied to capture and analyze unique signal characteristics or “fin-gerprints” for identification purposes.
+
+and model sequential data effectively [19]. However, these off-the-shelf mod-els were originally designed for NLP or CV tasks and are not optimized for the unique challenges of RF signals. Consequently, their robustness in RFFI applications is limited, with performance degrading under conditions such as channel variations [20, 21], noise distortions [22], and receiver inconsis-tencies [23, 24]. While strategies such as denoising and signal augmenta-tion [25], pre-training [26, 27], as well as domain adaptation techniques [23], have shown promise in addressing specific environmental challenges, they fall short of offering a comprehensive solution. The fundamental issue remains the lack of generalized and transferable features that can robustly handle the diverse challenges encountered in RFFI applications. To overcome the limitations of current RFFI approaches, this paper presents a robust DL model specifically tailored for RFFI applications. Fig-ure 3 illustrates the overall structure of our proposed framework, which is built around two key components: a novel model architecture and a spe-cialized training methodology. First, recognizing that RF fingerprints span multiple signal-level scales, we propose the Signal Inception Transformer (SinFormer) . This model leverages a multi-scale self-attention module to effectively capture the diverse and intrinsic patterns inherent in RF signals, enhancing the models ability to handle complex, dynamic environments. Sec-ond, we introduce a two-stage training framework, including 1) General Fea-ture Learning Stage: A novel unsupervised feature learning strategy is em-ployed to extract generalized and robust features from RF signals, addressing the challenge of limited labeled data. 2) Task-Specific Adaptation Stage: The 3Baseband  
+
+> Digital
+> Signal
+> Processing
+> I
+> Q
+> DAC
+> DAC
+> IF Filter
+> IF Filter Antenna
+> VCO Quantization Error
+> Nonlinear Integra-
+> tion Error
+> Noise
+> Nonlinear
+> Amplifier
+> Frequency &
+> Phase Shift
+
+Figure 2: The diagram of radio frequency circuit. The fingerprint of an emitter are mainly from non-ideal characteristics of individual modules. Splitting      
+
+> Embedding
+> SinFormer Encoder
+> Reconstruction Head
+> Signals (Masked) Patches
+> (Masked) Tokens Tokens Reconstructed
+> Signals Patches
+> Prediction Head
+> MAE 
+> Predict
+> is/not masked
+> pred 
+> Robust RFFI
+> Multi-scale Transformer (Section III )
+> Two-stage Training
+> (Section IV )
+> Training RFFI Models
+> Model Architecture
+> Training method
+> Output
+
+Figure 3: Overview of the proposed robust RFFI framework, integrating the proposed multi-scale Transformer architecture, called SinFormer and the two-stage training method to achieve robust and adaptable RFFI models. 
+
+model is fine-tuned to adapt to the RFFI task, ensuring optimal identifica-tion performance across various scenarios. The seamless integration of the SinFormer architecture with this two-stage training framework creates a uni-fied solution capable of addressing the critical challenges in robust RFFI, such as channel variations, noise distortions, and receiver changes. Our contributions are summarized as follows: 
+
+• Novel Model Architecture: The SinFormer model introduces a multi-scale self-attention mechanism tailored to RF signal fingerprints, en-abling superior adaptability in dynamic scenarios. 
+
+• Two-Stage Training Framework: The proposed training method ensures robust feature extraction and adaptability, addressing the limitations of traditional and DL-based RFFI approaches. 
+
+• Benchmark Results: Comprehensive experiments validate the effective-4ness of the proposed framework, establishing it as a robust and high-performing solution for future RFFI systems. The rest of the paper is organized as follows: Section 2 presents sys-tem model and the RFFI problem. Section 3 elaborates on the proposed SinFormer model. Section 4 describes the two-stage training framework. Section 5 presents the detailed experimental results on real-world data, and Section 6 concludes the paper. 
+
+2. System Model and Problem Formulation 
+
+Let us start from the signal received model. During the ℓ-th time interval, the received RF signal, denoted as xℓ(t), is expressed as 
+
+xℓ(t) = c(t) ∗ φ (s(t) cos( ωct + θ)) + n(t), (1) where (ℓ − 1) T ≤ t ≤ ℓT . In this model, n(t) represents the noise, T is the length of the time interval, ωc is the carrier frequency, θ is the initial phase, 
+
+s(t) is the random modulating signal, c(t) denotes the channel response, and ∗ is the convolution operator. The function φ(·) models the nonlinear distortion induced by the emitter’s hardware, which essentially encodes the unique “fingerprint” of the emitter. This “fingerprint” is extracted from xℓ(t)
+
+to distinguish the individual emitters. However, this process is influenced by noise n(t) and the channel response c(t), which requires the RFFI model to be robust. The RFFI process, depicted in Figure 4, is divided into two stages: the training stage and the testing stage. In the training stage, signals xℓ(t) trans-mitted by multiple emitters at different time intervals are collected by the receiver. Each signal is assigned an emitter label yℓ ∈ K ≜ {1, . . . , K },where K denotes the total number of emitters. For simplicity, we repre-sent xℓ as the ℓ-th signal sample after pre-processing. These signal sam-ples, along with their corresponding labels, constitute the training dataset 
+
+D = {(x1, y 1), . . . , (xN , y N )}, where N is the number of samples in the dataset. The objective is to train an RFFI model (or function) h : X → K 
+
+using the dataset D to minimize the expected classification error on the test data. Formally, this is expressed as: 
+
+min  
+
+> h
+
+E(X,Y )∼D [I(h(X)̸ = Y )] . (2) 5Rx Tx Train dataset  
+
+> train
+> RFFI model
+> Tx
+> Train stage
+> Signals Rx Signals RFFI model
+> Test stage
+> Predict Tx label data Figure 4: The scenario of RFFI consists of a training stage and a testing stage.
+
+Here, I(·) denotes the indicator function, which equals 1 if its argument is true and 0 otherwise. With a slight abuse of notation, we also use D to denote the joint distribution of the data and their labels during the test stage. 
+
+3. Signal Inception Transformer 
+
+This section aims to develop a learning model architecture specifically designed for the RFFI application. We begin by outlining the motivation and overall architecture of the proposed model, SinFormer, and then provide a detailed implementation with particular emphasis on the Inception Self-attention (ISA) module. 
+
+3.1. Motivation and Model Overview 
+
+The cornerstone of our design is multi-scale feature extraction. To il-lustrate this, we use examples of CFO and amplifier nonlinear effects to demonstrate that RF fingerprints manifest at various signal scales. 
+
+• Carrier frequency offset : as shown in Figure 5(a), the top and mid-dle plots represent the time-domain signals affected by different CFO. The bottom plot displays the squared amplitude error corresponding to the sample points of the two signals. It can be observed that the impact of CFO spans the entire time domain and exhibits a periodic pattern. Additionally, the more sample points considered, the more ac-curately the CFO can be estimated. Therefore, CFO can be regarded as a large-scale feature and a global distortion, affecting the overall characteristics of the signal. 6(a) Impacts of CFO 
+
+(b) Impacts of amplifier nonlinear effects Figure 5: Figure of the impacts of RF fingerprint features (a) CFO, (b) amplifier nonlinear effects on signals. In each subplot, the top and middle sections show the time-domain signals after being influenced by different RF fingerprint features on the same signal. The 
+
+bottom section represents the squared differences of the signal amplitudes at correspond-ing sampling points, highlighting the time-domain discrepancies between the two signals. 
+
+7Splitting                    
+
+> Embedding
+> Inception Self -attention
+> Feed -forward Network
+> 𝐿 ×
+> Global Average Pooling
+> FC Head
+> 𝑃𝑟𝑜𝑏
+> Linear
+> Scale: 2
+> Down -sampling Attention
+> Scale: 𝒔
+> Concatenate
+> Scale: 1
+> ℎ
+> Linear Linear Linear
+> 𝑸 𝑲 𝑽
+> 𝑠 ×1Conv
+> Stride: 𝒔
+> 𝑠 ×1Conv
+> Stride: 𝒔
+> 𝑠 ×1Conv
+> Stride: 1
+> RoPE
+> Attention Map
+> Signals Patches Tokens Tokens
+> Layer Norm
+
+( )  
+
+> Softmax ccQ K
+
+Figure 6: The architecture of proposed SinFormer for RFFI. Top is the overall flow from the input signal to the output emitter class probabilities. Bottom-left focuses on the Inception Self-attention module, which enables both large-scale and small-scale feature interaction. Bottom-right depicts the Down-sampling Attention mechanism, which facilitates targeted scale-specific feature interaction. 
+
+• Amplifier nonlinear effects : in Figure 5(b), the top and middle plots show the time-domain signals affected by amplifier nonlinear effects. The bottom plot displays the squared amplitude error corresponding to the sample points of these signals. Unlike CFO, the amplifier’s nonlinearity affects specific areas of the signal, causing changes only in certain parts. These small-scale features lead to sudden changes in amplitude within the red dashed boxes, showing the nonlinear behavior of the amplifier. This local impact means that while the overall signal shape stays mostly the same, the fine details change a lot. Therefore, amplifier nonlinear effects is seen as a small-scale feature and a local distortion, affecting the precise details of the signal in regions with larger amplitude. 8In summary, RF signals exhibit both large-scale features, which impact the signal globally, and small-scale features, which introduce localized dis-tortions. To accurately capture and leverage these multi-scale features, it is necessary to introduce multi-scale feature extraction capabilities into the model. To effectively capture both large-scale and small-scale features, we propose a model SinFormer, which can integrates multi-scale feature extrac-tion and accommodate the diverse nature of features in RF signals through an innovative architecture. Figure 6 illustrates the architecture of the SinFormer, which is divided into three main parts: signal embedding, feature extraction, and classifi-cation. In the signal embedding module, the raw signal is first segmented into multiple patches and each patch is then transformed into a feature rep-resentation through an embedding layer. Subsequently, in the feature ex-traction module, these features are subsequently processed by a series of L
+
+blocks, each consisting of Inception Self-Attention and Feed-forward Net-works (FFN). This process allows the model to capture both large-scale and small-scale features, effectively identifying coarse-grained and fine-grained dependencies within the signal. Finally, in the classification module, the ag-gregated features are passed through a fully connected classification head to produce the classification probabilities for each emitter. The details of the design and implementation are provided in the following subsections. 
+
+3.2. Signal Embedding 
+
+The raw time-domain signal is used as the input for the SinFormer frame-work because it preserves RF fingerprints and natural sequence correlations. This choice aligns with the Transformer’s strength in modeling dependencies, allowing SinFormer to effectively capture intricate signal relationships. Let 
+
+x ∈ Rm be the raw signal from dataset D, and split it into n non-overlapping patches, each of length l, where m = n × l and m is the number of sam-ple points of raw signal. These signal patches are stacked to form a matrix 
+
+P ∈ Rn×l, which allows the model to focus on localized sections of each patch, making it easier to capture fine-grained features. Afterward, each patch is transformed into a higher-dimensional feature space through an embedding layer. Specifically, each row Pi ∈ R1×l is mapped to an embedding feature vector Xi ∈ R1×d, viz., 
+
+X = PW d, (3) where Wd ∈ Rl×d denotes the parameter matrix of the embedding layer, and d is the dimension of the embedding space. This process results in an 9in XnndQnkdKnVssssConv cQ    
+
+> Conv
+> Conv
+> Down -
+> sampling
+> Down -
+> sampling cKcVn/ns/nskd
+> RoPE
+> RoPE
+> Softmax An/nsoutput nkdQWKWVW
+> token
+> feature
+
+Figure 7: The processing flow of proposed down-sampling attention module. 
+
+embedding matrix X ∈ Rn×d, where each row corresponds to the embedded feature of a signal patch, also called “token”. Therefore, the matrix X is also called token sequences. By converting the raw signal patches into embedding vectors, the model can effectively learn and capture complex patterns within the signal, which are crucial for accurate classification and downstream tasks. 
+
+3.3. Inception Self-attention 
+
+Although the multi-head self-attention (MHSA) [18] in the vanilla Trans-former is capable of modeling the dependencies and similarities between to-kens, effectively mixing the features of each token, it has certain limitations. Specifically, MHSA only facilitates feature mixing between tokens on a token-to-token basis. However, the RF fingerprints exist at both large-scale and small-scale signal levels, which necessitates an attention mechanism capable of interacting with features at multiple scales. To this end, we introduce the Inception module [28] into MHSA to create a novel attention mechanism ISA that can effectively interact with multi-scale features. The proposed ISA structure is illustrated in Figure 6. Concretely, given a token sequence X ∈ Rn×d, it serves as the input to h parallel Down-Sampling Attention (DSA) modules after layer normalization. Each DSA module op-erates at a specific scale, performing feature interactions tailored to that particular scale. The outputs from all DSA modules are then concatenated along the feature dimension, creating a comprehensive multi-scale feature representation. This concatenated output is subsequently passed through a final linear projection, which can be expressed as: ISA (X) = Concate (scale 1, . . . , scale h)WO,
+
+scale i = DSA i(LN (X); si), (4) 10 where WO ∈ Rhd k ×d is the parameter matrix, dk is the dimension of feature of DSA, scale i ∈ Rn×dk is the output of i-th DSA, si is the scale of i-th DSA, and LN (·) is the layer normalization operation. For DSA with a scale factor of s, we apply a down-sampling approach that reduces the sequence length by a factor of s. This process bundles multiple tokens into groups, allowing the model to perform feature interactions at the group level rather than the individual token level. The processing flow of DSA is shown in Figure 7. Specifically, when the input token sequence after layer normalization Xin = LN (X) ∈ Rn×d is received, we first apply linear projections to obtain the query Q, key K, and value V:
+
+Q = Xin WQ, K = Xin WK , V = Xin WV ∈ Rn×dk , (5) where WQ, WK , WV ∈ Rd×dk are the parameter matrices. Subsequently, we apply a convolution operation to down-sample the key and value matrices by a factor of s, effectively bundling every s consecutive tokens into a single group, which can be represented as: 
+
+Kc = Conv s,d k ,s (K) ∈ Rns ×dk ,
+
+Vc = Conv s,d k ,s (V) ∈ Rns ×dk , (6) where Conv a1,a 2,a 3 (·) is one-dimensional convolution operation with kernel size a1, output dimension a2 and stride a3. Next, to ensure the outputs from each DSA module in Eqn. (4) can be seamlessly concatenated, we apply local token fusion to the query matrix without performing any down-sampling: 
+
+Qc = Conv s,d k ,1(Q) ∈ Rn×dk . (7) Then we adopt the Rotary Position Embedding (RoPE) [29], which encodes the absolute position with a rotation matrix and meanwhile incorporates the explicit relative position dependency in self-attention formulation. The attention map A ∈ Rn× ns , denotes the similarity between the n mixed tokens in Q and the n/s groups in K, can be calculated as: 
+
+A = Softmax 
+
+(RoPE (Qc)RoPE (Kc)⊤
+
+√dk
+
+)
+
+. (8) Finally, the attention map A is multiplied with the value matrix to produce the output of the DSA module. This operation can be expressed as: DSA (Xin ; s) = AV c, (9) 11 which denotes each token of the output is the linear combination of tokens in Vc.In summary, ISA contains multiple DSA at different scales to facilitate feature interactions across various levels of granularity. This approach not only enables token-to-token interactions but also allows for token-to-group and group-to-group interactions. By integrating these multi-scale feature interactions, ISA effectively captures a richer and more diverse set of features, enhancing the model’s ability to signal understanding. 
+
+3.4. Feed-forward Network and Residual Connection 
+
+Unlike ISA module, the FFN consists of two fully connected layers, which perform a series of nonlinear transformations on the input feature. It enables the model to learn and represent complex patterns in the data and can be represented as: FFN (X) = ϕ(LN (X)W1 + b1)W2 + b2, (10) where W1 ∈ Rd×df and W2 ∈ Rdf ×d are weights of linear projection, b1 ∈ Rdf
+
+and b2 ∈ Rd are biases, df denotes the dimension of the projected higher-dimensional space, ϕ(·) is a nonlinear activation function, and in this context, we use the Gaussian Error Linear Unit (GELU). Similar to the vanilla Transformer and ResNet [30], the SinFormer en-coder also employs residual connections to facilitate stable and effective train-ing. The encoder can be expressed as: 
+
+X′ = ISA (Xℓ−1) + Xℓ−1,
+
+Xℓ = ISA (X′) + X′, (11) where Xℓ−1 is the output of the (ℓ − 1) -th block. 
+
+3.5. Classification 
+
+The output from the encoder, denoted as XL, undergoes global average pooling. This operation averages the features across the token dimension, transforming the output into a single feature vector z ∈ Rd, where: 
+
+z = 1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+XLi . (12) 12 Splitting     
+
+> Embedding
+> SinFormer  Encoder
+> Reconstruction Head
+> Signals (Masked)
+> Patches
+> (Masked)
+> Tokens Tokens Reconstructed
+> Signals Patches
+> Prediction Head MAE
+> Predict
+> is/not masked pred
+
+Figure 8: The overview of the proposed unsupervised general feature learning approach, MAE-AC. 
+
+Next, z is fed into a fully connected (FC) head, which applies a linear trans-formation followed by a softmax activation function to produce the proba-bility distribution over emitters: 
+
+p = Softmax (WFC z + bFC ), (13) where WFC ∈ Rk×d and bFC ∈ Rk are the weight matrix and bias of the fully connected layer, respectively, and k represents the number of emitter classes. So far, we have provided a comprehensive description of the entire Sin-Former architecture. In the following section, we will address the efficient and robust training methodologies associated with SinFormer. 
+
+4. Two-stage training 
+
+The two-stage training process includes unsupervised general feature learn-ing stage and supervised RFFI task-oriented adaptation stage. The first stage focuses on learning efficient fingerprint representations from RF signals in an unsupervised manner, while the second stage fine-tunes SinFormer using labeled signal-emitter data to adapt it to the RFFI task. This approach en-sures the model achieves a balance between generalization and specialization, enhancing its robustness and adaptability to diverse real-world scenarios. 
+
+4.1. Stage 1: General Feature Learning 
+
+Inspired by pre-training paradigms in CV and NLP, we employ unsuper-vised pre-training with techniques like the Masked Autoencoder (MAE) [31], where the model reconstructs masked signal patches to learn generalized fea-tures from RF signals. These features are task-independent, enhancing the 13 model’s robustness to environmental changes such as channel variations, re-ceiver diversity, or low SNR. We should mention that the pre-training for RFFI presents unique challenges. Unlike CV and NLP, where abundant and well-organized pre-training datasets are readily available online, there is no comparable large-scale, off-the-shelf RF dataset for pre-training. As a re-sult, we pre-train and fine-tune SinFormer on the same dataset D, diverging from typical CV and NLP pre-training setups. Additionally, the limited vol-ume and diversity of RF data increase the risk of overfitting during general feature learning. To address this, we augment the standard reconstruction task with an auxiliary classification task. This auxiliary task, implemented via an additional classification head, differentiates between masked and un-masked signal patches. By combining these tasks, SinFormer learns richer and more generalized representations while reducing overfitting. Figure 8 provides an overview of the proposed unsupervised general feature learning approach, MAE-AC. Specifically, given an unlabeled signal, it is first divided into patches and then mapped into feature representations via embedding layer, resulting in a sequence of tokens X ∈ Rn×d.
+
+4.1.1. Masking tokens 
+
+After obtaining X, a portion of the tokens are randomly masked and re-placed with a placeholder token indicating their absence, while the unmasked tokens retain their original values: 
+
+Xmask =
+
+{
+
+Xi, mask i = 0 ,
+
+M, mask i = 1 ,
+
+where Xi ∈ Rd is the i-th row (token) of the token sequence X, mask i is a uniform binary random variable (mask i = 1 indicates masking and mask i = 0 
+
+no masking), and M ∈ Rd is the placeholder token replacing the masked tokens. The placeholder token is randomly initialized and remains fixed throughout training, ensuring the model reconstructs the missing information based solely on the context from unmasked tokens, rather than patterns learned from the masking token itself. 
+
+4.1.2. Reconstructing masked patches 
+
+The masked sequence is fed into the SinFormer encoder, which processes the sequence and outputs a set of encoded features. These features are then 14 passed through a reconstruction head, implemented as a linear layer, to trans-form the encoded features back into the original input signal patch space. This process is expressed as: 
+
+ˆP = Encoder (Xmask )WR,
+
+where Encoder (·) represents SinFormer’s encoder, comprising a series of ISA and FFN modules. The processed features, Encoder (Xmask ) ∈ Rn×d, and the parameter matrix of the reconstruction head, WR ∈ Rd×l, are used to map the encoded features to the original signal patch space. In the MAE framework, the focus is on accurately reconstructing the masked portions of the input tokens. The reconstruction loss is calculated by comparing the reconstructed patches of the masked tokens with their original patches: 
+
+LMAE = 1
+
+∑ni=1 mask i
+
+∥ ˆPi − Pi∥22,
+
+where ˆPi ∈ Rl and Pi ∈ Rl are the i-th rows of the patch matrices ˆP
+
+and P, respectively, and ∥ · ∥ 2 denotes the ℓ2-norm. By focusing on the masked tokens, the MAE loss encourages the model to capture the structural information of the signal, ensuring accurate recovery of the missing data. 
+
+4.1.3. Auxiliary classification task 
+
+While MAE effectively learns representations by reconstructing masked portions of input data, it has limitations. Specifically, MAE may cause the model to overemphasize reconstructing fine details or outliers in the signal, leading to overfittingespecially with small pre-training datasets like ours. As a result, the model may struggle to generalize to new data and environments, being overly tuned to specific training signal details. To mitigate this, we propose an auxiliary classification task to comple-ment reconstruction. This task focuses on capturing global trends and struc-tures rather than just fine details. It involves distinguishing between un-masked original patches and reconstructed masked patches, encouraging the model to learn representations that generalize better to unseen signals and RFFI tasks. The auxiliary classification loss is formulated as: 
+
+Laux = − 1
+
+n
+
+[ n∑
+
+> i=1
+
+mask i log σ(FFN ( ˆPi)) + (1 − mask i) log σ(FFN (Pi)) ], (14) 15 where σ(·) is the sigmoid function, which maps the output of the feed-forward network (FFN) to a probability value between 0 and 1, FFN (·) is the same as Eqn. (10), and W1 ∈ Rl×df , W2 ∈ Rdf ×1, b1 ∈ Rdf , b2 ∈ R are parameters of FFN. Then, we minimize the combined loss function used in MAE-AC, which can be expressed as: 
+
+Lpretrain = LMAE + γLaux , (15) where γ > 0 is hyper-parameter. The proposed auxiliary classification task enhances the MAE framework by guiding the model to learn more robust and generalized feature representations, ultimately leading to improved per-formance in the following task-specific adaptation stage. 
+
+4.2. Stage 2: Task-specific Adaptation 
+
+In this phase, SinFormer is fine-tuned on the labeled signal dataset D
+
+to better align with the RFFI task. This is achieved through supervised learning by minimizing a cross-entropy loss: 
+
+Lcls = −
+
+> K
+
+∑
+
+> c=1
+
+[onehot (y)] c log pc,
+
+where [onehot (y)] c = 1 if c = y, and 0 otherwise. To enhance training efficiency and improve model robustness, we incor-porate self-supervised auxiliary tasks (SSAT) [32] in this stage. The SSAT loss is defined as: 
+
+LSSAT = 1
+
+n · l ∥XLWR − P∥2 
+
+> F
+
+,
+
+where WR ∈ Rd×l is a learnable parameter matrix, and ∥·∥ F is the Frobenius norm. The total loss for joint optimization combines the classification and aux-iliary tasks: 
+
+Ltask = αLcls + βLSSAT ,
+
+where α and β are positive hyperparameters balancing the contributions of the two tasks. By fine-tuning all layers, this task-specific adaptation phase optimizes the model to achieve greater accuracy and robustness for RFFI. Leveraging the generalized features learned during unsupervised pre-training, the model converges faster and performs better than training from scratch. 16 5. Experiment 
+
+In this section, we first describe the real-world dataset and evaluate the proposed method’s performance by comparing it with state-of-the-art ap-proaches in RFFI and time series classification. We also present ablation studies and demonstrate the methods effectiveness across varying SNR levels, in unknown emitter recognition tasks, and under practical wireless conditions including narrowband interference, multipath propagation, and large-scale scenarios. 
+
+5.1. Dataset description 
+
+The data used in this experiment was collected from eight radios operating in a controlled laboratory environment. The transmitted signals are OFDM-modulated, with a total of 2192 subcarriers. Each subcarrier is modulated using QPSK. The duration of each signal segment is 700 μs , with the first 100 μs dedicated to a pilot sequence, followed by the signal data packet. The communication setup involves networking the radios, allowing each radio to communicate with the others. The signals from the radios are transmitted into the open environment using a power divider, with the transmit power of the target radio set to 1W, while the other radios are set to 0.001W. These radiated signals are then received by an antenna that captures the signals from different radios. The signal frequency is set to 2230 MHz. To facilitate signal processing, the received signals are down-converted to an intermediate frequency (IF) of 77 MHz using the same frequency conver-sion equipment. The equipment settings are as follows: a sampling rate of 102.4 MHz, RF attenuation of 10 dB, IF attenuation of 6 dB, standard mode, and a channel bandwidth of 40 MHz. Signal collection is performed using a single-channel sampler with a sampling rate of 200 MHz, effective 12-bit resolution, and the signals are stored in int16 format. Both the transmit-ting and receiving antennas were fixed throughout the experiment to ensure consistent signal capture. The data collection process was conducted in both indoor and outdoor environments, with multiple sessions collected at different times. For the indoor scenario, data was collected in 9 consecutive sessions, named In-1 to In-9. For the outdoor scenario, signals were collected in 2 sessions, labeled Out-1 and Out-2. After collecting the signals, we applied energy detection to extract the relevant signal portions and segmented them into signal samples, 17 Table 1: The details of the SinFormer model                         
+
+> Stage Structure Parameters Values
+> Embedding Linear Input dimension 100 Output dimension 256 Encoder block ×6ISA module The number of DSA module 16 Scale [1, 2, 5, 10] ×4
+> Qc,Kc,Vcdimension 64 FFN Input dimension 256 Hidden dimension 512 Output dimension 256 FC head Linear Input dimension 256 Output dimension 8
+
+Table 2: The computational efficiency of the models                     
+
+> Method No. of parameters FLOPs
+> GRU-GCN 6.750 M 157.929 M ResNext 8.273 M 54.88 M ViT 7.906 M 166.098 M PatchMixer 8.026 M 90.595 M GLFormer 6.369 M 127.197 M PVT 10.646 M 35.343 M DeiT 7.908 M 173.990 M Vision Mamba 6.794 M 48.600 M SinFormer (proposed) 7.942 M 158.618 M
+
+each containing 2000 sample points. Each session includes 50,000 signal sam-ples per transmitter. To prepare the dataset for training and evaluation, we randomly assigned 40,000 signal samples from each session and each emitter to the training set, with the remaining 10,000 signal samples designated for the test set. 
+
+5.2. Model setting 
+
+To ensure reproducibility and clarify our design choices, we detail the key hyperparameter settings used in the proposed SinFormer model. As shown in Table 1, the input embedding dimension is set to 100 based on the characteristics of the raw signal, and the output embedding dimension is set to 256 to balance feature richness and computational efficiency. Six-teen DSA modules are employed with a repeated scale pattern of [1, 2, 5, 10], chosen to evenly cover the 20 input patches for effective multi-scale fea-18 Table 3: Hyper-parameters of Experiments          
+
+> Hyper-parameters Values
+> Patch length l100 Trade-off hyper-parameters α, β, γ 0.2, 0.8, 0.2 Optimizer Adam Epoch 50 Batch size 1024 Learning rate 0.0006
+
+ture extraction. The dimensions of the query, key, and value vectors are set to 64, which offers a good trade-off between model expressiveness and computational cost. The feed-forward network adopts a hidden dimension of 512, following common Transformer design practices to ensure sufficient non-linearity and transformation capacity. Finally, the output layer dimen-sion is set to 8, corresponding to the number of classification categories in the RFFI task. 
+
+5.3. Evaluation results 
+
+We compared the proposed SinFormer (in Section 3) and two-stage train-ing (in Section 4) with several different methods, including those based on RNNs, CNNs, and Transformers. For the RNN-based models, we selected the enhanced GRU model, GRU-FCN [33]. In the CNN category, we em-ployed ResNext [16], a model widely used in RFFI tasks, to benchmark performance, as well as PatchMixer [34], an advanced CNN-based method for time series forecasting. For Transformer-based baselines, we included Vision Transformer (ViT) [35], Pyramid Vision Transformer (PVT) [36], Data-efficient image Transformers (DeiT) [37], and Vision Mamba [38], a recently proposed state-space model that achieves competitive results in var-ious sequence modeling tasks. In addition, we adopted GLFormer [39], a lightweight Transformer specifically designed for RFFI. To further bench-mark against state-of-the-art RFFI systems, we also included Adaptive Se-mantic Augmentation (ASA) [40], a representative high-performance RFFI method. The parameter counts and floating-point operations (FLOPs) of these models are summarized in Table 2, providing a quantitative compari-son of their model sizes and inference costs. All models are implemented using PyTorch and trained on an NVIDIA Tesla V100 GPU. The hyperparameter settings for experiments are detailed in Table 3. 19 Table 4: Classification accuracy (%) of comparative experiments 
+
+Number of training samples Session GRU-FCN ResNext ViT PatchMixer PVT DeiT Vison Mamba ASA GLFormer SinFormer SinFormer + two-stage training 40000 × 8 × 7In-1 ∼ In-7 95.18 ±0.10 96.63 ±3.02 99.71 ±0.04 73.51 ±0.09 98.93 ±0.14 99.37 ±0.08 99.15 ±0.13 98.95 ±0.73 96.08 ±0.12 99.36 ±0.13 99.60 ±0.05 
+
+In-8 62.31 ±1.75 61.93 ±2.53 65.91 ±1.47 48.39 ±0.47 67.03 ±0.76 64.12 ±1.95 65.33 ±1.17 63.90 ±2.36 62.74 ±0.26 67.16 ±1.95 69.10 ±2.09 
+
+In-9 58.79 ±1.19 49.60 ±6.49 61.02 ±1.69 56.00 ±0.24 62.14 ±1.02 57.43 ±2.12 62.63 ±1.97 54.25 ±1.51 57.19 ±0.34 63.97 ±0.98 63.13 ±1.58 
+
+Out-1 47.13 ±0.57 36.34 ±2.12 52.84 ±1.06 25.95 ±0.46 50.20 ±1.31 54.86 ±0.68 52.65 ±1.33 48.12 ±1.68 45.63 ±0.79 57.08 ±0.98 55.32 ±0.70 
+
+Out-2 63.76 ±1.51 57.47 ±5.20 70.97 ±1.50 24.74 ±0.19 73.84 ±1.68 76.40 ±1.44 71.49 ±2.32 70.40 ±2.13 71.13 ±1.15 82.39 ±1.74 82.02 ±1.77 
+
+30000 × 8 × 7In-1 ∼ In-7 63.94 ±0.13 95.44 ±3.96 99.21 ±0.04 66.71 ±0.07 98.62 ±0.12 99.54 ±0.06 98.96 ±0.08 98.43 ±0.25 95.55 ±0.11 99.05 ±0.13 99.31 ±0.10 
+
+In-8 35.50 ±0.89 58.77 ±3.71 66.99 ±1.77 43.58 ±0.53 66.96 ±1.27 63.73 ±1.30 66.21 ±1.30 63.84 ±1.15 61.77 ±0.23 67.22 ±1.45 69.53 ±2.09 
+
+In-9 42.34 ±0.39 47.61 ±4.47 60.40 ±1.87 50.23 ±0.09 62.34 ±1.27 58.13 ±1.65 62.63 ±0.77 53.10 ±1.61 55.94 ±0.40 64.16 ±1.13 65.14 ±1.81 
+
+Out-1 26.70 ±0.41 39.24 ±2.78 54.20 ±1.25 26.22 ±3.71 50.44 ±1.04 53.08 ±1.36 54.09 ±1.05 47.14 ±1.64 47.36 ±0.45 54.42 ±1.36 55.46 ±1.40 
+
+Out-2 20.02 ±0.18 56.96 ±6.93 74.08 ±2.00 23.54 ±0.10 73.15 ±1.29 74.40 ±2.40 73.74 ±1.02 70.11 ±1.25 70.74 ±0.87 80.59 ±1.25 81.70 ±2.07 
+
+20000 × 8 × 7In-1 ∼ In-7 48.74 ±0.07 95.34 ±3.81 98.15 ±0.15 46.58 ±0.09 96.56 ±0.21 97.78 ±0.08 92.01 ±0.35 94.52 ±0.42 93.79 ±0.21 96.33 ±0.22 97.38 ±0.08 
+
+In-8 26.64 ±0.75 59.51 ±1.85 65.12 ±1.53 28.11 ±0.33 66.86 ±1.31 63.57 ±1.19 59.18 ±1.19 60.08 ±1.40 63.91 ±0.77 69.58 ±0.89 70.07 ±0.83 
+
+In-9 32.31 ±0.35 47.53 ±6.13 62.75 ±1.43 34.57 ±0.19 62.16 ±1.39 60.73 ±1.29 58.16 ±1.03 52.86 ±1.20 56.61 ±0.36 61.18 ±1.65 62.88 ±1.69 
+
+Out-1 24.35 ±0.39 40.42 ±2.98 51.26 ±1.11 24.02 ±0.17 48.27 ±0.70 51.57 ±1.29 50.55 ±0.72 47.51 ±1.21 46.22 ±0.52 52.69 ±1.36 53.91 ±1.63 
+
+Out-2 17.10 ±0.20 60.76 ±7.60 70.04 ±1.75 18.33 ±0.08 70.41 ±1.70 71.42 ±1.71 61.73 ±0.73 68.08 ±1.41 71.42 ±0.98 72.04 ±1.09 74.71 ±1.41 
+
+10000 × 8 × 7In-1 ∼ In-7 42.30 ±0.14 94.76 ±1.82 93.76 ±0.31 39.65 ±0.09 87.97 ±0.92 89.05 ±0.30 65.25 ±0.41 91.15 ±1.48 89.44 ±0.35 88.80 ±0.18 95.11 ±0.23 
+
+In-8 24.53 ±0.42 55.93 ±3.28 65.26 ±0.94 24.17 ±0.19 61.36 ±1.38 62.57 ±1.13 41.12 ±1.08 59.78 ±1.90 66.23 ±0.93 62.66 ±2.35 68.13 ±0.85 
+
+In-9 28.50 ±0.44 49.76 ±5.64 60.78 ±1.15 30.11 ±0.14 59.25 ±1.37 57.19 ±1.42 45.61 ±0.40 51.03 ±1.53 58.43 ±0.58 58.62 ±1.42 60.71 ±1.81 
+
+Out-1 22.21 ±0.24 38.65 ±2.78 49.24 ±1.23 20.57 ±0.22 42.73 ±1.29 42.65 ±1.07 38.78 ±0.49 42.81 ±2.22 45.51 ±0.73 47.58 ±0.72 49.69 ±0.94 
+
+Out-2 14.00 ±0.12 59.54 ±3.45 66.02 ±1.40 13.95 ±0.09 61.80 ±1.90 61.73 ±1.20 35.56 ±0.63 61.84 ±1.78 70.90 ±0.57 62.23 ±1.17 69.47 ±1.25 
+
+• The item in “Number of samples for training” is (Number of Samples) × (Number of Emitters) × (Number of Sessions). 
+
+• The best outcome among all competitive methods is denoted in bold , while the second best performance is indicated with underline. 
+
+In this experiment, we focus on evaluating the robustness of various mod-els under different channel conditions. Channel variations, caused by differ-ences in scenarios or the timing of data collection across sessions, can sig-nificantly affect the received signals and result in a sharp decline in model performance. A robust model should be less affected by these channel vari-ations and better able to adapt to new channels and scenarios after being trained on a dataset collected in known environments. we train all of the methods with the training sets from seven indoor sessions (In-1 to In-7), and then evaluate their performance using the test datasets from these seven ses-sions, as well as from In-8, In-9, and two outdoor sessions, Out-1 and Out-2. Additionally, we assessed how these methods perform with varying amounts of training data by using different number of samples: 40,000, 30,000, 20,000, and 10,000 samples per emitter from each session’s training set. The evaluation results of the experiment, presented in Table 4, demon-strate the excellent performance of SinFormer, particularly when combined with MAE-AC general feature learning. For the testing on indoor sessions In-1 to In-7, SinFormer with MAE-AC achieved an impressive accuracy of 99.6% when sufficient data is available (40,000 samples per emitter per ses-sion). Even more notably, it maintains an accuracy of over 95% across all training data sizes, significantly outperforming most of the methods. The results on the In-8, In-9, Out-1, and Out-2 sessions demonstrate the models’ ability to generalize to new environments and time sessions. As expected, all models show some decline in performance on these unseen ses-sions due to differences in channel temporal variations. However, SinFormer 20 Table 5: Classification accuracy (%) of experiments for the ablation study                                                                                                   
+
+> Components 40000 ×8×7 training samples 20000 ×8×7 training samples
+> Multi-scale SSAT Two-stage training In-1 ∼In-7 In-8 In-9 Out-1 Out-2 In-1 ∼In-7 In-8 In-9 Out-1 Out-2
+> ×××99.71 65.91 61.02 52.84 70.97 98.15 65.12 62.75 51.26 70.04
+> ×✓×99.75 66.94 60.55 55.64 75.57 98.24 67.05 60.76 51.95 71.72
+> ✓××99.59 66.52 62.23 53.27 74.84 96.25 65.46 62.21 50.62 70.33
+> ✓✓×99.36 67.16 63.97 57.08 82.39 96.33 69.58 61.18 52.69 72.04
+> ✓×MAE-AC 99.59 68.81 63.15 52.38 79.90 96.81 67.95 62.55 49.00 72.61
+> ✓✓MAE 99.50 68.39 62.40 55.94 80.67 97.31 69.50 62.31 53.66 73.64
+> ✓✓MAE-AC 99.60 69.10 63.13 55.32 82.02 97.38 70.07 62.88 53.91 74.71
+
+with two-stage training (MAE-AC) consistently outperforms other models, demonstrating its robustness and adaptability. On the In-8 test set, Sin-Former surpasses the second-best method by 2.1%. Similarly, on the In-9 test set, SinFormer achieves a 1.3% higher accuracy. The performance gap widens on the outdoor test sets, with SinFormer outperforming the next best method by 2.2% on Out-1 and an impressive 6.0% on Out-2. In addition, the t-distributed Stochastic Neighbor Embedding (t-SNE) [41] visualizations in Figure 9 illustrate the feature distributions of the unseen Out-2 session sig-nals, as extracted by different methods. The SinFormer with MAE-AC with two-stage training (MAE-AC) produces the most distinct and well-separated clusters among all the methods. The clear separation of features with the same emitter label shows that this method is highly effective at distinguishing between different emitters, even in an unseen session, demonstrating superior generalization and robustness. The experiment also evaluates the impact of number of training samples on model performance. Despite the reduction in training data, SinFormer with MAE-AC consistently outperforms the other methods, maintaining a relatively high accuracy even with the small dataset. This results show the effectiveness of the two-stage training in enhancing SinFormers generalization ability. 
+
+5.4. Ablation study 
+
+In the ablation study, we conducted experiments to evaluate the impact of each component in the proposed method, focusing on multi-scale, SSAT, and the two-stage training approach. The hyperparameter settings used in these experiments are consistent with those in Section 5.3. The results are shown in Table 5. From Table 5, it is observed that multi-scale feature extraction clearly enhances model performance. When comparing rows that multi-scale pro-cessing is utilized (the second and the fourth rows) against those that it is not 21 (a) GRU-FCN (b) ViT   
+
+> (c) GLFormer (d) SinFormer + MAE-AC
+> Figure 9: The t-SNE visualizations of extracted unseen session Out-2 signal feature distribution for different methods trained on In-1 to In-7 sessions, when training data is sufficient. Features with the same emitter label are plotted in the same color.
+
+(the first and the third rows), there is a noticeable improvement in accuracy across most test scenarios. For instance, with 40,000 samples per class per session for training, the accuracy on the Out-2 test set improves from 70.97% without multi-scale processing to 74.84% with it. The utilization of SSAT also contribute to the better performance of the proposed model. When SSAT is used without two-stage training (the second and fourth rows in Table 5), there is an increase in the identification accuracy, particularly on the unseen sessions. When data is sufficient and multi-scale feature extraction is employed, incorporating SSAT results in performance improvements across all unseen sessions compared to not using SSAT, with increases of 1.4%, 1.7%, 3.8%, and 7.5% on the In-8, In-9, Out-1, and Out-2 22 Table 6: Results (%) of experiments for open-set recognition                         
+
+> Method Metric
+> AUROC ↑FPR95 ↓
+> GRU-FCN 69.10 84.00 ResNext 83.58 93.88 ViT 78.31 75.24 PatchMixer 85.02 62.10 PVT 87.19 47.65 DeiT 90.72 39.74 Vision Mamba 75.37 56.96 ASA 81.10 66.99 GLFormer 66.23 91.19 SinFormer + MAE-AC 92.04 35.60
+
+sessions, respectively. From Table 5, we have that two-stage training further boosts the model performance. In the case of 20,000 samples per class per session, using MAE-AC leads to performance improvements across all sessions compared to not using it, with increases of 1.0%, 0.5%, 1.7%, 1.2%, and 1.9% on the In-1 to In-7, In-8, In-9, Out-1, and Out-2 sessions, respectively. Additionally, using MAE-AC during the general feature learning stage shows further improve-ments over using MAE, demonstrating that MAE-AC is more effective than MAE due to the utilization of the auxiliary classification task. The results of the ablation study indicate that when training data is sufficient, multi-scale feature extraction and SSAT are the key contributors to performance improvement. However, as the amount of training data de-creases, the two-stage training framework becomes increasingly crucial for maintaining and enhancing the model’s performance, as this framework al-lows the model to learn generalized features during general feature learning stage, which can be fine-tuned to adapt to specific tasks with limited labeled data. 
+
+5.5. Results of open-set recognition 
+
+The ability to recognize signals from unknown emitters is a fundamen-tal capability of any RFFI system, known as open-set recognition (OSR). In this experiment, we evaluated the OSR performance of various methods mentioned in Section 5.3. Specifically, we selecte 6 out of 8 transmitters as known emitters and the remaining 2 as unknown. The methods are trained 23 (a) GRU-FCN (b) ResNext1D (c) ViT 
+
+(d) PatchMixer (e) PVT (f) DeiT 
+
+(g) Vision Mamba (h) ASA (i) GLFormer 
+
+(j) SinFormer + MAE-AC Figure 10: Histograms of known and unknown emitter scores for each method using the open-set recognition approach ViM. 
+
+24 -20 -15 -10 -5 0 5 10 15 20 
+
+> SNR / dB
+> 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+> Accuracy / %
+> GRUFCN
+> ResNext1D
+> ViT
+> PatchMixer
+> PVT
+> DeiT
+> Vision Mamba
+> ASA
+> GLFormer
+> SinFormer
+> SinFormer + MAE-AC
+> Proposed
+
+Figure 11: Performance results of various methods across SNR ranges from -20 dB to 20 dB. 
+
+using the data from the known emitters in sessions In-1 to In-7. To per-form open-set recognition, we apply a post-processing OSR method, called Virtual-logit Matching (ViM) [42], for unknown emitter identification. The performance is assessed using Area Under the Receiver Operating Charac-teristic curve (AUROC) (higher is better) and False Positive Rate at 95% True Positive Rate (FPR95) (lower is better). The experimental results, as shown in Table 6, show that SinFormer with two-stage training (MAE-AC) achieves the best performance on both the AUROC and FPR95 metrics, significantly outperforming the other methods. Figure 10 presents the histograms of scores for known and unknown emit-ters obtained using ViM across various methods. It further illustrates each method’s ability to distinguish between known and unknown emitters. And SinFormer with two-stage training (MAE-AC) exhibiting the highest level of discrimination. This result highlights the proposed method’s powerful fea-ture extraction capabilities and its exceptional ability to generalize to unseen data. 25 5.6. Results of experiments with different SNRs 
+
+Noise resistance is a crucial indicator of a method’s robustness. In this experiment, we evaluate the performance of various methods across different SNRs. We treat the collected signals as noise-free and then introduce the Gaussian noise at varying levels to the signals from the In-1 to In-7 sessions, generating SNRs ranging from -20 dB to 20 dB. These noisy signals are used for training, and the performance of each method is subsequently assessed across the In-1 to In-7 sessions at each SNR level. The results are shown in Figure 11. It demonstrates that SinFormer with two-stage training (MAE-AC) is the most robust method, achieving the highest accuracy across all SNR levels. This highlights its ability to maintain strong performance even in highly noisy environments. Without two-stage training, the baseline SinFormer achieves comparable performance to Vision Mamba, a recently proposed strong general-purpose model. How-ever, with the incorporation of MAE-AC, SinFormer significantly surpasses Vision Mamba, particularly under low-SNR conditions. These results suggest that while the base SinFormer is already competitive, the two-stage training strategy enables the model to extract more noise-invariant and generalizable features, leading to consistent gains across varying SNR levels. 
+
+5.7. Results of robustness in other practical scenarios 
+
+To further evaluate the robustness of the model, we used the same trained models as in the SNR robustness experiments in Section 5.6, without ad-ditional fine-tuning or retraining. We consider the following two types of interference: 
+
+Narrowband Interference : In our simulation, the entire signal fre-quency band is divided into 256 sub-bands. For each data sample, two sub-bands are randomly selected and corrupted with narrowband interfer-ence. The selection is fixed within each individual sample but randomized across different samples. We evaluated the model performance across differ-ent signal-to-interference ratios (SIRs) to assess its sensitivity to frequency-localized disturbances, which may occur due to nearby interfering devices or partial-band jamming. 
+
+Multipath Effects: To simulate multipath propagation, we followed the channel model described in [43], where the received signal consists of two paths with a fixed delay of 150 ns. The first path is considered the desired signal, and the second path is treated as an interfering reflection. By varying 26 0 5 10 15 20 25 30 
+
+> Signal-to-Interference Ratio / dB
+> 0.4 0.45 0.5 0.55 0.6 0.65 0.7 0.75 0.8 0.85 0.9
+> Accuracy / %
+> SinFormer+MAE-AC
+> SinFormer
+
+(a) Narrowband interference 5 10 15 20 25 30  
+
+> Signal-to-Interference Ratio / dB
+> 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+> Accuracy / %
+> SinFormer+MAE-AC
+> SinFormer
+
+(b) Multi-path effects Figure 12: Accuracy vs. SIR in other practical scenarios. 
+
+the SIR between these two paths, we evaluated how well the model tolerates multi-path effects. Figure 12 demonstrates the robustness of the proposed method under nar-rowband interference and multipath conditions. As the SIR decreases, both variants of SinFormer maintain relatively high accuracy, indicating strong resilience to practical interference. In particular, the model exhibits greater robustness against narrowband interference compared to multipath effects. This may be attributed to the fact that narrowband interference only par-tially disturbs the signal spectrum, allowing the model to effectively suppress it by leveraging multi-scale features. In contrast, multipath interference in-troduces complex time-domain distortions, which are generally more chal-lenging to resolve. 
+
+5.8. Results of hyper-parameter sensitivity 5.8.1. The trade-off hyper-parameters α, β 
+
+For simplicity in selecting hyperparameters, we set β as 1 − α and varied 
+
+α from 0.1 to 0.9. The experimental results, shown in Figure 13(a), indicate that accuracy across the sessions remains relatively unchanged as α varies. However, when α approaches 1, there is a slight decrease in accuracy on the unseen sessions. This decline may be due to SSAT acting as a regularizer that adjusts the gradient direction, and a larger β ensures that SSAT’s corrective influence is effective. 27 (a) Hyper-parameters α, β (b) The number of blocks L 
+
+> Figure 13: Impact of hyper-parameter variations on results on In-1 to In-7, In-8, In-9, Out-1, and Out-2 Sessions
+
+5.8.2. The number of blocks L
+
+We also conducted hyperparameter experiments to evaluate the impact of the number of blocks L in SinFormer, which directly influences the num-bers of the parameters. The value of L is varied from 1 to 9. As shown in Figure 13(b), when L is small, increasing the number of blocks significantly enhances the models performance, leading to higher accuracy across all ses-sions. However, once L exceeds a certain threshold ( L ≥ 4), the accuracy shows no substantial improvement with additional blocks. This indicates that beyond a certain level of complexity, further increasing the number of blocks provides diminishing returns, as the model has likely captured the essential features for optimal performance. 
+
+5.9. Results of scalability 
+
+To evaluate the scalability of the proposed SinFormer model, we con-ducted additional experiments on the ManyTx subset of the publicly avail-able WiSig dataset [44]. WiSig is a large-scale WiFi RF fingerprinting dataset comprising over 10 million packets collected from 174 commercial WiFi trans-mitters and 41 USRP receivers over a one-month period. The ManyTx subset of Wisig dataset focuses on transmitter diversity and includes data from 150 transmitters and 18 receivers, recorded over 4 days, with 50 signal samples per transmitter-receiver pair per day. This results in a total of 540,000 samples. To simulate different dataset scales, we progressively selected subsets with 10, 30, 50, 70, 90, 110, 130, and 150 28 Figure 14: The scalability of proposed method 
+
+transmitters. For each transmitter, 80% of the samples per receiver per day were used for training, and the remaining 20% were used for testing. As shown in Figure 14, the proposed method exhibits good scalability across varying numbers of transmitters. SinFormer with two-stage training consistently achieves high accuracy, reaching up to 89.5% with 150 devices, while the baseline SinFormer also maintains stable performance above 88%. These results confirm that the proposed model generalizes well to large-scale RFFI tasks and demonstrates strong scalability. 
+
+6. Conclusions and Discussions 
+
+In this paper, we introduced a novel deep learning-based framework for RFFI, designed to enhance the accuracy, reliability, and robustness of device identification in complex and dynamic environments. The proposed Sin-Former model incorporates a multi-scale self-attention mechanism to effec-tively capture diverse features of radio signals, enabling precise identification. Furthermore, the two-stage training strategy improves the model’s adapt-ability to varying conditions. Experimental results on real-world datasets demonstrate that our approach outperforms existing methods, offering a more robust and accurate solution for device identification. This framework 29 establishes a new benchmark for future research in RFFI and holds promise for enhancing the security and reliability of wireless and IoT systems. Although SinFormer achieves strong performance, its current design ex-tracts multi-scale features uniformly across all predefined scales, regardless of the specific characteristics of the input data. This dense extraction may lead to redundant representations or unnecessary computational overhead, especially for datasets that predominantly require features at a particular scale. To address this limitation, future work will explore the integration of a Mixture-of-Experts (MoE) mechanism into the multi-scale extraction pro-cess. By dynamically selecting the most relevant scales based on the input, this design is expected to reduce redundancy, improve efficiency, and further enhance the models adaptability to diverse signal environments. 
+
+References 
+
+[1] Y. Zou, J. Zhu, X. Wang, L. Hanzo, A survey on wireless security: Technical challenges, recent advances, and future trends, Proceedings of the IEEE 104 (9) (2016) 1727–1765. doi:10.1109/JPROC.2016.2558521. [2] L. Peng, A. Hu, J. Zhang, Y. Jiang, J. Yu, Y. Yan, Design of a hybrid RF fingerprint extraction and device classification scheme, IEEE Internet of Things Journal 6 (1) (2019) 349–360. doi:10.1109/JIOT.2018.2838071. [3] J. Ma, J. Zhang, G. Shen, A. Marshall, C.-H. Chang, White-box adver-sarial attacks on deep learning-based radio frequency fingerprint identi-fication, in: ICC 2023 - IEEE International Conference on Communica-tions, 2023, pp. 3714–3719. doi:10.1109/ICC45041.2023.10278927. [4] P. Liu, P. Yang, W.-Z. Song, Y. Yan, X.-Y. Li, Real-time identification of rogue WiFi connections using environment-independent physical fea-tures, in: IEEE INFOCOM 2019 - IEEE Conference on Computer Com-munications, 2019, pp. 190–198. doi:10.1109/INFOCOM.2019.8737455. [5] V. Brik, S. Banerjee, M. Gruteser, S. Oh, Wireless device identification with radiometric signatures, in: Proceedings of the 14th ACM Inter-national Conference on Mobile Computing and Networking, 2008, pp. 116–127. [6] J. Zhang, R. Woods, M. Sandell, M. Valkama, A. Marshall, J. Caval-laro, Radio frequency fingerprint identification for narrowband systems, 30 modelling and classification, IEEE Transactions on Information Foren-sics and Security 16 (2021) 3974–3987. doi:10.1109/TIFS.2021.3088008. [7] A. C. Polak, S. Dolatshahi, D. L. Goeckel, Identifying wireless users via transmitter imperfections, IEEE Journal on Selected Areas in Commu-nications 29 (7) (2011) 1469–1479. doi:10.1109/JSAC.2011.110812. [8] H. Fu, L. Peng, M. Liu, A. Hu, Deep learning-based RF fingerprint identification with channel effects mitigation, IEEE Open Journal of the Communications Society 4 (2023) 1668–1681. doi:10.1109/OJCOMS.2023.3295379. [9] R. Kong, H. H. Chen, Physical-layer authentication of commod-ity Wi-Fi devices via micro-signals on csi curves, in: 2023 IEEE 24th International Workshop on Signal Processing Ad-vances in Wireless Communications (SPAWC), 2023, pp. 486–490. doi:10.1109/SPAWC53906.2023.10304542. [10] R. Xie, W. Xu, J. Yu, A. Hu, D. W. K. Ng, A. L. Swindlehurst, Disentan-gled representation learning for rf fingerprint extraction under unknown channel statistics, IEEE Transactions on Communications 71 (7) (2023) 3946–3962. doi:10.1109/TCOMM.2023.3268286. [11] G. Shen, J. Zhang, A. Marshall, L. Peng, X. Wang, Radio frequency fin-gerprint identification for LoRa using spectrogram and CNN, in: IEEE INFOCOM 2021 - IEEE Conference on Computer Communications, 2021, pp. 1–10. doi:10.1109/INFOCOM42981.2021.9488793. [12] J. Achiam, S. Adler, S. Agarwal, L. Ahmad, I. Akkaya, F. L. Aleman, D. Almeida, J. Altenschmidt, S. Altman, S. Anadkat, et al., Gpt-4 tech-nical report, arXiv preprint arXiv:2303.08774 (2023). [13] F.-A. Croitoru, V. Hondru, R. T. Ionescu, M. Shah, Diffu-sion models in vision: A survey, IEEE Transactions on Pat-tern Analysis and Machine Intelligence 45 (9) (2023) 10850–10869. doi:10.1109/TPAMI.2023.3261988. [14] N. Mohammadi Foumani, L. Miller, C. W. Tan, G. I. Webb, G. Forestier, M. Salehi, Deep learning for time series classification and extrinsic re-gression: A current survey, ACM Computing Surveys 56 (9) (apr 2024). doi:10.1145/3649448. 31 [15] Y. Zeng, Y. Gong, J. Liu, S. Lin, Z. Han, R. Cao, K. Huang, K. B. Letaief, Multi-channel attentive feature fusion for radio frequency finger-printing, IEEE Transactions on Wireless Communications 23 (5) (2024) 4243–4254. doi:10.1109/TWC.2023.3316286. [16] S. Xie, R. Girshick, P. Dollar, Z. Tu, K. He, Aggregated residual trans-formations for deep neural networks, in: Proceedings of the IEEE Con-ference on Computer Vision and Pattern Recognition (CVPR), 2017, pp. 1492–1500. [17] H. Ling, F. Zhu, M. Yao, A RSBU-LSTM network for radio frequency fingerprint identification relying on multiple features, EURASIP Journal on Advances in Signal Processing 2024 (1) (2024) 72. [18] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. u. Kaiser, I. Polosukhin, Attention is all you need, in: Advances in Neural Information Processing Systems, Vol. 30, 2017. [19] Y. Bo, W. Zhang, T. Yang, M. Jiang, J. Sun, C.-X. Wang, A specific emitter identification approach based on multi-head at-tention mechanism, in: 2023 International Wireless Communi-cations and Mobile Computing (IWCMC), 2023, pp. 953–958. doi:10.1109/IWCMC58020.2023.10183238. [20] G. Shen, J. Zhang, A. Marshall, J. R. Cavallaro, Towards scalable and channel-robust radio frequency fingerprint identification for LoRa, IEEE Transactions on Information Forensics and Security 17 (2022) 774–787. doi:10.1109/TIFS.2022.3152404. [21] X. Yang, D. Li, Led-rff: Lte dmrs-based channel robust ra-dio frequency fingerprint identification scheme, IEEE Transac-tions on Information Forensics and Security 19 (2024) 1855–1869. doi:10.1109/TIFS.2023.3343079. [22] G. Shen, J. Zhang, A. Marshall, R. Woods, J. Cavallaro, L. Chen, Towards receiver-agnostic and collaborative radio frequency fingerprint identification, IEEE Transactions on Mobile Computing 23 (7) (2024) 7618–7634. doi:10.1109/TMC.2023.3340039. 32 [23] L. Yang, Q. Li, X. Ren, Y. Fang, S. Wang, Mitigating receiver im-pact on radio frequency fingerprint identification via domain adapta-tion, IEEE Internet of Things Journal 11 (13) (2024) 24024–24034. doi:10.1109/JIOT.2024.3389491. [24] T. Zhao, S. Sarkar, E. Krijestorac, D. Cabric, Gan-rxa: A practical scalable solution to receiver-agnostic transmitter fingerprinting, IEEE Transactions on Cognitive Communications and Networking 10 (2) (2024) 403–416. doi:10.1109/TCCN.2023.3329012. [25] M. Wang, L. Peng, L. Xie, J. Zhang, M. Liu, H. Fu, Design of noise robust open-set radio frequency fingerprint identification method, in: IEEE INFOCOM 2024 - IEEE Conference on Computer Communications Workshops (INFOCOM WKSHPS), 2024, pp. 1–6. doi:10.1109/INFOCOMWKSHPS61880.2024.10620671. [26] K. Huang, J. Yang, H. Liu, P. Hu, Deep learning of radio frequency fin-gerprints from limited samples by masked autoencoding, IEEE Wireless Communications Letters (2022) 1–1doi:10.1109/LWC.2022.3184674. [27] C. Liu, X. Fu, Y. Wang, L. Guo, Y. Liu, Y. Lin, H. Zhao, G. Gui, Overcoming data limitations: A few-shot specific emitter identification method using self-supervised learning and adversarial augmentation, IEEE Transactions on Information Forensics and Security 19 (2024) 500–513. doi:10.1109/TIFS.2023.3324394. [28] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Er-han, V. Vanhoucke, A. Rabinovich, Going deeper with convolutions, in: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2015, pp. 1–9. [29] J. Su, M. Ahmed, Y. Lu, S. Pan, W. Bo, Y. Liu, Roformer: En-hanced Transformer with rotary position embedding, Neurocomputing 568 (2024) 127063. [30] K. He, X. Zhang, S. Ren, J. Sun, Deep residual learning for image recog-nition, in: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016. [31] K. He, X. Chen, S. Xie, Y. Li, P. Dollár, R. Girshick, Masked autoen-coders are scalable vision learners, in: Proceedings of the IEEE/CVF 33 Conference on Computer Vision and Pattern Recognition (CVPR), 2022, pp. 16000–16009. [32] S. Das, T. Jain, D. Reilly, P. Balaji, S. Karmakar, S. Marjit, X. Li, A. Das, M. S. Ryoo, Limited data, unlimited potential: A study on ViTs augmented by masked autoencoders, in: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), 2024, pp. 6878–6888. [33] N. Elsayed, A. S. Maida, M. Bayoumi, Deep gated recurrent and convo-lutional network hybrid model for univariate time series classification, International Journal of Advanced Computer Science and Applications 10 (5) (2019). [34] Z. Gong, Y. Tang, J. Liang, Patchmixer: A patch-mixing architecture for long-term time series forecasting, arXiv preprint arXiv:2310.00655 (2023). [35] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, T. Unterthiner, M. Dehghani, M. Minderer, G. Heigold, S. Gelly, J. Uszkoreit, N. Houlsby, An image is worth 16x16 words: Transform-ers for image recognition at scale, in: 9th International Conference on Learning Representations, ICLR, 2021. [36] W. Wang, E. Xie, X. Li, D.-P. Fan, K. Song, D. Liang, T. Lu, P. Luo, L. Shao, Pyramid vision transformer: A versatile backbone for dense prediction without convolutions, in: Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision (ICCV), 2021, pp. 568–578. [37] H. Touvron, M. Cord, M. Douze, F. Massa, A. Sablayrolles, H. Je-gou, Training data-efficient image transformers & distillation through attention, in: M. Meila, T. Zhang (Eds.), Proceedings of the 38th In-ternational Conference on Machine Learning, Vol. 139 of Proceedings of Machine Learning Research, PMLR, 2021, pp. 10347–10357. [38] L. Zhu, B. Liao, Q. Zhang, X. Wang, W. Liu, X. Wang, Vision mamba: Efficient visual representation learning with bidirectional state space model, in: Forty-first International Conference on Machine Learning, 2024. 34 [39] P. Deng, S. Hong, J. Qi, L. Wang, H. Sun, A lightweight Transformer-Based approach of specific emitter identification for the automatic iden-tification system, IEEE Transactions on Information Forensics and Se-curity 18 (2023) 2303–2317. doi:10.1109/TIFS.2023.3266627. [40] Z. Cai, Y. Wang, G. Gui, J. Sha, Toward robust radio frequency finger-print identification via adaptive semantic augmentation, IEEE Trans-actions on Information Forensics and Security 20 (2025) 1037–1048. doi:10.1109/TIFS.2024.3522758. [41] L. van der Maaten, G. Hinton, Visualizing data using t-SNE, Journal of Machine Learning Research 9 (86) (2008) 2579–2605. [42] H. Wang, Z. Li, L. Feng, W. Zhang, Vim: Out-of-distribution with virtual-logit matching, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, pp. 4921– 4930. [43] M. K. M. Fadul, D. R. Reising, T. D. Loveless, A. R. Ofoli, RF-DNA fingerprint classification of ofdm signals using a rayleigh fading chan-nel model, in: 2019 IEEE Wireless Communications and Networking Conference (WCNC), 2019, pp. 1–7. doi:10.1109/WCNC.2019.8885421. [44] S. Hanna, S. Karunaratne, D. Cabric, Wisig: A large-scale WiFi signal dataset for receiver and channel agnostic rf fingerprinting, IEEE Access 10 (2022) 22808–22818. doi:10.1109/ACCESS.2022.3154790. 35
