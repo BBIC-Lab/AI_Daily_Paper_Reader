@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-05-28
-- 运行时间：2026-05-28 04:59:01 北京时间
+- 最新运行日期：2026-05-29
+- 运行时间：2026-05-29 05:53:17 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日解读10篇前沿研究，聚焦用定制Transformer对抗信号噪声，并让脑电零样本看懂图像。  
-最值得关注的是：射频指纹识别引入正弦位置编码大幅提升鲁棒性，脑电解码突破跨模态语义墙实现零样本分类。  
-建议读者重点关注物理先验注入Transformer架构的设计思路，可尝试将其零样本范式迁移至其他时序感知任务。
-- 详情：[/202605/28/README](/202605/28/README)
+今日精读两篇EEG顶刊工作，同时速览了科学推理对齐、心脏影像分类与跨域强化学习的最新探索。  
+最值得关注的是因果状态空间模型实现实时连续脑电解码，以及分频带矢量量化构建的脑电基础模型。  
+若对非侵入式脑机接口或生理信号通用表征感兴趣，这两篇精读论文提供了从模型架构到数据泛化的重要参考。
+- 详情：[/202605/29/README](/202605/29/README)
 
 ### 精读区论文标签
-1. [SinFormer: A Tailored Transformer for Robust Radio Frequency Fingerprint Identification](/202605/28/2605.24389v1-sinformer-a-tailored-transformer-for-robust-radio-frequency-fingerprint-identification)  
+1. [CaMBRAIN: Real-time, Continuous EEG Inference with Causal State Space Models](/202605/29/2605.28792v1-cambrain-real-time-continuous-eeg-inference-with-causal-state-space-models)  
+   标签：评分：10.0/10、query:ndai
+   evidence：使用因果状态空间模型进行实时脑电图解码
+2. [BandVQ: Band-Wise Vector-Quantized EEG Foundation Model](/202605/29/2605.24921v1-bandvq-band-wise-vector-quantized-eeg-foundation-model)  
    标签：评分：9.0/10、query:ndai
-   evidence：射频信号序列建模的多尺度自注意力
-2. [MindAlign: Bridging EEG, Vision, and Language for Zero-Shot Visual Decoding](/202605/28/2605.24523v1-mindalign-bridging-eeg-vision-and-language-for-zero-shot-visual-decoding)  
+   evidence：基于频带向量量化的脑电表示学习
+3. [NeurIPS: Neuro-anatomical Inductive Priors for Sphere-based Brain Decoding](/202605/29/2605.24993v1-neurips-neuro-anatomical-inductive-priors-for-sphere-based-brain-decoding)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于EEG的视觉解码三模态框架
-3. [What Are We Actually Decoding? Source Attribution for Non-Invasive Brain-to-Language Retrieval](/202605/28/2605.24524v1-what-are-we-actually-decoding-source-attribution-for-non-invasive-brain-to-language-retrieval)  
+   evidence：利用解剖先验进行fMRI脑活动解码
+4. [AME-TS: Anchored Mixture-of-Experts for Time Series Forecasting](/202605/29/2605.25166v1-ame-ts-anchored-mixture-of-experts-for-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：MEG到音频检索的归因审计框架
-4. [Word Class Representations Spontaneously Emerge from Successor Representations Trained on Natural Language](/202605/28/2605.24585v1-word-class-representations-spontaneously-emerge-from-successor-representations-trained-on-natural-language)  
+   evidence：使用混合专家模型进行时间序列预测
+5. [Discrepancy Minimization Improves Cross-Hospital Robustness in Digital Pathology](/202605/29/2605.25175v1-discrepancy-minimization-improves-cross-hospital-robustness-in-digital-pathology)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过继任表征学习词表示
-5. [Beyond Fixed Points: Superpolynomial Capacity of Asymmetric Hopfield Networks](/202605/28/2605.24611v1-beyond-fixed-points-superpolynomial-capacity-of-asymmetric-hopfield-networks)  
-   标签：评分：9.0/10、query:ndai
-   evidence：非对称Hopfield网络用于时序序列存储和检索
+   evidence：有限标签数据下的病理基础模型域适应
 
 ### 速读区论文标签
-1. [Distributionally Robust Transfer Learning with Structurally Missing Covariates, with Application to Cross-National Cardiac Arrest Prediction](/202605/28/2605.24212v1-distributionally-robust-transfer-learning-with-structurally-missing-covariates-with-application-to-cross-national-cardiac-arrest-prediction)  
+1. [The Perception-Physics Paradox: Probing Scientific Alignment with TC-Bench](/202605/29/2605.24782v1-the-perception-physics-paradox-probing-scientific-alignment-with-tc-bench)  
    标签：评分：8.0/10、query:ndai
-   evidence：在有限标签和缺失协变量下的迁移学习
-2. [Plume Segmentation from MethaneSAT with Cross-Sensor Transfer Learning and Physics-Informed Postprocessing](/202605/28/2605.24273v1-plume-segmentation-from-methanesat-with-cross-sensor-transfer-learning-and-physics-informed-postprocessing)  
+   evidence：带科学一致性的表示学习
+2. [Self-Supervised Contrastive Learning for Cardiac MR Sequence Classification](/202605/29/2605.24789v1-self-supervised-contrastive-learning-for-cardiac-mr-sequence-classification)  
    标签：评分：8.0/10、query:ndai
-   evidence：跨传感器迁移学习应对标记数据稀缺
-3. [Interdomain Attention: Beyond Token-Level Key-Value Memory](/202605/28/2605.24330v1-interdomain-attention-beyond-token-level-key-value-memory)  
+   evidence：医学图像中用于表征学习的自监督对比学习
+3. [Cross-Domain Energy-Guided Diffusion Generation for Off-Dynamics Reinforcement Learning](/202605/29/2605.24810v1-cross-domain-energy-guided-diffusion-generation-for-off-dynamics-reinforcement-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：将SSM集成到注意力中的序列建模新方法
-4. [Multi-Source Domain Transfer Learning for Accurate Property Prediction in Two-Dimensional Materials](/202605/28/2605.24455v1-multi-source-domain-transfer-learning-for-accurate-property-prediction-in-two-dimensional-materials)  
+   evidence：跨域轨迹生成用于动态不匹配的强化学习，目标数据有限
+4. [Distributional Conformal Prediction for Markov Processes](/202605/29/2605.24848v1-distributional-conformal-prediction-for-markov-processes)  
    标签：评分：8.0/10、query:ndai
-   evidence：多源域迁移学习用于有限数据下的性质预测
-5. [Cross-Modal Action Recognition in Egocentric Video Using Mamba: Integrating RGB and Hand Skeleton Streams via CLS Token Fusion Strategies](/202605/28/2605.24302v1-cross-modal-action-recognition-in-egocentric-video-using-mamba-integrating-rgb-and-hand-skeleton-streams-via-cls-token-fusion-strategies)  
+   evidence：马尔可夫过程的预测区间方法
+5. [Geo-Expert: Towards Expert-Level Geological Reasoning via Parameter-Efficient Fine-Tuning](/202605/29/2605.24844v1-geo-expert-towards-expert-level-geological-reasoning-via-parameter-efficient-fine-tuning)  
    标签：评分：7.0/10、query:ndai
-   evidence：使用Mamba状态空间模型进行时序动作识别
+   evidence：使用LoRA参数高效微调将LLM适配到地质领域，仅需少量标注数据
 

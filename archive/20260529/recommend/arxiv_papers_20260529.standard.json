@@ -1,0 +1,430 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-28T21:49:27.149814+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 57,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 92,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 23,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 18,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 24
+  },
+  "deep_dive": [
+    {
+      "id": "2605.28792v1",
+      "source": "arxiv",
+      "title": "CaMBRAIN: Real-time, Continuous EEG Inference with Causal State Space Models",
+      "abstract": "Electroencephalography (EEG) is a critical, non-invasive method to monitor electrical brain activity. EEGs can span anywhere from a couple seconds to multiple hours, posing a major hurdle for existing deep learning methods due to two major factors: (1) existing EEG models are predominantly built upon the attention mechanism, incurring quadratic scaling as the sequence length increases, and (2) raw EEG signals must be processed in a sliding-window fashion due to fixed-length input requirements, preventing global understanding of the entire signal. To this extent, we propose CaMBRAIN - the first Causal, Mamba-based state space model (SSM) capable of real-time inference of EEG signals, arguing that bidirectional approaches are needlessly expensive given the causal, unidirectional nature of EEG. However, training such a model is non-trivial, as crucial EEG events can be extremely brief - within fractions of a second - yet separated by long intervals spanning minutes. Current EEG methods use self-supervised objectives that optimize for signal reconstruction, but these are not well suited for streaming SSMs; they fail to explicitly train the hidden state to retain the salient long-range context needed for streaming inference. We therefore introduce a multi-stage self-supervised training pipeline specifically tailored to encourage long-range memory retention and strong performance on EEG signals, while preserving the linear-time complexity of state space models. CaMBRAIN achieves state-of-the-art (SOTA) results across 3 different EEG datasets with >10x higher throughput than existing models, enabling the first model capable of long-range, continuous inference of variable-length EEG signals.",
+      "authors": [
+        "Abhilash Durgam",
+        "Nyle Siddiqui",
+        "Jeffrey A. Chan-Santiago",
+        "Qiushi Fu",
+        "Elakkat D. Gireesh",
+        "Mubarak Shah"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.HC",
+        "cs.LG"
+      ],
+      "published": "2026-05-27T17:50:36+00:00",
+      "link": "https://arxiv.org/pdf/2605.28792v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "real-time EEG decoding with causal SSMs",
+      "llm_evidence_cn": "使用因果状态空间模型进行实时脑电图解码",
+      "llm_evidence": "使用因果状态空间模型进行实时脑电图解码",
+      "canonical_evidence": "使用因果状态空间模型进行实时脑电图解码",
+      "llm_tldr_en": "Proposes CaMBRAIN, a causal SSM for efficient real-time EEG inference.",
+      "llm_tldr_cn": "提出CaMBRAIN，一种高效的因果状态空间模型用于实时脑电图推理。",
+      "llm_tldr": "提出CaMBRAIN，一种高效的因果状态空间模型用于实时脑电图推理。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.24921v1",
+      "source": "arxiv",
+      "title": "BandVQ: Band-Wise Vector-Quantized EEG Foundation Model",
+      "abstract": "A central challenge in electroencephalography (EEG) foundation modeling is learning transferable representations across recordings with diverse tasks, montages, references, and spectral characteristics. Existing masked modeling approaches often rely on broadband continuous patches or a single discrete representation, which may underrepresent frequency-specific activity. This paper proposes BandVQ, a band-wise vector-quantized EEG foundation model that decomposes EEG into delta, theta, alpha, beta, and gamma bands, trains an independent VQ-VAE tokenizer for each band, and pretrains a shared Transformer encoder on the resulting discrete VQ code indices. The encoder uses masked code tokens, quantized absolute log-power tokens, channel and temporal embeddings, and metadata prefix tokens representing reference, band, task family, and phase. Region-based masking is also introduced to reduce the trivial reconstruction of spatially adjacent electrodes. The model is pretrained on 71 public EEG corpora comprising over 9,200 subjects and 357,000 single-channel hours and evaluated on six subject-independent classification datasets. Under the current evaluation setting, the proposed model achieves strong transfer performance, with the highest reported results on three cognitive tasks and competitive performance on three motor imagery tasks.",
+      "authors": [
+        "Jamiyan Sukhbaatar",
+        "Satoshi Imamura",
+        "Toshihisa Tanaka"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-24T07:55:26+00:00",
+      "link": "https://arxiv.org/pdf/2605.24921v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "band-wise vector-quantized EEG representation learning",
+      "llm_evidence_cn": "基于频带向量量化的脑电表示学习",
+      "llm_evidence": "基于频带向量量化的脑电表示学习",
+      "canonical_evidence": "基于频带向量量化的脑电表示学习",
+      "llm_tldr_en": "Learns compact discrete representations of EEG via band-wise VQ-VAE.",
+      "llm_tldr_cn": "通过频带VQ-VAE学习脑电的紧凑离散表示。",
+      "llm_tldr": "通过频带VQ-VAE学习脑电的紧凑离散表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.24993v1",
+      "source": "arxiv",
+      "title": "NeurIPS: Neuro-anatomical Inductive Priors for Sphere-based Brain Decoding",
+      "abstract": "Current fMRI decoders face a performance-fidelity trade-off where efficient ID encoders outperform geometrically faithful surface-based models. We argue this is partly driven by inefficient surface tokenization and the failure to use anatomy as a predictive signal. We present NeurIPS, a framework that improves surface-based decoding by reframing anatomical variation from a nuisance to a powerful inductive prior. NeurIPS unites two innovations: a Selective ROI Spherical Tokenizer (SRST) for efficient geometric encoding, and a Structure-Guided Mixture of Experts (SG-MoE) that explicitly models individual anatomy using cortical features. On the Natural Scenes Dataset, NeurIPS establishes a new state-of-the-art for surface decoders and achieves performance comparable to strong 1D baselines. This is achieved with unprecedented efficiency, as the model converges dramatically faster (10 vs. 600 epochs). This efficiency enables rapid adaptation to new subjects using only 20% of data and ensures robust scalability as the training cohort is expanded. Ablations provide causal evidence that these gains are driven by the model's use of cortical features, not by memorizing subject IDs. By leveraging anatomical priors, NeurIPS provides a principled and scalable path toward robust, generalizable brain decoding.",
+      "authors": [
+        "Sijin Yu",
+        "Zijiao Chen",
+        "Zhenyu Yang",
+        "Zihao Tan",
+        "Jiakun Xu",
+        "Zhongliang Liu",
+        "Shengxian Chen",
+        "Wenxuan Wu",
+        "Xiangmin Xu",
+        "Xin Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-05-24T10:45:05+00:00",
+      "link": "https://arxiv.org/pdf/2605.24993v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "fMRI decoding using anatomical priors for brain activity",
+      "llm_evidence_cn": "利用解剖先验进行fMRI脑活动解码",
+      "llm_evidence": "利用解剖先验进行fMRI脑活动解码",
+      "canonical_evidence": "利用解剖先验进行fMRI脑活动解码",
+      "llm_tldr_en": "Surface-based brain decoder with neuro-anatomical inductive priors.",
+      "llm_tldr_cn": "基于表面的脑解码器，带有神经解剖归纳先验。",
+      "llm_tldr": "基于表面的脑解码器，带有神经解剖归纳先验。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.25166v1",
+      "source": "arxiv",
+      "title": "AME-TS: Anchored Mixture-of-Experts for Time Series Forecasting",
+      "abstract": "Time series forecasting models are increasingly scaled through large Transformer backbones, yet most existing approaches process all series through a shared dense computation path despite substantial heterogeneity in temporal structure. Mixture-of-Experts (MoE) offers a natural alternative by enabling conditional computation, but standard MoE routing leaves expert specialization weakly identified and often unstable during downstream adaptation. We propose AME-TS, a structure-guided sparse time series foundation model that aligns expert routing with interpretable temporal structure. AME-TS first uses a lightweight regime predictor to estimate series-level descriptors, including forecastability, seasonality, trend, and sparsity, and maps them to a soft structural prior over experts. This series-level prior guides token-level routing during training, encouraging structure-aligned specialization. On the GIFT-Eval benchmark, AME-TS delivers a strong accuracy-efficiency tradeoff across model scales: it substantially outperforms existing time series foundation models at small model scales and remains competitive with the strongest models at larger scales, while activating substantially fewer parameters through sparse routing. We further show that AME-TS learns more interpretable routing geometry and substantially more stable expert specialization than standard MoE during fine-tuning on the M5 dataset. These results suggest that structure-aware routing is an effective and reliable way to realize the benefits of sparse expert models for time series forecasting.",
+      "authors": [
+        "Rui Wang",
+        "Renhao Xue",
+        "Ray Razi",
+        "Huan Song",
+        "Hannah R. Marlowe"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-24T16:52:48+00:00",
+      "link": "https://arxiv.org/pdf/2605.25166v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "time series forecasting with mixture-of-experts",
+      "llm_evidence_cn": "使用混合专家模型进行时间序列预测",
+      "llm_evidence": "使用混合专家模型进行时间序列预测",
+      "canonical_evidence": "使用混合专家模型进行时间序列预测",
+      "llm_tldr_en": "Proposes AME-TS, a sparse time series foundation model using structure-guided MoE for forecasting.",
+      "llm_tldr_cn": "提出AME-TS，一种利用结构引导的稀疏时间序列基础模型进行预测。",
+      "llm_tldr": "提出AME-TS，一种利用结构引导的稀疏时间序列基础模型进行预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.25175v1",
+      "source": "arxiv",
+      "title": "Discrepancy Minimization Improves Cross-Hospital Robustness in Digital Pathology",
+      "abstract": "Pathology foundation models (PFMs) have advanced rapidly in recent years and support training classifiers for a range of histopathology tasks. However, their robustness across hospitals remains limited: performance often degrades when training a classifier on data from one hospital and evaluating it on another target hospital. We address this challenge by fine-tuning PFMs with a local maximum mean discrepancy (LMMD) objective that applies to two settings: domain adaptation, where unlabeled target-hospital data is available, and domain generalization, where target-hospital data is unavailable at all. Experiments at both the patch- and slide-level show consistent improvements across multiple PFMs and tasks.",
+      "authors": [
+        "Ben Vardi",
+        "Dana Schonberger",
+        "Yuval Friedmann",
+        "Zohar Yakhini",
+        "Iris Barshack",
+        "Alexander Loebel",
+        "Ariel Shamir"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-24T17:12:20+00:00",
+      "link": "https://arxiv.org/pdf/2605.25175v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "domain adaptation for pathology foundation models with limited labeled data",
+      "llm_evidence_cn": "有限标签数据下的病理基础模型域适应",
+      "llm_evidence": "有限标签数据下的病理基础模型域适应",
+      "canonical_evidence": "有限标签数据下的病理基础模型域适应",
+      "llm_tldr_en": "LMMD fine-tuning improves cross-hospital robustness of pathology foundation models with limited target data.",
+      "llm_tldr_cn": "LMMD微调在有限目标数据下提升病理基础模型的跨医院鲁棒性。",
+      "llm_tldr": "LMMD微调在有限目标数据下提升病理基础模型的跨医院鲁棒性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.24782v1",
+      "source": "arxiv",
+      "title": "The Perception-Physics Paradox: Probing Scientific Alignment with TC-Bench",
+      "abstract": "While Vision Foundation Models (VFMs) excel at predictive tasks on satellite imagery, their performance can arise from visual correlations rather than underlying structural invariants, making even perception-based out-of-distribution accuracy a poor proxy for scientific utility. As a result, models may look correct without reasoning correctly, a discrepancy we term the Perception-Physics Paradox. To address this gap, we introduce scientific alignment as an implicit objective for representation learning in scientific domains. We study a principled, testable aspect of scientific alignment through structural isomorphism, which requires latent representations to uniquely identify physical systems up to a linear reparameterization. This perspective induces a hierarchy of necessary conditions and yields a systematic probing protocol for physical and causal interpretability. To operationalize this framework, we release TC-Bench, a global, reproducible benchmark dataset with an automated construction pipeline for tropical cyclone research, and show that current VFMs rely on visual shortcuts that collapse in intense regimes, indicating that scientific alignment does not arise as a natural byproduct of scaling alone.",
+      "authors": [
+        "Dingling Yao",
+        "Andrea Polesello",
+        "Adeel Pervez",
+        "Caroline Muller",
+        "Francesco Locatello"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-23T23:51:19+00:00",
+      "link": "https://arxiv.org/pdf/2605.24782v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Representation learning with scientific alignment",
+      "llm_evidence_cn": "带科学一致性的表示学习",
+      "llm_evidence": "带科学一致性的表示学习",
+      "canonical_evidence": "带科学一致性的表示学习",
+      "llm_tldr_en": "Introduces scientific alignment as objective for representation learning in science",
+      "llm_tldr_cn": "为科学领域表示学习引入科学一致性目标",
+      "llm_tldr": "为科学领域表示学习引入科学一致性目标",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.24844v1",
+      "source": "arxiv",
+      "title": "Geo-Expert: Towards Expert-Level Geological Reasoning via Parameter-Efficient Fine-Tuning",
+      "abstract": "While general-purpose Large Language Models (LLMs) applied to Geology often hallucinate when reasoning about subsurface structures and deep-time evolution, current AI in Earth sciences predominantly targets surface remote sensing and GIS. To bridge this gap, we introduce Geo-Expert, a family of parameter-efficient geological LLMs fine-tuned on a custom-curated, high-quality instruction dataset processed using our custom instruction synthesis pipeline. We investigate the impact of model scaling and architecture by fine-tuning three base models: Qwen3-8B, Qwen3-32B, and Gemma-3-27B, with Low-Rank Adaptation (LoRA) method. Our extensive evaluation on a novel domain-specific benchmark, Geo-Eval, reveals that a domain-aligned 8B model can outperform open-weight 70B generalists and proprietary GPT-4o on specialized geological reasoning, while a 32B variant approaches frontier reasoning models. The optimized 8B model further offers a competitive cost-performance ratio for deployment. This work provides a reproducible recipe for democratizing scientific LLMs and establishes a baseline for geological artificial intelligence.",
+      "authors": [
+        "Chenyou Guo",
+        "Zongqi Liu",
+        "Yizhou Zhang",
+        "Zhaorui Jiang",
+        "Ze Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-05-24T03:28:17+00:00",
+      "link": "https://arxiv.org/pdf/2605.24844v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Parameter-efficient fine-tuning (LoRA) to adapt LLMs to geology with limited labeled data",
+      "llm_evidence_cn": "使用LoRA参数高效微调将LLM适配到地质领域，仅需少量标注数据",
+      "llm_evidence": "使用LoRA参数高效微调将LLM适配到地质领域，仅需少量标注数据",
+      "canonical_evidence": "使用LoRA参数高效微调将LLM适配到地质领域，仅需少量标注数据",
+      "llm_tldr_en": "Geo-Expert fine-tunes LLMs with LoRA for expert-level geological reasoning using limited data",
+      "llm_tldr_cn": "Geo-Expert使用LoRA微调LLM，以有限数据实现专家级地质推理",
+      "llm_tldr": "Geo-Expert使用LoRA微调LLM，以有限数据实现专家级地质推理",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.24789v1",
+      "source": "arxiv",
+      "title": "Self-Supervised Contrastive Learning for Cardiac MR Sequence Classification",
+      "abstract": "Vision Transformer (ViT) models, utilizing self-attention mechanisms, have demonstrated robust generalization capabilities across various vision tasks, including image classification. However, these models, typically pretrained on general public datasets, often lack the specialized domain knowledge necessary for medical imaging applications. In this study, we investigate the adaptation of ViT models, specifically for cardiac magnetic resonance (MR) images, using an in-house dataset. We found that pretrained ViT features do not effectively transfer to the cardiac MR domain. To overcome this limitation, we introduce an adaptation strategy that utilizes image-based self-supervised contrastive learning, demonstrating superior performance compared to traditional supervised training approaches. Moreover, our adapted ViT model exhibits strong generalization to external MR datasets such as BraTS and ADNI. Through ablation studies, we further investigate the impact of batch size and dataset scale on performance. Ultimately, our adapted model achieves classification AUC exceeding 0.75 across the four most common cardiac MR sequences.",
+      "authors": [
+        "Yuli Wang",
+        "Hyewon Jung",
+        "Dongshen Peng",
+        "Yuwei Dai",
+        "Jing Wu",
+        "Haoyue Guan",
+        "Yoko Kato",
+        "Zhicheng Jiao",
+        "Yu Sun",
+        "Ihab Kamel",
+        "Joao Lima",
+        "Cheng Ting Lin",
+        "Harrison Bai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.IV"
+      ],
+      "published": "2026-05-24T00:24:50+00:00",
+      "link": "https://arxiv.org/pdf/2605.24789v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised contrastive learning for representation learning in medical images",
+      "llm_evidence_cn": "医学图像中用于表征学习的自监督对比学习",
+      "llm_evidence": "医学图像中用于表征学习的自监督对比学习",
+      "canonical_evidence": "医学图像中用于表征学习的自监督对比学习",
+      "llm_tldr_en": "Adapts ViT to cardiac MR using self-supervised contrastive learning, outperforming direct transfer.",
+      "llm_tldr_cn": "使用自监督对比学习将ViT适应于心脏MR，优于直接迁移。",
+      "llm_tldr": "使用自监督对比学习将ViT适应于心脏MR，优于直接迁移。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.24810v1",
+      "source": "arxiv",
+      "title": "Cross-Domain Energy-Guided Diffusion Generation for Off-Dynamics Reinforcement Learning",
+      "abstract": "Off-dynamics offline reinforcement learning seeks to learn a target-domain policy from a large source dataset and a limited target dataset under mismatched transition dynamics. Existing approaches such as reward augmentation and data filtering are constrained to the source dataset and cannot synthesize new target behavior to improve coverage beyond the collected source trajectories. While recent model-based methods attempt to address this by learning target-aware dynamics, the generated experience is constructed only at the transition level, which leads to accumulated errors over long horizons. These limitations necessitate a shift toward trajectory-level generation for off-dynamics offline RL. We propose CEDGE, a Cross-domain Energy-guided Diffusion GEneration framework. CEDGE trains a trajectory diffusion model on source-domain trajectories and adapts the generated samples to the target domain through energy guidance. This guidance is derived by minimizing the distribution mismatch between the source and desired target-domain trajectories and is decomposed into return, domain, and behavior energy components. The resulting energy-guided trajectories are useful both for direct planning and as synthetic data for policy learning. Since target adaptation is achieved via energy guidance rather than retraining the diffusion model, CEDGE can be efficiently adapted to new target dynamics compared to previous methods. Experiments on the ODRL benchmark demonstrate that trajectory-level energy-guided generation improves diffusion planning under dynamics shifts and produces synthetic data that improves downstream target policy learning.",
+      "authors": [
+        "Yu Yang",
+        "Yihong Guo",
+        "Anqi Liu",
+        "Pan Xu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO",
+        "stat.AP"
+      ],
+      "published": "2026-05-24T01:44:57+00:00",
+      "link": "https://arxiv.org/pdf/2605.24810v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Cross-domain trajectory generation for off-dynamics RL with limited target data",
+      "llm_evidence_cn": "跨域轨迹生成用于动态不匹配的强化学习，目标数据有限",
+      "llm_evidence": "跨域轨迹生成用于动态不匹配的强化学习，目标数据有限",
+      "canonical_evidence": "跨域轨迹生成用于动态不匹配的强化学习，目标数据有限",
+      "llm_tldr_en": "Generates target-domain trajectories via diffusion to improve off-dynamics RL with limited target data",
+      "llm_tldr_cn": "通过扩散生成目标域轨迹，改进有限目标数据下的动态偏移强化学习",
+      "llm_tldr": "通过扩散生成目标域轨迹，改进有限目标数据下的动态偏移强化学习",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.24848v1",
+      "source": "arxiv",
+      "title": "Distributional Conformal Prediction for Markov Processes",
+      "abstract": "We introduce the Markov Distributional Conformal Prediction (MDCP) method that extends the distributional conformal prediction (previously developed for regression) to the setting of a strictly stationary Markov process. Instead of relying on a specific model structure to do prediction, the idea of distributional conformal prediction interval aligns with the Model-Free (MF) Prediction Principle. In analogy to MF prediction of Markov processes, our method exploits the probability integral transform based on estimated transition distribution functions to transform the Markov data to an i.i.d.~dataset. We show a non-asymptotic error bound of MDCPs unconditional coverage rate under a $β$-mixing condition and other standard assumptions on the kernel estimators. The asymptotic validity of the conditional prediction interval is also verified. In addition, we show that our conditional prediction interval is still asymptotically valid with Markov processes being $L^p$-$m$-approximable instead of satisfying the mixing property. Numerical simulations and real data experiments are deployed to empirically illustrate the finite-sample performance of MDCP, and compare it with the MF bootstrap prediction method.",
+      "authors": [
+        "Dehao Dai",
+        "Kejin Wu",
+        "Dimitris N. Politis"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME",
+        "math.ST"
+      ],
+      "published": "2026-05-24T03:41:28+00:00",
+      "link": "https://arxiv.org/pdf/2605.24848v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "method for prediction interval of Markov processes",
+      "llm_evidence_cn": "马尔可夫过程的预测区间方法",
+      "llm_evidence": "马尔可夫过程的预测区间方法",
+      "canonical_evidence": "马尔可夫过程的预测区间方法",
+      "llm_tldr_en": "Extends distributional conformal prediction to stationary Markov processes",
+      "llm_tldr_cn": "将分布共形预测扩展到平稳马尔可夫过程",
+      "llm_tldr": "将分布共形预测扩展到平稳马尔可夫过程",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
