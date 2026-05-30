@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.26569v1/fig-006.webp",
+      "caption": "Figure 1: A schematic overview of the DCP framework: (1) Start by training a DGP to generate predictive distributions on the calibration and test set. (2) Select a nonconformity score that evaluates how uncharacteristic a ground truth is for a predictive distribution. (3) Calibrate a global threshold q̂ on the calibration set and (4) locate the prediction intervals for the test set by root-finding, which determines the values along a grid for which the nonconformity is approximately equal to the threshold.",
+      "page": 9,
+      "index": 6,
+      "width": 902,
+      "height": 806
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26569v1/fig-004.webp",
+      "caption": "Table 2: Summary of Data set Properties",
+      "page": 13,
+      "index": 4,
+      "width": 568,
+      "height": 227
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26569v1/fig-001.webp",
+      "caption": "Figure 2: Effect of scaled nonconformity scores on the local adaptiveness and thus, sharpness of the prediction interval for (a) the standard residual, and (b) the Z score. For the latter, intervals are narrow or wide where the predictive variance (and thus the predicted uncertainty) is small or high, respectively. Both approaches result in 90% marginal coverage.",
+      "page": 15,
+      "index": 1,
+      "width": 888,
+      "height": 273
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26569v1/fig-005.webp",
+      "caption": "Figure 3: Behavior of the MMW score. (a) Under-coverage penalty factor Puc as a function of the relative under-coverage ∆C for three different growth factors K. (b) Decomposition of the classical Winkler score into width δ and error e, together with the penalized error Puc × e for three different K (dashed) of the MMW; all plotted against empirical coverage. (c) MMW score versus empirical coverage for five test-set sizes N , where a larger N implies a minimal acceptable coverage Ca closer to 1− α. All illustrations use α = 0.1, N = 10000 and δ = 1 if not stated otherwise.",
+      "page": 19,
+      "index": 5,
+      "width": 893,
+      "height": 246
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26569v1/fig-007.webp",
+      "caption": "Figure 4: Performance of MCD and QR on a) an aleatoric and b) an epistemic synthetic benchmark data set for the LSTM model. The annotated metrics are calculated over the shown test set for 216 samples.",
+      "page": 20,
+      "index": 7,
+      "width": 900,
+      "height": 502
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26569v1/fig-002.webp",
+      "caption": "Figure 5: DCP intervals on a) Solar (subset 100; limited to 84 test points) and b) M4Weekly (subset 244) for the LSTM model with all DGPs, combined with residual (R), quantile interval (QIS), and KNN scores. The plot shows normalized groundtruth targets and nominal 90% prediction intervals; annotations report the MMW metric results for each DGP-score pairing.",
+      "page": 22,
+      "index": 2,
+      "width": 902,
+      "height": 510
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26569v1/fig-003.webp",
+      "caption": "Figure 6: Average Performance across all models for the benchmark data sets and all 20 DGP–score combination. Cells values are a) the normalized mean MMW, b) the mean coefficient of variance (CV) of interval width, and c) the median ranks of the MMW score (lower = better), for a given combination, computed over all subsets of each data set. Cells outlined in red mark combinations for which at least 25% of the subsets fall below the Ca threshold. Note that a CV higher then 0.0 for the nonadaptive residual score is due to online conformal calibration.",
+      "page": 23,
+      "index": 3,
+      "width": 718,
+      "height": 766
+    }
+  ]
+}

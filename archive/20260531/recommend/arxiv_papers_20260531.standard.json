@@ -1,0 +1,429 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-30T20:23:58.591800+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 61,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 76,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 28,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 23,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 29
+  },
+  "deep_dive": [
+    {
+      "id": "2605.26423v1",
+      "source": "arxiv",
+      "title": "FM-fMRI: Event Conditioned Flow Matching for Rest-to-Task fMRI Time-Series Synthesis",
+      "abstract": "Task-based fMRI provides a direct readout of task-evoked neural dynamics, but it is expensive and difficult to acquire at scale, motivating rest-to-task synthesis from widely available resting-state fMRI (rsfMRI). We propose FM-fMRI, an event-conditioned flow-matching model that learns a continuous-time conditional vector field to generate task ROI time series from a subject's rsfMRI and the task event information. The formulation enables fast ODE-based sampling and flexible conditioning over heterogeneous event schedules. Rather than optimizing for pointwise reconstruction, we evaluated generated signals using complementary criteria that probe temporal and spectral structure, subject and group-level connectome consistency, and distributional alignment. On the public Human Connectome Project and internal BioPoint autism cohort, FM-fMRI achieves the strongest spectral and connectivity agreement and improved distribution-level matching over conditional diffusion, generative adversarial networks (GANs), and variational autoencoders (VAEs) baselines. Furthermore, we augment the BioPoint cohort by synthesizing task-fMRI ROI time series with our method, improving downstream autism classification and demonstrating practical utility in data-limited clinical settings. The code will be available on GitHub.",
+      "authors": [
+        "Peiyu Duan",
+        "Jiyao Wang",
+        "Nicha C. Dvornek",
+        "Junlin Yang",
+        "Ziqi Gao",
+        "Lawrence H. Staib",
+        "James S. Duncan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "eess.IV"
+      ],
+      "published": "2026-05-26T01:21:23+00:00",
+      "link": "https://arxiv.org/pdf/2605.26423v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Flow matching model for generating task fMRI time series from resting state",
+      "llm_evidence_cn": "从静息态生成任务fMRI时间序列的流匹配模型",
+      "llm_evidence": "从静息态生成任务fMRI时间序列的流匹配模型",
+      "canonical_evidence": "从静息态生成任务fMRI时间序列的流匹配模型",
+      "llm_tldr_en": "Flow matching model for generating task fMRI time series from rest",
+      "llm_tldr_cn": "从静息态生成任务fMRI时间序列的流匹配模型",
+      "llm_tldr": "从静息态生成任务fMRI时间序列的流匹配模型",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.26569v1",
+      "source": "arxiv",
+      "title": "Distribution-Aware Conformal Prediction: A Framework for generating efficient prediction intervals for time series",
+      "abstract": "We present Distribution-aware Conformal Prediction (DCP), a unified framework integrating probabilistic predictors like Monte Carlo dropout, deep ensembles, and quantile regression with score-agnostic conformal calibration to produce valid and efficient prediction intervals. Leveraging a numerical inversion approach to construct interval bounds, DCP accommodates arbitrary combinations of distribution generating predictors and nonconformity scores. Benchmark analysis on synthetic and real-world time series data demonstrate DCP's ability to adaptively calibrate prediction intervals under varying uncertainty regimes. Crucially, DCP's modular design facilitates plug-and-play experimentation with different predictor-score pairings, quantitatively supported by a newly introduced modified Winkler score that balances validity and efficiency by explicitly penalizing undercoverage. While DCP generalizes and extends existing approaches like Conformalized Quantile Regression and Conformalized Monte Carlo, its modular design allows further extensions, setting a foundation for advancing uncertainty quantification in dynamic environments and high-risk applications.",
+      "authors": [
+        "Daniel Schweizer",
+        "Peter Kuhn",
+        "Jayant Sharma",
+        "Shivali Dubey",
+        "Malte von Ramin",
+        "Christoph Brockt-Haßauer"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-26T05:38:18+00:00",
+      "link": "https://arxiv.org/pdf/2605.26569v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "time series prediction intervals",
+      "llm_evidence_cn": "时间序列预测区间",
+      "llm_evidence": "时间序列预测区间",
+      "canonical_evidence": "时间序列预测区间",
+      "llm_tldr_en": "DCP framework for valid and efficient prediction intervals on time series",
+      "llm_tldr_cn": "DCP框架生成时间序列有效且高效的预测区间",
+      "llm_tldr": "DCP框架生成时间序列有效且高效的预测区间",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.26624v2",
+      "source": "arxiv",
+      "title": "MSCGC-KAN: Multi-scale Causal Graph Convolution and Kolmogorov-Arnold Feature Mapping for EEG Emotion Recognition",
+      "abstract": "Electroencephalogram (EEG)-based emotion recognition is an important affective computing task, and recent EEG foundation models provide useful generic representations for downstream adaptation. However, under the fine-tuning setting, three limitations remain prominent: insufficient modeling of multi-scale emotional dynamics, inadequate exploitation of inter-channel functional connectivity, and the limited expressive power of simple linear classification heads. To address these issues, this paper proposes a new EEG emotion recognition method, termed MSCGC-KAN, which introduces a structured task head composed of multi-scale causal graph convolution and Kolmogorov--Arnold feature mapping. Built on a pre-trained CBraMod backbone, MSCGC-KAN enhances downstream adaptation by jointly strengthening multi-scale temporal modeling, learnable inter-channel connectivity modeling, and nonlinear discriminative mapping within a compact task-specific head. This design preserves the representation advantage of the foundation model while making the classifier more sensitive to emotion-related spatiotemporal patterns. Extensive experiments are conducted on the public FACED and SEED-VII datasets. The proposed method achieves a balanced accuracy of 60.66\\%, a Cohen's Kappa of 0.5525, and a weighted F1-score of 60.40\\% on FACED, and obtains 33.27\\%, 0.2223, and 33.64\\%, respectively, on SEED-VII. Compared with the CBraMod+Linear baseline, the balanced accuracy is improved by 5.91 and 2.03 percentage points on the two datasets, respectively. These results indicate that structured task-head design is an effective way to improve EEG emotion recognition when fine-tuning pre-trained EEG models.",
+      "authors": [
+        "Haoliang Gong",
+        "Qingshan She",
+        "Jiale Xu",
+        "Yunyan Gao",
+        "Xugang Xi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-26T07:02:13+00:00",
+      "link": "https://arxiv.org/pdf/2605.26624v2",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG emotion recognition decoding neural signals",
+      "llm_evidence_cn": "通过EEG情绪识别解码神经信号",
+      "llm_evidence": "通过EEG情绪识别解码神经信号",
+      "canonical_evidence": "通过EEG情绪识别解码神经信号",
+      "llm_tldr_en": "Proposes multi-scale causal graph convolution for EEG emotion recognition",
+      "llm_tldr_cn": "提出多尺度因果图卷积用于EEG情绪识别",
+      "llm_tldr": "提出多尺度因果图卷积用于EEG情绪识别",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.26797v1",
+      "source": "arxiv",
+      "title": "Latent Recurrent Transformer: Architecture Exploration, Training Strategies, and Scaling Behavior",
+      "abstract": "We study Latent Recurrent Transformer (LRT), a lightweight augmentation of autoregressive transformers that reuses a high-level source-layer hidden state from the previous token as recurrent memory for the next token. Because this source state is already computed during ordinary decoding, LRT adds a cross-layer recurrent latent pathway across positions without inserting pause tokens or extra depth loops, and the standard attention mechanism and KV-cache interface are preserved. To pretrain this recurrence at scale without sequentially unrolling the transformer, we introduce interleaved parallel training: a single full-sequence initialization forward pass builds a shared buffer; then disjoint position subsets are refined in parallel and written back, so that all tokens receive recurrent-memory-aware supervision at roughly 2 times baseline compute. Across nanochat style backbones and a wide range of tokens-per-parameter budgets, LRT improves both language-modeling loss and in-context learning under matched effective compute while adding as little as 0.3% parameters.",
+      "authors": [
+        "Zeyi Huang",
+        "Xuehai He",
+        "LiLiang Ren",
+        "Yiping Wang",
+        "Baolin Peng",
+        "Hao Cheng",
+        "Shuohang Wang",
+        "Pengcheng He",
+        "Jianfeng Gao",
+        "Yong Jae Lee",
+        "Yelong Shen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-05-26T10:10:26+00:00",
+      "link": "https://arxiv.org/pdf/2605.26797v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "latent recurrent pathway for sequential data processing",
+      "llm_evidence_cn": "潜在递归路径用于序列数据处理",
+      "llm_evidence": "潜在递归路径用于序列数据处理",
+      "canonical_evidence": "潜在递归路径用于序列数据处理",
+      "llm_tldr_en": "Latent Recurrent Transformer augments transformers with recurrent memory for improved sequence modeling.",
+      "llm_tldr_cn": "潜在递归变换器通过递归记忆增强变换器的序列建模能力。",
+      "llm_tldr": "潜在递归变换器通过递归记忆增强变换器的序列建模能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.27467v1",
+      "source": "arxiv",
+      "title": "Comparative Analysis of Liquid Neural Networks and LSTM for Sequential Pattern Recognition: Robustness, Efficiency, and Clinical Utility",
+      "abstract": "Traditional Recurrent Neural Networks (RNNs) and Long Short-Term Memory (LSTM) units operate on discrete time steps, often failing to capture the fluid temporal dynamics of real-world physical processes. Liquid Neural Networks (LNNs), specifically Closed-form Continuous-time (CfC) networks, address this by modeling the hidden state evolution as a continuous differential equation. In this paper, we conduct a comprehensive benchmarking study across four distinct sequential modalities: neuromorphic event-based data (N-MNIST), stroke-based drawing (QuickDraw), visual handwriting (IAM), and physiological time-series (PhysioNet Sepsis-3). Furthermore, we perform a rigorous stress test using temporal dropout to evaluate model robustness against missing data. Our findings reveal that LNNs consistently provide superior parameter efficiency and significantly higher robustness in natively temporal domains and clinical environments where data sparsity is prevalent. This extended preprint provides additional background on related datasets and the LNN theoretical lineage, supplemented with a detailed appendix documenting our full implementation and experimental settings.",
+      "authors": [
+        "Ye Kyaw Thu",
+        "Thazin Myint Oo",
+        "Thepchai Supnithi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-05-26T08:18:52+00:00",
+      "link": "https://arxiv.org/pdf/2605.27467v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "compares LNN and LSTM for sequential pattern recognition across modalities",
+      "llm_evidence_cn": "比较LNN和LSTM在多模态序列模式识别中的表现",
+      "llm_evidence": "比较LNN和LSTM在多模态序列模式识别中的表现",
+      "canonical_evidence": "比较LNN和LSTM在多模态序列模式识别中的表现",
+      "llm_tldr_en": "Benchmarks liquid neural networks vs LSTM on time-series and sequential data.",
+      "llm_tldr_cn": "在时间序列和序列数据上基准测试液态神经网络与LSTM。",
+      "llm_tldr": "在时间序列和序列数据上基准测试液态神经网络与LSTM。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.26434v1",
+      "source": "arxiv",
+      "title": "Aperiodic and Low-Frequency Spectral Bias in Reconstruction based EEG Foundation Models",
+      "abstract": "EEG foundation models, pre-trained on large-scale unlabelled EEG data, have emerged as a promising direction towards learning generalizable EEG representations. Despite showing positive results in data-rich regimes, they often fail to outperform significantly smaller supervised models in low-resource settings compared to fully supervised models. We provide a mechanistic account of this shortcoming, attributing it to a fundamental mismatch between reconstruction-based pretext tasks and the idiosyncratic spectral structure of EEG signals, which decompose into distinct high-power aperiodic and low-power oscillatory components. Using controlled, synthetically-generated EEG inputs, we demonstrate that EEG foundation model embeddings are biased to capture the aperiodic components of the EEG signal while under-representing oscillatory components, particularly at higher frequencies. Additionally, linear probe evaluations on real-world BCI datasets further reveal that embeddings encode subject identity more strongly than task-relevant information, thereby reinforcing the low-frequency and aperiodic component bias in foundation model embeddings trained primarily on reconstruction based objectives. Together, these findings elucidate a failure mode in reconstruction based EEG foundation models and motivate future work to incorporate auxiliary losses explicitly targeting high-frequency oscillatory structure as a path toward more capable and generalizable EEG representations.",
+      "authors": [
+        "Aditya Kommineni",
+        "Emily Zhou",
+        "Kleanthis Avramidis",
+        "Simon Bock Segaard",
+        "Jeppe Roden Münster",
+        "Andreas Peter Juhl Hansen",
+        "Takfarinas Medani",
+        "Tiantian Feng",
+        "Richard Leahy",
+        "Shrikanth Narayanan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-26T01:40:36+00:00",
+      "link": "https://arxiv.org/pdf/2605.26434v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Studies representation learning bias in EEG foundation models",
+      "llm_evidence_cn": "研究EEG基础模型中的表征学习偏差",
+      "llm_evidence": "研究EEG基础模型中的表征学习偏差",
+      "canonical_evidence": "研究EEG基础模型中的表征学习偏差",
+      "llm_tldr_en": "Identifies spectral bias in EEG foundation models that limits low-resource performance.",
+      "llm_tldr_cn": "识别EEG基础模型中的频谱偏差，限制了低资源性能。",
+      "llm_tldr": "识别EEG基础模型中的频谱偏差，限制了低资源性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.26717v1",
+      "source": "arxiv",
+      "title": "L2Rec: Towards Dual-View Understanding of LLMs for Personalized Recommendation",
+      "abstract": "Adapting large language models (LLMs) for personalized recommendation requires aligning their general-purpose capabilities with user-specific preferences while effectively leveraging both behavioral and semantic signals. Existing approaches typically integrate these signals at either the input level (e.g., injecting behavioral embeddings into the token space) or the output level (e.g., contrastive alignment of separate encoders), suffering from distribution gaps or lack of end-to-end task supervision. In this work, we introduce L2Rec, which unifies behavioral and semantic understanding at the parameter level of LLMs. Our key insight is that the same set of Transformer parameters can serve as a shared medium for both views: by applying view-specific, personalized low-rank perturbations via a Dual-view Personalized Mixture-of-Experts (DPMoE) mechanism, L2Rec enables a single LLM backbone to produce complementary behavioral and semantic adaptations for each user with minimal representation-level misalignment. An adaptive cross-view fusion module further integrates the dual-view outputs into a unified user preference. Experiments on four datasets show that L2Rec consistently outperforms state-of-the-art baselines, and online A/B testing on a large-scale industrial platform validates significant improvements in key engagement metrics.",
+      "authors": [
+        "Pingjun Pan",
+        "Tingting Zhou",
+        "Peiyao Lu",
+        "Tingting Fei",
+        "Hongxiang Chen",
+        "Chuanjiang Luo"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-05-26T08:57:19+00:00",
+      "link": "https://arxiv.org/pdf/2605.26717v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "adapts LLMs for recommendation using parameter-level unification",
+      "llm_evidence_cn": "利用参数级统一化将大语言模型适配到推荐任务",
+      "llm_evidence": "利用参数级统一化将大语言模型适配到推荐任务",
+      "canonical_evidence": "利用参数级统一化将大语言模型适配到推荐任务",
+      "llm_tldr_en": "Proposes L2Rec to unify behavioral and semantic understanding in LLMs for personalized recommendation.",
+      "llm_tldr_cn": "提出L2Rec方法，在参数层面统一行为与语义理解，用于个性化推荐。",
+      "llm_tldr": "提出L2Rec方法，在参数层面统一行为与语义理解，用于个性化推荐。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.26910v1",
+      "source": "arxiv",
+      "title": "EEG-FM-Audit: A Systematic Evaluation and Analysis Pipeline for EEG Foundation Models",
+      "abstract": "Large EEG Foundation Models (FMs) have shown great potential for decoding EEG signals across diverse cognitive tasks. However, existing EEG-FM studies exhibit three critical limitations: opaque supervised baseline tuning, unverified contributions of complex learning paradigms, and a lack of transparency in model decision-making. To address these, we propose EEG-FM-Audit, a comprehensive evaluation and analysis pipeline designed to systematize the assessment of EEG-FMs. EEG-FM-Audit consists of three primary components: (1) an ASHA-driven benchmarking protocol that ensures fair comparisons by transparently optimizing supervised baselines; (2) paradigm-level ablation studies to evaluate the effectiveness of learning paradigms in FMs; and (3) a neurophysiological probing (NPP) framework, which explores whether FMs leverage valid temporal, spatial, and spectral EEG properties. We apply EEG-FM-Audit to four state-of-the-art EEG-FMs and five representative supervised models across three public datasets. Our results reveal that properly tuned supervised baselines can match or outperform advanced FMs, despite requiring significantly fewer parameters. Furthermore, we find that the effectiveness of learning paradigms of FMs is highly dependent on dataset scale and architecture. Finally, NPP analysis demonstrates how FMs rely on specific physiological features, establishing a framework for more interpretable neural decoding.",
+      "authors": [
+        "Xianheng Wang",
+        "Yige Yang",
+        "Damien Coyle"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "q-bio.NC"
+      ],
+      "published": "2026-05-26T12:06:35+00:00",
+      "link": "https://arxiv.org/pdf/2605.26910v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "evaluates EEG foundation models for decoding tasks",
+      "llm_evidence_cn": "评估用于解码任务的EEG基础模型",
+      "llm_evidence": "评估用于解码任务的EEG基础模型",
+      "canonical_evidence": "评估用于解码任务的EEG基础模型",
+      "llm_tldr_en": "Systematic evaluation pipeline for EEG foundation models",
+      "llm_tldr_cn": "EEG基础模型的系统评估流程",
+      "llm_tldr": "EEG基础模型的系统评估流程",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.26998v1",
+      "source": "arxiv",
+      "title": "Probabilistic Recurrent Intention Switching Model",
+      "abstract": "Inverse reinforcement learning (IRL) recovers reward functions from observed behavior, yet traditional methods assume a single stationary reward that cannot capture goal switching within an episode. Recent multi-intention IRL methods address this by segmenting trajectories, but model intention transitions as either a memoryless Markov chain or via manual state augmentation with a fixed history window. We propose the Probabilistic Recurrent Intention Switching Model (PRISM), which replaces both mechanisms with a lightweight recurrent network that maps observation history to a per-step intention distribution. We prove that the resulting EM objective decomposes exactly into independent per-intention reward subproblems, each solvable in closed form, yielding an $\\mathcal{O}(nK)$ E-step with no variational approximation. We evaluate PRISM on a non-Markovian gridworld, a mouse labyrinth, and BridgeData~V2 robotic manipulation, the first large-scale robotic application of multi-intention IRL. Across all settings PRISM achieves the highest held-out log-likelihood while recovering nameable, temporally coherent intentions from unlabeled demonstrations, suggesting that discrete goal switching is present in both biological and artificial agents.",
+      "authors": [
+        "Wenyuan Sheng",
+        "Hao Zhu",
+        "Joschka Boedecker"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "q-bio.NC"
+      ],
+      "published": "2026-05-26T13:19:00+00:00",
+      "link": "https://arxiv.org/pdf/2605.26998v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Recurrent intention switching model for sequential data",
+      "llm_evidence_cn": "用于序列数据的递归意图切换模型",
+      "llm_evidence": "用于序列数据的递归意图切换模型",
+      "canonical_evidence": "用于序列数据的递归意图切换模型",
+      "llm_tldr_en": "Proposes a recurrent model for intention switching in inverse reinforcement learning.",
+      "llm_tldr_cn": "提出了一种用于逆强化学习中意图切换的递归模型。",
+      "llm_tldr": "提出了一种用于逆强化学习中意图切换的递归模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.27063v1",
+      "source": "arxiv",
+      "title": "Learning Dynamic Graph Representations through Timespan View Contrasts",
+      "abstract": "The rich information underlying graphs has inspired further investigation of unsupervised graph representation. Existing studies mainly depend on node features and topological properties within static graphs to create self-supervised signals, neglecting the temporal components carried by real-world graph data, such as timestamps of edges. To overcome this limitation, this paper explores how to model temporal evolution on dynamic graphs elegantly. Specifically, we introduce a new inductive bias, namely temporal translation invariance, which illustrates the tendency of the identical node to keep similar labels across different timespans. Based on this assumption, we develop a dynamic graph representation framework CLDG that encourages the node to maintain locally consistent temporal translation invariance through contrastive learning on different timespans. Except for standard CLDG which only considers explicit topological links, our further proposed CLDG++ additionally employs graph diffusion to uncover global contextual correlations between nodes, and designs a multi-scale contrastive learning objective composed of local-local, local-global, and global-global contrasts to enhance representation capabilities. Interestingly, by measuring the consistency between different timespans to shape anomaly indicators, CLDG and CLDG++ are seamlessly integrated with the task of spotting anomalies on dynamic graphs, which has broad applications in many high-impact domains, such as finance, cybersecurity, and healthcare. Experiments demonstrate that CLDG and CLDG++ both exhibit desirable performance in downstream tasks including node classification and dynamic graph anomaly detection. Moreover, CLDG significantly reduces time and space complexity by implicitly exploiting temporal cues instead of complicated sequence models.",
+      "authors": [
+        "Yiming Xu",
+        "Zhen Peng",
+        "Bin Shi",
+        "Xu Hua",
+        "Bo Dong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-26T14:15:04+00:00",
+      "link": "https://arxiv.org/pdf/2605.27063v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "models temporal evolution on dynamic graphs",
+      "llm_evidence_cn": "建模动态图的时间演化",
+      "llm_evidence": "建模动态图的时间演化",
+      "canonical_evidence": "建模动态图的时间演化",
+      "llm_tldr_en": "Contrastive learning framework for dynamic graph representations using timespan views.",
+      "llm_tldr_cn": "利用时间跨度视图对比学习动态图表示。",
+      "llm_tldr": "利用时间跨度视图对比学习动态图表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

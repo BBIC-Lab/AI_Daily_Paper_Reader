@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-05-30
-- 运行时间：2026-05-30 05:34:32 北京时间
+- 最新运行日期：2026-05-31
+- 运行时间：2026-05-31 04:28:58 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-1) 今日聚焦灵长类自然全身运动的神经行为解码与多模态脑信号生成模型。  
-2) 猴子自然全身运动的神经-行为表征和离散扩散驱动的脑-视-语言统一框架是两大前沿亮点；速读中稀疏自编码器特征蒸馏与“法庭类比”不确定性分类也值得关注。  
-3) 下一步可尝试将全身运动解码与多模态生成结合，探索更人性化的脑机交互应用。
-- 详情：[/202605/30/README](/202605/30/README)
+今日精读5篇、速读5篇，聚焦时序合成、预测区间与脑电基础模型评估。  
+最值得关注的是流匹配驱动的静息到任务fMRI生成，和分布感知的保形预测区间框架。  
+建议从事脑信号或时序预测的读者优先复现这两项高分工作，验证其在你的场景下的泛化能力。
+- 详情：[/202605/31/README](/202605/31/README)
 
 ### 精读区论文标签
-1. [Neural-Behavioral Representation of Natural Whole-body Movement in Monkeys](/202605/30/2605.29355v1-neural-behavioral-representation-of-natural-whole-body-movement-in-monkeys)  
-   标签：评分：10.0/10、query:ndai
-   evidence：使用自回归模型将神经信号解码为猴子全身运动
-2. [Mind-Omni: A Unified Multi-Task Framework for Brain-Vision-Language Modeling via Discrete Diffusion](/202605/30/2605.29591v1-mind-omni-a-unified-multi-task-framework-for-brain-vision-language-modeling-via-discrete-diffusion)  
-   标签：评分：10.0/10、query:ndai
-   evidence：通过离散扩散统一脑信号编解码为语言/视觉
-3. [Modeling Dynamic Mixtures of Time-Delay Systems from Streaming Time Series](/202605/30/2605.26191v1-modeling-dynamic-mixtures-of-time-delay-systems-from-streaming-time-series)  
+1. [FM-fMRI: Event Conditioned Flow Matching for Rest-to-Task fMRI Time-Series Synthesis](/202605/31/2605.26423v1-fm-fmri-event-conditioned-flow-matching-for-rest-to-task-fmri-time-series-synthesis)  
    标签：评分：9.0/10、query:ndai
-   evidence：将流式时间序列建模为时滞系统的动态混合体
-4. [Revealing the core dimensions underlying representations in brains, behavior and AI](/202605/30/2605.26921v1-revealing-the-core-dimensions-underlying-representations-in-brains-behavior-and-ai)  
+   evidence：从静息态生成任务fMRI时间序列的流匹配模型
+2. [Distribution-Aware Conformal Prediction: A Framework for generating efficient prediction intervals for time series](/202605/31/2605.26569v1-distribution-aware-conformal-prediction-a-framework-for-generating-efficient-prediction-intervals-for-time-series)  
    标签：评分：9.0/10、query:ndai
-   evidence：从神经和行为相似性数据中提取可解释的低维嵌入
-5. [Linear Recurrent Neural Networks as Time-Delay Embeddings](/202605/30/2605.27290v1-linear-recurrent-neural-networks-as-time-delay-embeddings)  
+   evidence：时间序列预测区间
+3. [MSCGC-KAN: Multi-scale Causal Graph Convolution and Kolmogorov-Arnold Feature Mapping for EEG Emotion Recognition](/202605/31/2605.26624v2-mscgc-kan-multi-scale-causal-graph-convolution-and-kolmogorov-arnold-feature-mapping-for-eeg-emotion-recognition)  
    标签：评分：9.0/10、query:ndai
-   evidence：线性递归网络作为时间延迟嵌入用于时序数据分析
+   evidence：通过EEG情绪识别解码神经信号
+4. [Latent Recurrent Transformer: Architecture Exploration, Training Strategies, and Scaling Behavior](/202605/31/2605.26797v1-latent-recurrent-transformer-architecture-exploration-training-strategies-and-scaling-behavior)  
+   标签：评分：9.0/10、query:ndai
+   evidence：潜在递归路径用于序列数据处理
+5. [Comparative Analysis of Liquid Neural Networks and LSTM for Sequential Pattern Recognition: Robustness, Efficiency, and Clinical Utility](/202605/31/2605.27467v1-comparative-analysis-of-liquid-neural-networks-and-lstm-for-sequential-pattern-recognition-robustness-efficiency-and-clinical-utility)  
+   标签：评分：9.0/10、query:ndai
+   evidence：比较LNN和LSTM在多模态序列模式识别中的表现
 
 ### 速读区论文标签
-1. [Accelerated Dynamic Importance Weighting with Versatile Divergence-Minimizing Estimators](/202605/30/2605.25499v1-accelerated-dynamic-importance-weighting-with-versatile-divergence-minimizing-estimators)  
+1. [Aperiodic and Low-Frequency Spectral Bias in Reconstruction based EEG Foundation Models](/202605/31/2605.26434v1-aperiodic-and-low-frequency-spectral-bias-in-reconstruction-based-eeg-foundation-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于联合分布漂移的动态重要性加权
-2. [SAE-FD: Sparse Autoencoder Feature Distillation for Continual Learning of Large Language Models](/202605/30/2605.25525v1-sae-fd-sparse-autoencoder-feature-distillation-for-continual-learning-of-large-language-models)  
+   evidence：研究EEG基础模型中的表征学习偏差
+2. [EEG-FM-Audit: A Systematic Evaluation and Analysis Pipeline for EEG Foundation Models](/202605/31/2605.26910v1-eeg-fm-audit-a-systematic-evaluation-and-analysis-pipeline-for-eeg-foundation-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于稀疏自编码器特征蒸馏的持续学习
-3. [Courtroom Analogy: New Perspective on Uncertainty-Aware Classification](/202605/30/2605.25616v1-courtroom-analogy-new-perspective-on-uncertainty-aware-classification)  
+   evidence：评估用于解码任务的EEG基础模型
+3. [Probabilistic Recurrent Intention Switching Model](/202605/31/2605.26998v1-probabilistic-recurrent-intention-switching-model)  
    标签：评分：8.0/10、query:ndai
-   evidence：输入相关的可信度权重用于类别特定意见
-4. [CMAP: Cross-Modal Adaptive Prompting for Multi-Domain Task-Incremental Learning](/202605/30/2605.25708v1-cmap-cross-modal-adaptive-prompting-for-multi-domain-task-incremental-learning)  
+   evidence：用于序列数据的递归意图切换模型
+4. [Learning Dynamic Graph Representations through Timespan View Contrasts](/202605/31/2605.27063v1-learning-dynamic-graph-representations-through-timespan-view-contrasts)  
    标签：评分：8.0/10、query:ndai
-   evidence：跨模态自适应提示用于多域增量学习，数据有限
-5. [From Item-Only to Query-Item: Query-Conditioned Generative Search with QGS in Quark](/202605/30/2605.25514v1-from-item-only-to-query-item-query-conditioned-generative-search-with-qgs-in-quark)  
+   evidence：建模动态图的时间演化
+5. [L2Rec: Towards Dual-View Understanding of LLMs for Personalized Recommendation](/202605/31/2605.26717v1-l2rec-towards-dual-view-understanding-of-llms-for-personalized-recommendation)  
    标签：评分：7.0/10、query:ndai
-   evidence：用于查询条件下一项预测的生成式序列模型
+   evidence：利用参数级统一化将大语言模型适配到推荐任务
 

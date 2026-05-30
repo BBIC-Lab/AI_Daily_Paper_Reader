@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.26797v1/fig-003.webp",
+      "caption": "Figure 1: Overview of Latent Recurrent Transformer (LRT). (a) Depth-recurrent methods increase computation by repeatedly applying model blocks to the same token before emitting an output. (b) Default LRT reuses a high-level source-layer hidden state from the previous token as recurrent memory for the next token, creating a cross-layer, cross-token latent recurrence without adding extra autoregressive decoding steps. Each generated token still uses one normal transformer forward pass.",
+      "page": 3,
+      "index": 3,
+      "width": 932,
+      "height": 511
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26797v1/fig-007.webp",
+      "caption": "Figure 2: Training approximations for LRT. (a) Interleaved parallel training first performs a full initialization pass to populate a sequence-level KV and recurrent-state buffer, then refines disjoint interleaved subsets of positions. Updated states are written back to the buffer, allowing later subsets to consume recurrent memory refined by earlier subsets. (b) Chunked Training processes contiguous chunks sequentially. Computation remains parallel within each chunk, but recurrent memory is propagated only across chunk boundaries, giving a coarser approximation to token-level recurrence. Blue boxes indicate recomputed positions, gray boxes indicate cached context, and orange arrows indicate recurrent memory or updated hidden states.",
+      "page": 5,
+      "index": 7,
+      "width": 979,
+      "height": 604
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26797v1/fig-002.webp",
+      "caption": "Figure 3: Scaling behavior of Latent Recurrent Transformers under baseline-equivalent training compute. Left: BPB versus training compute, where lower is better. Right: CORE versus training compute, where higher is better. We plot methods by baseline-equivalent training compute: R denotes the tokens-perparameter training budget. A standard transformer trained at ratio R is plotted at R, while an LRT trained with interleaved parallel training at ratio R is plotted at 2R because it uses one initialization pass and one effective refinement pass. LRT-shared is our default lightweight variant with recurrent projections shared across layers, adding 0.3% parameters. LRT-layerwise uses separate recurrent projections per layer, adding 4.8% parameters for 20L and 5.4% for 24L. Across both depths, LRT shifts the scaling curves toward lower BPB and higher CORE, with the layerwise variant providing additional gains at higher parameter cost.",
+      "page": 7,
+      "index": 2,
+      "width": 976,
+      "height": 329
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26797v1/fig-004.webp",
+      "caption": "Table 2: Ablation on the temporal recurrent memory source. Among memory sources that preserve one normal decoding forward per token, the immediately preceding source-layer state mt−1 performs best as a single state and matches a learned average of recent past states. Current-token recurrence using mt requires two inference forwards per token in our implementation because mt is only available after an initial forward for token t. Although combining mt with mt−1 gives the best BPB, we use mt−1 as the default memory source to preserve one normal autoregressive forward per token.",
+      "page": 8,
+      "index": 4,
+      "width": 656,
+      "height": 241
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26797v1/fig-001.webp",
+      "caption": "Table 4: Full BPB scaling results. Lower is better. Training Cost denotes approximate compute relative to a standard transformer update. ∆ Params denotes additional trainable parameters relative to the corresponding baseline transformer. LRT-shared is the default lightweight variant with recurrent projections shared across layers, while LRT-layerwise uses separate recurrent projections per layer. Columns R5–R120 denote raw tokens-per-parameter training budgets. For baseline rows, baseline-equivalent compute equals R; for LRT rows, baseline-equivalent compute equals 2R because interleaved parallel training costs approximately 2×.",
+      "page": 15,
+      "index": 1,
+      "width": 852,
+      "height": 180
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26797v1/fig-008.webp",
+      "caption": "Table 6: Detailed architecture ablations on the 20L model at ratio R = 10. BPB is lower better. Injecting recurrent memory into values is stronger than injecting it into keys alone, suggesting that recurrent memory is especially useful as attention content. Adding recurrent key-value features to local features outperforms replacing local KV features, indicating that recurrent memory is more useful as an auxiliary pathway than as a substitute for local token features. Combining KV Projection with Residual Injection performs best, suggesting that attention-level and residual-stream memory pathways are complementary.",
+      "page": 16,
+      "index": 8,
+      "width": 532,
+      "height": 230
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26797v1/fig-006.webp",
+      "caption": "Table 8: Baseline-strength and negative ablations on the 20L model. BPB is lower better. Generic additions such as gated attention, layer scaling, and residual mixing yield only marginal improvements, and adding gated attention on top of the final baseline does not further improve BPB. This suggests that the gains reported for LRT are not simply due to adding extra parameters, gates, or residual pathways, but instead come from the recurrent memory mechanism.",
+      "page": 17,
+      "index": 6,
+      "width": 622,
+      "height": 277
+    },
+    {
+      "url": "assets/figures/arxiv/2605.26797v1/fig-005.webp",
+      "caption": "Table 10: CORE task list. The benchmark contains 22 tasks: 12 multiple-choice tasks, 8 language-modeling tasks, and 2 schema tasks.",
+      "page": 19,
+      "index": 5,
+      "width": 802,
+      "height": 594
+    }
+  ]
+}

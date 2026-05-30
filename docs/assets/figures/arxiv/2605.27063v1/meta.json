@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-009.webp",
+      "caption": "Figure 1: Illustration of our basic idea. In the collected datasets (details are demonstrated in Section 5.1.1), an interesting observation is that the semantics and labels learned by the same node tend to be similar no matter what encoder is used at different timespans of the dynamic graph. We refer to this observation as temporal translation invariance. Based on temporal translation invariance, we claim that the features of node A, on different timespan should be similar and pull apart the features of other nodes, such as B.",
+      "page": 3,
+      "index": 9,
+      "width": 722,
+      "height": 288
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-014.webp",
+      "caption": "Table 1: Notations and Descriptions.",
+      "page": 9,
+      "index": 14,
+      "width": 636,
+      "height": 334
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-008.webp",
+      "caption": "Figure 2: The architecture of the CLDG++. Given an input graph, we first sample multiple views through a timespan view sampling layer. Subsequently, each view generates a diffusion matrix through graph diffusion, where the adjacency matrix and diffusion matrix offer local and global perspectives of the graph structure, respectively. Then, the adjacency and diffusion matrices of the views are fed into the encoder to generate node embeddings, and a projection head is utilized to map the embeddings into the space of the contrastive loss. Finally, CLDG trains the model by maintaining the temporal translation invariance between local-local contrast, while CLDG++ adds both local-global contrast and global-global contrast to capture both local and global topological properties.",
+      "page": 10,
+      "index": 8,
+      "width": 806,
+      "height": 250
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-001.webp",
+      "caption": "Figure 3: The ratio of the number of times the predicted node label has changed across timespans.",
+      "page": 11,
+      "index": 1,
+      "width": 797,
+      "height": 232
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-012.webp",
+      "caption": "Figure 4: Four candidate timespan view sampling strategies.",
+      "page": 12,
+      "index": 12,
+      "width": 961,
+      "height": 366
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-004.webp",
+      "caption": "Figure 5: The heatmaps (a) and (c) of the normalized adjacency matrix, and the heatmaps (b) and (d) of the normalized diffusion matrix are visualized for the Florentine families graph (Breiger and Pattison, 1986) and the Davis Southern women social network (Davis et al., 1941), respectively.",
+      "page": 15,
+      "index": 4,
+      "width": 644,
+      "height": 631
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-015.webp",
+      "caption": "Table 2: Statistics of the Datasets.",
+      "page": 20,
+      "index": 15,
+      "width": 704,
+      "height": 299
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-010.webp",
+      "caption": "Table 3: Experimental results (%) of classification tasks on seven datasets. We report both mean Accuracy and Weighted-F1, the input column highlights the data required for model training (X is the node features, A is the adjacency matrix, S is the diffusion matrix, T is the time information, and Y is the node labels). Bold represents the optimal in the unsupervised method, and underlined represents the global optimal.",
+      "page": 23,
+      "index": 10,
+      "width": 808,
+      "height": 383
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-013.webp",
+      "caption": "Table 4: AUC Scores (%) for Anomaly Detection on seven datasets (OOM: CPU/CUDA Out of Memory). Bold represents the global optimal.",
+      "page": 24,
+      "index": 13,
+      "width": 808,
+      "height": 287
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-002.webp",
+      "caption": "Figure 6: Visualization of detection results on BITalpha dataset. Abnormal/normal nodes or nodes detected as abnormal/normal by the model are marked in red/blue. (a) is the ground truth of the sampled BITalpha dataset, and the others are the anomaly detection results of CoLA, CLDG, and CLDG++ respectively.",
+      "page": 25,
+      "index": 2,
+      "width": 672,
+      "height": 624
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-003.webp",
+      "caption": "Table 5: Comparison of different timespan view sampling architectures, sampling strategy, sampling view timespan size s and number of sampling views v in the DBLP and TAX dataset. The sampling strategy with a low overlap rate between views, such as sequential and random, and sampling more views are beneficial to CLDG, and the timespan of sampling views is robust to CLDG.",
+      "page": 26,
+      "index": 3,
+      "width": 808,
+      "height": 484
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-011.webp",
+      "caption": "Table 6: Scalability verification of CLDG and CLDG++ by comparing the results of different encoder variants on three datasets.",
+      "page": 28,
+      "index": 11,
+      "width": 692,
+      "height": 274
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-006.webp",
+      "caption": "Table 7: Comparison of space and time complexity of dynamic graph method on seven datasets. CLDG has lower space and time complexity.",
+      "page": 29,
+      "index": 6,
+      "width": 808,
+      "height": 197
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-007.webp",
+      "caption": "Figure 7: Ablation study on different variants.",
+      "page": 29,
+      "index": 7,
+      "width": 785,
+      "height": 273
+    },
+    {
+      "url": "assets/figures/arxiv/2605.27063v1/fig-005.webp",
+      "caption": "Figure 8: Parameter sensitivity of CLDG++. Effect of (a) epoch, (b) batch size, (c) hidden layer dimension, and (d) temperature parameter on the node classification.",
+      "page": 30,
+      "index": 5,
+      "width": 730,
+      "height": 637
+    }
+  ]
+}
