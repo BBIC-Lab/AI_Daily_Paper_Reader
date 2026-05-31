@@ -1,0 +1,102 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-006.webp",
+      "caption": "Figure 2: Representative preprocessed MRI volume from a participant in the study cohort (Subject 002_S_0413). The three orthogonal views display central slices through the axial, coronal, and sagittal planes following completion of the five-stage preprocessing pipeline. The final volume occupies a 128× 128× 128 voxel grid with intensity values normalised to the [0, 1] range. Note the clear tissue contrast, well-defined anatomical boundaries, and absence of extracranial structures following brain extraction and spatial normalisation to MNI152 standard space.",
+      "page": 10,
+      "index": 6,
+      "width": 979,
+      "height": 329
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-009.webp",
+      "caption": "Figure 3: Architecture of TAF-Net. Stage 1: A Siamese 3D CNN encoder with shared parameters θ extracts bottleneck feature maps from baseline and 12-month follow-up MRI volumes. Stage 2: The Temporal Fusion Module processes the paired features through three complementary branches—temporal difference, cross-temporal attention, and channel concatenation—whose outputs are combined via a learned Adaptive Temporal Gate (ATG) with a baseline residual connection. Notation: [a ; b] denotes concatenation along the channel axis, and fcat = Conv3D13([fBL; fM12]) is the output of Branch C. The projection matrices WQ,WK ,WV in Branch B are learned (see Algorithm 3, lines 4–5). Stage 3: A lightweight classification head produces the conversion probability. Dashed borders indicate logical groupings.",
+      "page": 12,
+      "index": 9,
+      "width": 782,
+      "height": 1102
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-008.webp",
+      "caption": "Figure 4: Performance comparison across benchmark methods and TAFNet variants. (a) Box plots showing AUC distribution across 5-fold cross-validation. TAFNet achieves the highest median AUC with competitive stability, while Siamese-Subtract exhibits greater variability with outliers at both extremes. (b) ROC curves computed from pooled predictions across all folds (pooled AUC values differ slightly from the fold-averaged means in Table 1). TAFNet dominates the upper-left region, indicating superior sensitivity-specificity trade-offs across all operating points.",
+      "page": 19,
+      "index": 8,
+      "width": 976,
+      "height": 508
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-012.webp",
+      "caption": "Figure 5: Fold-wise AUC performance across 5-fold cross-validation. TAFNet achieves the highest AUC in three of five folds. The consistent performance reduction in Fold 2 across all methods reflects the limited number of converter subjects (n = 9) in that validation partition. Per-fold values: Siamese-Subtract (0.904, 0.798, 0.781, 0.736, 0.796); CNN-LSTM (0.948, 0.840, 0.940, 0.826, 0.943); TAFNet-InitialOnly (0.944, 0.840, 0.944, 0.817, 0.943); TAFNet (0.973, 0.849, 0.937, 0.883, 0.940).",
+      "page": 20,
+      "index": 12,
+      "width": 915,
+      "height": 324
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-004.webp",
+      "caption": "Table 4: Learning curve analysis stratified by scan interval. AUC (mean ± std) across 5-fold cross-validation. All methods use the frozen pretrained encoder. Best results per condition shown in bold.",
+      "page": 22,
+      "index": 4,
+      "width": 882,
+      "height": 419
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-005.webp",
+      "caption": "Figure 6: Performance comparison across AUC, Sensitivity, and F1-Score. TAFNet achieves the highest AUC, reflecting superior overall discrimination, while CNN-LSTM achieves the highest Sensitivity and F1-Score, reflecting a decision threshold optimised for converter detection.",
+      "page": 22,
+      "index": 5,
+      "width": 892,
+      "height": 381
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-011.webp",
+      "caption": "Figure 7: Attention heatmap for a representative MCI subject (002_S_0295) with predicted conversion probability P (MCI → AD) = 0.52. Warmer colours indicate regions receiving greater model attention. Notable concentrations appear in periventricular regions, medial temporal lobes, and the corpus callosum.",
+      "page": 24,
+      "index": 11,
+      "width": 979,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-001.webp",
+      "caption": "Figure 8: Average attention map computed across n = 10 subjects in the evaluation cohort. The consistent pattern across subjects demonstrates that TAFNet has learned generalisable anatomical features rather than subject-specific artefacts.",
+      "page": 25,
+      "index": 1,
+      "width": 976,
+      "height": 349
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-002.webp",
+      "caption": "Figure 9: Axial attention distribution across six representative slices from inferior (left) to superior (right). The attention pattern varies systematically, with strongest activation in mid-brain structures surrounding the lateral ventricles.",
+      "page": 25,
+      "index": 2,
+      "width": 979,
+      "height": 240
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-003.webp",
+      "caption": "Figure 10: Distribution of adaptive gate coefficients across the evaluation cohort (n = 33). The temporal subtraction branch (α) consistently receives the highest weight, exceeding the equal-weighting baseline (dashed line at 0.333). The cross-attention branch (β) receives the lowest weight. The low variance across all coefficients indicates a stable fusion strategy.",
+      "page": 26,
+      "index": 3,
+      "width": 686,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-010.webp",
+      "caption": "Figure 11: Relationship between gate coefficients and conversion predictions. The temporal subtraction coefficient (α) shows a strong positive correlation with predicted conversion probability (r = 0.825), while cross-attention (β, r = −0.835) and concatenation (γ, r = −0.720) show negative correlations. Dashed lines indicate the decision threshold (vertical) and equal-weighting baseline (horizontal).",
+      "page": 27,
+      "index": 10,
+      "width": 976,
+      "height": 289
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28397v1/fig-007.webp",
+      "caption": "Table 6: Comparison with published methods for MCI-to-AD conversion prediction on the ADNI cohort. Methods are grouped by input modality. Horizon denotes the conversion observation window. NMCI indicates the number of MCI subjects used. Direct comparison across studies requires caution due to differences in cohort selection, validation strategy, and class balance.",
+      "page": 28,
+      "index": 7,
+      "width": 980,
+      "height": 339
+    }
+  ]
+}

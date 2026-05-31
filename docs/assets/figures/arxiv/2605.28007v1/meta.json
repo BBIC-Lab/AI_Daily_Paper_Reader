@@ -1,0 +1,94 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-005.webp",
+      "caption": "Figure 1: Vector Networks Compose Input-Specific Function from Sparse Weight Atoms. (A) A VN layer replaces one dense weight matrix with reusable rank-1 weight atoms. Sparse coefficients gl,i are inferred to reconstruct the current input x while propagating upward information to hl and receiving reverse reconstruction targets from above. (B) A weight atom is a pair of code vectors defining A(l,i) = ul,is ⊤ l,i, a rank-1 weight atom mapping sensing space sl to output space ul. The activity gl,i scales its contribution. (C) Standard networks apply a fixed monolithic matrix W , so tasks share the same parameter space. VN instead composes a few fixed weight atoms into W ⋆ l (xl) = ∑ i g ⋆ l,i(xl)A (l,i), allowing new inputs to be processed using recombinations of learned function components rather than interpolations within a fixed mapping.",
+      "page": 2,
+      "index": 5,
+      "width": 372,
+      "height": 373
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-001.webp",
+      "caption": "Figure 2: Spatial Composition: Generalizing to Novel Bump Positions (a) Task setup (adapted from Liang et al. [2025]). A decoder maps (x, y) to an N ×N output grid. Training covers a local ID region, while testing probes an unseen OOD region. (b) Spatial reconstruction error (MSE) across the grid. CNN, VAE, and factorized decoders show strong OOD error, whereas the VN decoder remains low across the full space. (c) Reconstruction MSE on ID and OOD regions. VN-based models achieve much lower OOD error while maintaining strong ID performance. Error bars are 95% CI. (d) OOD/ID error ratio vs. depth. CNN decoders degrade rapidly with depth, whereas VN remains stable and improves with depth (inset: zoom on VNs).",
+      "page": 6,
+      "index": 1,
+      "width": 416,
+      "height": 379
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-002.webp",
+      "caption": "Figure 3: Function Composition: Generalizing to Novel Signal Combinations. (a) Training and test structure. Models are trained on individual function families drawn from the in-distribution (ID) set. Easy-OOD tests require linear recombination of learned functions, whereas Hard-OOD tests require non-linear compositions of previously learned functions. (b) Reconstruction MSE for ID, Easy-OOD, and Hard-OOD conditions. (c) Average Hard-OOD masked prediction MSE across the four masking regimes shown above. All bar plots are sorted by mean performance; error bars are 95% CI. VN-1L/3L: 1 and 3 layer VN.",
+      "page": 6,
+      "index": 2,
+      "width": 829,
+      "height": 229
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-008.webp",
+      "caption": "Figure 4: Force Composition: Generalization in n-body Dynamics. (a) Task setup. Models are trained on single force fields (gravity, drag, Lorentz, spring) with n = 5 bodies and then evaluated out of distribution on mixed-force systems and reduced body counts (n = 5, 4, 3). (b) Mean OOD MSE under force composition. Left: mean over all two-force combinations. Right: mean over all three- and four-force combinations. Error bars are 95% CIs; within each model, lighter bars denote reduced body count (n = 4, 3). (c) Mean OOD vs. mean ID performance on a log–log scale, averaged across n = 5, 4, 3. Each point is one model, with ID MSE on the y-axis and OOD MSE on the x-axis. The dashed diagonal marks equal ID and OOD performance; models that degrade under distribution shift move to the right and below this line. VN remains closest to the ideal low-error, near-diagonal regime, indicating stronger robustness and compositional generalization.",
+      "page": 8,
+      "index": 8,
+      "width": 829,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-010.webp",
+      "caption": "Figure 5: Image Composition: Generalizing to MNIST Compositions (a) VN reconstruction error on MNIST ID and OOD composition tests. (b) Representative Rotation/Translation/Scaling (RTS) ID training samples and OOD test compositions of different motions. (c) Motion reconstruction error on ID/OOD RTS transformations; faint bars denote sparsity-matched AE variants. OOD tests combine familiar transformations outside the training distribution, and VN again achieves the strongest OOD performance while remaining competitive on ID. Error bars are 95% CI.",
+      "page": 9,
+      "index": 10,
+      "width": 829,
+      "height": 370
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-009.webp",
+      "caption": "Table 6 reports the mean masked MSE for every (model, mask regime, difficulty) cell at Tier 1 (n=600 test samples, clean training). All VN numbers use masked-FISTA inference with nouter=5; all other models receive the masked input with zeroed positions. The MASK_FORECAST_25/Hard-OOD column corresponds to the masked-prediction bars summarized in Fig. 3c.",
+      "page": 24,
+      "index": 9,
+      "width": 718,
+      "height": 236
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-003.webp",
+      "caption": "Figure 6: Hard-OOD reconstruction (single worst non-VN sample). Sample selected as argmaxi ρi with ρi=mean(MSEnon−VN)/MSEVN-5L.",
+      "page": 25,
+      "index": 3,
+      "width": 794,
+      "height": 221
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-004.webp",
+      "caption": "Figure 8: Hard-OOD masked-prediction gallery (MASK_FORECAST_25). Three worst-case non-VN samples over the full ten-comparator roster. Grey curves: target; grey shading: hidden region; colored curves: model output; per-panel numbers: MSE on hidden positions and on observed positions.",
+      "page": 26,
+      "index": 4,
+      "width": 803,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-007.webp",
+      "caption": "Figure 9: Body-dropout Pareto on the n-body benchmark. Median ID vs. Median OOD MSE for each model, evaluated at n=5, 4, 3 bodies (large→ small marker).",
+      "page": 28,
+      "index": 7,
+      "width": 777,
+      "height": 564
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-006.webp",
+      "caption": "Figure 10: Position drift during rollout (5 s, Runge–Kutta, avg. over 4 initial conditions, shading = ±1σ). Top row: ID single forces; bottom row: OOD compositions. Vector Network (blue) has the lowest average drift on five of six panels.",
+      "page": 29,
+      "index": 6,
+      "width": 817,
+      "height": 418
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28007v1/fig-011.webp",
+      "caption": "Figure 11: Trajectory rollouts under three OOD force compositions (columns). Top row: ground truth; subsequent rows: model rollouts from the same initial state per column. Axes are matched within each column. Dots mark the t=0 positions.",
+      "page": 31,
+      "index": 11,
+      "width": 717,
+      "height": 1441
+    }
+  ]
+}

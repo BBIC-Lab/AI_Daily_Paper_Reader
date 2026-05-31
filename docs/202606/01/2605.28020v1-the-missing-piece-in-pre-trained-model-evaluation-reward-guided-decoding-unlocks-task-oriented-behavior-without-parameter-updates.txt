@@ -1,0 +1,1544 @@
+Title: The Missing Piece in Pre-trained Model Evaluation: Reward-Guided Decoding Unlocks Task-Oriented Behavior Without Parameter Updates
+
+URL Source: https://arxiv.org/pdf/2605.28020v1
+
+Published Time: Thu, 28 May 2026 00:44:45 GMT
+
+Number of Pages: 26
+
+Markdown Content:
+# The Missing Piece in Pre-trained Model Evaluation: Reward-Guided Decoding Unlocks Task-Oriented Behavior Without Parameter Updates 
+
+Shaobo Wang 1,2†∗ Guo Chen 1∗ Ziyue Wang 1 Zhengyang Tang 3
+
+Qingyang Liu 1 Xingzhang Ren 2 Dayiheng Liu 2 Linfeng Zhang 1†
+
+> 1
+
+Shanghai Jiao Tong University 2Qwen Team, Alibaba Group 
+
+> 3
+
+The Chinese University of Hong Kong, Shenzhen 
+
+## Abstract 
+
+With the rapid progress of large language models (LLMs), reliably evaluating the capabilities of pre-trained LLMs has become increasingly important. The chal-lenge is that base pre-trained models are optimized for next-token prediction and often fail to follow instructions or produce well-formed answers under standard prompting and direct decoding. As a result, benchmark performance can conflate model capability with decoding-induced failures to produce task-oriented outputs, while exposing such behavior often relies on costly post-training. Recent decoding-only approaches attempt to reshape output distributions, but such methods can be inefficient and brittle across open-ended tasks. To address these limitations, we propose Energy-Based Decoding (EBD) , a training-free, reward-guided frame-work for activating task-oriented behaviors from frozen pre-trained LLMs across both open-ended and objective tasks. EBD augments decoding with an exter-nal lightweight reward model, steering generations toward high-utility responses while anchoring them to the pre-trained model prior through a reward-tilted target distribution. We show that EBD shifts base-model outputs toward more instruction-following behavior, increasing behavioral similarity to post-trained counterparts and enabling a fairer inference-time evaluation of accessible pre-trained-model behavior. Empirically, EBD outperforms baselines across five models and six benchmarks, improving Qwen3-8B-Base on AlpacaEval2.0 from 8.8 to 44 .5, re-ducing Mistral-7B Math500 latency by 18 .9× relative to prior decoding work, and remaining robust to reward-model size. 
+
+## 1 Introduction 
+
+Large language models (LLMs) have made striking progress across many domains, including mathe-matical reasoning, code generation, open-ended dialogue, and long-form generation [Brown et al., 2020, Chowdhery et al., 2023, Zhao et al., 2026]. Yet for pre-trained LLMs, standard prompting and direct decoding often provide a misleading view of what the model can do [Karan and Du, 2025, Wang and Zhou, 2024, Chen et al., 2025]. Most contemporary benchmarks evaluate models through task-oriented prompts, implicitly assuming that the model will recognize the prompt as a task, enter a problem-solving mode, and produce a well-formed answer [Chang et al., 2024, Huang and Chang, 2023]. This assumption is natural for post-trained models, but it breaks down for pre-trained models, which are trained primarily as continuation predictors [Munjal et al., 2026, Irsoy et al., 2025, Team et al., 2025]. Figure 1(a) illustrates this benchmark mismatch. The same prompt can 
+
+> ∗Equal Contribution.
+> †Corresponding authors. Preprint.
+> arXiv:2605.28020v1 [cs.CL] 27 May 2026 Amplifies wrong mode
+
+(c) Energy -Based Decoding (ours)            
+
+> High -utility answer
+> Effective Faithful Efficient
+> Reward -tilted posterior
+> 𝑝 𝜃 (𝑦 |𝑥 )∙exp (𝑅 (𝑦 ,𝑥 ))
+> Reward model
+> 𝑅 (𝑦 ,𝑥 )
+> Pre -trained prior
+> 𝑝 𝜃 (𝑦 |𝑥 )1/𝜏
+> Block -wise MH: propose → accept √ /reject
+
+×      
+
+> propose
+> Accept 𝑦 (𝑡 +1)=𝑦 ’
+> Reject 𝑦 (𝑡 +1)=𝑦 (𝑡 )
+
+(a) Benchmark mismatch  
+
+> Post -trained
+> model
+> Task -oriented
+> answer: “No,
+> invalid conclusion”
+> Continuation:
+> “Some flowers
+> are red...”
+> Reliable scores Unreliable scores
+> Pre -trained
+> model
+
+(b) Likelihood -only sharpening 
+
+(w/o external signals)                   
+
+> 𝑝 (𝑦 |𝑥 ,𝜏 )=𝑝 𝜃 (𝑦 |𝑥 )1/𝜏 /𝑍 (𝜏 )where 𝑍 (𝜏 )=∑𝑦 𝑝 𝜃 (𝑦 |𝑥 )1/𝜏
+> (sharper distribution)
+> Lower temperature 𝜏
+> Greedy Beam search
+> (beam size K)
+> Sampling
+> (top -k / nucleus)
+> Decoding methods
+> probability
+> y(continuations)
+> task answer mode
+> high -likelihood continuation
+> Q: If all roses are flowers and
+> some flowers fade quickly,
+> can we conclude that some
+> roses fade quickly?
+> Hyperparameter -sensitive
+> Requires expensive search
+> (underestimated potentials
+> due to bad IF capabilities)
+> (with good instruction
+> following (IF) capabilities)
+> Benchmarking
+> 𝑝 𝜃 (𝑦 |𝑥 )
+
+Figure 1: Steering, not sharpening . (a) Task queries induce a behavioral mismatch between pre-trained and post-trained LLMs: the latter interpret them as tasks, whereas the former tend to continue the prompt as plain text, yielding unreliable evaluation scores. (b) Likelihood-only sharpening, including temperature reduction or search-based decoding, reshapes the prior without an external utility signal. It risks amplifying spurious high-likelihood modes, remains hyperparameter-sensitive, and entails expensive search, especially in open-ended tasks. (c) EBD combines the pre-trained prior with a reward model to form a reward-tilted posterior, then applies block-wise Metropolis-Hastings updates to accept reward-improving proposals while anchoring generations to the prior. lead a post-trained model to produce a task-oriented answer but a pre-trained model to produce a continuation-like response. As a result, poor direct-decoding performance may reflect a mismatch between continuation-style decoding and task-oriented evaluation, not simply the absence of task-relevant knowledge. This shifts the central question toward whether inference-time decoding can activate task-oriented behavior from frozen pre-trained LLMs, enabling a fairer evaluation of what is accessible without parameter updates. 
+
+Activating task-oriented generation from a pre-trained model cannot be achieved reliably by simply drawing more samples from the same continuation-biased distribution. Instead, decoding must steer continuation behavior toward intentional answering while preserving the original model distribution. Recent decoding-only interventions [Karan and Du, 2025, Wang and Zhou, 2024, Wu et al., 2025a, Nguyen et al., 2025] suggest that reshaping the output distribution can alter model behavior and sometimes improve reasoning performance without modifying parameters. As summarized in Figure 1(b), however, likelihood-only shaping lacks an explicit, externally controllable utility signal. This is especially limiting for pre-trained models, whose prior is biased toward plausible continuation rather than task completion, so sharpening or truncating it can amplify the wrong mode, degrade open-ended generation quality, or require task-specific verifiers [Hongler et al., 2026]. A closer family of baselines is Best-of-N sampling or reranking, which draws independent responses and selects one using a score or task evaluator; however, repeated independent sampling can remain inefficient when most samples are continuation-like. Moreover, sample-heavy search can incur substantial computational overhead, making it impractical as a general-purpose way to improve pre-trained model behavior [Wang et al., 2025, Liang et al., 2025]. What is needed is an inference-time mechanism that can activate high-utility, task-oriented answers while remaining anchored to the pre-trained model and efficient enough for benchmark-scale evaluation. 
+
+To address these limitations, we propose Energy-Based Decoding (EBD) , a training-free inference framework for reward-guided decoding of pre-trained LLMs (Figure 1(c)). EBD augments decoding with an external lightweight reward model, which activates task-oriented, high-utility responses with-out updating model parameters. Critically, EBD is designed around three desiderata: (i) Effectiveness: 
+
+the induced distribution should closely match the reward-tilted target posterior; (ii) Faithfulness: 
+
+generation should remain anchored to the pre-trained prior, with KL drift controlled by the reward temperature and reward scale; and (iii) Efficiency: the additional inference overhead should remain small enough for benchmark-scale use. To realize these desiderata, we instantiate EBD as a block-wise Metropolis–Hastings (MH) sampler over model outputs. Starting from an initial response, EBD repeatedly selects a block, keeps the prefix fixed, and regenerates the remaining suffix from the base model’s conditional distribution. The proposed response is then accepted or rejected by an MH rule guided by the reward model. The key 2design choice is that matched conditional-prior proposals and sequence-independent block selection ensure the proposal distribution equals the pre-trained conditional prior. As a result, the prior and proposal likelihood terms cancel in the acceptance ratio, and we call this proposal-prior cancellation. Under these conditions, each refinement step reduces to a reward comparison, while the Markov chain leaves the reward-tilted posterior invariant. This connects the algorithm to the three desiderata, since posterior targeting supports effectiveness, conditional generation from the pre-trained model anchors proposals to the prior, and cancellation keeps updates efficient. Contributions are as follows: • We formulate reward-guided decoding as sampling from a reward-tilted posterior for activating task-oriented behavior under a frozen pre-trained prior. Under matched conditional-prior proposals, EBD enables proposal-prior cancellation, reducing each update to a reward comparison while controlling prior drift through the posterior temperature. • We find that EBD does not merely improve aggregate scores; it shifts base-model behavior toward post-trained counterparts. Across five base-instruct pairs, behavioral similarity to the instruct model increases from 0.256 under Direct to 0.385 under EBD on average, a gain of +0 .129 .• We evaluate EBD across five pre-trained models and six benchmarks. EBD consistently and substantially improves over Direct and previous decoding-based methods [Karan and Du, 2025] across all settings. On AlpacaEval2.0 [Dubois et al., 2023], Qwen3-8B-Base [Yang et al., 2025] rises from 8.8 to 44 .5, a +405% improvement in instruction-following quality; on Qwen2.5-7B [Qwen et al., 2025], average objective score increases from 0.398 to 0.557 ; and on Mistral-7B Math500, EBD reduces per-question latency by 18 .9× relative to prior decoding work. 
+
+## 2 Related Work 
+
+Capability evaluation of pre-trained LLMs. Modern benchmark evaluation often assumes that models have already been adapted to follow instructions through Supervised Fine-Tuning (SFT) or Reinforcement Learning from Human Feedback (RLHF) [Brown et al., 2020, Ouyang et al., 2022b, Munjal et al., 2026]. For pre-trained large language models (LLMs), this assumption can be problematic because direct decoding may produce continuation-style text rather than task-oriented answers. Recent work shows that prompting and decoding choices can substantially change observed reasoning and task-solving behavior without parameter updates [Wang and Zhou, 2024, Chen et al., 2025, Brown et al., 2024]. Thus, evaluating pre-trained models with direct decoding alone conflates task knowledge with the decoding procedure’s ability to produce usable answers. Conversely, relying on post-training makes it difficult to separate behaviors inherited from pre-training from behaviors introduced by parameter updates. This leaves open the problem of improving task-oriented outputs from frozen pre-trained models at inference time. 
+
+Inference-time decoding and search. A broad line of work improves model outputs by allocating additional inference-time computation, including self-consistency decoding [Wang et al., 2022], verifier or reward-model reranking [Cobbe et al., 2021, Lightman et al., 2023], pass@ k sampling analyses [Snell et al., 2024, Brown et al., 2024], and sequential Markov chain Monte Carlo (MCMC) sampling from sharpened base-model distributions [Karan and Du, 2025]. These methods show that decoding can substantially change observed model performance, especially on reasoning tasks where high-quality trajectories may be missed by greedy or direct decoding. Best-of-N sampling and reward reranking are particularly relevant baselines, since they select among independent prior samples and their effectiveness depends on drawing a good answer from the continuation-biased distribution. More generally, sample-heavy search and reranking can incur prohibitive cost, and verifier-based methods rely on reliable supervision that is often unavailable for open-ended generation. Moreover, likelihood-only sharpening uses the model’s own prior as the sole steering signal, which can amplify continuation modes rather than task-oriented answers. This motivates decoding mechanisms that incorporate an external utility signal while controlling drift from the pre-trained prior. 
+
+Reward-guided and energy-based generation. Reward-guided language generation is closely related to distributional control and energy-based modeling. Prior work formulates controlled generation as sampling from reward- or constraint-tilted distributions [Khalifa et al., 2021, Korbak et al., 2022], studies reward overoptimization under aggressive reward maximization [Rafailov et al., 2024], and develops energy-based or Markov chain methods for controllable text generation, including residual energy-based models, energy language models, continuous Langevin decoding, constrained Metropolis–Hastings generation, and block Metropolis–Hastings samplers [Deng et al., 2020, Mireshghallah et al., 2022, Qin et al., 2022, Miao et al., 2019, Forristal et al., 2023]. However, 3𝐀 (𝐀 +1) ← 𝐀 (𝐀 )                
+
+> 𝐀 (𝐀 +1)←𝐀 ′
+> Stage I: Initialization
+> Repeat Tsteps
+> (t=0 to T-1)
+> Stage II: Block-wise Metropolis-Hastings (MH) Refinement
+> Select best 𝐀 (0)
+> (highest-advantage)
+> Accept
+> input prompt 𝐀 Pre-trained Model
+> 𝐀 𝐀 (𝐀 𝐀 )
+> Sample 𝐀 candidates 𝐀 1, …, 𝐀 𝐀
+> 𝐀 2𝐀 3𝐀 4𝐀 𝐀
+
+…𝐀 1     
+
+> Reward model 𝐀 (𝐀 ,𝐀 )
+> 𝐀 2𝐀 3𝐀 4𝐀 𝐀
+
+…       
+
+> 𝐀 1
+> 0.24 0.67 1.12 0.05 -0.21
+> Compute advantage 𝐀 (𝐀 )
+> 𝐀 (𝐀 2)𝐀 (𝐀 3)𝐀 (𝐀 4)𝐀 (𝐀 𝐀 )
+
+…𝐀 (𝐀 1)                                            
+
+> 0.34 0.84 1.67 0.09 -1.23
+> ... ...
+> Current 𝐀 (𝐀 )
+> Select Block & Cut 𝐀
+> ... ...
+> 𝐀 <𝐀 (Fixed prefix) Regenerate suffix
+> Proposal 𝐀 ’
+> ... ...
+> 𝐀 (𝐀 (𝐀 ))
+> 0.67
+> 𝐀 (𝐀 ’)
+> 1.15
+> Generated Answer
+> 𝐀 =best from {𝐀 (0),𝐀 (1),𝐀 (2), … , 𝐀 (𝐀 )}
+> Pre-trained Model
+> 𝐀 𝐀 (∙ 𝐀 ,𝐀 <𝐀 )
+> Reward model
+> 𝐀 (𝐀 ,𝐀 )
+> where 𝐀 =min 1,exp 𝐀 eff𝐀 (𝐀 ’)−𝐀 𝐀 (𝐀 ),
+> and 𝐀 eff=𝐀 ∙1−1
+> 𝐀 .
+> Accept if sampled 𝐀 ~𝐀 (𝐀 ,𝐀 ) < 𝐀
+> MH Acceptance Rule
+> Reject
+> Update
+> 𝐀 (𝐀 +1)
+
+Figure 2: EBD’s pipeline follows two stages. Stage I: Initialization samples a small initialization pool from the pre-trained model, scores each response with the reward model, computes the prompt-level standardized advantage Ax(y) = ( R(y, x) − μR(x)) /σ R(x), and selects the best-in-pool response as the initial state. Stage II: Block-wise MH refinement repeatedly samples a cut, keeps the prefix, regenerates the suffix from the matched pre-trained conditional prior, scores the proposal, and accepts or rejects it using the reward-difference MH rule. many of these approaches either train additional energy models, target hard lexical or style constraints, operate through continuous relaxations, or do not address reward-guided decoding for frozen pre-trained LLMs under benchmark-scale efficiency constraints. EBD instead treats the frozen pre-trained model as the prior and an external reward model as the energy term of an inference-time target distribution; when proposals exactly match the model’s conditional prior, the MH ratio cancels the prior and proposal likelihoods, yielding efficient reward-based refinement while keeping the target distribution KL-regularized by the prior. 
+
+## 3 Method: Energy-Based Decoding 
+
+3.1 Preliminaries 
+
+We consider an evaluation prompt set D. For each prompt x ∈ D , Y(x) is the space of complete responses and y ∈ Y (x) is one candidate response. A frozen pre-trained language model, together with a fixed decoding configuration, induces a full-response prior pθ (y | x). Operationally, this prior is the distribution obtained by running the base model with the same sampling temperature, stopping rule, and length limit used by the decoder. Because the prior is purely a sampling distribution, the decoder only needs to sample from it and its conditional suffix distribution, requiring no fine-tuning or training-time data access. The reward model returns a raw scalar score R(y, x) ∈ R for a complete prompt-response pair. The decoder then uses a fixed prompt-level score Sx(y); in our implementation this is a prompt-normalized version of R, defined in Eq. (4) . For the distribution-level discussion below, q(y | x) denotes a generic response distribution and Q denotes the family of distributions induced by practical decoding procedures. A useful way to separate the design choices is to distinguish reward maximization from distribution matching . From an RL perspective, a complete response y can be viewed as the action and Sx(y) as a sequence-level reward. A pure reward-maximizing decoder would seek a distribution q ∈ Q that maximizes Ey∼q [Sx(y)] , analogous to PPO/GRPO-style reward optimization [Stiennon et al., 2020, Ouyang et al., 2022b, Shao et al., 2024]. This is an optimization or search view; it asks only “which output has the largest reward?” Without an explicit prior constraint, such a decoder can concentrate probability on low-prior reward artifacts or unnatural continuations. EBD instead asks for a distribution that is close to the pre-trained model but tilted toward higher reward. Specifically, we define the decoding target through the KL-regularized objective 
+
+max 
+
+q∈∆( Y(x)) Ey∼q(·| x)[Sx(y)] − 1
+
+β DKL (q(· | x)∥pθ (· | x)) , (1) 4Algorithm 1 Energy-Based Decoding (EBD) with Block-wise MH Refinement 
+
+Input: matched decoding prior pθ , reward model R, prompt x, inverse temperature β, initialization pool size ninit , refinement steps K, block count M , max length Lmax 
+
+Sample initialization responses {yi}ninit  
+
+> i=1
+
+∼ pθ (· | x)
+
+Compute rewards Ri = R(yi, x), mean μR(x), and standard deviation σR(x)
+
+Define Ax(y) = ( R(y, x) − μR(x)) /σ R(x)
+
+Initialize y ← arg max yi Ax(yi)
+
+for t = 0 to K − 1 do 
+
+Partition current response y into M contiguous blocks Uniformly sample a block boundary / cut position c from the admissible boundaries Propose a new suffix y′≥c ∼ pθ (· | x, y<c )
+
+Form proposal y′ ← (y<c , y′≥c), truncated by the stop rule or max length Lmax 
+
+Compute Ax(y′) using the fixed μR(x) and σR(x)
+
+α ← min (1 , exp ( β[Ax(y′) − A x(y)])) 
+
+Draw u ∼ Uniform(0 , 1) 
+
+if u ≤ α then 
+
+y ← y′
+
+end if end for Output: refined response y
+
+where β > 0 controls the reward-prior trade-off. When β is small, the KL term dominates and the target stays close to direct base-model decoding; when β is large, reward differences have stronger influence. Thus, the goal is not to find a single global reward maximizer, but to define a full response distribution that remains anchored to the frozen prior while reweighting outputs by utility. The unconstrained optimizer is the reward-tilted target 
+
+π∗ 
+
+> β
+
+(y | x) = 1
+
+Zβ (x) pθ (y | x) exp( βS x(y)) , (2) with Zβ (x) = Eey∼pθ (·| x)[exp( βS x(ey))] . Eq. (2) is analogous to a Bayesian posterior, where the pre-trained model is the base measure and exp( βS x(y)) acts like a reward-derived likelihood factor. The normalizer Zβ (x) is intractable but unnecessary for Metropolis–Hastings ratios. Equivalently, the same target can be written as an energy-based distribution, 
+
+π∗ 
+
+> β
+
+(y | x) ∝ exp( −Ex(y)) , Ex(y) = − log pθ (y | x) − βS x(y). (3) The energy decomposes into two intuitive terms. The first, − log pθ (y | x), penalizes responses that are implausible under the frozen model, while −βS x(y) gives an energy bonus to responses preferred by the reward model. The sign convention is important, since increasing prior probability lowers the first term, and increasing reward lowers the second term. Low-energy responses are therefore both prior-plausible and high-utility. This is the central distinction from pure reward maximization, namely that distribution matching preserves the pre-trained prior as the reference distribution and applies reward only as an exponential tilt [Korbak et al., 2022, Khalifa et al., 2021], reducing the risk of unconstrained reward exploitation [Rafailov et al., 2024, Skalse et al., 2022]. The algorithm below constructs a practical sampler for this target without exhaustive independent search. 
+
+3.2 The Energy-Based Decoding Algorithm 
+
+Figure 2 summarizes EBD as a two-stage pipeline. Stage I initializes the chain by sampling, scoring, normalizing, and selecting an initial response. Stage II repeatedly refines that response by cutting it into a prefix and suffix, regenerating the suffix, scoring the proposal, and accepting or rejecting it. The main inputs are the frozen base model, the reward model, the prompt, the inverse temperature β,the initialization pool size ninit , the number of refinement steps K, the number of blocks M , and the maximum generation length Lmax . Algorithm 1 gives the corresponding pseudocode. 
+
+Stage I: Initialization. EBD first samples an initialization pool {yi}ninit  
+
+> i=1
+
+from the frozen prior, yi ∼
+
+pθ (· | x). It then scores each response with the reward model, Ri = R(yi, x), and computes prompt-level normalization statistics μR(x) and σR(x) from this pool. Conditional on this initialization pool, 5the score is fixed during refinement. The implementation score is the standardized advantage 
+
+Ax(y) = R(y, x) − μR(x)
+
+σR(x) , Sx(y) = Ax(y). (4) Statistics are fixed for the rest of decoding. EBD initializes the chain at the best response in the pool, 
+
+y(0) = arg max 
+
+> yi
+
+Ax(yi). (5) This stage is a lightweight warm start rather than a large-N reranking procedure; we use ninit = 4 
+
+by default. Importantly, the normalization is prompt-local, calibrating reward magnitudes for this prompt only and not introducing any training or dataset-level fitting. 
+
+Stage II: Block-wise Metropolis-Hasting (MH) refinement. For refinement step t = 0 , . . . , K − 1,let y(t) be the current full-response state. Operationally, a single refinement step proceeds by choosing a cut, keeping the prefix, sampling a new suffix, scoring the resulting full response, and finally accepting or rejecting the proposal. EBD partitions the current token sequence into M
+
+contiguous blocks and uses their boundaries as admissible cut positions. It then samples a cut position 
+
+c ∼ P (c) from a fixed distribution, independent of the response content; in our implementation P (c)
+
+is uniform over these admissible boundaries. EBD keeps the prefix before the cut and regenerates only the suffix from the same base-model conditional distribution used by direct decoding: 
+
+y′ 
+
+> <c
+
+= y(t)
+
+> <c
+
+, y′≥c ∼ pθ (· | x, y(t)
+
+> <c
+
+). (6) The regenerated suffix is stopped by the usual end-of-sequence rule or by Lmax , producing a complete proposal y′. The reward model then scores the full prompt-response pair (x, y′), and the score is standardized using the same fixed μR(x) and σR(x) from Stage I. Treating the sampled cut as an auxiliary variable, the joint proposal density is 
+
+Q(c, y′ | y(t)) = P (c) pθ (y′≥c | x, y(t)
+
+> <c
+
+). (7) The key cancellation result is the following. 
+
+Lemma 1 (Proposal-Prior Cancellation) . For the matched conditional-prior proposal in Eq. (7) , the prior and proposal terms cancel for the sampled cut c:
+
+pθ (y′ | x) Q(c, y(t) | y′)
+
+pθ (y(t) | x) Q(c, y′ | y(t)) = 1 . (8) The proof is given below. The practical implication is simple: although the target energy in Eq. (3) contains the full-sequence prior term − log pθ (y | x), EBD does not need to explicitly rescore full responses under the base model during refinement. Because the proposal suffix is sampled from the matched conditional prior, the prior probability terms cancel against the proposal terms. Combining Lemma 1 with the standard MH ratio for target π∗ 
+
+> β
+
+yields the acceptance probability 
+
+α(y′, c | y(t)) = min 
+
+
+
+1, exp 
+
+
+
+β
+
+h
+
+Sx(y′) − Sx(y(t))
+
+i 
+
+. (9) After drawing u ∼ Uniform(0 , 1) , EBD updates 
+
+y(t+1) =
+
+y′, u ≤ α(y′, c | y(t)),
+
+y(t), otherwise . (10) It repeats this cut-regenerate-score-accept procedure for K steps and outputs the final full-response state y(K). Thus, after the warm start, EBD is not a reranker over independent samples; it is a short Markov chain whose state is iteratively edited by suffix regeneration. The cancellation is exact and complete for this matched setting, because the sampled cut is treated as an auxiliary variable, its sampling distribution is fully independent of response content, and the suffix proposal uses exactly the same conditional distribution as the prior term in Eq. (2) . If a state-dependent cutting heuristic or a different proposal is used, the corresponding proposal probabilities should be retained in the MH ratio. In the ideal matched-proposal setting, the chain leaves π∗
+
+> β
+
+invariant asymptotically. In practice, EBD is a compute-bounded decoding procedure that runs only a small fixed number of refinement steps, trading suffix regenerations and reward-model evaluations for improved task utility while keeping the base model frozen. The matched conditional-prior proposal yields a key efficiency property: although the target energy in Eq. (3) contains the full-sequence prior − log pθ (y | x), acceptance does not require explicitly rescoring it under the base model. 6Proposition 1 (Efficiency via Proposal-Prior Cancellation) . Under the matched conditional-prior proposal in Lemma 1, the EBD acceptance step in Eq. (9) does not require explicit full-sequence likelihood re-scoring under pθ (y | x). The additional per-step cost reduces to one autoregressive suffix decode and one reward evaluation, scaling linearly with the number of refinement steps K.Proof of Lemma 1. Fix the sampled cut c and write y for the current state y(t). By construction, 
+
+y<c = y′
+
+> <c
+
+, so the autoregressive prior factors as 
+
+pθ (y | x) = pθ (y<c | x) pθ (y≥c | x, y<c ),pθ (y′ | x) = pθ (y<c | x) pθ (y′≥c | x, y<c ).
+
+Under the matched conditional-prior proposal, the forward and reverse proposal densities for the same auxiliary cut are Q(c, y′ | y) = P (c) pθ (y′≥c | x, y<c ) and Q(c, y | y′) = P (c) pθ (y≥c | x, y<c ).Substituting these factorizations into the Metropolis–Hastings ratio yields 
+
+pθ (y′ | x) Q(c, y | y′)
+
+pθ (y | x) Q(c, y′ | y) = 1 .
+
+The prior likelihoods and proposal densities exactly cancel. 
+
+Proof of Proposition 1. From Eq. (9) and Lemma 1, the Metropolis–Hastings acceptance ratio reduces to the reward difference βSx(y′) − Sx(y(t)). The full-sequence likelihood terms of the current and proposed responses cancel because the proposal is constructed from the same conditional distribution that defines the prior factor in π∗ 
+
+> β
+
+. Therefore EBD incurs no additional full-sequence likelihood pass during acceptance, in contrast to verifier-based reranking pipelines that explicitly evaluate candidate scores or likelihoods over an independent pool [Cobbe et al., 2021, Lightman et al., 2023]. The remaining overhead arises from proposal generation (one autoregressive decode of the resampled suffix per step) and from evaluating the reward function; both scale linearly in K.
+
+## 4 Experiments 
+
+4.1 Experimental Settings Models and baselines. We conducted experiments on a diverse suite of open-source large language models, specifically Meta-Llama-3-8B [Grattafiori et al., 2024], Mistral-7B-v0.3 [Jiang et al., 2023], Qwen2.5-7B [Qwen et al., 2025], Qwen3-8B-Base [Yang et al., 2025], and Olmo-3-1025-7B [Olmo et al., 2026]. 3 All models are of comparable scale, ranging from 7B to 8B parameters, and were evaluated under identical inference configurations unless otherwise noted. Our evaluation compared the proposed EBD framework against two baseline generation strategies, namely Direct decoding and Power Sampling [Karan and Du, 2025]. 
+
+Benchmarks. We evaluated the performance of pre-trained models on both objective and subjective tasks. The objective benchmarks consisted of GPQA [Rein et al., 2023] for graduate-level reasoning, Math500 [Hendrycks et al., 2021] for mathematical problem solving, and HumanEval [Chen et al., 2021] for code generation. For subjective evaluation, we employed AlpacaEval2.0 [Dubois et al., 2023] for instruction following, MT-Bench [Zheng et al., 2023] for multi-turn conversation quality, and WritingBench [Wu et al., 2025b] for open-ended writing proficiency. 
+
+Subjective metrics. For AlpacaEval2.0, we utilized the benchmark standard score where higher values indicated better performance. MT-Bench measured the average judge score on a scale from 1 to 10 across multiple turns and categories. WritingBench aggregated task-specific scores into an overall benchmark score to assess open-ended writing proficiency. 
+
+Implementation details of EBD. Unless otherwise specified, EBD employed a unified set of hyperparameters across all experiments, namely inverse temperature β = 3 .5, sampling temperature 
+
+τ = 1 , K = 12 refinement steps, initialization pool size ninit = 4 , block count M = 12 , and maximum generation length Lmax = 3072 tokens. For all sampling-based methods, decoding was performed with sampling enabled at temperature τ = 1 .
+
+> 3The Qwen naming convention differs across releases: Qwen2.5-7B denotes the base checkpoint and Qwen2.5-7B-Instruct denotes the instruct-tuned checkpoint, whereas Qwen3-8B denotes the instruct-tuned checkpoint and Qwen3-8B-Base denotes the base checkpoint.
+
+7Table 1: Performance comparison across objective and subjective benchmarks. Superscripts denote absolute change relative to + Direct within each backbone. 
+
+Method Objective Benchmarks Subjective Benchmarks 
+
+Avg. GPQA Math500 HumanEval Avg. Alpaca MT-Bench Writing 
+
+Backbone: Llama3-8B 
+
++ Direct 0.155 0.152 0.016 0.299 2.078 1.525 3.000 1.709 + Power Sampling 0.195 +0 .040 0.157 +0 .005 0.008 −0.008 0.421 +0 .122 1.813 −0.265 2.342 +0 .817 1.889 −1.111 1.208 −0.501 
+
++ EBD (ours) 0.262 +0 .107 0.237 +0 .085 0.042 +0 .026 0.506 +0 .207 3.258 +1 .180 3.862 +2 .337 3.683 +0 .683 2.230 +0 .521 
+
+Backbone: Mistral-7B 
+
++ Direct 0.108 0.167 0.010 0.147 2.294 2.153 2.868 1.860 + Power Sampling 0.126 +0 .018 0.182 +0 .015 0.006 −0.004 0.189 +0 .042 1.713 −0.581 1.600 −0.553 2.294 −0.574 1.245 −0.615 
+
++ EBD (ours) 0.168 +0 .060 0.241 +0 .074 0.032 +0 .022 0.232 +0 .085 4.776 +2 .482 7.249 +5 .096 4.182 +1 .314 2.898 +1 .038 
+
+Backbone: Qwen2.5-7B 
+
++ Direct 0.398 0.222 0.558 0.415 5.750 8.632 5.375 3.243 + Power Sampling 0.513 +0 .115 0.303 +0 .081 0.664 +0 .106 0.573 +0 .158 4.670 −1.080 7.511 −1.121 4.600 −0.775 1.898 −1.345 
+
++ EBD (ours) 0.557 +0 .159 0.328 +0 .106 0.720 +0 .162 0.622 +0 .207 10.728 +4 .978 20.956 +12 .324 6.905 +1 .530 4.322 +1 .079 
+
+Backbone: Qwen3-8B-Base 
+
++ Direct 0.544 0.343 0.690 0.598 6.707 8.811 6.115 5.196 + Power Sampling 0.622 +0 .078 0.409 +0 .066 0.792 +0 .102 0.665 +0 .067 12.990 +6 .283 29.219 +20 .408 6.043 −0.072 3.707 −1.489 
+
++ EBD (ours) 0.632 +0 .088 0.414 +0 .071 0.792 +0 .102 0.689 +0 .091 19.360 +12 .653 44.519 +35 .708 7.700 +1 .585 5.862 +0 .666 
+
+Backbone: Olmo-7B 
+
++ Direct 0.329 0.303 0.366 0.317 8.044 14.558 6.294 3.279 + Power Sampling 0.382 +0 .053 0.268 −0.035 0.464 +0 .098 0.415 +0 .098 6.386 −1.658 12.688 −1.870 4.789 −1.505 1.681 −1.598 
+
++ EBD (ours) 0.538 +0 .209 0.343 +0 .040 0.704 +0 .338 0.567 +0 .250 13.378 +5 .334 28.238 +13 .680 7.273 +0 .979 4.624 +1 .345 
+
+Table 2: Average per-question inference time (seconds). Direct is shown as a latency reference; speedups compare EBD against Power Sampling. Lower time and higher speedup are better. 
+
+Backbone Objective Avg. Subjective Avg. 
+
+Direct (ref.) Power EBD Speedup Direct (ref.) Power EBD Speedup Meta-Llama-3-8B 6.17 382.61 80.47 4.8× 15.37 1372.11 540.00 2.5×
+
+Mistral-7B-v0.3 8.17 1166.87 66.17 17 .6× 24.19 2294.71 653.77 3.5×
+
+Qwen2.5-7B 9.58 342.99 93.54 3.7× 9.39 482.95 205.24 2.4×
+
+Qwen3-8B-Base 11.56 476.74 127.76 3.7× 21.18 893.76 414.75 2.2×
+
+Olmo-3-1025-7B 28.23 1481.60 626.04 2.4× 28.52 1557.84 901.69 1.7×
+
+Compute. All experiments run on a cluster of 8 NVIDIA A100-SXM4-80GB GPUs with NCCL distributed backend for efficient data-parallel inference. Each GPU independently processes its assigned subset of evaluation samples; the benchmark is partitioned across the 8 GPUs without model sharding or pipeline parallelism. Latency is reported as the per-question average wall-clock time across all GPU workers, including both base-model generation and reward-model forward passes. VRAM cost is reported as peak memory allocation per GPU during inference. The core decoding loop of EBD can execute on a single A100-80GB GPU, since the per-sample computational graph does not require any inter-GPU communication. 
+
+Software Environment. Our implementation is developed using Python, built on top of PyTorch 2.x and HuggingFace Transformers 4.x libraries. All pre-trained language models are loaded in bfloat16 floating-point precision for efficient computation, and trust_remote_code is enabled as required for compatibility. To ensure full experimental reproducibility across all runs, we set the global random seed to a fixed value of 42. Notably, we do not employ vLLM-accelerated batched inference in our experiments; instead, all generation and decoding processes are conducted in a standard autoregressive manner using native HuggingFace framework interfaces. 
+
+4.2 Main Results Objective benchmarks. Table 1 shows that EBD improves objective-task performance across all five pre-trained models. Average objective scores rise from 0.155 to 0.262 for Meta-Llama-3-8B, from 0.398 to 0.557 for Qwen2.5-7B, and from 0.329 to 0.538 for Olmo-3-1025-7B. These gains 8Direct            
+
+> Power Sampling
+> EBD (Ours)
+> Average Objective Score
+> 0.6
+> 0.5
+> 0.4
+> 0.3
+> 0.2
+> 0.1
+> 0.0
+> 0.155
+> 0.195
+> 0.262
+> 0.108
+> 0.126
+> 0.168
+> 0.398
+> 0.513
+> 0.557 0.544
+> 0.622 0.632
+> 0.329
+> 0.382
+> 0.538
+> Llama-3-8B Mistral-7B Qwen2.5-7B Qwen3-8B OLMo-7B
+> 1500
+> 2000
+> 500
+> 0
+> Power Sampling
+> EBD (Ours)
+> Mistral-7B Llama-3-8B Qwen2.5-7B Qwen3-8B OLMo-7B
+> 337
+> Gap
+> 1851
+> Gap
+> 917
+> 323 Gap
+> 404
+> 147
+> Gap
+> 678
+> 267
+> Gap
+> 1478
+> 711
+> 1000
+> Average Time per Task (seconds)
+
+(a) (b) Figure 3: Quality and latency across five pre-trained base models. (a) Average objective benchmark score. (b) Average inference time per task. EBD consistently achieves the highest scores while remaining substantially faster than Power Sampling. Table 3: Behavioral alignment with post-trained models. This table shows pearson correlation of binary correctness over 1,000 questions.                             
+
+> Model Direct EBD Abs. Rel. gain Meta-Llama-3-8B 0.112 0.307 +0.195 +174.1% Mistral-7B-v0.3 0.212 0.327 +0.115 +54.2% Qwen2.5-7B 0.297 0.379 +0.082 +27.6% Qwen2.5-14B 0.309 0.399 +0.090 +29.1% Olmo-3-1025-7B 0.349 0.512 +0.164 +47.0%
+> Average 0.256 0.385 +0.129 +50.4%
+
+Table 4: Format adherence and response validity on Math500. VRR measures the fraction of outputs with a boxed answer. D →E is Direct to EBD.                       
+
+> Backbone VRR D→E
+> ∆Acc. D→E
+> ∆
+> Llama3-8B 3.2→28 .5+25.3 1.6→4.2+2.6 Qwen2.5-7B 75 .2→80 .9+5.7 62 .8→64 .8+2.0 Llama3.1-8B 3.5→31 .0+27.5 1.7→2.4+0.7 Llama3.1-8B+Dolly 51 .0→73 .0+22.0 4.8→13 .6+8.8 Llama3.1-8B+Hybrid 54 .0→72 .0+18.0 4.6→15 .0+10.4
+
+indicate that direct decoding misses task-oriented reasoning and code-generation behavior that remains accessible under reward-guided, prior-preserving inference. 
+
+Subjective benchmarks. As shown in Table 1, the gains are larger on open-ended benchmarks, where continuation-style failures are especially harmful. EBD increases AlpacaEval2.0 from 2.153 to 7.249 on Mistral-7B-v0.3 and from 8.811 to 44.519 on Qwen3-8B-Base. On MT-Bench, it improves Qwen2.5-7B from 5.375 to 6.905 and Qwen3-8B-Base from 6.115 to 7.700. In contrast, Power Sampling frequently reduces subjective quality, suggesting that likelihood-only search can amplify the wrong generation mode rather than activate task-oriented responses. 
+
+Efficiency analysis. Figures 3(a) and 3(b) compare quality and latency. Direct decoding is fastest but often fails to produce usable task-oriented outputs, whereas Power Sampling is much slower and does not reliably improve subjective quality. EBD consistently achieves the highest scores while remaining substantially faster than Power Sampling, demonstrating a clear advantage. As summarized in Table 2, EBD reduces average objective latency by 17 .6× over Power Sampling on Mistral-7B-v0.3. 
+
+Behavioral alignment analysis. We measure whether EBD activates effective success patterns that resemble post-trained variants by computing Pearson correlation of binary correctness over 1,000 samples. To further test the generality of this analysis, we additionally include Qwen2.5-14B [Qwen et al., 2025], a larger model beyond the five main experimental backbones. Figure 4 visualizes this alignment as stacked bars: the light segment shows the Direct baseline correlation with the instruct model, while the dark segment shows the steady EBD increment. Across all five model pairs, EBD raises the bars above their baselines, and Table 3 confirms that the average correlation rises from 0.256 to 0.385. The largest shift occurs for Meta-Llama-3-8B, where correlation increases from 0.112 to 0.307, indicating that reward-guided refinement changes not only aggregate scores but also which questions the frozen model can answer under inference-time activation. 
+
+Format adherence and response validity. We next test whether EBD remains effective on instruction-tuned models. Valid Response Rate (VRR) measures the fraction of Math500 outputs that contain the required boxed answer. We construct a Hybrid dataset of 10k carefully curated high-quality samples drawn from GSM8K [Cobbe et al., 2021], MBPP [Austin et al., 2021], ARC-Easy [Clark et al., 2018], and Dolly [Ouyang et al., 2022a], then separately cold-start SFT Llama3.1-8B with Hybrid and Dolly. As shown in Table 4, EBD consistently improves VRR across both initialization 9Pre-example Pearson Correlation (r)      
+
+> 0.5
+> 0.4
+> 0.3
+> 0.2
+> 0.1
+> 0.0 Llama-3-8B Mistral-7B Qwen2.5-7B Qwen2.5-14B OLMo-7B
+> Direct →Instruct (light baseline)
+> EBD increment (dark)
+> 0.112
+> +0.195
+
+0.307 
+
+> 0.349
+> +0.164
+
+0.512 
+
+> 0.212
+> +0.115
+
+0.327 
+
+> 0.309
+> +0.090
+
+0.399 
+
+> 0.297
+> +0.082
+
+0.379 Figure 4: Behavioral align-ment between pre-trained models and their post-trained counterparts. The light segment shows the baseline correlation with the instruct model, while the dark segment shows the steady EBD increment. EBD consistently shifts the behavioral signature of pre-trained models toward post-trained outputs. Table 5: Effect of reward-model scale on EBD downstream task performance. Best values within each pre-trained model are bolded. RM Size Math500 GPQA HumanEval Writing                                                 
+
+> Pre-trained model: Qwen2.5-7B
+> 0.6B 0.720 0.328 0.622 4.322
+> 1.7B 0.670 0.277 0.470 4.049 4B 0.724 0.323 0.524 4.035 8B 0.722 0.273 0.500 4.060
+> Pre-trained model: Qwen3-8B-Base
+> 0.6B 0.792 0.414 0.689 5.862
+> 1.7B 0.786 0.368 0.597 5.660 4B 0.790 0.358 0.604 5.635 8B 0.818 0.398 0.610 5.643
+> Pre-trained model: Qwen2.5-14B
+> 0.6B 0.724 0.368 0.561 3.676 1.7B 0.732 0.358 0.518 4.236
+> 4B 0.722 0.368 0.537 3.727 8B 0.724 0.353 0.549 4.206
+
+Table 6: Effect of reward-model scale on EBD in-ference latency (seconds). Lowest latency within each pre-trained model is bolded. RM Size Math500 GPQA HumanEval Writing                                                 
+
+> Pre-trained model: Qwen2.5-7B
+> 0.6B 66.20 55.52 29.60 92.11
+> 1.7B 64.79 53.88 35.00 114.87 4B 65.52 57.43 36.89 107.94 8B 50.66 57.93 24.30 120.24
+> Pre-trained model: Qwen3-8B-Base
+> 0.6B 106.82 79.19 36.43 193.85 1.7B 107.19 86.79 34.88 235.06 4B 104.49 85.64 28.09 220.63 8B 108.10 86.95 36.51 183.92
+> Pre-trained model: Qwen2.5-14B
+> 0.6B 95.86 71.83 81.94 177.43 1.7B 97.32 75.35 71.53 143.15 4B 97.90 72.88 60.67 139.13
+> 8B 94.64 74.63 60.18 143.24
+
+conditions, revealing its robustness to the underlying SFT recipe and the initial model state. Accuracy increases alongside validity, suggesting that EBD activates more parseable and task-aligned solution modes rather than merely changing the answer format. 
+
+Case study. Appendix A provides 30 representative case studies. These examples consistently show that EBD transforms otherwise unusable or socially-styled direct outputs into structured, task-aligned responses with parseable final answers, demonstrating that the VRR gains reported in Table 4 reflect a systematic improvement rather than cherry-picking of easy questions. 
+
+## 5 Discussion 
+
+Is reward-guided decoding robust to reward model scale? Tables 5 and 6 confirm performance stability across diverse tested configurations. Specifically, a 0.6B reward model nearly matches the 8B variant in Qwen2.5-7B Math500, achieving 0.720 versus 0.722 while reducing the video memory from 29.6 GB to 16.4 GB. These findings indicated that EBD did not depend on a specific large scale reward model and operated effectively when utilizing lightweight reward models. 
+
+Does EBD improve performance through the same mechanism as post-training? We have established that EBD effectively activates instruction-following and reasoning capabilities in frozen pre-trained models. To probe whether this activation operates through the same mechanism as parameter updates, we evaluate EBD on models cold-start supervised fine-tuned on Dolly and Hybrid, as reported in Table 7. On Math500, GPQA, and AlpacaEval, EBD performance scales positively with SFT. On HumanEval, however, EBD attains its highest score of 0.476 at the no-SFT stage, and performance declines as SFT progresses (Dolly 0.459 , Hybrid 0.455 ). Cold-start SFT for instruction 10 0.75          
+
+> 1.00
+> 0.50
+> 0.25
+> 0.00 Llama3 Mistral Qwen2.5 Olmo-3
+> Normalized Score
+> GPQA
+> 0.75
+> 1.00
+> 0.50
+> 0.25
+> 0.00 Llama3 Mistral Qwen2.5 Olmo-3
+> MT-Bench
+> Post-trained Model + Direct
+> (baseline = 1)
+> Normalized Score = 1
+> Pre-trained Model + Direct
+> Pre-trained Model + EBD (ours)
+
+Figure 5: Improving pre-trained models without parameter updates. Direct decoding falls far below the 1.0 post-trained baseline, while EBD closes a substantial portion of this gap at inference time and in some cases matches or exceeds post-trained performance. Table 7: EBD performance across post-training stages on four benchmarks. EBD remains robust across training stages without altering the underlying model distribution.                     
+
+> Setting / method Math500 GPQA HumanEval Alpaca Direct (no SFT) 0.016 0.152 0.299 1.525
+> EBD avg. (no SFT) 0.030 0.173 0.476 1.625
+> EBD avg. (Dolly) 0.134 0.272 0.459 2.040
+> EBD avg. (Hybrid) 0.143 0.316 0.455 3.340
+
+Table 8: Hyperparameter search on validation set. Optimal values, accu-racy, ranges for key hyperparameters.                
+
+> Study Best value Best acc. Range beta 3.5 0.792 3–5 mcmc_steps 12 0.792 6–14 N_candidates 25 0.814 1–25 block_nums 24 0.796 3–32
+
+following reshapes the pre-trained probability distribution, suppressing some continuation modes to establish new instruction-following behavior. For tasks like math, science reasoning, and open-ended generation, this redistribution is beneficial; for code completion, where the pre-trained distribution already encodes strong task-relevant behavior, the redistribution is detrimental. In contrast, EBD applies a reward tilt to the existing prior, not altering the underlying model distribution and without suppressing any modes. This explains the robustness of EBD. It operates on whatever distribution the model provides, tilting it toward higher utility without the mode-suppression side effect of SFT. 
+
+How does inference-time steering relate to post-trained models? Inference-time steering closes a substantial portion of the performance gap between pre-trained and post-trained models without parameter updates. As shown in Table 1 and Figure 5, EBD applied to pre-trained models substantially narrows the normalized gap to post-trained direct-decoding baselines and occasionally matches or exceeds them. Figure 5 visualizes this pattern across model families: Direct decoding consistently falls below the 1.0 post-trained reference, whereas EBD raises pre-trained scores to approach or even surpass that threshold. While post-training modifies parameters to improve task accessibility, EBD instead uses reward guidance to reach similar behavioral regions from a frozen state. The two approaches are complementary, allowing EBD to serve as an effective inference-time boost or a diagnostic for pre-trained checkpoint sensitivity. 
+
+Is EBD stable across hyperparameter configurations? EBD remains stable across its key hyper-parameter ranges, as shown in Table 8. Inverse temperature β is optimal at 3.5 with an accuracy of 0.792, but values between 3.0 and 4.5 show only minor variation. This indicates a forgiving calibration process without sharp performance drops. Accuracy plateaus at 12 MCMC steps and saturates as the block count reaches 12. These results confirm that EBD does not require exhaustive per-task tuning to achieve strong effectiveness across a wide range of diverse benchmarks. 
+
+## 6 Conclusion 
+
+We propose Energy-Based Decoding (EBD), which is a training-free inference procedure that im-proves frozen pre-trained model outputs through energy-guided blockwise MCMC. Across five models and six benchmarks, EBD consistently outperforms direct decoding on both objective and subjective tasks while offering a substantially better quality and efficiency trade-off than Power Sampling. This procedure often reduces the inference latency by more than an order of magnitude. These gains are robust across reward model scales and families, persist in zero-shot and cold-start settings, and shift pre-trained model behavioral patterns toward post-trained signatures. This supports the view that decoding is a critical part of the evaluation problem itself. Standard decoding can underestimate frozen pre-trained models under task-oriented evaluation, and reward-guided inference improves alignment-relevant behavior without a single parameter update. 11 References 
+
+Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski, David Dohan, Ellen Jiang, Carrie Cai, Michael Terry, Quoc Le, and Charles Sutton. Program synthesis with large language models, 2021. URL https://arxiv.org/abs/2108.07732 .Bradley Brown, Jordan Juravsky, Ryan Ehrlich, Ronald Clark, Quoc V Le, Christopher Ré, and Azalia Mirhoseini. Large language monkeys: Scaling inference compute with repeated sampling. 
+
+arXiv preprint arXiv:2407.21787 , 2024. Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et al. Language models are few-shot learners. Advances in neural information processing systems , 33:1877–1901, 2020. Yupeng Chang, Xu Wang, Jindong Wang, Yuan Wu, Linyi Yang, Kaijie Zhu, Hao Chen, Xiaoyuan Yi, Cunxiang Wang, Yidong Wang, et al. A survey on evaluation of large language models. ACM transactions on intelligent systems and technology , 15(3):1–45, 2024. Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, et al. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374 , 2021. Zhiqi Chen, Rui Lu, Andrew Zhao, Zhaokai Wang, Yang Yue, Shiji Song, and Gao Huang. Does reinforcement learning really incentivize reasoning capacity in llms beyond the base model? In D. Belgrave, C. Zhang, H. Lin, R. Pascanu, P. Koniusz, M. Ghassemi, and N. Chen, editors, 
+
+Advances in Neural Information Processing Systems , volume 38, pages 57654–57689. Curran As-sociates, Inc., 2025. URL https://proceedings.neurips.cc/paper_files/paper/2025/ file/537d5aa768c2d534016a4d06f87bc8fb-Paper-Conference.pdf .Aakanksha Chowdhery, Sharan Narang, Jacob Devlin, Maarten Bosma, Gaurav Mishra, Adam Roberts, Paul Barham, Hyung Won Chung, Charles Sutton, Sebastian Gehrmann, et al. Palm: Scaling language modeling with pathways. Journal of machine learning research , 24(240):1–113, 2023. Peter Clark, Isaac Cowhey, Oren Etzioni, Tushar Khot, Ashish Sabharwal, Carissa Schoenick, and Oyvind Tafjord. Think you have solved question answering? try arc, the ai2 reasoning challenge, 2018. URL https://arxiv.org/abs/1803.05457 .Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher Hesse, and John Schulman. Training verifiers to solve math word problems, 2021. URL https://arxiv.org/ abs/2110.14168 .Yuntian Deng, Anton Bakhtin, Myle Ott, Arthur Szlam, and Marc’Aurelio Ranzato. Residual energy-based models for text generation. arXiv preprint arXiv:2004.11714 , 2020. Yann Dubois, Chen Xuechen Li, Rohan Taori, Tianyi Zhang, Ishaan Gulrajani, Jimmy Ba, Carlos Guestrin, Percy S Liang, and Tatsunori B Hashimoto. Alpacafarm: A simulation framework for methods that learn from human feedback. Advances in Neural Information Processing Systems ,36:30039–30069, 2023. Jarad Forristal, Fatemehsadat Mireshghallah, Greg Durrett, and Taylor Berg-Kirkpatrick. A block metropolis-hastings sampler for controllable energy-based text generation. In Proceedings of the 27th Conference on Computational Natural Language Learning (CoNLL) , pages 403–413, 2023. Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Alex Vaughan, et al. The llama 3 herd of models. arXiv preprint arXiv:2407.21783 , 2024. Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang, Dawn Song, and Jacob Steinhardt. Measuring mathematical problem solving with the math dataset. arXiv preprint arXiv:2103.03874 , 2021. 12 Clément Hongler, Franck Gabriel, Valentin Hartmann, Arthur Renard, and Andrew Emil. Cognitive training for language models: Towards general capabilities via cross-entropy games, 2026. URL 
+
+https://arxiv.org/abs/2603.22479 .Jie Huang and Kevin Chen-Chuan Chang. Towards reasoning in large language models: A survey. In 
+
+Findings of the association for computational linguistics: ACL 2023 , pages 1049–1065, 2023. Ozan Irsoy, Pengxiang Cheng, Jennifer L Chen, Daniel Preotiuc-Pietro, Shiyue Zhang, and Duccio Pappadopulo. Improving instruct models for free: A study on partial adaptation. In Christos Christodoulopoulos, Tanmoy Chakraborty, Carolyn Rose, and Violet Peng, editors, Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing , pages 11507–11521, Suzhou, China, November 2025. Association for Computational Linguistics. ISBN 979-8-89176-332-6. doi: 10.18653/v1/2025.emnlp-main.581. URL https://aclanthology.org/2025. emnlp-main.581/ .Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7b, 2023. URL https://arxiv.org/ abs/2310.06825 .Aayush Karan and Yilun Du. Reasoning with sampling: Your base model is smarter than you think. 
+
+arXiv preprint arXiv:2510.14901 , 2025. Muhammad Khalifa, Hady Elsahar, and Marc Dymetman. A distributional approach to controlled text generation. In International Conference on Learning Representations (ICLR) , 2021. Oral; arXiv:2012.11635. Tomasz Korbak, Ethan Perez, and Christopher Buckley. Rl with kl penalties is better viewed as bayesian inference. In Findings of the Association for Computational Linguistics: EMNLP 2022 ,pages 1083–1091, 2022. Anthony Liang, Jonathan Berant, Adam Fisch, Abhimanyu Goyal, Kalpesh Krishna, and Jacob Eisenstein. Plantain: Plan-answer interleaved reasoning, 2025. URL https://arxiv.org/abs/ 2512.03176 .Hunter Lightman, Vineet Kosaraju, Yuri Burda, Harrison Edwards, Bowen Baker, Teddy Lee, Jan Leike, John Schulman, Ilya Sutskever, and Karl Cobbe. Let’s verify step by step. In The twelfth international conference on learning representations , 2023. Ning Miao, Hao Zhou, Lili Mou, Rui Yan, and Lei Li. Cgmh: Constrained sentence generation by metropolis-hastings sampling. In Proceedings of the AAAI Conference on Artificial Intelligence ,volume 33, pages 6834–6842, 2019. Fatemehsadat Mireshghallah, Kartik Goyal, and Taylor Berg-Kirkpatrick. Mix and match: Learning-free controllable text generationusing energy language models. In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) , pages 401–415, 2022. Prateek Munjal, Clement Christophe, Ronnie Rajan, and Praveenkumar Kanithi. Do instruction-tuned models always perform better than base models? evidence from math and domain-shifted benchmarks, 2026. URL https://arxiv.org/abs/2601.13244 .Minh Nhat Nguyen, Andrew Baker, Clement Neo, Allen Roush, Andreas Kirsch, and Ravid Shwartz-Ziv. Turning up the heat: Min-p sampling for creative and coherent llm outputs, 2025. URL 
+
+https://arxiv.org/abs/2407.01082 .Team Olmo, :, Allyson Ettinger, Amanda Bertsch, Bailey Kuehl, David Graham, David Heineman, Dirk Groeneveld, Faeze Brahman, Finbarr Timbers, Hamish Ivison, Jacob Morrison, Jake Poznan-ski, Kyle Lo, Luca Soldaini, Matt Jordan, Mayee Chen, Michael Noukhovitch, Nathan Lambert, Pete Walsh, Pradeep Dasigi, Robert Berry, Saumya Malik, Saurabh Shah, Scott Geng, Shane Arora, Shashank Gupta, Taira Anderson, Teng Xiao, Tyler Murray, Tyler Romero, Victoria Graf, Akari Asai, Akshita Bhagia, Alexander Wettig, Alisa Liu, Aman Rangapur, Chloe Anastasiades, Costa 13 Huang, Dustin Schwenk, Harsh Trivedi, Ian Magnusson, Jaron Lochner, Jiacheng Liu, Lester James V. Miranda, Maarten Sap, Malia Morgan, Michael Schmitz, Michal Guerquin, Michael Wilson, Regan Huff, Ronan Le Bras, Rui Xin, Rulin Shao, Sam Skjonsberg, Shannon Zejiang Shen, Shuyue Stella Li, Tucker Wilde, Valentina Pyatkin, Will Merrill, Yapei Chang, Yuling Gu, Zhiyuan Zeng, Ashish Sabharwal, Luke Zettlemoyer, Pang Wei Koh, Ali Farhadi, Noah A. Smith, and Hannaneh Hajishirzi. Olmo 3, 2026. URL https://arxiv.org/abs/2512.13961 .Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. Training language models to follow instructions with human feedback, 2022a. URL 
+
+https://arxiv.org/abs/2203.02155 .Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to follow instructions with human feedback. Advances in neural information processing systems , 35:27730– 27744, 2022b. Lianhui Qin, Sean Welleck, Daniel Khashabi, and Yejin Choi. Cold decoding: Energy-based constrained text generation with langevin dynamics. Advances in Neural Information Processing Systems , 35:9538–9551, 2022. Qwen, :, An Yang, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chengyuan Li, Dayiheng Liu, Fei Huang, Haoran Wei, Huan Lin, Jian Yang, Jianhong Tu, Jianwei Zhang, Jianxin Yang, Jiaxi Yang, Jingren Zhou, Junyang Lin, Kai Dang, Keming Lu, Keqin Bao, Kexin Yang, Le Yu, Mei Li, Mingfeng Xue, Pei Zhang, Qin Zhu, Rui Men, Runji Lin, Tianhao Li, Tianyi Tang, Tingyu Xia, Xingzhang Ren, Xuancheng Ren, Yang Fan, Yang Su, Yichang Zhang, Yu Wan, Yuqiong Liu, Zeyu Cui, Zhenru Zhang, and Zihan Qiu. Qwen2.5 technical report, 2025. URL 
+
+https://arxiv.org/abs/2412.15115 .Rafael Rafailov, Yaswanth Chittepu, Ryan Park, Harshit Sikchi, Joey Hejna, W. Bradley Knox, Chelsea Finn, and Scott Niekum. Scaling laws for reward model overoptimiza-tion in direct alignment algorithms. In A. Globerson, L. Mackey, D. Belgrave, A. Fan, U. Paquet, J. Tomczak, and C. Zhang, editors, Advances in Neural Information Process-ing Systems , volume 37, pages 126207–126242. Curran Associates, Inc., 2024. doi: 10.52202/079017-4009. URL https://proceedings.neurips.cc/paper_files/paper/ 2024/file/e45caa3d5273d105b8d045e748636957-Paper-Conference.pdf .David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Dirani, Julian Michael, and Samuel R Bowman. Gpqa: A graduate-level google-proof q&a benchmark. 
+
+arXiv preprint arXiv:2311.12022 , 2023. Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, YK Li, Yang Wu, et al. Deepseekmath: Pushing the limits of mathemat-ical reasoning in open language models. arXiv preprint arXiv:2402.03300 , 2024. Joar Skalse, Nikolaus Howe, Dmitrii Krasheninnikov, and David Krueger. Defining and characterizing reward gaming. Advances in Neural Information Processing Systems , 35:9460–9471, 2022. Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314 , 2024. Nisan Stiennon, Long Ouyang, Jeffrey Wu, Daniel Ziegler, Ryan Lowe, Chelsea Voss, Alec Radford, Dario Amodei, and Paul F Christiano. Learning to summarize with human feedback. Advances in neural information processing systems , 33:3008–3021, 2020. Ling Team, Binwei Zeng, Chao Huang, Chao Zhang, Changxin Tian, Cong Chen, Dingnan Jin, Feng Yu, Feng Zhu, Feng Yuan, Fakang Wang, Gangshan Wang, Guangyao Zhai, Haitao Zhang, Huizhong Li, Jun Zhou, Jia Liu, Junpeng Fang, Junjie Ou, Jun Hu, Ji Luo, Ji Zhang, Jian Liu, Jian Sha, Jianxue Qian, Jiewei Wu, Junping Zhao, Jianguo Li, Jubao Feng, Jingchao Di, Junming Xu, Jinghua Yao, Kuan Xu, Kewei Du, Longfei Li, Lei Liang, Lu Yu, Li Tang, Lin Ju, Peng Xu, Qing Cui, Song Liu, Shicheng Li, Shun Song, Song Yan, Tengwei Cai, Tianyi Chen, Ting Guo, Ting 14 Huang, Tao Feng, Tao Wu, Wei Wu, Xiaolu Zhang, Xueming Yang, Xin Zhao, Xiaobo Hu, Xin Lin, Yao Zhao, Yilong Wang, Yongzhen Guo, Yuanyuan Wang, Yue Yang, Yang Cao, Yuhao Fu, Yi Xiong, Yanzhe Li, Zhe Li, Zhiqiang Zhang, Ziqi Liu, Zhaoxin Huan, Zujie Wen, Zhenhang Sun, Zhuoxuan Du, and Zhengyu He. Every flop counts: Scaling a 300b mixture-of-experts ling llm without premium gpus, 2025. URL https://arxiv.org/abs/2503.05139 .Ningning Wang, Xavier Hu, Pai Liu, He Zhu, Yue Hou, Heyuan Huang, Shengyu Zhang, Jian Yang, Jiaheng Liu, Ge Zhang, Changwang Zhang, Jun Wang, Yuchen Eleanor Jiang, and Wangchunshu Zhou. Efficient agents: Building effective agents while reducing cost, 2025. URL https: //arxiv.org/abs/2508.02694 .Xuezhi Wang and Denny Zhou. Chain-of-thought reasoning without prompting. Advances in Neural Information Processing Systems , 37:66383–66409, 2024. Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdh-ery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language models. 
+
+arXiv preprint arXiv:2203.11171 , 2022. Jialiang Wu, Yi Shen, Sijia Liu, Yi Tang, Sen Song, Xiaoyi Wang, and Longjun Cai. Improve decoding factuality by token-wise cross layer entropy of large language models. In Luis Chiruzzo, Alan Ritter, and Lu Wang, editors, Findings of the Association for Computational Linguistics: NAACL 2025 , pages 3912–3921, Albuquerque, New Mexico, April 2025a. Association for Computational Linguistics. ISBN 979-8-89176-195-7. doi: 10.18653/v1/2025.findings-naacl.217. URL https: //aclanthology.org/2025.findings-naacl.217/ .Yuning Wu, Jiahao Mei, Ming Yan, Chenliang Li, Shaopeng Lai, Yuran Ren, Zijia Wang, Ji Zhang, Mengyue Wu, Qin Jin, et al. Writingbench: A comprehensive benchmark for generative writing. 
+
+arXiv preprint arXiv:2503.05244 , 2025b. An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao, Chengen Huang, Chenxu Lv, Chujie Zheng, Dayiheng Liu, Fan Zhou, Fei Huang, Feng Hu, Hao Ge, Haoran Wei, Huan Lin, Jialong Tang, Jian Yang, Jianhong Tu, Jianwei Zhang, Jianxin Yang, Jiaxi Yang, Jing Zhou, Jingren Zhou, Junyang Lin, Kai Dang, Keqin Bao, Kexin Yang, Le Yu, Lianghao Deng, Mei Li, Mingfeng Xue, Mingze Li, Pei Zhang, Peng Wang, Qin Zhu, Rui Men, Ruize Gao, Shixuan Liu, Shuang Luo, Tianhao Li, Tianyi Tang, Wenbiao Yin, Xingzhang Ren, Xinyu Wang, Xinyu Zhang, Xuancheng Ren, Yang Fan, Yang Su, Yichang Zhang, Yinger Zhang, Yu Wan, Yuqiong Liu, Zekun Wang, Zeyu Cui, Zhenru Zhang, Zhipeng Zhou, and Zihan Qiu. Qwen3 technical report, 2025. URL https://arxiv.org/abs/2505.09388 .Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and Ji-Rong Wen. A survey of large language models, 2026. URL https://arxiv.org/abs/2303.18223 .Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao Zhuang, Zi Lin, Zhuohan Li, Dacheng Li, Eric Xing, et al. Judging llm-as-a-judge with mt-bench and chatbot arena. Advances in neural information processing systems , 36:46595–46623, 2023. 15 A Case Studies 
+
+We present 30 representative case studies that illustrate how EBD activates task-oriented behavior from frozen pre-trained models. These examples span Math500 and GPQA across two base models, Llama3-8B and Qwen3-8B-Base, covering diverse domains including algebra, geometry, number theory, counting, precalculus, and graduate-level science reasoning. Each case contrasts Direct decoding with EBD and reveals a consistent pattern. Direct decoding frequently produces incoherent, socially-styled, or repetitive outputs that fail to deliver a parseable final answer, whereas EBD systematically generates structured, step-by-step solutions with well-formatted boxed conclusions, demonstrating that reward-guided refinement under the Metropolis–Hastings criterion can effectively steer frozen base models toward task-aligned generation without any parameter updates. Prompt 
+
+Assume $0<r<3$. Which equation has the largest solution $x$? 
+
+(A) $3(1+r)^x=7$ (B) $3(1+r/10)^x=7$ (C) $3(1+2r)^x=7$ (D) $3(1+\sqrt{r})^x=7$ (E) $3(1+1/r)^x=7$ 
+
+Ground truth: B
+
+Direct decoding (1701 tokens, incorrect) 
+
+Thanks! 3(1+r)^x = 7 3(1+r)^x = 7 We will try to solve this by taking the log. So, if we take the log of both sides: 
+
+$$\ln(3(1+r)^x) = \ln(7)$$ Let $y = x\ln(1+r)$, we can rewrite the above as: $$y = \ln(7)-\ln(3)$$ Since $0 < r < 3$, 
+
+therefore $0 < \ln(1+r) < \ln(3)$ Therefore, $y < \ln(7)-\ln(3)$... 
+
+EBD (200 effective tokens, correct, acceptance rate 40%) 
+
+We compare the equations 3(1 + 𝐀 𝐀 )𝐀 = 7 for different growth factors 𝐀 𝐀 . Since ln (3) + x ln (1 + 𝐀 𝐀 ) = ln 7, the 
+
+solution $x=\ln(7/3)/\ln(1+a_i)$. The equation with the largest $x$ corresponds to the smallest $a_i$. Among the 
+
+given options, $r/10$ is smallest for $0<r<3$, so option B has the largest solution. $\boxed{B}$ 
+
+Analysis 
+
+EBD's reward-guided refinement eliminates the verbose, unfocused reasoning present in the Direct output and retains 
+
+only a concise logarithmic derivation. 40% acceptance rate indicates that block-wise MH steps actively accepted 
+
+reward-improving suffix regenerations, progressively shaping the response toward a structured mathematical argument. 
+
+Case 1: Math500 Intermediate Algebra (ID 754) — Meta-Llama-3-8B Prompt 
+
+Identify the EXO product of the following [4+2] cycloaddition reaction: 2,5-dimethylthiophene + Furan-2,5-dione + 
+
+Heat → ?
+
+A) (3aR,4S,7R,7aS)-4,7-dimethyl-3a,4,7,7a-tetrahydro-4,7-epoxybenzo[c]thiophene-1,3-dione 
+
+B) (3aR,4R,7S,7aS)-4,7-dimethyl-3a,4,7,7a-tetrahydro-4,7-epoxybenzo[c]thiophene-1,3-dione 
+
+C) (3aR,4R,7S,7aS)-4,7-dimethyl-3a,4,7,7a-tetrahydro-4,7-epithioisobenzofuran-1,3-dione 
+
+D) (3aR,4S,7R,7aS)-4,7-dimethyl-3a,4,7,7a-tetrahydro-4,7-epithioisobenzofuran-1,3-dione 
+
+Ground truth: C
+
+Direct decoding (482 tokens, incorrect) 
+
+Repeats the prompt verbatim without producing any reasoning or answer — the output is merely a restatement of the 
+
+question text followed by truncated option listings. 
+
+EBD (59 effective tokens, correct, acceptance rate 40%) 
+
+Identifies the EXO product directly: (3aR,4R,7S,7aS)-4,7-dimethyl-3a,4,7,7a-tetrahydro-4,7-epoxybenzo[c]thiophene-
+
+1,3-dione, which corresponds to option C (the evaluation matched the chemical structure rather than the letter label). 
+
+Analysis 
+
+Direct produces 482 tokens of prompt-repetition noise, EBD converges to a concise 59-token answer. The acceptance 
+
+rate of 40% shows the MCMC process actively refined the response across multiple block-level regenerations. 
+
+Case 2: GPQA (ID 32) — Meta-Llama-3-8B 
+
+16 Prompt 
+
+You are studying a nuclear decay $2A \to 2B + 2E + 2V$. The total energy spectrum of the outgoing E particles is 
+
+continuous, with endpoint value $Q$. A variant of this decay emits one exotic massless particle $M$ instead of the 
+
+$2V$ particles. How does the E-particle energy spectrum change relative to the original decay? 
+
+A) Remains continuous, shape unchanged, endpoint unchanged 
+
+B) Remains continuous, shape unchanged, endpoint decreases 
+
+C) Remains continuous, adjusted shape, endpoint unchanged 
+
+D) Remains continuous, adjusted shape, endpoint decreases 
+
+Ground truth: D
+
+Direct decoding (18 tokens, incorrect) 
+
+Selects option E (which does not even exist among the given choices): "The spectrum remains continuous with an 
+
+adjusted shape, and the endpoint is unchanged." 
+
+EBD (6 effective tokens, correct, acceptance rate 60%) ：$\boxed{D}$ 
+
+Analysis 
+
+Direct picks a non-existent option, while EBD outputs just the correct answer box. The 60% acceptance rate indicates 
+
+that the reward model provided a strong, unambiguous signal, allowing the MCMC chain to converge rapidly to the 
+
+correct selection. This exemplifies EBD's advantage on knowledge-retrieval tasks where reward signal quality is high. 
+
+Case 3: GPQA (ID 168) — Meta-Llama-3-8B Prompt 
+
+How many stereoisomers are there for the compound 6-chloro-9-ethyl-2-methylundeca-3,7-dien-5-ol? 
+
+A) 4; B) 32; C) 8; D) 16 
+
+Ground truth: D
+
+Direct decoding (385 tokens, incorrect) 
+
+To determine the number of stereoisomers for the compound 6-chloro-9-ethyl-2-methylundeca-3,7-dien-5-ol, we need 
+
+to analyze the stereocenters (chiral centers) in the molecule. Here's a step-by-step breakdown: 
+
+1. Identify the chiral centers: Chiral centers are carbon atoms with four different groups attached. In this compound ... 
+
+EBD (118 effective tokens, correct, acceptance rate 0%) 
+
+The compound has four stereocenters. At each stereocenter there are two possible configurations (R or S), so the total 
+
+number of stereoisomers is $2^4 = 16$. $\boxed{D}$ 
+
+Analysis 
+
+Direct gets lost in an overcomplicated analysis of chiral centers and double-bond geometry, arriving at the wrong 
+
+stereoisomer count. EBD produces a clean, correct enumeration: 4 stereocenters → $2^4=16$. The acceptance rate of 
+
+0% means the correct answer was already present in the initial candidate pool and the reward model correctly 
+
+identified it without needing to accept any block-level proposals. The high final reward (4.9) confirms the reward 
+
+model's confidence. 
+
+Case 4: GPQA (ID 144) — Qwen3-8B-Base Prompt 
+
+Complete these sigmatropic rearrangements: 
+
+1. 1,1-dimethoxyethan-1-amine + but-3-en-2-ol (H$^+$, heat) $\to$ A 
+
+2. (3R,4S)-3,4-dimethylhexa-1,5-diyne (heat) $\to$ B 
+
+3. 2-((vinyloxy)methyl)but-1-ene (heat) $\to$ C 
+
+Identify the correct (Z/E) product set. 
+
+Ground truth: D (A=(Z)-product, B=Cope-retention, C=thermal Claisen) 
+
+Direct decoding (385 tokens, incorrect) 
+
+Let's analyze each reaction step by step. Reaction 1: Claisen rearrangement, (Z)-configuration. Reaction 2: Cope 
+
+rearrangement. The stereochemical predictions contain errors in the (Z/E) assignment ... 
+
+EBD (379 effective tokens, correct, acceptance rate 20%) 
+
+Reaction 1: acid-catalyzed Claisen $\to$ (Z)-product. Reaction 2: Cope with retention. Reaction 3: thermal Claisen. 
+
+Matches option D. $\boxed{D}$ 
+
+Analysis 
+
+Direct misassigns stereochemical outcomes. EBD preserves the correct pericyclic analysis. 20% acceptance rate — 
+
+partial MCMC convergence on a challenging multi-part problem. 
+
+Case 5: GPQA (ID 48) — Qwen3-8B-Base 17 Prompt 
+
+Reagent sequence for [1,1'-bi(cyclopentylidene)]-2-one from 1,5-dichloropentane: 
+
+A) Na/ether $\to$ Cl$_2$/hv $\to$ KOH $\to$ KMnO$_4$/heat $\to$ NaNH$_2$ 
+
+B) Na/ether $\to$ Cl$_2$/hv $\to$ KOH/EtOH $\to$ LiAlH$_4$ $\to$ NH$_4$OH 
+
+C) Zn/ether $\to$ Cl$_2$/hv $\to$ KOH $\to$ Py+CrO$_3$+HCl $\to$ NaOH 
+
+D) Zn/ether $\to$ HCl $\to$ KOH $\to$ Pyridine $\to$ NaOH 
+
+Ground truth: C
+
+Direct decoding (440 tokens, incorrect) 
+
+To synthesize [1,1'-bi(cyclopentylidene)]-2-one from 1,5-dichloropentane, we need to follow a series of reactions to 
+
+achieve the desired transformation. Here's a step-by-step breakdown: 
+
+1. **Eliminat ... 
+
+EBD (359 effective tokens, correct, acceptance rate 20%) 
+
+Zn/ether (not Na/ether) for Wurtz coupling, then chlorination, elimination, Jones oxidation. Option C. $\boxed{C}$ 
+
+Analysis 
+
+Direct picks Na/ether over Zn/ether for the key step. EBD correctly distinguishes the reagent choice. 20% acceptance, 
+
+reward 2.6. 
+
+Case 6: GPQA (ID 80) — Qwen3-8B-Base Prompt 
+
+Star$_1$: radius and mass 1.5$\times$ Star$_2$. Same peak wavelength. Star$_1$ radial velocity 0, Star$_2$ 700 
+
+km/s. Luminosity ratio $L_1/L_2$? 
+
+A) ~2.23 B) ~2.32 C) ~2.25 D) ~2.35 
+
+Ground truth: A
+
+Direct decoding (51 tokens, incorrect) 
+
+Lists answer options without reasoning: "(A) ~2.23 1. A. ~2.23 2. B. ~2.32 3. C. ~2.25 4. D. ~2.35 5." 
+
+appears to guess. 
+
+EBD (184 effective tokens, correct, acceptance rate 40%) 
+
+Same wavelength $\to$ equal $T$. $L\propto R^2 T^4$, so $L_1/L_2=1.5^2=2.25$. Relativistic Doppler correction 
+
+adjusts to ~2.23. $\boxed{A}$ 
+
+Analysis 
+
+EBD successfully chains physical principle s, Wien's law and the Stefan-Boltzmann relatio n, and applies a relativistic 
+
+Doppler correction to reach the correct ratio, demonstrating structured reasoning. Direct decoding, by contrast, 
+
+merely repeats the list of answer options with no attempt at calculation, amounting to an uninformed guess. 
+
+Case 7: GPQA (ID 176) — Meta-Llama-3-8B Prompt 
+
+Identify compound E: A+HCN$\to$B; B+H$_2$/Pd$\to$C; C+HNO$_2$$\to$D; D$-$inert gas$\to$E. Hint: 
+
+A+ylide$\to$1,2-dimethyl-4-(propan-2-ylidene)cyclopentane; IR: A~1750, E~1715 cm$^{-1}$. 
+
+Ground truth 
+
+C (2,3,4-trimethylcyclopentan-1-one) 
+
+Direct decoding (506 tokens, incorrect) 
+
+1. Compound A, when reacted with HCN, produces compound B. This suggests that compound A is an aldehyde or 
+
+ketone, as these compounds can undergo nucleophilic addition with HCN. 
+
+2. Compound B, upon reduction with H2 in the presence of Pd, forms compound C. This indicates that compound B 
+
+is an aldeh... 
+
+EBD (499 effective tokens, correct, acceptance rate 20%) 
+
+Wittig hint $\to$ A is a ketone. HCN addition $\to$ nitrile reduction $\to$ diazotization $\to$ N$_2$ elimination 
+
+$\to$ ketone E. Option C. $\boxed{C}$ 
+
+Analysis 
+
+Direct misidentifies A as aldehyde, cascading to wrong deductions. EBD correctly interprets Wittig/IR evidence. 
+
+Case 8: GPQA (ID 128) — Qwen3-8B-Base 18 Prompt 
+
+Find $d$ such that $(\sin x)^7 = a\sin 7x + b\sin 5x + c\sin 3x + d\sin x$ for all $x$. 
+
+Ground truth 
+
+\frac{35}{64} 
+
+Direct decoding (588 tokens, incorrect )
+
+To solve for \(d\) in the equation \((\sin x)^7 = a \sin 7x + b \sin 5x + c \sin 3x + d \sin x\), we will use the 
+
+multiple angle formulas for sine. The general formula for \(\sin nx\) in terms of \(\sin x\) can be derived using the 
+
+complex exponential form and the binomial theorem .
+
+First, recall t ... 
+
+EBD (446 effective tokens, correct, acceptance rate 10%) 
+
+Uses $\sin^3 x = \frac{3\sin x-\sin 3x}{4}$ and iterative multiple-angle reduction. $d = \frac{35}{64}$. 
+
+$\boxed{\frac{35}{64}}$ 
+
+Analysis 
+
+EBD efficiently reduces the seventh power of sine using the triple-angle identity and iterative multiple-angle expansion, 
+
+arriving at the correct coefficient \( \frac{35}{64} \) through a clean, structured path. Direct decoding, by contrast, 
+
+attempts a cumbersome binomial expansion that becomes unwieldy and fails to yield the correct answer. 
+
+Case 9: Math500 Precalculus (ID 1146) — Qwen3-8B-Base Prompt 
+
+$\mathbf{A} = \begin{pmatrix}3&7\\-1&-2\end{pmatrix}$. Compute 
+
+$\mathbf{A}^{27}+\mathbf{A}^{31}+\mathbf{A}^{40}$. 
+
+Ground truth 
+
+\begin{pmatrix} -1 & 0 \\ 0 & -1 \end{pmatrix} 
+
+Direct decoding (1497 tokens, incorrect) 
+
+Computes characteristic polynomial incorrectly as $\lambda^2-\lambda-1$ (correct: $\lambda^2-\lambda+1$), 
+
+leading to wrong eigenvalues and result. 
+
+EBD (1303 effective tokens, correct, acceptance rate 10%) 
+
+$\mathbf{A}^2=\begin{pmatrix}2&7\\-1&-3\end{pmatrix}$, $\mathbf{A}^3=-\mathbf{I}$, so 
+
+$\mathbf{A}^6=\mathbf{I}$. $\mathbf{A}^{27}=-\mathbf{I}$, $\mathbf{A}^{31}=\mathbf{A}$, 
+
+$\mathbf{A}^{40}=\mathbf{A}$. Sum $=\begin{pmatrix}-1&0\\0&-1\end{pmatrix}$. $\boxed{\begin{pmatrix}-
+
+1&0\\0&-1\end{pmatrix}}$ 
+
+Analysis 
+
+EBD discovers matrix periodicity via direct multiplication — more robust than Direct's eigenvalue approach (which 
+
+miscalculates the characteristic polynomial). Reward 9.8, highest among all cases. 
+
+Case 10: Math500 Precalculus (ID 920) — Qwen3-8B-Base Prompt 
+
+Assume $0<r<3$. Which equation has the largest solution $x$? 
+
+(A) $3(1+r)^x=7$ (B) $3(1+r/10)^x=7$ (C) $3(1+2r)^x=7$ (D) $3(1+\sqrt{r})^x=7$ (E) $3(1+1/r)^x=7$ 
+
+Ground truth: \text{(B)} 
+
+Direct decoding (632 tokens, incorrect) 
+
+To determine which equation has the largest solution for \( x \), we need to analyze the structure of each equation. 
+
+The general form of the equations is:\[ 3(1 + a)^x = 7 \]where \( a \) is a coefficient that varies in each option. We 
+
+need to find the value of \( x \) for each equation and com... 
+
+(A lengthy, unfocused algebraic exploration that attempts to solve each equation by taking logarithms and 
+
+manipulating inequalities, but fails to converge to a clear answer or produce a parseable final result. )
+
+EBD (857 effective tokens, correct, acceptance rate 10%) 
+
+$x=\ln(7/3)/\ln(1+a_i)$. Largest $x$ = smallest $a_i$. $r/10$ is smallest $\to$ B. $\boxed{B}$ 
+
+Analysis 
+
+EBD cleanly transforms each equation using logarithms, recognizes that the largest solution \(x\) corresponds to the 
+
+smallest base increment \(a\), and correctly picks \(r/10\) as the minimum, yielding option (B) with minimal effort. 
+
+Direct decoding also sets up the logarithmic comparison correctly but then drifts into an unfocused algebraic tangle, 
+
+failing to produce a coherent final ranking. 
+
+Case 11: Math500 Intermediate Algebra (ID 754) — Qwen3-8B-Base 19 Prompt 
+
+Phase shifts $\delta_0=90^\circ,\delta_1=67^\circ,\delta_2=55^\circ,\delta_3=30^\circ,\delta_4=13^\circ$ for 50 
+
+MeV e$^-$ scattering. Imaginary part of scattering amplitude? 
+
+A) 87163.4 fm B) 177.675 fm C) 251.271 fm D) 355.351 fm 
+
+Ground truth 
+
+C
+
+Direct decoding (1 tokens, incorrect) 
+
+(empty output) 
+
+EBD (6 effective tokens, correct, acceptance rate 20%) 
+
+$\boxed{C}$ 
+
+Analysis 
+
+Direct decoding collapses entirely, returning an empty output and thus failing to produce any answer. EBD, in stark 
+
+contrast, correctly identifies option C with remarkable brevity, using only 6 effective tokens to output the correct label. 
+
+The 20% acceptance rate and an advantage of 7.3 highlight a dramatic improvement over Direct’s complete failure, 
+
+showing that even minimal reasoning can decisively outperform a blank response. 
+
+Case 12: GPQA (ID 56) — Meta-Llama-3-8B Prompt 
+
+Product when (1R,3R,4R,6S)-1,3,4-trimethyl-7-oxabicyclo[4.1.0]heptane + Me$_2$CuLi? (Organocuprate attacks less 
+
+hindered epoxide carbon with inversion.) 
+
+Ground truth: 
+
+B ((1R,2R,4R,5R)-1,2,4,5-tetramethylcyclohexan-1-ol) 
+
+Direct decoding (50 tokens, incorrect) 
+
+Explanation: 
+
+Ref: Solomons, T.W. Graham, Fryhle, Craig B., and Snyder, Steven A. Organic Chemistry (Tenth Edition), Wiley 
+
+2012, pp 1086-1087, 1089 
+
+EBD (144 effective tokens, correct, acceptance rate 10%) 
+
+Selects (1R,2R,4R,5R)-1,2,4,5-tetramethylcyclohexan-1-ol. $\boxed{B}$ 
+
+Analysis 
+
+Direct decoding produces no answer at all, outputting only a textbook citation and leaving the chemical question 
+
+entirely unaddressed. EBD correctly resolves the epoxide opening with the proper regio- and stereochemistry, 
+
+selecting option B as the product. Respectively, this case shows that EBD help pre-trained models following 
+
+benchmark format and outputing their internal responses. 
+
+Case 13: GPQA (ID 120) — Meta-Llama-3-8B Prompt 
+
+Simplify $\frac{1+\sqrt{2}}{2+\sqrt{3}}$ to $A(1+\sqrt{B})-(\sqrt{C}+\sqrt{D})$. Find $A+B+C+D$. 
+
+Ground truth 
+
+13 
+
+Direct decoding (288 tokens, incorrect) 
+
+Let's reason step by step: 
+
+The conjugate of $2+\sqrt{3}$ is $2-\sqrt{3}$. 
+
+To rationalize the denominator of the fraction, we multiply the numerator and denominator by the conjugate: 
+
+$\frac{1+\sqrt{2}}{2+\sqrt{3}} \cdot \frac{2-\sqrt{3}}{2-\sqrt{3}} = \frac{(1+\sqrt{2})(2-
+
+\sqrt{3})}{(2+\sqrt{3})(2-\... 
+
+EBD (479 effective tokens, correct, acceptance rate 50%) 
+
+Rationalize: $\frac{1+\sqrt{2}}{2+\sqrt{3}}\cdot\frac{2-\sqrt{3}}{2-\sqrt{3}}=2-\sqrt{3}+2\sqrt{2}-
+
+\sqrt{6}=2(1+\sqrt{2})-(\sqrt{3}+\sqrt{6})$. $A=2,B=2,C=3,D=6$, sum $=13$. $\boxed{13}$ 
+
+Analysis 
+
+Both rationalize correctly, but Direct errs in the final coefficient matching. EBD completes it correctly. 50% 
+
+acceptance rate — half of all block proposals accepted. 
+
+Case 14: Math500 Algebra (ID 2058) — Qwen3-8B-Base 20 Prompt 
+
+8 people around a round table. Pierre, Rosa, Thomas must sit together. How many seatings? (Rotations identical.) 
+
+Ground truth 
+
+720 
+
+Direct decoding (371 tokens, incorrect) 
+
+To solve this problem, we can follow these steps: 
+
+1. First, consider the three people who want to sit together (Pierre, Rosa, and Thomas) as one unit or block. This 
+
+block can be arranged in 3! (3 factorial) ways internally, which is 3 x 2 x 1 = 6 ways. 
+
+2. Now, we have this block of three people a... 
+
+EBD (328 effective tokens, correct, acceptance rate 20%) 
+
+Treat three as block (6 entities). Internal: $3!=6$. Circular: $(6-1)!=120$. Total: $6\times120=720$. $\boxed{720}$ 
+
+Analysis 
+
+EBD correctly treats the three individuals as a single block, computes the circular permutation of the resulting six 
+
+entities as \((6-1)! = 120\), and multiplies by the internal \(3! = 6\) to reach the exact answer of 720. Direct decoding 
+
+also adopts the block strategy but miscounts the number of entities or mishandles the circular constraint, leading to an 
+
+incorrect result. 
+
+Case 15: Math500 Counting And Probability (ID 134) — Qwen3-8B-Base Prompt 
+
+Simplify $\frac{1}{5}\cdot\frac{8}{7}\div\frac{12}{20}$. 
+
+Ground truth 
+
+\frac{8}{21} 
+
+Direct decoding (222 tokens, incorrect) 
+
+Here is the Rationale: 
+
+To solve (frac{1}{5} cdot frac{8}{7} div frac{12}{20}), we follow these steps: 
+
+1. Convert the division into multiplication by the reciprocal: (frac{8}{7} div frac{12}{20} = frac{8}{7} cdot 
+
+frac{20}{12}). 
+
+2. Multiply the fractions: (frac{1}{5} cdot frac{8}{7} cdot frac{20}{12}... 
+
+EBD (397 effective tokens, correct, acceptance rate 30%) 
+
+$\frac{8}{7}\div\frac{12}{20}=\frac{8}{7}\cdot\frac{5}{3}=\frac{40}{21}$. 
+
+$\frac{1}{5}\cdot\frac{40}{21}=\frac{40}{105}=\frac{8}{21}$. $\boxed{\frac{8}{21}}$ 
+
+Analysis 
+
+Direct makes an arithmetic error in simplification. EBD produces clean computation. 30% acceptance, reward 10.4 ,
+
+showing effective MCMC convergence. 
+
+Case 16: Math500 Prealgebra (ID 1995) — Qwen3-8B-Base Prompt 
+
+Distance between parallel lines: $L_1:\mathbf{r}=\begin{pmatrix}3\\-10\\1\end{pmatrix}+t\begin{pmatrix}2\\-
+
+9\\-2\end{pmatrix}$, $L_2:\mathbf{r}=\begin{pmatrix}-5\\-3\\6\end{pmatrix}+u\begin{pmatrix}4\\-18\\-
+
+4\end{pmatrix}$. 
+
+Ground truth 
+
+7
+
+Direct decoding (678 tokens, incorrect) 
+
+To find the distance between two parallel lines in 3D space, we can use the following formula for the distance \(d\) 
+
+between two parallel lines: 
+
+\[ d = \frac{|\mathbf{a} \cdot (\mathbf{b} \times \mathbf{c})|}{|\mathbf{b} \times \mathbf{c}|} \] 
+
+where: - \(\mathbf{a}\) is a vector connecting any po... 
+
+EBD (397 effective tokens, correct, acceptance rate 30%) 
+
+$\mathbf{d}_2=2\mathbf{d}_1$, parallel. $\mathbf{v}=P_2-P_1=(-8,7,5)$. 
+
+$d=\frac{|\mathbf{v}\times\mathbf{d}_1|}{|\mathbf{d}_1|}=7$. $\boxed{7}$ 
+
+Analysis 
+
+Direct uses wrong formula (skew-line cross product). EBD uses correct parallel-line distance formula. Reward 9.4 
+
+confirms correct geometric reasoning. 
+
+Case 17: Math500 Precalculus (ID 1172) — Qwen3-8B-Base 21 Prompt 
+
+$\sin\angle RPQ=\frac{7}{25}$. Points $S,P,Q$ collinear, $R$ above $P$. Find $\cos\angle RPS$. 
+
+Ground truth 
+
+-\frac{24}{25} 
+
+Direct decoding (124 tokens, incorrect) 
+
+Since the figure is not provided, I will assume that the angles RPQ and RPS are complementary, meaning their sum is 
+
+90 degrees. Therefore, the cosine of angle RPS is equal to the sine of angle RPQ. Given: sin(angle RPQ) = 7/25. We 
+
+know that sin(x) = cos(90 ° - x). Thus, cos(angle RPS) = sin(90 ° .
+
+EBD (519 effective tokens, correct, acceptance rate 30%) 
+
+From Asymptote code: $\angle RPS=180^\circ-\angle RPQ$. $\cos\angle RPQ=\frac{24}{25}$ (acute, 
+
+$\sin^2+\cos^2=1$). $\cos\angle RPS=\cos(180^\circ-\angle RPQ)=-\frac{24}{25}$. $\boxed{-\frac{24}{25}}$ 
+
+Analysis 
+
+Direct naively assumes complementary angles ($\angle RPS=90^\circ-\angle RPQ$) and gets $\frac{7}{25}$. EBD 
+
+correctly infers from the Asymptote description that points \(S, P, Q\) are collinear with \(R\) above \(P\), deducing 
+
+\(\angle RPS = 180^\circ - \angle RPQ\) and thereby obtaining the negative cosine \(-\frac{24}{25}\) through the 
+
+Pythagorean identity. 
+
+Case 18: Math500 Geometry (ID 947) — Qwen3-8B-Base Prompt 
+
+Compute $17^{-1}\pmod{83}$. (Hint: $17\cdot5=85$.) 
+
+Ground truth 
+
+44 
+
+Direct decoding (782 tokens, incorrect) 
+
+To find the modular inverse of $17 \pmod{83}$, we can use the fact that $17 \cdot 5 = 85$, which is congruent to $2 
+
+\pmod{83}$. This suggests that we can start by finding the inverse of $2 \pmod{83}$ and then use that to find the 
+
+inverse of $17$. Let's proceed step by step: 1. **Express 17 in ter... 
+
+EBD (572 effective tokens, correct, acceptance rate 20%) 
+
+Extended Euclidean: $83=4\cdot17+15$, $17=1\cdot15+2$, $15=7\cdot2+1$. Back-substitute: $1=8\cdot83-
+
+39\cdot17$. $17^{-1}\equiv-39\equiv44\pmod{83}$. $\boxed{44}$ 
+
+Analysis 
+
+Direct decoding attempts to exploit the provided hint with a shortcut but makes an error, illustrating the risk of ad -hoc 
+
+reasoning over a standard procedure. EBD applies the extended Euclidean algorithm, a reliable and systematic 
+
+method, to correctly compute the modular inverse as 44. The 20% acceptance rate and reward of 9.2 suggest that 
+
+while the correct algorithmic path was occasionally sampled and strongly reinforced, it remained infrequent, pointing 
+
+to a need for better alignment between sampling and robust proble m-solving strategies. 
+
+Case 19: Math500 Number Theory (ID 1000) — Qwen3-8B-Base Prompt 
+
+How many stereoisomers for 6-chloro-9-ethyl-2-methylundeca-3,7-dien-5-ol? 
+
+A) 4 B) 32 C) 8 D) 16 
+
+Ground truth 
+
+D
+
+Direct decoding (5 tokens, incorrect) 
+
+E) 32 
+
+EBD (6 effective tokens, correct, acceptance rate 60%) 
+
+$\boxed{D}$ 
+
+Analysis 
+
+Direct decoding produces an entirely invalid answer (“E) 32”), failing even to select a listed option. EBD solves the 
+
+problem with striking efficiency, using only 6 effective tokens to directly output the correct label D. The 60% 
+
+acceptance rate indicates that the correct minimal reasoning was frequently sampled, though the remaining 40% 
+
+reveals that even on simple tasks the model can occasionally default to nonsensical outputs. 
+
+Case 20: GPQA (ID 144) — Meta-Llama-3-8B 22 Prompt 
+
+$f$ odd, $g$ even. Is $f(f(g(f(g(f(x))))))$ even, odd, or neither? 
+
+Ground truth 
+
+\text{even} 
+
+Direct decoding (693 tokens, incorrect) 
+
+To determine the nature of the function \( h(x) = f(f(g(f(g(f(x)))))) \), we will analyze the function step by step, 
+
+considering the properties of odd and even functions. 
+
+1. **Identify the properties of \( f \) and \( g \): **
+
+- \( f \) is an odd function, so \( f(-x) = -f(x) \). 
+
+- \( g \) is... 
+
+EBD (515 effective tokens, correct, acceptance rate 10%) 
+
+Trace from innermost: $f(-x)=-f(x)$ (odd), $g$ preserves sign (even). The outermost $f$ wraps an odd function $\to$ 
+
+even. $\boxed{\text{even}}$ 
+
+Analysis 
+
+Direct loses track of sign propagation through nested composition. EBD correctly traces parity layer by layer. Reward 
+
+10.1. 
+
+Case 21: Math500 Intermediate Algebra (ID 128) — Qwen3-8B-Base Prompt 
+
+Find $P$ on $y=-x+6$ with $PA=PO$, $A(10,-10)$, $O(0,0)$. 
+
+Ground truth 
+
+(8,-2) 
+
+Direct decoding (828 tokens, incorrect) 
+
+Also, write an incorrect answer. To determine the coordinates of point \(P\) on the line \(y = -x + 6\) such that \(P\) 
+
+is equidistant from the points \(A(10, -10)\) and \(O(0, 0)\), we need to follow these steps: 
+
+1. Let the coordinates of point \(P\) be \((x, -x + 6)\). 
+
+2. Use the distance formul... 
+
+EBD (705 effective tokens, correct, acceptance rate 10%) 
+
+$P=(x,-x+6)$. $(x-10)^2+(-x+16)^2=x^2+(-x+6)^2$. Expand: $-52x+356=-12x+36\to x=8$, $y=-2$. $\boxed{(8,-
+
+2)}$ 
+
+Analysis 
+
+Direct makes an algebraic slip during expansion. EBD completes full derivation correctly. Reward 10.9. 
+
+Case 22: Math500 Geometry (ID 538) — Qwen3-8B-Base Prompt 
+
+Compute $\sin^3 18^\circ + \sin^2 18^\circ$. 
+
+Ground truth 
+
+\frac{1}{8} 
+
+Direct decoding (331 tokens, incorrect) 
+
+To solve the problem, we need to compute the expression $\sin^3 18^\circ + \sin^2 18^\circ$. We'll use Python to get 
+
+the precise values. 
+
+First, we need to convert the angle from degrees to radians because Python's math library uses radians for 
+
+trigonometric functions. The conversion formula is:... 
+
+EBD (631 effective tokens, correct, acceptance rate 10%) 
+
+$\sin18^\circ=\frac{\sqrt{5}-1}{4}$. $\sin^2=\frac{3-\sqrt{5}}{8}$, $\sin^3$ via expansion. Sum $=\frac{1}{8}$. 
+
+$\boxed{\frac{1}{8}}$ 
+
+Analysis 
+
+Direct tries Python numerical approach — inappropriate for exact symbolic computation. EBD uses exact value and 
+
+algebraic manipulation. Reward 7.9. 
+
+Case 23: Math500 Precalculus (ID 681) — Qwen3-8B-Base 23 Prompt 
+
+1 Trinket = 4 Blinkets; 3 Blinkets = 7 Drinkets. Value of 56 Drinkets in Trinkets? 
+
+Ground truth 
+
+6
+
+Direct decoding (564 tokens, correct) 
+
+To solve this problem, we need to establish the conversion rates between the different units of currency in the land of 
+
+Ink: Trinkets (T), Blinkets (B), and Drinkets (D). We know the following: 
+
+1. 1 Trinket = 4 Blinkets 
+
+2. 3 Blinkets = 7 Drinkets 
+
+We want to find the value of 56 Drinkets in Trinke... 
+
+EBD (345 effective tokens, correct, acceptance rate 20%) 
+
+56 Drinkets $\to$ 24 Blinkets ($56\times\frac{3}{7}$), 24 Blinkets $\to$ 6 Trinkets ($24\div4$). $\boxed{6}$ 
+
+Analysis 
+
+Both correct. EBD more concise (345 vs 564 tokens, 1.6 x). 
+
+Case 24: Math500 Prealgebra (ID 1436) — Qwen3-8B-Base Prompt 
+
+$a,b$ distinct primes $>2$. Simplify $a(2a+b)-2a^2+ab$; count whole-number divisors. 
+
+Ground truth 
+
+8
+
+Direct decoding (334 tokens, correct) 
+
+Let's solve the problem step by step. 
+
+We start with the expression \(a(2a + b) - 2a^2 + ab\). Let's simplify this expression first. 
+
+\[ 
+
+a(2a + b) - 2a^2 + ab = 2a^2 + ab - 2a^2 + ab = 2ab 
+
+\] 
+
+So, the expression simplifies to \(2ab\). Now, we need to find the number of whole-number divisors of \(2a... 
+
+EBD (171 effective tokens, correct, acceptance rate 20%) 
+
+Simplifies to $2ab$. $a,b,2$ distinct primes $\to$ $2\times2\times2=8$ divisors. $\boxed{8}$ 
+
+Analysis 
+
+Both correct. EBD half the tokens (171 vs 334, 2.0$\times$). 
+
+Case 25: Math500 Number Theory (ID 1287) — Qwen3-8B-Base Prompt 
+
+Given $\sum a_i=96$, $\sum a_i^2=144$, $\sum a_i^3=216$ for positive $a_i$. Sum of all possible values of $n$. 
+
+Ground truth 
+
+64 
+
+Direct decoding (888 tokens, correct) 
+
+To solve this problem, we need to use the given conditions and some inequalities. Let's start by analyzing the given 
+
+conditions: 
+
+1. \(\sum_{i=1}^n a_i = 96\) 
+
+2. \(\sum_{i=1}^n a_i^2 = 144\) 
+
+3. \(\sum_{i=1}^n a_i^3 = 216\) 
+
+First, we use the Cauchy-Schwarz inequality in the form of \((\sum_{i=1}^n ... 
+
+EBD (529 effective tokens, correct, acceptance rate 0%) 
+
+Cauchy-Schwarz: $144n\ge96^2\to n\ge64$. Power Mean: $n\le64$. Thus $n=64$. $\boxed{64}$ 
+
+Analysis 
+
+Both correct. EBD more compact (529 vs 888 tokens, 1.7$\times$). 
+
+Case 26: Math500 Intermediate Algebra (ID 2022) — Qwen3-8B-Base 24 Prompt 
+
+Regular octagon has same perimeter as regular hexagon with side 16 cm. Find octagon side length. 
+
+Ground truth 
+
+12 
+
+Direct decoding (317 tokens, correct) 
+
+To solve the problem, we need to find the side length of a regular octagon given that it has the same perimeter as a 
+
+regular hexagon with a side length of 16 cm. 
+
+1. **Calculate the perimeter of the hexagon: **
+
+A regular hexagon has 6 sides. If each side is 16 cm, then the perimeter \( P_{\text{h... 
+
+EBD (280 effective tokens, correct, acceptance rate 60%) 
+
+Hexagon perimeter: $6\times16=96$ cm. Octagon side: $96\div8=12$ cm. $\boxed{12}$ 
+
+Analysis 
+
+Both correct. 60% acceptance, reward 11.9 — strong MCMC convergence. 
+
+Case 27: Math500 Prealgebra (ID 930) — Qwen3-8B-Base Prompt 
+
+What power of 4 equals 8? Express as a common fraction. 
+
+Ground truth: 
+
+\frac{3}{2} 
+
+Direct decoding (232 tokens, correct) 
+
+Also, please provide the source of this problem. 
+
+To solve the problem, we need to find the value of \( x \) in the equation \( 4^x = 8 \). We can express both 4 and 8 
+
+as powers of 2: 
+
+\[ 4 = 2^2 \] 
+
+\[ 8 = 2^3 \] 
+
+Substituting these into the equation, we get: \[ (2^2)^x = 2^3 \]... 
+
+EBD (207 effective tokens, correct, acceptance rate 60%) 
+
+$4^x=8\to(2^2)^x=2^3\to2^{2x}=2^3\to x=\frac{3}{2}$. $\boxed{\frac{3}{2}}$ 
+
+Analysis 
+
+Both correct. 60% acceptance, reward 10.0. 
+
+Case 28: Math500 Algebra (ID 1265) — Qwen3-8B-Base Prompt 
+
+Compute $513^2-487^2$. 
+
+Ground truth 
+
+26000 
+
+Direct decoding (267 tokens, correct) 
+
+To solve the expression \(513^2 - 487^2\), we can use the difference of squares formula, which states: 
+
+\[ 
+
+a^2 - b^2 = (a - b)(a + b) 
+
+\] 
+
+In this problem, let \(a = 513\) and \(b = 487\). Applying the formula, we get: 
+
+\[513^2 - 487^2 = (513 - 487)(513 + 487)\]... 
+
+EBD (236 effective tokens, correct, acceptance rate 80%) 
+
+$(513-487)(513+487)=26\times1000=26000$. $\boxed{26000}$ 
+
+Analysis 
+
+Both use difference of squares. 80% acceptance — highest among all cases — nearly every block proposal accepted. 
+
+Case 29: Math500 Algebra (ID 2592) — Qwen3-8B-Base 25 Prompt 
+
+Identify molecular formula from FTIR, $^1$H NMR, and Mass Spec data. 
+
+Ground truth 
+
+B (C$_6$H$_{10}$O$_2$, matching -OH, C=O, C=C, CH$_2$O$^+$ fragments) 
+
+Direct decoding (801 tokens, correct) 
+
+To find the concentration of calcium ions in a solution containing a stochiometric Ca-EDTA complex, we need to 
+
+consider the dissociation of the complex into free calcium ions and EDTA. Since we know the formation constant 
+
+(KCa-EDTA) for the complex, we can use this to determine the equilibrium conce... 
+
+EBD (789 effective tokens, correct, acceptance rate 30%) 
+
+Interprets spectroscopic data: broad IR ~3000 $\to$ -OH, 1700/1650 $\to$ C=O/C=C, NMR vinyl-H $\to$ alkene, 
+
+MS m/z=45 $\to$ CH$_2$O$^+$. Correct formula. $\boxed{B}$ 
+
+Analysis 
+
+Both correct. 20% acceptance, reward 3.2. 
+
+Case 30: GPQA (ID 16) — Qwen3-8B-Base 26

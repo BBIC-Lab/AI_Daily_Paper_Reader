@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.28020v1/fig-001.webp",
+      "caption": "Figure 1: Steering, not sharpening. (a) Task queries induce a behavioral mismatch between pretrained and post-trained LLMs: the latter interpret them as tasks, whereas the former tend to continue the prompt as plain text, yielding unreliable evaluation scores. (b) Likelihood-only sharpening, including temperature reduction or search-based decoding, reshapes the prior without an external utility signal. It risks amplifying spurious high-likelihood modes, remains hyperparameter-sensitive, and entails expensive search, especially in open-ended tasks. (c) EBD combines the pre-trained prior with a reward model to form a reward-tilted posterior, then applies block-wise Metropolis-Hastings updates to accept reward-improving proposals while anchoring generations to the prior.",
+      "page": 2,
+      "index": 1,
+      "width": 808,
+      "height": 310
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28020v1/fig-007.webp",
+      "caption": "Figure 2: EBD’s pipeline follows two stages. Stage I: Initialization samples a small initialization pool from the pre-trained model, scores each response with the reward model, computes the promptlevel standardized advantage Ax(y) = (R(y,x) − µR(x))/σR(x), and selects the best-in-pool response as the initial state. Stage II: Block-wise MH refinement repeatedly samples a cut, keeps the prefix, regenerates the suffix from the matched pre-trained conditional prior, scores the proposal, and accepts or rejects it using the reward-difference MH rule.",
+      "page": 4,
+      "index": 7,
+      "width": 810,
+      "height": 325
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28020v1/fig-005.webp",
+      "caption": "Table 1: Performance comparison across objective and subjective benchmarks. Superscripts denote absolute change relative to + Direct within each backbone.",
+      "page": 8,
+      "index": 5,
+      "width": 830,
+      "height": 509
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28020v1/fig-006.webp",
+      "caption": "Table 2: Average per-question inference time (seconds). Direct is shown as a latency reference; speedups compare EBD against Power Sampling. Lower time and higher speedup are better.",
+      "page": 8,
+      "index": 6,
+      "width": 830,
+      "height": 184
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28020v1/fig-008.webp",
+      "caption": "Figure 3: Quality and latency across five pre-trained base models. (a) Average objective benchmark score. (b) Average inference time per task. EBD consistently achieves the highest scores while remaining substantially faster than Power Sampling.",
+      "page": 9,
+      "index": 8,
+      "width": 808,
+      "height": 268
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28020v1/fig-002.webp",
+      "caption": "Figure 4: Behavioral alignment between pre-trained models and their posttrained counterparts. The light segment shows the baseline correlation with the instruct model, while the dark segment shows the steady EBD increment. EBD consistently shifts the behavioral signature of pretrained models toward posttrained outputs.",
+      "page": 10,
+      "index": 2,
+      "width": 567,
+      "height": 315
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28020v1/fig-003.webp",
+      "caption": "Table 5: Effect of reward-model scale on EBD downstream task performance. Best values within each pre-trained model are bolded.",
+      "page": 10,
+      "index": 3,
+      "width": 409,
+      "height": 354
+    },
+    {
+      "url": "assets/figures/arxiv/2605.28020v1/fig-004.webp",
+      "caption": "Table 6: Effect of reward-model scale on EBD inference latency (seconds). Lowest latency within each pre-trained model is bolded.",
+      "page": 10,
+      "index": 4,
+      "width": 408,
+      "height": 354
+    }
+  ]
+}

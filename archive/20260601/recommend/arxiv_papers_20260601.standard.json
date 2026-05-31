@@ -1,0 +1,404 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-31T20:07:30.645952+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 47,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 69,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 20,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 15,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 21
+  },
+  "deep_dive": [
+    {
+      "id": "2605.27790v1",
+      "source": "arxiv",
+      "title": "SYNAPSE: Neuro-Symbolic Visual Thought-to-Text Decoding via Topological Semantic Denoising",
+      "abstract": "Recent advances in large language models have accelerated open-vocabulary EEG-to-imagined-text decoding, where non-invasive neural activity recorded during visual perception is translated into coherent natural language descriptions of viewed stimuli. However, existing systems remain highly vulnerable to biological noise, where corrupted neural projections induce hallucinated or semantically unstable generation in frozen language models. We introduce SYNAPSE (Symbolic Neural Alignment for Precise Semantic Extraction), a lightweight neuro-symbolic framework that stabilizes neural text generation through inference-time symbolic regularization. By purifying EEG-derived semantic candidates using commonsense graph structure and latent exemplars, SYNAPSE improves semantic stability without end-to-end LLM fine-tuning. Experiments across popular EEG decoding benchmarks and multiple frozen LLM backends demonstrate consistent gains over unconstrained prompting baselines, robustness under object-label ablation, and performance commensurate with substantially more resource-intensive fine-tuned systems, while preserving biometric privacy by localizing raw EEG processing entirely within the encoder stack.",
+      "authors": [
+        "Akshaj Murhekar",
+        "Abhijit Mishra"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-27T00:12:44+00:00",
+      "link": "https://arxiv.org/pdf/2605.27790v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes EEG neural signals into natural language descriptions",
+      "llm_evidence_cn": "将EEG神经信号解码为自然语言描述",
+      "llm_evidence": "将EEG神经信号解码为自然语言描述",
+      "canonical_evidence": "将EEG神经信号解码为自然语言描述",
+      "llm_tldr_en": "Proposes a neuro-symbolic framework to decode EEG signals into text using semantic denoising.",
+      "llm_tldr_cn": "提出神经符号框架，通过语义去噪将EEG信号解码为文本。",
+      "llm_tldr": "提出神经符号框架，通过语义去噪将EEG信号解码为文本。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.28057v1",
+      "source": "arxiv",
+      "title": "On the Learnability of Test-Time Adaptation: A Recovery Complexity Perspective",
+      "abstract": "Test-time adaptation (TTA) aims to adapt models to maintain reliable performance on non-stationary test streams without requiring labeled data. Despite its empirical success, the learnability of TTA under non-stationary streams remains unexplored. A key challenge is the lack of a principled theoretical framework that simultaneously aligns with the TTA objective and captures both continuously evolving distribution shifts and intrinsic information constraints. To address this gap, we propose the first theoretical framework for studying the learnability of TTA and introduce $(ε,δ)$-Recovery Complexity and $(ε,ρ)$-TTA Learnability. Recovery complexity measures the post-shift time needed to maintain excess risk below a target level with high probability, and is further extended to TTA learnability, which measures the long-term reliability of TTA. Within this framework, we introduce a novel discrete surrogate for non-stationary test streams, enabling a unified and tractable analysis of both gradual and abrupt shifts. We derive order-wise matching lower and upper bounds on recovery complexity, revealing fundamental limits of TTA and an intrinsic adaptivity-information trade-off. These results provide unified learnability guarantees for TTA that complement regret-based analyses.",
+      "authors": [
+        "Zhi Zhou",
+        "Ming Yang",
+        "Shi-Yu Tian",
+        "Kun-Yang Yu",
+        "Lan-Zhe Guo",
+        "Yu-Feng Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-27T07:04:23+00:00",
+      "link": "https://arxiv.org/pdf/2605.28057v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "theoretical framework for test-time adaptation under non-stationary streams",
+      "llm_evidence_cn": "非平稳流下测试时自适应的理论框架",
+      "llm_evidence": "非平稳流下测试时自适应的理论框架",
+      "canonical_evidence": "非平稳流下测试时自适应的理论框架",
+      "llm_tldr_en": "Introduces a theoretical framework for test-time adaptation with recovery complexity analysis.",
+      "llm_tldr_cn": "提出测试时自适应的理论框架与恢复复杂度分析。",
+      "llm_tldr": "提出测试时自适应的理论框架与恢复复杂度分析。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.28143v1",
+      "source": "arxiv",
+      "title": "Sequential Neural Probabilistic Amplitude Shaping: Learning the Channel's Language",
+      "abstract": "We present the first neural probabilistic amplitude shaping that outperforms existing methods while accounting for all implementation losses, using a block-less, easily implementable sequential autoregressive encoder compatible with arithmetic distribution matching, yielding reduced rate loss and higher achievable information rates.",
+      "authors": [
+        "Mohammad Taha Askari",
+        "Lutz Lampe",
+        "Amirhossein Ghazisaeidi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.IT",
+        "eess.SP"
+      ],
+      "published": "2026-05-27T08:25:18+00:00",
+      "link": "https://arxiv.org/pdf/2605.28143v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "methods for analyzing and predicting sequential data over time via sequential autoregressive encoder",
+      "llm_evidence_cn": "通过顺序自回归编码器分析和预测时间序列数据",
+      "llm_evidence": "通过顺序自回归编码器分析和预测时间序列数据",
+      "canonical_evidence": "通过顺序自回归编码器分析和预测时间序列数据",
+      "llm_tldr_en": "Proposes a sequential neural probabilistic amplitude shaping method that outperforms existing approaches for channel coding.",
+      "llm_tldr_cn": "提出了一种顺序神经概率振幅整形方法，在信道编码中优于现有方法。",
+      "llm_tldr": "提出了一种顺序神经概率振幅整形方法，在信道编码中优于现有方法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.28166v2",
+      "source": "arxiv",
+      "title": "QuITE: Query-Based Irregular Time Series Embedding",
+      "abstract": "Irregular Multivariate Time Series (IMTS) are common in practice, yet their irregular sampling complicates effective modeling. Existing approaches typically either (i) design specialized architectures that limit the reuse of proven Multivariate Time Series (MTS) models, or (ii) map IMTS onto regular temporal grids through interpolation, which may distort temporal dynamics by introducing artificial values. To address these limitations, we propose a new input-embedding-based approach. We identify that the key bottleneck lies not in the backbone architecture, but in conventional embedding layers that assume uniform sampling. In this work, we introduce QuITE (Query-Based Irregular Time Series Embedding), a simple yet effective plug-and-play embedding module for IMTS. QuITE employs learnable query tokens to aggregate irregular observations through a single self-attention layer, directly producing backbone-compatible latent representations without artificial value generation or architectural modification. Extensive experiments on real-world benchmarks show that QuITE consistently improves MTS models, yielding average relative gains of up to $54.7\\%$ in forecasting and $15.8\\%$ in classification across diverse datasets and backbone architectures. Code is available at: https://github.com/Meaningfull9502/QuITE.",
+      "authors": [
+        "JungHoon Lim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-27T08:48:58+00:00",
+      "link": "https://arxiv.org/pdf/2605.28166v2",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "query-based embedding for irregular time series analysis and prediction",
+      "llm_evidence_cn": "基于查询的不规则时间序列嵌入方法，用于分析和预测",
+      "llm_evidence": "基于查询的不规则时间序列嵌入方法，用于分析和预测",
+      "canonical_evidence": "基于查询的不规则时间序列嵌入方法，用于分析和预测",
+      "llm_tldr_en": "Proposes QuITE, a plug-and-play embedding module for irregular time series that enables use of standard models",
+      "llm_tldr_cn": "提出QuITE，一种即插即用的不规则时间序列嵌入模块，便于使用标准模型",
+      "llm_tldr": "提出QuITE，一种即插即用的不规则时间序列嵌入模块，便于使用标准模型",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.28397v1",
+      "source": "arxiv",
+      "title": "Adaptive Temporal Gating of Longitudinal Magnetic Resonance Imaging for Alzheimer's Prediction",
+      "abstract": "Predicting conversion from Mild Cognitive Impairment (MCI) to Alzheimer's Disease (AD) is critical for early intervention. Current deep learning paradigms predominantly rely on cross-sectional structural MRI, neglecting prognostic value in patient-specific anatomical trajectories. We introduce the Temporal Adaptive Fusion Network (TAF-Net), a hybrid CNN-Transformer architecture that models paired longitudinal 3D MRI scans. Central to TAF-Net is a Temporal Fusion Module governed by an Adaptive Temporal Gate, which learns patient-specific weightings to synthesize three spatiotemporal representations: explicit structural change, region-to-region temporal cross-attention, and bilateral feature concatenation. Evaluated on the Alzheimer's Disease Neuroimaging Initiative cohort for three-year MCI-to-AD conversion prediction, TAF-Net achieved the highest discriminative performance among all evaluated methods using only structural MRI, significantly outperforming the strongest baseline and approaching multimodal methods requiring PET, CSF, or genetic data. The architecture exhibited exceptional data efficiency, matching baseline performance with a fraction of training data. Ablation studies demonstrate that longitudinal fusion improves discrimination while reducing predictive variance by 48% compared to single-timepoint evaluation. Interpretability analyses reveal spatial attention aligned with established AD pathology in the medial temporal lobe and ventricles, while the gating mechanism prioritizes explicit volumetric change with strong positive correlation to conversion risk.",
+      "authors": [
+        "Alireza Moayedikia",
+        "Sara Fin",
+        "Alicia Troncoso Lora",
+        "Uffe Kock Wiil"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-27T12:33:46+00:00",
+      "link": "https://arxiv.org/pdf/2605.28397v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "models sequential longitudinal MRI scans for temporal prediction of Alzheimer's",
+      "llm_evidence_cn": "对纵向MRI扫描序列建模以进行阿尔茨海默病的时间预测",
+      "llm_evidence": "对纵向MRI扫描序列建模以进行阿尔茨海默病的时间预测",
+      "canonical_evidence": "对纵向MRI扫描序列建模以进行阿尔茨海默病的时间预测",
+      "llm_tldr_en": "Hybrid CNN-Transformer with adaptive temporal gate for disease progression prediction.",
+      "llm_tldr_cn": "混合CNN-Transformer与自适应时间门，用于疾病进展预测。",
+      "llm_tldr": "混合CNN-Transformer与自适应时间门，用于疾病进展预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.27734v1",
+      "source": "arxiv",
+      "title": "Learn from your own latents and not from tokens: A sample-complexity theory",
+      "abstract": "Generative models, from diffusion models to large language models, achieve remarkable performance but at a cost in training data orders of magnitude larger than what biological learners require. An alternative paradigm has emerged in which networks are trained to predict their \\emph{own} latent representations of related views or masked regions, as in data2vec and JEPA -- an idea related to predictive-coding accounts of the cortex. Despite strong empirical results, the theoretical understanding of these methods remains limited. Central questions include: by how much does latent prediction actually improve data efficiency? Is there a benefit to stacking such methods into multi-scale hierarchies? We answer both using as data a tractable probabilistic context-free grammar that captures the compositional structure of natural language and images. Such a grammar generates strings of visible tokens by recursively applying production rules along a tree of hidden symbols of depth $L$. For such data, supervised or token-level SSL require a number of samples \\emph{exponential} in $L$ to recover the latent tree; we prove that latent prediction achieves this with a number of samples \\emph{constant} in $L$, up to logarithmic factors. We confirm this bound with (i) a hierarchical clustering algorithm, (ii) an end-to-end neural network whose predictor-clusterer modules predict their own latents at each level via gradient descent, and (iii) the first sample-complexity analysis of data2vec, which we show implicitly performs hierarchical latent prediction. This suggests that explicit stacking such as H-JEPA is largely redundant.",
+      "authors": [
+        "Daniel J. Korchinski",
+        "Alessandro Favero",
+        "Matthieu Wyart"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-26T22:16:42+00:00",
+      "link": "https://arxiv.org/pdf/2605.27734v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learning compact representations from raw data via latent prediction",
+      "llm_evidence_cn": "通过潜在预测从原始数据学习紧凑表示",
+      "llm_evidence": "通过潜在预测从原始数据学习紧凑表示",
+      "canonical_evidence": "通过潜在预测从原始数据学习紧凑表示",
+      "llm_tldr_en": "The paper provides theoretical analysis of self-supervised latent prediction methods for data-efficient representation learning.",
+      "llm_tldr_cn": "论文提供了自监督潜在预测方法在数据高效表示学习中的理论分析。",
+      "llm_tldr": "论文提供了自监督潜在预测方法在数据高效表示学习中的理论分析。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.27686v1",
+      "source": "arxiv",
+      "title": "Tensor Memory: Fixed-Size Recurrent State for Long-Horizon Transformers",
+      "abstract": "Transformers process images and videos by flattening space and time into long token sequences. While attention and KV caching preserve past features, their memory grows with sequence length and they lack an explicit, persistent spatial state, making long-horizon video understanding and occlusion-sensitive reasoning difficult. We propose Tensor Memory, a lightweight module that augments Transformer blocks with a fixed-size recurrent 3D memory tensor: tokens write into a voxel grid via a differentiable soft write that deposits content as a Gaussian-weighted volume around a predicted continuous 3D location, the memory is updated with an efficient local interaction operator and gated recurrent dynamics, and tokens read back context via continuous sampling with gated residual fusion. Because the memory tensor has a constant size, Tensor Memory decouples state capacity from input length while preserving a spatial inductive bias. We evaluate the module on standard language, image, and video benchmarks and on a controlled toy diagnostic suite designed to isolate when persistent state is beneficial; it integrates with standard Transformer training pipelines and can be attached to or removed from existing blocks without other architectural changes.",
+      "authors": [
+        "Kabir Swain",
+        "Sijie Han",
+        "Daniel Karl I. Weidele",
+        "Mauro Martino",
+        "Antonio Torralba"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-26T21:03:42+00:00",
+      "link": "https://arxiv.org/pdf/2605.27686v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "recurrent 3D memory for long-horizon sequence processing",
+      "llm_evidence_cn": "用于长程序列处理的循环3D记忆",
+      "llm_evidence": "用于长程序列处理的循环3D记忆",
+      "canonical_evidence": "用于长程序列处理的循环3D记忆",
+      "llm_tldr_en": "Fixed-size recurrent 3D memory augments Transformers for long-horizon video understanding",
+      "llm_tldr_cn": "固定大小循环3D记忆增强Transformer实现长程视频理解",
+      "llm_tldr": "固定大小循环3D记忆增强Transformer实现长程视频理解",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.28007v1",
+      "source": "arxiv",
+      "title": "Learning Compositional Latent Structure with Vector Networks",
+      "abstract": "Deep networks are powerful function approximators, but they typically store many different computations in shared weight matrices, making it difficult to selectively reuse or adapt parts of them when a familiar structure appears in novel combinations. We introduce the Vector Network (VN), a hierarchical recurrent architecture in which each layer replaces a fixed weight matrix with a library of reusable rank-1 weight atoms. For each input, VN minimizes a layer-local energy to infer a sparse set of active weight atoms and their coefficients, jointly constrained by bottom-up input reconstruction and top-down feedback consistency. These weight atom coefficients then compose an input-specific low-rank weight matrix for that sample. After convergence, slow learning updates only the selected weight atoms through local residual signals scaled by the inferred coefficients. We evaluate VN on four compositional benchmarks spanning 1D signals, 2D spatial decoding, N-body dynamics, and compositional MNIST. VN matches strong baselines in distribution while often achieving out-of-distribution error about an order of magnitude lower when familiar factors must be recombined in novel ways. Vector networks thus make compositional generalization a structural property of the architecture and inference process rather than a brittle byproduct of fitting many behaviors into one shared dense parameter substrate.",
+      "authors": [
+        "Niclas Pokel",
+        "Benjamin F. Grewe"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-05-27T05:56:36+00:00",
+      "link": "https://arxiv.org/pdf/2605.28007v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns compositional latent structure via reusable weight atoms",
+      "llm_evidence_cn": "通过可重用权重原子学习组合潜在结构",
+      "llm_evidence": "通过可重用权重原子学习组合潜在结构",
+      "canonical_evidence": "通过可重用权重原子学习组合潜在结构",
+      "llm_tldr_en": "Introduces Vector Networks that learn input-specific low-rank representations",
+      "llm_tldr_cn": "提出向量网络，学习输入特定的低秩表示",
+      "llm_tldr": "提出向量网络，学习输入特定的低秩表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.28020v1",
+      "source": "arxiv",
+      "title": "The Missing Piece in Pre-trained Model Evaluation: Reward-Guided Decoding Unlocks Task-Oriented Behavior Without Parameter Updates",
+      "abstract": "With the rapid progress of large language models (LLMs), reliably evaluating the capabilities of pre-trained LLMs has become increasingly important. The challenge is that base pre-trained models are optimized for next-token prediction and often fail to follow instructions or produce well-formed answers under standard prompting and direct decoding. As a result, benchmark performance can conflate model capability with decoding-induced failures to produce task-oriented outputs, while exposing such behavior often relies on costly post-training. Recent decodingonly approaches attempt to reshape output distributions, but such methods can be inefficient and brittle across open-ended tasks. To address these limitations, we propose Energy-Based Decoding (EBD), a training-free, reward-guided framework for activating task-oriented behaviors from frozen pre-trained LLMs across both open-ended and objective tasks. EBD augments decoding with an external lightweight reward model, steering generations toward high-utility responses while anchoring them to the pre-trained model prior through a reward-tilted target distribution. We show that EBD shifts base-model outputs toward more instructionfollowing behavior, increasing behavioral similarity to post-trained counterparts and enabling a fairer inference-time evaluation of accessible pre-trained-model behavior. Empirically, EBD outperforms baselines across five models and six benchmarks, improving Qwen3-8B-Base on AlpacaEval2.0 from 8.8 to 44.5, reducing Mistral-7B Math500 latency by 18.9x relative to prior decoding work, and remaining robust to reward-model size.",
+      "authors": [
+        "Shaobo Wang",
+        "Guo Chen",
+        "Ziyue Wang",
+        "Zhengyang Tang",
+        "Qingyang Liu",
+        "Xingzhang Ren",
+        "Dayiheng Liu",
+        "Linfeng Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-27T06:25:00+00:00",
+      "link": "https://arxiv.org/pdf/2605.28020v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reward-guided decoding unlocks task-oriented behavior in pretrained LLMs without parameter updates",
+      "llm_evidence_cn": "基于奖励的解码在不更新参数下激发预训练LLM的任务导向行为",
+      "llm_evidence": "基于奖励的解码在不更新参数下激发预训练LLM的任务导向行为",
+      "canonical_evidence": "基于奖励的解码在不更新参数下激发预训练LLM的任务导向行为",
+      "llm_tldr_en": "Decoding method adapts pretrained LLMs to tasks without fine-tuning.",
+      "llm_tldr_cn": "解码方法无需微调即适配预训练LLM到任务。",
+      "llm_tldr": "解码方法无需微调即适配预训练LLM到任务。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.28034v1",
+      "source": "arxiv",
+      "title": "Clark Hash: Stateless Sparse Johnson-Lindenstrauss Quantization for Neural Embeddings",
+      "abstract": "Clark Hash is a small method for storing neural embeddings in less space. It normalizes each database vector, applies a deterministic sparse signed Johnson-Lindenstrauss projection, clips the result, and stores a fixed-width scalar-quantized code. Queries stay in floating point and are scored against the stored sketches. In the default 384-dimensional sentence-embedding setting, Clark Hash stores a cosine-search vector in 48 bytes instead of 1536 bytes for dense f32 storage. This is 32x smaller. The method does not need a training pass, learned codebooks, rotations, or corpus statistics before new vectors can be stored. We describe the codec, the Rust implementation, and a multilingual sentence-similarity evaluation on 9,304 labeled pairs from 29 subsets. With a multilingual MiniLM encoder, the 48-byte sketches reached 0.910 and 0.946 macro Pearson correlation with dense cosine scores on STS17 and STS22. Clark Hash is not a new Johnson-Lindenstrauss theorem and it is not a replacement for approximate nearest-neighbor indexes. It is a simple stateless codec for compact embedding storage.",
+      "authors": [
+        "Stanislav Kirdey",
+        "Clark Labs Inc"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-27T06:38:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.28034v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "compact neural embedding representation via quantization",
+      "llm_evidence_cn": "通过量化实现紧凑的神经嵌入表示",
+      "llm_evidence": "通过量化实现紧凑的神经嵌入表示",
+      "canonical_evidence": "通过量化实现紧凑的神经嵌入表示",
+      "llm_tldr_en": "Clark Hash compresses neural embeddings by 32x using sparse JL projection and quantization, enabling efficient storage.",
+      "llm_tldr_cn": "Clark Hash通过稀疏JL投影和量化将神经嵌入压缩32倍，实现高效存储。",
+      "llm_tldr": "Clark Hash通过稀疏JL投影和量化将神经嵌入压缩32倍，实现高效存储。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
