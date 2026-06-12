@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-007.webp",
+      "caption": "Fig. 2: Framework of the InA-Probe. The pipeline illustrates the transition from raw numerical signals to generative forecasting. Input time series are processed into patch embeddings and interrogated by Adaptive Queries within the TimeLanguage Connector. This connector leverages instruction-aware self-attention to internalize Global Task Prompts and temporal cross-attention to extract salient features. During the training phase, Patch-level Prompts provide dense semantic supervision via a contrastive alignment objective to bridge the modality gap, while the Frozen LLM remains unchanged to preserve its pre-trained reasoning priors.",
+      "page": 3,
+      "index": 7,
+      "width": 1058,
+      "height": 517
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-008.webp",
+      "caption": "Fig. 3: Framework of the AQG module. A time-context extractor with attention pooling distills a global representation from the input embeddings, which then drives two paths, FiLMbased modulation and instance-wise selection gating, that turn the learnable base queries into sample-specific adaptive probes.",
+      "page": 4,
+      "index": 8,
+      "width": 524,
+      "height": 271
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-001.webp",
+      "caption": "TABLE I: Multivariate long-term forecasting results under the one-for-all protocol. A single model is trained on a 96-step horizon and recursively applied to all other prediction lengths. The “1st Count” indicates the total number of best-performing metrics (MSE and MAE) achieved by each model. Blue and Purple denote the best and second-best results, respectively. Full results are provided in Appendix.",
+      "page": 6,
+      "index": 1,
+      "width": 1068,
+      "height": 242
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-003.webp",
+      "caption": "TABLE III: Zero-shot forecasting performance across diverse ETT domain transfers. Blue and Purple denote the best and second-best results, respectively. Full results are provided in Appendix.",
+      "page": 7,
+      "index": 3,
+      "width": 516,
+      "height": 423
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-004.webp",
+      "caption": "TABLE II: Multivariate long-term forecasting results under one-for-one protocol. Our single model trained only on a 96-step horizon is compared against baseline models that have been independently trained and optimized for each specific prediction length. Blue and Purple denote the best and second-best results, respectively. Full results are provided in Appendix.",
+      "page": 7,
+      "index": 4,
+      "width": 1064,
+      "height": 277
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-005.webp",
+      "caption": "Fig. 8: Patch-level hybrid prompts and the corresponding time series on ETTh1 (Z-score normalized). The generated linguistic labels are consistent with the per-patch statistics (slope, range, level).",
+      "page": 10,
+      "index": 5,
+      "width": 1009,
+      "height": 189
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-006.webp",
+      "caption": "Fig. 9: Patch-level hybrid prompts and the corresponding time series on ETTm1 (Z-score normalized). The generated linguistic labels are consistent with the per-patch statistics (slope, range, level).",
+      "page": 10,
+      "index": 6,
+      "width": 1009,
+      "height": 188
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-002.webp",
+      "caption": "Fig. 10: Self-attention visualization: Instruction internalization. Heatmaps illustrate the attention weights between adaptive queries and key filtered semantic tokens for (a) ETTh1 and (b) ETTm1, averaged across the test set. Probes place their largest weights on domain keywords (e.g., ”Temperature,” ”15-minute”) and task objectives, consistent with conditioning on the global task description.",
+      "page": 11,
+      "index": 2,
+      "width": 490,
+      "height": 483
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-009.webp",
+      "caption": "Fig. 12: Showcase forecasts on ETTh1 (192-step horizon): (a) InA-Probe, (b) TALON, (c) AutoTimes, against the ground truth.",
+      "page": 12,
+      "index": 9,
+      "width": 1062,
+      "height": 253
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08601v1/fig-010.webp",
+      "caption": "Fig. 13: Showcase forecasts on ETTm1 (192-step horizon): (a) InA-Probe, (b) TALON, (c) AutoTimes, against the ground truth.",
+      "page": 12,
+      "index": 10,
+      "width": 1062,
+      "height": 254
+    }
+  ]
+}

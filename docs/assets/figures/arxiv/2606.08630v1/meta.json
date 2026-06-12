@@ -1,0 +1,134 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-004.webp",
+      "caption": "Table 1 The summary of selected WPF research based on time series modeling.",
+      "page": 2,
+      "index": 4,
+      "width": 977,
+      "height": 510
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-011.webp",
+      "caption": "Figure 1: Geographical distribution of all sites in the WTK dataset, covering the continental United States, categorized by pretraining and evaluation pools. Unseen sites within the domain (used for evaluation) are selected randomly and represent various ecological regions, including inland and coastal areas.",
+      "page": 4,
+      "index": 11,
+      "width": 962,
+      "height": 511
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-012.webp",
+      "caption": "Figure 2: Visualization of power curve and wind rose at a representative site in the WTK dataset. 𝐋𝐞𝐟𝐭: joint distribution of wind speed and turbine-level power at site 9094, with marginal histograms and a two-dimensional bin-count colour scale summarising 736,416 valid samples. 𝐑𝐢𝐠𝐡𝐭: wind rose summarising the directional frequency and wind-speed distribution at the same site.",
+      "page": 4,
+      "index": 12,
+      "width": 977,
+      "height": 341
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-001.webp",
+      "caption": "Figure 3: The overall framework of Tyan-WP. The model takes historical power sequences, historical meteorological sequences, timestamp information, and static site metadata as inputs, without using future meteorological variables. Dynamic sequences are mapped into dual-branch patch embeddings, while timestamps and static metadata are mapped into time-level calendar embeddings and site-level geography-ecology embeddings, respectively. The power-aware meteorological fusion (PAMF) module models interactions between recent power dynamics and historical meteorological covariates to generate fused representations. The sparse expert encoder then combines relative temporal phase modelling with sparse expert routing to capture heterogeneous wind-regime patterns. Finally, the horizon-quantile forecasting head produces multi-horizon quantile forecasts for ultra-short-term probabilistic wind power forecasting.",
+      "page": 6,
+      "index": 1,
+      "width": 977,
+      "height": 631
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-006.webp",
+      "caption": "Table 2 Model configuration of Tyan-WP used in the main experiments. EPA: United States Environmental Protection Agency.",
+      "page": 10,
+      "index": 6,
+      "width": 977,
+      "height": 527
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-005.webp",
+      "caption": "Table 3 Hyperparameter configuration for the site-specific time series models. To ensure fairness in the comparison, we maintain the parameter size of the time series models at the same order of magnitude, except for DLinear.",
+      "page": 10,
+      "index": 5,
+      "width": 977,
+      "height": 231
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-014.webp",
+      "caption": "Figure 4: Visualization of power curve and wind rose at a representative site in the Kelmarsh dataset. 𝐋𝐞𝐟𝐭: joint distribution of wind speed and turbine-level power for turbine KWF1, with marginal histograms and a two-dimensional bin-count colour scale summarising 309,984 valid samples after clipping 32,212 negative-power records. 𝐑𝐢𝐠𝐡𝐭: wind rose summarising the directional frequency and wind-speed distribution for the same turbine.",
+      "page": 12,
+      "index": 14,
+      "width": 977,
+      "height": 342
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-010.webp",
+      "caption": "Table 5 Comparison of deterministic and probabilistic forecasting results between WTK 10-site zero-shot Tyan-WP and site-specific supervised TSM baselines. Best in bold and second best underlined.",
+      "page": 13,
+      "index": 10,
+      "width": 977,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-007.webp",
+      "caption": "Figure 5: A comparison of site-level deterministic distributions for zero-shot Tyan-WP and site-specific supervised TSM baselines at the WTK 10-site.",
+      "page": 14,
+      "index": 7,
+      "width": 977,
+      "height": 240
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-008.webp",
+      "caption": "Figure 6: A comparison of site-level probabilistic distributions for zero-shot Tyan-WP and site-specific supervised TSM baselines at the WTK 10-site.",
+      "page": 14,
+      "index": 8,
+      "width": 977,
+      "height": 356
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-009.webp",
+      "caption": "Table 6 Comparison of deterministic and probabilistic forecasting results between WTK 127-site zero-shot Tyan-WP and generic LTSM baselines. Best in bold and second best underlined.",
+      "page": 14,
+      "index": 9,
+      "width": 977,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-003.webp",
+      "caption": "Figure 7: A comparison of site-level deterministic distributions of zero-shot forecasting for Tyan-WP and generic LTSMs at the WTK 127-site.",
+      "page": 15,
+      "index": 3,
+      "width": 977,
+      "height": 350
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-002.webp",
+      "caption": "Figure 8: A comparison of site-level probabilistic distributions of zero-shot forecasting for Tyan-WP and generic LTSMs at the WTK 127-site.",
+      "page": 15,
+      "index": 2,
+      "width": 977,
+      "height": 381
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-015.webp",
+      "caption": "Table 7 Comparison of deterministic and probabilistic forecasting results between Kelmarsh 6-site zero-shot Tyan-WP and generic LTSM baselines. Best in bold and second best underlined.",
+      "page": 16,
+      "index": 15,
+      "width": 977,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-016.webp",
+      "caption": "Figure 9: A comparison of site-level deterministic distributions of zero-shot forecasting for Tyan-WP and generic LTSMs at the Kelmarsh 6-site.",
+      "page": 16,
+      "index": 16,
+      "width": 977,
+      "height": 350
+    },
+    {
+      "url": "assets/figures/arxiv/2606.08630v1/fig-013.webp",
+      "caption": "Figure 10: A comparison of site-level probabilistic distributions of zero-shot forecasting for Tyan-WP and generic LTSMs at the Kelmarsh 6-site.",
+      "page": 17,
+      "index": 13,
+      "width": 977,
+      "height": 379
+    }
+  ]
+}

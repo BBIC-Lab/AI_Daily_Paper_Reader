@@ -1,0 +1,435 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-12T06:37:26.829617+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 63,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 110,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 21,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 16,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 22
+  },
+  "deep_dive": [
+    {
+      "id": "2606.10530v1",
+      "source": "arxiv",
+      "title": "Machine Learning Methods for Studying Latent Neural Activity Dynamics",
+      "abstract": "Recent developments in brain recording are driving a demand for machine learning tools capable of decoding the latent structure of large populations of neurons. In this paper, we provide a comprehensive survey that outlines the trajectory of Latent Variable Models (LVMs) from early state-space models to more recent deep generative models. We organize the literature into three closely related domains: (1) Single-Region Latent Dynamics, which includes models such as linear dynamical systems to more complex dynamics represented by Recurrent Neural Networks (RNNs) and Neural Ordinary Differential Equations (ODEs); (2) Multi-Region Communication, which employs probabilistic as well as subspace methods to study how information is transferred across different brain areas considering synaptic propagation delays and network connectivity; and (3) Behavior-Aligned Modeling, which seeks to disentangle neural activity related to task performance from other internal states via supervised or contrastive learning. This survey also includes large-scale neural foundation models, such as Transformers and diffusion models, that rely on large-scale pre-training for optimal performance across subjects. Finally, we conclude and discuss benchmarks, evaluation criteria, and open challenges, such as the ability to identify causal links or directionality of communication, to facilitate future research for bridging interpretable brain dynamics with reliable neural decoding.",
+      "authors": [
+        "Shufeng Kong",
+        "Fumei Deng",
+        "Xinyi Dong",
+        "Caihua Liu",
+        "Weiwei Chen",
+        "Yingheng Wang",
+        "Daniel Cao",
+        "Azahara Oliva",
+        "Antonio Fernandez-Ruiz",
+        "Carla Gomes"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-09T08:01:11+00:00",
+      "link": "https://arxiv.org/pdf/2606.10530v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "survey on latent variable models for neural activity dynamics",
+      "llm_evidence_cn": "神经活动潜变量模型综述",
+      "llm_evidence": "神经活动潜变量模型综述",
+      "canonical_evidence": "神经活动潜变量模型综述",
+      "llm_tldr_en": "Comprehensive survey of LVMs for decoding latent structure in neural populations, from state-space to deep models.",
+      "llm_tldr_cn": "全面综述解析神经群体潜在结构的潜变量模型，从状态空间到深度生成模型。",
+      "llm_tldr": "全面综述解析神经群体潜在结构的潜变量模型，从状态空间到深度生成模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08594v1",
+      "source": "arxiv",
+      "title": "How Much Capacity Does EEG Denoising Need? Ultra-Compact Networks reveal Benchmark Saturation and Metric-Utility Gap",
+      "abstract": "Deep learning EEG denoising architectures have scaled from tens of thousands to tens of millions of parameters, yet no prior study has isolated model capacity as the experimental variable or tested whether reconstruction metrics predict downstream neural-signal utility. We address both gaps by fixing architecture, loss, data split, and training recipe while sweeping only channel width from 1.05K to 40.26K parameters in a minimal depthwise-separable convolutional U-Net. Models were evaluated on the EEGDenoiseNet benchmark, cross-dataset BCI transfer tests, controlled baseline retraining, and downstream motor-imagery classification with five decoder families across all nine BCI Competition IV-2a subjects. Reconstruction performance saturated by 3-6.5K parameters, with post-elbow gains of at most 0.015 correlation coefficient per log10-parameter unit. An 8.46M-parameter baseline retrained under the same pipeline matched the 40.26K compact variant on EOG--a 200x parameter gap yielding no advantage--while a Patch-Transformer control reproduced the same diminishing-return shape. Downstream evaluation exposed a classifier-dependent metric-utility gap: reconstruction-optimized denoising significantly degraded CSP+LDA classification across all nine subjects and three artifact types (best denoised accuracy 0.547 vs. 0.612 noisy baseline; Bonferroni p=0.0488), persisting on naturally recorded trials (Delta=-0.047; BH-FDR q=0.0049). End-to-end neural decoders showed variable or neutral effects. Standard EEG denoising benchmarks are saturated far below current model capacity, and reconstruction metrics do not predict BCI utility. Ultra-compact models at 33-46 KB and 1.27-2.61M FLOPs/segment are practical for edge deployment. These findings argue for capacity-controlled evaluation, harder task-aware benchmarks, and mandatory downstream validation.",
+      "authors": [
+        "Jasmeet Singh Bindra",
+        "Siddharth Panwar",
+        "Shubhajit Roy Chowdhury"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "eess.SP"
+      ],
+      "published": "2026-06-07T12:17:25+00:00",
+      "link": "https://arxiv.org/pdf/2606.08594v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "cross-dataset BCI transfer learning and motor-imagery evaluation",
+      "llm_evidence_cn": "跨数据集BCI迁移学习和运动想象评估",
+      "llm_evidence": "跨数据集BCI迁移学习和运动想象评估",
+      "canonical_evidence": "跨数据集BCI迁移学习和运动想象评估",
+      "llm_tldr_en": "Shows ultra-compact EEG denoising networks saturate benchmarks and impact downstream BCI classification.",
+      "llm_tldr_cn": "展示超紧凑EEG去噪网络在基准上饱和并影响下游BCI分类。",
+      "llm_tldr": "展示超紧凑EEG去噪网络在基准上饱和并影响下游BCI分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08601v1",
+      "source": "arxiv",
+      "title": "InA-Probe: Instruction-Aware Active Probing for Time Series Forecasting with LLMs",
+      "abstract": "Large Language Models (LLMs) have recently demonstrated impressive potential for time series forecasting. However, existing methods predominantly rely on passive modality alignment or static task reprogramming, which often fail to capture fine-grained, non-stationary temporal patterns or to adapt to nuanced task intents. In this paper, we propose Instruction-aware Active Probing (InA-Probe), which shifts the paradigm from passive alignment toward an active, instruction-driven probing mechanism. Specifically, we design a Multi-Level Instruction Injection mechanism that enriches the model with both global task objectives and fine-grained, patch-level semantic priors. Building on this, an Adaptive Query Generation module produces sample-specific probes that are dynamically modulated by the temporal context. These probes are then refined through a dual-stage attention process: they first internalize task-specific intents via Instruction-Aware Self-Attention, and subsequently interrogate the projected temporal representations through Temporal Cross-Attention to extract salient patterns. Comprehensive experiments on seven real-world benchmarks show that InA-Probe consistently outperforms state-of-the-art deep learning and LLM-based baselines, excelling in both one-for-all generalization and zero-shot transfer while reducing forecasting error by up to 37\\% in challenging cross-domain scenarios. Ablation studies further confirm that the synergy between adaptive querying and fine-grained instructions is key to unlocking the reasoning power of LLMs for complex time series.",
+      "authors": [
+        "Peiliang Gong",
+        "Emadeldeen Eldele",
+        "Chenyu Liu",
+        "Ziyu Jia",
+        "Yi Ding",
+        "Xinliang Zhou",
+        "Lianchao Gu",
+        "Qi Zhu",
+        "Yang Liu",
+        "Daoqiang Zhang",
+        "Xiaoli Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-07T12:27:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.08601v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "instruction-aware active probing for time series forecasting",
+      "llm_evidence_cn": "面向时间序列预测的指令感知主动探测",
+      "llm_evidence": "面向时间序列预测的指令感知主动探测",
+      "canonical_evidence": "面向时间序列预测的指令感知主动探测",
+      "llm_tldr_en": "InA-Probe improves LLM-based time series forecasting via active instruction-driven probing.",
+      "llm_tldr_cn": "InA-Probe通过主动指令驱动探测改进基于LLM的时间序列预测。",
+      "llm_tldr": "InA-Probe通过主动指令驱动探测改进基于LLM的时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08630v1",
+      "source": "arxiv",
+      "title": "Tyan-WP: A Wind Power Foundation Model for Ultra-Short-Term Probabilistic Forecasting",
+      "abstract": "Global wind power capacity, especially in China, is booming, with new farms spanning diverse terrains and climates. The industry urgently needs accurate wind power foundation models to shorten commissioning and accelerate grid connection. This is because site-specific time series models (TSMs) are not well suited to data-scarce scenarios and generalize poorly, while generic large time series models (LTSMs) are mostly limited to univariate inputs and cannot fully exploit static site attributes or the dependencies between power and meteorological covariates, leading to insufficient accuracy. To fill this gap, we propose \\textbf{Tyan-WP}, the first wind power foundation model for ultra-short-term probabilistic forecasting. Pretrained on a large-scale wind power dataset covering more than 126,000 U.S. sites over seven years, Tyan-WP further improves zero-shot forecasting through two domain-specific module designs: static site embedding using coordinate, terrain, and ecoregion metadata, and a power-aware meteorological fusion (PAMF) module that models interactions between historical power and meteorological covariates. Under a unified evaluation protocol, Tyan-WP surpasses eight site-specific supervised TSMs on 10 in-domain sites and outperforms eleven generic LTSMs on 127 in-domain sites, reducing MAE by 19.9%, RMSE by 16.6%, CRPS by 22.2%, and AQL by 21.7%, while raising R^2 by 16.7%. It further demonstrates strong cross-geography generalization on six real U.K. sites. These results show that the wind power foundation model can achieve accurate zero-shot forecasting without target-site training, providing a practical pathway for rapid turbine onboarding and probabilistic risk management at new wind farms.",
+      "authors": [
+        "Jiahui Huang",
+        "Ao Luo",
+        "Lei Liu",
+        "Hongwei Zhao",
+        "Tengyuan Liu",
+        "Ruibo Guo",
+        "Bo Wang",
+        "Zhao Wang",
+        "Bin Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-07T13:50:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.08630v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "ultra-short-term probabilistic wind power forecasting via foundation model",
+      "llm_evidence_cn": "通过基础模型进行超短期概率风电预测",
+      "llm_evidence": "通过基础模型进行超短期概率风电预测",
+      "canonical_evidence": "通过基础模型进行超短期概率风电预测",
+      "llm_tldr_en": "First wind power foundation model for ultra-short-term probabilistic forecasting using pretraining.",
+      "llm_tldr_cn": "首个用于超短期概率风电预测的基础模型，利用预训练。",
+      "llm_tldr": "首个用于超短期概率风电预测的基础模型，利用预训练。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08691v1",
+      "source": "arxiv",
+      "title": "Hierarchical Projection for Adaptive Knowledge Transfer",
+      "abstract": "Modern data-driven applications increasingly involve learning from multiple heterogeneous sources, where a target dataset is limited but related information is available across domains. Naively combining these sources can degrade performance when relevance varies or spurious signals are present, posing a fundamental challenge for trustworthy cross-domain learning. We propose Projection Transfer Learning (ProjectionTL), a unified framework that integrates hierarchical Bayesian modeling with adaptive projection for selective knowledge transfer. The key idea is to decouple transfer at two levels: first, we construct a source-guided hierarchical prior that aggregates information across sources using data-driven weights, capturing global alignment between each source and the target; second, we refine this borrowing through a posterior-projection step that operates at the feature level, selectively retaining coordinates that exhibit local agreement with the target signal. This two-stage design enables the method to simultaneously perform source selection and feature selection, thereby mitigating negative transfer while preserving interpretability. ProjectionTL provides a principled approach to integrating heterogeneous data across domains, bridging statistical modeling and modern machine learning paradigms for robust and interpretable transfer. Through simulations and real-world biomedical applications, we demonstrate improved accuracy, stability, and interpretability compared to existing methods. Our framework offers a scalable and generalizable strategy for trustworthy cross-domain learning in high-dimensional settings.",
+      "authors": [
+        "Samhita Pal",
+        "Tian Gu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ME"
+      ],
+      "published": "2026-06-07T15:44:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.08691v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Adaptive knowledge transfer with limited labeled data via hierarchical projection",
+      "llm_evidence_cn": "通过分层投影进行有限标注数据的自适应知识迁移",
+      "llm_evidence": "通过分层投影进行有限标注数据的自适应知识迁移",
+      "canonical_evidence": "通过分层投影进行有限标注数据的自适应知识迁移",
+      "llm_tldr_en": "ProjectionTL enables selective knowledge transfer from multiple sources to target domains",
+      "llm_tldr_cn": "ProjectionTL实现从多个源到目标领域的选择性知识迁移",
+      "llm_tldr": "ProjectionTL实现从多个源到目标领域的选择性知识迁移",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.08578v1",
+      "source": "arxiv",
+      "title": "Lost in the Non-convex Loss Landscape: How to Fine-tune the Large Time Series Model?",
+      "abstract": "Recently, large time series models (LTSMs) have gained increasing attention due to their similarities to large language models, including flexible context length, scalability, and task generality, outperforming advanced task-specific models. However, prior studies indicate that pre-trained LTSMs may exhibit a poorly conditioned non-convex loss landscape, leading to limited trainability. As a result, direct fine-tuning tends to cause overfitting and suboptimal performance, sometimes even worse than training from scratch, substantially diminishing the benefits of pre-training. To overcome this limitation, we propose Smoothed Full Fine-tuning (SFF), a novel fine-tuning technology. Specifically, we construct an auxiliary LTSM via random initialization to obtain a smoother loss landscape, and then linearly interpolate its weights with those of the pre-trained model to smooth the original landscape. This process improves trainability while preserving pre-trained knowledge, thereby enabling more effective downstream fine-tuning. From an optimization perspective, SFF perturbs sharp minima without significantly harming flat regions, facilitating escape from poor local basins toward smoother and more generalizable solutions. Extensive experiments on benchmark datasets demonstrate consistent improvements across eight representative LTSMs, including Timer, TimesFM, MOMENT, UniTS, MOIRAI, Chronos, TTMs, and Sundial, on diverse downstream tasks. The code is available at the link: https://github.com/Meteor-Stars/SFF.",
+      "authors": [
+        "Xu Zhang",
+        "Peang Wang",
+        "Wei Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-07T11:25:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.08578v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "fine-tuning large time series models for sequential data",
+      "llm_evidence_cn": "微调大规模时间序列模型处理序列数据",
+      "llm_evidence": "微调大规模时间序列模型处理序列数据",
+      "canonical_evidence": "微调大规模时间序列模型处理序列数据",
+      "llm_tldr_en": "Smoothed full fine-tuning for large time series models overcomes overfitting",
+      "llm_tldr_cn": "平滑全微调解决大规模时间序列模型过拟合",
+      "llm_tldr": "平滑全微调解决大规模时间序列模型过拟合",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.08520v1",
+      "source": "arxiv",
+      "title": "Two Bridges, One Pathway: From VLMs to Generalizable VLAs with Embodied Trajectory-Coupled Data",
+      "abstract": "Vision-language models (VLMs) are powerful general-purpose reasoners, yet converting them into robot control policies (VLAs) is surprisingly difficult. The root cause is a two-fold gap: VLMs are trained on internet-scale images with language-understanding objectives, while VLAs must perceive robot scenes and predict motor actions. Fine-tuning a VLM directly on robot action data forces the model to cross both gaps at once -- the learning curve is steep and the rich generalizations learned during pretraining tend to degrade rather than transfer. We argue that this gap can be bridged gradually with the right intermediate data. We introduce \\emph{embodied trajectory-coupled (ETC) data} -- vision-language supervision derived from the same robot scenes and trajectories used for action learning. Because ETC data shares the visual context of robot operation while retaining familiar language-understanding objectives, it provides a natural stepping stone between VLM pretraining and VLA fine-tuning. Building on this, we design a three-stage training recipe. Distribution Bridging first adapts the VLM to embodied visual-language semantics. Objective Bridging then gradually shifts the model toward action prediction while preserving the acquired representations. Retentive Adaptation finally specializes the policy to the target deployment domain. We further show that mixing task-relevant out-of-distribution ETC data with a small amount of action data enables the model to generalize to novel visual-language conditions without requiring additional robot demonstrations. Simulation and real-robot experiments confirm that this gradual bridging strategy is the key to transferring VLM generalization into robust, deployable robot policies.",
+      "authors": [
+        "Linqi Yin",
+        "Shiduo Zhang",
+        "Shenling Qiu",
+        "Chenxin Li",
+        "Zhaoyang Fu",
+        "Lei Xiao",
+        "Xiang Wang",
+        "Chenchen Yang",
+        "Zhe Xu",
+        "Pengfang Qian",
+        "Jingjing Gong",
+        "Xipeng Qiu",
+        "Xuanjing Huang",
+        "Yu-Gang Jiang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-07T08:57:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.08520v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "converts VLM outputs into robot action sequences",
+      "llm_evidence_cn": "将VLM输出转换为机器人动作序列",
+      "llm_evidence": "将VLM输出转换为机器人动作序列",
+      "canonical_evidence": "将VLM输出转换为机器人动作序列",
+      "llm_tldr_en": "Bridges VLMs to robot control via trajectory-coupled data",
+      "llm_tldr_cn": "通过轨迹耦合数据桥接VLM到机器人控制",
+      "llm_tldr": "通过轨迹耦合数据桥接VLM到机器人控制",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.08804v1",
+      "source": "arxiv",
+      "title": "Q-Delta: Beyond Key-Value Associative State Evolution",
+      "abstract": "Linear attention reformulates sequence modeling as recurrent state evolution, enabling efficient linear-time inference. Under the key-value associative paradigm, existing approaches restrict the role of the query to the readout operation, decoupling it from state evolution. We show that query-conditioned state readout induces a structured value prediction over accumulated memory that complements key-based retrieval. Based on this insight, we propose Q-Delta, a query-aware delta rule that integrates mixed key-query prediction errors into state evolution, enabling jointly corrective dynamics while preserving delta-rule efficiency. We establish stability guarantees for the resulting dynamics and derive a hardware-efficient chunkwise-parallel formulation with a custom Triton implementation. Empirical results demonstrate stable optimization, competitive throughput, and consistent improvements over strong baselines on language modeling and long-context retrieval tasks.",
+      "authors": [
+        "Sumin Park",
+        "Seojin Kim",
+        "Noseong Park"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-07T19:49:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.08804v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "improves sequence modeling with query-aware delta rule",
+      "llm_evidence_cn": "通过查询感知的delta规则改进序列建模",
+      "llm_evidence": "通过查询感知的delta规则改进序列建模",
+      "canonical_evidence": "通过查询感知的delta规则改进序列建模",
+      "llm_tldr_en": "Q-Delta enhances linear attention for efficient sequence modeling with corrective dynamics.",
+      "llm_tldr_cn": "Q-Delta 通过校正动力学增强线性注意力以实现高效序列建模。",
+      "llm_tldr": "Q-Delta 通过校正动力学增强线性注意力以实现高效序列建模。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.08935v1",
+      "source": "arxiv",
+      "title": "PAI: Preserving Amplitude Information in Representation-Based Time-Series Anomaly Detection",
+      "abstract": "Representation-based time-series anomaly detection algorithms significantly outperform other methods on diverse anomaly detection tasks. However, we notice that they suffer from a major limitation in our evaluation - their learned embeddings are often amplitude-agnostic. Losing amplitude information can degrade performance on amplitude related anomalies, and this failure is prevalent across all existing representation-based methods. To address aforementioned issues, we propose a new anomaly scoring scheme named PAI. PAI consists of two complementary modules, a diagnostic module and a final score augmentation function. The diagnostic module compares cosine and Euclidean scoring on the same representation bank to test whether amplitude information is already captured in the learned representation. Then in final score augmentation function, PAI computes a point-wise median and MAD deviation score and a local mean-shift score-which are fused with the representation score to produce the final anomaly score. On the TSB-AD-U-Eva and TAB UV datasets, PAI improves all four evaluated representation-based methods across every reported metric, achieving average VUS-PR gains of 98.4% and 36.8%, respectively. Among all evaluated combinations, PaAno + PAI achieves the best performance, outperforming the state-of-the-art method by 15%. Further evaluation on bootstrap confidence intervals, anomaly-type breakdowns, and a TS2Vec input-normalization ablation further support the proposed scheme. These results suggest that explicitly retaining amplitude information is important for representation-based time-series anomaly detection, which has been underemphasized in existing scoring schemes. Code is available at: https://github.com/pantheon5100/PAI",
+      "authors": [
+        "Kang Zhang",
+        "Wei Jian Lau",
+        "Shoushou Ren",
+        "Dong Lin",
+        "Joon Son Chung",
+        "Chuanhao Sun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-08T02:24:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.08935v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "time-series anomaly detection preserving amplitude information in representations",
+      "llm_evidence_cn": "在表示中保留幅度信息的时间序列异常检测",
+      "llm_evidence": "在表示中保留幅度信息的时间序列异常检测",
+      "canonical_evidence": "在表示中保留幅度信息的时间序列异常检测",
+      "llm_tldr_en": "Proposes PAI to preserve amplitude information in representation-based time-series anomaly detection.",
+      "llm_tldr_cn": "提出PAI在基于表示的时间序列异常检测中保留幅度信息。",
+      "llm_tldr": "提出PAI在基于表示的时间序列异常检测中保留幅度信息。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.08978v1",
+      "source": "arxiv",
+      "title": "Heterophily-Aware Adaptive Knowledge Distillation for Hypergraph Neural Networks",
+      "abstract": "Hypergraph knowledge distillation aims to retain the predictive performance of a hypergraph neural network (HNN) teacher while reducing inference costs through a lightweight student model. In this work, we observe that HNNs exhibit substantially lower prediction performance on heterophilic nodes connected through semantically diverse hyperedges, indicating that the reliability of teacher knowledge varies across nodes. Motivated by this observation, we propose HADES, a heterophily-aware adaptive distillation method for hypergraph neural networks. HADES quantifies node heterophily and leverages it as an estimate of teacher reliability to modulate the transfer of teacher knowledge during distillation. Experimental results on real-world hypergraphs demonstrate that HADES consistently improves student performance across different HNN teachers and distillation objectives. In many cases, the resulting student models surpass the predictive performance of their teachers while achieving up to 12.3 times faster inference.",
+      "authors": [
+        "Joohee Cho",
+        "David Yoon Suk Kang",
+        "Yunyong Ko"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-08T03:23:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.08978v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adaptive knowledge distillation leveraging teacher model knowledge",
+      "llm_evidence_cn": "自适应知识蒸馏，利用教师模型知识",
+      "llm_evidence": "自适应知识蒸馏，利用教师模型知识",
+      "canonical_evidence": "自适应知识蒸馏，利用教师模型知识",
+      "llm_tldr_en": "HADES uses heterophily to adaptively transfer teacher knowledge to student.",
+      "llm_tldr_cn": "HADES利用异质性自适应传递教师知识给学生模型。",
+      "llm_tldr": "HADES利用异质性自适应传递教师知识给学生模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
