@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-06-12
-- 运行时间：2026-06-12 14:41:49 北京时间
+- 最新运行日期：2026-06-16
+- 运行时间：2026-06-16 18:40:37 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-精读5篇，速览5篇，聚焦神经活动动力学解析、EEG去噪瓶颈与时间序列模型微调。  
-满分论文用机器学习方法揭示潜在神经活动动态；EEG去噪中，超紧凑网络已逼近基准饱和，凸显现有度量与实际效用间的落差。  
-建议关注时间序列大模型在非凸损失中的微调陷阱，并尝试将紧凑架构与保留幅值信息的异常检测方法结合落地。
-- 详情：[/202606/12/README](/202606/12/README)
+今日 AI 日报聚焦损失偏移迁移、Transformer 泛化理论等在理论与工程上的新突破，并速览了脑机接口多智能体、多视图对比学习与文化传承零样本描述等成果。  
+最值得深读的方向是：借助贝叶斯商数实现损失偏移的稳定迁移，以及首次给出 Transformer 做下一词预测的泛化界，为语言模型的理论理解提供坚实支撑。  
+建议读者不妨从零样本图像描述入手，尝试用类似思路将AI用于传统文化数字化，这是门槛低但社会价值高的实践切入点。
+- 详情：[/202606/16/README](/202606/16/README)
 
 ### 精读区论文标签
-1. [Machine Learning Methods for Studying Latent Neural Activity Dynamics](/202606/12/2606.10530v1-machine-learning-methods-for-studying-latent-neural-activity-dynamics)  
-   标签：评分：10.0/10、query:ndai
-   evidence：神经活动潜变量模型综述
-2. [How Much Capacity Does EEG Denoising Need? Ultra-Compact Networks reveal Benchmark Saturation and Metric-Utility Gap](/202606/12/2606.08594v1-how-much-capacity-does-eeg-denoising-need-ultra-compact-networks-reveal-benchmark-saturation-and-metric-utility-gap)  
+1. [Loss-Shift Transfer via Bayes Quotients](/202606/16/2606.13178v1-loss-shift-transfer-via-bayes-quotients)  
    标签：评分：9.0/10、query:ndai
-   evidence：跨数据集BCI迁移学习和运动想象评估
-3. [InA-Probe: Instruction-Aware Active Probing for Time Series Forecasting with LLMs](/202606/12/2606.08601v1-ina-probe-instruction-aware-active-probing-for-time-series-forecasting-with-llms)  
+   evidence：损失转移下的迁移学习
+2. [Generalization Bounds for Transformer-Based Next-Token Prediction in a Language Model](/202606/16/2606.13280v1-generalization-bounds-for-transformer-based-next-token-prediction-in-a-language-model)  
    标签：评分：9.0/10、query:ndai
-   evidence：面向时间序列预测的指令感知主动探测
-4. [Tyan-WP: A Wind Power Foundation Model for Ultra-Short-Term Probabilistic Forecasting](/202606/12/2606.08630v1-tyan-wp-a-wind-power-foundation-model-for-ultra-short-term-probabilistic-forecasting)  
+   evidence：基于Transformer的下一个词预测的泛化界限
+3. [SpikF-GO: Spiking Fourier Graph Operators for Multivariate Time Series Forecasting](/202606/16/2606.13901v1-spikf-go-spiking-fourier-graph-operators-for-multivariate-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过基础模型进行超短期概率风电预测
-5. [Hierarchical Projection for Adaptive Knowledge Transfer](/202606/12/2606.08691v1-hierarchical-projection-for-adaptive-knowledge-transfer)  
+   evidence：使用脉冲神经网络和图算子进行多变量时间序列预测
+4. [Cauchy Aggregation of Ridge-Regularized Hotelling Tests for High-Dimensional Change-Point Detection](/202606/16/2606.14092v1-cauchy-aggregation-of-ridge-regularized-hotelling-tests-for-high-dimensional-change-point-detection)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过分层投影进行有限标注数据的自适应知识迁移
+   evidence：高维时序数据的变点检测方法
+5. [FAConformer: Frequency-Aware Convolutional Transformer for Auditory Attention Decoding](/202606/16/2606.14120v1-faconformer-frequency-aware-convolutional-transformer-for-auditory-attention-decoding)  
+   标签：评分：9.0/10、query:ndai
+   evidence：从EEG解码听觉注意力
 
 ### 速读区论文标签
-1. [Lost in the Non-convex Loss Landscape: How to Fine-tune the Large Time Series Model?](/202606/12/2606.08578v1-lost-in-the-non-convex-loss-landscape-how-to-fine-tune-the-large-time-series-model)  
+1. [Multi-Modal Multi-Agent Robotic Cognitive Alignment enabled by Non-Invasive Consumer Brain Computer Interfaces: A Proof of Concept Exploration](/202606/16/2606.13190v1-multi-modal-multi-agent-robotic-cognitive-alignment-enabled-by-non-invasive-consumer-brain-computer-interfaces-a-proof-of-concept-exploration)  
    标签：评分：8.0/10、query:ndai
-   evidence：微调大规模时间序列模型处理序列数据
-2. [Q-Delta: Beyond Key-Value Associative State Evolution](/202606/12/2606.08804v1-q-delta-beyond-key-value-associative-state-evolution)  
+   evidence：通过非侵入式脑机接口解码神经信号实现认知对齐
+2. [Extracting Governing Equations from Latent Dynamics via Multi-View Contrastive Learning](/202606/16/2606.13260v1-extracting-governing-equations-from-latent-dynamics-via-multi-view-contrastive-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过查询感知的delta规则改进序列建模
-3. [PAI: Preserving Amplitude Information in Representation-Based Time-Series Anomaly Detection](/202606/12/2606.08935v1-pai-preserving-amplitude-information-in-representation-based-time-series-anomaly-detection)  
+   evidence：从含噪高维测量中学习紧凑的潜在表征和动力学方程
+3. [Zero-Shot Captioning for Cultural Heritage: Automated Image Analysis of Traditional Indonesian Clothing](/202606/16/2606.13275v1-zero-shot-captioning-for-cultural-heritage-automated-image-analysis-of-traditional-indonesian-clothing)  
    标签：评分：8.0/10、query:ndai
-   evidence：在表示中保留幅度信息的时间序列异常检测
-4. [Heterophily-Aware Adaptive Knowledge Distillation for Hypergraph Neural Networks](/202606/12/2606.08978v1-heterophily-aware-adaptive-knowledge-distillation-for-hypergraph-neural-networks)  
+   evidence：使用冻结CLIP和BERT的零样本描述，利用预训练知识
+4. [CloudCons: A Comprehensive End-to-End Benchmark for Cloud Resource Consolidation](/202606/16/2606.13513v1-cloudcons-a-comprehensive-end-to-end-benchmark-for-cloud-resource-consolidation)  
    标签：评分：8.0/10、query:ndai
-   evidence：自适应知识蒸馏，利用教师模型知识
-5. [Two Bridges, One Pathway: From VLMs to Generalizable VLAs with Embodied Trajectory-Coupled Data](/202606/12/2606.08520v1-two-bridges-one-pathway-from-vlms-to-generalizable-vlas-with-embodied-trajectory-coupled-data)  
+   evidence：用于评估时间序列资源数据预测模型的基准
+5. [Decoding Insect Song: A Multitask Semisupervised Orthoptera Bioacoustic Classifier](/202606/16/2606.13236v1-decoding-insect-song-a-multitask-semisupervised-orthoptera-bioacoustic-classifier)  
    标签：评分：7.0/10、query:ndai
-   evidence：将VLM输出转换为机器人动作序列
+   evidence：半监督多任务框架，结合自监督学习和知识蒸馏，用于生物声学分类，方法可迁移
 

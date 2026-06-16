@@ -1,0 +1,210 @@
+Title: Zero-Shot Captioning for Cultural Heritage: Automated Image Analysis of Traditional Indonesian Clothing
+
+URL Source: https://arxiv.org/pdf/2606.13275v1
+
+Published Time: Fri, 12 Jun 2026 00:54:02 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Zero-Shot Captioning for Cultural Heritage: Automated Image Analysis of Traditional Indonesian Clothing 
+
+1st Anugrah Aidin Yotolembah 
+
+Department of Informatics Engineering Faculty of Computer Science Brawijaya University Malang, Indonesia didiyotolembah@student.ub.ac.id 
+
+2nd Novanto Yudistira 
+
+Department of Informatics Engineering Faculty of Computer Science Brawijaya University Malang, Indonesia yudistira@ub.ac.id 
+
+3rd Gembong Edhi Setyawan 
+
+Department of Informatics Engineering Faculty of Computer Science Brawijaya University Malang, Indonesia gembong@ub.ac.id 
+
+Abstract —This paper presents Custom ZeroCLIP, a retrieval-augmented vision-language framework for zero-shot captioning of Indonesian traditional garments. The dataset contains 3,800 expert-annotated images from all 38 Indonesian provinces. Us-ing a province-level inductive zero-shot protocol, the model is trained on 24 seen provinces, validated on 6 seen provinces, and evaluated on 8 unseen provinces. The framework com-bines a frozen CLIP ViT-B/32 image encoder, a CLIP text encoder, a BERT text encoder, and an LSTM caption de-coder. During inference, unseen-province labels and captions are unavailable, and retrieval uses only captions from train-ing provinces. No unseen-province image, label, or caption is used during training, validation, or retrieval-bank construction. Custom ZeroCLIP achieves a CLIPScore of 0.8536, BLEU-4 of 0.3342, and METEOR of 0.4859, outperforming existing baselines. Ablation results show that retrieval improves cultural vocabulary recovery with a 19.3% METEOR gain, while human evaluation confirms stronger cultural accuracy and fluency. The results demonstrate the effectiveness of retrieval-augmented domain adaptation for culturally grounded caption generation in low-resource heritage settings. The dataset is publicly avail-able at https://github.com/AnugrahAidinYotolembah/Traditional-Indonesian-Clothing-Captioning-Dataset. 
+
+Index Terms —Custom ZeroCLIP, cultural heritage caption-ing, Indonesian textile recognition, inductive zero-shot vision-language, low-resource multimodal learning 
+
+I. I NTRODUCTION 
+
+Indonesia’s textile heritage, including Batik, Tenun Ikat, Ulos, and Songket, reflects rich ethnolinguistic diversity and encodes ceremonial as well as historical knowledge through motifs and weaving practices [1]–[4]. However, modernization has gradually reduced these garments to ritual and museum contexts, thereby endangering their cultural vocabulary [5]. Image captioning provides a scalable approach for cultural preservation through visually grounded textual descriptions [6], [7]. Despite their strong performance, vision-language models such as CLIP [8] and BLIP [9] remain limited in capturing fine-grained Indonesian cultural terminology [10], [11]. This motivates the problem of inductive zero-shot cultural caption-ing, where models are required to generate descriptions for garments from unseen provinces without access to their im-ages, labels, or reference captions during training or inference [12]. In this work, inductive zero-shot is defined at the level of province generalization. Unseen provinces are fully ex-cluded from training, validation, and retrieval-bank construc-tion, while inference-time retrieval is restricted to captions originating only from seen provinces. Under this setting, we construct a dataset consisting of 3,800 expert-annotated images spanning 38 Indonesian provinces, and propose Custom Zero-CLIP , a retrieval-augmented vision-language framework that integrates frozen CLIP encoders with a BERT–LSTM decoder for culturally grounded caption generation. The proposed approach is evaluated in terms of cultural accuracy, linguistic fluency, and zero-shot generalization performance in a low-resource heritage setting. We frame this work as cultural heritage documentation rather than generative art creation. Generated captions support museum digitization and cultural indexing, but require expert validation before deployment. Overall, results demonstrate ef-fectiveness of retrieval-guided domain adaptation for culturally grounded image captioning. II. R ELATED WORK 
+
+A. Image Captioning and Vision-Language Pretraining 
+
+Image captioning has evolved from CNN–RNN and attention-based architectures [13]–[15] to transformer-based vision-language models (VLMs) [16]. CLIP [8] enables zero-shot transfer, while models such as BLIP [9], InstructBLIP, BLIP-2, Flamingo, PaLI, and Kosmos-2 improve multimodal reasoning through large-scale pretraining and instruction tun-ing [17]. Recent VLMs such as BLIP-2, Flamingo, PaLI, and Kosmos-2 improve multimodal reasoning through web-scale supervision, but their Western-centric training data limits rep-resentation of fine-grained cultural attributes in low-resource heritage domains [18], [19]. 
+
+> arXiv:2606.13275v1 [cs.CV] 11 Jun 2026
+
+BERT and LSTM remain effective for low-resource caption-ing [20], [21]. Our approach combines retrieval-guided decod-ing and domain adaptation for cultural heritage captioning. 
+
+B. Zero-Shot Learning for Visual Recognition 
+
+Zero-shot learning (ZSL) generalizes to unseen classes with-out labeled examples [12], [22]. Under the inductive setting [12], no unseen data or labels are available during training, unlike the transductive variant. Retrieval-augmented methods extend ZSL by leveraging external memory at inference. Inspired by retrieval-augmented generation (RAG) [23], visual embeddings are matched with text embeddings, and the top-
+
+K candidates are retrieved to guide caption generation without class labels [23]. 
+
+C. Cultural Heritage AI and Research Gap 
+
+Fashion captioning benchmarks such as DeepFashion and FashionIQ are dominated by Western garments, limiting per-formance on non-Western attire [24], [25]. Although prior work explores cultural clothing in other regions, province-level datasets for Indonesian attire remain scarce [7]. Existing approaches focus mainly on recognition rather than cultural interpretation. Our work addresses this gap by framing cap-tioning as cultural meaning reconstruction and introducing inductive zero-shot captioning across all Indonesian provinces with retrieval-augmented generation. III. P ROPOSED METHOD 
+
+A. Problem Formulation 
+
+Let P = {p1, . . . , p 38 } denote the set of Indonesian provincial garment categories. The dataset is partitioned into 24 training provinces, 6 validation provinces, and 8 held-out unseen test provinces. The union of training and validation provinces forms the set of seen provinces Ps, while the held-out test provinces form the unseen set Pu.Following the inductive zero-shot learning protocol [12], [22], no image, label, or reference caption from Pu is used during training, validation, hyperparameter tuning, or retrieval-bank construction. The retrieval bank used during inference contains only captions from the training split. 
+
+B. System Architecture 
+
+As illustrated in Fig. 1, the system operates in two phases. During the training phase, paired image-caption data from 
+
+Ps is used to optimize a BERT-LSTM decoder conditioned on frozen CLIP visual embeddings, with no CLIP parameters being modified. During the inference phase on Pu, a zero-shot retrieval step first identifies culturally proximate caption candidates from the training corpus. These candidates are then used to condition the LSTM decoder for label-free caption generation.                    
+
+> TABLE I: Model Components and Training Configuration
+> Component Frozen Trainable Used at Inference
+> CLIP Image Encoder Yes No Yes CLIP Text Encoder Yes No Yes BERT Encoder No Yes Yes Projection Layers No Yes Yes LSTM Decoder No Yes Yes
+
+C. CLIP-Based Visual Encoding 
+
+A frozen CLIP ViT-B/32 image encoder maps an input image I into a visual embedding v = fCLIP −image (I). All captions ci in the retrieval bank are pre-encoded using a frozen CLIP text encoder to obtain embeddings ri = fCLIP −text (ci),for i = 1 , . . . , N . Both modalities share CLIP’s aligned space, enabling direct retrieval via cosine similarity. The CLIP en-coders remain frozen during training and inference to preserve pretrained alignment and prevent catastrophic forgetting. 
+
+D. BERT-LSTM Caption Decoder 
+
+The decoder combines retrieved textual context and frozen CLIP visual features using a BERT encoder and an LSTM autoregressive decoder. For K retrieved captions ci from the seen-province bank, each is encoded by a trainable BERT: 
+
+ei = fBERT (ci), i = 1 , . . . , K (1) The embeddings are mean-pooled into a global context: 
+
+¯e = 1
+
+K
+
+> K
+
+X
+
+> i=1
+
+ei (2) This text context is fused with the frozen CLIP image embedding v via learnable projections: 
+
+z = Wv v + Wt¯e (3) The fused feature conditions an LSTM-based autoregressive decoder: 
+
+ht = LSTM( ht−1, y t−1, z), ˆyt = Softmax( Woht + b) (4) At inference, retrieved captions provide contextual guid-ance. The CLIP image encoder remains frozen, while training updates only the BERT, projection layers, and LSTM. For multi-subject images (e.g., couples), the frozen CLIP captures the global visual context. Retrieved captions supply explicit re-lational cues, guiding the LSTM to correctly attribute specific garments to respective subjects without requiring bounding boxes. 
+
+E. Zero-Shot Retrieval at Inference 
+
+During inference, the model has no access to unseen-province labels or unseen reference captions. The retrieval bank is built solely from captions in the seen-province training split. 
+
+Retrieval Parameter Selection: Across all experiments, we empirically set K = 5 based on validation performance on the seen-province validation split before evaluation on un-seen test provinces. This setting balances retrieval specificity, Fig. 1: Overview of Custom ZeroCLIP. Training (left) optimizes a BERT-LSTM decoder using frozen CLIP embeddings from seen provinces. Inference (right) applies cosine-similarity retrieval to generate captions for unseen provinces without labels. 
+
+Fig. 2: Training pipeline of Custom ZeroCLIP. Image and caption tokens are encoded by frozen CLIP, projected into the LM, and optimized using LCE and LCLIP . The BERT encoder, projection layers, and LSTM decoder are trained while CLIP remains frozen. 
+
+computational efficiency, and noise reduction from excessive candidates while preserving relevant cultural context. Given a test image embedding v, cosine similarity is computed against all text embeddings from the retrieval bank as si = ( v⊤ri)/(∥v∥∥ ri∥). The top-K retrieved captions are selected via C∗ = TopK( si).The retrieved captions provide lexical and cultural cues for the LSTM decoder while preserving the inductive zero-shot protocol, since no unseen-province annotations are accessed. IV. E XPERIMENTS 
+
+A. Dataset and Implementation 
+
+The Indonesian Traditional Attire Dataset contains 3,800 images from 38 Indonesian provinces (100 images per province), collected from museum archives, cultural organi-zations, educational repositories, and professional photogra-phy sources. All samples are annotated by domain experts, including anthropologists and textile scholars [7], with labels 
+
+TABLE II: Province-Level Dataset Split                      
+
+> Split Provinces
+> Training Bali, East Java, Central Java, West Java, Papua, West Papua, East Kalimantan, South Kalimantan, Central Kalimantan, Central Sulawesi, South Sulawesi, West Sulawesi, Gorontalo, Lampung, Bengkulu, Riau Is-lands, Riau, Jakarta, Yogyakarta, West Nusa Tenggara, Maluku, North Kalimantan, West Kalimantan, Central Papua Validation Southwest Papua, South Papua, Highland Papua, North Sulawesi, South Central Java, North East Kalimantan Unseen Test Aceh, Banten, Jambi, North Maluku, East Nusa Tenggara, Southeast Sulawesi, South Sumatra, North Sumatra
+
+covering garment categories (e.g., kebaya , songket , and ulos ), ceremonial attributes, ethnic affiliation, and cultural context. The dataset includes male, female, couple, ceremonial, and isolated garment images for fine-grained textile understanding. We adopt a province-level inductive zero-shot setting, where unseen provinces are fully excluded from training, validation, and retrieval-bank construction. The province-level dataset split is summarized in Table II, ensuring strict separation between training, validation, and unseen test provinces. Fig. 3 illustrates the visual diversity of Indonesian attire under the zero-shot protocol [26], with full 38-province visu-alizations provided in the supplementary material due to page constraints. All images are resized to 224 × 224 and normalized using ImageNet statistics [5], [23]. Data augmentation includes random horizontal flipping ( p = 0.5), color jittering, and Aceh (Unseen) N. Sumatra (Unseen) Jambi (Unseen)      
+
+> C. Sulawesi (Seen) E. Java (Seen) Papua (Seen)
+
+Fig. 3: Representative samples from seen and unseen provinces used in the inductive zero-shot evaluation protocol [26]. 
+
+Fig. 4: Training and validation loss curves showing stable conver-gence without overfitting. 
+
+rotations up to 15 ◦ [14]. Captions are tokenized with the BERT tokenizer (maximum length: 512 tokens), while synonym re-placement and back-translation improve robustness to cultural terminology [6], [21], [27]. The CLIP ViT-B/32 encoder remains frozen during training, while the BERT encoder, projection layers, and LSTM decoder are jointly optimized using AdamW ( 2 × 10 −5, 100 epochs). Fig. 4 shows stable convergence without overfitting. 
+
+B. Quantitative Results 
+
+Table III reports results on the inductive zero-shot test split comprising 8 unseen provinces. Under the current setting, Custom ZeroCLIP achieves the best performance across all metrics. Compared with the strongest baseline per metric, Custom ZeroCLIP improves CLIPScore by +1.97% over Instruct-BLIP (0.8371), BLEU-4 by +18.64% over the CLIP base-line (0.2817), and METEOR by +10.18% over InstructBLIP (0.4410). The BLEU-4 and METEOR gains indicate improved recovery of province-specific terminology such as kebaya ,
+
+songket , Meukutop , and blangkon through retrieval-guided domain adaptation. We acknowledge an asymmetric comparison since the pro-posed framework is domain-adapted while baseline VLMs are evaluated off-the-shelf. Fine-tuning foundational models presents significant computational barriers in this low-resource setting. Thus, baselines are included primarily to highlight their limitations on fine-grained cultural terminologies. Re-ported gains reflect the effectiveness of retrieval-augmented domain adaptation via a lightweight LSTM, rather than archi-tectural superiority. 
+
+TABLE III: Zero-shot performance on 8 unseen provinces. Bold indicates the best result in each column. † Off-the-shelf evaluation without domain fine-tuning. ‡ Retrieval disabled during inference. 
+
+Model CLIPScore BLEU-4 METEOR 
+
+CLIP Baseline † 0.8021 0.2817 0.1274 BLIP † 0.7729 0.2100 0.2881 InstructBLIP † 0.8371 0.2353 0.4410 MSGIT Base † 0.6932 0.2530 0.2730 ZeroCLIP w/o Retrieval ‡ 0.8214 0.2743 0.3921 Retrieval-only Top-1 ‡ 0.8104 0.3187 0.4201 
+
+Custom ZeroCLIP 0.8536 0.3342 0.4859   
+
+> †Off-the-shelf models evaluated without domain-specific fine-tuning.
+> ‡Retrieval-only Top-1 directly outputs the nearest-neighbor caption without LSTM generation.
+
+C. Data Leakage Control 
+
+To preserve inductive zero-shot validity, retrieval is re-stricted to training-split captions only, with no image, label, or reference caption from the 8 unseen provinces included. Near-duplicate filtering using CLIP image similarity (threshold 0.95) further prevents test overlap. To distinguish province-level from vocabulary-level zero-shot, cultural term coverage is analyzed across train/val/test splits. Terms such as kebaya , songket , Meukutop , Linto Baro ,and Suntiang Aceh are tracked to determine whether recov-ery reflects retrieval-guided transfer from seen captions or genuine unseen-token generalization. 
+
+D. Ablation Study 
+
+Table V isolates the contributions of retrieval and decod-ing. Disabling retrieval causes a significant METEOR drop (−19 .3% ). While domain adaptation maintains a moderate CLIPScore, retrieval proves essential for recovering fine-grained cultural vocabulary. To verify the LSTM’s generative value, we compare against a Retrieval-only Top-1 baseline that outputs the nearest caption without decoding. Custom ZeroCLIP outperforms this baseline across all metrics. Furthermore, modest n-gram overlap (23% unigram, 8% bigram) with the top-1 caption confirms genuine culturally-grounded generation rather than pure copying. 
+
+E. Qualitative Analysis 
+
+Table IV compares captions across three representative gar-ment categories, including the unseen Acehnese case. General-purpose baselines generate visually plausible but culturally Image Model Generated Caption Reference Caption                        
+
+> Aceh (Unseen)
+> CLIP Baseline A person wearing traditional red clothing with gold accessories. A couple wearing traditional Acehnese wedding attire. The groom wears Linto Baro with gold embroidery and a Meukutop headdress. The bride wears a violet kebaya, gold songket, and Suntiang Aceh, reflecting Acehnese ceremonial heritage. (Province unseen during training.)
+> BLIP A couple in matching red outfits posing for a photo. ZeroCLIP Image of a couple wearing traditional Indonesian wedding clothes. InstructBLIP Two people wearing elaborate red and gold ceremonial costumes. MSGIT Base A man and a woman in traditional dress.
+> Custom ZeroCLIP
+> Image of a couple in Acehnese wedding attire, groom in Linto Baro with Meukutop, bride in violet kebaya, songket, and Suntiang Aceh headdress.
+> Bali (Seen)
+> CLIP Baseline A woman in a colorful traditional dress with a head-dress. Balinese temple attire with kebaya lace, kamen batik cloth, selendang sash, and golden floral headpiece representing Hindu-Balinese spiritual identity. (Province seen during training.)
+> BLIP A woman wearing a white lace top and batik skirt. ZeroCLIP Image of a woman in traditional clothing. InstructBLIP A person wearing traditional Southeast Asian clothing with flowers. MSGIT Base A woman in traditional dress.
+> Custom ZeroCLIP Image of Balinese temple attire with kebaya lace, kamen batik, selendang sash, and golden floral headpiece.
+> East Java (Seen)
+> CLIP Baseline A person wearing a batik shirt and traditional hat. East Javanese wedding attire featuring beskap jacket, blangkon headpiece, jarik batik cloth, and keris dagger, symbolizing Javanese nobility and ceremonial heritage.
+> (Province seen during training.)
+> BLIP A man and woman in traditional Javanese wedding costume. ZeroCLIP Image of a couple in traditional Javanese wedding attire. InstructBLIP Two people in elaborate traditional Indonesian wedding outfits. MSGIT Base Man and woman in traditional dress.
+> Custom ZeroCLIP
+> Image of East Javanese wedding attire with beskap jacket, blangkon headpiece, jarik batik cloth, and keris dagger.
+
+TABLE IV: Qualitative comparison across representative garment categories from seen and unseen provinces. Baseline VLMs generate visually plausible but culturally generic captions, whereas Custom ZeroCLIP recovers province-specific terminology through retrieval-guided zero-shot decoding. 
+
+TABLE V: Ablation Study on Retrieval Mechanism 
+
+Model Variant CLIPScore BLEU-4 METEOR 
+
+ZeroCLIP w/o Retrieval 0.8214 0.2743 0.3921 Retrieval-only Top-1 0.8104 0.3187 0.4201 
+
+Custom ZeroCLIP 0.8536 0.3342 0.4859 
+
+generic descriptions without provincial identifiers or ceremo-nial terminology. Despite receiving no training data from Aceh, Custom ZeroCLIP recovers province-specific terms such as Linto Baro ,
+
+Meukutop , kebaya , songket , and Suntiang Aceh , which are absent from baseline outputs. This improvement is enabled by retrieval-guided decoding using captions from culturally related seen provinces. The Balinese and East Javanese ex-amples further demonstrate consistent generation of garment names and symbolic accessories such as kamen batik, jarik batik, selendang, keris dagger, and blangkon headpiece. 
+
+F. Human Evaluation 
+
+Five knowledgeable annotators (two textile researchers, one museum archivist, two graduate researchers) assessed caption quality using a stratified random sample of 80 images from 8 unseen provinces (10 per province). Each evaluated all 80 im-ages in a blind setting. Evaluation used a 1–5 Likert scale for 
+
+cultural accuracy (province-specific terminology, ceremonial context) and fluency (grammar, coherence), reporting mean ±
+
+std dev and Fleiss’ κ for inter-annotator agreement. For practicality, human evaluation focuses on the strongest baseline models and the proposed framework, following com-mon practice in vision-language evaluation. 
+
+TABLE VI: Human Evaluation Results on Unseen Provinces 
+
+Model Accuracy Fluency Kappa 
+
+BLIP 3.1 ± 0.8 3.8 ± 0.6 0.42 InstructBLIP 3.6 ± 0.9 4.1 ± 0.5 0.51 
+
+Custom ZeroCLIP 4.4 ± 0.5 4.3 ± 0.4 0.68 
+
+Custom ZeroCLIP achieves the highest scores in both evaluation criteria, indicating improved cultural grounding and fluent caption generation compared to the strongest baseline models. Scores above 4.0 indicate strong perceived caption quality. These findings are consistent with the quantitative evalu-ation, suggesting that retrieval-augmented domain adaptation improves perceived cultural relevance under the current exper-imental setting, particularly for unseen provincial garments. 
+
+G. Discussion and Limitations 
+
+Results show zero-shot retrieval enables culturally coher-ent captioning. From an AIART perspective, this framework moves beyond object recognition to cultural meaning recon-struction . By generating ceremonial terminologies, it aids the artistic interpretation of traditional textiles, bridging visual mo-tifs with historical narratives. However, since retrieval systems may oversimplify cultural nuances, expert validation remains essential. Generated captions should therefore be treated as 
+
+assistive rather than authoritative cultural descriptions, especially for museum or ceremonial contexts. Several limitations remain. The zero-shot setting is 
+
+province-level , not token-level, so cultural term recovery depends on retrieval-guided transfer from seen-province captions. Retrieval may also propagate visually similar but cul-turally incorrect terminology. In addition, comparisons remain asymmetric between off-the-shelf and domain-trained models; future work will include fine-tuned BLIP and InstructBLIP baselines together with broader expert-based evaluation. V. C ONCLUSION 
+
+This paper proposes Custom ZeroCLIP, a retrieval-augmented vision-language framework for inductive zero-shot captioning of traditional Indonesian garments. Experimental and ablation results show that retrieval-guided domain adap-tation is the main contributor to recovering province-specific garment terminology in unseen categories. The findings suggest that retrieval-augmented multimodal systems can support scalable cultural heritage documentation in low-resource settings, including museum digitization, cul-tural indexing, and digital archiving, provided expert validation and cultural sensitivity are maintained. ACKNOWLEDGEMENTS 
+
+The authors thank the Intelligent Systems Laboratory, Fac-ulty of Computer Science, Brawijaya University, for computa-tional support, and the Indonesian traditional garment experts for their invaluable domain expertise. REFERENCES [1] S. Andr´ efou¨ et, M. Paul, and A. R. Farhan, “Indonesia’s 13558 islands: A new census from space and a first step towards a one map for small islands policy,” Marine Policy , vol. 135, pp. 104848, Jan. 2022. [2] L. Suryatni and I. D. K. K. Widana, “Perception and appreciation of the indonesian plural society toward cultural diversity,” Technium Social Science Journal , vol. 43, pp. 466, 2023. [3] P. H. Candra, A. Widita, F. H. Maulida, M. Shanti, and Y. B. Kusuma, “Rebranding of malangan batik as a symbol of malang’s cultural identity through value chain analysis,” in E3S Web of Conferences , 2023, vol. 426, p. 02129. [4] R. G. Tiwari, A. K. Agarwal, V. Jain, and A. Kumar, “Batik classification in indonesia: Exploring its significance on tourism and economy,” in 
+
+2023 International Conference on Sustaining Heritage: Innovative and Digital Approaches (ICSH) , Jun. 2023, pp. 119–124. [5] Y. Mayuzumi, “Is meeting the needs of tourists through ethnic tourism sustainable? focus on bali, indonesia,” Asia-Pacific Journal of Regional Science , vol. 6, no. 1, pp. 423–451, Feb. 2022. [6] F. Fitriadi, R. M. Sinaga, and R. R. Muhammad, “A literature review on the cultural perspective study in elementary school education in indonesia,” Journal of Innovation in Educational and Cultural Research ,vol. 5, no. 1, Feb. 2024. [7] A. Fitrisia and E. Ernawati, “The forest cultural heritage in the east coast sumatra,” in Proceedings of the 9th Asbam International Conference (ASBAM 2021) , Apr. 2022, pp. 453–457. [8] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal, G. Sastry, A. Askell, P. Mishkin, J. Clark, G. Krueger, and I. Sutskever, “Learning transferable visual models from natural language supervi-sion,” 2021, arXiv:2103.00020. [9] M. Barraco, M. Cornia, S. Cascianelli, L. Baraldi, and R. Cucchiara, “The unreasonable effectiveness of CLIP features for image captioning: An experimental analysis,” in 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW) , Jun. 2022, pp. 4661–4669. [10] Z. Zhang et al., “Reducing bias in AI-based analysis of visual artworks,” 
+
+IEEE BITS the Information Theory Magazine , vol. 2, no. 1, pp. 36–48, Oct. 2022. [11] H. Wang, Y. Zhan, L. Liu, L. Ding, Y. Yang, and J. Yu, “Towards alleviating text-to-image retrieval hallucination for CLIP in zero-shot learning,” 2024, arXiv:2402.18400. [12] S. Yu, P. H. Seo, and J. Son, “Zero-shot referring image segmentation with global-local context features,” 2023, arXiv:2303.17811. [13] L. Lou, K. Lu, and J. Xue, “Improved transformer with parallel encoders for image captioning,” in 2022 26th International Conference on Pattern Recognition (ICPR) , Aug. 2022, pp. 4072–4075. [14] A. Mahmoud et al., “Sieve: Multimodal dataset pruning using image captioning models,” in 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , Jun. 2024, pp. 22423–22432. [15] K. Jeong, W. Lee, W. Nam, M. Ma, and P. Kang, “Technical report of NICE challenge at CVPR 2024: Caption re-ranking evaluation using ensembled CLIP and consensus scores,” in 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW) , Jun. 2024, pp. 7366–7372. [16] H. Han, M. Bhatti, B. Ali, Y. A. Ali, M. Al-razgan, and Y. Yasid, “Optimizing image captioning: The effectiveness of vision transformers and VGG networks for remote sensing,” Big Data Research , vol. 37, pp. 100477, Jan. 2024. [17] Thao Nguyen, Samir Yitzhak Gadre, Gabriel Ilharco, Sewoong Oh, and Ludwig Schmidt, “Improving multimodal datasets with image captioning,” Advances in neural information processing systems , vol. 36, pp. 22047–22069, 2023. [18] Xi Chen, Xiao Wang, Soravit Changpinyo, AJ Piergiovanni, Piotr Padlewski, Daniel Salz, Sebastian Goodman, Adam Grycner, Basil Mustafa, Lucas Beyer, et al., “Pali: A jointly-scaled multilingual language-image model,” arXiv preprint arXiv:2209.06794 , 2022. [19] Zhiliang Peng, Wenhui Wang, Li Dong, Yaru Hao, Shaohan Huang, Shuming Ma, Qixiang Ye, and Furu Wei, “Grounding multimodal large language models to the world,” in International Conference on Learning Representations , 2024, vol. 2024, pp. 51575–51598. [20] N. Yudistira and T. Kurita, “Gated spatio and temporal convolutional neural network for activity recognition: towards gated multimodal deep learning,” EURASIP Journal on Image and Video Processing , vol. 2017, no. 1, pp. 85, 2017. [21] Mourad Bahani, Aziza El Ouaazizi, and Khalil Maalmi, “The effective-ness of t5, gpt-2, and bert on text-to-image generation task,” Pattern recognition letters , vol. 173, pp. 57–63, 2023. [22] Z. Xu et al., “Benchmarking zero-shot recognition with vision-language models: Challenges on granularity and specificity,” 2024, Amazon Science. [Online]. Available: https://www.amazon.science/publications/ benchmarking-zero-shot-recognition-with- vision-language-models-challenges-on-granularity- and-specificity. [23] S. Sarto, M. Barraco, M. Cornia, L. Baraldi, and R. Cucchiara, “Positive-augmented contrastive learning for image and video captioning evalua-tion,” in 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , Jun. 2023, pp. 6914–6924. [24] D. Harisanty, K. L. B. Obille, N. E. V. Anna, E. Purwanti, and F. Re-trialisca, “Cultural heritage preservation in the digital age, harnessing artificial intelligence for the future: a bibliometric analysis,” Digital Library Perspectives , vol. 40, no. 4, pp. 609–630, Sep. 2024. [25] A. H. Aida, “Cultural heritage preservation in the digital age: Balanc-ing tradition and innovation in mediterranean smart cities,” in 2024 Mediterranean Smart Cities Conference (MSCC) , May 2024, pp. 1–6. [26] Apri Subagyo, Mengenal Pakaian Adat Nusantara , CV. Indrajaya, Jakarta Timur, 2017. [27] Z. Lai et al., “VeCLIP: Improving CLIP training via visual-enriched captions,” 2024, arXiv:2310.07699.

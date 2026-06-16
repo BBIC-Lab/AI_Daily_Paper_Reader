@@ -1,0 +1,408 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-16T10:36:45.542634+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 31,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 63,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 9,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 4,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2606.13178v1",
+      "source": "arxiv",
+      "title": "Loss-Shift Transfer via Bayes Quotients",
+      "abstract": "Transfer learning is usually studied as a consequence of distribution shift. This paper identifies an orthogonal failure mode in which the data distribution is fixed and the loss changes. This setting is called \\emph{loss shift}. A loss determines which information in \\(X\\) is Bayes-relevant, and two losses may therefore require different representations even under the same joint law \\(P(X,Y)\\). The idea is formalized using Bayes quotients, which allow losses to be ordered by refinement. In the Bayes-quotient formulation, strict refinement gives an immediate qualitative obstruction. A source-minimal representation for a coarser loss is insufficient for a strictly finer target loss. For finite-output log loss, this obstruction becomes an exact quantitative identity. The excess risk is the conditional information about \\(Y\\) discarded by the representation. Experiments in controlled, learned, synthetic-image, and real-image settings show the predicted effect, i.e., classification-equivalent representations can have different optimal log-loss performance under a fixed data distribution.",
+      "authors": [
+        "Vasileios Sevetlidis"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-11T10:46:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.13178v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "transfer learning under loss shift",
+      "llm_evidence_cn": "损失转移下的迁移学习",
+      "llm_evidence": "损失转移下的迁移学习",
+      "canonical_evidence": "损失转移下的迁移学习",
+      "llm_tldr_en": "Formal framework for transfer learning when the loss function changes, with theoretical guarantees.",
+      "llm_tldr_cn": "当损失函数变化时的迁移学习形式化框架，具有理论保证。",
+      "llm_tldr": "当损失函数变化时的迁移学习形式化框架，具有理论保证。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.13280v1",
+      "source": "arxiv",
+      "title": "Generalization Bounds for Transformer-Based Next-Token Prediction in a Language Model",
+      "abstract": "A refined statistical understanding of LLM pre-training requires the analysis of the transformer architecture for data distributions that encapsulate key characteristics of text data. To address this, we propose a text data distribution based on an extension of the log-bilinear language model from the natural language processing literature. For this data generating process, we derive generalization bounds for deep transformer architectures, highlighting the dependence on the network architecture, the vocabulary size, the number of documents and the document length.",
+      "authors": [
+        "Insung Kong",
+        "Niklas Dexheimer",
+        "Johannes Schmidt-Hieber"
+      ],
+      "primary_category": "math.ST",
+      "categories": [
+        "math.ST"
+      ],
+      "published": "2026-06-11T12:34:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.13280v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "generalization bounds for transformer-based next-token prediction",
+      "llm_evidence_cn": "基于Transformer的下一个词预测的泛化界限",
+      "llm_evidence": "基于Transformer的下一个词预测的泛化界限",
+      "canonical_evidence": "基于Transformer的下一个词预测的泛化界限",
+      "llm_tldr_en": "Derives generalization bounds for transformer architectures in next-token prediction",
+      "llm_tldr_cn": "推导了Transformer在下一个词预测中的泛化界限",
+      "llm_tldr": "推导了Transformer在下一个词预测中的泛化界限",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.13901v1",
+      "source": "arxiv",
+      "title": "SpikF-GO: Spiking Fourier Graph Operators for Multivariate Time Series Forecasting",
+      "abstract": "Spiking Neural Networks (SNNs) have emerged as an energy-efficient alternative to conventional neural networks, demonstrating strong performance in computer vision and robotics. More recently, SNNs have been applied to time series forecasting (TSF), with methods exploring spiking temporal backbones, spike-compatible positional encodings, Fourier-domain processing, and redesigned neuron dynamics. However, existing SNN forecasting approaches process variables independently, lacking explicit mechanisms for modeling inter-variable dependencies. This is a critical limitation in multivariate settings, where cross-variable correlations carry substantial predictive information. We propose Spiking Fourier Graph Operators (SpikF-GO), which addresses this gap by combining a hypervariate graph formulation in which every scalar observation becomes a graph node with spike-driven spectral processing. SpikF-GO introduces a Hard Concrete frequency gate for learnable sparse frequency selection and a Complex LIF gate that applies independent spiking neurons to real and imaginary Fourier components, preserving binary, event-driven computation throughout the spectral domain. We further present a variant incorporating Central Pattern Generator-based positional encodings for stronger long-range temporal modeling. Evaluated on eight benchmarks under a unified experimental protocol, SpikF-GO achieves the best average rank among all SNN methods and outperforms its ANN counterpart, FourierGNN, at reduced energy cost. SpikF-GO maintains competitive accuracy even at substantially smaller embedding dimensions, thereby achieving significant energy reductions. To our knowledge, this is among the first works to bring graph-based multivariate modeling into the spiking domain for TSF and the first to provide a unified comparison across SNN forecasting architectures under a common experimental protocol.",
+      "authors": [
+        "Jafar Bakhshaliyev",
+        "Niels Landwehr"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.NE"
+      ],
+      "published": "2026-06-11T20:48:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.13901v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multivariate time series forecasting with spiking neural networks and graph operators",
+      "llm_evidence_cn": "使用脉冲神经网络和图算子进行多变量时间序列预测",
+      "llm_evidence": "使用脉冲神经网络和图算子进行多变量时间序列预测",
+      "canonical_evidence": "使用脉冲神经网络和图算子进行多变量时间序列预测",
+      "llm_tldr_en": "Introduces spiking Fourier graph operators for efficient multivariate time series forecasting.",
+      "llm_tldr_cn": "引入脉冲傅里叶图算子实现高效多变量时间序列预测。",
+      "llm_tldr": "引入脉冲傅里叶图算子实现高效多变量时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14092v1",
+      "source": "arxiv",
+      "title": "Cauchy Aggregation of Ridge-Regularized Hotelling Tests for High-Dimensional Change-Point Detection",
+      "abstract": "Ridge-regularized Hotelling-type (RHT) change-point tests depend on a ridge parameter $λ$, but the power-optimal value is determined by the unknown covariance structure and the unknown mean shift. We avoid selecting a single ridge value by computing fixed-ridge p-values on a finite deterministic grid and aggregating them with the Cauchy combination rule. Under the standard random-matrix conditions for fixed-ridge RHT statistics, we establish finite-grid joint weak convergence of the ridge processes. This leads to fixed-level validity under joint-limit calibration and small-tail validity for the analytic Cauchy p-value. Monte Carlo experiments show that deterministic-grid Cauchy aggregation has stable size behavior and achieves power close to the best stable fixed ridge choice across a range of covariance and signal configurations.",
+      "authors": [
+        "Ping Zhao",
+        "Le Zhou",
+        "Long Feng"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-06-12T04:14:06+00:00",
+      "link": "https://arxiv.org/pdf/2606.14092v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "change-point detection method for high-dimensional sequential data",
+      "llm_evidence_cn": "高维时序数据的变点检测方法",
+      "llm_evidence": "高维时序数据的变点检测方法",
+      "canonical_evidence": "高维时序数据的变点检测方法",
+      "llm_tldr_en": "Proposes Cauchy aggregation of ridge-regularized Hotelling tests for change-point detection",
+      "llm_tldr_cn": "提出用柯西聚合岭正则化Hotelling检验进行变点检测",
+      "llm_tldr": "提出用柯西聚合岭正则化Hotelling检验进行变点检测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14120v1",
+      "source": "arxiv",
+      "title": "FAConformer: Frequency-Aware Convolutional Transformer for Auditory Attention Decoding",
+      "abstract": "Auditory attention decoding (AAD) aims to infer the attended speaker from neural responses in multi-speaker acoustic environments and is a key problem for neuro-steered hearing systems. Although recent studies have achieved encouraging progress, existing AAD models still do not fully exploit frequency domain electroencephalography (EEG) information. In particular, most approaches introduce multi-band information through handcrafted feature extraction or direct cross-band feature concatenation, which mainly exploit frequency information at a shallow level and may overlook band-specific patterns and cross-band interactions. To address these limitations, this paper proposes FAConformer, a frequency-aware CNN-Transformer framework for AAD that explicitly integrates band-specific encoding and adaptive cross-band interaction. Specifically, FAConformer first decomposes EEG signals into multiple frequency bands and assigns each band to an independent CNN-Transformer encoder for band-specific modeling. The resulting band-wise features are then adaptively fused by a carefully designed frequency-aware attention (FAA) module that models cross-band dependencies by treating band-wise features as tokens. Further, band-wise auxiliary supervision (BAS) is introduced to prevent weakly contributing branches from being under-optimized during joint training. In this way, FAConformer performs frequency-aware modeling that more effectively exploits frequency domain information. Extensive experiments on two public AAD datasets with three decision-window lengths demonstrated that FAConformer consistently outperformed 12 competitive baselines, surpassing the current state-of-the-art model by 4.9%. Further analyses of band importance, ablation, and parameter sensitivity verify the effectiveness, robustness, and interpretability of the proposed framework. Code is available at https://github.com/wzwvv/FAConformer.",
+      "authors": [
+        "Ziwei Wang",
+        "Xingyi He",
+        "Tianwang Jia",
+        "Hongbin Wang",
+        "Dongrui Wu"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.AI",
+        "cs.LG",
+        "cs.SD",
+        "eess.AS"
+      ],
+      "published": "2026-06-12T04:59:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.14120v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "auditory attention decoding from EEG",
+      "llm_evidence_cn": "从EEG解码听觉注意力",
+      "llm_evidence": "从EEG解码听觉注意力",
+      "canonical_evidence": "从EEG解码听觉注意力",
+      "llm_tldr_en": "FAConformer uses frequency-aware CNN-Transformer to decode attended speaker from EEG",
+      "llm_tldr_cn": "FAConformer利用频率感知CNN-Transformer从EEG解码注意力说话者",
+      "llm_tldr": "FAConformer利用频率感知CNN-Transformer从EEG解码注意力说话者",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.13190v1",
+      "source": "arxiv",
+      "title": "Multi-Modal Multi-Agent Robotic Cognitive Alignment enabled by Non-Invasive Consumer Brain Computer Interfaces: A Proof of Concept Exploration",
+      "abstract": "While non-verbal behaviors and expressive movements are essential for natural human-robot interaction, existing methods often overlook a crucial element: the human's internal cognitive state. Frequently, proactive multi-agent systems can interrupt humans at inopportune moments, leading to cognitive overload and decreased task performance. This paper introduces a framework for generating \"cognitively aligned\" multi-agent interactions, enhancing the ability of robotic systems to contextually defer communications to the user of an agent system during moments of high human mental workload and engagement. We present the design and implementation of a closed-loop architecture that explores the interplay between autonomous task execution and real-time neurophysiological focus. Using a consumer-grade Brain-Computer Interface (BCI), our approach continuously monitors Electroencephalography (EEG) spectral band powers while a human performs an engagement-inducing task. We propose an engagement-driven pipeline where an HTTP-based signaling mechanism places a primary agent's sensory inputs and audio outputs into a holding state upon detecting high engagement. This allows secondary agents to seamlessly process complex, delegated tasks in the background. Once the human's cognitive state returns to a lower cognitive load baseline, the primary agent releases the queued agent message. Our preliminary results demonstrate the feasibility of leveraging real-time signal processing, Large Language Models (LLMs), and physical robotic embodiments to create cognitively-aware, non-intrusive multi-agent systems.",
+      "authors": [
+        "Nataliya Kosmyna",
+        "Liz Jenkins",
+        "Anoop K. Sinha"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.HC"
+      ],
+      "published": "2026-06-11T10:58:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.13190v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "decoding neural signals via non-invasive BCI for cognitive alignment",
+      "llm_evidence_cn": "通过非侵入式脑机接口解码神经信号实现认知对齐",
+      "llm_evidence": "通过非侵入式脑机接口解码神经信号实现认知对齐",
+      "canonical_evidence": "通过非侵入式脑机接口解码神经信号实现认知对齐",
+      "llm_tldr_en": "Proof-of-concept using consumer BCI for real-time cognitive state detection.",
+      "llm_tldr_cn": "使用消费级脑机接口进行实时认知状态检测的概念验证。",
+      "llm_tldr": "使用消费级脑机接口进行实时认知状态检测的概念验证。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.13236v1",
+      "source": "arxiv",
+      "title": "Decoding Insect Song: A Multitask Semisupervised Orthoptera Bioacoustic Classifier",
+      "abstract": "Passive acoustic monitoring holds great promise for ecological inference, yet existing automated tools are typically narrowly trained and non-transferable. We address these limitations with PULSE, a semi-supervised, multi-task framework for Orthoptera bioacoustics, combining weakly-supervised species classification, self-supervised learning on unlabelled field audio, and knowledge distillation from a general-purpose bioacoustic model. Our domain-adapted specialist model outperforms a state-of-the-art general model across all metrics (macro F1: 0.21 vs. 0.07; AUC: 0.74 vs. 0.45; AP: 0.32 vs. 0.19), with active learning further raising F1 to 0.34 and AUC to 0.84. Beyond classification, the learned embeddings encode ecologically meaningful structure, exposed through an interactive visualisation tool for ecological discovery.",
+      "authors": [
+        "Olga Isupova",
+        "Danil Kuzin",
+        "Ella Browning",
+        "Tom Mills",
+        "Steven Reece"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.SD",
+        "stat.AP"
+      ],
+      "published": "2026-06-11T11:51:49+00:00",
+      "link": "https://arxiv.org/pdf/2606.13236v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "semi-supervised multi-task framework with self-supervised learning and knowledge distillation for bioacoustic classification, transferable methods",
+      "llm_evidence_cn": "半监督多任务框架，结合自监督学习和知识蒸馏，用于生物声学分类，方法可迁移",
+      "llm_evidence": "半监督多任务框架，结合自监督学习和知识蒸馏，用于生物声学分类，方法可迁移",
+      "canonical_evidence": "半监督多任务框架，结合自监督学习和知识蒸馏，用于生物声学分类，方法可迁移",
+      "llm_tldr_en": "PULSE framework for insect song classification using self-supervised learning and domain adaptation.",
+      "llm_tldr_cn": "PULSE框架用自监督学习和域适应分类昆虫鸣声。",
+      "llm_tldr": "PULSE框架用自监督学习和域适应分类昆虫鸣声。",
+      "llm_tags": [
+        "query:ndai:composite"
+      ],
+      "matched_query_tag": "query:ndai:composite",
+      "matched_query_text": "Papers central to AI启发神经解码方法, especially work that connects or combines: methods for analyzing and predicting sequential data over time; learning compact and meaningful representations from raw data; algorithms for converting model outputs into sequences; techniques for adapting models to new domains with limited labeled data; leveraging knowledge from pretrained models for downstream tasks; methods that compute importance weights for input features; decoding neural signals into language or actions; transfer learning for brain computer interfaces; sequence modeling for neural data; representation learning for neural activity.",
+      "matched_requirement_id": "req-composite-ndai",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.13260v1",
+      "source": "arxiv",
+      "title": "Extracting Governing Equations from Latent Dynamics via Multi-View Contrastive Learning",
+      "abstract": "Identifying latent dynamical systems from noisy, high-dimensional measurements is a central problem at the intersection of representation learning, system identification, and scientific discovery. We present DYSCO, a multi-view temporal contrastive learning algorithm that jointly recovers latent trajectories and the governing dynamics from such observations, by leveraging multiple independent noisy views of the same underlying process to disentangle signal from noise. By parameterizing the dynamics in a structured functional basis, our framework further enables symbolic recovery of the governing equations within an affine gauge. We offer theoretical guarantees for strong identification up to an affine indeterminacy, extending prior identifiability results to the realistic setting of noisy nonlinear observations. Empirically, we demonstrate accurate recovery of both latent trajectories and flow fields across a diverse set of dynamical regimes (e.g., chaotic, oscillatory, and metastable) under both Gaussian and Poisson observation noise, the latter being particularly relevant for neural recordings.",
+      "authors": [
+        "Paolo Muratore",
+        "Mackenzie Weygandt Mathis"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "q-bio.NC"
+      ],
+      "published": "2026-06-11T12:16:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.13260v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns compact latent representations and governing equations from noisy high-dimensional measurements",
+      "llm_evidence_cn": "从含噪高维测量中学习紧凑的潜在表征和动力学方程",
+      "llm_evidence": "从含噪高维测量中学习紧凑的潜在表征和动力学方程",
+      "canonical_evidence": "从含噪高维测量中学习紧凑的潜在表征和动力学方程",
+      "llm_tldr_en": "Multi-view contrastive learning to extract latent dynamics and symbolic equations",
+      "llm_tldr_cn": "多视角对比学习提取潜在动力学和符号方程",
+      "llm_tldr": "多视角对比学习提取潜在动力学和符号方程",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.13275v1",
+      "source": "arxiv",
+      "title": "Zero-Shot Captioning for Cultural Heritage: Automated Image Analysis of Traditional Indonesian Clothing",
+      "abstract": "This paper presents Custom ZeroCLIP, a retrieval-augmented vision-language framework for zero-shot captioning of Indonesian traditional garments. The dataset contains 3,800 expert-annotated images from all 38 Indonesian provinces. Using a province-level inductive zero-shot protocol, the model is trained on 24 seen provinces, validated on 6 seen provinces, and evaluated on 8 unseen provinces. The framework combines a frozen CLIP ViT-B/32 image encoder, a CLIP text encoder, a BERT text encoder, and an LSTM caption decoder. During inference, unseen-province labels and captions are unavailable, and retrieval uses only captions from training provinces. No unseen-province image, label, or caption is used during training, validation, or retrieval-bank construction. Custom ZeroCLIP achieves a CLIPScore of 0.8536, BLEU-4 of 0.3342, and METEOR of 0.4859, outperforming existing baselines. Ablation results show that retrieval improves cultural vocabulary recovery with a 19.3\\% METEOR gain, while human evaluation confirms stronger cultural accuracy and fluency. The results demonstrate the effectiveness of retrieval-augmented domain adaptation for culturally grounded caption generation in low-resource heritage settings. The dataset is publicly available at https://github.com/AnugrahAidinYotolembah/Traditional-Indonesian-Clothing-Captioning-Dataset.",
+      "authors": [
+        "Anugrah Aidin Yotolembah",
+        "Novanto Yudistira",
+        "Gembong Edhi Setyawan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-11T12:29:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.13275v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "zero-shot captioning using frozen CLIP and BERT for pretrained knowledge leverage",
+      "llm_evidence_cn": "使用冻结CLIP和BERT的零样本描述，利用预训练知识",
+      "llm_evidence": "使用冻结CLIP和BERT的零样本描述，利用预训练知识",
+      "canonical_evidence": "使用冻结CLIP和BERT的零样本描述，利用预训练知识",
+      "llm_tldr_en": "Custom ZeroCLIP achieves zero-shot captioning of Indonesian garments using frozen CLIP and BERT",
+      "llm_tldr_cn": "Custom ZeroCLIP使用冻结CLIP和BERT实现印尼服装的零样本描述",
+      "llm_tldr": "Custom ZeroCLIP使用冻结CLIP和BERT实现印尼服装的零样本描述",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.13513v1",
+      "source": "arxiv",
+      "title": "CloudCons: A Comprehensive End-to-End Benchmark for Cloud Resource Consolidation",
+      "abstract": "Driven by conservative over-provisioning to guarantee service reliability, resource utilization in cloud data centers remains at low levels. To mitigate this, the forecast-then-optimize paradigm has emerged to optimize consolidation by anticipating future demands. While emerging time series foundation models promise to enhance this paradigm through zero-shot generalization, existing benchmarks focus solely on prediction error metrics. The actual decision utility of these advanced models remains unverified, rendering their practical value for downstream tasks uncertain. To bridge this gap, we propose CloudCons, a comprehensive end-to-end benchmark designed to evaluate forecasting models within the specific context of cloud resource consolidation. We build high-quality datasets that cover diverse workloads from Huawei Cloud, Microsoft Azure, and Google Borg, capturing distinct service characteristics ranging from synchronized diurnal rhythms to stochastic, pulse-like bursts and high-frequency noise. We conduct an extensive evaluation of statistical, deep learning, and foundation models. Our experiments reveal a pivotal finding: while foundation models demonstrate superior zero-shot forecasting accuracy, this advantage does not inherently translate into better decision utility. Of practical significance, we systematically analyze how the selection of predictive quantiles acts as a critical lever. We provide actionable guidelines for calibrating these selections to balance the trade-off between resource efficiency and service reliability, offering vital insights for real-world deployment decisions.",
+      "authors": [
+        "Xiaobin Zhang",
+        "Lefei Shen",
+        "Mouxiang Chen",
+        "Zhuo Li",
+        "Hongkai Li",
+        "Han Fu",
+        "Jianling Sun",
+        "Xiaoxue Ren",
+        "Chenghao Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-11T16:00:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.13513v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for evaluating forecasting models on time-series resource data",
+      "llm_evidence_cn": "用于评估时间序列资源数据预测模型的基准",
+      "llm_evidence": "用于评估时间序列资源数据预测模型的基准",
+      "canonical_evidence": "用于评估时间序列资源数据预测模型的基准",
+      "llm_tldr_en": "CloudCons benchmarks forecasting models for cloud resource consolidation",
+      "llm_tldr_cn": "CloudCons对云资源整合的预测模型进行基准测试",
+      "llm_tldr": "CloudCons对云资源整合的预测模型进行基准测试",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
