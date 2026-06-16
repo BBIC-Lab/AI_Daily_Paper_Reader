@@ -1,0 +1,406 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-16T21:47:11.294667+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 61,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 105,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 20,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 15,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 21
+  },
+  "deep_dive": [
+    {
+      "id": "2606.14195v1",
+      "source": "arxiv",
+      "title": "Structured Noise Adaptation for Sequential Bayesian Filtering with Embedded Latent Transfer Operators",
+      "abstract": "Kalman filters based on the Embedded Latent Transfer Operators (ELTO) emerge as novel statistical tools for sequential state estimation. However, a critical limitation stems from their use of simplified noise models, which fail to dynamically adapt to non-stationary processes. To address this limitation, we introduce an ELTO-based Bayesian filtering approach with a new structured parameterization for the filter's noise model. This parameterization enables structured noise adaptation, which couples the data-driven learning of an optimal time-invariant noise model with dynamic parameter adaptation that responds to changes in dynamics within non-stationary processes. Empirical results show that our structured noise adaptation improves the filter's dynamic state estimation performance in noisy, time-varying environments.",
+      "authors": [
+        "Naichang Ke",
+        "Pongpisit Thanasutives",
+        "Yoshinobu Kawahara"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "math.OC"
+      ],
+      "published": "2026-06-12T07:28:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.14195v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "sequential Bayesian filtering with adaptive noise for time series",
+      "llm_evidence_cn": "自适应噪声的序贯贝叶斯滤波，用于时间序列",
+      "llm_evidence": "自适应噪声的序贯贝叶斯滤波，用于时间序列",
+      "canonical_evidence": "自适应噪声的序贯贝叶斯滤波，用于时间序列",
+      "llm_tldr_en": "Proposes structured noise adaptation in ELTO-based Kalman filters for non-stationary sequential state estimation.",
+      "llm_tldr_cn": "提出基于ELTO的卡尔曼滤波中的结构化噪声适应，用于非平稳序贯状态估计。",
+      "llm_tldr": "提出基于ELTO的卡尔曼滤波中的结构化噪声适应，用于非平稳序贯状态估计。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14391v1",
+      "source": "arxiv",
+      "title": "Learning to Hear Hesitation: Continual Learning for Disfluency-Aware ASR",
+      "abstract": "Despite advances in large-scale Automatic Speech Recognition (ASR), disfluent speech remains challenging, as state-of-the-art systems are often optimized to omit disfluencies, leading to information loss and hallucinations. Prior work has focused on verbatim transcription and the integration of disfluency markers, but adapting models on limited datasets can lead to catastrophic forgetting of general-domain knowledge. We address this gap by leveraging continual learning (CL) with explicit disfluency tokens. We first introduce these tokens into a pretrained ASR model to establish stable token mechanisms, and then continue training on additional datasets with varying disfluency distributions. Through a detailed analysis of model dynamics during training, we identify a trade-off between marker learning and ASR performance, and a consistent cross-attention head mechanism shared across CL methods.",
+      "authors": [
+        "Henri-Leon Kordt",
+        "Theresa Pekarek Rosin",
+        "Jae Hee Lee",
+        "Stefan Wermter"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.SD"
+      ],
+      "published": "2026-06-12T12:25:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.14391v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "continual learning to adapt pretrained ASR to disfluent speech with limited data",
+      "llm_evidence_cn": "持续学习以用有限数据适应预训练ASR到不流畅语音",
+      "llm_evidence": "持续学习以用有限数据适应预训练ASR到不流畅语音",
+      "canonical_evidence": "持续学习以用有限数据适应预训练ASR到不流畅语音",
+      "llm_tldr_en": "Uses continual learning to adapt ASR to disfluent speech without catastrophic forgetting, using explicit disfluency tokens.",
+      "llm_tldr_cn": "使用持续学习适应ASR到不流畅语音，避免灾难性遗忘，利用明确的不流畅标记。",
+      "llm_tldr": "使用持续学习适应ASR到不流畅语音，避免灾难性遗忘，利用明确的不流畅标记。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14614v1",
+      "source": "arxiv",
+      "title": "Decoding Semantic Categories from Picture-Naming EEG",
+      "abstract": "Picture naming requires the transformation of visual object information into a spoken lexical response through perceptual, semantic, lexical, and articulatory processes. This study asked whether semantic-category information is recoverable from high-density EEG during overt picture naming. Sixteen native French-speaking participants performed a picture-naming task using line drawings. Picture labels were embedded with a multilingual text-embedding model and organized into nine interpretable semantic categories, providing a data-driven semantic target space for neural decoding. EEG activity was represented channel-wise using a pre-trained single-channel EEG encoder over an early post-stimulus window, a later naming-related window, and their combination. Nine-class decoding showed above-chance semantic-category discrimination in all temporal representations. Balanced accuracy increased from 0.562 in the early window to 0.610 in the naming-related window, and reached 0.781 when both windows were combined, with a maximum Macro-F1 of 0.784. Class-level F1 scores showed consistent gains across semantic categories, and sensor-level decoding maps indicated spatially distributed category information. These findings suggest that semantic-category structure is reflected in EEG activity during overt picture naming and that early and naming-related temporal windows provide complementary information. The results support the use of modern neural decoding methods as tools for investigating lexical-semantic processing in spoken language production.",
+      "authors": [
+        "Wei Hu",
+        "Binbin Xu"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "eess.SP"
+      ],
+      "published": "2026-06-12T16:40:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.14614v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG decoding of semantic categories from picture-naming",
+      "llm_evidence_cn": "从图片命名的EEG信号解码语义类别",
+      "llm_evidence": "从图片命名的EEG信号解码语义类别",
+      "canonical_evidence": "从图片命名的EEG信号解码语义类别",
+      "llm_tldr_en": "Decodes semantic categories from EEG during overt picture naming using pretrained EEG encoder.",
+      "llm_tldr_cn": "使用预训练EEG编码器从脑电信号中解码语义类别。",
+      "llm_tldr": "使用预训练EEG编码器从脑电信号中解码语义类别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14866v1",
+      "source": "arxiv",
+      "title": "Test-Time Adaptation of Spiking Neural Networks for Intracortical Neural Decoding using Membrane Potential Alignment",
+      "abstract": "Intracortical brain-computer interfaces suffer from day-to-day neural signal shifts that degrade pretrained decoders. Existing unsupervised adaptation methods rely on deep recurrent or adversarial architectures that are too computationally expensive for implantable hardware. We propose Membrane Potential Alignment (MPA), a test-time adaptation method for spiking neural networks that realigns a pretrained decoder to shifted recordings by only matching membrane potential distributions via KL divergence. By restricting updates to low-rank (LoRA) weights, MPA adapts fewer than 9% of parameters. On a non-human primate reaching task spanning over one month, MPA achieves performance competitive with the state-of-the-art NoMAD method, while using a simpler architecture and finer temporal resolution (4 ms vs. 20 ms). These results show that efficient SNN-based test-time adaptation is a practical path toward long-term, recalibration-free brain-computer interfaces.",
+      "authors": [
+        "Guangzhi Tang"
+      ],
+      "primary_category": "cs.NE",
+      "categories": [
+        "cs.NE"
+      ],
+      "published": "2026-06-12T18:08:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.14866v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "test-time adaptation for neural decoding in BCI",
+      "llm_evidence_cn": "脑机接口中神经解码的测试时自适应",
+      "llm_evidence": "脑机接口中神经解码的测试时自适应",
+      "canonical_evidence": "脑机接口中神经解码的测试时自适应",
+      "llm_tldr_en": "Membrane Potential Alignment enables efficient test-time adaptation of spiking neural networks for intracortical neural decoding.",
+      "llm_tldr_cn": "膜电位对齐实现脉冲神经网络在皮层内神经解码中的高效测试时自适应。",
+      "llm_tldr": "膜电位对齐实现脉冲神经网络在皮层内神经解码中的高效测试时自适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14941v1",
+      "source": "arxiv",
+      "title": "Semantics-Enhanced Retrieval-Augmented Time Series Forecasting",
+      "abstract": "Time series forecasting models often benefit from historical patterns. Inspired by Retrieval-Augmented Generation (RAG), recent research explored retrieving relevant historical time series segments to enhance forecasting. However, relying solely on time series similarity is often insufficient for retrieval under non-stationarity. To address this, we propose a multimodal approach: a \\textbf{S}emantics-\\textbf{E}nhanced \\textbf{R}etrieval-\\textbf{A}ugmented Time Series \\textbf{F}orecasting framework, SERAF. Unlike mainstream approaches that depend only on time series similarity, SERAF conducts dual retrieval over the time series and their self-generated textual descriptions. It retrieves two complementary sets of historical patterns and corresponding futures, which are selectively and jointly used to guide future predictions. Experiments across seven real-world datasets demonstrate the effectiveness of SERAF in bridging numerical and semantic views of time series compared with state-of-the-art baselines.",
+      "authors": [
+        "Shiqiao Zhou",
+        "Zipeng Wu",
+        "Holger Schöner",
+        "Edouard Fouché",
+        "IAG Wilson",
+        "Shuo Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-12T20:32:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.14941v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "retrieval-augmented time series forecasting with dual semantics",
+      "llm_evidence_cn": "带双重语义的检索增强时间序列预测",
+      "llm_evidence": "带双重语义的检索增强时间序列预测",
+      "canonical_evidence": "带双重语义的检索增强时间序列预测",
+      "llm_tldr_en": "Proposes SERAF, a multimodal framework that retrieves historical patterns and text descriptions for time series forecasting.",
+      "llm_tldr_cn": "提出SERAF，一种多模态框架，通过检索历史模式和文本描述进行时间序列预测。",
+      "llm_tldr": "提出SERAF，一种多模态框架，通过检索历史模式和文本描述进行时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.13982v1",
+      "source": "arxiv",
+      "title": "Adaptive Nucleus Truncation for Long-Form Reasoning",
+      "abstract": "Sampling plays an important role in long-form language-model reasoning. Over thousands of decoding steps, small changes in the candidate token set can compound into different reasoning trajectories, stability profiles, and final answers. Existing truncation methods such as top-$p$, min-$p$, and fixed top-$nσ$ sampling improve over unrestricted sampling, but they rely on fixed thresholds that cannot adapt to changes in entropy, task difficulty, training stage, or generation budget. We introduce Adaptive Nucleus Truncation Sampling (ANTS), which extends top-\\(nσ\\) sampling from a fixed decoding rule into an adaptive rollout-control mechanism for long-form generation. ANTS selects standardized neighborhoods around the maximum logit before temperature scaling, adapts the truncation width using an entropy-conditioned controller, and retains a no-truncation fallback arm to stabilize training when truncation becomes unsafe. On a 33B-total / 4B-active sparse Mixture-of-Experts reasoning model, ANTS improves average performance over percentage-based benchmarks by +1.9, +3.8, and +5.2 points at 8K, 16K, and 32K generation budgets, respectively. The strongest gains appear on instruction following and mathematical reasoning, with IFBench improving by more than 10 points at 32K and AIME 2025 improving by 7 points. Code generation reveals an important budget interaction. On Codeforces, ANTS trails the baseline at 8K, but reverses this gap and substantially improves ELO at 16K and 32K. These results suggest that sampler design should be treated not just as a decoding hyperparameter, but as part of how we stabilize and scale long-budget reasoning.",
+      "authors": [
+        "Ousmane Amadou Dia"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-06-12T00:02:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.13982v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adaptive sampling method for converting model outputs to sequences",
+      "llm_evidence_cn": "自适应采样方法用于将模型输出转换为序列",
+      "llm_evidence": "自适应采样方法用于将模型输出转换为序列",
+      "canonical_evidence": "自适应采样方法用于将模型输出转换为序列",
+      "llm_tldr_en": "Introduces Adaptive Nucleus Truncation Sampling for long-form language model reasoning.",
+      "llm_tldr_cn": "提出自适应核截断采样用于长文本语言模型推理。",
+      "llm_tldr": "提出自适应核截断采样用于长文本语言模型推理。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.13989v1",
+      "source": "arxiv",
+      "title": "Mask, Sample, Revise: A Revisable CTMC Inference Stack for Guided Discrete Flow Matching Text-to-Speech",
+      "abstract": "Recent alignment-free non-autoregressive (NAR) text-to-speech (TTS) models formulate synthesis as a conditional infilling task, bypassing explicit duration predictors and external aligners. When speech is represented with neural codec tokens, the infilling problem becomes discrete, making Discrete Flow Matching (DFM), a Continuous-Time Markov Chain (CTMC) framework for discrete generation, a natural fit. However, inference-time control for stable low-step conditional infilling remains underexplored. We propose Mask, Sample, Revise, an inference-time CTMC stack for alignment-free DFM-TTS. The stack combines predictor-free guidance to strengthen text conditioning, prompt-matched conditional coupling to align the probability path with the acoustic prompt, and SC-ReMask, a schedule-constrained remasking mechanism that introduces token-to-mask transitions so early de-masking decisions can be revised. These components require no post-hoc fine-tuning and operate in a single tau-leaping sampler. Controlled ablations show that this stack improves intelligibility and robustness in the low-NFE prompted setting, outperforming unguided and guidance-only samplers with substantially more steps.",
+      "authors": [
+        "Alef Iury Siqueira Ferreira",
+        "Lucas Rafael Stefanel Gris",
+        "Luiz Fernando de Araújo Vidal",
+        "Frederico Santos de Oliveira",
+        "Christopher Dane Shulby",
+        "Anderson da Silva Soares",
+        "Arlindo Rodrigues Galvão Filho"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-06-12T00:13:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.13989v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "converts model outputs into speech token sequences via discrete flow matching",
+      "llm_evidence_cn": "通过离散流匹配将模型输出转换为语音token序列",
+      "llm_evidence": "通过离散流匹配将模型输出转换为语音token序列",
+      "canonical_evidence": "通过离散流匹配将模型输出转换为语音token序列",
+      "llm_tldr_en": "Inference-time CTMC stack for guided discrete flow matching text-to-speech",
+      "llm_tldr_cn": "推理时CTMC堆栈用于引导式离散流匹配文本转语音",
+      "llm_tldr": "推理时CTMC堆栈用于引导式离散流匹配文本转语音",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.14222v1",
+      "source": "arxiv",
+      "title": "Learning the Context of Errors: Black-Box Online Adaptation of Time Series Foundation Models",
+      "abstract": "The rapid evolution of Time Series Foundation Models (TSFMs) has advanced zero-shot forecasting across diverse domains. Inspired by the current form of Large Language Models, future TSFMs may be offered as commercialized, closed-source API services. However, many existing online adaptation methods still rely on white-box access for parameter fine-tuning or gradient backpropagation. This paradigm mismatch raises a question: In black-box online adaptation for TSFMs, what should we learn? We answer this with an insight: the predictive errors of the base model are conditioned on both the input and output of the base model (i.e., the context of errors). To validate this insight, we propose ORCA (Online Residual Contextual Adaptation). We conduct extensive experiments across 5 state-of-the-art TSFMs and 8 datasets to demonstrate the effectiveness of our approach. Furthermore, through ablation studies, we quantitatively analyze the impact of different adapter learning hypotheses on the final adaptation performance in black-box online adaptation. Code available at https://github.com/Fifthky/ORCA.",
+      "authors": [
+        "Xilin Dai",
+        "Yiding Liu",
+        "Hongjie Xia",
+        "Yifan Hu",
+        "Zewei Dong",
+        "Jiang-Ming Yang",
+        "Qiang Xu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-12T08:02:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.14222v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Black-box online adaptation of time series foundation models",
+      "llm_evidence_cn": "时间序列基础模型的黑盒在线适应",
+      "llm_evidence": "时间序列基础模型的黑盒在线适应",
+      "canonical_evidence": "时间序列基础模型的黑盒在线适应",
+      "llm_tldr_en": "Proposes ORCA for black-box online adaptation of time series models to new domains",
+      "llm_tldr_cn": "提出ORCA用于时间序列模型的黑盒在线领域适应",
+      "llm_tldr": "提出ORCA用于时间序列模型的黑盒在线领域适应",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.14417v1",
+      "source": "arxiv",
+      "title": "Stable Multivariate Functional Time Series Prediction for Major Geomagnetic Indices",
+      "abstract": "High\\text{--}resolution scientific data, such as geomagnetic index streams, often exhibit complex temporal dependencies that can be modeled through functional data analysis. Conventional functional time series (FTS) methods typically partition continuous processes into non-overlapping segments, which artificially fragments temporal continuity and can limit estimation efficiency and stability. This is particularly evident in geomagnetic time series prediction due to their noisy, sudden, and large\\text{--}scale changes. This study presents a robust multivariate FTS forecasting framework for multi\\text{--}dimensional time series with inter\\text{--}series correlations and the existence of exogenous predictors. We introduce an overlapping rolling\\text{--}window scheme that preserves temporal coherence and mitigates boundary information loss, thereby enriching the effective sample size for a more efficient and stable estimation. We integrate functional principal component analysis for dimension reduction with a vector autoregressive model with exogenous inputs to capture latent dynamics across correlated series. We also construct computationally efficient conformal prediction intervals for uncertainty quantification. The framework is motivated by and applied to the simultaneous forecasting of five critical geomagnetic indices, Kp, Dst, SYM\\text{--}H, SME, and SMR, using solar wind parameters as predictors. Empirical results show that this approach outperforms state\\text{--}of\\text{--}the\\text{--}art machine learning baselines, extends forecast horizons to 6\\text{--}24 hours, and provides calibrated uncertainty bounds.",
+      "authors": [
+        "Yian Yu",
+        "Shasha Zou",
+        "Tuija Pulkkinen",
+        "Yang Chen"
+      ],
+      "primary_category": "stat.AP",
+      "categories": [
+        "stat.AP"
+      ],
+      "published": "2026-06-12T12:51:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.14417v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multivariate functional time series prediction",
+      "llm_evidence_cn": "多变量函数时间序列预测",
+      "llm_evidence": "多变量函数时间序列预测",
+      "canonical_evidence": "多变量函数时间序列预测",
+      "llm_tldr_en": "A robust framework for multivariate functional time series forecasting applied to geomagnetic indices.",
+      "llm_tldr_cn": "针对地磁指数的鲁棒多元函数时间序列预测框架。",
+      "llm_tldr": "针对地磁指数的鲁棒多元函数时间序列预测框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.14586v1",
+      "source": "arxiv",
+      "title": "S$^2$COPE: Self-Supervised Concept Discovery via Preference Learning",
+      "abstract": "Current representation learning paradigms force a fundamental compromise: self-supervised methods scale to massive datasets but yield opaque features, whereas interpretable models remain bottlenecked by the need for dense human annotation. We introduce Self-Supervised Concept discOvery via Preference lEarning (\\model), a label-free framework that resolves this dilemma. Instead of treating Vision-Large-Language Models (VLLMs) as static feature extractors, \\model leverages them as active participants in a self-supervised preference optimization loop. By autonomously hypothesizing, validating, and reinforcing candidate visual attributes directly from raw imagery, our framework discovers novel, structured concepts without a single label. Extensive experiments across natural, medical, and physics domains demonstrate that \\model successfully extracts domain-specific concepts where standard VLLMs often fail to generate. By amortizing concept discovery directly into the VLLM backbone through our self-supervised preference objective -- rather than relying on static generation and disjoint filtering -- we achieve up to a 24-point absolute improvement in downstream top-1 classification accuracy on unseen data. Our work suggest that interpretability can emerge through a model's autonomous interaction with incidental visual structures, without any human supervision.",
+      "authors": [
+        "Shilong Xiang",
+        "Zirui Zhang",
+        "Chengzhi Mao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-12T16:02:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.14586v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised concept discovery from raw images",
+      "llm_evidence_cn": "从原始图像自监督发现概念",
+      "llm_evidence": "从原始图像自监督发现概念",
+      "canonical_evidence": "从原始图像自监督发现概念",
+      "llm_tldr_en": "Proposes self-supervised framework for discovering visual concepts without labels",
+      "llm_tldr_cn": "提出无需标签的自监督视觉概念发现框架",
+      "llm_tldr": "提出无需标签的自监督视觉概念发现框架",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

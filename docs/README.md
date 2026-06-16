@@ -1,48 +1,46 @@
 ## 最新日报
-- 最新运行日期：2026-06-16
-- 运行时间：2026-06-16 18:40:37 北京时间
+- 最新运行日期：2026-06-17
+- 运行时间：2026-06-17 05:49:39 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日 AI 日报聚焦损失偏移迁移、Transformer 泛化理论等在理论与工程上的新突破，并速览了脑机接口多智能体、多视图对比学习与文化传承零样本描述等成果。  
-最值得深读的方向是：借助贝叶斯商数实现损失偏移的稳定迁移，以及首次给出 Transformer 做下一词预测的泛化界，为语言模型的理论理解提供坚实支撑。  
-建议读者不妨从零样本图像描述入手，尝试用类似思路将AI用于传统文化数字化，这是门槛低但社会价值高的实践切入点。
-- 详情：[/202606/16/README](/202606/16/README)
+今日精读两篇9分佳作，聚焦“结构化噪声适配”重塑序列贝叶斯滤波，以及语音助手通过持续学习听懂人类的犹豫。最值得关注的方向是隐式状态转移算子与不流畅感知的终身学习，它们为鲁棒预测和共情交互带来全新可能。建议从噪声建模的泛化性切入，留意这类方法何时走进实时感知与对话产品。
+- 详情：[/202606/17/README](/202606/17/README)
 
 ### 精读区论文标签
-1. [Loss-Shift Transfer via Bayes Quotients](/202606/16/2606.13178v1-loss-shift-transfer-via-bayes-quotients)  
+1. [Structured Noise Adaptation for Sequential Bayesian Filtering with Embedded Latent Transfer Operators](/202606/17/2606.14195v1-structured-noise-adaptation-for-sequential-bayesian-filtering-with-embedded-latent-transfer-operators)  
    标签：评分：9.0/10、query:ndai
-   evidence：损失转移下的迁移学习
-2. [Generalization Bounds for Transformer-Based Next-Token Prediction in a Language Model](/202606/16/2606.13280v1-generalization-bounds-for-transformer-based-next-token-prediction-in-a-language-model)  
+   evidence：自适应噪声的序贯贝叶斯滤波，用于时间序列
+2. [Learning to Hear Hesitation: Continual Learning for Disfluency-Aware ASR](/202606/17/2606.14391v1-learning-to-hear-hesitation-continual-learning-for-disfluency-aware-asr)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于Transformer的下一个词预测的泛化界限
-3. [SpikF-GO: Spiking Fourier Graph Operators for Multivariate Time Series Forecasting](/202606/16/2606.13901v1-spikf-go-spiking-fourier-graph-operators-for-multivariate-time-series-forecasting)  
+   evidence：持续学习以用有限数据适应预训练ASR到不流畅语音
+3. [Decoding Semantic Categories from Picture-Naming EEG](/202606/17/2606.14614v1-decoding-semantic-categories-from-picture-naming-eeg)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用脉冲神经网络和图算子进行多变量时间序列预测
-4. [Cauchy Aggregation of Ridge-Regularized Hotelling Tests for High-Dimensional Change-Point Detection](/202606/16/2606.14092v1-cauchy-aggregation-of-ridge-regularized-hotelling-tests-for-high-dimensional-change-point-detection)  
+   evidence：从图片命名的EEG信号解码语义类别
+4. [Test-Time Adaptation of Spiking Neural Networks for Intracortical Neural Decoding using Membrane Potential Alignment](/202606/17/2606.14866v1-test-time-adaptation-of-spiking-neural-networks-for-intracortical-neural-decoding-using-membrane-potential-alignment)  
    标签：评分：9.0/10、query:ndai
-   evidence：高维时序数据的变点检测方法
-5. [FAConformer: Frequency-Aware Convolutional Transformer for Auditory Attention Decoding](/202606/16/2606.14120v1-faconformer-frequency-aware-convolutional-transformer-for-auditory-attention-decoding)  
+   evidence：脑机接口中神经解码的测试时自适应
+5. [Semantics-Enhanced Retrieval-Augmented Time Series Forecasting](/202606/17/2606.14941v1-semantics-enhanced-retrieval-augmented-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：从EEG解码听觉注意力
+   evidence：带双重语义的检索增强时间序列预测
 
 ### 速读区论文标签
-1. [Multi-Modal Multi-Agent Robotic Cognitive Alignment enabled by Non-Invasive Consumer Brain Computer Interfaces: A Proof of Concept Exploration](/202606/16/2606.13190v1-multi-modal-multi-agent-robotic-cognitive-alignment-enabled-by-non-invasive-consumer-brain-computer-interfaces-a-proof-of-concept-exploration)  
+1. [Adaptive Nucleus Truncation for Long-Form Reasoning](/202606/17/2606.13982v1-adaptive-nucleus-truncation-for-long-form-reasoning)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过非侵入式脑机接口解码神经信号实现认知对齐
-2. [Extracting Governing Equations from Latent Dynamics via Multi-View Contrastive Learning](/202606/16/2606.13260v1-extracting-governing-equations-from-latent-dynamics-via-multi-view-contrastive-learning)  
+   evidence：自适应采样方法用于将模型输出转换为序列
+2. [Learning the Context of Errors: Black-Box Online Adaptation of Time Series Foundation Models](/202606/17/2606.14222v1-learning-the-context-of-errors-black-box-online-adaptation-of-time-series-foundation-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：从含噪高维测量中学习紧凑的潜在表征和动力学方程
-3. [Zero-Shot Captioning for Cultural Heritage: Automated Image Analysis of Traditional Indonesian Clothing](/202606/16/2606.13275v1-zero-shot-captioning-for-cultural-heritage-automated-image-analysis-of-traditional-indonesian-clothing)  
+   evidence：时间序列基础模型的黑盒在线适应
+3. [Stable Multivariate Functional Time Series Prediction for Major Geomagnetic Indices](/202606/17/2606.14417v1-stable-multivariate-functional-time-series-prediction-for-major-geomagnetic-indices)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用冻结CLIP和BERT的零样本描述，利用预训练知识
-4. [CloudCons: A Comprehensive End-to-End Benchmark for Cloud Resource Consolidation](/202606/16/2606.13513v1-cloudcons-a-comprehensive-end-to-end-benchmark-for-cloud-resource-consolidation)  
+   evidence：多变量函数时间序列预测
+4. [S$^2$COPE: Self-Supervised Concept Discovery via Preference Learning](/202606/17/2606.14586v1-s2cope-self-supervised-concept-discovery-via-preference-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于评估时间序列资源数据预测模型的基准
-5. [Decoding Insect Song: A Multitask Semisupervised Orthoptera Bioacoustic Classifier](/202606/16/2606.13236v1-decoding-insect-song-a-multitask-semisupervised-orthoptera-bioacoustic-classifier)  
+   evidence：从原始图像自监督发现概念
+5. [Mask, Sample, Revise: A Revisable CTMC Inference Stack for Guided Discrete Flow Matching Text-to-Speech](/202606/17/2606.13989v1-mask-sample-revise-a-revisable-ctmc-inference-stack-for-guided-discrete-flow-matching-text-to-speech)  
    标签：评分：7.0/10、query:ndai
-   evidence：半监督多任务框架，结合自监督学习和知识蒸馏，用于生物声学分类，方法可迁移
+   evidence：通过离散流匹配将模型输出转换为语音token序列
 

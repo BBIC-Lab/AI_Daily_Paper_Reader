@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.13989v1/fig-006.webp",
+      "caption": "Fig. 1. Overview of G-DFlow-TTS. (a) During training, the model learns DFM-based masked infilling over neural codec tokens using text-filler conditioning and prompt-matched conditional coupling. (b) At inference, the Mask, Sample, Revise stack combines predictor-free guidance (PFG), CTMC tau-leaping, and SC-ReMask token-to-mask transitions to revise generated tokens while keeping the acoustic prompt fixed.",
+      "page": 3,
+      "index": 6,
+      "width": 1076,
+      "height": 460
+    },
+    {
+      "url": "assets/figures/arxiv/2606.13989v1/fig-003.webp",
+      "caption": "Fig. 2. Grid search over predictor-free guidance strength 𝛾 and sampling budget (NFE) for G-DFlow-TTS with conditional coupling. Colors denote WER on the LibriSpeech test-clean prompted subset (lower is better).",
+      "page": 4,
+      "index": 3,
+      "width": 471,
+      "height": 292
+    },
+    {
+      "url": "assets/figures/arxiv/2606.13989v1/fig-001.webp",
+      "caption": "TABLE I Results on LibriSpeech test-clean. We report mean scores with 95% confidence intervals, where the gray ± values denote CI half-widths. External systems are shown using official checkpoints for contextual reference. † indicates a statistically significant improvement over the G-DFlow-TTS baseline at the same NFE (paired sign-flip permutation, 𝑝 < 10−4; see Table II). Within the G-DFlow-TTS variants, the best result for each metric is highlighted in bold, and the second-best is underlined.",
+      "page": 5,
+      "index": 1,
+      "width": 932,
+      "height": 316
+    },
+    {
+      "url": "assets/figures/arxiv/2606.13989v1/fig-002.webp",
+      "caption": "TABLE II Paired significance at NFE=32 on the same utterances. Δ is the mean paired difference (variant−baseline). For WER/CER (in percentage points), negative is better; for SIM-o/UTMOS, positive is better. 95% CI: paired bootstrap (10k). 𝑝: paired sign-flip permutation (10k); all entries have 𝑝 < 10−4. Takeaway: PFG yields large gains over the baseline, while C-coupling and SC-ReMask provide additional consistent improvements.",
+      "page": 5,
+      "index": 2,
+      "width": 990,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2606.13989v1/fig-004.webp",
+      "caption": "Fig. 4. Schedule-constrained remasking ablation on LibriSpeech dev-clean, where 𝜂𝑟 = 𝜂𝑟𝑒𝑠𝑐𝑎𝑙𝑒 and 𝜂𝑐 = 𝜂𝑐𝑎𝑝 . We report CER as a function of the number of function evaluations (NFE) while varying the remasking switch time 𝑡switch, rescaling factor 𝜂𝑟 , and cap 𝜂𝑐 . The no-remasking baseline uses C-coupling with PFG. Always-on remasking (𝑡switch = 0) with (𝜂𝑟 , 𝜂𝑐 ) = (0.5, 0.5) gives the best low-NFE behavior among the tested schedules, showing that revisable token-to-[MASK] transitions improve CTMC sampling beyond guided unmasking alone.",
+      "page": 6,
+      "index": 4,
+      "width": 1006,
+      "height": 326
+    },
+    {
+      "url": "assets/figures/arxiv/2606.13989v1/fig-005.webp",
+      "caption": "TABLE III Quality-speed trade-off across sampling budgets for the G-DFlow-TTS Baseline (U-coupling) and our full method (+C-coupling+PFG+SC-ReMask).",
+      "page": 6,
+      "index": 5,
+      "width": 438,
+      "height": 335
+    }
+  ]
+}
