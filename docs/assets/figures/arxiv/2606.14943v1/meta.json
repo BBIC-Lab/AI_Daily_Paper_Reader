@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-009.webp",
+      "caption": "Figure 1: Illustration of our method, AC-GPT. We train a standard causal Transformer architecture, but augment the sequences with a set of known tokens representing the conditioning set which all other tokens can attend to. Each token’s final hidden representation is used to predict the next token in the sequence, and the loss for tokens in the evaluation set are used to update the model. BOS is the <BEGINNING OF SEQUENCE> token, and x̄i represents a copy of a token with identical embedding and positional encoding. We train over a joint distribution of conditioning/evaluation sets, each representing a conditional probability query.",
+      "page": 3,
+      "index": 9,
+      "width": 807,
+      "height": 328
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-005.webp",
+      "caption": "Figure 2: Main results (rmax = 0.6, GPT-2 Small (82M)). (a) Perplexity (↓) across evaluation modes. (b) Training-distribution perplexity (↓) with vs. without future context, for AC-GPT and σ-GPT-temporal. The other methods reported in full in Appendix B.",
+      "page": 7,
+      "index": 5,
+      "width": 798,
+      "height": 307
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-013.webp",
+      "caption": "Figure 3: (a) Qwen3-14B + LoRA r = 8, rmax = 0.6. Perplexity (↓) for AC-GPT LoRA with and without future context, compared to a standard causal LoRA baseline. (b) Relative perplexity advantage (%) of AC-GPT LoRA over the causal LoRA baseline at rmax = 0.6 across three Qwen3 scales (LoRA r = 8);",
+      "page": 8,
+      "index": 13,
+      "width": 798,
+      "height": 279
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-012.webp",
+      "caption": "Table A.1: MAUVE Ablation (Small): MAUVE (↑) on WikiText-103 across evaluation modes and conditioning scales using GPT-2 Small backbone.",
+      "page": 13,
+      "index": 12,
+      "width": 830,
+      "height": 567
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-007.webp",
+      "caption": "Table A.2: MAUVE Ablation (Base): MAUVE (↑) on WikiText-103 across evaluation modes and conditioning scales using GPT-2 Base backbone.",
+      "page": 14,
+      "index": 7,
+      "width": 830,
+      "height": 564
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-008.webp",
+      "caption": "Table A.3: MAUVE Ablation (Medium): MAUVE (↑) on WikiText-103 across evaluation modes and conditioning scales using GPT-2 Medium backbone.",
+      "page": 14,
+      "index": 8,
+      "width": 830,
+      "height": 565
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-001.webp",
+      "caption": "Table B.1: Ablation Study (Small): Perplexity (↓) across evaluation modes, model types, and conditioning scales using GPT-2 Small (82M) backbone.",
+      "page": 25,
+      "index": 1,
+      "width": 830,
+      "height": 483
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-002.webp",
+      "caption": "Table B.2: Ablation Study (Base): Perplexity (↓) across evaluation modes, model types, and conditioning scales using GPT-2 Base (124M) backbone.",
+      "page": 25,
+      "index": 2,
+      "width": 830,
+      "height": 482
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-003.webp",
+      "caption": "Table B.3: Ablation Study (Medium): Perplexity (↓) across evaluation modes, model types, and conditioning scales using GPT-2 Medium (204M) backbone.",
+      "page": 26,
+      "index": 3,
+      "width": 830,
+      "height": 481
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-010.webp",
+      "caption": "Table C.1: Per-configuration perplexities for the fine-tuning sweep (Section 4.3). All cells use rmax = 0 (causal baseline) or rmax = 0.6 (AC-GPT). Mix denotes the pure-autoregressive mixing probability during training (0 means no mixing). Mode definitions follow Section 4.2; the Infilling and Training dist. columns evaluate AC-GPT with future context, while Infilling w/o future and Training dist. w/o future evaluate without. Baseline cells report N/A for the with-future columns because a causal model cannot exploit future context.",
+      "page": 28,
+      "index": 10,
+      "width": 830,
+      "height": 297
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-011.webp",
+      "caption": "Table C.2: Relative perplexity advantage (%) of AC-GPT LoRA over the matched-budget causal LoRA baseline at rmax = 0.6. UC adv: AC-GPT Unconditional vs. Baseline Unconditional. Inf adv: AC-GPT Infilling (with future) vs. Baseline Infilling (w/o future). TD adv: AC-GPT Training dist. (with future) vs. Baseline Training dist. (w/o future). Positive = AC-GPT better.",
+      "page": 28,
+      "index": 11,
+      "width": 830,
+      "height": 319
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-006.webp",
+      "caption": "Figure C.1: Qwen3-1.7B rmax sweep (LoRA r = 8, Wikitext-103). Relative Training-distribution perplexity advantage (%) of AC-GPT over the matched-budget causal LoRA baseline as a function of conditioning range. Advantage scales monotonically with rmax.",
+      "page": 29,
+      "index": 6,
+      "width": 798,
+      "height": 282
+    },
+    {
+      "url": "assets/figures/arxiv/2606.14943v1/fig-004.webp",
+      "caption": "Figure D.2: The five evaluation modes used throughout the paper. illustrated with “The cat sat on the mat.” as a running example. SeeSection 4.1 for formal definitions.",
+      "page": 30,
+      "index": 4,
+      "width": 810,
+      "height": 411
+    }
+  ]
+}

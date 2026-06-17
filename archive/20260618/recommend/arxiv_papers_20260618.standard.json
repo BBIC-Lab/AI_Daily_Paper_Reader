@@ -1,0 +1,418 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-17T20:39:35.441632+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 75,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 126,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 19,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 14,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 20
+  },
+  "deep_dive": [
+    {
+      "id": "2606.15989v1",
+      "source": "arxiv",
+      "title": "Task-guided cross-subject latent alignment: a multi-encoder-decoder VAE",
+      "abstract": "Aligning neural activity across subjects offers the promise of discovering shared computational principles and generalizable decoders. However, traditional alignment methods require shared stimuli across subjects, a constraint that limits applicability to naturalistic paradigms with limited or non-overlapping data. We introduce a Multi-Encoder-Decoder Variational Autoencoder (MED-VAE) that achieves cross-subject alignment without shared stimuli by anchoring representations to a common scaffold provided by a pretrained ANN. Using the Natural Scenes Dataset, we show that MED-VAE creates common latent spaces with superior semantic organisation, achieving higher cross-subject alignment than common methods while maintaining robust generalisation to held-out stimuli where traditional methods degrade. Reconstructing from these common spaces back to each subject's original neural space, MED-VAE preserves equal stimulus-driven signal in its cross-subject latent space. Finally, we show that this superior alignment directly enables cross-subject neural prediction, as demonstrated via cross-subject image decoding. In summary, we introduce a framework to identify generalisable common subspaces for cross-subject predictions and downstream tasks, demonstrated here for visual cortex responses to static images.",
+      "authors": [
+        "Angeliki Papathanasiou",
+        "Jascha Achterberg",
+        "Thomas E. Nichols",
+        "Rui Ponte Costa"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "cs.AI"
+      ],
+      "published": "2026-06-14T19:30:11+00:00",
+      "link": "https://arxiv.org/pdf/2606.15989v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "representation learning for neural activity via cross-subject VAE",
+      "llm_evidence_cn": "通过跨被试VAE进行神经活动表示学习",
+      "llm_evidence": "通过跨被试VAE进行神经活动表示学习",
+      "canonical_evidence": "通过跨被试VAE进行神经活动表示学习",
+      "llm_tldr_en": "MED-VAE aligns neural representations across subjects without shared stimuli using a pretrained ANN.",
+      "llm_tldr_cn": "MED-VAE利用预训练人工神经网络在没有共享刺激的情况下对齐跨被试神经表征。",
+      "llm_tldr": "MED-VAE利用预训练人工神经网络在没有共享刺激的情况下对齐跨被试神经表征。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14970v1",
+      "source": "arxiv",
+      "title": "Zero-order Parameter-free Optimization for LMO-based Methods: Novel Approach for Efficient Fine-tuning",
+      "abstract": "Fine-tuning large language models (LLMs) has become a central application of modern optimization, enabling pretrained models to adapt to diverse downstream tasks and domain-specific data. A major obstacle in large-scale fine-tuning is the memory overhead of backpropagation, which requires storing activations, gradients, and optimizer states. Zeroth-order (ZO) optimization offers a memory-efficient alternative, but its performance is highly sensitive to the stepsize and smoothing parameter, often requiring costly task-specific tuning. Parameter-free (PF) optimization addresses this issue by adapting algorithmic parameters without prior knowledge of problem-dependent constants. Moreover, large-scale fine-tuning can benefit from geometry-aware updates that account for the heterogeneous structure of parameter blocks, which can be modeled through methods that exploit linear minimization oracle (LMO). In this work, we study PF adaptation for LMO-based ZO optimization and introduce $\\texttt{AdaNAGED}$, a method that unifies gradient-free training, adaptive tuning, and non-Euclidean update geometry. We establish convergence guarantees and validate the method on large-scale LLM fine-tuning task with $\\texttt{OPT}-1.3\\mathrm{B}$ model.",
+      "authors": [
+        "Dmitriy Bystrov",
+        "Daniil Medyakov",
+        "Dmitry Bylinkin",
+        "Aleksandr Beznosikov"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-12T21:46:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.14970v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "zero-order parameter-free optimization for fine-tuning LLMs",
+      "llm_evidence_cn": "零阶无参数优化用于微调LLMs",
+      "llm_evidence": "零阶无参数优化用于微调LLMs",
+      "canonical_evidence": "零阶无参数优化用于微调LLMs",
+      "llm_tldr_en": "Proposes memory-efficient zeroth-order optimization for fine-tuning large language models.",
+      "llm_tldr_cn": "提出用于微调大语言模型的内存高效零阶优化方法。",
+      "llm_tldr": "提出用于微调大语言模型的内存高效零阶优化方法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14975v1",
+      "source": "arxiv",
+      "title": "Harnessing cortical geometry, wiring, and function as inductive biases for recurrent neural networks",
+      "abstract": "How the wiring and functional organization of cortex shape recurrent computation remains a central question in both neuroscience and machine learning. Here, we leverage data released through the Machine Intelligence from Cortical Networks (MICrONS) program--a functional connectomics resource spanning multiple areas of mouse visual cortex, in which dense calcium imaging is co-registered with high-resolution electron microscopy reconstruction from the same animal--to build biologically grounded recurrent neural networks. Using neuronal spatial coordinates, anatomical connectivity, and function-derived relationships from nearly 12,000 coregistered excitatory neurons, we initialize recurrent weights and impose communication-aware spatial constraints during learning. Across three cognitive decision-making tasks, networks constrained by cortical structure and function consistently outperform baseline and partially constrained models. Functional weight initialization provides the largest gain, while real spatial embedding yields robust additional improvements across conditions. These biologically grounded networks also develop low-entropy, modular, and small-world organization, and retain strong performance even when recurrence is restricted to positive weights. Together, our results show that the machinery of cortex--its geometry, wiring, and functional structure--can be harnessed as a powerful inductive basis for building recurrent networks that learn more effectively while converging toward key organizational principles of biological computation.",
+      "authors": [
+        "Mo Shakiba",
+        "Rana Rokni",
+        "Mohammad Mohammadi",
+        "Nima Dehghani"
+      ],
+      "primary_category": "cs.NE",
+      "categories": [
+        "cs.NE",
+        "cs.AI",
+        "cs.LG",
+        "physics.data-an",
+        "q-bio.NC"
+      ],
+      "published": "2026-06-12T21:53:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.14975v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "biologically grounded RNNs using cortical data from MICrONS",
+      "llm_evidence_cn": "利用MICrONS皮层数据构建生物启发的循环神经网络",
+      "llm_evidence": "利用MICrONS皮层数据构建生物启发的循环神经网络",
+      "canonical_evidence": "利用MICrONS皮层数据构建生物启发的循环神经网络",
+      "llm_tldr_en": "Builds recurrent neural networks initialized with cortical geometry and connectivity from MICrONS data for neural computation.",
+      "llm_tldr_cn": "利用MICrONS数据的皮层几何和连接初始化循环神经网络，用于神经计算。",
+      "llm_tldr": "利用MICrONS数据的皮层几何和连接初始化循环神经网络，用于神经计算。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.15169v1",
+      "source": "arxiv",
+      "title": "Label Shift Aware Adaptation for Online Zero-shot Learning with Contrastive Language-Image Pre-Training (CLIP)",
+      "abstract": "Vision-language models like Contrastive Language-Image Pre-Training (CLIP) have been extensively studied in data-scarce scenarios. A particularly challenging and realistic task in this area is online zero-shot learning with CLIP, where unknown test samples are predicted sequentially in random order by CLIP while keeping the feature extraction and model parameters fixed during the sequential inference phase. Most existing approaches in this setting address the problem by adapting representations online using incoming test samples, while neglecting the distribution of the data on which CLIP was initially trained. This mismatch can lead to degraded performance when the label distribution in the test data differs from that of the training domain. To address this gap, we propose Label Shift Aware (LSA), which formulates the online zero-shot classification task as a domain adaptation problem. Specifically, LSA adapts the predictions computed by CLIP, which was trained on an unknown source distribution, to a target distribution using only unlabeled test data, and applies label shift correction to mitigate the mismatch between the source and target domains. The extensive experiments across multiple datasets demonstrate that the proposed LSA consistently outperforms state-of-the-art online zero-shot learning methods based on CLIP.",
+      "authors": [
+        "Pengxiao Han",
+        "Changkun Ye",
+        "Yanshuo Wang",
+        "Jinguang Tong",
+        "Miaohua Zhang",
+        "Xuesong Li",
+        "Jie Hong",
+        "Lars Petersson"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-13T07:36:24+00:00",
+      "link": "https://arxiv.org/pdf/2606.15169v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "label shift aware online adaptation for zero-shot CLIP",
+      "llm_evidence_cn": "针对零样本CLIP的标签偏移自适应方法",
+      "llm_evidence": "针对零样本CLIP的标签偏移自适应方法",
+      "canonical_evidence": "针对零样本CLIP的标签偏移自适应方法",
+      "llm_tldr_en": "Proposes label shift aware adaptation for online zero-shot learning with CLIP, addressing distribution mismatch.",
+      "llm_tldr_cn": "提出标签偏移感知的自适应方法，用于CLIP在线零样本学习，解决分布不匹配问题。",
+      "llm_tldr": "提出标签偏移感知的自适应方法，用于CLIP在线零样本学习，解决分布不匹配问题。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.15278v1",
+      "source": "arxiv",
+      "title": "RECTOR: Masked Region-Channel-Temporal Modeling for Affective and Cognitive Representation Learning",
+      "abstract": "Affective and cognitive disorders manifest as distributed, time-varying brain network dynamics across regions, channels, and time, challenging robust representation learning from EEG/sEEG for clinical diagnosis. We propose RECTOR (Masked Region-Channel-Temporal Modeling), an end-to-end self-supervised framework that unifies joint region-channel-temporal representation learning beyond fixed anatomical priors. At its core, RECTOR-SA is a hierarchical, block-sparse self-attention induced by Adaptive Functional Partitioning that evolves region structures from static anatomical definitions to adaptive functional regions. The self-supervision is driven by Masked Topology and Representation Learning, which jointly optimizes three complementary objectives: Masked Predictive Modeling, Topological Structure Modeling, and Cross-View Consistency. Across diverse benchmarks, RECTOR sets a new state-of-the-art in EEG emotion recognition and sEEG task-engagement classification. Crucially, its strong robustness to missing channels and cross-montage generalization underscores its potential for large-scale pre-training on heterogeneous EEG/sEEG, providing interpretable insights at both region and channel levels.",
+      "authors": [
+        "Jinhan Liu",
+        "Mahsa Shoaran"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-13T12:33:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.15278v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised representation learning for neural activity",
+      "llm_evidence_cn": "神经活动的自监督表示学习",
+      "llm_evidence": "神经活动的自监督表示学习",
+      "canonical_evidence": "神经活动的自监督表示学习",
+      "llm_tldr_en": "RECTOR learns region-channel-temporal representations from EEG/sEEG via masked modeling.",
+      "llm_tldr_cn": "RECTOR通过掩码建模从EEG/sEEG学习区域-通道-时间表示。",
+      "llm_tldr": "RECTOR通过掩码建模从EEG/sEEG学习区域-通道-时间表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.14956v1",
+      "source": "arxiv",
+      "title": "A Comparative Study of Graph Neural Network Layer Selection for Interaction Modelling in Driving Trajectory Prediction",
+      "abstract": "Autonomous driving systems rely on precise trajectory prediction to plan safe and efficient movement. Graph Neural Networks (GNNs) have become a promising approach for modelling spatiotemporal interactions among road agents. However, designing GNN architectures for trajectory prediction remains non-standardized, with little guidance on which graph layers effectively capture spatial interactions and temporal dynamics. This paper offers a detailed comparative study of 19 graph layer types, focusing on their spatial and temporal processing capabilities to discover the most effective architectures for trajectory prediction. Within the explored hyperparameter setting, we highlight five standout layer combinations, with ARMA, Chebyshev, and topology-aware layers consistently performing better than others. Beyond performance metrics, our findings yield practical design principles: sum-based aggregation is more effective than mean-based methods, multi-head attention mechanisms enable richer interactions, and assigning different weights to different hop distances significantly improves prediction accuracy. These findings offer useful guidance for designing more interpretable and effective trajectory prediction models.",
+      "authors": [
+        "George Daoud",
+        "Mohamed El-Darieby"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-12T20:57:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.14956v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "compares GNN layers for spatiotemporal trajectory prediction",
+      "llm_evidence_cn": "比较GNN层在时空轨迹预测中的效果",
+      "llm_evidence": "比较GNN层在时空轨迹预测中的效果",
+      "canonical_evidence": "比较GNN层在时空轨迹预测中的效果",
+      "llm_tldr_en": "Systematic study of 19 GNN layers for driving trajectory prediction",
+      "llm_tldr_cn": "系统比较19种图神经网络层在驾驶轨迹预测中的效果",
+      "llm_tldr": "系统比较19种图神经网络层在驾驶轨迹预测中的效果",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.14943v1",
+      "source": "arxiv",
+      "title": "Simplifying the Modeling of Arbitrary Conditionals in Natural Language",
+      "abstract": "Causal Transformers model sequences through an autoregressive factorization of the joint distribution, which enables efficient left-to-right decoding and conditional likelihood computation. However, they cannot tractably sample from or evaluate arbitrary conditionals -- e.g., a block of text conditioned on past and future tokens. Recent work aims to solve this problem through novel architectures, but they often lead to sub-optimal modeling of such conditionals and degraded generations. We propose Arbitrary Conditionals GPT (AC-GPT) which introduces a simple modification to standard causal Transformers to enable evaluating and sampling from arbitrary conditionals -- including past, future, and mixed contexts -- within a single forward pass. Unlike prior approaches, our method preserves the standard left-to-right ordering and next-token prediction objective essential for both strong performance and efficient training on natural language. Crucially, this compatibility allows existing LLMs to be fine-tuned for arbitrary conditioning. Our empirical results indicate that our method outperforms baselines on modeling arbitrary conditionals, without degrading standard left-to-right performance.",
+      "authors": [
+        "Yinhan Lu",
+        "Eric Elmoznino",
+        "Léo Gagnon",
+        "Sarthak Mittal",
+        "Tejas Kasetty",
+        "Guillaume Lajoie"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-06-12T20:39:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.14943v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "enables sampling from arbitrary conditionals in language models",
+      "llm_evidence_cn": "使语言模型能够从任意条件分布中采样",
+      "llm_evidence": "使语言模型能够从任意条件分布中采样",
+      "canonical_evidence": "使语言模型能够从任意条件分布中采样",
+      "llm_tldr_en": "AC-GPT modifies causal transformers to allow efficient arbitrary conditional generation.",
+      "llm_tldr_cn": "AC-GPT修改因果变压器以实现高效任意条件生成。",
+      "llm_tldr": "AC-GPT修改因果变压器以实现高效任意条件生成。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.14957v1",
+      "source": "arxiv",
+      "title": "Learning Sparse Latent Predictive Foundation Model for Multimodal Neuroimaging",
+      "abstract": "Brain MRIs are routinely acquired as multiple complementary sequences with unique contrast weighting, including T1-weighed imaging (T1w) anatomic and fluid-sensitive T2-weighted (T2w) contrasts. However, methods for learning unified representations across the multitude of MRI contrast mechanisms at health-system scale are lacking. In this study, we introduce Neuro-JEPA, a sparse multimodal neuroimaging foundation model that combines a latent predictive objective with a Mixture-of-Experts architecture to encode brain MRI across core T1w, T2w, and fluid-suppressed FLAIR imaging (FLAIR). We further provide a systematic methodological study of architectural, masking, objective, and sparsity design choices beneficial for robust neuroimaging multimodal representation learning. Neuro-JEPA was pretrained on 1,551,862 scans from 428,647 studies after modality-specific preprocessing with data curation across three core structural brain MRI sequences. We evaluated the learned representations across clinical and research settings, including 25 tasks from three health systems: NYU Langone, NYU Long Island, and Massachusetts General Hospital, and 22 tasks from 12 public datasets, covering unimodal, multimodal and cross-domain evaluation configurations. Across these benchmarks, existing neuroimaging foundation models showed inconsistent gains over a simple convolutional neural network (CNN) baseline, whereas Neuro-JEPA achieved stronger and more consistent performance across all evaluated settings. These results establish a scalable methodological framework for multimodal neuroimaging representation learning and highlight the need for foundation model evaluation protocols that include simple baselines, clinically heterogeneous cohorts and controlled multimodal comparisons.",
+      "authors": [
+        "Haoxu Huang",
+        "Long Chen",
+        "Jingyun Chen",
+        "Jinu Hyun",
+        "James Ryan Loftus",
+        "Kara Melmed",
+        "Daniel Orringer",
+        "Jennifer Frontera",
+        "Seena Dehkharghani",
+        "Arjun Masurkar",
+        "Narges Razavian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-12T21:02:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.14957v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sparse multimodal neuroimaging foundation model learning compact representations",
+      "llm_evidence_cn": "稀疏多模态神经影像基础模型学习紧凑表示",
+      "llm_evidence": "稀疏多模态神经影像基础模型学习紧凑表示",
+      "canonical_evidence": "稀疏多模态神经影像基础模型学习紧凑表示",
+      "llm_tldr_en": "Neuro-JEPA learns unified representations from multiple MRI contrasts using latent predictive objective.",
+      "llm_tldr_cn": "Neuro-JEPA 使用潜在预测目标从多种 MRI 对比中学习统一表示。",
+      "llm_tldr": "Neuro-JEPA 使用潜在预测目标从多种 MRI 对比中学习统一表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.15012v1",
+      "source": "arxiv",
+      "title": "A Kuramoto-von Mises Time Series Model for Probabilistic Modeling of Coupled Oscillators",
+      "abstract": "A system of coupled oscillators provides a fundamental framework for modeling a wide range of physical and biological phenomena. In neuroscience, the central nervous system exhibits synchronized oscillatory activity with adjacent brain regions, giving rise to traveling wave dynamics for instance during sleep. Similarly, in the gastrointestinal system, neuromuscular cells coordinate their oscillations to generate propagating waves of slow wave activity. To estimate probability distributions of multivariate phase relationships, existing approaches typically rely on equilibrium thermodynamics, expressing the system in a Boltzmann form through a pairwise exponential family distribution. However, these assumptions are often violated in real-world systems, which are inherently dynamic and frequently transition between equilibrium and non-equilibrium regimes. To address this, we propose an efficient method for estimating the probability distribution of coupled oscillators that does not assume thermodynamic equilibrium. Using a Langevin dynamics-based construction, the approach enables accurate modeling even in non-equilibrium regimes. The maximum likelihood estimation method is shown to have a closed form algebraic solution in the high sampling rate regime, a condition commonly satisfied by modern data acquisition systems, which makes it readily applicable in practice. We demonstrate its robustness on simulated data, where it outperforms existing approaches in non-equilibrium settings, and further illustrate its utility for characterizing dynamic brain traveling waves in response to brain stimulation and in hypothesis testing within the context of electrophysiologic recordings of the human stomach.",
+      "authors": [
+        "Yun Hwang",
+        "Todd P. Coleman"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME",
+        "q-bio.QM"
+      ],
+      "published": "2026-06-12T23:17:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.15012v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "probabilistic time series model for coupled oscillators in neuroscience",
+      "llm_evidence_cn": "神经科学中耦合振荡器的概率时间序列模型",
+      "llm_evidence": "神经科学中耦合振荡器的概率时间序列模型",
+      "canonical_evidence": "神经科学中耦合振荡器的概率时间序列模型",
+      "llm_tldr_en": "Proposes a Kuramoto-von Mises model for probabilistic modeling of coupled oscillators with neuroscience applications.",
+      "llm_tldr_cn": "提出Kuramoto-von Mises模型，用于耦合振荡器的概率建模，应用于神经科学。",
+      "llm_tldr": "提出Kuramoto-von Mises模型，用于耦合振荡器的概率建模，应用于神经科学。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.15054v1",
+      "source": "arxiv",
+      "title": "Size Doesn't Matter: Cosine-Scored Sparse Autoencoders",
+      "abstract": "Sparse autoencoders (SAEs) detect features via inner product, so a feature's activation scales with both its directional alignment and the input's norm. Under BatchTopK, high-norm tokens inflate all pre-activations simultaneously, claiming dictionary slots regardless of content alignment. This matters because sublayer normalization has already discarded the magnitude the score measures, so the encoder detects a quantity the model does not read. We replace the score with a learned blend of cosine similarity and input magnitude, letting the optimizer choose how much norm to use; a per-feature extension lets each feature decide independently. In both regimes, training is free to recover inner product but never does, with no feature ever choosing more than half-magnitude dependence. At matched reconstruction, the cosine encoder learns features that align with human-recognizable concepts far more often than standard, filling dictionary slots that inner product wastes on norm detectors. Loss reweighting that equalizes gradients barely closes the gap, confirming forward-pass score geometry as the lever. The advantage is not universal across tasks or depths, but we believe cosine scoring should be the default for dictionary learning on normalized representations.",
+      "authors": [
+        "Silen Naihin",
+        "Lev Stambler"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-13T01:51:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.15054v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "cosine-scored sparse autoencoders for feature learning",
+      "llm_evidence_cn": "余弦评分稀疏自编码器用于特征学习",
+      "llm_evidence": "余弦评分稀疏自编码器用于特征学习",
+      "canonical_evidence": "余弦评分稀疏自编码器用于特征学习",
+      "llm_tldr_en": "Improves sparse autoencoders by learning a blend of cosine similarity and input magnitude for better feature detection.",
+      "llm_tldr_cn": "通过学习余弦相似度和输入幅度的混合改进了稀疏自编码器的特征检测。",
+      "llm_tldr": "通过学习余弦相似度和输入幅度的混合改进了稀疏自编码器的特征检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
