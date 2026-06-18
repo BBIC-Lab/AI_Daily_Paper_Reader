@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-006.webp",
+      "caption": "Figure 1. A representation of Transfer Learning (TL) between source and target datasets with a shared feature space. The source dataset typically has a larger size. The knowledge acquired from the source model, trained on the source dataset, is transferred to the target dataset. Figure concept and design adapted from Ribani & Marengoni (2019).",
+      "page": 3,
+      "index": 6,
+      "width": 510,
+      "height": 270
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-010.webp",
+      "caption": "Figure 2. Schematic illustration of various layers in a CNN and their relevance in transfer learning. The input tensor is a science, reference and difference image cutout triplet. The feature extraction region extracts general and specific features from the input, and the fully-connected classifier classifies the input (e.g. real/bogus) based on extracted features.",
+      "page": 4,
+      "index": 10,
+      "width": 1058,
+      "height": 266
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-013.webp",
+      "caption": "Figure 3. Examples of ILMT detections: (a) a genuine transient adjacent to a host galaxy (highlighted with a red marker) and (b) a spurious source. For each case, the top row shows 195 × 195 pixel cutouts of the science, reference, and difference frames, and the bottom row shows their downsampled 63 × 63 pixel versions. The native pixel scale is 0′′.323/pixel, while the downsampled stamps are at 1′′/pixel, consistent with ZTF.",
+      "page": 5,
+      "index": 13,
+      "width": 1058,
+      "height": 382
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-012.webp",
+      "caption": "Figure 4. Histogram depicting the magnitude distribution of ZTF transient alerts. The ALeRCE broker executed a real/bogus classification of these alerts, facilitating the incorporation of selected samples into the source dataset based on the classification results.",
+      "page": 5,
+      "index": 12,
+      "width": 521,
+      "height": 389
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-001.webp",
+      "caption": "Figure 5. Examples of sources belonging to the four possible candidate classes. A triplet of science, reference and difference stamps for every source is shown. The sources were correctly classified into their relevant classes by the real/bogus classifier, 3-class and 4-class candidate alert classifiers.",
+      "page": 6,
+      "index": 1,
+      "width": 1058,
+      "height": 376
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-002.webp",
+      "caption": "Figure 6. CNN architecture of the real/bogus classifier. The same architecture was used for the 3-class and 4-class transient alert classifiers, except for the softmax output layer (instead of sigmoid) with 3 and 4 dimensions, respectively.",
+      "page": 6,
+      "index": 2,
+      "width": 510,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-004.webp",
+      "caption": "Figure 7. Evaluation of optimal threshold for CNN-based real/bogus classifier using F1 score maximisation on the validation dataset.",
+      "page": 7,
+      "index": 4,
+      "width": 531,
+      "height": 400
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-007.webp",
+      "caption": "Figure 8. Receiver operating characteristic (ROC) curves and precision-recall curves for the source (ZTF) model, model trained without TL (baseline) and target (ILMT) model trained with TL for the real/bogus classifier.",
+      "page": 8,
+      "index": 7,
+      "width": 1058,
+      "height": 391
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-008.webp",
+      "caption": "Figure 9. Confusion matrices obtained for real/bogus classifier source model (left) and target model (centre). The same is also shown for a model trained with the small ILMT dataset (baseline) without using TL (right).",
+      "page": 8,
+      "index": 8,
+      "width": 936,
+      "height": 190
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-009.webp",
+      "caption": "Figure 10. Recall values evaluated for simulated ‘orphan’ sources at various seeing/FWHM and magnitude ranges. The plot also shows the median S/N ratio (here defined as the ratio between the amplitude of the simulated Gaussian source and the local noise) for different magnitude ranges.",
+      "page": 8,
+      "index": 9,
+      "width": 510,
+      "height": 419
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-011.webp",
+      "caption": "Figure 11. Comparison between confusion matrices of the source (left) 3-class (top) and 4-class (bottom) transient alert classifier models and the models modified with TL (right) on the same test dataset.",
+      "page": 9,
+      "index": 11,
+      "width": 848,
+      "height": 847
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-005.webp",
+      "caption": "Figure 12. Distribution of MPC obtained V-band magnitudes of asteroids detected with the pipeline by only using the TL models for real/bogus classifiers.",
+      "page": 10,
+      "index": 5,
+      "width": 500,
+      "height": 300
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15705v1/fig-003.webp",
+      "caption": "Figure 13. Left side: From top to bottom: science, reference and difference image cutouts of supernova candidates AT2024abso, AT2025chp, AT2025dgl, and AT2025re, detected in the ILMT science images using TL models for real/bogus classifiers. All the 4 candidates have a clear and extended-host galaxy associated with them. The first three candidates were classified correctly as extended-host objects by the 3 and 4-class classifiers. AT2025re was misclassified as hostless by the 4-class classifier but correctly classified as extended-host by the 3-class classifier. The size of the cutouts shown is 102×102 pixel (∼ 31′′ × 31′′). Right side: From top to bottom: science, reference and difference image cutouts of variability detected in the Seyfert 1 galaxy 2MASS J11061222+2927307, the QSO J0937+2937, and the variable star ATO J084.9485+29.3722. The three candidates are clearly point sources. The bottom panel shows detection of the asteroid 1999 ND50, appearing hostless. The first 3 candidates were classified as point-source objects by the 3-class and 4-class classifiers. The asteroid candidate was classified as hostless. The size of the cutouts shown is 102×102 pixel (∼ 31′′ × 31′′).",
+      "page": 11,
+      "index": 3,
+      "width": 1085,
+      "height": 720
+    }
+  ]
+}

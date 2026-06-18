@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.15805v1/fig-001.webp",
+      "caption": "Figure 1: Mean-Field Parallel Decoding Framework. (Left) Joint Inconsistency: Standard parallel decoding commits tokens based on position-wise confidence (Top-3 confidence shown). This ignores inter-token dependencies, leading to an incompatible sequence (e.g., repeating the token “3”). (Center) Mean-Field Commit: Our framework frames joint token commitment as a variational mean-field optimization. It computes local margins (ci) and pairwise similarities (Dij using Jensen-Shannon Divergence), then iterates (R=2) to update commit intensities qi. (Right) Consistent Parallel Decoding & Commit: The refined, global-aware selection enables consistent parallel updates. This induces inhibitory signals that unmask only non-conflicting high-confidence positions, yielding a more reliable parallel update while increasing parallelism.",
+      "page": 3,
+      "index": 1,
+      "width": 822,
+      "height": 330
+    }
+  ]
+}

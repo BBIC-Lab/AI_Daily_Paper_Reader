@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-004.webp",
+      "caption": "Figure 1: RECAP overview. Instead of teleoperating each new task and fine-tuning the policy (top, ∼24 GPU-hours/task for Cosmos Policy [7]), ReCAP appends cheap human-hand demonstrations to a retrieval pool while keeping the policy frozen (bottom), 18× cheaper [9, 10], no additional training.",
+      "page": 2,
+      "index": 4,
+      "width": 777,
+      "height": 278
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-009.webp",
+      "caption": "Figure 2: RECAP framework. The current observation retrieves a matching state-action chunk from the pool database; the retrieved chunk and the current observation then condition a world action model that denoises the next action and next observation in one video sequence.",
+      "page": 4,
+      "index": 9,
+      "width": 436,
+      "height": 345
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-001.webp",
+      "caption": "Figure 5: Comparative analyses of RECAP and baseline on PushT. (a) Unseen-angle success with and without retrieval on a π0.5 and a Cosmos (WAM) backbone; retrieval helps both, and the WAM benefits more. (b) The future-image objective improves unseen success only when paired with retrieval. (c) Action-slot attention across decoder layers, which peaks on the T-block and then on the predicted next position under retrieval but stays near uniform without it.",
+      "page": 6,
+      "index": 1,
+      "width": 817,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-005.webp",
+      "caption": "Table 1: Quantitative analysis on RoboTwin. We report per-task success rate (%) on RoboTwin, with Aloha-Agilex as the target embodiment and UR5 as the retrieval pool. The left block shows seen tasks, and the right block shows unseen tasks.",
+      "page": 7,
+      "index": 5,
+      "width": 768,
+      "height": 190
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-006.webp",
+      "caption": "Figure 6: Qualitative comparison on the held-out hand-over-mic task. Baseline (top-left) and Co-training (bottom-left) fail to grasp the microphone; Retrieval Only (top-right) knocks it over (red box); Ours (bottom-right) grasps it successfully. Each inset shows the retrieved UR5 chunk that the policy conditions on.",
+      "page": 7,
+      "index": 6,
+      "width": 769,
+      "height": 233
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-007.webp",
+      "caption": "Figure 10: Action-slot attention along a representative rollout. Top row: scene at six timesteps. Subsequent rows: action-slot attention overlaid on the primary view at L10 (intake) and L15 (commit), and on the retrieved frame at L10. The primary L10 row attends to the current T-block; the primary L15 row shifts to the predicted end-of-chunk pose; the retrieved L10 row attends to the retrieved chunk’s T-block region, consistent with the per-layer summary in Table 4.",
+      "page": 14,
+      "index": 7,
+      "width": 790,
+      "height": 517
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-002.webp",
+      "caption": "Table 6: Causal ablation across seven unseen angles. “L10 block” masks the action-to-retrieval cross-attention at decoder layer 10 (similarly for L15); applied separately to the five-success rollouts (5S) and the five-failure rollouts (5F) at each angle. The baseline column reproduces the unseenangle success of Table 2.",
+      "page": 15,
+      "index": 2,
+      "width": 672,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-003.webp",
+      "caption": "Figure 11: Two failure modes across all seven unseen angles. (a) L15 own-prediction commit, success vs failure: success bars exceed failure bars at every angle, so weakened L15 commit is a universal failure signature, with the strongest weakening at 0◦. (b) L10 retrieval-intake gap, failure− success: angles close to the seen training band (±30◦, +15◦) show negative gaps (under-anchoring: failures under-use retrieval), while angles far from it (0◦,±60◦) show positive gaps (over-anchoring: failures over-rely on retrieval); 0◦ is the heaviest over-anchoring.",
+      "page": 15,
+      "index": 3,
+      "width": 775,
+      "height": 217
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-008.webp",
+      "caption": "Table 9: Progressive retrieval pool composition (RoboTwin). Each level is a strict superset of the previous one and appends six UR5 tasks; the held-out evaluation task that becomes retrievable at that level is in bold. The base is the five training tasks under the ur5 clean 50 and ur5 randomized 500 splits.",
+      "page": 18,
+      "index": 8,
+      "width": 727,
+      "height": 346
+    },
+    {
+      "url": "assets/figures/arxiv/2606.15631v1/fig-010.webp",
+      "caption": "Table 10: Hyperparameters. Backbone, and the RoboTwin 2.0 retrieval and training settings. The Stage 2 weights are the per-component subframe-matching weights of Eq. (6), and the proprioception encoding feeds ϕprop.",
+      "page": 20,
+      "index": 10,
+      "width": 702,
+      "height": 630
+    }
+  ]
+}

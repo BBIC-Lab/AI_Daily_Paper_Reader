@@ -1,0 +1,416 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-18T20:55:14.600693+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 77,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 129,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 16,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 11,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 17
+  },
+  "deep_dive": [
+    {
+      "id": "2606.15705v1",
+      "source": "arxiv",
+      "title": "Transfer learning for transient search with small-field optical survey telescopes",
+      "abstract": "The advent of optical sky surveys has enabled several automated programs for searching transients. Many of these programs extensively use supervised machine learning (ML) algorithms to automate these searches. Effective implementation of such a strategy has an advantage over non-automated methods of transient search in terms of reduced manual labour and reporting latency. Training the relevant ML algorithms often requires extensive labelled training datasets that might not be readily available for new or small field-of-view survey telescopes. Transfer Learning (TL) is an ML technique that is often employed to address this issue by transferring knowledge from a pre-trained model, trained on an extensive dataset for a related task, to enhance performance on a new task with a limited dataset available. This paper demonstrates TL for a Convolutional Neural Network (CNN)-based real/bogus classifier model for transient detection between extensive publicly available image data from the Zwicky Transient Facility (ZTF) and a small and labelled dataset from the 4-m International Liquid Mirror Telescope (ILMT). The same technique was employed to train two different types of transient alert classifiers to characterise the detected candidates based on detection image stamps into 3 and 4 classes, respectively. The resulting model for the real/bogus classifier achieved an accuracy of 97.3% on the test dataset. Additionally, an accuracy of 92.9% was achieved for the 3-class classifier and 85.6% for the 4-class classifier. Furthermore, the statistical significance of the effectiveness of this technique was established with an unpaired t-test between TL models and baseline models trained without TL.",
+      "authors": [
+        "Kumar Pranshu",
+        "Kuntal Misra",
+        "Rithesh A",
+        "Jean Surdej",
+        "Sarvesh Kumar Yadav"
+      ],
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM"
+      ],
+      "published": "2026-06-14T09:35:11+00:00",
+      "link": "https://arxiv.org/pdf/2606.15705v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Transfer learning from pretrained models for transient search with limited labeled data",
+      "llm_evidence_cn": "利用预训练模型的迁移学习，在有限标注数据下搜索瞬变源",
+      "llm_evidence": "利用预训练模型的迁移学习，在有限标注数据下搜索瞬变源",
+      "canonical_evidence": "利用预训练模型的迁移学习，在有限标注数据下搜索瞬变源",
+      "llm_tldr_en": "Transfer learning adapts a model trained on large surveys to small-field telescopes for transient detection.",
+      "llm_tldr_cn": "迁移学习将在大规模巡天中训练的模型适配到小视场望远镜，用于瞬变源检测。",
+      "llm_tldr": "迁移学习将在大规模巡天中训练的模型适配到小视场望远镜，用于瞬变源检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.15752v1",
+      "source": "arxiv",
+      "title": "One Sequential Recommendation Model Pretrained from Synthetic Priors Predicts Multiple Datasets",
+      "abstract": "Existing sequential recommendation models rely on dataset-specific training, where the learned parameters are fitted to the item catalog and the observed interaction distribution of the training data. This limits generalization to new domains, typically requiring retraining from scratch. In this work, we propose SRPFN, a Prior-data Fitted Network for sequential recommendation -- predicting the next item in a single forward pass without any gradient-based parameter updates in the target domain. SRPFN is pretrained offline on 25.6M sequences sampled from a synthetic prior that spans diverse item-to-item transition patterns, learning to produce posterior predictive next-item distributions. At inference time, SRPFN generates recommendations by conditioning on a support set of item-item transition examples from the target domain, adapting to domain-specific patterns without retraining. Extensive experiments on five benchmarks across 10 baselines show that SRPFN achieves the best or second-best performance across nearly all metrics and datasets, while being substantially more computationally efficient than trained baselines. These results establish that a single model pretrained on synthetic priors can generalize across diverse real-world domains, offering a framework for update-free sequential recommendation.",
+      "authors": [
+        "Woosung Kang",
+        "Jiwon Jeong",
+        "Jonghyeok Shin",
+        "Jeongwhan Choi",
+        "Noseong Park"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-06-14T11:28:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.15752v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "sequential recommendation with pretrained synthetic priors",
+      "llm_evidence_cn": "使用预训练合成先验的序列推荐",
+      "llm_evidence": "使用预训练合成先验的序列推荐",
+      "canonical_evidence": "使用预训练合成先验的序列推荐",
+      "llm_tldr_en": "SRPFN pretrains on synthetic sequences to predict next items across domains without retraining.",
+      "llm_tldr_cn": "SRPFN在合成序列上预训练，无需重新训练即可跨域预测下一项。",
+      "llm_tldr": "SRPFN在合成序列上预训练，无需重新训练即可跨域预测下一项。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.15805v1",
+      "source": "arxiv",
+      "title": "Mean-Field Parallel Decoding for Discrete Diffusion Language Models",
+      "abstract": "Discrete diffusion language models enable parallel token generation, offering a pathway to low-latency decoding. However, selecting tokens independently by marginal confidence limits effective parallelism: tokens that appear reliable in isolation can form incompatible configurations when several positions are updated at once. We introduce a training-free decoding framework that coordinates these parallel updates. At each forward pass, the method assigns a commit score to each masked position and refines these scores using pairwise interactions derived from the model's predictive distributions. A variational relaxation yields a simple fixed-point update that suppresses conflicting simultaneous commitments within a single forward pass. This mechanism allows the decoder to commit more tokens in parallel while maintaining competitive generation quality. The method is lightweight, requires no auxiliary model or retraining, and drops into existing diffusion decoding pipelines without modification. Experiments on reasoning and code-generation benchmarks show consistent improvements in the quality-latency trade-off.",
+      "authors": [
+        "Tamim Zoabi",
+        "Ameen Ali",
+        "Liran Ringel",
+        "Lior Wolf"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-14T13:17:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.15805v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Training-free parallel decoding framework for discrete diffusion language models",
+      "llm_evidence_cn": "用于离散扩散语言模型的无训练并行解码框架",
+      "llm_evidence": "用于离散扩散语言模型的无训练并行解码框架",
+      "canonical_evidence": "用于离散扩散语言模型的无训练并行解码框架",
+      "llm_tldr_en": "Mean-field parallel decoding coordinates token updates in discrete diffusion models for efficient generation.",
+      "llm_tldr_cn": "均场并行解码协调离散扩散模型中的令牌更新，实现高效生成。",
+      "llm_tldr": "均场并行解码协调离散扩散模型中的令牌更新，实现高效生成。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.16076v1",
+      "source": "arxiv",
+      "title": "Phys-JEPA: Physics-Informed Latent World Models for Multivariate Time-Series Forecasting",
+      "abstract": "Multivariate forecasting in physical systems requires models that predict coupled temporal variables while preserving meaningful state evolution. Deep forecasters can fit temporal correlations, and physics-informed models can regularize predictions with scientific constraints, but these directions are often connected only at the decoded-output level. As a result, the hidden predictive state that generates future trajectories may remain statistically useful but physically unstructured. We introduce Phys-JEPA, a physics-informed joint-embedding predictive architecture for multivariate time-series forecasting. Phys-JEPA learns a latent world model in which predictive states are decomposed into physical and residual components, and physical consistency is imposed directly on latent states and latent transitions rather than only on decoded forecasts. This formulation uses known physical variables to organize the representation space while retaining residual capacity for unresolved dynamics. On Jena Climate 2009--2016, Phys-JEPA reduces aggregate MSE from 0.12482 to 0.12273 and temperature MSE from 0.01892 to 0.01831 at H=24. On Traffic, full Phys-JEPA improves aggregate MSE over the supervised baseline across all tested horizons, reducing H=192 MSE from 0.800784 to 0.773873. On Electricity, the best variant depends on horizon: static latent consistency is strongest at H=24 and H=48, while full Phys-JEPA gives the best aggregate and target-variable MSE at H=192. These initial results suggest that moving physics-informed learning from output space to latent predictive state space is a promising direction for interpretable temporal world models.",
+      "authors": [
+        "Weizhi Nie",
+        "Weichao Liu",
+        "Honglin Guo",
+        "Yuting Su"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.GT"
+      ],
+      "published": "2026-06-15T00:22:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.16076v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multivariate time-series forecasting with latent world model",
+      "llm_evidence_cn": "基于潜在世界模型的多变量时间序列预测",
+      "llm_evidence": "基于潜在世界模型的多变量时间序列预测",
+      "canonical_evidence": "基于潜在世界模型的多变量时间序列预测",
+      "llm_tldr_en": "Introduces a physics-informed joint-embedding predictive architecture for time-series forecasting.",
+      "llm_tldr_cn": "提出一种物理信息联合嵌入预测架构用于时间序列预测",
+      "llm_tldr": "提出一种物理信息联合嵌入预测架构用于时间序列预测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.16362v1",
+      "source": "arxiv",
+      "title": "Input-Dependent Fisher Information for Local Sensitivity Analysis of Medical Image Classifiers",
+      "abstract": "Deep neural networks have achieved strong performance in medical image classification, but often work like black-box. Commonly used post-hoc interpretation methods often provide heuristic visualizations whose relationship to the classifier's predictive distribution is indirect. This work introduces a local sensitivity analysis framework based on the input-dependent Fisher Information Matrix (iFIM) of a trained classifier. The iFIM characterizes how the classifier's predictive distribution changes under infinitesimal perturbations of the input image. By using a Gram-matrix formulation, the nonzero eigenspectrum of the iFIM can be recovered without explicitly forming the full image-dimensional Fisher matrix. The leading iFIM eigenspace is then used to project an input image into a high local-sensitivity component and its orthogonal component. These components provide a model-intrinsic description of local predictive sensitivity, rather than a conventional pixel-wise attribution heatmap or a causal segmentation of task-relevant anatomy. The framework is evaluated on controlled and clinical medical image classification tasks using multiple classifier architectures. Perturbation-based experiments show that high-sensitivity iFIM components are more strongly coupled to changes in predictive confidence and classification performance than lower-sensitivity complementary components. The results support the iFIM framework as a principled tool for analyzing local decision sensitivity and for complementing existing attribution-based interpretability methods in medical imaging.",
+      "authors": [
+        "Sourya Sengupta. Mark A. Anastasio"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.AI",
+        "cs.IT"
+      ],
+      "published": "2026-06-15T07:57:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.16362v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Input-dependent Fisher Information for feature importance weighting",
+      "llm_evidence_cn": "输入依赖的Fisher信息用于特征重要性加权",
+      "llm_evidence": "输入依赖的Fisher信息用于特征重要性加权",
+      "canonical_evidence": "输入依赖的Fisher信息用于特征重要性加权",
+      "llm_tldr_en": "Introduces iFIM for local sensitivity analysis and feature importance in classifiers",
+      "llm_tldr_cn": "提出iFIM框架用于分类器的局部敏感性分析和特征重要性",
+      "llm_tldr": "提出iFIM框架用于分类器的局部敏感性分析和特征重要性",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.15495v1",
+      "source": "arxiv",
+      "title": "Contrastive learning of dynamical representations for enhanced molecular sampling",
+      "abstract": "Identifying collective variables that capture slow dynamical modes is essential for sampling rare events in complex systems. Existing machine-learning approaches often require predefined metastable states, carefully chosen descriptors, or training trajectories with high-quality kinetic information. Here, we introduce SelfTICA, a self-supervised contrastive-learning framework that reformulates collective-variable discovery as dynamical representation learning. SelfTICA defines positive and negative pairs from time-lagged molecular configurations, learns reusable features through a contrastive objective linked to spectral variational principles, and extracts orthogonal slow modes by applying time-lagged independent component analysis in the learned representation space. By decoupling representation learning from slow-mode extraction, SelfTICA avoids direct optimization of eigendecomposition-based objectives and enables spectra and collective variables to be evaluated across lag times without retraining. Across different atomistic systems, SelfTICA learns dynamical representations from limited, biased, or exploratory data and converts them into collective variables that accelerate rare-event exploration and improve free-energy convergence.",
+      "authors": [
+        "Kai Zhu",
+        "Jintu Zhang",
+        "Pietro Novelli",
+        "Tingjun Hou",
+        "Luigi Bonati"
+      ],
+      "primary_category": "physics.comp-ph",
+      "categories": [
+        "physics.comp-ph",
+        "physics.chem-ph"
+      ],
+      "published": "2026-06-13T22:44:06+00:00",
+      "link": "https://arxiv.org/pdf/2606.15495v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "contrastive learning of dynamical representations from time-lagged sequential data",
+      "llm_evidence_cn": "从时间延迟序列数据中对比学习动态表示",
+      "llm_evidence": "从时间延迟序列数据中对比学习动态表示",
+      "canonical_evidence": "从时间延迟序列数据中对比学习动态表示",
+      "llm_tldr_en": "SelfTICA learns slow collective variables for molecular sampling using contrastive learning on time-lagged configurations.",
+      "llm_tldr_cn": "SelfTICA通过对时间延迟构象进行对比学习，学习分子采样的慢集体变量。",
+      "llm_tldr": "SelfTICA通过对时间延迟构象进行对比学习，学习分子采样的慢集体变量。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.15598v1",
+      "source": "arxiv",
+      "title": "Integrating Reasoning and Generalization in Text-to-SQL via Self-Enhanced Fine-Tuning",
+      "abstract": "Text-to-SQL aims to translate natural language questions into executable SQL queries over structured databases, enabling non-expert users to access data intuitively. While recent advances in large language models (LLMs) have shown promise in this task, existing LLM-based approaches often struggle to strike a balance between strong reasoning capabilities and robust generalization. To address these limitations, we propose CoTE-SQL to enhance the LLM-based text-to-SQL generation with three key innovations: (i) self-enhanced reasoning traces distilled from LLMs without human annotation, (ii) structured chain-of-thought (CoT) prompting with modular decomposition and examples retrieval, and (iii) error-aware revision based on SQL execution feedback. Extensive experiments on the Spider and Bird benchmarks demonstrate that CoTE-SQL achieves new state-of-the-art performance among methods built on open-source LLMs with comparable model sizes on Bird (53.39% EX / 59.02 VES) and strong results on Spider (79.60% EX / 77.19 VES), with especially significant gains on complex queries. Results highlight the effectiveness of combining self-enhancement, structured reasoning, and execution-time feedback within an LLM-based framework for text-to-SQL design.",
+      "authors": [
+        "Feng Lyu",
+        "Jinfeng Cen",
+        "Sijing Duan",
+        "Hao Wu",
+        "Shucheng Li",
+        "Weixu Zhang",
+        "Haolun Wu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-14T04:52:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.15598v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "fine-tunes LLMs for text-to-SQL with self-enhanced reasoning",
+      "llm_evidence_cn": "通过自增强推理微调大语言模型用于文本到SQL",
+      "llm_evidence": "通过自增强推理微调大语言模型用于文本到SQL",
+      "canonical_evidence": "通过自增强推理微调大语言模型用于文本到SQL",
+      "llm_tldr_en": "Enhances LLM-based text-to-SQL generation via self-distilled reasoning and error-aware revision.",
+      "llm_tldr_cn": "通过自蒸馏推理和错误修正增强基于大语言模型的文本到SQL生成。",
+      "llm_tldr": "通过自蒸馏推理和错误修正增强基于大语言模型的文本到SQL生成。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.15631v1",
+      "source": "arxiv",
+      "title": "Retrieve, Don't Retrain: Extending Vision Language Action Models to New Tasks at Test Time",
+      "abstract": "Extending a vision-language-action (VLA) policy to a new task typically requires task-specific teleoperated demonstrations and per-task fine-tuning, making adaptation costly in both data collection and compute. In this paper, we show that this target-side per-task adaptation cost can be replaced by retrieval. Our retrieval-augmented policy is trained once on paired demonstrations from the target embodiment (query) and a cheaper embodiment (pool, e.g., human-hand video), then frozen. New tasks are added at deployment by appending pool-side demonstrations to a retrieval pool. The frozen policy conditions on retrieved trajectories at every control step, so new tasks are absorbed by indexing data rather than updating parameters. Fine-tuning is needed only to take on a new, unseen embodiment, not for each new task. We show that retrieval improves policies beyond a specific backbone, including standard VLA policies, but its effect is especially pronounced in Cosmos Policy, a video-generation-based world-action model (WAM). In this setting, retrieval supplies coarse task progression, while the WAM's future-image objective provides an additional visual consistency signal that strengthens the retrieval-conditioned actions. On PushT, we study how retrieval provides a reusable high-level motion prior for cross-embodiment generalization to unseen goal angles, while on RoboTwin 2.0 our method outperforms cross-embodiment baselines on unseen tasks, and we additionally demonstrate the method on a real robot.",
+      "authors": [
+        "Jeongeun Park",
+        "Juhan Park",
+        "Taekyung Kim",
+        "Sungjoon Choi",
+        "Dongyoon Han",
+        "Sangdoo Yun"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-14T06:48:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.15631v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "retrieval-augmented VLA policy adapts to new tasks without retraining",
+      "llm_evidence_cn": "检索增强的VLA策略无需重训即可适应新任务",
+      "llm_evidence": "检索增强的VLA策略无需重训即可适应新任务",
+      "canonical_evidence": "检索增强的VLA策略无需重训即可适应新任务",
+      "llm_tldr_en": "Uses retrieval to extend VLA policies to new tasks at test time, avoiding per-task fine-tuning",
+      "llm_tldr_cn": "通过检索在测试时扩展VLA策略到新任务，避免逐任务微调",
+      "llm_tldr": "通过检索在测试时扩展VLA策略到新任务，避免逐任务微调",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.15638v1",
+      "source": "arxiv",
+      "title": "MambAdapter: Lightweight Mamba-Based Adapters for Parameter-Efficient Transfer Learning in Speech and Audio",
+      "abstract": "Fine-tuning Transformer-based foundation models has become the dominant strategy for domain adaptation in audio and speech processing. To reduce the computational and memory costs of this process, parameter-efficient transfer learning (PETL) methods have been widely explored. Meanwhile, Mamba, a recent state-space model, has emerged as a promising alternative to Transformers for sequence modeling. In this work, we present MambAdapter, a parameter-efficient transfer learning approach that integrates Mamba into low-rank bottleneck adapters. Our design combines parameter sharing across adapters with the injection of a lightweight Mamba module, enabling more effective modeling of audio features. We demonstrate that MambAdapter matches or outperforms strong PETL baselines on four audio classification tasks and five speech recognition languages, even when operating under reduced parameter budgets.",
+      "authors": [
+        "Salman Hussain Ali",
+        "Umberto Cappellazzo",
+        "Mirco Ravanelli"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-06-14T07:01:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.15638v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "parameter-efficient transfer learning using Mamba-based adapters",
+      "llm_evidence_cn": "使用基于 Mamba 的适配器进行参数高效迁移学习",
+      "llm_evidence": "使用基于 Mamba 的适配器进行参数高效迁移学习",
+      "canonical_evidence": "使用基于 Mamba 的适配器进行参数高效迁移学习",
+      "llm_tldr_en": "MambAdapter integrates Mamba into low-rank adapters for efficient transfer learning in speech and audio.",
+      "llm_tldr_cn": "MambAdapter 将 Mamba 集成到低秩适配器中，实现语音和音频的高效迁移学习。",
+      "llm_tldr": "MambAdapter 将 Mamba 集成到低秩适配器中，实现语音和音频的高效迁移学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.15642v1",
+      "source": "arxiv",
+      "title": "CIWI-CKT: Chaos-Informed Wave Interference Feature Fusion and Cross-City Knowledge Transfer for Traffic Flow Forecasting",
+      "abstract": "Accurate traffic flow prediction remains challenging in cross-city, data-scarce scenarios where limited historical data hinders model generalisation. The chaotic nature of traffic dynamics, complex spatio-temporal dependencies, and heterogeneous urban networks complicate few-shot learning across cities. Existing deep learning approaches either treat traffic as purely deterministic or lack mechanisms to model wave-like interference patterns essential for cross-regime traffic dynamics. To address these limitations, this paper proposes CIWI-CKT, a novel Chaos-Informed Wave Interference Feature Fusion framework with Cross-City Knowledge Transfer. Our framework introduces three core innovations: chaos-informed wave generation that extracts measurable chaos invariants and models traffic as adaptive wave components; meta-interference processing that captures wave interactions between support and query regimes while producing a predictability score for confidence estimation; and chaos-aware meta-learning that enables efficient cross-city knowledge transfer while preserving chaotic characteristics. We establish theoretical guarantees including chaos-to-wave stability, wave-induced dimension reduction, and meta-learning generalisation bounds. Extensive experiments on four real-world traffic datasets demonstrate that CIWI-CKT significantly outperforms state-of-the-art spatio-temporal graph learning, transfer learning, prompt-based, and few-shot methods, improving prediction accuracy while substantially reducing required training data.",
+      "authors": [
+        "Abdul Joseph Fofanah",
+        "Lian Wen",
+        "David Chen",
+        "Shaoyang Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-14T07:08:24+00:00",
+      "link": "https://arxiv.org/pdf/2606.15642v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "cross-city knowledge transfer for traffic forecasting in data-scarce scenarios",
+      "llm_evidence_cn": "在数据稀缺场景下进行跨城市知识迁移的交通预测",
+      "llm_evidence": "在数据稀缺场景下进行跨城市知识迁移的交通预测",
+      "canonical_evidence": "在数据稀缺场景下进行跨城市知识迁移的交通预测",
+      "llm_tldr_en": "Proposes chaos-informed wave interference feature fusion with cross-city knowledge transfer for traffic prediction.",
+      "llm_tldr_cn": "提出混沌信息波干涉特征融合与跨城市知识迁移的交通预测",
+      "llm_tldr": "提出混沌信息波干涉特征融合与跨城市知识迁移的交通预测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
