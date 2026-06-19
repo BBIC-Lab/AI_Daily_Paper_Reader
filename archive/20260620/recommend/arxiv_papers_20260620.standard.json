@@ -1,0 +1,428 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-19T21:39:26.206246+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 44,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 80,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 14,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 9,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 15
+  },
+  "deep_dive": [
+    {
+      "id": "2606.18667v1",
+      "source": "arxiv",
+      "title": "Can neurons speak? Semantic narration of vision at single-cell resolution",
+      "abstract": "Identifying what individual neurons encode in higher-order visual cortex is an open problem. Responses resist intuitive parameterization, and the deep-network embeddings used in their place are black boxes. Here, we introduce NEURRATOR, a framework that decodes spiking activity into free-form natural-language narration of the viewed scene at single-neuron resolution. A learned encoder maps spike trains from arbitrary subsets of simultaneously-recorded neurons into the patch-embedding space of a frozen CLIP, from which a multimodal language model and sparse autoencoder generates and validates a description with no language-side training. Applied to Neuropixel recordings of mouse visual cortex during natural-movie viewing, NEURRATOR narrates from thousands of neurons, singular cortical regions, local populations, or from a molecularly-defined cell-types. We use this property to (i) quantify how decoding fidelity scales with population size and cortical region, and (ii) \"neurrate\", in plain language, what individual neurons and genetically-tagged inhibitory cell-types contribute to visual representation. This recasts cell identity from a classification target into a functional probe of the visual system, providing a new unit of biological insights in neural systems.",
+      "authors": [
+        "Arnau Marin-Llobet",
+        "Richard Hakim",
+        "Sara Matias",
+        "Venkatesh N. Murthy",
+        "Na Li",
+        "Demba Ba"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "q-bio.QM"
+      ],
+      "published": "2026-06-17T04:06:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.18667v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "decodes neural spiking into natural language narration",
+      "llm_evidence_cn": "将神经脉冲解码为自然语言叙述",
+      "llm_evidence": "将神经脉冲解码为自然语言叙述",
+      "canonical_evidence": "将神经脉冲解码为自然语言叙述",
+      "llm_tldr_en": "NEURRATOR decodes single-neuron spiking into free-form language descriptions of visual scenes.",
+      "llm_tldr_cn": "NEURRATOR将单神经元脉冲解码为视觉场景的自由语言描述。",
+      "llm_tldr": "NEURRATOR将单神经元脉冲解码为视觉场景的自由语言描述。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19081v1",
+      "source": "arxiv",
+      "title": "Retrieval-Based Brain Decoding by Alignment, not Complexity",
+      "abstract": "A prominent theory in cognitive science suggests that concepts in the brain are organized as high-dimensional vectors, with semantic meaning captured by directions and relative angles in this space. Brain decoding is the effort of reconstructing or retrieving stimuli (or their representations) from neural activity and involves finding a function that approximates how the brain represents concepts. This motivates the investigation of contrastive objectives as biologically plausible candidates to reverse the brain loss function. In this work, we study how functional MRI (fMRI) activity can generally be mapped with the embedding spaces of foundation models in vision, language, and audio. Although neural computations are highly non-linear at the microscale, fMRI measurements average signals across space and time, further smoothed by noise, effectively linearizing the observable representation. Consistent with these views, our experiments across multiple datasets demonstrate that linear contrastive decoders consistently outperform ridge regression and standard non-linear alternatives, and that these results generalize across images, text, and sound. These findings indicate that decoding gains arise more from the choice of training objective than from architectural complexity, pointing to contrastive-linear models as a principled strategy for brain decoding.",
+      "authors": [
+        "Matteo Ciferri",
+        "Matteo Ferrante",
+        "Nicola Toschi"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "cs.HC"
+      ],
+      "published": "2026-06-17T13:52:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.19081v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "decodes fMRI activity by aligning with foundation model embeddings for stimulus retrieval",
+      "llm_evidence_cn": "通过将fMRI活动与基础模型嵌入对齐来解码刺激",
+      "llm_evidence": "通过将fMRI活动与基础模型嵌入对齐来解码刺激",
+      "canonical_evidence": "通过将fMRI活动与基础模型嵌入对齐来解码刺激",
+      "llm_tldr_en": "Aligns fMRI with foundation model embeddings for retrieval-based brain decoding without complex models.",
+      "llm_tldr_cn": "将fMRI与基础模型嵌入对齐，实现无需复杂模型的基于检索的脑解码。",
+      "llm_tldr": "将fMRI与基础模型嵌入对齐，实现无需复杂模型的基于检索的脑解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.16301v1",
+      "source": "arxiv",
+      "title": "One-Step Generalization Ratio Guided Optimization for Domain Generalization",
+      "abstract": "Domain Generalization (DG) aims to train models that generalize to unseen target domains but often overfit to domain-specific features, known as undesired correlations. Gradient-based DG methods typically guide gradients in a dominant direction but often inadvertently reinforce spurious correlations. Recent work has employed dropout to regularize overconfident parameters, but has not explicitly adjusted gradient alignment or ensured balanced parameter updates. We propose GENIE (Generalization-ENhancing Iterative Equalizer), a novel optimizer that leverages the One-Step Generalization Ratio (OSGR) to quantify each parameter's contribution to loss reduction and assess gradient alignment. By dynamically equalizing OSGR via a preconditioning factor, GENIE prevents a small subset of parameters from dominating optimization, thereby promoting domain-invariant feature learning. Theoretically, GENIE balances convergence contribution and gradient alignment among parameters, achieving higher OSGR while retaining SGD's convergence rate. Empirically, it outperforms existing optimizers and enhances performance when integrated with various DG and single-DG methods.",
+      "authors": [
+        "Sumin Cho",
+        "Dongwon Kim",
+        "Kwangsu Kim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-06-15T07:06:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.16301v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "domain generalization optimizer using OSGR to improve generalization to unseen domains",
+      "llm_evidence_cn": "使用OSGR优化器进行域泛化，提升对未见域的泛化能力",
+      "llm_evidence": "使用OSGR优化器进行域泛化，提升对未见域的泛化能力",
+      "canonical_evidence": "使用OSGR优化器进行域泛化，提升对未见域的泛化能力",
+      "llm_tldr_en": "GENIE optimizer uses OSGR to balance parameter updates for better domain generalization.",
+      "llm_tldr_cn": "GENIE优化器利用OSGR平衡参数更新以提升域泛化性能。",
+      "llm_tldr": "GENIE优化器利用OSGR平衡参数更新以提升域泛化性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.16413v1",
+      "source": "arxiv",
+      "title": "An Augmented Reality Brain-Robot Interface for Generalist Robot Arm Manipulation",
+      "abstract": "The integration of augmented reality (AR) and EEG-based brain-computer interfaces (BCIs) offers a promising path for enabling intuitive control of robots for assistive purposes. However, existing AR brain-robot interface (BRI) systems are often constrained to task-specific structures, limiting their utility in real-world environments. We present an AR BRI designed for generalist robot arm manipulation that combines gaze-based object selection with motor imagery action control. Our system uses eye-tracking for intuitive object targeting and context-aware visual overlays (\"Place\" and \"Use\") to guide the user through tasks within a shared autonomy framework. We evaluated the interface through a feasibility study with 18 healthy participants performing three multi-step activities of daily living: drinking, using a drawer, and operating an oven. Our results demonstrate that this interaction paradigm enables effective sequential task execution and high user engagement, achieving a \"Good\" usability rating (SUS > 70). These findings support the feasibility of the proposed interaction paradigm for complex BCI-driven robotic assistance, and motivate future evaluation with the intended target population. Project website: https://ar-bri-manip.github.io/.",
+      "authors": [
+        "Shangkai Zhang",
+        "Rousslan Fernand Julien Dossa",
+        "Luca Nunziante",
+        "Marina Di Vincenzo",
+        "Kai Arulkumaran"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.HC"
+      ],
+      "published": "2026-06-15T08:50:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.16413v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG-based brain-robot interface decoding motor imagery into actions",
+      "llm_evidence_cn": "基于EEG的脑机接口解码运动想象为动作",
+      "llm_evidence": "基于EEG的脑机接口解码运动想象为动作",
+      "canonical_evidence": "基于EEG的脑机接口解码运动想象为动作",
+      "llm_tldr_en": "AR brain-robot interface decodes neural signals for generalist robot control",
+      "llm_tldr_cn": "AR脑机接口解码神经信号用于通用机器人控制",
+      "llm_tldr": "AR脑机接口解码神经信号用于通用机器人控制",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.16462v1",
+      "source": "arxiv",
+      "title": "Learning aligned EEG representations with subject-specific encoders",
+      "abstract": "Cross-subject EEG decoding promises more training data, but it also exposes neural networks to strong inter-subject distribution shifts. We study whether task supervision and architecture alone can learn subject-aligned representations. We replace a shared EEG encoder with subject-specific encoders followed by a common classifier, and compare this hybrid model with standard EEGNet, AttentionBaseNet, and CTNet baselines with Euclidean Alignment (EA) on four motor-imagery datasets. EA improves shared encoders by recentering subject covariances, but the hybrid encoder largely internalises this role: validation-loss curves and latent-distance analyses change little when EA is removed. Subject-specific heads increase class distinctiveness and place each subject close to its own latent manifold, improving most subjects while leaving a method-sensitive subset. These results support subject-specific encoders as a learned alignment mechanism for EEG decoding and identify head selection for unseen subjects as the remaining bottleneck.",
+      "authors": [
+        "Bruna J. Lopes",
+        "Gabriel Schwartz",
+        "Sylvain Chevallier",
+        "Raphael Y. de Camargo",
+        "Bruno Aristimunha"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-15T09:31:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.16462v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "subject-specific EEG representation learning",
+      "llm_evidence_cn": "特定被试的EEG表示学习",
+      "llm_evidence": "特定被试的EEG表示学习",
+      "canonical_evidence": "特定被试的EEG表示学习",
+      "llm_tldr_en": "Subject-specific encoders align EEG representations across subjects",
+      "llm_tldr_cn": "特定被试编码器对齐跨被试EEG表示",
+      "llm_tldr": "特定被试编码器对齐跨被试EEG表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.16093v1",
+      "source": "arxiv",
+      "title": "Long-Context Modeling via GSS-Transformer Hybrid Architecture with Learnable Mixing",
+      "abstract": "Modeling long-range dependencies remains a central challenge in natural language processing. Transformer architectures achieve strong performance via self-attention but scale quadratically ($O(N^2)$) with sequence length, while State Space Models (SSMs) scale linearly ($O(N)$) but suffer from a selective recall bottleneck, struggling to retrieve precise information from compressed states. This creates a fundamental tradeoff between efficiency and perplexity. To tackle these challenges, we propose the \\textit{Parallel Hybrid Architecture (PHA)}, which runs Gated State Spaces (GSS), Grouped Query Attention (GQA), and Feed-Forward Networks (FFNs) as independent parallel branches fused by a learnable mixing mechanism. Instead of forcing SSMs to approximate attention or serializing the two paradigms, PHA allows each branch to specialize: GSS captures global context, while attention performs selective retrieval, with FFN providing complementary processing. On WikiText-103, PHA achieves 16.51 PPL at 125M parameters, outperforming Hedgehog (16.70) and H3-125M (23.70). Scaling to 180M parameters yields 16.42 PPL, which gives comparable results with the pure attention baseline while delivering 24\\% higher throughput and up to 40\\% lower memory usage at long contexts. On OpenWebText, our 125M model achieves 19.72 PPL, outperforming standard Transformers (20.60) and GSS hybrid baselines (19.80). These results demonstrate that separating sequence modeling paradigms into parallel specialists enables Transformer-level perplexity with substantially improved efficiency for long-context language modeling.",
+      "authors": [
+        "Kuzey Torlak",
+        "Hüseyin Arda Arslan",
+        "Anıl Dervişoğlu",
+        "Beyza Nur Deniz",
+        "Onur Boyar"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-15T01:17:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.16093v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "hybrid architecture for long-context sequential data modeling",
+      "llm_evidence_cn": "用于长上下文时序数据建模的混合架构",
+      "llm_evidence": "用于长上下文时序数据建模的混合架构",
+      "canonical_evidence": "用于长上下文时序数据建模的混合架构",
+      "llm_tldr_en": "Proposes parallel hybrid architecture combining GSS, attention, and FFN for long-range dependencies.",
+      "llm_tldr_cn": "提出结合GSS、注意力和FFN的并行混合架构处理长距离依赖。",
+      "llm_tldr": "提出结合GSS、注意力和FFN的并行混合架构处理长距离依赖。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.16203v2",
+      "source": "arxiv",
+      "title": "DynFS-MoE: Dynamic Functional-Structural Mixture-of-Experts for Post-Traumatic Epilepsy Diagnosis",
+      "abstract": "Post-traumatic epilepsy (PTE) is a severe complication of traumatic brain injury (TBI), yet early identification remains challenging due to the complex structural and functional alterations it induces in the brain. To address this, we propose a dynamic multimodal Mixture-of-Experts (MoE) framework that integrates functional and structural MRI through time-aware functional-structural encoding and class-conditioned expert routing. Within this framework, modality-specific and cross-modal experts learn complementary representations, while a Modality-Class MoE (MCoE) module dynamically dispatches expert weights according to each classification objective. Experimental results across three binary classification tasks demonstrate that the framework consistently outperforms static fusion baselines, and high-interpretability analyses further reveal meaningful region-of-interest (ROI) interactions. This dynamic multimodal expert framework effectively captures class-dependent brain interaction patterns and provides an interpretable approach for PTE diagnosis and risk stratification.",
+      "authors": [
+        "Jun-En Ding",
+        "Spencer Chen",
+        "Henry Noren",
+        "Daniel Valdivia",
+        "Christine Yohn",
+        "Suhina Patel",
+        "Taylor Zink",
+        "Hai Sun",
+        "Feng Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-15T04:25:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.16203v2",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "dynamic MoE for multimodal brain MRI representation learning",
+      "llm_evidence_cn": "用于多模态脑MRI表征学习的动态MoE",
+      "llm_evidence": "用于多模态脑MRI表征学习的动态MoE",
+      "canonical_evidence": "用于多模态脑MRI表征学习的动态MoE",
+      "llm_tldr_en": "Proposes a dynamic MoE framework integrating functional and structural MRI for epilepsy diagnosis.",
+      "llm_tldr_cn": "提出动态MoE框架整合功能和结构MRI用于癫痫诊断。",
+      "llm_tldr": "提出动态MoE框架整合功能和结构MRI用于癫痫诊断。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.16193v1",
+      "source": "arxiv",
+      "title": "Cascaded Sparse Autoencoders Learn Multi-Level Visual Concepts in Multimodal LLMs",
+      "abstract": "Multimodal Large Language Models (MLLMs) have demonstrated strong performance on vision-language tasks, yet their internal visual representations remain difficult to interpret. Sparse Autoencoders (SAEs) provide a scalable way to decompose dense model activations into sparse, interpretable features. However, existing SAE architectures primarily recover flat feature dictionaries and are less suited for explicit multi-level concept organization. In this paper, we introduce cascaded sparse autoencoders (CSAEs) for learning hierarchical visual concepts in MLLMs. Rather than nesting or stacking SAE sparse activation codes, CSAEs train a second-level SAE directly on the decoder weights of the first-level SAE, treating learned low-level feature directions as inputs for higher-level abstraction. This design enables CSAEs to learn \"concepts of concepts\" while avoiding drawbacks from the shared-prefix coupling of nesting, Matryoshka-style hierarchies and the bottlenecks of naively stacked SAEs. Experiments across Qwen3-VL, Gemma-3, and LLaVA on multiple visual datasets show that CSAEs improve interpretability in terms of hierarchical concept coherence over state-of-the-art SAE baselines. Results on concept steering further demonstrate that the learned concept groups support effective group-level interventions in MLLM outputs.",
+      "authors": [
+        "Yusong Zhao",
+        "Hengyi Wang",
+        "Tanuja Ganu",
+        "Akshay Nambi",
+        "Hao Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-15T04:10:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.16193v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "cascaded sparse autoencoders for hierarchical representation learning",
+      "llm_evidence_cn": "级联稀疏自编码器学习层次表示",
+      "llm_evidence": "级联稀疏自编码器学习层次表示",
+      "canonical_evidence": "级联稀疏自编码器学习层次表示",
+      "llm_tldr_en": "Cascaded SAEs learn multi-level visual concepts in multimodal LLMs",
+      "llm_tldr_cn": "级联SAE学习多模态大模型的多层视觉概念",
+      "llm_tldr": "级联SAE学习多模态大模型的多层视觉概念",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.16196v1",
+      "source": "arxiv",
+      "title": "When Confidence Lacks Concepts: Interpretable OOD Detection via Representation Perturbations",
+      "abstract": "Deep neural networks have achieved remarkable performance across medical imaging tasks, yet their tendency to overgeneralize under distributional shifts poses a major obstacle to safe clinical deployment. Out-of-Distribution (OOD) detection methods aim to mitigate this risk, but most existing approaches rely on opaque internal signals with poorly understood semantic meaning, limiting trust in safety-critical settings. In this work, we propose an interpretable OOD detection framework that probes the stability of model predictions under class-conditioned semantic perturbations. Leveraging sparse autoencoders (SAEs), we learn class-specific concept vectors from in-distribution data that disentangle dense intermediate representations into sparse, semantically meaningful components. At inference, we perturb deeper-layer representations using the concept vectors associated with the model's predicted class and measure the class logits stability. We hypothesize that in-distribution samples exhibit low sensitivity to such perturbations, as their representations align with class-specific semantic directions, whereas OOD samples show amplified deviations due to representational misalignment. By framing OOD detection as a concept conditioned stability analysis, our approach provides both a discriminative OOD signal and an interpretable lens into the internal mechanisms driving model uncertainty, making it particularly suitable for high stakes medical applications.",
+      "authors": [
+        "Anju Chhetri",
+        "Pratik Shrestha",
+        "Ramesh Rana",
+        "Prashnna Gyawali",
+        "Binod Bhattarai"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-06-15T04:11:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.16196v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns class-specific concept vectors from representations using sparse autoencoders",
+      "llm_evidence_cn": "使用稀疏自编码器从表示中学习类特定概念向量",
+      "llm_evidence": "使用稀疏自编码器从表示中学习类特定概念向量",
+      "canonical_evidence": "使用稀疏自编码器从表示中学习类特定概念向量",
+      "llm_tldr_en": "Proposes interpretable OOD detection via concept vectors learned from representation perturbations.",
+      "llm_tldr_cn": "提出通过从表示扰动中学习概念向量进行可解释的OOD检测。",
+      "llm_tldr": "提出通过从表示扰动中学习概念向量进行可解释的OOD检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.16256v1",
+      "source": "arxiv",
+      "title": "KeepLoRA++: Continual Learning with Layer-Scaled Residual Gradient Adaptation",
+      "abstract": "Continual learning for pre-trained vision-language models requires balancing three competing objectives: retaining pre-trained knowledge, preserving knowledge from a sequence of learned tasks, and maintaining the plasticity to acquire new knowledge. This paper presents KeepLoRA++, balancing these objectives through a unified dual-dimensional knowledge retention mechanism. We analyze knowledge distribution of Transformer architecture from both inter-layer and intra-layer perspectives. The inter-layer perspective examines how retention is distributed across layers, while the intra-layer perspective focuses on the parameter space within each layer. Our analysis reveals a structural property: general transferable knowledge is mainly encoded in the shallow layers and the principal subspace of the parameters, while task-specific adaptations are localized in the deep layers and the residual subspace. Motivated by this insight, KeepLoRA++ introduces a layer-scaled residual gradient adaptation method. New tasks are learned by restricting LoRA parameter updates to the residual subspace, combined with a shallow-to-deep layer scaling, to prevent interference with previously acquired capabilities. Specifically, the gradient of a new task is projected onto a subspace orthogonal to both the principal subspace of the pre-trained model and the dominant directions of previous task features, while simultaneously assigning smaller update magnitudes to shallow layers and larger ones to deeper layers. Our theoretical analysis and empirical evaluations confirm that KeepLoRA++ successfully balances these three competing objectives, consistently outperforming representative baselines across image classification, visual question answering, and video understanding tasks.",
+      "authors": [
+        "Mao-Lin Luo",
+        "Yi-Lin Zhang",
+        "Zi-Hao Zhou",
+        "Yankun Hong",
+        "Xialiang Tong",
+        "Mingxuan Yuan",
+        "Tong Wei",
+        "Min-Ling Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-15T05:57:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.16256v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Leverages pretrained models via LoRA adaptation",
+      "llm_evidence_cn": "通过LoRA适配利用预训练模型",
+      "llm_evidence": "通过LoRA适配利用预训练模型",
+      "canonical_evidence": "通过LoRA适配利用预训练模型",
+      "llm_tldr_en": "KeepLoRA++ balances knowledge retention and plasticity for continual learning",
+      "llm_tldr_cn": "KeepLoRA++平衡知识保留与可塑性实现持续学习",
+      "llm_tldr": "KeepLoRA++平衡知识保留与可塑性实现持续学习",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

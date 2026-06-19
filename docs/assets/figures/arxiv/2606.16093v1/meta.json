@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.16093v1/fig-001.webp",
+      "caption": "Fig. 1. In PHA, the input is processed by three parallel branches: GSS, Attention, and an Auxiliary FFN. These are fused via Learnable Mixing (Σ). The aggregated signal is then processed by a Main FFN at the end of the block. This structure balances parallel feature extraction with sequential depth processing.",
+      "page": 6,
+      "index": 1,
+      "width": 504,
+      "height": 518
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16093v1/fig-004.webp",
+      "caption": "Fig. 2. Individual seed results (circles), means (horizontal bars), and ±1 std error bars for each PHA model variants. The 125M and 180M variants consistently outperform Hedgehog (125M), approaching Routing Transformer (257M) quality at a fraction of the parameter count.",
+      "page": 8,
+      "index": 4,
+      "width": 528,
+      "height": 387
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16093v1/fig-006.webp",
+      "caption": "Table 2. Comparison of ∼125M Parameter Models on WikiText-103. Our PHA-125M outperforms all direct competitors.",
+      "page": 9,
+      "index": 6,
+      "width": 718,
+      "height": 204
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16093v1/fig-005.webp",
+      "caption": "Table 3. Comparison with Larger Baselines (200M+). Despite having fewer parameters (180M), our model outperforms major baselines like S4, Transformer-XL, and Compressive Transformer.",
+      "page": 9,
+      "index": 5,
+      "width": 718,
+      "height": 256
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16093v1/fig-002.webp",
+      "caption": "Fig. 4. Inference Efficiency: Throughput and Memory vs. Sequence Length.",
+      "page": 14,
+      "index": 2,
+      "width": 677,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16093v1/fig-003.webp",
+      "caption": "Table 9. Layer-wise Branch Weight Analysis (PHA-180M). The learned mixer discovers a stable “Sandwich” specialization: GSS dominates near the boundaries to anchor global context, while Attention becomes more prominent in the middle layers for selective retrieval. Average across layers: GSS 46.9%, Attention 31.2%, FFN 21.9%.",
+      "page": 14,
+      "index": 3,
+      "width": 646,
+      "height": 287
+    }
+  ]
+}

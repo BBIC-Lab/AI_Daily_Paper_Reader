@@ -1,0 +1,134 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-001.webp",
+      "caption": "Fig. 1. Analysis of Transformer architecture in inter-layer structure and intralayer parameter space. In Fig. 1a and 1b, we measure zero-shot performance after reconstructing attention weights using only the top principal singular components. While performance on general-domain datasets remains robust, performance on most specific-domain datasets degrades sharply as more low-energy components are removed. In Fig. 1c and 1d, we investigate the impact of different layer-wise scaling schedules on transfer accuracy (forward stability) and target accuracy (plasticity), where γ on the horizontal axis controls the lower bound of the scaling factor. Shallow-to-deep denotes that scaling factor progressively increases from shallow to deep layers, while deepto-shallow represents the inverse.",
+      "page": 1,
+      "index": 1,
+      "width": 505,
+      "height": 462
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-009.webp",
+      "caption": "Fig. 2. Illustration of the KeepLoRA++ mechanism at layer l. The pretrained weights W l are decomposed by SVD to define the principal subspace W l p. The current task gradient Gl t is projected onto the residual subspace orthogonal to both W l p and the accumulated previous task directions M l t−1 to maintain forward and backward stability. SVD on this projected gradient Ĝl t yields the initialization for the frozen down-projection matrix Al t. Only the up-projection matrix Bl t is learnable, and the final low-rank update is scaled by a layer-specific factor αl t to mitigate disruption in shallower layers.",
+      "page": 4,
+      "index": 9,
+      "width": 477,
+      "height": 315
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-004.webp",
+      "caption": "TABLE II Comparison of different methods on MTIL for each classification task in terms of Transfer, Average, and Last scores (%). The best results are in bold.",
+      "page": 7,
+      "index": 4,
+      "width": 966,
+      "height": 1118
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-012.webp",
+      "caption": "TABLE III Comparison of different continual learning methods on MLLM-DCL benchmark for VQA tasks in terms of Transfer, Average, and Last scores (%). The best results are in bold.",
+      "page": 9,
+      "index": 12,
+      "width": 506,
+      "height": 444
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-013.webp",
+      "caption": "TABLE IV Comparison of different continual learning methods on UCIT benchmark for VQA tasks in terms of Transfer, Average, and Last scores (%). The best results are in bold.",
+      "page": 9,
+      "index": 13,
+      "width": 516,
+      "height": 444
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-006.webp",
+      "caption": "Fig. 4. Visualization of the average L2 norm of the output magnitude from the learned LoRA across multiple tasks. Each heatmap cell at row i and column j displays the normalized average L2 norm of the LoRA’s output when the model, trained up to task i, is tested on task j’s data. The vertical bar to the left of each heatmap indicates the mean output norm across all test tasks after each training stage, with darker colors signifying a lower norm and thus a reduced impact on the stability.",
+      "page": 10,
+      "index": 6,
+      "width": 1060,
+      "height": 187
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-005.webp",
+      "caption": "TABLE V Comparison of different continual learning methods on CL-VISTA benchmark for video understanding tasks in terms of Transfer, PostAverage, and Last scores (%). The best results are in bold.",
+      "page": 10,
+      "index": 5,
+      "width": 838,
+      "height": 490
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-002.webp",
+      "caption": "TABLE VI Ablation Study of KeepLoRA++ on MTIL, MLLM-DCL and UCIT.",
+      "page": 11,
+      "index": 2,
+      "width": 1052,
+      "height": 216
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-003.webp",
+      "caption": "TABLE VII Comparison of different continual learning methods on MTIL for each task with order-II in terms of Transfer, Average, and Last scores (%). The best results are in bold.",
+      "page": 15,
+      "index": 3,
+      "width": 966,
+      "height": 1119
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-014.webp",
+      "caption": "TABLE X Accuracy of KeepLoRA on the MTIL benchmark with order-I. Each row represents the performance on every dataset of the model trained after the",
+      "page": 16,
+      "index": 14,
+      "width": 822,
+      "height": 413
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-015.webp",
+      "caption": "TABLE IX Accuracy of KeepLoRA++ on the MTIL benchmark with order-II. Each row represents the performance on every dataset of the model trained after the",
+      "page": 16,
+      "index": 15,
+      "width": 822,
+      "height": 414
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-016.webp",
+      "caption": "TABLE VIII Accuracy of KeepLoRA++ on the MTIL benchmark with order-I. Each row represents the performance on every dataset of the model trained after the",
+      "page": 16,
+      "index": 16,
+      "width": 822,
+      "height": 411
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-010.webp",
+      "caption": "TABLE XII Accuracy of LoRA-FT, O-LoRA, CL-MoE, SEFE, KeepLoRA, and KeepLoRA++ on the MLLM-DCL benchmark. Each row represents the",
+      "page": 17,
+      "index": 10,
+      "width": 1002,
+      "height": 846
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-011.webp",
+      "caption": "TABLE XI Accuracy of KeepLoRA on the MTIL benchmark with order-II. Each row represents the performance on every dataset of the model trained after the",
+      "page": 17,
+      "index": 11,
+      "width": 822,
+      "height": 410
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-007.webp",
+      "caption": "TABLE XIII Accuracy of LoRA-FT, O-LoRA, CL-MoE, SEFE, KeepLoRA, and KeepLoRA++ on the UCIT benchmark. Each row represents the performance on",
+      "page": 18,
+      "index": 7,
+      "width": 1068,
+      "height": 942
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16256v1/fig-008.webp",
+      "caption": "TABLE XIV Accuracy of KeepLoRA++ on the CL-VISTA benchmark. Each row represents the performance on every dataset of the model trained after the",
+      "page": 18,
+      "index": 8,
+      "width": 627,
+      "height": 373
+    }
+  ]
+}

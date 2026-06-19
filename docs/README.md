@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-06-19
-- 运行时间：2026-06-19 04:58:28 北京时间
+- 最新运行日期：2026-06-20
+- 运行时间：2026-06-20 05:41:52 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读10篇AI论文，重点深挖迁移学习在瞬变源搜索与序列推荐中的高分突破。  
-最值得看：用迁移学习破解小视场望远镜的瞬变源发现难题，以及合成先验预训练让一个序列推荐模型通吃多个数据集。  
-建议读者关注“预训练+迁移”如何用更低成本抢占新场景的红利。
-- 详情：[/202606/19/README](/202606/19/README)
+今日精读两篇满分论文，分别揭示单神经元可“讲述”视觉语义、以及基于检索而非复杂模型即可解码大脑信号，同时速递长上下文混合架构、多模态LLM视觉概念学习与可解释OOD检测等前沿探索。  
+最值得关注的方向：视觉认知的神经解码正在走向精细语义叙述，且简单比对策略已能超越复杂模型；多模态大模型的内在视觉概念也可被逐层稀疏自编码器清晰“解剖”。  
+建议读者从神经叙事与检索解码两篇切入，快速把握AI与脑科学交叉的新范式，再结合速读拓展混合架构与可解释性视野。
+- 详情：[/202606/20/README](/202606/20/README)
 
 ### 精读区论文标签
-1. [Transfer learning for transient search with small-field optical survey telescopes](/202606/19/2606.15705v1-transfer-learning-for-transient-search-with-small-field-optical-survey-telescopes)  
+1. [Can neurons speak? Semantic narration of vision at single-cell resolution](/202606/20/2606.18667v1-can-neurons-speak-semantic-narration-of-vision-at-single-cell-resolution)  
+   标签：评分：10.0/10、query:ndai
+   evidence：将神经脉冲解码为自然语言叙述
+2. [Retrieval-Based Brain Decoding by Alignment, not Complexity](/202606/20/2606.19081v1-retrieval-based-brain-decoding-by-alignment-not-complexity)  
+   标签：评分：10.0/10、query:ndai
+   evidence：通过将fMRI活动与基础模型嵌入对齐来解码刺激
+3. [One-Step Generalization Ratio Guided Optimization for Domain Generalization](/202606/20/2606.16301v1-one-step-generalization-ratio-guided-optimization-for-domain-generalization)  
    标签：评分：9.0/10、query:ndai
-   evidence：利用预训练模型的迁移学习，在有限标注数据下搜索瞬变源
-2. [One Sequential Recommendation Model Pretrained from Synthetic Priors Predicts Multiple Datasets](/202606/19/2606.15752v1-one-sequential-recommendation-model-pretrained-from-synthetic-priors-predicts-multiple-datasets)  
+   evidence：使用OSGR优化器进行域泛化，提升对未见域的泛化能力
+4. [An Augmented Reality Brain-Robot Interface for Generalist Robot Arm Manipulation](/202606/20/2606.16413v1-an-augmented-reality-brain-robot-interface-for-generalist-robot-arm-manipulation)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用预训练合成先验的序列推荐
-3. [Mean-Field Parallel Decoding for Discrete Diffusion Language Models](/202606/19/2606.15805v1-mean-field-parallel-decoding-for-discrete-diffusion-language-models)  
+   evidence：基于EEG的脑机接口解码运动想象为动作
+5. [Learning aligned EEG representations with subject-specific encoders](/202606/20/2606.16462v1-learning-aligned-eeg-representations-with-subject-specific-encoders)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于离散扩散语言模型的无训练并行解码框架
-4. [Phys-JEPA: Physics-Informed Latent World Models for Multivariate Time-Series Forecasting](/202606/19/2606.16076v1-phys-jepa-physics-informed-latent-world-models-for-multivariate-time-series-forecasting)  
-   标签：评分：9.0/10、query:ndai
-   evidence：基于潜在世界模型的多变量时间序列预测
-5. [Input-Dependent Fisher Information for Local Sensitivity Analysis of Medical Image Classifiers](/202606/19/2606.16362v1-input-dependent-fisher-information-for-local-sensitivity-analysis-of-medical-image-classifiers)  
-   标签：评分：9.0/10、query:ndai
-   evidence：输入依赖的Fisher信息用于特征重要性加权
+   evidence：特定被试的EEG表示学习
 
 ### 速读区论文标签
-1. [Contrastive learning of dynamical representations for enhanced molecular sampling](/202606/19/2606.15495v1-contrastive-learning-of-dynamical-representations-for-enhanced-molecular-sampling)  
+1. [Long-Context Modeling via GSS-Transformer Hybrid Architecture with Learnable Mixing](/202606/20/2606.16093v1-long-context-modeling-via-gss-transformer-hybrid-architecture-with-learnable-mixing)  
    标签：评分：8.0/10、query:ndai
-   evidence：从时间延迟序列数据中对比学习动态表示
-2. [Retrieve, Don't Retrain: Extending Vision Language Action Models to New Tasks at Test Time](/202606/19/2606.15631v1-retrieve-dont-retrain-extending-vision-language-action-models-to-new-tasks-at-test-time)  
+   evidence：用于长上下文时序数据建模的混合架构
+2. [Cascaded Sparse Autoencoders Learn Multi-Level Visual Concepts in Multimodal LLMs](/202606/20/2606.16193v1-cascaded-sparse-autoencoders-learn-multi-level-visual-concepts-in-multimodal-llms)  
    标签：评分：8.0/10、query:ndai
-   evidence：检索增强的VLA策略无需重训即可适应新任务
-3. [MambAdapter: Lightweight Mamba-Based Adapters for Parameter-Efficient Transfer Learning in Speech and Audio](/202606/19/2606.15638v1-mambadapter-lightweight-mamba-based-adapters-for-parameter-efficient-transfer-learning-in-speech-and-audio)  
+   evidence：级联稀疏自编码器学习层次表示
+3. [When Confidence Lacks Concepts: Interpretable OOD Detection via Representation Perturbations](/202606/20/2606.16196v1-when-confidence-lacks-concepts-interpretable-ood-detection-via-representation-perturbations)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用基于 Mamba 的适配器进行参数高效迁移学习
-4. [CIWI-CKT: Chaos-Informed Wave Interference Feature Fusion and Cross-City Knowledge Transfer for Traffic Flow Forecasting](/202606/19/2606.15642v1-ciwi-ckt-chaos-informed-wave-interference-feature-fusion-and-cross-city-knowledge-transfer-for-traffic-flow-forecasting)  
+   evidence：使用稀疏自编码器从表示中学习类特定概念向量
+4. [KeepLoRA++: Continual Learning with Layer-Scaled Residual Gradient Adaptation](/202606/20/2606.16256v1-keeplora-continual-learning-with-layer-scaled-residual-gradient-adaptation)  
    标签：评分：8.0/10、query:ndai
-   evidence：在数据稀缺场景下进行跨城市知识迁移的交通预测
-5. [Integrating Reasoning and Generalization in Text-to-SQL via Self-Enhanced Fine-Tuning](/202606/19/2606.15598v1-integrating-reasoning-and-generalization-in-text-to-sql-via-self-enhanced-fine-tuning)  
+   evidence：通过LoRA适配利用预训练模型
+5. [DynFS-MoE: Dynamic Functional-Structural Mixture-of-Experts for Post-Traumatic Epilepsy Diagnosis](/202606/20/2606.16203v2-dynfs-moe-dynamic-functional-structural-mixture-of-experts-for-post-traumatic-epilepsy-diagnosis)  
    标签：评分：7.0/10、query:ndai
-   evidence：通过自增强推理微调大语言模型用于文本到SQL
+   evidence：用于多模态脑MRI表征学习的动态MoE
 

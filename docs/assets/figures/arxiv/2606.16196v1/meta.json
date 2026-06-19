@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.16196v1/fig-002.webp",
+      "caption": "Fig. 1. (a) SAE Training: Intermediate ViT activations are used to train an SAE; sparse coefficients are aggregated per class to select top-k decoder columns, forming a class concept dictionary. (b) Inference: For a test sample x̄, we first obtain the predicted class from the base model and select the corresponding concept set. These concepts are aggregated into a class-specific concept vector vc, which is injected into the intermediate activation. The resulting change in the predicted-class logit (∆ℓc) is then used as the OOD detection score.",
+      "page": 4,
+      "index": 2,
+      "width": 712,
+      "height": 475
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16196v1/fig-001.webp",
+      "caption": "Fig. 2. (a) Cosine similarity between the class concept vector vc and sample activations for ID and OOD data in the histopathology dataset (similar trends are observed for Kvasir and OCT). (b) Robustness analysis with respect to the number of concept vectors k and the scaling parameter β across Histopathology, OCT, and Kvasir datasets.",
+      "page": 6,
+      "index": 1,
+      "width": 704,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16196v1/fig-003.webp",
+      "caption": "Table 1. Metrics include AUROC (higher is better) and FPR95% (lower is better), both reported as percentages. The best results are highlighted in bold, while the secondbest and third-best results are underlined.",
+      "page": 7,
+      "index": 3,
+      "width": 650,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2606.16196v1/fig-004.webp",
+      "caption": "Fig. 3. Clinical Grounding and OOD Contrast of Sparse Concept Latents. Each row pairs a base-model predicted class with an SAE latent (concept). Left (green): ID clusters showing the four images with the highest latent activations. Right (red): An OOD sample with low activation. While all images in a row share the same predicted class, green and red boxes provide expert clinical descriptions for the ID cluster and OOD outlier, respectively. Labels beneath denote the ground-truth original class.",
+      "page": 8,
+      "index": 4,
+      "width": 721,
+      "height": 469
+    }
+  ]
+}
