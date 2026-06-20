@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-001.webp",
+      "caption": "Fig. 1: Overview of our proposed framework. The framework learns task-level meta-knowledge on a dynamics-simplified agent, trains target-agent low-level policies via magnitudeguided adaptation, and reuses the frozen meta-knowledge as semantic-magnitude subgoals for efficient deployment across heterogeneous agents.",
+      "page": 1,
+      "index": 1,
+      "width": 512,
+      "height": 258
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-002.webp",
+      "caption": "Fig. 2: Overview of ReMAP. a, The framework first learns reusable task-level meta-knowledge on a dynamics-simplified agent through DPMM-based task inference and high-level policy learning, while b, independently warming up embodiment-specific low-level policies with SMAI-guided curriculum adaptive learning. c, During deployment and meta-knowledge reutilization, the frozen meta-knowledge module generates semantic-magnitude subgoals, which are temporally aligned by a stride predictor and executed by different target agents with lightweight online adaptation.",
+      "page": 6,
+      "index": 2,
+      "width": 1040,
+      "height": 833
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-003.webp",
+      "caption": "Fig. 3: Simplified agent modeling. a, Illustration of the simplified agent instantiation in the Mujoco environment. b, Abstracted mass–damper modeling with external, gravity, and friction forces corresponding to Eq. (15).",
+      "page": 6,
+      "index": 3,
+      "width": 516,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-008.webp",
+      "caption": "Fig. 5: Evaluation of the simplified agent on four non-parametric tasks. a, Average reward during meta-knowledge acquisition over four task scenarios, including goal tracking forward/backward and velocity tracking forward/backward. The curve reports the mean reward with standard deviation over at least five trials (µ ± σ). b, Inference trajectories on twelve task variations, where dashed horizontal lines denote the ground-truth targets. The inference module and high-level policy can accurately track both position (above) and velocity (below) targets in both directions. c, Visualization of the learned latent space, where different task types form separable clusters, indicating that the inference module captures the underlying task structure.",
+      "page": 12,
+      "index": 8,
+      "width": 1000,
+      "height": 315
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-005.webp",
+      "caption": "Fig. 6: Disentangled low-level policy adaptive learning reward curves of four agents with complex dynamics. The solid line represents the average reward, while the shaded region denotes the standard deviation across five trials (µ± σ).",
+      "page": 13,
+      "index": 5,
+      "width": 992,
+      "height": 225
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-006.webp",
+      "caption": "Fig. 7: Visualization of inference results trained on the goalforward task. a, Goal-tracking trajectories across four agents within the first 100 time steps. Solid curves denote the current goals, while dashed curves denote the corresponding target goals. b, Encoding-target relationship after convergence across four agents. Scatter points denote inferred latent encodings obtained from trajectory samples from the 50th time step onward, while solid lines show the linear regression trends.",
+      "page": 13,
+      "index": 6,
+      "width": 503,
+      "height": 603
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-004.webp",
+      "caption": "Fig. 8: Cross-agent deployment of our ReMAP DPMM-based task inference module. a–d, Inference trajectories on HalfCheetah, Ant, Walker, and Hopper, respectively. For each agent, the upper plot shows position tracking and the lower plot shows velocity tracking across twelve non-parametric tasks; dashed horizontal lines denote the corresponding ground-truth targets. e–h, t-SNE visualizations of the inferred latent representations after deploying the frozen task inference module to different target agents. Across all embodiments, different task types form clearly distinguishable clusters, indicating that the learned latent representation preserves task semantics across agents. i–l, Decoder prediction confusion matrices for HalfCheetah, Ant, Walker, and Hopper. The consistently high prediction accuracy shows that the inferred latent representations remain semantically informative after cross-agent deployment.",
+      "page": 15,
+      "index": 4,
+      "width": 1034,
+      "height": 843
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-009.webp",
+      "caption": "Fig. 9: Baseline comparison of inference trajectories on four non-parametric tasks for Half-Cheetah embodiment. a, RL2; b, PEARL; c, CEMRL; and d, MELTS. For each baseline, the upper plot shows position tracking and the lower plot shows velocity tracking. Dashed horizontal lines denote the corresponding ground-truth targets.",
+      "page": 16,
+      "index": 9,
+      "width": 1049,
+      "height": 359
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-010.webp",
+      "caption": "Fig. 10: Tracking MSE comparison between our ReMAP and baseline methods (Half-Cheetah 4 tasks). a, Goal tracking forward and backward MSE over time steps. b, Velocity tracking forward and backward MSE over time steps. Solid curves denote the mean MSE over at least 50 trials for each task, and shaded regions indicate the standard deviation (µ ± σ). Lower MSE indicates more accurate tracking performance.",
+      "page": 16,
+      "index": 10,
+      "width": 496,
+      "height": 592
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18132v1/fig-007.webp",
+      "caption": "Fig. 11: Training cost comparison between ReMAP and baseline methods across four target agents. a, Total environment steps, measured in millions, required for training convergence. ReMAP achieves substantially lower total cost by reusing high-level meta-knowledge and training only embodimentspecific low-level controllers for target agents. b, Cost decomposition of ReMAP, showing the relative contribution of simplified-agent high-level training, target-agent low-level controller training, and online deployment adaptation.",
+      "page": 17,
+      "index": 7,
+      "width": 504,
+      "height": 513
+    }
+  ]
+}

@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-06-20
-- 运行时间：2026-06-20 05:41:52 北京时间
+- 最新运行日期：2026-06-21
+- 运行时间：2026-06-21 05:21:05 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读两篇满分论文，分别揭示单神经元可“讲述”视觉语义、以及基于检索而非复杂模型即可解码大脑信号，同时速递长上下文混合架构、多模态LLM视觉概念学习与可解释OOD检测等前沿探索。  
-最值得关注的方向：视觉认知的神经解码正在走向精细语义叙述，且简单比对策略已能超越复杂模型；多模态大模型的内在视觉概念也可被逐层稀疏自编码器清晰“解剖”。  
-建议读者从神经叙事与检索解码两篇切入，快速把握AI与脑科学交叉的新范式，再结合速读拓展混合架构与可解释性视野。
-- 详情：[/202606/20/README](/202606/20/README)
+今天精选了10篇前沿AI论文，其中5篇精读聚焦生成模型与序列预测。  
+最值得关注的是直接用流匹配单步从文本生成高保真语音波形，以及将图神经网络与交叉注意力结合以实现合规流程预测的突破。  
+建议读者重点跟进端到端生成式语音与结构化序列预测的应用潜力，这两方向正快速落地。
+- 详情：[/202606/21/README](/202606/21/README)
 
 ### 精读区论文标签
-1. [Can neurons speak? Semantic narration of vision at single-cell resolution](/202606/20/2606.18667v1-can-neurons-speak-semantic-narration-of-vision-at-single-cell-resolution)  
-   标签：评分：10.0/10、query:ndai
-   evidence：将神经脉冲解码为自然语言叙述
-2. [Retrieval-Based Brain Decoding by Alignment, not Complexity](/202606/20/2606.19081v1-retrieval-based-brain-decoding-by-alignment-not-complexity)  
-   标签：评分：10.0/10、query:ndai
-   evidence：通过将fMRI活动与基础模型嵌入对齐来解码刺激
-3. [One-Step Generalization Ratio Guided Optimization for Domain Generalization](/202606/20/2606.16301v1-one-step-generalization-ratio-guided-optimization-for-domain-generalization)  
+1. [One-Step Token-to-Waveform Generation with MeanFlow in Latent Space](/202606/21/2606.18072v1-one-step-token-to-waveform-generation-with-meanflow-in-latent-space)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用OSGR优化器进行域泛化，提升对未见域的泛化能力
-4. [An Augmented Reality Brain-Robot Interface for Generalist Robot Arm Manipulation](/202606/20/2606.16413v1-an-augmented-reality-brain-robot-interface-for-generalist-robot-arm-manipulation)  
+   evidence：使用一步流的令牌到波形生成
+2. [Graph Grounded Cross Attention Transformer Neural Network for Structurally Constrained Full Event Sequence Generation in Predictive Process Monitoring](/202606/21/2606.18726v1-graph-grounded-cross-attention-transformer-neural-network-for-structurally-constrained-full-event-sequence-generation-in-predictive-process-monitoring)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于EEG的脑机接口解码运动想象为动作
-5. [Learning aligned EEG representations with subject-specific encoders](/202606/20/2606.16462v1-learning-aligned-eeg-representations-with-subject-specific-encoders)  
+   evidence：在结构约束下生成全事件序列
+3. [SwitchBraidNet: Quantisation-Aware Lightweight Architecture for Hybrid Brain-Computer Interface](/202606/21/2606.18816v1-switchbraidnet-quantisation-aware-lightweight-architecture-for-hybrid-brain-computer-interface)  
    标签：评分：9.0/10、query:ndai
-   evidence：特定被试的EEG表示学习
+   evidence：用于混合脑机接口解码的紧凑型EEG架构
+4. [Anomaly Detection for Sparse and Irregular Multivariate Time Series with Latent SDEs](/202606/21/2606.18898v1-anomaly-detection-for-sparse-and-irregular-multivariate-time-series-with-latent-sdes)  
+   标签：评分：9.0/10、query:ndai
+   evidence：潜在随机微分方程用于时间序列异常检测
+5. [Spectral Retrieval-Augmented Time-Series Forecasting](/202606/21/2606.19412v1-spectral-retrieval-augmented-time-series-forecasting)  
+   标签：评分：9.0/10、query:ndai
+   evidence：使用频谱检索的时间序列预测
 
 ### 速读区论文标签
-1. [Long-Context Modeling via GSS-Transformer Hybrid Architecture with Learnable Mixing](/202606/20/2606.16093v1-long-context-modeling-via-gss-transformer-hybrid-architecture-with-learnable-mixing)  
+1. [Non-Autoregressive Minimum Bayes' Risk Decoding for Fast Speech Recognition](/202606/21/2606.17537v1-non-autoregressive-minimum-bayes-risk-decoding-for-fast-speech-recognition)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于长上下文时序数据建模的混合架构
-2. [Cascaded Sparse Autoencoders Learn Multi-Level Visual Concepts in Multimodal LLMs](/202606/20/2606.16193v1-cascaded-sparse-autoencoders-learn-multi-level-visual-concepts-in-multimodal-llms)  
+   evidence：非自回归最小贝叶斯风险解码用于序列生成
+2. [BrainWorld: A Structural-Prior-Conditioned Generative Model for Whole-Brain 4D fMRI Dynamics](/202606/21/2606.17742v1-brainworld-a-structural-prior-conditioned-generative-model-for-whole-brain-4d-fmri-dynamics)  
    标签：评分：8.0/10、query:ndai
-   evidence：级联稀疏自编码器学习层次表示
-3. [When Confidence Lacks Concepts: Interpretable OOD Detection via Representation Perturbations](/202606/20/2606.16196v1-when-confidence-lacks-concepts-interpretable-ood-detection-via-representation-perturbations)  
+   evidence：全脑4D fMRI动态的生成模型
+3. [Knowledge Reutilization in Meta-Reinforcement Learning](/202606/21/2606.18132v1-knowledge-reutilization-in-meta-reinforcement-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用稀疏自编码器从表示中学习类特定概念向量
-4. [KeepLoRA++: Continual Learning with Layer-Scaled Residual Gradient Adaptation](/202606/20/2606.16256v1-keeplora-continual-learning-with-layer-scaled-residual-gradient-adaptation)  
+   evidence：元知识重利用以实现跨智能体的快速适应，数据有限
+4. [Learning Dynamics of Chain-of-Thought State Tracking in a Solvable Transformer Model](/202606/21/2606.18164v1-learning-dynamics-of-chain-of-thought-state-tracking-in-a-solvable-transformer-model)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过LoRA适配利用预训练模型
-5. [DynFS-MoE: Dynamic Functional-Structural Mixture-of-Experts for Post-Traumatic Epilepsy Diagnosis](/202606/20/2606.16203v2-dynfs-moe-dynamic-functional-structural-mixture-of-experts-for-post-traumatic-epilepsy-diagnosis)  
+   evidence：分析Transformer思维链中的序列状态跟踪
+5. [Complex Layout Classification in the Wild: A Low-Resource Approach with Layout-Preserving Augmentations](/202606/21/2606.17355v1-complex-layout-classification-in-the-wild-a-low-resource-approach-with-layout-preserving-augmentations)  
    标签：评分：7.0/10、query:ndai
-   evidence：用于多模态脑MRI表征学习的动态MoE
+   evidence：基于领域感知增强的低资源分类
 

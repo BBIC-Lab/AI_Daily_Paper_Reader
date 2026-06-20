@@ -1,0 +1,420 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-20T21:18:33.082745+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 39,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 90,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 10,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2606.18072v1",
+      "source": "arxiv",
+      "title": "One-Step Token-to-Waveform Generation with MeanFlow in Latent Space",
+      "abstract": "Neural audio codecs are central to modern LLM-based Text-to-Speech (TTS) and multimodal systems. As low-bitrate semantic codecs gain prominence, the Token-to-Waveform (Token2Wav) decoder becomes a bottleneck determining both perceptual quality and system efficiency. Conventional multi-step flow-matching decoders offer superior quality but suffer from high inference latency due to iterative sampling, creating a severe quality-speed trade-off. In this paper, we propose a novel Token2Wav architecture that overcomes this limitation by applying MeanFlow in a highly compressed latent space. By modeling the average velocity rather than the instantaneous velocity field, MeanFlow enables true one-step generation. Operating in the latent domain mitigates the memory and stability issues of waveform-level flows, yielding up to a 17$\\times$ improvement in Real-Time Factor (RTF) compared to multi-step baselines with negligible quality degradation. Furthermore, we introduce refinement strategies that mitigate latent mismatch, including decoder-only fine-tuning with the MeanFlow generator frozen and end-to-end joint fine-tuning, improving fidelity without increasing inference-time cost. Code and demo are publicly available.",
+      "authors": [
+        "Zheqi Dai",
+        "Guangyan Zhang",
+        "Zhen Ye",
+        "Jingyu Li",
+        "Haolin He",
+        "Chunyat Wu",
+        "Yiwen Guo",
+        "Qiuqiang Kong"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-06-16T15:40:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.18072v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "token-to-waveform generation with one-step flow",
+      "llm_evidence_cn": "使用一步流的令牌到波形生成",
+      "llm_evidence": "使用一步流的令牌到波形生成",
+      "canonical_evidence": "使用一步流的令牌到波形生成",
+      "llm_tldr_en": "MeanFlow enables one-step token-to-waveform generation in latent space, overcoming quality-speed trade-off.",
+      "llm_tldr_cn": "MeanFlow在潜在空间实现一步令牌到波形生成，克服质量-速度权衡。",
+      "llm_tldr": "MeanFlow在潜在空间实现一步令牌到波形生成，克服质量-速度权衡。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18726v1",
+      "source": "arxiv",
+      "title": "Graph Grounded Cross Attention Transformer Neural Network for Structurally Constrained Full Event Sequence Generation in Predictive Process Monitoring",
+      "abstract": "Structurally constrained event sequence generation remains challenging because generated paths must preserve transition feasibility, temporal order, termination, and attribute consistency. In predictive process monitoring (PPM), this challenge appears as full event sequence generation, whereas existing work mainly addresses component tasks such as next activity, remaining time, outcome, and attribute prediction. This paper proposes the Graph Grounded Cross Attention Transformer Neural Network (GGATN) for this unified PPM task. GGATN uses a global process graph as structured activity memory, contextualizes sequence positions through Transformer self attention, and injects process topology through graph grounded cross attention. Unlike autoregressive decoding, GGATN generates activities, timestamps, length, and event level and sequence level attributes in a single pass, followed by Viterbi style graph constrained decoding for feasible paths and explicit termination. Experiments on six benchmark event logs show more reliable generation quality than local instruction prompted LLM baselines. GGATN achieves strong performance on sequence similarity, Damerau Levenshtein similarity, bigram based control flow similarity, and duration distribution, while maintaining zero hallucinated activities and zero sequence level attribute inconsistency. Ablation analyses confirm the global graph encoder as a stable structural prior. Interpretability analyses show how graph structure, sequence context, feedback refinement, and constrained decoding shape generation.",
+      "authors": [
+        "Fang Wang",
+        "Ernesto Damiani"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-17T06:10:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.18726v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "generates full event sequences under structural constraints",
+      "llm_evidence_cn": "在结构约束下生成全事件序列",
+      "llm_evidence": "在结构约束下生成全事件序列",
+      "canonical_evidence": "在结构约束下生成全事件序列",
+      "llm_tldr_en": "A transformer network that generates full event sequences using graph memory for predictive process monitoring.",
+      "llm_tldr_cn": "使用图记忆的Transformer网络，用于预测过程监控中的全事件序列生成。",
+      "llm_tldr": "使用图记忆的Transformer网络，用于预测过程监控中的全事件序列生成。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18816v1",
+      "source": "arxiv",
+      "title": "SwitchBraidNet: Quantisation-Aware Lightweight Architecture for Hybrid Brain-Computer Interface",
+      "abstract": "Hybrid brain-computer interfaces (BCIs) that integrate motor imagery (MI) and steady-state visual evoked potentials (SSVEP) provide high-dimensional neural decoding but typically exceed the computational limits of embedded hardware. To address this, we propose SwitchBraidNet, a compact EEG classification architecture designed for low-power deployment. The model employs a dual-path temporal braid to extract multiscale oscillatory features, an adaptive squeeze-and-excitation spatial switch for electrode gating, and a log-variance readout layer for direct band-power encoding. Furthermore, through systematic quantisation-aware training on the OpenBMI dataset, we compared SwitchBraidNet against four established baselines across FP32, FP16, and INT8 precisions. Experimental results demonstrate superior efficiency and performance, achieving MI accuracy of 69.49% (FP16), SSVEP accuracy of 93.48% (FP32), and a hybrid information transfer rate of 64.82 bits/min (FP16). With an INT8 footprint of only 3.03 KB, SwitchBraidNet maintains high accuracy across varying numerical precisions, demonstrating its suitability for low-power embedded BCI deployment.",
+      "authors": [
+        "Gourav Siddhad",
+        "Yogesh Kumar Meena"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.AI",
+        "cs.ET"
+      ],
+      "published": "2026-06-17T08:35:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.18816v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "compact EEG architecture for hybrid BCI decoding (MI/SSVEP)",
+      "llm_evidence_cn": "用于混合脑机接口解码的紧凑型EEG架构",
+      "llm_evidence": "用于混合脑机接口解码的紧凑型EEG架构",
+      "canonical_evidence": "用于混合脑机接口解码的紧凑型EEG架构",
+      "llm_tldr_en": "Proposes a lightweight quantized EEG architecture for hybrid BCI neural decoding.",
+      "llm_tldr_cn": "提出一个轻量级量化的EEG架构用于混合脑机接口神经解码。",
+      "llm_tldr": "提出一个轻量级量化的EEG架构用于混合脑机接口神经解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18898v1",
+      "source": "arxiv",
+      "title": "Anomaly Detection for Sparse and Irregular Multivariate Time Series with Latent SDEs",
+      "abstract": "Multivariate time series anomaly detection (MTSAD) is critical for a wide range of application areas, such as industrial monitoring, cybersecurity, or healthcare. Real-world data is often sparse, irregularly sampled or partially observed, yet existing methods assume uniformly sampled time series. We propose a generative approach based on Latent SDEs that projects the observed time series on a continuous-time stochastic dynamical system, directly being able to handle missing observations and irregular sampling, while also naturally capturing possible cyclic behavior that many real-world use cases inherently possess. Experiments on six anomaly benchmark datasets show that our proposed method ranks first among state-of-the-art baselines. We further demonstrate that our method remains robust under severe data sparsity, while performance significantly degrades for the tested baseline methods. These results highlight latent SDEs as a natural inductive bias for anomaly detection in multivariate time series, especially in presence of real-world irregularities.",
+      "authors": [
+        "Martin Uray",
+        "Dominik Geng",
+        "Florian Graf",
+        "Stefan Huber",
+        "Roland Kwitt"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-17T10:17:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.18898v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "latent SDEs for anomaly detection in time series",
+      "llm_evidence_cn": "潜在随机微分方程用于时间序列异常检测",
+      "llm_evidence": "潜在随机微分方程用于时间序列异常检测",
+      "canonical_evidence": "潜在随机微分方程用于时间序列异常检测",
+      "llm_tldr_en": "Uses latent SDEs to handle irregular time series for anomaly detection, achieving SOTA.",
+      "llm_tldr_cn": "使用潜在SDE处理不规则时间序列进行异常检测，取得最优结果。",
+      "llm_tldr": "使用潜在SDE处理不规则时间序列进行异常检测，取得最优结果。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19412v1",
+      "source": "arxiv",
+      "title": "Spectral Retrieval-Augmented Time-Series Forecasting",
+      "abstract": "Time series forecasting leverages historical patterns to predict future values, but traditional methods face challenges when dealing with complex, non-stationary patterns that are difficult to memorize during training. Retrieval-augmented approaches have emerged as promising solutions by retrieving similar historical patterns to enhance predictions. However, existing retrieval methods suffer from two fundamental limitations: spectral blindness, which overlooks critical frequency-domain characteristics that capture underlying periodic structures, and temporal recency, which treats all historical data equally without emphasizing recent, more relevant patterns. In this paper, we propose SpecReTF, a novel retrieval method that addresses these issues by converting time series into windowed frequency representations, measuring similarity with a combined metric that captures both amplitude and phase information. To balance recency and historical context, we apply an exponential moving average weighting scheme that emphasizes recent windows. Extensive experiments on benchmark datasets demonstrate that SpecReTF outperforms time-domain retrieval methods, achieving superior forecasting accuracy across diverse, non-stationary time series.",
+      "authors": [
+        "Huu Hiep Nguyen",
+        "Minh Hoang Nguyen",
+        "Dung Nguyen",
+        "Hung Le"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-17T15:42:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.19412v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "time series forecasting with spectral retrieval",
+      "llm_evidence_cn": "使用频谱检索的时间序列预测",
+      "llm_evidence": "使用频谱检索的时间序列预测",
+      "canonical_evidence": "使用频谱检索的时间序列预测",
+      "llm_tldr_en": "SpecReTF enhances time-series forecasting by retrieving similar patterns in frequency domain.",
+      "llm_tldr_cn": "SpecReTF通过检索频域中的相似模式增强时间序列预测。",
+      "llm_tldr": "SpecReTF通过检索频域中的相似模式增强时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.17537v1",
+      "source": "arxiv",
+      "title": "Non-Autoregressive Minimum Bayes' Risk Decoding for Fast Speech Recognition",
+      "abstract": "Non-autoregressive (NAR) decoding generates output tokens in parallel, making speech recognition faster than autoregressive decoding, which generates them sequentially from left to right. However, the recognition performance is degraded because NAR decoding cannot resolve uncertainty by conditioning on previously generated tokens. To address this issue, we propose a novel NAR decoding framework based on minimum Bayes' risk (MBR) decoding, termed NAR-MBR decoding, that maximizes the expected utility calculated from samples drawn from the output probability of an NAR model rather than maximizing the output probability. Notably, by leveraging the nature of NAR models, multiple samples are obtained efficiently with a single forward computation. Our experiments across LibriSpeech, Switchboard, AMI, and web presentation corpus demonstrated that our NAR-MBR decoding outperformed previous NAR decoding and ran faster than AR decoding.",
+      "authors": [
+        "Hiroyuki Deguchi",
+        "Takatomo Kano",
+        "Katsuki Chousa",
+        "Marc Delcroix"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.CL"
+      ],
+      "published": "2026-06-16T05:28:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.17537v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "non-autoregressive MBR decoding for sequence generation",
+      "llm_evidence_cn": "非自回归最小贝叶斯风险解码用于序列生成",
+      "llm_evidence": "非自回归最小贝叶斯风险解码用于序列生成",
+      "canonical_evidence": "非自回归最小贝叶斯风险解码用于序列生成",
+      "llm_tldr_en": "Applies minimum Bayes risk decoding to non-autoregressive speech recognition for faster sequence output.",
+      "llm_tldr_cn": "将最小贝叶斯风险解码应用于非自回归语音识别以实现更快序列输出。",
+      "llm_tldr": "将最小贝叶斯风险解码应用于非自回归语音识别以实现更快序列输出。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.17355v1",
+      "source": "arxiv",
+      "title": "Complex Layout Classification in the Wild: A Low-Resource Approach with Layout-Preserving Augmentations",
+      "abstract": "Many digitized corpora suffer from low resources because annotations may be scarce, page scans are noisy and of poor resolution, or layouts are structurally complex in ways that negatively affect the quality of automatic transcription. Developing robust classification models for low-resource languages is inhibited by the lack of large-scale annotated data and by the frequent semantic complexity of page layouts. To this end, we have curated a complex-layout dataset, manually classified into eight distinct layout types based on their separator regions. To overcome data scarcity, we propose a novel training strategy in the form of a CNN-based classifier that employs strong, domain-aware augmentations to improve generalization. We utilize narrow anisotropic Gaussian masking to suppress incidental textual details while preserving essential separations, compelling the model to learn global geometric arrangements. Additionally, we implement reflection-induced label transformations to enrich the training distribution while maintaining label consistency across asymmetric categories. The results demonstrate that layout-specific augmentations can substantially improve page-level layout classification under severe annotation scarcity.",
+      "authors": [
+        "Sharva Gogawale",
+        "Iddo Hakim",
+        "Gal Grudka",
+        "Mohammad Suliman",
+        "Omer Ventura",
+        "Daria Vasyutinsky-Shapira",
+        "Berat Kurar-Barakat",
+        "Nachum Dershowitz"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-15T23:06:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.17355v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "low-resource classification with domain-aware augmentations",
+      "llm_evidence_cn": "基于领域感知增强的低资源分类",
+      "llm_evidence": "基于领域感知增强的低资源分类",
+      "canonical_evidence": "基于领域感知增强的低资源分类",
+      "llm_tldr_en": "Uses layout-preserving augmentations for robust low-resource layout classification.",
+      "llm_tldr_cn": "使用布局保持增强实现鲁棒的低资源布局分类。",
+      "llm_tldr": "使用布局保持增强实现鲁棒的低资源布局分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.17742v1",
+      "source": "arxiv",
+      "title": "BrainWorld: A Structural-Prior-Conditioned Generative Model for Whole-Brain 4D fMRI Dynamics",
+      "abstract": "Whole-brain 4D fMRI generation is valuable for modeling functional brain dynamics, yet existing fMRI foundation models mainly target representation learning and downstream prediction rather than conditional predictive generation. We introduce BrainWorld, a structural-prior-conditioned generative model for whole-brain 4D fMRI dynamics. BrainWorld uses sMRI as subject-level anatomical context to guide future fMRI generation, integrating structural information into the denoising process rather than treating it as a parallel modality. Evaluated on 22 datasets spanning diverse cohorts and brain states, BrainWorld generates stable 4D fMRI trajectories up to 400 frames, improves downstream performance through generated-example augmentation, and learns transferable multimodal representations that outperform baselines. Together, these results establish BrainWorld as a condition-aware generative framework for long-horizon brain dynamics modeling and multimodal representation learning.",
+      "authors": [
+        "Junfeng Xia",
+        "Wenhao Ye",
+        "Junxiang Zhang",
+        "Xuanye Pan",
+        "Mo Wang",
+        "Quanying Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "q-bio.NC"
+      ],
+      "published": "2026-06-16T10:03:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.17742v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "generative model for whole-brain 4D fMRI dynamics",
+      "llm_evidence_cn": "全脑4D fMRI动态的生成模型",
+      "llm_evidence": "全脑4D fMRI动态的生成模型",
+      "canonical_evidence": "全脑4D fMRI动态的生成模型",
+      "llm_tldr_en": "BrainWorld generates realistic whole-brain fMRI sequences using structural priors.",
+      "llm_tldr_cn": "BrainWorld利用结构先验生成逼真的全脑fMRI序列。",
+      "llm_tldr": "BrainWorld利用结构先验生成逼真的全脑fMRI序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.18132v1",
+      "source": "arxiv",
+      "title": "Knowledge Reutilization in Meta-Reinforcement Learning",
+      "abstract": "Meta-reinforcement learning enables fast adaptation by extracting shared structure from related tasks, but existing end-to-end methods often couple task inference with embodiment-specific control. This coupling can obscure non-parametric task semantics, reduce sample efficiency, and limit cross-agent reuse. We propose a meta-knowledge reutilization framework that learns task-level knowledge on a dynamics-simplified agent and transfers it to heterogeneous agents. The framework uses a Bayesian non-parametric prior to organize latent task modes and a high-level policy to generate task-level magnitude guidance. To bridge reusable task knowledge with different embodiments, we introduce a semantic-magnitude interface and a lightweight temporal adaptor, which convert frozen meta-knowledge into temporally aligned subgoals for embodiment-specific low-level controllers. Experiments on multiple locomotion agents show that our framework reduces final-step tracking error by 94.75% -- 99.79% compared with recent state-of-the-art baselines and achieves comparable deployment performance with about 23.8% of their interaction data.",
+      "authors": [
+        "Yuan Meng",
+        "Bo Wang",
+        "Juan de los Rios Ruiz",
+        "Xiangtong Yao",
+        "Zhenshan Bing",
+        "Fuchun Sun",
+        "Alois Knoll"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-16T16:32:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.18132v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "meta-knowledge reutilization for fast adaptation across agents with limited data",
+      "llm_evidence_cn": "元知识重利用以实现跨智能体的快速适应，数据有限",
+      "llm_evidence": "元知识重利用以实现跨智能体的快速适应，数据有限",
+      "canonical_evidence": "元知识重利用以实现跨智能体的快速适应，数据有限",
+      "llm_tldr_en": "Proposes a meta-knowledge reutilization framework for transferring task knowledge across heterogeneous agents.",
+      "llm_tldr_cn": "提出元知识重利用框架，跨异构智能体迁移任务知识。",
+      "llm_tldr": "提出元知识重利用框架，跨异构智能体迁移任务知识。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.18164v1",
+      "source": "arxiv",
+      "title": "Learning Dynamics of Chain-of-Thought State Tracking in a Solvable Transformer Model",
+      "abstract": "Chain-of-thought generation can turn a multi-step computation into a sequence of locally checkable state updates, but the training dynamics by which transformers acquire such updates remain poorly understood. We study this question in a solvable setting: a simplified one-block transformer trained by supervised next-token prediction on state sequences generated by composing permutations. The architecture separates fixed-lag action retrieval, learned by RoPE attention, from a specialized MLP logic module that applies the retrieved permutation to the current state. Using a statistical-physics mean-field description, we derive dynamics for three order parameters measuring attention retrieval, teacher-matrix alignment, and off-target logic overlap. These equations quantitatively match simulations for the order parameters and, combined with a logit-distribution approximation, qualitatively predict the sharp transition in final rollout accuracy. The analysis reveals staged learning: the logic module first learns a mixed heuristic; attention then locks onto the relevant action, enabling efficient MLP alignment. Together, these results provide a controlled mechanistic account of how attention-based retrieval and MLP-based logic co-develop during chain-of-thought state tracking.",
+      "authors": [
+        "Niklas Forner",
+        "Marcel Kühn",
+        "Matthias Thamm",
+        "Bernd Rosenow"
+      ],
+      "primary_category": "cond-mat.dis-nn",
+      "categories": [
+        "cond-mat.dis-nn",
+        "physics.data-an"
+      ],
+      "published": "2026-06-16T17:01:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.18164v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "analyzes sequential state tracking in transformer chain-of-thought",
+      "llm_evidence_cn": "分析Transformer思维链中的序列状态跟踪",
+      "llm_evidence": "分析Transformer思维链中的序列状态跟踪",
+      "canonical_evidence": "分析Transformer思维链中的序列状态跟踪",
+      "llm_tldr_en": "Derives learning dynamics of chain-of-thought state tracking in a simplified transformer.",
+      "llm_tldr_cn": "推导简化Transformer中思维链状态跟踪的学习动态。",
+      "llm_tldr": "推导简化Transformer中思维链状态跟踪的学习动态。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
