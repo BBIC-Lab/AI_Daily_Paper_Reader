@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.19398v1/fig-003.webp",
+      "caption": "Figure 1: S-JEPA: a JEPA-style encoder–predictor pair matches soft GMM posteriors at masked positions, with the GMM fit in Phase 1 (frozen, over MFCC features) and updated online in Phase 2 (over EMA encoder features). The single training signal is KL divergence at masked positions; the predictor, cluster head, and GMM are discarded after pre-training.",
+      "page": 2,
+      "index": 3,
+      "width": 748,
+      "height": 435
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19398v1/fig-005.webp",
+      "caption": "Table 1: Frozen-encoder evaluation on the SUPERB benchmark: ASR (WER on LibriSpeech test-clean), emotion recognition (ER, accuracy), and slot filling (SF, F1 and CER). All entries use the standard SUPERB protocol with greedy CTC decoding for ASR. Baseline numbers are from the public SUPERB leaderboard. Parameter counts are inference-time encoder only. Best result within the sub90M block in bold.",
+      "page": 5,
+      "index": 5,
+      "width": 527,
+      "height": 520
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19398v1/fig-001.webp",
+      "caption": "Table 2: S-JEPA leads on Speaker, Gender, and Chapter ID, and benefits more from a nonlinear probe on phoneme classification. Probing accuracy on LibriSpeech [32] across four tasks. Mean ± standard deviation across 3 splits. Chapter ID is the most discriminative comparison: chapters within a book are typically read by the same speaker, so the cue is subtle prosodic and recording variation rather than speaker identity.",
+      "page": 6,
+      "index": 1,
+      "width": 527,
+      "height": 276
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19398v1/fig-002.webp",
+      "caption": "Figure 3: S-JEPA advances the Pareto frontier on SUPERB below 90M parameters. Parameter count vs. performance on (a) ASR (WER on LibriSpeech test-clean, ↓) and (b) emotion recognition (accuracy, ↑). Dashed line: Pareto frontier across all evaluated SSL methods. Shaded region: S-JEPA’s improvement over the prior best in the 51.8M–90M range. S-JEPA reaches 12.10% WER (vs. 13.02% for DeCoAR 2.0 at 89.8M) and 64.83% ER accuracy (matching HuBERT-Base at 55% of its parameters), trained directly without a teacher.",
+      "page": 6,
+      "index": 2,
+      "width": 1026,
+      "height": 419
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19398v1/fig-004.webp",
+      "caption": "Table 3: Training hyperparameters used in our experiments. AdamW [30] is the optimizer for both phases.",
+      "page": 13,
+      "index": 4,
+      "width": 1068,
+      "height": 1012
+    }
+  ]
+}

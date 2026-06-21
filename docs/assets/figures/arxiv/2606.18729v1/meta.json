@@ -1,0 +1,182 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-012.webp",
+      "caption": "Figure 1. Overview of the TIMELAVA Framework. Given an evaluated time series and a reference time series, TIMELAVA assigns a value to each temporal segment indicating its quality relative to the reference. Both series are partitioned into overlapping segments and transformed into multi-scale wavelet representations. The Selective Wavelet-based Wasserstein (WSW) discrepancy is then computed between the two segment distributions. Segment values are efficiently derived from the optimal dual potentials without model training, enabling diverse applications including anomaly detection, data pruning, and label noise detection.",
+      "page": 3,
+      "index": 12,
+      "width": 1013,
+      "height": 236
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-022.webp",
+      "caption": "Figure 3. UOT vs. OT. (a) Standard OT forces complete matching, creating costly alignments for outliers and regime shifts. (b–e) As κ decreases, UOT becomes more selective, allowing dissimilar points to remain unmatched rather than forced into poor alignments.",
+      "page": 5,
+      "index": 22,
+      "width": 1011,
+      "height": 245
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-006.webp",
+      "caption": "Figure 4. Qualitative analysis on the UCR Time Series Anomaly Archive. Each column corresponds to one anomaly type: Local Contextual, Global Contextual, Point Anomaly, and Noisy Data. The first row shows the observed time series with ground-truth anomalous regions shaded in red. Subsequent rows plot the normalized negated anomaly scores produced by each method. Boxes show AUC/F1 scores (higher is better); higher curves in red regions with flat responses elsewhere indicate better localization and fewer false alarms.",
+      "page": 7,
+      "index": 6,
+      "width": 1005,
+      "height": 354
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-016.webp",
+      "caption": "Table 2. Table of Notations",
+      "page": 13,
+      "index": 16,
+      "width": 854,
+      "height": 1252
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-017.webp",
+      "caption": "Figure 7. Experimental validation of Theorem 5.1: TIMELAVA distinguishes between isolated anomalies and regime shifts through characteristic score distributions. Left: Isolated anomalies manifest as sporadic spikes distributed across the time series (red markers indicate 50 anomalies, 5% of data). Middle: Regime shift exhibits systematic change after the transition point (red dashed line at t = 500), with the shaded region indicating the new regime. Right: Score density comparison reveals fundamentally different distributions: isolated anomalies produce a heavy-tailed distribution with extreme outliers (blue), while regime shifts yield a bimodal distribution (green) reflecting pre- and post-shift regimes. The JS divergence of 0.47 confirms statistical distinguishability, demonstrating that the bounded response property of theWSW distance enables nuanced data quality assessment.",
+      "page": 17,
+      "index": 17,
+      "width": 991,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-009.webp",
+      "caption": "Figure 8. Numerical verification of entropy-regularized UOT convergence for time series segments. Left: Value trajectories showing segment-wise convergence. Middle: L1 and L∞ convergence errors on log-log scale with theoretical O(ε) reference (dashed). Right: Spearman correlation demonstrating ranking stability.",
+      "page": 22,
+      "index": 9,
+      "width": 991,
+      "height": 260
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-001.webp",
+      "caption": "Table 3. Details of the anomaly detection datasets. Note that all discrete-valued dimensions are excluded from each dataset. The term “Average Length” refers to the average length across all time series in the dataset.",
+      "page": 25,
+      "index": 1,
+      "width": 911,
+      "height": 327
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-002.webp",
+      "caption": "Figure 9. Anomaly score distributions. TimeLAVA achieves distinct separation between normal and anomalous segments, whereas baselines exhibit significant overlap.",
+      "page": 25,
+      "index": 2,
+      "width": 996,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-003.webp",
+      "caption": "Figure 10. Comprehensive results on the UCR Time Series Anomaly Archive.",
+      "page": 26,
+      "index": 3,
+      "width": 1005,
+      "height": 1125
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-018.webp",
+      "caption": "Figure 13. Parameter sensitivity analysis on UOT regularizer κ.",
+      "page": 27,
+      "index": 18,
+      "width": 728,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-015.webp",
+      "caption": "Table 5. Ablation study on key components of TIMELAVA. TIMELAVA-OT replaces UOT with OT, and TIMELAVA-Fourier replaces Wavelet with Fourier. Bold = best, underline = second best.",
+      "page": 28,
+      "index": 15,
+      "width": 910,
+      "height": 352
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-008.webp",
+      "caption": "Figure 14. Anomaly detection on SMAP channels G-1 (left) and A-2 (right). TIMELAVA with UOT (bottom) shows superior anomaly detection compared to TIMELAVA-OT with standard OT (middle), achieving significantly higher AUC scores.",
+      "page": 29,
+      "index": 8,
+      "width": 1003,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-007.webp",
+      "caption": "Figure 15. Comparison of TIMELAVA-Fourier and TIMELAVA on SMAP channel D-8 (left) and MSL channel F-5 (right). While TIMELAVA-Fourier achieves perfect AUC (1.000), this inflated score results from ground-truth labels that mark extended intervals rather than precise anomaly points. TIMELAVA provides more accurate point-wise localization despite lower AUC.",
+      "page": 29,
+      "index": 7,
+      "width": 1003,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-004.webp",
+      "caption": "Figure 16. Data Selection and Pruning Results - Exchange",
+      "page": 30,
+      "index": 4,
+      "width": 1011,
+      "height": 217
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-005.webp",
+      "caption": "Figure 17. Data Selection and Pruning Results - ETTh1",
+      "page": 30,
+      "index": 5,
+      "width": 1011,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-020.webp",
+      "caption": "Figure 18. Data Selection and Pruning Results - Traffic",
+      "page": 31,
+      "index": 20,
+      "width": 1005,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-019.webp",
+      "caption": "Figure 19. Data Selection and Pruning Results - Electricity",
+      "page": 31,
+      "index": 19,
+      "width": 1011,
+      "height": 220
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-021.webp",
+      "caption": "Figure 20. ROC curves illustrating the performance of temporal label-noise segment identification on four datasets: Exchange, Electricity, ETTh1, and Traffic. The results demonstrate the robustness of TIMELAVA in distinguishing clean from corrupted segments across diverse temporal domains.",
+      "page": 31,
+      "index": 21,
+      "width": 1009,
+      "height": 186
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-014.webp",
+      "caption": "Figure 21. Temporal label noise patterns in time series segments. Upper: Binary classification labels (Class 0/1) with corrupted segments marked in red. Lower: Time-varying corruption probability P (i ∈ N ) for each pattern. Random noise maintains constant probability η, Periodic follows sinusoidal variation simulating cyclical quality changes, Decay shows exponential decrease modeling learning effects, and Growth exhibits sigmoid increase representing degradation over time.",
+      "page": 33,
+      "index": 14,
+      "width": 1003,
+      "height": 434
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-013.webp",
+      "caption": "Figure 22. F1-score on Blinking across different noise types.",
+      "page": 33,
+      "index": 13,
+      "width": 1001,
+      "height": 245
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-011.webp",
+      "caption": "Figure 23. F1-score on Moving across different noise types.",
+      "page": 34,
+      "index": 11,
+      "width": 995,
+      "height": 247
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18729v1/fig-010.webp",
+      "caption": "Figure 24. F1-score on Senior across different noise types.",
+      "page": 34,
+      "index": 10,
+      "width": 1001,
+      "height": 246
+    }
+  ]
+}

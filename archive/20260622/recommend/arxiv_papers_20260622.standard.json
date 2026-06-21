@@ -1,0 +1,437 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-21T20:55:16.306027+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 47,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 88,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 9,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 4,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2606.18567v1",
+      "source": "arxiv",
+      "title": "Bridging Data Gaps in Structural Fragility Modeling through Transfer Learning: Methodology and Case Studies",
+      "abstract": "This paper presents a methodology-centered transfer learning framework for fragility adaptation under domain shift, class imbalance, and scarce target labels while preserving engineering interpretability and supporting decision-making under uncertainty. Four transfer learning strategies (instance-based, parameter-based, hierarchical Bayesian, and multi-source) are demonstrated through three complementary case studies: (i) instance-based transfer learning via importance weighting, demonstrated on coastal bridge fragility using Hurricane Katrina observations; (ii) parameter-based transfer learning together with hierarchical Bayesian transfer learning, enabling partial pooling across strata and posterior uncertainty quantification, demonstrated on residential building fragility using Hurricane Ian observations; and (iii) multi-source transfer learning that fuses multiple analytical fragility models with learned source weights and regularized target-domain adaptation, demonstrated on seismic bridge fragility using observations from the 2001 Nisqually earthquake. Across these case studies, direct transfer of source models (i.e. using existing state-of-the-art models) fails under domain shift and severe class imbalance, while targeted adaptation substantially improves failure detection and predictive stability in low-data regimes. These findings highlight the need for systematic guidance on diagnostics, strategy selection, and uncertainty reporting when developing and adapting fragility models.",
+      "authors": [
+        "Narges Saeednejad",
+        "Jamie Ellen Padgett"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "stat.AP",
+        "stat.ME"
+      ],
+      "published": "2026-06-17T00:38:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.18567v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Transfer learning framework with importance weighting for fragility adaptation under domain shift",
+      "llm_evidence_cn": "使用重要性加权的迁移学习框架用于域偏移下的脆性适应",
+      "llm_evidence": "使用重要性加权的迁移学习框架用于域偏移下的脆性适应",
+      "canonical_evidence": "使用重要性加权的迁移学习框架用于域偏移下的脆性适应",
+      "llm_tldr_en": "Presents transfer learning strategies including importance weighting for domain adaptation in structural fragility.",
+      "llm_tldr_cn": "提出了包括重要性加权在内的迁移学习策略用于结构脆性的域适应。",
+      "llm_tldr": "提出了包括重要性加权在内的迁移学习策略用于结构脆性的域适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18729v1",
+      "source": "arxiv",
+      "title": "TimeLAVA: Learning-Agnostic Data Valuation for Time Series",
+      "abstract": "Data valuation quantifies the intrinsic quality of individual samples to enable principled data curation, quality control, and robust learning. For time series in critical domains such as healthcare, finance, and industrial monitoring, effective valuation methods are essential yet fundamentally lacking. Existing approaches are either model-dependent, limiting their generalizability, or designed for i.i.d. data and thus fail to capture temporal dependencies, multi-scale patterns, and non-stationary dynamics inherent to sequential data. We introduce TimeLAVA, a learning-agnostic framework that values temporal segments by their marginal contribution to minimizing distributional discrepancy between evaluated and reference data. At its core is a novel Selective Wavelet-based Wasserstein discrepancy combining multi-scale wavelet transforms for temporal localization with unbalanced optimal transport for robustness to distributional shifts. Segment values are efficiently computed via sensitivity analysis without requiring model training and aggregated into point-wise scores. We provide theoretical guarantees linking valuation to model-agnostic generalization and prove bounded sensitivity to outlier contamination. Extensive experiments across anomaly detection, data pruning, and label noise detection demonstrate that TimeLAVA produces significantly more informative value scores than existing methods on diverse real-world datasets.",
+      "authors": [
+        "Wenqin Liu",
+        "Weizhi Quan",
+        "Aoqi Zuo",
+        "Erdun Gao",
+        "Vu Nguyen",
+        "Dino Sejdinovic",
+        "Howard Bondell",
+        "Mingming Gong"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-06-17T06:16:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.18729v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "computes importance weights for time series segments via distributional discrepancy",
+      "llm_evidence_cn": "通过分布差异计算时间序列片段的重要性权重",
+      "llm_evidence": "通过分布差异计算时间序列片段的重要性权重",
+      "canonical_evidence": "通过分布差异计算时间序列片段的重要性权重",
+      "llm_tldr_en": "TimeLAVA values time series segments by their marginal contribution to minimizing distributional discrepancy.",
+      "llm_tldr_cn": "TimeLAVA 通过最小化分布差异的边际贡献来评估时间序列片段的价值。",
+      "llm_tldr": "TimeLAVA 通过最小化分布差异的边际贡献来评估时间序列片段的价值。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18897v1",
+      "source": "arxiv",
+      "title": "SAERec: Constructing Fine-grained Interpretable Intents Priors via Sparse Autoencoders for Recommendation",
+      "abstract": "Intent-based recommender systems have gained significant attention for improving accuracy and interpretability by modeling the underlying motivations behind user behaviors. Most existing models derive intents directly from user sequences via clustering or prototype learning. However, they are sensitive to sequence quality, require presetting the number of intents, and lack explicit semantic grounding. These issues lead to an incomplete and coarse intent set and limit the effectiveness of recommendation. In this paper, we propose the Sparse Autoencoder for intent-based recommendation (SAERec), a novel recommender that automatically constructs a fine-grained and interpretable intent space from a textual corpus to guide recommendation. Rather than treating texts as side signals, SAERec leverages them as high information density evidence for intent construction. Specifically, we first extract a comprehensive set of fine-grained interpretable intents from the latent space of large language models (LLMs) by using a sparse autoencoder (SAE) to disentangle and interpret text embeddings, which isolates intent-related semantics from textual noise. Then, for each user, we retrieve relevant intents from this set as priors to guide recommendation. It contains personal intents matching a user's current interests and public intents capturing general item patterns shared across users (e.g., quality, price). Finally, to integrate retrieved intents into sequence modeling, we propose a multi-branch attention mechanism that captures temporal dependencies and injects both personal and public intent signals, followed by an adaptive fusion layer to construct the final user representation for recommendation. Extensive experiments on public datasets demonstrate the superiority of SAERec, consistently outperforming state-of-the-art baselines while providing human-understandable explanations.",
+      "authors": [
+        "Jiangnan Xia",
+        "Xuansheng Wu",
+        "Yu Yang",
+        "Xin Wang",
+        "Ninghao Liu"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-06-17T10:17:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.18897v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "sparse autoencoder for fine-grained intent representations",
+      "llm_evidence_cn": "稀疏自编码器用于细粒度意图表示",
+      "llm_evidence": "稀疏自编码器用于细粒度意图表示",
+      "canonical_evidence": "稀疏自编码器用于细粒度意图表示",
+      "llm_tldr_en": "SAERec uses sparse autoencoders to learn interpretable intent representations from user sequences.",
+      "llm_tldr_cn": "SAERec使用稀疏自编码器从用户序列学习可解释的意图表示。",
+      "llm_tldr": "SAERec使用稀疏自编码器从用户序列学习可解释的意图表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18986v1",
+      "source": "arxiv",
+      "title": "Beyond Tokenization: Direct Timestep Embedding and Contrastive Alignment for Time-Series Question Answering",
+      "abstract": "Recent advances in large language models (LLMs) have given rise to time-series question answering (TSQA), which formulates time-series analysis as natural-language question answering. However, directly feeding raw numerical series into LLMs suffers from a tokenization bottleneck: Byte Pair Encoding fragments continuous values into unstable tokens whose embeddings lack meaningful metric structure, resulting in the loss of magnitude, scale, and trend information. Prior methods use patch-based encoders that split the series into fixed windows, locking in one granularity that breaks patterns and hides exact timesteps, through a separate module that rarely transfers across datasets with different lengths or sampling rates. To address this challenge, we propose CADE (Contrastive Alignment with Direct Embedding), a novel framework for TSQA built upon two key components: direct timestep embedding and semantic alignment. The proposed framework maps each timestep directly into the LLM embedding space through a point-wise linear encoder and MLP projector, preserving exact index-level access while eliminating the need for patching and padding. To further bridge the semantic gap between time-series and language representations, we introduce a novel one-directional supervised contrastive loss that aligns time-series embeddings with frozen class-name text anchors. Experimental results on the public Time-MQA benchmark demonstrate that our framework consistently improves performance across six TSQA tasks, outperforming both open-source and proprietary LLM baselines.",
+      "authors": [
+        "Yafeng Wu",
+        "Huu Hiep Nguyen",
+        "Thin Nguyen",
+        "Hung Le"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-17T12:07:23+00:00",
+      "link": "https://arxiv.org/pdf/2606.18986v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "direct timestep embedding for time-series analysis",
+      "llm_evidence_cn": "直接时间步嵌入用于时间序列分析",
+      "llm_evidence": "直接时间步嵌入用于时间序列分析",
+      "canonical_evidence": "直接时间步嵌入用于时间序列分析",
+      "llm_tldr_en": "Proposes direct timestep embedding and contrastive alignment for time-series QA, addressing tokenization bottleneck.",
+      "llm_tldr_cn": "提出直接时间步嵌入和对比对齐用于时间序列问答，解决分词瓶颈。",
+      "llm_tldr": "提出直接时间步嵌入和对比对齐用于时间序列问答，解决分词瓶颈。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19398v1",
+      "source": "arxiv",
+      "title": "S-JEPA : Soft Clustering Anchors for Self-Supervised Speech Representation Learning",
+      "abstract": "Self-supervised speech encoders are predominantly trained by predicting discrete hard cluster IDs at masked positions, a recipe that collapses acoustic ambiguity at category boundaries and requires interrupting training to re-cluster the entire corpus between iterations. We introduce S-JEPA, a JEPA-style encoder-predictor pair trained to match the soft posteriors of a Gaussian Mixture Model at masked positions via KL divergence. Training runs as one continuous optimization trajectory in two phases: a fixed GMM over MFCC features, then an online GMM over encoder features, with the input layer selected adaptively from a label-free signal, removing both the offline re-cluster step and the hand-tuned choice of which transformer layer to cluster on. Under the SUPERB protocol, S-JEPA achieves the lowest WER among evaluated SSL methods below 90M parameters and matches HuBERT-Base on emotion recognition at roughly half its parameter count, establishing a new Pareto frontier without offline re-clustering or teacher distillation. An analysis of the predictor's per-frame entropy on held-out speech reveals a bimodal distribution with a substantial minority of frames near the entropy of a perfect two-cluster tie, providing direct empirical evidence that the soft-target objective preserves the acoustic ambiguity that hard targets would collapse. Code is available at https://github.com/gioannides/s-jepa.",
+      "authors": [
+        "Georgios Ioannides",
+        "Adrian Kieback",
+        "Judah Goldfeder",
+        "Linsey Pang",
+        "Aman Chadha",
+        "Aaron Elkins",
+        "Yann LeCun",
+        "Ravid Shwartz-Ziv"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "eess.AS",
+        "eess.SP"
+      ],
+      "published": "2026-06-17T08:39:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.19398v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learning compact and meaningful representations from raw data",
+      "llm_evidence_cn": "从原始数据学习紧凑有意义表示",
+      "llm_evidence": "从原始数据学习紧凑有意义表示",
+      "canonical_evidence": "从原始数据学习紧凑有意义表示",
+      "llm_tldr_en": "S-JEPA learns self-supervised speech representations via soft clustering.",
+      "llm_tldr_cn": "S-JEPA通过软聚类学习自监督语音表示。",
+      "llm_tldr": "S-JEPA通过软聚类学习自监督语音表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.18512v1",
+      "source": "arxiv",
+      "title": "Causal Forecasting in Panel Data: A Two-Way Synthetic Forecasting Approach",
+      "abstract": "Estimating causal effects in panel data is a central problem in policy evaluation. Existing methods largely address retrospective questions of the form: what would have happened to a target unit under a different intervention during the observed panel? In many applications, however, decision-makers face prospective questions: what will happen to a target unit under an intervention it has not yet experienced, beyond the observed panel? This article develops a framework for answering such causal forecasting questions by integrating the retrospective counterfactual logic of synthetic-controls-based approaches with the extrapolative structure of multivariate time-series forecasting. Building on the latent factor models that justify unit-side regressions in synthetic controls, we impose low-rank temporal structure on the latent time factors to identify prospective causal forecast estimands. We operationalize this strategy through the Two-Way Synthetic Forecasting estimator, or TWSF, which learns cross-unit relationships from pre-treatment outcomes and combines them with a time-series model learned from treated donor trajectories under the intervention of interest. Under suitable conditions, we establish finite-sample forecasting error bounds that imply pointwise consistency and introduce an orthogonalized correction that yields asymptotic normality and thus enables pointwise inference. We extend the framework to fixed multi-step forecasting horizons through both direct and recursive procedures, each of which inherits analogous pointwise guarantees. We corroborate the theory with simulation studies and illustrate the practical utility of TWSF by studying the public-health impact of opening NFL stadiums during the 2020 season.",
+      "authors": [
+        "Dennis Shen"
+      ],
+      "primary_category": "econ.EM",
+      "categories": [
+        "econ.EM",
+        "stat.ME"
+      ],
+      "published": "2026-06-16T22:04:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.18512v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "methods for analyzing and predicting sequential data over time",
+      "llm_evidence_cn": "分析和预测时序数据的方法",
+      "llm_evidence": "分析和预测时序数据的方法",
+      "canonical_evidence": "分析和预测时序数据的方法",
+      "llm_tldr_en": "Causal forecasting in panel data using synthetic controls.",
+      "llm_tldr_cn": "面板数据中利用合成控制进行因果预测。",
+      "llm_tldr": "面板数据中利用合成控制进行因果预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.18485v1",
+      "source": "arxiv",
+      "title": "MagpieTTS-LF: Inference-Time Long-Form Speech Generation Without Training on Long-Form data",
+      "abstract": "Neural Text-to-Speech (TTS) systems achieve remarkable quality on short utterances but long-form speech generation shows prosodic drift, speaker inconsistencies and sentence boundary artifacts. Existing approaches either compress sequences, increase context length or naively concatenate independently synthesized chunks. We present an inference-time approach called MagpieTTS-LF that enables MagpieTTS to produce coherent long-form speech without model retraining. Our method introduces three key innovations: (1) soft attention priors to guide monotonic alignment while preserving past and future context; (2) a stateful inference algorithm that maintains context across sentence chunks, ensuring prosodic continuity; (3) history-aware text encoding that uses past text for discourse-level prosodic planning. Experiments on long texts show significant improvements in long-range intelligibility, prosodic coherence, speaker consistency, and boundary naturalness compared to other baselines.",
+      "authors": [
+        "Subhankar Ghosh",
+        "Jason Li",
+        "Paarth Neekhara",
+        "Shehzeen Hussain",
+        "Ryan Langman",
+        "Xuesong Yang",
+        "Roy Fejgin"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "eess.AS"
+      ],
+      "published": "2026-06-16T20:58:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.18485v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "inference-time long-form speech sequence generation",
+      "llm_evidence_cn": "推理时生成长语音序列",
+      "llm_evidence": "推理时生成长语音序列",
+      "canonical_evidence": "推理时生成长语音序列",
+      "llm_tldr_en": "MagpieTTS-LF generates coherent long-form speech sequences without long-form training.",
+      "llm_tldr_cn": "MagpieTTS-LF无需长序列训练即可生成连贯的长语音。",
+      "llm_tldr": "MagpieTTS-LF无需长序列训练即可生成连贯的长语音。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.18558v1",
+      "source": "arxiv",
+      "title": "MolmoMotion: Forecasting Point Trajectories in 3D with Language Instruction",
+      "abstract": "Motion forecasting is central to visual intelligence: agents must anticipate how objects will move in order to plan actions, reason about physical interactions, and synthesize realistic futures. We argue that 3D points in world coordinates provide a general representation that is class-agnostic, view-stable, compact, and directly useful for downstream tasks. We formalize the task of goal-conditioned 3D point motion forecasting: given a short visual history, a set of 3D query points on an object of interest, and a language description of the intended goal, the model predicts the future 3D trajectory of each point. We introduce a full stack to study this task at scale: (1) MolmoMotion-1M is a large corpus of action-described, object-grounded 3D point trajectories annotated from 1.16M unconstrained videos; (2) PointMotionBench is a human-verified benchmark spanning 111 object categories and 61 motion types; and (3) MolmoMotion is a general motion forecasting model that supports both autoregressive coordinate prediction and flow-matching-based trajectory generation. MolmoMotion accurately predicts diverse motion patterns with different language instructions, and significantly outperforms existing motion prediction baselines on PointMotionBench. Finally, we show that the learned 3D motion prior transfers well to downstream applications: it improves training efficiency and generalization for robot manipulation, and its predicted trajectories provide effective motion guidance for generative models to synthesize videos with more realistic object motion.",
+      "authors": [
+        "Jianing Zhang",
+        "Chenhao Zheng",
+        "Yajun Yang",
+        "Max Argus",
+        "Rustin Soraki",
+        "Winson Han",
+        "Taira Anderson",
+        "Chun-Liang Li",
+        "Shuo Liu",
+        "Jiafei Duan",
+        "Zhongzheng Ren",
+        "Jieyu Zhang",
+        "Ranjay Krishna"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-17T00:19:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.18558v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D point motion forecasting with language instruction",
+      "llm_evidence_cn": "基于语言指令的3D点运动预测",
+      "llm_evidence": "基于语言指令的3D点运动预测",
+      "canonical_evidence": "基于语言指令的3D点运动预测",
+      "llm_tldr_en": "Goal-conditioned 3D point trajectory prediction using language and visual history",
+      "llm_tldr_cn": "基于语言和视觉历史的目标条件3D点轨迹预测",
+      "llm_tldr": "基于语言和视觉历史的目标条件3D点轨迹预测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.18597v1",
+      "source": "arxiv",
+      "title": "Low-resource Language Discrimination Towards Chinese Dialects with Transfer learning and Data Augmentation",
+      "abstract": "Chinese dialects discrimination is a challenging natural language processing task due to scarce annotation resource. In this article, we develop a novel Chinese dialects discrimination framework with transfer learning and data augmentation (CDDTLDA) in order to overcome the shortage of resources. To be more specific, we first use a relatively larger Chinese dialects corpus to train a source-side automatic speech recognition (ASR) model. Then, we adopt a simple but effective data augmentation method (i.e., speed, pitch, and noise disturbance) to augment the target-side low-resource Chinese dialects, and fine-tune another target ASR model based on the previous source-side ASR model. Meanwhile, the potential common semantic features between source-side and target-side ASR models can be captured by using self-attention mechanism. Finally, we extract the hidden semantic representation in the target ASR model to conduct Chinese dialects discrimination. Our extensive experimental results demonstrate that our model significantly outperforms state-of-the-art methods on two benchmark Chinese dialects corpora.",
+      "authors": [
+        "Fan Xu",
+        "Yangjie Dan",
+        "Keyu Yan",
+        "Yong Ma",
+        "Mingwen Wang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-17T01:46:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.18597v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "transfer learning and data augmentation for low-resource dialect discrimination",
+      "llm_evidence_cn": "对低资源方言识别的迁移学习和数据增强",
+      "llm_evidence": "对低资源方言识别的迁移学习和数据增强",
+      "canonical_evidence": "对低资源方言识别的迁移学习和数据增强",
+      "llm_tldr_en": "CDDTLDA uses transfer learning and data augmentation to discriminate low-resource Chinese dialects.",
+      "llm_tldr_cn": "CDDTLDA 使用迁移学习和数据增强来区分低资源中文方言。",
+      "llm_tldr": "CDDTLDA 使用迁移学习和数据增强来区分低资源中文方言。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.18620v1",
+      "source": "arxiv",
+      "title": "BCL: Bayesian In-Context Learning Framework for Information Extraction",
+      "abstract": "Existing information extraction (IE) tasks increasingly adopt in-context learning (ICL) with large language models. However, current approaches either show inconsistent performance across model scales or lack systematic optimization and generalizability. Building on this, we propose BCL (Bayesian In-Context Learning Framework for Information Extraction), the first optimization framework that uses particle filtering with Bayesian updates to systematically refine label representations across IE tasks. Through four steps initialization, observation, weight update, and resampling, BCL generalizes to both sequence labeling and relation classification paradigms. Extensive experiments demonstrate substantial and consistent improvements over existing approaches.",
+      "authors": [
+        "Haoliang Liu",
+        "Chengkun Cai",
+        "Xu Zhao",
+        "Han Zhu",
+        "Shizhou Huang",
+        "Xinglin Zhang",
+        "Tao Chen",
+        "Jenq-Neng Hwang",
+        "Zhang Huaping",
+        "Lei Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-17T02:34:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.18620v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Bayesian in-context learning leverages pretrained LLMs for IE tasks",
+      "llm_evidence_cn": "贝叶斯上下文学习利用预训练LLM进行信息抽取",
+      "llm_evidence": "贝叶斯上下文学习利用预训练LLM进行信息抽取",
+      "canonical_evidence": "贝叶斯上下文学习利用预训练LLM进行信息抽取",
+      "llm_tldr_en": "Bayesian update framework improves ICL for information extraction",
+      "llm_tldr_cn": "贝叶斯更新框架改进信息抽取的上下文学习",
+      "llm_tldr": "贝叶斯更新框架改进信息抽取的上下文学习",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

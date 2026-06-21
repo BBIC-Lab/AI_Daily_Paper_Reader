@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-001.webp",
+      "caption": "Figure 1: Comparison of previous approaches and our work. Top: Previous methods convert IE tasks to leverage models’ stronger code or chat capabilities, making performance dependent on model-specific strengths. Bottom: Our approach directly improves IE performance via automatically generated semantic patterns, regardless of models’ relative strengths across task types.",
+      "page": 1,
+      "index": 1,
+      "width": 475,
+      "height": 377
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-003.webp",
+      "caption": "Figure 2: Performance comparison of different methods on Qwen-2.5-7B across NER and RE tasks. The Y-axis represents F1 score (%). BCL demonstrates consistent superiority over baseline methods, while ChatIE and CodeIE show substantial degradation on both task types. GuideNER is applicable only to NER tasks.",
+      "page": 2,
+      "index": 3,
+      "width": 465,
+      "height": 430
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-004.webp",
+      "caption": "Figure 3: Overview of the BCL framework. The framework operates through particle filtering with Bayesian updates, alternating between observation and control to progressively optimize the semantic patterns distribution.",
+      "page": 2,
+      "index": 4,
+      "width": 452,
+      "height": 315
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-007.webp",
+      "caption": "Figure 4: Overall framework of BCL showing the particle-based rule optimization pipeline with iterative generation (Particle Generator), evaluation(Posterior Probability Calculator), selection (Retain), and mutation (Resampler) phases guided by LLM performance feedback.",
+      "page": 4,
+      "index": 7,
+      "width": 845,
+      "height": 383
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-008.webp",
+      "caption": "Table 4: F1 scores (%) for different training set sizes.",
+      "page": 9,
+      "index": 8,
+      "width": 451,
+      "height": 311
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-009.webp",
+      "caption": "Table 5: F1 scores (%) for different context lengths (in sentences) during the observation step",
+      "page": 9,
+      "index": 9,
+      "width": 452,
+      "height": 309
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-006.webp",
+      "caption": "Figure 5: Case study showing the prompt template for subcategory generation. The template guides the model to generate semantic subcategories for named entity labels, demonstrated with organization and person entity types.",
+      "page": 13,
+      "index": 6,
+      "width": 854,
+      "height": 319
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-005.webp",
+      "caption": "Figure 6: Case study demonstrating posterior probability calculation through likelihood estimation. The model evaluates generated rules against input text to compute particle posterior probabilities based on classification accuracy.",
+      "page": 14,
+      "index": 5,
+      "width": 854,
+      "height": 450
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18620v1/fig-002.webp",
+      "caption": "Figure 7: Case study demonstrating the resampling stage with particle mutation.",
+      "page": 15,
+      "index": 2,
+      "width": 854,
+      "height": 506
+    }
+  ]
+}

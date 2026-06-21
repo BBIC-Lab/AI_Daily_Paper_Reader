@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-004.webp",
+      "caption": "Figure 1 Overview. We introduce the task of goal-conditioned 3D point motion prediction. Given initial 3D query points on an object, history RGB observations, and a language description of the future action, our model predicts the future 3D positions of all queried points in a metric world coordinate frame. We show that pretraining this motion prediction task produces a transferable motion representation for downstream applications, including robotics planning and video generation.",
+      "page": 2,
+      "index": 4,
+      "width": 986,
+      "height": 306
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-011.webp",
+      "caption": "Figure 2 MolmoMotion architecture. The shared input to Molmo2 [17] backbone consists of image tokens of RGB observations, text tokens of action description, and 2D query point feature tokens sampled from Molmo2 vision encoder. The autoregressive variant encodes the initial 3D query coordinates and decodes future trajectories as quantized coordinate text, while the flow-matching variant represents them directly in continuous 3D coordinate space.",
+      "page": 4,
+      "index": 11,
+      "width": 914,
+      "height": 385
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-014.webp",
+      "caption": "Figure 3 Overview of data annotation pipeline. Given a video of an action event and its description, we first ground the moving object and sample query points on it. We then track dense 2D points on the object, lift these tracks into a shared metric 3D frame, and use object-level spatial and temporal consistency priors to filter unreliable trajectories. Finally, we clip the video around intervals where the grounded object undergoes meaningful motion.",
+      "page": 5,
+      "index": 14,
+      "width": 904,
+      "height": 313
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-001.webp",
+      "caption": "Figure 4 Action-verb diversity. Distribution of the most frequent motion verbs across the pretraining corpus (MolmoMotion-1M), the full training corpus that additionally includes the MolmoSpaces and DROID downstreamfinetune data, and the PointMotionBench evaluation set. Bars are log-scaled.",
+      "page": 6,
+      "index": 1,
+      "width": 978,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-002.webp",
+      "caption": "Figure 5 Manipulated-object diversity. Distribution of the most frequent manipulated objects per cohort. Generic placeholder tokens (object, hand, person) are excluded. Bars are log-scaled.",
+      "page": 6,
+      "index": 2,
+      "width": 980,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-005.webp",
+      "caption": "Table 1 3D point trajectory prediction on PointMotionBench. We report 3D ADE, FDE, and average PWT in meters. Input columns indicate the number of past observations consumed and whether the model accepts a natural-language action description. MolmoMotion-AR denotes our autoregressive variant, while MolmoMotion-FM denotes the flow-matching variant.",
+      "page": 7,
+      "index": 5,
+      "width": 986,
+      "height": 391
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-010.webp",
+      "caption": "Figure 6 Qualitative MolmoMotion prediction. MolmoMotion predicts accurate motion trajectories on diverse motion patterns with different action instructions.",
+      "page": 8,
+      "index": 10,
+      "width": 986,
+      "height": 398
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-013.webp",
+      "caption": "Figure 7 MolmoMotion transfers effectively to robotics planning. (a) Task success rate on the MolmoSpaces Franka Pick-and-place benchmark over robot-finetuning steps (left) and the final step per split breakdown (right) across SS (seen scene, seen object), SU (seen scene, unseen object), US (unseen scene, seen object), and All. (b) Test L2 error of predicted 3D trajectories on held-out DROID clips. In both settings, initializing from MolmoMotion substantially outperforms the baseline.",
+      "page": 9,
+      "index": 13,
+      "width": 976,
+      "height": 262
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-007.webp",
+      "caption": "Figure 9 Qualitative Video Generation Comparison. MolmoMotion-guided videos exhibit more physically plausible object motion and follow the prompted action more faithfully.",
+      "page": 10,
+      "index": 7,
+      "width": 982,
+      "height": 533
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-008.webp",
+      "caption": "Table 3 Source corpora used to construct MolmoMotion-1M.",
+      "page": 18,
+      "index": 8,
+      "width": 658,
+      "height": 188
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-012.webp",
+      "caption": "Table 6 Model ablations on PointMotionBench. All variants use the autoregressive head with the same Molmo2-4B initialization, the same 40K+10K training schedule, and the same evaluation protocol as Tab. 1. The reference row is MolmoMotion-AR at H = 3. Rows 2–4 remove one design choice; row 5 doubles the per-object query count. Anchor-relative parameterization and language conditioning are the largest contributors; the 2D point feature yields a small but consistent gain; doubling N improves accuracy slightly at substantial training cost (see text).",
+      "page": 24,
+      "index": 12,
+      "width": 986,
+      "height": 241
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-009.webp",
+      "caption": "Figure 10 MolmoMotion predictions on held-out DROID clips.",
+      "page": 28,
+      "index": 9,
+      "width": 986,
+      "height": 619
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-006.webp",
+      "caption": "Figure 11 Video generation comparisons on held-out PointMotionBench prompts (1/2).",
+      "page": 29,
+      "index": 6,
+      "width": 981,
+      "height": 904
+    },
+    {
+      "url": "assets/figures/arxiv/2606.18558v1/fig-003.webp",
+      "caption": "Figure 12 Video generation comparisons on held-out PointMotionBench prompts (2/2).",
+      "page": 30,
+      "index": 3,
+      "width": 758,
+      "height": 1339
+    }
+  ]
+}
