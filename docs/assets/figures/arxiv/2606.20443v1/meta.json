@@ -1,0 +1,94 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-005.webp",
+      "caption": "Figure 1: Different representations of multivariate time-series data. (a) Raw time-series trajectories for process variables vi. (b) A matrix representation of the same data, where rows correspond to variable indices and columns to time steps. (c) A heatmap visualization of the matrix, forming a 2D manifold whose pixel intensity reflects normalized process variables. (d) A 3D surface / field obtained by projecting intensities onto a third (vertical) axis, highlighting geometric structure (shape) in the data.",
+      "page": 3,
+      "index": 5,
+      "width": 998,
+      "height": 644
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-008.webp",
+      "caption": "Figure 2: Different representations of a multivariate time-series dataset. (a) Raw normalized trajectories for N “ 56 variables over a monitoring horizon of approximately 90,000 minutes. (b) 2D manifold representation of the same dataset, where rows correspond to variable indices, columns correspond to time indices, and grayscale intensity denotes the normalized value of each variable.",
+      "page": 8,
+      "index": 8,
+      "width": 1002,
+      "height": 398
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-004.webp",
+      "caption": "Figure 4: NODE architecture used to learn the temporal evolution of the topological descriptors. The input consists of EC curves χpτkq associated with successive moving windows, and the model predicts their corresponding temporal derivatives 9χpτkq. The learned directionality of the EC curves is subsequently used to identify events during process monitoring.",
+      "page": 10,
+      "index": 4,
+      "width": 1010,
+      "height": 281
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-001.webp",
+      "caption": "Figure 5: Schematic of industrial olefins plant. The plant converts hydrocarbon feedstocks into light olefins such as ethylene and propylene through steam cracking followed by downstream separation and purification. The process involves quenching, compression, and cryogenic distillation through units such as the demethanizer, deethanizer, and multiple splitter columns to separate hydrogen- and methane-rich streams.",
+      "page": 11,
+      "index": 1,
+      "width": 1010,
+      "height": 434
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-007.webp",
+      "caption": "Table 1: Summary of events detected during online operation of the olefins plant.",
+      "page": 13,
+      "index": 7,
+      "width": 932,
+      "height": 384
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-002.webp",
+      "caption": "Figure 7: Performance of the reconstruction-based monitoring approaches. (a) Normalized multivariate timeseries trajectories pṽq of the olefins plant over the full monitoring horizon, obtained by superimposing all measured process variables, with the time intervals associated with Events 1-6 highlighted. (b1) PCA reconstruction error as a function of time. (b2) The same PCA reconstruction error overlaid with the event windows described in Table 1. (c1) AE reconstruction error as a function of time. (c2) The same AE reconstruction error overlaid with the event windows described in Table 1. Both reconstruction-based approaches primarily respond to the major events, while exhibiting limited sensitivity to the minor instabilities.",
+      "page": 15,
+      "index": 2,
+      "width": 990,
+      "height": 888
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-011.webp",
+      "caption": "Figure 8: KAE event detection showing the temporal evolution of ∥∆zk∥ across all time windows overlaid with onset times of the different types of events described in Table 1. Although the latent-space dynamics capture the shutdown and start-up events, the minor instabilities do not produce clearly distinguishable signatures.",
+      "page": 16,
+      "index": 11,
+      "width": 890,
+      "height": 511
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-006.webp",
+      "caption": "Figure 9: Topological descriptors obtained from the moving-window representation of the olefins plant data. (a) Normalized EC curves computed for all moving windows, color-coded by default operation and event classes as defined in Table 1. (b) PCA projection of the EC curves onto the first two principal components. The minor events mostly overlap with the default operating region, whereas the major events separate more distinctly in the topological latent space. The gray dotted arrowed lines between consecutive PCA markers indicate the dynamic progression of the TDA descriptors pχkq, across time windows.",
+      "page": 18,
+      "index": 6,
+      "width": 998,
+      "height": 402
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-009.webp",
+      "caption": "Figure 10: TDA-NODE based event detection showing the temporal evolution of › › 9χk › › across all moving windows. Colored vertical dashed lines indicate the onset times of Events 1-6 as defined in Table 1. Although the minor events overlap with the default region in the static EC-based latent representation, their signatures are revealed through the directionality of the EC descriptors. Peaks in the predicted topological dynamics align with both minor and major events, indicating that TDA-NODE captures minor and major transitions within a unified trajectory-based monitoring framework.",
+      "page": 19,
+      "index": 9,
+      "width": 860,
+      "height": 493
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-010.webp",
+      "caption": "Figure 11: Normalized time-series trajectories of the measured process variables pṽq for the independent testing dataset. The dataset contains the same process variables as the training dataset, but over a different operating timeline spanning approximately t “ 62 days (88,562 minutes), with measurements recorded every minute. The trajectories exhibit markedly different transient patterns and dynamic variability relative to the dataset used to develop the NODE model.",
+      "page": 20,
+      "index": 10,
+      "width": 1010,
+      "height": 706
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20443v1/fig-003.webp",
+      "caption": "Figure 12: Topological analysis and NODE-based monitoring results for the independent testing dataset. (a) 2D manifold representation of the multivariate time-series data constructed using the same moving-window strategy as in the training case. (b) Normalized EC curves computed for all moving windows of the testing dataset. Although the EC distributions differ from those of the training dataset, the qualitative changes reflect different plant behavior across the two operating periods. (c) PCA projection of the EC curves, where the yellow/orange markers denote events. The events largely overlap with the normal operating region, indicating that static visualization of the topological descriptors alone is insufficient for reliable event detection. (d) NODE-based monitoring of the testing dataset showing the temporal evolution of › › 9χk › ›. Peaks in the predicted temporal derivatives align with instability regions in the unseen dataset, demonstrating the generalizability of the pretrained TDA-NODE framework.",
+      "page": 21,
+      "index": 3,
+      "width": 1010,
+      "height": 731
+    }
+  ]
+}

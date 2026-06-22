@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-06-22
-- 运行时间：2026-06-22 04:57:44 北京时间
+- 最新运行日期：2026-06-23
+- 运行时间：2026-06-23 06:17:49 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-1) 今日精读两篇高分研究：用迁移学习填补结构脆弱性建模的数据缺口，以及一个叫TimeLAVA的时间序列数据估值新框架。
-2) 最值得关注的是，迁移学习能显著缓解工程安全评估中数据不足的难题，而TimeLAVA则提供了一种无需依赖具体模型就能为时序数据定价的通用方法。
-3) 如果你正处理数据稀疏的物理建模或时序分析任务，不妨先看看这两篇的思路——它们提供了从数据获取、融合到价值评估的完整参照。
-- 详情：[/202606/22/README](/202606/22/README)
+今日聚焦可解释神经加性模型与KAN储备池计算两项高分精读，并速览语音合成预训练、5G可解释预测与医学多视图对齐。  
+最值得关注的可解释性方向：神经加性模型如何原生融入特征选择与交互，以及Kolmogorov-Arnold网络用于高效时序计算。  
+建议读者从这两篇9分精读切入，对比模型透明度与动力学系统建模新思路，再延展至其他应用领域的可解释设计。
+- 详情：[/202606/23/README](/202606/23/README)
 
 ### 精读区论文标签
-1. [Bridging Data Gaps in Structural Fragility Modeling through Transfer Learning: Methodology and Case Studies](/202606/22/2606.18567v1-bridging-data-gaps-in-structural-fragility-modeling-through-transfer-learning-methodology-and-case-studies)  
+1. [Neural Additive and Basis Models with Feature Selection and Interactions](/202606/23/2606.19850v1-neural-additive-and-basis-models-with-feature-selection-and-interactions)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用重要性加权的迁移学习框架用于域偏移下的脆性适应
-2. [TimeLAVA: Learning-Agnostic Data Valuation for Time Series](/202606/22/2606.18729v1-timelava-learning-agnostic-data-valuation-for-time-series)  
+   evidence：提出NAM和NBM计算并可视化特征贡献
+2. [Kolmogorov-Arnold Reservoir Computing](/202606/23/2606.19984v1-kolmogorov-arnold-reservoir-computing)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过分布差异计算时间序列片段的重要性权重
-3. [SAERec: Constructing Fine-grained Interpretable Intents Priors via Sparse Autoencoders for Recommendation](/202606/22/2606.18897v1-saerec-constructing-fine-grained-interpretable-intents-priors-via-sparse-autoencoders-for-recommendation)  
+   evidence：使用基函数扩展的储备池计算预测动态系统
+3. [Self-Adaptive Scale Handling for Forecasting Time Series with Scale Heterogeneity](/202606/23/2606.20010v1-self-adaptive-scale-handling-for-forecasting-time-series-with-scale-heterogeneity)  
    标签：评分：9.0/10、query:ndai
-   evidence：稀疏自编码器用于细粒度意图表示
-4. [Beyond Tokenization: Direct Timestep Embedding and Contrastive Alignment for Time-Series Question Answering](/202606/22/2606.18986v1-beyond-tokenization-direct-timestep-embedding-and-contrastive-alignment-for-time-series-question-answering)  
+   evidence：时间序列预测中的自适应尺度处理
+4. [PaAno+: Multiscale Encoding and Cross-Variable Attention for Time Series Anomaly Detection](/202606/23/2606.20055v1-paano-multiscale-encoding-and-cross-variable-attention-for-time-series-anomaly-detection)  
    标签：评分：9.0/10、query:ndai
-   evidence：直接时间步嵌入用于时间序列分析
-5. [S-JEPA : Soft Clustering Anchors for Self-Supervised Speech Representation Learning](/202606/22/2606.19398v1-s-jepa--soft-clustering-anchors-for-self-supervised-speech-representation-learning)  
+   evidence：多尺度编码和跨变量注意力用于时间序列异常检测
+5. [Topological Data Analysis for High-Dimensional Dynamic Process Monitoring](/202606/23/2606.20443v1-topological-data-analysis-for-high-dimensional-dynamic-process-monitoring)  
    标签：评分：9.0/10、query:ndai
-   evidence：从原始数据学习紧凑有意义表示
+   evidence：拓扑数据分析与神经常微分方程进行高维时间序列事件检测
 
 ### 速读区论文标签
-1. [Causal Forecasting in Panel Data: A Two-Way Synthetic Forecasting Approach](/202606/22/2606.18512v1-causal-forecasting-in-panel-data-a-two-way-synthetic-forecasting-approach)  
+1. [Exploring Pre-training Benefits on Phoneme Addition through Fine-tuning in Speech Synthesis](/202606/23/2606.19792v1-exploring-pre-training-benefits-on-phoneme-addition-through-fine-tuning-in-speech-synthesis)  
    标签：评分：8.0/10、query:ndai
-   evidence：分析和预测时序数据的方法
-2. [MolmoMotion: Forecasting Point Trajectories in 3D with Language Instruction](/202606/22/2606.18558v1-molmomotion-forecasting-point-trajectories-in-3d-with-language-instruction)  
+   evidence：研究语音合成中音素添加的迁移学习，以有限数据适应新音素
+2. [TelcoAgent: A Scalable 5G Multi-KPM Forecasting With 3GPP-Grounded Explainability](/202606/23/2606.19821v1-telcoagent-a-scalable-5g-multi-kpm-forecasting-with-3gpp-grounded-explainability)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于语言指令的3D点运动预测
-3. [Low-resource Language Discrimination Towards Chinese Dialects with Transfer learning and Data Augmentation](/202606/22/2606.18597v1-low-resource-language-discrimination-towards-chinese-dialects-with-transfer-learning-and-data-augmentation)  
+   evidence：使用基础模型进行多小区KPM预测
+3. [OTCHA: Optimal Transport-driven Confidence-aware Latent Hub Alignment for Multi-View Medical Image Classification](/202606/23/2606.19838v1-otcha-optimal-transport-driven-confidence-aware-latent-hub-alignment-for-multi-view-medical-image-classification)  
    标签：评分：8.0/10、query:ndai
-   evidence：对低资源方言识别的迁移学习和数据增强
-4. [BCL: Bayesian In-Context Learning Framework for Information Extraction](/202606/22/2606.18620v1-bcl-bayesian-in-context-learning-framework-for-information-extraction)  
+   evidence：基于最优传输的置信感知潜在中心对齐的多视图表示学习
+4. [SL-S4Wave: Self-Supervised Learning of Physiological Waveforms with Structured State Space Models](/202606/23/2606.19888v1-sl-s4wave-self-supervised-learning-of-physiological-waveforms-with-structured-state-space-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：贝叶斯上下文学习利用预训练LLM进行信息抽取
-5. [MagpieTTS-LF: Inference-Time Long-Form Speech Generation Without Training on Long-Form data](/202606/22/2606.18485v1-magpietts-lf-inference-time-long-form-speech-generation-without-training-on-long-form-data)  
+   evidence：自监督S4模型用于长序列生理波形分析
+5. [BrainG3N: A Dual-Purpose Tokenizer for Controllable 3D Brain MRI Generation](/202606/23/2606.19651v1-braing3n-a-dual-purpose-tokenizer-for-controllable-3d-brain-mri-generation)  
    标签：评分：7.0/10、query:ndai
-   evidence：推理时生成长语音序列
+   evidence：通过3D脑MRI分词器实现神经活动的表示学习
 

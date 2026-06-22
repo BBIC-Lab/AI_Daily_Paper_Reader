@@ -1,0 +1,420 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-22T22:15:38.750388+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 21,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 38,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 6,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 1,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2606.19850v1",
+      "source": "arxiv",
+      "title": "Neural Additive and Basis Models with Feature Selection and Interactions",
+      "abstract": "Deep neural networks (DNNs) exhibit attractive performance in various fields but often suffer from low interpretability. The neural additive model (NAM) and its variant called the neural basis model (NBM) use neural networks (NNs) as nonlinear shape functions in generalized additive models (GAMs). Both models are highly interpretable and exhibit good performance and flexibility for NN training. NAM and NBM can provide and visualize the contribution of each feature to the prediction owing to GAM-based architectures. However, when using two-input NNs to consider feature interactions or when applying them to high-dimensional datasets, training NAM and NBM becomes intractable due to the increase in the computational resources required. This paper proposes incorporating the feature selection mechanism into NAM and NBM to resolve computational bottlenecks. We introduce the feature selection layer in both models and update the selection weights during training. Our method is simple and can reduce computational costs and model sizes compared to vanilla NAM and NBM. In addition, it enables us to use two-input NNs even in high-dimensional datasets and capture feature interactions. We demonstrate that the proposed models are computationally efficient compared to vanilla NAM and NBM, and they exhibit better or comparable performance with state-of-the-art GAMs.",
+      "authors": [
+        "Yasutoshi Kishimoto",
+        "Kota Yamanishi",
+        "Takuya Matsuda",
+        "Shinichi Shirakawa"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T06:58:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.19850v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes NAM and NBM to compute and visualize feature contributions",
+      "llm_evidence_cn": "提出NAM和NBM计算并可视化特征贡献",
+      "llm_evidence": "提出NAM和NBM计算并可视化特征贡献",
+      "canonical_evidence": "提出NAM和NBM计算并可视化特征贡献",
+      "llm_tldr_en": "Neural additive models with interpretable feature importance weights.",
+      "llm_tldr_cn": "具有可解释特征重要性权重的神经加性模型。",
+      "llm_tldr": "具有可解释特征重要性权重的神经加性模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19984v1",
+      "source": "arxiv",
+      "title": "Kolmogorov-Arnold Reservoir Computing",
+      "abstract": "Reservoir computing offers a lightweight framework for forecasting dynamical systems but may struggle to capture long-range dependencies due to limited representational capacity. Conventional reservoir computing recurrently uses trainable reservoirs with hyperparameter sensitivity, while the next-generation reservoir computing removes recurrence at the cost of rapidly growing feature dimensions. Here, we develop Kolmogorov-Arnold Reservoir Computing (KARC), which replaces reservoirs with explicit basis-function expansions inspired by the Kolmogorov-Arnold representation theorem. We rigorously show that KARC is a lightweight design of Kolmogorov-Arnold networks (KANs), preserving the potential expressive capacity of KANs while admitting efficient closed-form training of reservoir computing. At comparable cost, KARC outperforms existing reservoir computing methods on challenging benchmarks including partial differential equations. It can also be integrated with generative diffusion models for text-to-image generation. This work thus establishes a principled bridge between reservoir computing and KANs, enabling efficient and high-fidelity dynamical system forecasting.",
+      "authors": [
+        "Juntian Huang",
+        "Jurgen Kurths",
+        "Ying Tang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T09:24:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.19984v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "forecasts dynamical systems using reservoir computing with basis-function expansions",
+      "llm_evidence_cn": "使用基函数扩展的储备池计算预测动态系统",
+      "llm_evidence": "使用基函数扩展的储备池计算预测动态系统",
+      "canonical_evidence": "使用基函数扩展的储备池计算预测动态系统",
+      "llm_tldr_en": "Develops Kolmogorov-Arnold Reservoir Computing for efficient time series forecasting.",
+      "llm_tldr_cn": "开发Kolmogorov-Arnold储备池计算用于高效时间序列预测。",
+      "llm_tldr": "开发Kolmogorov-Arnold储备池计算用于高效时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.20010v1",
+      "source": "arxiv",
+      "title": "Self-Adaptive Scale Handling for Forecasting Time Series with Scale Heterogeneity",
+      "abstract": "Current time series forecasting (TSF) research predominantly focuses on scale-homogeneous data, where different time series share similar numerical magnitude ranges. However, in real-world industrial scenarios such as financial product sales, different time series often differ by orders of magnitude (scale heterogeneity). Since these series share similar temporal patterns, joint modeling is desirable for better data utilization, yet existing scaling methods either compress low-scale signals (global normalization) or destroy semantic discriminability and amplify inverse-scaling errors (window-based scaling). This paper proposes a self-Adaptive Scale-handling (AS) module that learns adaptive scale factors tailored to each input, preserving semantic discriminability while reducing inverse-scaling errors. AS consists of Scale Calibrating (SC), which calibrates prior mean scaling factors through neural networks, and Scaling Selection (SS), which decides whether to apply calibration or retain the original factor, avoiding over-calibration. Experiments on real-world fund sales datasets from Ant Fortune and Alipay show that AS seamlessly integrates into popular TSF models and consistently improves their performance. The code and dataset are available at the link https://github.com/Meteor-Stars/ASTSF.",
+      "authors": [
+        "Xu Zhang",
+        "Zhengang Huang",
+        "Yunzhi Wu",
+        "Xun Lu",
+        "Erpeng Qi",
+        "Yunkai Chen",
+        "Zhongya Xue",
+        "Peng Wang",
+        "Wei Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T09:44:25+00:00",
+      "link": "https://arxiv.org/pdf/2606.20010v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-adaptive scale handling for time series forecasting",
+      "llm_evidence_cn": "时间序列预测中的自适应尺度处理",
+      "llm_evidence": "时间序列预测中的自适应尺度处理",
+      "canonical_evidence": "时间序列预测中的自适应尺度处理",
+      "llm_tldr_en": "AS module learns adaptive scale factors for forecasting heterogeneous time series.",
+      "llm_tldr_cn": "AS模块学习自适应尺度因子以预测异构时间序列。",
+      "llm_tldr": "AS模块学习自适应尺度因子以预测异构时间序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.20055v1",
+      "source": "arxiv",
+      "title": "PaAno+: Multiscale Encoding and Cross-Variable Attention for Time Series Anomaly Detection",
+      "abstract": "Time-series anomaly detection has significant practical value for industrial and medical monitoring, as well as other critical domains. Current Transformer- and large-model-based detection approaches incur excessive computational overhead, while existing lightweight alternatives are constrained by insufficient feature extraction and inadequate modeling of dependencies across multivariate variables. To mitigate the above drawbacks, this study develops a lightweight, efficient anomaly detection model, dubbed PaAno, within the patch-oriented representation learning paradigm. In the encoder module, a multiscale feature-extraction backbone is constructed using convolutional kernels with differentiated receptive fields to capture hierarchical temporal characteristics; subsequent cross-scale adaptive attention aggregation, combined with residual connection optimization, further stabilizes feature representation learning. A cross-variable fusion attention module is embedded to explicitly characterize inter-variable correlations, empowering the model to identify anomalous patterns amid intricate operational conditions. Moreover, a novel pretext task based on temporal patch-window sorting is customized to uncover intrinsic structural properties of time series, and triplet loss is leveraged to optimize the patch embedding space for enhanced feature discrimination. Extensive experiments on the TSB-AD benchmark demonstrate that the proposed PaAno achieves state-of-the-art detection accuracy on both univariate and multivariate tasks, yielding significant performance gains across evaluation metrics, including VUS-PR, relative to the original PaAno. Leveraging a compact network design, the presented model achieves favorable computational efficiency, enabling deployment on resource-limited terminals for real-time anomaly inference.",
+      "authors": [
+        "Youji Zhu",
+        "Hongbing Wang",
+        "Wenchao Liu",
+        "Xiaodong Liu",
+        "Xiangguang Xiong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T10:27:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.20055v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multiscale encoding and cross-variable attention for time series anomaly detection",
+      "llm_evidence_cn": "多尺度编码和跨变量注意力用于时间序列异常检测",
+      "llm_evidence": "多尺度编码和跨变量注意力用于时间序列异常检测",
+      "canonical_evidence": "多尺度编码和跨变量注意力用于时间序列异常检测",
+      "llm_tldr_en": "Develops PaAno+, a lightweight model for efficient time series anomaly detection with multiscale features.",
+      "llm_tldr_cn": "开发PaAno+，一种轻量级时间序列异常检测模型，具有多尺度特征。",
+      "llm_tldr": "开发PaAno+，一种轻量级时间序列异常检测模型，具有多尺度特征。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.20443v1",
+      "source": "arxiv",
+      "title": "Topological Data Analysis for High-Dimensional Dynamic Process Monitoring",
+      "abstract": "Real-time process monitoring requires methods that extract actionable information from high-dimensional time-series data. In this work, we present a new approach for process monitoring that combines tools of topological data analysis (TDA) and machine learning. In the proposed approach, we represent multivariate time-series data as manifolds and use topological descriptors to summarize the structure of such data; we then use a neural ordinary differential equation to learn the dynamic evolution of the topological structure of the system. Using real data from an industrial process, we show that this trajectory-based event detection approach is effective at detecting diverse types of events. We contrast this approach against reconstruction-based approaches such as principal component analysis and autoencoders and against a trajectory-based approach that uses Koopman autoencoders.",
+      "authors": [
+        "Angan Mukherjee",
+        "Tyler A. Soderstrom",
+        "Michael J. Kurtz",
+        "Victor M. Zavala"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "math.AT"
+      ],
+      "published": "2026-06-18T16:22:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.20443v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Topological data analysis and neural ODE for high-dimensional time-series event detection",
+      "llm_evidence_cn": "拓扑数据分析与神经常微分方程进行高维时间序列事件检测",
+      "llm_evidence": "拓扑数据分析与神经常微分方程进行高维时间序列事件检测",
+      "canonical_evidence": "拓扑数据分析与神经常微分方程进行高维时间序列事件检测",
+      "llm_tldr_en": "Combines TDA and neural ODE to monitor dynamic processes from multivariate time-series data.",
+      "llm_tldr_cn": "结合TDA和神经常微分方程监控多变量时间序列动态过程。",
+      "llm_tldr": "结合TDA和神经常微分方程监控多变量时间序列动态过程。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.19792v1",
+      "source": "arxiv",
+      "title": "Exploring Pre-training Benefits on Phoneme Addition through Fine-tuning in Speech Synthesis",
+      "abstract": "Transfer learning is widely used for low-resource text-to-speech. When the target corpus contains phonemes unseen in pre-training, the model must expand its phoneme inventory during fine-tuning; we call the process \"phoneme addition.\" However, it remains unclear whether the pre-trained ability to generate seen phonemes contributes to this process. This study investigates phoneme addition in two settings: (1) a simulation setup using LLM-generated phoneme-controlled corpora that enables investigation without considering confounding factors, and (2) a real-speech cross-lingual transfer setup (English to Japanese) to validate whether the findings hold in practice. Experiments in both settings showed that while fine-tuning achieved higher naturalness than training from scratch, it required as much or more data to achieve comparable PER for new phonemes. These results indicate that pre-training mainly contributes to naturalness improvement, but offers limited benefit for phoneme addition.",
+      "authors": [
+        "Masato Murata",
+        "Koichi Miyazaki",
+        "Tomoki Koriyama",
+        "Tomoki Toda"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-06-18T04:56:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.19792v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "investigates transfer learning for phoneme addition in speech synthesis, adapting to new phonemes with limited data",
+      "llm_evidence_cn": "研究语音合成中音素添加的迁移学习，以有限数据适应新音素",
+      "llm_evidence": "研究语音合成中音素添加的迁移学习，以有限数据适应新音素",
+      "canonical_evidence": "研究语音合成中音素添加的迁移学习，以有限数据适应新音素",
+      "llm_tldr_en": "Explores pre-training benefits on phoneme addition through fine-tuning in low-resource TTS",
+      "llm_tldr_cn": "探索预训练在低资源TTS中对音素添加的微调益处",
+      "llm_tldr": "探索预训练在低资源TTS中对音素添加的微调益处",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.19651v1",
+      "source": "arxiv",
+      "title": "BrainG3N: A Dual-Purpose Tokenizer for Controllable 3D Brain MRI Generation",
+      "abstract": "Three-dimensional (3D) brain MRI is central to clinical neurology and neuro-oncology, where generative models could augment under-represented cohorts, simulate disease trajectories, and support privacy-preserving data sharing. Latent diffusion has been the go-to solution for modeling imaging data, but it places two competing demands on the tokenizer: encoder embeddings must retain the clinical information that downstream tasks act on, and the decoder must reconstruct anatomically faithful volumes. Existing reconstruction-driven tokenizers achieve the second at the expense of the first. To address this, we introduce a fully volumetric masked-autoencoder (MAE) based tokenizer for 3D brain MRI latent diffusion, decoupling encoder and decoder: a frozen 3D MAE encoder produces clinically informative embeddings, while a dedicated CNN decoder reconstructs voxels from a linear projection of those embeddings. We pretrain the encoder on 35,309 volumes from 18 public cohorts spanning four modalities, ten disease categories, and 200+ acquisition sites, and demonstrate its dual utility in two settings. First, on a 23-task linear-probing benchmark, the encoder outperforms or matches SOTA models (i.e., BrainIAC, BrainSegFounder, and MedicalNet) on 21 of 23 tasks. Second, a conditional diffusion transformer (DiT) trained on these clinically informative embeddings supports both conditional generation across six variables and patient-specific longitudinal forecasting. Together these results establish a single 3D brain-MRI embedding space capable of both downstream clinical tasks and controllable generation.",
+      "authors": [
+        "Max Van Puyvelde",
+        "Ibrahim Gulluk",
+        "Wim Van Criekinge",
+        "Olivier Gevaert"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-17T23:14:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.19651v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "representation learning for neural activity via 3D brain MRI tokenizer",
+      "llm_evidence_cn": "通过3D脑MRI分词器实现神经活动的表示学习",
+      "llm_evidence": "通过3D脑MRI分词器实现神经活动的表示学习",
+      "canonical_evidence": "通过3D脑MRI分词器实现神经活动的表示学习",
+      "llm_tldr_en": "BrainG3N: a dual-purpose tokenizer for 3D brain MRI latent diffusion that decouples encoder and decoder.",
+      "llm_tldr_cn": "BrainG3N：用于3D脑MRI潜在扩散的双用途分词器，解耦编码器和解码器。",
+      "llm_tldr": "BrainG3N：用于3D脑MRI潜在扩散的双用途分词器，解耦编码器和解码器。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.19821v1",
+      "source": "arxiv",
+      "title": "TelcoAgent: A Scalable 5G Multi-KPM Forecasting With 3GPP-Grounded Explainability",
+      "abstract": "Key Performance Measurement (KPM) forecasting is essential for proactive network management of 5G and next-generation telecom networks. However, existing machine learning (ML) approaches face significant limitations in scalability and explainability, restricting their effectiveness in real-world deployments. We propose TelcoAgent, a foundation model-based framework that enables accurate, scalable, and explainable forecasting of multiple KPMs across diverse network cells without the need for site-specific training. Specifically, the framework comprises three key components: (i) an automated three-agent pipeline that constructs a 3rd Generation Partnership Project (3GPP) knowledge graph directly from specification documents, (ii) a scalable, time-series foundation model (TSFM)-based prediction pipeline to deliver accurate, zero-shot forecasting, and finally (iii) a reasoning and explanation pipeline that provides actionable, domain-grounded diagnostics. Evaluated using a 3-month, real-world, city-scale 5G KPM dataset from a U.S.-based network operator, TelcoAgent demonstrates high forecasting accuracy for all 7 considered KPMs per cell across 200 cells, while delivering explainable insights and actionable instructions to address network degradations.",
+      "authors": [
+        "Geon Kim",
+        "Dara Ron",
+        "Sukhdeep Singh",
+        "Suyog Moogi",
+        "Pranshav Gajjar",
+        "V V N K Someswara Rao Koduri",
+        "Een Kee Hong",
+        "Vijay K. Shah"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-18T05:55:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.19821v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "KPM forecasting using foundation model for multi-cell prediction",
+      "llm_evidence_cn": "使用基础模型进行多小区KPM预测",
+      "llm_evidence": "使用基础模型进行多小区KPM预测",
+      "canonical_evidence": "使用基础模型进行多小区KPM预测",
+      "llm_tldr_en": "TelcoAgent delivers accurate and explainable multi-KPM forecasting without site-specific training.",
+      "llm_tldr_cn": "TelcoAgent实现无需站点训练的准确可解释多KPM预测。",
+      "llm_tldr": "TelcoAgent实现无需站点训练的准确可解释多KPM预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.19838v1",
+      "source": "arxiv",
+      "title": "OTCHA: Optimal Transport-driven Confidence-aware Latent Hub Alignment for Multi-View Medical Image Classification",
+      "abstract": "Multi-view imaging, such as mammography and chest radiography, is a standard component of clinical practice. However, medical images are often unregistered and contain view-specific artifacts or irrelevant background cues that can obscure diagnostically relevant findings. Many existing methods directly fuse per-view representations, allowing such irrelevant content to contaminate the fused embedding and reducing robustness under varying view configurations. We propose OTCHA, a confidence-aware latent hub token alignment module based on optimal transport (OT) that refines patch tokens before fusion for multi-view classification. OTCHA introduces a set of learnable latent hub tokens shared across views. For each view, we compute an OT plan between patch tokens and hub tokens that jointly considers feature similarity and geometry, and augment the OT formulation with token-conditional dustbins to enable partial matching and discard irrelevant tokens. The resulting transport plan provides token-wise matching confidence, which gates hub-mediated message passing and weights a novel optimal-transport-based representation alignment loss to stabilize refinement. Experiments on three multi-view medical image datasets demonstrate consistent improvements over competing baselines across diverse anatomies and view configurations. Our code is available at https://github.com/labhai/OTCHA.",
+      "authors": [
+        "Jiwoong Yang",
+        "Haejun Chung",
+        "Ikbeom Jang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-18T06:32:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.19838v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Optimal transport-based confidence-aware latent hub alignment for multi-view representation learning",
+      "llm_evidence_cn": "基于最优传输的置信感知潜在中心对齐的多视图表示学习",
+      "llm_evidence": "基于最优传输的置信感知潜在中心对齐的多视图表示学习",
+      "canonical_evidence": "基于最优传输的置信感知潜在中心对齐的多视图表示学习",
+      "llm_tldr_en": "OTCHA refines patch tokens via optimal transport to learn robust multi-view latent representations.",
+      "llm_tldr_cn": "OTCHA通过最优传输优化图块令牌，学习鲁棒的多视图潜在表示。",
+      "llm_tldr": "OTCHA通过最优传输优化图块令牌，学习鲁棒的多视图潜在表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.19888v1",
+      "source": "arxiv",
+      "title": "SL-S4Wave: Self-Supervised Learning of Physiological Waveforms with Structured State Space Models",
+      "abstract": "Modeling long-sequence medical time series data, such as electrocardiograms (ECG), poses significant challenges due to high sampling rates, multichannel signal complexity, inherent noise, and limited labeled data. While recent self-supervised learning (SSL) methods, based on various encoder architectures such as convolutional neural networks, have been proposed to learn representations from unlabeled data, they often fall short in capturing long-range dependencies and noise-invariant features. Structured state space models (S4) excel at long-sequence modeling, but existing S4 architectures fail to capture the unique characteristics of multichannel physiological waveforms. In this work, we propose SL-S4Wave, a self-supervised learning framework that combines contrastive learning with a tailored encoder built on structured state space models. The encoder incorporates multi-layer global convolution using multiscale subkernels, enabling the capture of both fine-grained local patterns and long-range temporal dependencies in noisy, high-resolution multichannel waveforms. Extensive experiments on real-world datasets demonstrate that SL-S4Wave (1) consistently outperforms state-of-the-art supervised and self-supervised baselines in a challenging arrhythmia detection task, (2) achieves high performance with significantly fewer labeled examples, showcasing strong label efficiency, and (3) maintains robust performance on long waveform segments, highlighting its capacity to model complex temporal dynamics in long sequences that most existing approaches fail to efficiently model, and (4) transfers effectively to unseen arrhythmia types, underscoring its robust cross-domain generalization. We additionally evaluate SL-S4Wave on multiple EEG tasks, achieving superior performance over strong baselines, demonstrating generalizability of our approach beyond cardiac waveforms.",
+      "authors": [
+        "Feng Wu",
+        "Harsh Deep",
+        "Eric Lehman",
+        "Sanyam Kapoor",
+        "Guoshuai Zhao",
+        "Rahul Krishnan",
+        "Gari Clifford",
+        "Li-wei H Lehman"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T07:46:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.19888v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Self-supervised S4 model for long-sequence physiological waveform analysis",
+      "llm_evidence_cn": "自监督S4模型用于长序列生理波形分析",
+      "llm_evidence": "自监督S4模型用于长序列生理波形分析",
+      "canonical_evidence": "自监督S4模型用于长序列生理波形分析",
+      "llm_tldr_en": "SL-S4Wave adapts structured state space models for self-supervised learning on multichannel time series",
+      "llm_tldr_cn": "SL-S4Wave将结构化状态空间模型应用于多通道时间序列的自监督学习",
+      "llm_tldr": "SL-S4Wave将结构化状态空间模型应用于多通道时间序列的自监督学习",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

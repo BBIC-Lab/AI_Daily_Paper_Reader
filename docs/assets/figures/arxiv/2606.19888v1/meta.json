@@ -1,0 +1,166 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-020.webp",
+      "caption": "Figure 1: Overview of proposed Self-Supervised Learning Structured State Space Model (SL-S4Wave). Left: During pretraining, waveform segments from different patients form negative pairs, while each filtered segment and its corresponding original segment form a positive pair. Right: The S4Wave model learns expressive latent representations of waveform data through M stacked S4Wave blocks. Skip connections between blocks help mitigate vanishing gradients and facilitate stable optimization.",
+      "page": 5,
+      "index": 20,
+      "width": 958,
+      "height": 342
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-018.webp",
+      "caption": "Table 1: Ventricular tachycardia detection task: Evaluation results on Challenge 2015-VT, MIMIC II-VT and VTaC dataset, using 10s segment waveforms prior to alarms as input for classification. All selfsupervised methods are pre-trained on the VTaC unlabeled dataset. Reported values are the mean and standard deviation over 5 runs (except for the rule-based method, which is deterministic). Result with the highest average values of F1, Score, PPV and AUC in bold. Score = Challenge Score.",
+      "page": 9,
+      "index": 18,
+      "width": 968,
+      "height": 650
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-007.webp",
+      "caption": "Table 2: Ablation study on SL-S4Wave using different contrastive losses and model architecture. The \"w/o Lc\" setting refers to using self-supervised learning without the context consistency loss. The \"w/o Ln\" setting is without the noise-resilient loss. The \"w/o Pre\" refers to using S4Wave for direct supervised training on labeled dataset without any pre-training. All experiments conducted using 10s segments.",
+      "page": 10,
+      "index": 7,
+      "width": 971,
+      "height": 359
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-008.webp",
+      "caption": "Figure 2: Fine-Tuning Data Efficiency. We plot the fine-tuning performance vs. the fraction of training data used for fine-tuning on the VTaC (N = 5, 037) and MIMIC II-VT (N = 2, 802) benchmarks and report average of 5 seeds. Even with only 10% of the labeled data, SL-S4Wave matches or surpasses competing self-supervised methods in both Challenge Score and AUC, and continues to scale more favorably as additional data become available. All models used 10s segment of waveform prior to alarm onset as input for classification.",
+      "page": 10,
+      "index": 8,
+      "width": 981,
+      "height": 211
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-001.webp",
+      "caption": "Table 3: SL-S4Wave outperforms prior S4-based encoders (specifically the original S4 and SGConv) with and without pretraining across different datasets. All experiments use 10s segment waveforms prior to alarms as input for classification. No pre-train refers to supervised training directly on labeled data only without pre-training on unlabeled data.",
+      "page": 11,
+      "index": 1,
+      "width": 980,
+      "height": 314
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-015.webp",
+      "caption": "Figure 3: Results using different sequence lengths with SL-S4Wave and baseline model in the two dataset. All experiment conducted with 5 different seeds and reported their mean and standard deviation. The performance of our proposed SL-S4Wave model enhanced further with longer sequences of time series data, significantly outperforming the baseline FCN with contrastive learning. Waveforms were resampled at 125 Hz. Each 30-second segment corresponds to 3,750 time steps. S4Wave is supervised learning without pretraining.",
+      "page": 12,
+      "index": 15,
+      "width": 979,
+      "height": 208
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-013.webp",
+      "caption": "Figure 4: Broad transferability of SL-S4Wave. We further show that SL-S4Wave provides a strong pretrained model for adaptation to a wide variety of datasets related to various types of arrhythmia. This figure shows the 5 different arrhythmia results in MIMIC dataset. In all cases, SL-S4Wave tends to at least match or exceed the performance (as measured by Challenge Score) of the best method trained from scratch. Detailed results are in Appendix B.1",
+      "page": 13,
+      "index": 13,
+      "width": 881,
+      "height": 415
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-019.webp",
+      "caption": "Table 4: Transferability to other types of arrhythmias: Classification results on the PhysioNet Challenge 2015 dataset. We pre-trained on the unlabeled dataset from VTaC and fine-tuned on the labeled data from the Challenge 2015 data. We report the test set performance for four distinct classes of lifethreatening arrhythmias from the Challenge 2015 dataset, including Asystole (ASY), Extreme Bradycardia (EBR), Extreme Tachycardia (ETC), Ventricular Flutter/Fibrillation (VFB), and Ventricular Tachycardia (VTA). Performance was reported as the mean and standard deviation over five random seeds. Despite the limited size of the target dataset, SL-S4Wave demonstrated strong cross-domain transferability across different arrhythmia classes. The result in this table uses the S4 d state=64 setting.",
+      "page": 20,
+      "index": 19,
+      "width": 975,
+      "height": 965
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-004.webp",
+      "caption": "Table 5: Transferability to other types of arrhythmias: classification results on the MIMIC II Arrhythmia dataset (Total N=8,010). We pre-trained on the unlabeled VTaC dataset and fine-tuned on five different disease-specific sub-datasets. ASY, EBR, ETC, VFB, and VTA represent Asystole, Extreme Bradycardia, Extreme Tachycardia, Ventricular Tachycardia, and Ventricular Flutter/Fibrillation, respectively.",
+      "page": 21,
+      "index": 4,
+      "width": 975,
+      "height": 975
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-005.webp",
+      "caption": "Table 6: Effect of Encoder Architecture and Pre-training in SL-S4Wave: Evaluation of pre-training effectiveness using different baseline models. The ResNet we are using here is ResNet18. Our results demonstrate that S4Wave is an effective encoder architecture for SL-S4Wave, capturing temporal dependencies from long, multi-channel physiological signals more effectively than convolutional or attention-based encoders, such as FCN, ResNet and Transformer. All models use 10s segment of waveforms as input for classification.",
+      "page": 22,
+      "index": 5,
+      "width": 948,
+      "height": 307
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-011.webp",
+      "caption": "Figure 5: The results of SL-S4Wave on the VTaC dataset with different numbers of blocks.",
+      "page": 23,
+      "index": 11,
+      "width": 979,
+      "height": 590
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-016.webp",
+      "caption": "Table 9: Results using different sequence lengths with SL-S4Wave and baseline model in the VTaC dataset.",
+      "page": 24,
+      "index": 16,
+      "width": 946,
+      "height": 333
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-017.webp",
+      "caption": "Table 10: Results using different sequence lengths with SL-S4Wave and baseline model in the MIMIC II-VT dataset.",
+      "page": 24,
+      "index": 17,
+      "width": 966,
+      "height": 334
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-002.webp",
+      "caption": "Table 11: Efficiency Analysis on S4Wave and Transformer.",
+      "page": 25,
+      "index": 2,
+      "width": 760,
+      "height": 211
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-003.webp",
+      "caption": "Figure 6: Visualization of the initial weights for different kernel sizes d. The values in the convolution kernel exhibit a decaying behavior. In addition, as d decreases, the number of parameters in the model also reduces. This efficient kernel weight design can save a significant amount of computational cost.",
+      "page": 26,
+      "index": 3,
+      "width": 902,
+      "height": 741
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-012.webp",
+      "caption": "Table 14: Overview of three datasets we used in the experiment part.",
+      "page": 28,
+      "index": 12,
+      "width": 618,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-014.webp",
+      "caption": "Table 18: Performance comparison across EEG datasets.",
+      "page": 32,
+      "index": 14,
+      "width": 848,
+      "height": 444
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-010.webp",
+      "caption": "Figure 7: An example of using the filter, the filter eliminates high-frequency noise present in the data.",
+      "page": 33,
+      "index": 10,
+      "width": 976,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-009.webp",
+      "caption": "Figure 8: Example true vs. false VT alarms. Each plot shows data in the 10-second interval immediately prior to the VT alarm onset. The alarm onset is marked with a vertical red-line at time 0. Figure (b) shows an example false VT alarm – the event corresponds to an episode of atrial fibrillation with rate-related aberration instead of a ventricular tachycardia.",
+      "page": 33,
+      "index": 9,
+      "width": 976,
+      "height": 324
+    },
+    {
+      "url": "assets/figures/arxiv/2606.19888v1/fig-006.webp",
+      "caption": "Figure 9: An example of abnormal precursor prior to VT alarm onset. Abnormal waveform pattern appears before the 10-second window immediately preceding the alarm onset.",
+      "page": 34,
+      "index": 6,
+      "width": 838,
+      "height": 518
+    }
+  ]
+}

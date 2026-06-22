@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.20010v1/fig-001.webp",
+      "caption": "Fig. 1. Comparison between our adaptive scale scaling (left) and traditional scale scaling (right). Our method learns appropriate scaling levels from the data instead of uniformly scaling all inputs to around 1, resulting in higher signal-to-noise ratio, better time-series semantic discriminability, and lower magnitude reconstruction error.",
+      "page": 2,
+      "index": 1,
+      "width": 1054,
+      "height": 267
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20010v1/fig-002.webp",
+      "caption": "Fig. 2. Framework for forecasting TS with scale heterogeneity based on the proposed self-Adaptive Scale-handling module. AS consists of three steps: (1) extracting temporal features from input time series windows; (2) computing the Calibration Coefficient λ̂ and a binary Calibration Flag di; (3) applying scaling to the prior mean scaling factor vi. Specifically, if the Calibration Flag is 1, the prior mean scaling factor is further calibrated; otherwise, the original prior mean scaling factor is retained without modification.",
+      "page": 3,
+      "index": 2,
+      "width": 896,
+      "height": 461
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20010v1/fig-004.webp",
+      "caption": "Table 1. Comparison of TSF models under different scalehandling strategies: our Adaptive Scale-handling (“AS”), vanilla scaling (“VS”, using prior mean scaling factor vi), and no preprocessing (“nop”). The last two rows additionally compare against global standardization (“std”) and normalization (“nor”). Lower is better.",
+      "page": 5,
+      "index": 4,
+      "width": 517,
+      "height": 821
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20010v1/fig-003.webp",
+      "caption": "Table 2. Ablation study. ‡ denotes the full AS module (SC + SS sub-modules, using v̂i); † denotes using only the SC submodule (using vi). The last two rows compare WMAPE vs. MSE as training loss.",
+      "page": 5,
+      "index": 3,
+      "width": 456,
+      "height": 777
+    }
+  ]
+}
