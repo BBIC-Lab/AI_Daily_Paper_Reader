@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.21311v1/fig-002.webp",
+      "caption": "Figure 1. Schematic overview of the method. Left: molecular representations are either global (a d-dimensional molecular vector) or local (one vector for each of the NA atoms). The initial weights w are uniform and then are optimized on low-quality data (LQ). The optimal weights are assumed to be similar for LQ and high quality data (HQ), which enables the transfer. After optimization, weights are property-specific and potentially sparse, yielding compact propertydependent representations. Right: Optimization procedure. Feature weights falling below a threshold are eliminated (×), while informative ones survive (✓); the feature count decreases accordingly. The test RMSE on LQ data decreases monotonically, while the HQ error first improves then rises as overfitting towards LQ appears; the optimal weight vector corresponds to the HQ minimum (□).",
+      "page": 2,
+      "index": 2,
+      "width": 510,
+      "height": 627
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21311v1/fig-004.webp",
+      "caption": "Figure 2. Normalized feature weight vectors for cMBDF on QM9, shown for four target properties. Each bar gives the weight of one feature, normalized by the maximum weight for that property. Only those 1160 features assigned nonzero weight by at least one property are shown (571 two-body and 589 three-body out of 1880 total); the dashed line marks the boundary between the two blocks. The overlaid curve shows the sorted weight profile within each block.",
+      "page": 5,
+      "index": 4,
+      "width": 1046,
+      "height": 417
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21311v1/fig-001.webp",
+      "caption": "Figure 3. Compression curves showing relative RMSE improvement over the full-feature KRR baseline as a function of the number of retained features, for three global molecular representations on QM9. Each point is the median over five independent runs with different random seeds, tracing the optimization trajectory from full dimensionality (right) to maximum compression (left). The shaded region marks performance worse than the unweighted baseline.",
+      "page": 6,
+      "index": 1,
+      "width": 1055,
+      "height": 286
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21311v1/fig-003.webp",
+      "caption": "Figure 6. Learning curves comparing the weighted global representations (dashed) and the uncompressed baseline (solid) on QM9. Shaded areas: improvement through this work.",
+      "page": 9,
+      "index": 3,
+      "width": 1054,
+      "height": 294
+    }
+  ]
+}

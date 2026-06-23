@@ -1,0 +1,455 @@
+Title: Property-Specific Molecular Representations via Feature-Space Transfer Compression
+
+URL Source: https://arxiv.org/pdf/2606.21311v1
+
+Published Time: Tue, 23 Jun 2026 00:54:36 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# Property-Specific Molecular Representations via Feature-Space Transfer Compression 
+
+Ali Banjafar 
+
+Institut für Chemie, Universität Kassel, Heinrich-Plett-Straße 40, 34132 Kassel, Germany 
+
+Guido Falk von Rudorff ∗
+
+Institut für Chemie, Universität Kassel, Heinrich-Plett-Straße 40, 34132 Kassel, Germany and Center for Interdisciplinary Nanostructure Science and Technology (CINSaT), Heinrich-Plett-Straße 40, 34132 Kassel 
+
+(Dated: June 23, 2026) In many machine learning applications, molecules need to be transformed into representations, i.e. mathe-matical objects. Those representations are typically considered to be property-agnostic and as such are expected to be over-complete: for different physical properties, different parts or the representation may be relevant. In this work, we propose a method to sub-select and re-weight the representation by adapting it to the property in question. We find that in most cases this makes representations shorter and more accurate at the same time. The feature selection itself uses cheap semi-empirical data instead of high-quality labels. We study four properties (total energy, heat capacity, dipole moment, and polarizability) for three representations (cMBDF, FCHL19, and MACE-MP-0 descriptors) on two datasets (QM9 and VQM24). We can reduce the number of dimensions of a representation in the median by 72 % (range 36-98 %) while retaining the accuracy. Tuning for accuracy instead we can increase the learning efficiency for dipole moments such that the same accuracy can be reached with 19 % of the training data. Our approach yields data-driven interpretations of feature importance, lossless compact representations, and increased data efficiency, requiring only expendable surrogate data. 
+
+INTRODUCTION 
+
+Machine learning models have transformed the field of computational quantum chemistry in recent years [1–4]. Ker-nel methods such as kernel ridge regression (KRR) have at-tracted considerable attention, particularly because they per-form very well in low-data regimes [5–7]. Kernel-based mod-els require a representation (or descriptor) the role of which is to map atomic information into a vector (global) or a ma-trix of per-atom descriptors (local) [8]. Some representa-tions are built on physical interactions through many-body expansions [9], such as SOAP [10], cMBDF [11, 12], and FCHL19 [13, 14]; others are derived from pre-trained neu-ral networks [15–19] such as MACE-MP[20]. These different routes produce long vectors offering a rich bouquet of features to choose from where kernel models consume training data to use the right ones. One alternative to direct learning on this superset of overcomplete features is Automatic Relevance De-termination (ARD), which replaces the single kernel length-scale hyperparameter with per-feature length scales [21–23]. Most molecular representations built so far are designed to universally describe a wide range of molecular properties. Such universal representations contain many features to si-multaneously cover these various properties, which naturally results in representations that are over-complete with respect to any single property [24–26]. This already becomes clear when comparing the formal dimensionality of the molecu-lar Hamiltonian with the representation length: formally, the Hamiltonian has 4 N − 6 + 2 degrees of freedom for N atoms (nuclear charges, spatial coordinates minus translation and ro-tation, plus spin and net charge), while representations are typ-ically several times longer, sometimes approaching a million features [27]. Combining ARD with molecular representa-tions to select features and thereby make the representation property-specific is an open question that many have sought to address [28, 29]. The intrinsic dimensionality of physical properties can be substantially lower even than the formal dimensionality of the Hamiltonian [30] which means that many degrees of freedom contribute little to the overall description [31]. Motivated by the same intuition — that removing irrelevant features makes ML models more accurate — many efforts have been made to construct shorter representations, each successful to some degree. For example, by introducing a square transformation matrix[29] that scales, rotates, and shears the feature space using a fixed kernel length scale and applied to a large, high-quality dataset. Multi-kernel learning[32] probes multiple length scales or combines different kernels for separate fea-ture groups. Differentiable Information Imbalance (DII)[33] and compressive sensing[34] has been used to find a subset of features which reproduces distances of a given ground truth. All of these approaches operate at a single level of data qual-ity, on which the model is also evaluated, carrying a risk of overfitting. This distinction is particularly important when the model must operate in low-data regimes, where there are too few data to first select features and then deploy them in the final model. Transfer learning, which assumes that the correlations and feature relevance in the data carry over across different lev-els of theory, is by contrast a well-established field in ML for chemistry [35–38], typically exploiting the similarity in labels, e.g. via ∆-ML[39] or similarity in features, e.g. for or-bital energies[40–42]. So far, however, the information con-tained in the low-quality data has not been used to act on the representation itself — that is, to weight the features using the low-quality data and then apply the weighted representation to high-quality data. In this work, we combine transfer learning with ARD ker-nels to construct property-dependent representations. The ker-
+
+> arXiv:2606.21311v1 [physics.chem-ph] 19 Jun 2026
+
+2nel feature weights are optimized on either global (vector) and local (matrix) representations to yield a final weight vec-tor that is then applied to the high-quality data. The weight vector is optimized with the Adam optimizer [43] on the low-quality data [44] of two databases, QM9 [45, 46] and VQM24 [47], treated separately. Throughout the optimiza-tion, the high-quality data remain entirely unseen, and the optimizer is fed random mini-batches drawn from the low-quality pool. The optimized weight vector is then applied to the hold-out high-quality data, and its accuracy is compared with the unweighted baseline. Four molecular properties are examined: total energy, heat capacity, dipole moment, and po-larizability. 
+
+METHODS NA
+
+> 1
+> P1
+> P2
+> Weights
+> Weights 2
+> Weights 1
+> LQ
+> HQ
+> LQ HQ
+> P1
+> P2
+> Weights
+> Feature
+> Count
+> d
+> RMSE
+> LQ
+> HQ
+> 1
+> Weights
+
+# xx
+
+> d
+> Feature Count
+> Feature
+> Count
+> d
+> d
+> Optimization step
+> Optimization step
+> Optimization step
+> Optimization
+> Optimization
+
+Figure 1. Schematic overview of the method. Left : molecular rep-resentations are either global (a d-dimensional molecular vector) or local (one vector for each of the NA atoms). The initial weights w are uniform and then are optimized on low-quality data (LQ). The opti-mal weights are assumed to be similar for LQ and high quality data (HQ), which enables the transfer. After optimization, weights are property-specific and potentially sparse, yielding compact property-dependent representations. Right : Optimization procedure. Feature weights falling below a threshold are eliminated ( ×), while informa-tive ones survive ( ✓); the feature count decreases accordingly. The test RMSE on LQ data decreases monotonically, while the HQ error first improves then rises as overfitting towards LQ appears; the opti-mal weight vector corresponds to the HQ minimum ( □). 
+
+Kernel Ridge Regression 
+
+For a molecule of given nuclear charges ZI and positions 
+
+RI , one can find a representation x(ZI , RI |θ ) ∈ Rd for each of n molecules ( X ∈ Rn×d ) governed by some representation settings θ . With those representations, we employ Kernel-Ridge-Regression (KRR) with a global Gaussian kernel: 
+
+kG(x, x′) = exp 
+
+
+
+− 12σ 2 ∥x − x′∥22
+
+
+
+(1) where σ is the length-scale hyperparameter. A KRR model 
+
+f (xq) is obtained from nt training data points Xt ∈ Rnt×d :
+
+f (xq) = 
+
+> nt
+
+# ∑
+
+> i=1
+
+αi kG(xq, xi) (2) where xq is the representation of the query molecule and the model coefficients α are found by minimizing the loss func-tion 
+
+L =
+
+> nt
+
+# ∑
+
+> i=1
+
+( f (xi) − yi)2 + λ ∥ f ∥2 ; ∥ f ∥2 ≡ αT Kα
+
+(3) with the RKHS norm ∥ f ∥2 regularizing the model. The model for a fixed representation x(ZI , RI ) can be obtained from 
+
+α = ( K + λ I)−1y (4) Typically, a fixed universal (i.e. property-independent) rep-resentation is assumed for which the length scale σ and the regularization strength λ are determined through hyperpa-rameter optimization. We now explore whether making the representation property-dependent can improve the prediction accuracy and reduce the feature vector length. Shorter and more relevant feature vectors are expected to yield more data-efficient models. 
+
+Feature weights 
+
+We introduce per-feature weights w ∈ Rd via the kernel 
+
+kG
+
+> w
+
+(x, x′) = exp −
+
+> d
+
+# ∑
+
+> i=1
+
+w2 
+
+> i
+
+(xi − x′
+
+> i
+
+)2
+
+!
+
+(5) which recovers eqn. 1 for w2 
+
+> i
+
+= 1/(2σ 2). The added flexi-bility is an implied per-feature length scale σi =
+
+q
+
+1/(2w2 
+
+> i
+
+)
+
+and the aspect that features of vanishing wi are irrelevant and can be dropped without consequence. Crucially, KRR does not fail on irrelevant (or even random) features as long as the relevant features are also present[48]: the kernel will still en-code the correct similarity structure. However, irrelevant fea-tures reduce the sensitivity of kernel to the relevant structure in the data effectively reducing the data-efficiency of the model. Dropping features with vanishing weights therefore directly 3reduces data requirements, improving sample efficiency with-out sacrificing predictive power. Our approach operates on two sets of data for the same molecular property over the same chemical space: a large pool of low-quality data DLQ = {(xi, yLQ  
+
+> i
+
+)}NLQ  
+
+> i=1
+
+and a much smaller set of high-quality data DHQ = {(xi, yHQ  
+
+> i
+
+)}NHQ  
+
+> i=1
+
+. Both sets share the same molecular representations x but none of the configurations (ZI , RI ). The central assumption illustrated in Fig. 1 is that feature relevance is more dependent on the property in question rather than on which quality level this property has been calculated on: the subset of features in x
+
+that carries predictive information for a given property is sim-ilar across fidelity levels. Under this assumption, the weights 
+
+w optimized by minimizing RMSE of low-quality data on the mini-batches transfer directly to high-quality data, yielding a compressed, property-specific representation that improves KRR accuracy on the expensive target without requiring large amounts of high-quality data. 
+
+> Weight Optimization
+
+In standard ARD, the weights w are found by maxi-mizing the log-marginal likelihood (LML) of the training data[21, 23]. Although the LML penalizes model complex-ity, it is inherently biased toward the current set of train-ing points and does not guarantee that the selected features generalize beyond them. We therefore instead adopt an on-line transfer learning scheme: the weights are optimized by gradient descent using Adam optimizer [43] over successive mini-batches drawn from a large pool of low-quality surrogate data. Since both levels of theory describe the same molecu-lar properties over the same chemical space, the feature rele-vance learned from the cheap surrogate is expected to trans-fer to the expensive high-quality target. This scheme simul-taneously pursues three goals: improving prediction accuracy on the high-quality target without adding high-quality train-ing data, compressing the representation by driving irrelevant feature weights toward zero, and yielding property-dependent weights that make the representation itself property-specific. The weights w are initialized uniformly and are updated to minimize the RMSE on sequential batches of size nb
+
+RMSE LQ (w) = 
+
+s
+
+1
+
+nb
+
+> nb
+
+# ∑
+
+> i=1
+
+
+
+fw(xi) − yLQ 
+
+> i
+
+2
+
+(6) Cycling over successive mini-batches from the full surrogate pool prevents the weights from overfitting to any fixed sub-set of the low-quality data. As training progresses, weights of irrelevant features decay toward zero; those falling below a small threshold ε are set exactly to zero and the correspond-ing features are dropped, yielding a progressively sparser, property-specific representation. To monitor progress, the intermediate weight vector is ap-plied to a KRR model on a constant training set of the HQ data with own global hyperparameter optimisation but fixed weights. The weight vector that minimizes the validation er-ror is then selected as the final model; we report the corre-sponding test error on the HQ hold-out set. Plotting the test error as a function of the number of retained features yields the compression curve (see below), which quantifies the trade-off between feature dimensionality and predictive accuracy. Since representation features are not standardized across a data set, it is not obvious that the weights alone should drive discarding features. In eqn. 5, each feature influences not by the weight alone but by the weight together with the spread of that feature across the dataset. Each feature therefore con-tributes to the kernel the expected value of w2 
+
+> i
+
+Var (xi), not w2
+
+> i
+
+alone. One might consequently rank and drop features by this product, rather than by wi, so that the absolute scale of a fea-ture also decides whether it is relevant. This would be more closely related to sketching or approximating the existing rep-resentation space. We instead select features by the weights wi directly, for two reasons. The first and more important one concerns low-variance features. A relevant feature with small Var (xi) retains a small product w2 
+
+> i
+
+Var (xi), so it is more likely to drop it be-fore giving it the opportunity to be amplified by its weight. Selecting by wi keeps such features, and we observe that sev-eral low-variance features are pulled up during optimization and contribute appreciably to the accuracy gain. The im-provement therefore does not stem only from dropping irrel-evant features, but also from magnifying relevant ones that are underrepresented in the raw-variance (unweighted) rep-resentation. The second reason follows from the same bias: because the unweighted kernel is itself dominated by high-variance features, selecting by the product preferentially re-tains those same high-variance directions, so the compressed kernel stays close to the unweighted one and improves little. Selecting by wi instead keeps the features the optimization has promoted, reshaping the kernel away from the raw-variance baseline, which is where the gain originates. 
+
+> Representations
+
+Three molecular representations with different design ap-proaches are considered: cMBDF[11, 12], FCHL19[13, 14], and the descriptors from the neural network MACE-MP-0 (medium) [18, 19], short MACE . Each encodes the local chemical environment of an atom as a per-atom descriptor 
+
+xI ∈ Rd ; the global molecular representation is obtained by summing (for cMBDF: summation after bagging[12]) over all NA atoms. cMBDF encodes pairwise and many-body in-teratomic interactions through contracted distribution func-tions. FCHL19 combines two-body and three-body terms with smooth distance-weighted cutoffs. MACE is a pre-trained equivariant message-passing descriptor that implicitly captures higher-order many-body interactions. The dimen-sionality of cMBDF and FCHL19 scales with the number of chemical elements in the dataset, ranging from d ≈ 1800– 2100 and d ≈ 720–2200 respectively; MACE produces a fixed 4descriptor of d = 256 in our settings. For the local case, the per-atom descriptors xa are used di-rectly without summation, and the molecular kernel is defined over sets of atomic environments. The feature weights en-ter as a feature scaling applied to each per-atom descriptor, ˜xa = w ⊙ xa, before kernel evaluation. The local kernel ag-gregates all atom pairs between two molecules A, B regardless of element: 
+
+kL(A, B) = ∑
+
+> i∈A
+
+# ∑
+
+> j∈B
+
+kG
+
+> w
+
+(xi, x′j) (7) with normalisation 
+
+klocal (A, B) = kL(A,B)
+
+pkL(A, A)kL(B, B) (8) The elemental kernel refines this by restricting the sum to atom pairs of the same chemical element via the Kronecker delta δZi,Z j :
+
+kE (A, B) = ∑
+
+> i∈A
+
+# ∑
+
+> j∈B
+
+δZi,Z j kG
+
+> w
+
+(xi, x′j) (9) and identical normalisation. 
+
+> Datasets
+
+We use two benchmark datasets. QM9[45, 46] con-tains 133,885 small organic molecules containing elements H, C, N, O, and F, with properties computed at B3LYP/6-31G(2df,p) level of theory, of which we consider total energy, heat capacity, dipole moment, and polarizability. VQM24[47] is a larger and chemically more diverse dataset of 835,947 configurations spanning ten elements (H, C, N, O, F, Si, P, S, Cl, Br), from which total energy and heat capacity are con-sidered. Low-quality labels at the GFN2-xTB level of theory have been pre-computed for QM9[49] and we obtained the corresponding labels for VQM24. For each dataset and property, the individual configurations are strictly partitioned into a high-quality set and a low-quality pool. The low-quality pool is used exclusively for weight op-timization; the high-quality set is held out entirely and never seen during optimization, such that neither the labels nor the molecular geometries of the HQ data enter the gradient up-dates. For HQ data, only the validation error for a constant fixed training set size is used to determine when to stop the weight optimization. Prior to training, all labels are detrended by subtracting a linear fit on stoichiometry, removing the dom-inant compositional contribution to the target property. The same cross-validation procedure[50] is applied in all cases; all improvements are reported as relative reductions in RMSE with respect to the unmodified baseline, so that the method is always compared to the best standard KRR achiev-able for a given representation. 
+
+> Calculation settings
+
+All experiments use the Adam optimizer with a learning rate of η = 0.05. The learning rate controls the step size of each gradient update; values that are too large risk dropping relevant features prematurely by pushing multiple weights be-low the threshold in a single step, while smaller values slow convergence without affecting the final result. For global rep-resentations, the low-quality mini-batch size is nb = 2048 and the high-quality training set size is NHQ = 1024. For local representations, a smaller mini-batch of nb = 512 is used due to the higher computational cost of local kernel evaluations, while the high-quality training set is larger at NHQ = 2048 to reduce the difference between the baselines of different runs. All experiments are repeated over five independent runs with different random seeds, and results are reported as the median. A feature is dropped only once its weight falls below the current threshold, at which point the weight is set exactly to zero and the feature is removed from the representation. This threshold is initially inactive (set to zero). Early in the op-timization the weights of irrelevant features decay quickly, however, as the optimization progresses, the optimizer settles into a minimum where the weights barely change and the ac-tive feature count stops decreasing. Because this minimum may only be local, we use it as a trigger: once such a plateau is detected, the threshold is raised to the 5 th percentile of the remaining weights, dropping the least important of the surviv-ing features, and each subsequent plateau cranks the thresh-old up further. If a deeper minimum exists, the optimizer then moves downhill toward it; if the plateau is already the best attainable, the procedure begins to remove genuinely relevant features, so the RMSE rises slowly until — once the repre-sentation is over-compressed — it returns to the unweighted baseline, now with far fewer features. 
+
+> RESULTS Property-dependent representations
+
+The weight vector is property-dependent: the optimiza-tion trajectory and the resulting weights encode which fea-tures are relevant for the target property, so different prop-erties promote different features and suppress different ones. Figure 2 illustrates this for cMBDF on QM9, where the two-body (radial) and three-body (angular) feature blocks are dis-tinguished. The relative importance of the two blocks follows a physically interpretable progression across properties. The most glaring aspect is that out of 1880 features in total, 720 are irrelevant for all four considered properties, i.e. 38 % of the features can be dropped without loss of accuracy for any of them. For the total energy, the largest contributions are pairwise interactions. Heat capacity reflects the curvature of the en-ergy surface and involves both bond-stretching and angle-bending normal modes, leaving two-body and three-body fea-50       
+
+> 1
+> E two-body three-body sorted
+> 0
+> 1
+> Cv
+> 0
+> 1
+> 0200 400 600 800 1000
+> Feature index
+> 0
+> 1
+> Figure 2. Normalized feature weight vectors for cMBDF on QM9, shown for four target properties. Each bar gives the weight of one feature, normalized by the maximum weight for that property. Only those 1160 features assigned nonzero weight by at least one property are shown (571 two-body and 589 three-body out of 1880 total); the dashed line marks the boundary between the two blocks. The overlaid curve shows the sorted weight profile within each block.
+
+tures comparably important. The dipole moment depends on the vectorial sum of bond dipoles, which is governed by bond angles as much as by bond polarities, shifting the balance to-ward three-body features, but generally using fewer features of the full representation, since learning is inefficient as the representation poorly represents the dipole moment. Polar-izability, as the response of the dipole to an external field, is even more sensitive to molecular shape and geometry, and shows the strongest three-body dominance of the four proper-ties. The progression from total energy to polarizability thus tracks an increasing sensitivity to molecular geometry over pairwise distances. The sorted weight profiles within each block (overlaid curves in Figure 2) reveal a consistent heavy-tail structure: a small number of features carry the bulk of the weight, fol-lowed by a long plateau of weakly contributing ones. This is consistent with the intrinsic dimensionality analysis of the same properties [30], which found that the property surface decomposes into a small set of separable degrees of freedom responsible for most of the variance, followed by a broad cou-pled regime. The optimization recovers an analogous struc-ture in representation space, identifying the high-weight fea-tures as the effective separable directions for each property. To quantify the property-specific component of the learned weights, we apply the total energy weight vector to the re-maining three properties. This cross-property transfer still improves accuracy — by 7.2%, 1.3%, and 7.6% for heat ca-pacity, dipole moment, and polarizability respectively — in-dicating that a subset of features suppressed by the energy optimization is also irrelevant for other properties. However, these gains are substantially smaller than those achieved by property-specific optimization ( ∼20%, ∼10%, and ∼15%, observed in Figure 3). The gap between cross-property and property-specific improvement directly quantifies the property-specific information encoded in the learned weights: the optimization identifies not only universally irrelevant fea-tures but also features that are selectively informative for each target property. 
+
+> Accuracy
+
+Applying the optimized weight vector consistently im-proves KRR accuracy across all representations and properties on QM9. Figure 3 shows the relative RMSE improvement as a function of the number of retained features along the opti-mization trajectory; the rightmost point of each curve corre-sponds to the unweighted baseline, and any improvement is measured relative to it. The largest gains are observed for cMBDF, with approxi-mately 20% RMSE reduction for total energy and heat capac-ity, ∼15% for polarizability, and ∼10% for dipole moment. FCHL19 shows consistent but more modest improvements, reaching ∼10% for total energy and ∼5% for the remaining properties. MACE improves least, with gains below 5% in all cases. This ranking reflects the inherent nature of each repre-sentation. cMBDF and FCHL19 are linear combinations of physics-inspired descriptors that enumerate physical interac-tions without reference to any specific target property, leav-ing a substantial fraction of features weakly relevant — drop-ping these via weight optimization yields the largest accuracy gains. MACE, by contrast, couples physics-inspired features non-linearly as a foundation model pre-trained on a large and chemically diverse dataset. Across all three representations, the dipole moment μ con-sistently yields the smallest improvement. This pattern is consistent with the known difficulty of learning μ from lo-60 500 1000 1500 
+
+> Number of features
+> 10
+> 0
+> 10
+> 20
+> 30
+> Relative improvement (RMSE %)
+
+A: Total energy    
+
+> 0500 1000 1500
+> Number of features
+> 10
+> 0
+> 10
+> 20
+> 30
+
+B: Heat capacity    
+
+> 0500 1000 1500
+> Number of features
+> 10
+> 0
+> 10
+> 20
+> 30
+
+C: Dipole moment    
+
+> 0500 1000 1500
+> Number of features
+> 10
+> 0
+> 10
+> 20
+> 30
+
+D: Polarizability 
+
+> cMBDF
+> FCHL19Global
+> MACEGlobal
+> Figure 3. Compression curves showing relative RMSE improvement over the full-feature KRR baseline as a function of the number of retained features, for three global molecular representations on QM9. Each point is the median over five independent runs with different random seeds, tracing the optimization trajectory from full dimensionality (right) to maximum compression (left). The shaded region marks performance worse than the unweighted baseline.
+
+cal atomic descriptors [51–55] (which may be partially im-proved by considering it as explicit response function[56]): unlike energy or heat capacity, which are approximately ad-ditive over local atomic contributions, the dipole moment is a non-additive global response property governed by long-range charge distributions across the entire molecule. As a result, relevant features are expanded poorly in a two- and three-body basis where many features are required to observe learning at all, but none of them dominate. Feature weight optimization gains the most leverage when relevance is sparse and loses leverage when relevance is spread uniformly. This interpreta-tion is consistent with the weight distributions in Fig. 2, where 
+
+μ displays the least pronounced contrast between two-body and three-body features among the four properties. 
+
+> Compressibility
+
+A property-optimized representation is also a shorter one, which is helpful e.g. for encrypted model inference[57]. Through the optimization, features whose weights decay to zero are progressively removed, yielding a descriptor that grows more compact at each step. As shown in Fig. 1 (top right), irrelevant features decay toward zero and are eventu-ally dropped, while the remaining features are promoted. Be-cause the optimization targets the low quality data RMSE, it first eliminates irrelevant features for both low and high qual-ity data – yielding accuracy gains in both. As optimization proceeds, however, the process begins to overfit towards the low quality data, causing the high quality RMSE to increase. This bends the curves in Fig. 3 upward at low feature counts. The resulting bowl shape, observed across almost all represen-tations and properties, defines the accuracy-compressibility tradeoff and identifies the optimal compression point for each case. Figure 3 quantifies this tradeoff for all three representations. cMBDF, with 1880 features, shows the greatest absolute com-pressibility. For total energy, the best accuracy is achieved with 777 features, and the unweighted baseline accuracy is matched with fewer than 422 – 22 percent of the full length of the descriptor. The other properties compress more ag-gressively: heat capacity reaches its optimum at 299 features, polarizability at 149, and dipole moment at only 17 features. The extreme case of dipole moment — where only 17 out of 1880 features are sufficient — reflects the same non-locality that limits accuracy improvement: cMBDF’s local two- and three-body enumeration cannot encode the long-range charge distribution that governs μ, so the vast majority of features contribute negligible predictive signal and can be discarded without penalty. The compression is large precisely because so little of the descriptor is useful, not because the retained subset is exceptionally informative. A qualitatively similar pattern is observed for FCHL19 (720 features) and MACE (256 features). FCHL19 behaves anal-ogously to cMBDF, as expected from their shared physics-based design: roughly two-thirds of features can be dropped across most properties. MACE presents a more striking re-sult: despite yielding only modest accuracy improvements (see above), it shows larger compressibility across all prop-erties Table I. Since MACE embeddings are extracted from a foundation model pre-trained on chemically diverse data, this redundancy reflects the mismatch between the broad general-ity of the pre-trained features and the narrow requirements of individual property regression. Beyond the magnitude of compression, the shape of the optimization curves reveals an important practical distinction between representations. cMBDF exhibits broad, flat bowl-shaped optima: for total energy, the improvement remains near its maximum across a range of roughly 300 to 700 fea-tures, meaning the compressed representation is robust to the stopping point of the optimization. FCHL19 and MACE, by contrast, show narrow, peaked optima — compression gains drop off sharply if too many or too few features are retained, requiring more precise control over the feature count. The dipole moment curve for cMBDF in Fig. 3C illustrates this most clearly: the improvement varies only weakly from 17 features up to several hundred, confirming that the discarded features are genuinely redundant rather than mildly informa-tive. This breadth reflects the greater intrinsic redundancy 7of cMBDF, consistent with the weight distributions discussed earlier. Table I collects these observations into two complementary metrics: compression and data saved. The compression col-umn measures how many dimensions of the representation can be dropped without loss of accuracy. The data saved column measures data efficiency: what fraction of high quality train-ing points can be saved purely due to the compression. Con-cretely, it is the relative excess of training data the unweighted model would need – read from its learning curve (Fig. 6) – to match the accuracy the compressed model achieves at 
+
+NHQ = 1024. In many cases the two metrics reinforce each other: cMBDF on dipole moment achieves 98% compression alongside 81% data savings, and the same representation on total energy yields 84% compression with 53% savings. This coupling is intuitive – a sparser, more targeted descriptor con-centrates kernel similarity on structure genuinely predictive of the target property, possibly steepening the learning curve and reducing the number of high quality training points needed. However, compression and data savings can decouple: MACE on polarizability compresses by 47% yet saves only 2% of training data; cMBDF on polarizability achieves 92% com-pression with only 32% savings. In these cases the removed features are redundant for the kernel at the chosen evaluation point, but the retained features do not discriminate molecules sharply enough to meaningfully accelerate learning. The de-coupling is most pronounced for MACE: if the compressed representation improves little over the baseline at fixed NHQ ,the learning curve shifts correspondingly little, and data sav-ings remain small even when nearly half the features are dis-carded.                  
+
+> Table I. Feature compression and data efficiency improvement on QM9 for three representations (cMBDF, FCHL19, MACE) across four molecular properties. Compression :percentage of features dropped at the point where the weighted model test error first reaches the unweighted baseline. Data saved : percentage of training data rendered redundant by feature weighting, measured as the fraction by which the equivalent unweighted training set size exceeds N=1024. Compression Data saved
+> ECvμαECvμα
+> cMBDF 78% 91% 98% 92% 53% 49% 81% 32% FCHL19 71% 51% 82% 59% 15% 17% 37% 23% MACE 47% 36% 72% 47% 13% 18% 19% 2%
+> Other dataset: VQM24
+
+Many representations have been built with QM9 as target benchmark set in mind, so it is relevant to consider other databases. We consider the total energy and heat capacity on the newer VQM24 dataset across all three representations (Fig. 4). VQM24 spans a broader chemical space, including a wider range of elements and molecular compositions, which 0 1000 2000 
+
+> Number of features
+> 10
+> 0
+> 10
+> 20
+> 30
+> Relative improvement (RMSE %)
+
+A: Total energy   
+
+> 01000 2000
+> Number of features
+> 10
+> 0
+> 10
+> 20
+> 30
+
+B: Heat capacity 
+
+> cMBDF
+> FCHL19Global
+> MACEGlobal
+> Figure 4. Compression curves for three global molecular representa-tions on the larger and more chemically diverse VQM24 dataset, for two properties—total energy (A) and heat capacity (B). Axes, shad-ing, and methodology are as in Fig. 3.
+
+makes KRR training less efficient and representations less able to encode molecular information compactly. The learn-ing curves on VQM24 are noticeably flatter than on QM9, providing a more demanding test of whether the optimization generalizes. For total energy, the method transfers successfully. cMBDF achieves around 13% improvement at 849 features, with a very flat bowl spanning roughly 500 to 1800 features – the compressed representation is robust to the stopping point of the optimization. FCHL19 shows a similar bowl-shaped be-havior, reaching around 10% improvement at 1553 features and matching baseline accuracy at 903 features. MACE shows no meaningful improvement and degrades rapidly upon com-pression, consistent with its behavior on QM9. For heat capacity, the story is different. On QM9, heat ca-pacity produced wide bowl-shaped curves with up to 20% improvement for cMBDF; on VQM24, only the compres-sion aspect remains, but only marginal accuracy gains remain: cMBDF peaks at only around 7% near the full descriptor size and crosses baseline at approximately 1400 features, while FCHL19 reaches barely 3% before immediately declining. Neither curve shows a bowl shape. This reflects the nature of VQM24: the greater chemical diversity distributes heat ca-pacity information more uniformly across the descriptor, leav-ing little concentrated redundancy for the optimization to ex-ploit. MACE shows no improvement and degrades immedi-ately upon any compression. Taken together, the VQM24 results confirm that the method generalizes across datasets, but its effectiveness scales with the available redundancy in the descriptor. Total energy, be-ing approximately additive and well-encoded by local fea-tures, remains compressible even in a chemically diverse set-ting. Heat capacity, requiring a more distributed representa-tion of molecular vibrations, proves resilient to compression when the training data spans a wide chemical space. 80 200 400 600 
+
+> Number of features
+> 5
+> 0
+> 5
+> 10
+> 15
+> 20
+> 25
+> Relative improvement (RMSE %)
+> cMBDF
+> FCHL19
+> MACE
+> Figure 5. Compression curves for local representations on QM9 total energy. Per-atom descriptors are used directly with their respective optimal local kernels: the elemental kernel for cMBDF and FCHL19, and the all-pair local kernel for MACE. Axes and shading follow the same convention as Fig. 3.
+> Local representations
+
+The global compression results reported above aggregate per-atom contributions into a single molecular vector via sum-mation. We now examine whether the same learning scheme extends to local representations, where per-atom descriptors are used directly and molecular similarity is computed via the atom-pair kernels. Figure 5 shows compression curves for QM9 total energy using local kernels: the elemental kernel for cMBDF and FCHL19, and the all-pair local kernel for MACE. The three representations behave very differently in this setting. FCHL19 with the elemental kernel achieves the largest gain of any configuration tested: approximately 19–21% RMSE re-duction over a broad plateau spanning 500–700 features. This improvement matches or exceeds the global FCHL19 gain for total energy, and the wide optimum again indicates robustness to the stopping criterion. cMBDF as local representation is already designed to be much shorter and on this dataset has 40 features, compared to ∼1880 in the global case. The optimization compresses this from 40 to 25 features with a ∼3–4% improvement — modest in absolute terms, but notable given that the starting representation is already compact. The smaller gain relative to global cMBDF is consistent with diminished redundancy at the per-atom level: the summation step in the global case introduces additional redundancy across atomic environments that feature weighting can exploit, but which is absent in the local descriptor. MACE with the local kernel shows no improvement; the test error degrades immediately as features are removed. This is consistent with the global MACE behavior and re-flects the compact nature of pre-trained embeddings: the 256-dimensional per-atom features encode structure relevant to to-tal energy without the cross-atom redundancy that makes the global summed representation compressible. 
+
+> Learning curves – practical payoff / data efficiency
+
+The compression curves above evaluate accuracy at a fixed high-quality training set size of NHQ = 1024. Fig. 6 extends this picture by showing full learning curves for all three rep-resentations across all four QM9 properties, comparing the uncompressed baseline (solid lines) to the weighted model (dashed lines) at training sizes N = 128–2048, i.e. includ-ing data set sizes that have not been optimization targets. The weight vector is fixed to the one selected at NHQ = 1024; no re-optimization is performed at other training sizes. Two qual-itatively distinct effects are visible: a vertical shift , where weighted and baseline curves are roughly parallel (constant relative improvement across all N), and a slope change , indi-cating that additional data can now be used more efficiently. For total energy and heat capacity, the dominant effect is a vertical shift. The learning curve for the weighted version of FCHL19 and cMBDF run parallel to their respective base-line, indicating a stable accuracy and simultaneous efficiency gain at all training sizes. The cMBDF curves not only shifts downward but exhibits a modest steepening, with the com-pressed model with 512 points reaching accuracy comparable to the unweighted baseline at half of the data for both prop-erties. The most striking effect appears for the dipole mo-ment in Fig. 6C. The cMBDF baseline is comparably flat, i.e. cannot make efficient use of additional training data. Since the weighted version improves, this is likely because the full 1880-dimensional descriptor space contains too many entries which are unrelated for this property. The weighted cMBDF curve is substantially steeper: the compressed model at N = 256 already matches the accuracy of the unweighted baseline at more than four times the number of high-quality data points, which is the single largest absolute data-efficiency gain in the figure. The growing gap between the two curves confirms that the benefit of compression increases with num-ber of data points, an effect that is also found for FCHL19, although less pronounced. For the polarizability in Fig. 6D, both cMBDF and FCHL19 benefit from the compression, typ-ically by a constant factor which is most likely to come from the filtering of irrelevant features. In summary, the learning curves demonstrate that the ben-efit of transfer compression is not confined to the evaluation point used during optimization. For properties with concen-trated feature relevance (energy, heat capacity), compression yields a uniform data efficiency gain. For properties where the full descriptor is nearly uninformative (dipole moment), com-pression can change the fundamental scaling of the learning curve, converting a data-limited, high-dimensional regression problem into a tractable low-dimensional one. 9128 256 512 1024 2048                    
+
+> Training set size
+> 10 1
+> 3 × 10 0
+> 4 × 10 0
+> 6 × 10 0
+> Test RMSE
+> optimization
+> target
+> A: Total energy (kcal/mol)
+> 128 256 512 1024 2048
+> Training set size
+> 2 × 10 1
+> 3 × 10 1
+> 4 × 10 1
+> 6 × 10 1
+> optimization
+> target
+> B: Heat capacity (cal/mol K)
+> 128 256 512 1024 2048
+> Training set size
+> 10 0
+> 9 × 10 1
+> 1.1 × 10 0
+> 1.2 × 10 0
+> 1.3 × 10 0optimization
+> target
+> C: Dipole moment (D)
+> Improvement
+> 128 256 512 1024 2048
+> Training set size
+> 10 0
+> 2 × 10 0optimization
+> target
+> D: Polarizability (Bohr 3)
+> Baseline
+> cMBDF
+> FCHL19
+> MACE
+> Weighted
+> cMBDF
+> FCHL19
+> MACE
+
+Figure 6. Learning curves comparing the weighted global representations (dashed) and the uncompressed baseline (solid) on QM9. Shaded areas: improvement through this work. 
+
+CONCLUSION 
+
+Our results show that chemical representations are over-complete, and that representations are achievable which at the same time are more accurate and shorter. This is done through transfer learning in feature space rather than in labels over two datasets of different fidelity where the low-quality dataset is used to extract the physically relevant subset of features only. We confirm the assumption that feature relevance is transfer-able between data computed at different levels of theory: since a weight vector optimized on low-quality data also works on high-quality data, feature relevance proves transferable for the four physical properties studied and for different datasets, rep-resentations and both global and local kernels. In particular, for representations built on systematically enumerated physical many-body terms, such as cMBDF and FCHL19, the number of irrelevant features is more pro-nounced. In addition, we observe weighting features higher that originally contribute weakly to the feature space has a strong effect. By analyzing the cMBDF weight vector, we further observe that the final weights agree with the physical interpretation for each target property – e.g., two-body fea-tures play a more important role for total energy, whereas for polarizability the three-body terms dominate. We show that shorter and more accurate representations are not limited to a single dataset or representation flavor (local and global). By optimizing the weight vector on VQM24 – a larger and more chemically diverse set of molecules – we find that representations which perform fairly poorly on this harder dataset can still be improved through a property-dependent representation. The method also extends to local representations, which are typically more accurate and more compact than their global counterparts for extensive proper-ties. The accuracy gains here are representation-dependent – FCHL19 reaches its largest improvement of all in the local setting, while for cMBDF the local gain is more modest than the global – but the compressibility keeps its impact: even the very short local cMBDF (40 features) can be compressed further. The pretrained representation MACE leads in accu-racy but saw large numbers of high quality training data (al-beit for materials not molecules) during representation design. Our method can even compress the non-linear neural network descriptor of MACE, but achieves only modest accuracy im-provement. We expect that for stronger improvements, com-pression would need to be done at training time for neural network representations. Overall, this work provides a method to construct property-dependent chemical representations from more general ones, points out inefficiencies, and demonstrates that representa-tions can be shorter and more accurate at the same time. More-over, our method doubles as diagnostic tool to detect whether a given set of features is expressive enough for a given prop-erty, since the initial weighting during representation design is somewhat arbitrary and typically chosen to work well on the benchmark properties considered. Main limitations for our method are that it assumes that a sufficiently predictive but cheap baseline such as xTB exists for the property in question and that the initial representa-tion needs to be short enough such that optimization is fea-sible. Furthermore, global representations are much preferred as their optimization is orders of magnitude cheaper and less noisy than the one for local representations. On a practical side, shorter representations drastically re-duce cost e.g. for encrypted inference[57] or reduce the high memory requirements for local representations and the asso-ciated compute time which dominates KRR training cost[50]. Employing the filtering during representation design may be beneficial to select effective feature spaces for elusive proper-ties – both for kernel methods or neural networks. Possible ex-tensions could be to find representations for different regions in chemical space, or to steer active learning selections to-wards data points which span the selected feature space more dominantly.  
+
+> ∗
+
+vonrudorff@uni-kassel.de [1] O. A. von Lilienfeld, Quantum machine learning in chemi-cal compound space, Angewandte Chemie International Edition 
+
+57 , 4164 (2018). [2] O. A. Von Lilienfeld, K.-R. Müller, and A. Tkatchenko, Explor-ing chemical compound space with quantum-based machine 10 
+
+learning, Nature Reviews Chemistry 4, 347 (2020). [3] J. Behler, Four generations of high-dimensional neural network potentials, Chemical Reviews 121 , 10037 (2021). [4] O. T. Unke, S. Chmiela, H. E. Sauceda, M. Gastegger, I. Poltavsky, K. T. Schütt, A. Tkatchenko, and K.-R. Müller, Machine Learning Force Fields, Chemical Reviews 121 , 10142 (2021). [5] G. Montavon, M. Rupp, V. Gobre, A. Vazquez-Mayagoitia, K. Hansen, A. Tkatchenko, K.-R. Müller, and O. A. von Lilien-feld, Machine learning of molecular electronic properties in chemical compound space, New Journal of Physics 15 , 095003 (2013). [6] A. Stuke, M. Todorovi´ c, M. Rupp, C. Kunkel, K. Ghosh, L. Hi-manen, and P. Rinke, Chemical diversity in molecular orbital energy predictions with kernel ridge regression, The Journal of Chemical Physics 150 , 10.1063/1.5086105 (2019). [7] Y. M. Thant, T. Wakamiya, M. Nukunudompanich, K. Kameda, M. Ihara, and S. Manzhos, Kernel regression methods for pre-diction of materials properties: Recent developments, Chemical Physics Reviews 6, 011306 (2025). [8] F. Musil, A. Grisafi, A. P. Bartók, C. Ortner, G. Csányi, and M. Ceriotti, Physics-Inspired Structural Representations for Molecules and Materials, Chemical Reviews 121 , 9759 (2021). [9] R. Drautz, Atomic cluster expansion for accurate and trans-ferable interatomic potentials, Physical Review B 99 , 014104 (2019). [10] A. P. Bartók, R. Kondor, and G. Csányi, On representing chem-ical environments, Physical Review B 87 , 184115 (2013). [11] D. Khan, S. Heinen, and O. A. Von Lilienfeld, Kernel based quantum machine learning at record rate: Many-body distri-bution functionals as compact representations, The Journal of Chemical Physics 159 , 034106 (2023). [12] D. Khan and O. A. von Lilienfeld, Generalized convolutional many-body distribution functional representations, Proceed-ings of the National Academy of Sciences 122 , e2415662122 (2025). [13] F. A. Faber, A. S. Christensen, B. Huang, and O. A. von Lilien-feld, Alchemical and structural distribution based representa-tion for universal quantum machine learning, The Journal of Chemical Physics 148 , 241717 (2018). [14] A. S. Christensen, L. A. Bratholm, F. A. Faber, and O. Ana-tole Von Lilienfeld, FCHL revisited: Faster and more accurate quantum machine learning, The Journal of Chemical Physics 
+
+152 , 044107 (2020). [15] J. Behler and M. Parrinello, Generalized Neural-Network Rep-resentation of High-Dimensional Potential-Energy Surfaces, Physical Review Letters 98 , 146401 (2007). [16] K. T. Schütt, H. E. Sauceda, P.-J. Kindermans, A. Tkatchenko, and K.-R. Müller, SchNet - a deep learning architecture for molecules and materials, The Journal of Chemical Physics 148 ,241722 (2018). [17] S. Batzner, A. Musaelian, L. Sun, M. Geiger, J. P. Mailoa, M. Kornbluth, N. Molinari, T. E. Smidt, and B. Kozinsky, E(3)-equivariant graph neural networks for data-efficient and accu-rate interatomic potentials, Nature Communications 13 , 2453 (2022). [18] I. Batatia, D. P. Kovács, G. N. C. Simm, C. Ortner, and G. Csányi, MACE: Higher Order Equivariant Message Passing Neural Networks for Fast and Accurate Force Fields, NeurIPS 35, arXiv 2206.07697 (2022). [19] I. Batatia, P. Benner, Y. Chiang, A. M. Elena, D. P. Kovács, J. Riebesell, X. R. Advincula, M. Asta, M. Avaylon, W. J. Bald-win, F. Berger, N. Bernstein, A. Bhowmik, F. Bigi, S. M. Blau, V. C˘ arare, M. Ceriotti, S. Chong, J. P. Darby, S. De, F. Della Pia, V. L. Deringer, R. Elijošius, Z. El-Machachi, F. Falcioni, E. Fako, A. C. Ferrari, J. L. A. Gardner, M. J. Gawkowski, A. Genreith-Schriever, J. George, R. E. A. Goodall, J. Grandel, C. P. Grey, P. Grigorev, S. Han, W. Handley, H. H. Heenen, K. Hermansson, C. Holm, C. H. Ho, S. Hofmann, J. Jaafar, K. S. Jakob, H. Jung, V. Kapil, A. D. Kaplan, N. Karimi-tari, J. R. Kermode, P. Kourtis, N. Kroupa, J. Kullgren, M. C. Kuner, D. Kuryla, G. Liepuoniute, C. Lin, J. T. Margraf, I.-B. Magd˘ au, A. Michaelides, J. H. Moore, A. A. Naik, S. P. Niblett, S. W. Norwood, N. O’Neill, C. Ortner, K. A. Pers-son, K. Reuter, A. S. Rosen, L. A. M. Rosset, L. L. Schaaf, C. Schran, B. X. Shi, E. Sivonxay, T. K. Stenczel, V. Svahn, C. Sutton, T. D. Swinburne, J. Tilly, C. van der Oord, S. Var-gas, E. Varga-Umbrich, T. Vegge, M. Vondrák, Y. Wang, W. C. Witt, T. Wolf, F. Zills, and G. Csányi, A foundation model for atomistic materials chemistry (2024). [20] I. Batatia, P. Benner, Y. Chiang, A. M. Elena, D. P. Kovács, J. Riebesell, X. R. Advincula, M. Asta, M. Avaylon, W. J. Bald-win, F. Berger, N. Bernstein, A. Bhowmik, F. Bigi, S. M. Blau, V. C˘ arare, M. Ceriotti, S. Chong, J. P. Darby, S. De, F. Della Pia, V. L. Deringer, R. Elijošius, Z. El-Machachi, E. Fako, F. Fal-cioni, A. C. Ferrari, J. L. A. Gardner, M. J. Gawkowski, A. Genreith-Schriever, J. George, R. E. A. Goodall, J. Grandel, C. P. Grey, P. Grigorev, S. Han, W. Handley, H. H. Heenen, K. Hermansson, C. H. Ho, S. Hofmann, C. Holm, J. Jaafar, K. S. Jakob, H. Jung, V. Kapil, A. D. Kaplan, N. Karimitari, J. R. Kermode, P. Kourtis, N. Kroupa, J. Kullgren, M. C. Kuner, D. Kuryla, G. Liepuoniute, C. Lin, J. T. Margraf, I.-B. Magd˘ au, A. Michaelides, J. H. Moore, A. A. Naik, S. P. Niblett, S. W. Norwood, N. O’Neill, C. Ortner, K. A. Persson, K. Reuter, A. S. Rosen, L. A. M. Rosset, L. L. Schaaf, C. Schran, B. X. Shi, E. Sivonxay, T. K. Stenczel, C. Sutton, V. Svahn, T. D. Swinburne, J. Tilly, C. Van Der Oord, S. Vargas, E. Varga-Umbrich, T. Vegge, M. Vondrák, Y. Wang, W. C. Witt, T. Wolf, F. Zills, and G. Csányi, A foundation model for atomistic mate-rials chemistry, The Journal of Chemical Physics 163 , 184110 (2025). [21] D. J. C. MacKay, Bayesian Non-Linear Modeling for the Pre-diction Competition, in Maximum Entropy and Bayesian Meth-ods , edited by G. R. Heidbreder (Springer Netherlands, Dor-drecht, 1996) pp. 221–234. [22] M. E. Tipping, Sparse Bayesian Learning and the Relevance Vector Machine, Journal of Machine Learning Research 1, 211 (2001). [23] C. E. Rasmussen and C. K. I. Williams, Gaussian processes for machine learning , 3rd ed., Adaptive computation and machine learning (MIT Press, Cambridge, Mass., 2008). [24] B. Huang and O. A. von Lilienfeld, Communication: Under-standing molecular representations in machine learning: The role of uniqueness and target similarity, The Journal of Chemi-cal Physics 145 , 161102 (2016). [25] S. N. Pozdnyakov, M. J. Willatt, A. P. Bartók, C. Ortner, G. Csányi, and M. Ceriotti, Incompleteness of Atomic Structure Representations, Physical Review Letters 125 , 166001 (2020). [26] M. Uhrin, Through the eyes of a descriptor: Constructing com-plete, invertible descriptions of atomic environments, Physical Review B 104 , 144110 (2021). [27] Y. Cho, K. R. Briling, Y. Calvino Alonso, R. Laplaza, and C. Corminboeuf, Benchmarking physics-inspired machine learning models for transition metal complexes with diverse charge and spin states, Digital Discovery 5, 2103 (2026). [28] N. Fedik, R. Zubatyuk, M. Kulichenko, N. Lubbers, J. S. Smith, B. Nebgen, R. Messerly, Y. W. Li, A. I. Boldyrev, K. Barros, O. Isayev, and S. Tretiak, Extending machine learning beyond 11 
+
+interatomic potentials for predicting molecular properties, Na-ture Reviews Chemistry 6, 653 (2022). [29] R. Fabregat, P. Van Gerwen, M. Haeberle, F. Eisenbrand, and C. Corminboeuf, Metric learning for kernel ridge regression: assessment of molecular similarity, Machine Learning: Science and Technology 3, 035015 (2022). [30] A. Banjafar and G. F. Von Rudorff, Intrinsic dimensionality of molecular properties, The Journal of Chemical Physics 163 ,174301 (2025). [31] E. Facco, M. d’Errico, A. Rodriguez, and A. Laio, Estimating the intrinsic dimension of datasets by a minimal neighborhood information, Scientific Reports 7, 12140 (2017). [32] M. J. Willatt, F. Musil, and M. Ceriotti, Feature optimization for atomistic machine learning yields a data-driven construction of the periodic table of the elements, Physical Chemistry Chemical Physics 20 , 29661 (2018). [33] R. Wild, F. Wodaczek, V. Del Tatto, B. Cheng, and A. Laio, Au-tomatic feature selection and weighting in molecular systems using Differentiable Information Imbalance, Nature Communi-cations 16 , 270 (2025). [34] L. J. Nelson, G. L. W. Hart, F. Zhou, and V. Ozolin , š, Compres-sive sensing as a paradigm for building physics models, Physi-cal Review B 87 , 035125 (2013). [35] J. S. Smith, B. T. Nebgen, R. Zubatyuk, N. Lubbers, C. Dev-ereux, K. Barros, S. Tretiak, O. Isayev, and A. E. Roitberg, Ap-proaching coupled cluster accuracy with a general-purpose neu-ral network potential through transfer learning, Nature Commu-nications 10 , 10.1038/s41467-019-10827-4 (2019). [36] P. Zaspel, B. Huang, H. Harbrecht, and O. A. von Lilienfeld, Boosting quantum machine learning models with a multilevel combination technique: Pople diagrams revisited, Journal of Chemical Theory and Computation 15 , 1546 (2018). [37] V. Vinod, S. Maity, P. Zaspel, and U. Kleinekathöfer, Multi-fidelity Machine Learning for Molecular Excitation Energies, Journal of Chemical Theory and Computation 19 , 7658 (2023). [38] V. Vinod, D. Lyu, M. Ruth, P. R. Schreiner, U. Kleinekathöfer, and P. Zaspel, Predicting Molecular Energies of Small Organic Molecules With Multi-Fidelity Methods, Journal of Computa-tional Chemistry 46 , e70056 (2025). [39] R. Ramakrishnan, P. O. Dral, M. Rupp, and O. A. von Lilien-feld, Big data meets quantum chemistry approximations: The 
+
+∆-machine learning approach, Journal of Chemical Theory and Computation 11 , 2087 (2015). [40] M. Welborn, L. Cheng, and T. F. Miller, Transferability in ma-chine learning for electronic structure via the molecular orbital basis, Journal of Chemical Theory and Computation 14 , 4772 (2018). [41] K. Karandashev and O. A. Von Lilienfeld, An orbital-based rep-resentation for accurate quantum machine learning, The Journal of Chemical Physics 156 , 114101 (2022). [42] T. Husch, J. Sun, L. Cheng, S. J. R. Lee, and T. F. Miller, Improved accuracy and transferability of molecular-orbital-based machine learning: Organics, transition-metal complexes, non-covalent interactions, and transition states, The Journal of Chemical Physics 154 , 064108 (2021). [43] D. P. Kingma and J. Ba, Adam: A Method for Stochastic Opti-mization (2017). [44] C. Bannwarth, S. Ehlert, and S. Grimme, GFN2-xTB—An Accurate and Broadly Parametrized Self-Consistent Tight-Binding Quantum Chemical Method with Multipole Electro-statics and Density-Dependent Dispersion Contributions, Jour-nal of Chemical Theory and Computation 15 , 1652 (2019). [45] R. Ramakrishnan, P. O. Dral, M. Rupp, and O. A. von Lilien-feld, Quantum chemistry structures and properties of 134 kilo molecules, Scientific Data 1, 10.1038/sdata.2014.22 (2014). [46] L. Ruddigkeit, R. van Deursen, L. C. Blum, and J.-L. Rey-mond, Enumeration of 166 billion organic small molecules in the chemical universe database GDB-17, Journal of Chemical Information and Modeling 52 , 2864 (2012). [47] D. Khan, A. Benali, S. Y. H. Kim, G. F. von Rudorff, and O. A. von Lilienfeld, Towards comprehensive coverage of chemical space: Quantum mechanical properties of 836k constitutional and conformational closed shell neutral isomers consisting of HCNOFSiPSClBr (2024). [48] J. Shawe-Taylor, C. Williams, N. Cristianini, and J. Kandola, On the Eigenspectrum of the Gram Matrix and the Generaliza-tion Error of Kernel-PCA, IEEE Transactions on Information Theory 51 , 2510 (2005). [49] S. Nandi, T. Vegge, and A. Bhowmik, MultiXC-QM9: Large dataset of molecular and reaction energies from multi-level quantum chemical methods, Scientific Data 10 , 783 (2023). [50] N. Grimblat, G. Klassen, and G. F. von Rudorff, Data-driven complete basis set limit estimates from a minimal auxiliary ba-sis, arXiv 10.48550/ARXIV.2605.15927 (2026). [51] F. A. Faber, L. Hutchison, B. Huang, J. Gilmer, S. S. Schoen-holz, G. E. Dahl, O. Vinyals, S. Kearnes, P. F. Riley, and O. A. von Lilienfeld, Prediction Errors of Molecular Machine Learn-ing Models Lower than Hybrid DFT Error, Journal of Chemical Theory and Computation 13 , 5255 (2017). [52] M. Veit, D. M. Wilkins, Y. Yang, R. A. DiStasio, and M. Ceri-otti, Predicting molecular dipole moments by combining atomic partial charges and atomic dipoles, The Journal of Chemical Physics 153 , 024113 (2020). [53] T. W. Ko, J. A. Finkler, S. Goedecker, and J. Behler, A fourth-generation high-dimensional neural network potential with ac-curate electrostatics including non-local charge transfer, Nature Communications 12 , 10.1038/s41467-020-20427-2 (2021). [54] O. T. Unke and M. Meuwly, PhysNet: A Neural Network for Predicting Energies, Forces, Dipole Moments, and Partial Charges, Journal of Chemical Theory and Computation 15 ,3678 (2019). [55] M. Cools-Ceuppens, J. Dambre, and T. Verstraelen, Model-ing electronic response properties with an explicit-electron ma-chine learning potential, Journal of Chemical Theory and Com-putation 18 , 1672 (2022). [56] A. S. Christensen and O. A. von Lilienfeld, Operator quantum machine learning: Navigating the chemical space of response properties, CHIMIA International Journal for Chemistry 73 ,1028 (2019). [57] J. Weinreich, G. F. von Rudorff, and O. A. von Lilienfeld, Encrypted machine learning of molecular quantum properties, Machine Learning: Science and Technology 4, 025017 (2023).

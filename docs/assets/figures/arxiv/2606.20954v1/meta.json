@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-001.webp",
+      "caption": "Figure 1: How an agent evicts decides whether it finishes. Context tokens per generation on one AppWorld task (d194965_2) under four policies at a 2048-token budget. No-compression grows unbounded (∼12.6k tokens); FIFO and LLM compression (ACON) stay bounded but lose the load-bearing content. ACON does 49 llm + 8 compressor calls. LRE keeps the relevant turns verbatim with a few kilobyte CPU scorer and completes in 19 calls, 37% fewer than no-compression’s 30.",
+      "page": 1,
+      "index": 1,
+      "width": 462,
+      "height": 588
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-009.webp",
+      "caption": "Figure 3: LRE: budgeted extractive eviction. The cap B applies to the older selected units S⋆; the recent window Rk (and the system prompt and task, omitted here) are appended without competing for B. Older units are added in decreasing value density pi/ci, skipping any that overflow. The two domains instantiate (ci, B,Rk) as in Table 1.",
+      "page": 4,
+      "index": 9,
+      "width": 458,
+      "height": 576
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-005.webp",
+      "caption": "Figure 6: Gold recall versus retention budget on both benchmarks. On LoCoMo, LRE retains more gold evidence than every baseline at every budget; on LongMemEvalS LRE tracks just below content salience but reaches it at a higher budget.",
+      "page": 7,
+      "index": 5,
+      "width": 821,
+      "height": 324
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-002.webp",
+      "caption": "Figure 7: LoCoMo evaluation pipeline for query-agnostic context eviction in LRE.",
+      "page": 11,
+      "index": 2,
+      "width": 950,
+      "height": 976
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-010.webp",
+      "caption": "Figure 8: LongMemEvalS evaluation pipeline for session-level context eviction under query-dependent retrieval.",
+      "page": 12,
+      "index": 10,
+      "width": 950,
+      "height": 943
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-006.webp",
+      "caption": "Table 6: Unified feature space used by LRE across agentic execution traces (Domain A: AppWorld) and conversational QA (Domain B: LoCoMo and LongMemEvalS). The model shares a small set of causal structural features across domains, while augmenting them with domain-specific lexical, conversational, or code-execution signals. All features are computed over prefix histories u≤i to ensure strict causality during training and inference. The feature set is constructed as a minimal causal representation of interaction structure, motivated by observed failure modes across domains.",
+      "page": 14,
+      "index": 6,
+      "width": 619,
+      "height": 422
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-003.webp",
+      "caption": "Figure 9: AppWorld: agentic evaluation of LRE under token budget constraints and Pareto efficiency criteria.",
+      "page": 15,
+      "index": 3,
+      "width": 950,
+      "height": 1047
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-014.webp",
+      "caption": "Figure 10: Domain A (agent): shared eviction trigger; methods differ only in HANDLEOLDER. No-compression keeps everything (unbounded), FIFO drops the older steps, ACON replaces them with one abstractive LLM summary, and LRE keeps the highest learned-relevance-per-token steps verbatim.",
+      "page": 16,
+      "index": 14,
+      "width": 933,
+      "height": 824
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-007.webp",
+      "caption": "Figure 11: Domain B (conversational): shared score-then-retain eviction, with each baseline’s per-unit score. agei is distance from the most recent unit; c̄U , ēU are the group TF-IDF / embedding centroids; query-aware references read the question and are upper bounds, never competitors.",
+      "page": 18,
+      "index": 7,
+      "width": 933,
+      "height": 518
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-004.webp",
+      "caption": "Figure 12: Recovery of true TGC by replay ($0, no LLM call): replay_eval.py. A fresh environment resets to the initial state, so we replay the logged actions to reconstruct the agent’s final state before evaluating.",
+      "page": 21,
+      "index": 4,
+      "width": 933,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-008.webp",
+      "caption": "Table 11: The 14 AppWorld test_normal tasks (seed 1) solved by LRE alone: hidden unit-test pass counts (passed/total) per policy. LRE passes all tests on every task, while no-compression, FIFO, and ACON each leave at least one test failing.",
+      "page": 23,
+      "index": 8,
+      "width": 454,
+      "height": 362
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-013.webp",
+      "caption": "Table 12: Downstream answer quality at a 20% retention budget. On LoCoMo (token-F1) the full context is best but token-heavy, and LRE leads the budget-constrained policies; on LongMemEvalS (LLM-judge) the full context is worst and the deployable policies cluster.",
+      "page": 24,
+      "index": 13,
+      "width": 621,
+      "height": 198
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-011.webp",
+      "caption": "Table 13: Conversational serving cost and iso-recall budget saving. LRE does zero neural forward passes and scores resident units on a CPU, whereas the dense and LLMLingua-2 encoders pay one forward pass per unit (102–103× slower). At iso-recall (80% gold recall) LRE reaches the target at roughly half the budget of recency.",
+      "page": 24,
+      "index": 11,
+      "width": 679,
+      "height": 205
+    },
+    {
+      "url": "assets/figures/arxiv/2606.20954v1/fig-012.webp",
+      "caption": "Figure 13: Downstream answer quality versus token cost under a 20% retention budget (Full context † = no eviction). The comparison set is minimal and deployment-oriented: recency is the production default, content salience the strongest non-neural query-blind competitor, and the LRE variants test whether proactive relevance transfers to QA; MemoryBank (ranking-equivalent to recency) and the neural salience baselines (dominated by content salience) are omitted.",
+      "page": 24,
+      "index": 12,
+      "width": 864,
+      "height": 340
+    }
+  ]
+}

@@ -1,0 +1,402 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-23T20:42:19.786611+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 55,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 111,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 16,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 11,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 17
+  },
+  "deep_dive": [
+    {
+      "id": "2606.21036v1",
+      "source": "arxiv",
+      "title": "Diffusion-Driven State Space Models",
+      "abstract": "In many domains, practitioners seek models that produce accurate forecasts while faithfully capturing latent system dynamics. Existing approaches typically sacrifice one of these goals: deep state space models often assume Gaussian latent transitions, limiting fit and forecasting, while diffusion models are highly expressive but lack principled inference for the underlying dynamics. To combine the strengths of both, we introduce the Diffusion-Driven State Space Model (DDSSM), which replaces the conventional Gaussian transition distribution with a diffusion model. Our DDSSM resolves the open problem of how to jointly train an autoencoder and a diffusion model on sequential data, thereby extending the literature on latent diffusion models for time series. Moreover, we find that the DDSSM empirically outperforms a state-of-the-art deep SSM at fitting and forecasting a simulated time series with multimodal transitions.",
+      "authors": [
+        "Jack Ruder",
+        "Michael Wojnowicz"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-06-19T02:00:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.21036v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "state space model for sequential data with diffusion",
+      "llm_evidence_cn": "扩散驱动的状态空间模型用于序列数据",
+      "llm_evidence": "扩散驱动的状态空间模型用于序列数据",
+      "canonical_evidence": "扩散驱动的状态空间模型用于序列数据",
+      "llm_tldr_en": "Introduces a diffusion-driven state space model for accurate forecasting and latent dynamics capture on sequential data.",
+      "llm_tldr_cn": "提出扩散驱动的状态空间模型，用于准确预测序列数据并捕捉潜在动态。",
+      "llm_tldr": "提出扩散驱动的状态空间模型，用于准确预测序列数据并捕捉潜在动态。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.21055v1",
+      "source": "arxiv",
+      "title": "Robust EEG Functional Connectivity Metrics for Decoding Action Observation Conditions and Observed Actions",
+      "abstract": "Action observation (AO) paradigms probe motor-system engagement, yet the electroencephalographic (EEG) functional connectivity (FC) metrics that best capture AO-related dynamics remain unclear. This pilot study benchmarked five sensor-level FC metrics, including coherence (COH), imaginary coherence (iCOH), phase-locking value (PLV), partial directed coherence (PDC), and spectral Granger causality (SpcG), for decoding AO stimuli in five healthy adults. EEG signals were recorded while participants observed upper-limb actions performed by human or robot agents, as well as non-action control stimuli. Ten motor-area channels were analyzed in the alpha (8-12 Hz) and beta (13-30 Hz) bands. Trial-wise 10 x 10 FC matrices were used as inputs to multiple classifiers for two tasks: (i) six-class AO-condition decoding and (ii) five-class action-type decoding. Across both tasks, metrics robust to volume conduction consistently outperformed their counterparts. iCOH achieved the highest macro-area under the receiver operating characteristic curve (macro-AUC) for most classifiers, with PDC and SpcG showing comparable performance. Graph neural networks (GNNs) provided the most robust and stable results across all FC metrics, while convolutional neural networks and random forests also performed strongly. These findings highlight the importance of suppressing zero-phase-lag interactions and incorporating directed connectivity when characterizing AO-related brain activity. They further demonstrate the ability of GNNs to exploit the inherent graph structure of FC representations, providing practical guidance for selecting connectivity measures and machine learning models in future large-scale studies of action observation.",
+      "authors": [
+        "Anh T. Nguyen",
+        "Zachary A. Rentala",
+        "Michelle J. Johnson"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE"
+      ],
+      "published": "2026-06-19T02:45:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.21055v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decoding EEG connectivity for action observation",
+      "llm_evidence_cn": "基于EEG功能连接解码动作观察",
+      "llm_evidence": "基于EEG功能连接解码动作观察",
+      "canonical_evidence": "基于EEG功能连接解码动作观察",
+      "llm_tldr_en": "Benchmarks EEG connectivity metrics for decoding observed actions",
+      "llm_tldr_cn": "基准测试EEG连接性指标用于解码观察到的动作",
+      "llm_tldr": "基准测试EEG连接性指标用于解码观察到的动作",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.21295v1",
+      "source": "arxiv",
+      "title": "Topological Neural Dynamics: A Neuron-wise Framework for Sequence Modeling",
+      "abstract": "Existing sequence models, including RNNs, LSTMs, continuous-time networks, and Transformers, share a common structural principle: layer-wise dynamics, where all neurons in the same layer co-evolve through a shared parameterized operator, leaving individual neurons no freedom to evolve independently. Yet in many complex dynamical systems, rich global behavior emerges precisely from locally evolving units interacting through structured connectivity. Inspired by this principle, we introduce Topological Neural Dynamics (TND), a sequence modeling framework that shifts computation from layer-wise to neuron-wise dynamics. TND represents a neural system as a directed neuron graph, an interaction operator, and a local dynamics function, where each neuron evolves independently and collective computation emerges from interactions through the explicit graph topology. We instantiate TND as a discrete-time graph-coupled dynamical system and evaluate it as a case study on a behavior cloning task in single-player Pong. Compared with Vanilla RNN, Sparse RNN, LSTM, Closed-form continuous-time neural network (CfC), and Transformer baselines, TND achieves the best catch rate and a mean of 17.47 consecutive catches per round, more than three times that of the strongest baseline. These results suggest that shifting from layer-wise to neuron-wise dynamics provides an effective inductive bias for sequence modeling.",
+      "authors": [
+        "Borui Cai",
+        "Yao Zhao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-19T10:18:24+00:00",
+      "link": "https://arxiv.org/pdf/2606.21295v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "neuron-wise sequence modeling framework for analyzing and predicting sequential data",
+      "llm_evidence_cn": "神经元级别的序列建模框架，用于分析和预测时序数据",
+      "llm_evidence": "神经元级别的序列建模框架，用于分析和预测时序数据",
+      "canonical_evidence": "神经元级别的序列建模框架，用于分析和预测时序数据",
+      "llm_tldr_en": "Introduces Topological Neural Dynamics, a new sequence modeling paradigm with neuron-wise dynamics.",
+      "llm_tldr_cn": "提出拓扑神经动力学，一种神经元级别的序列建模新范式。",
+      "llm_tldr": "提出拓扑神经动力学，一种神经元级别的序列建模新范式。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.21356v1",
+      "source": "arxiv",
+      "title": "SOHET: Sequence Of Heterogeneous Events Transformer with Self-Supervised Pre-Training",
+      "abstract": "Many machine learning applications rely on heterogeneous event streams to make predictions, either causally as events arrive or bidirectionally over complete sequences. We propose SOHET (Sequence Of Heterogeneous Events Transformer), a hierarchical architecture combining event-type-specific tabular encoders with temporal and type embeddings, processed by a causal or bidirectional transformer. We introduce three self-supervised pre-training objectives for the causal setting. On a proprietary large-scale real-world Booking.com fraud detection task with 17 event types, SOHET outperforms FlexTPP, NAPPT, and CIPPT by 5.8%. Pre-training yields an additional 2.6% gain and 2.4% faster convergence. On the EBES benchmark, bidirectional SOHET matches or exceeds the published best on 6 out of 8 tasks.",
+      "authors": [
+        "Kees Jan de Vries",
+        "Mustafa Radha",
+        "Mathijs de Jong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-19T11:56:46+00:00",
+      "link": "https://arxiv.org/pdf/2606.21356v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "transformer for sequence modeling of heterogeneous events with self-supervised pretraining",
+      "llm_evidence_cn": "用于异构事件序列建模的Transformer，带自监督预训练",
+      "llm_evidence": "用于异构事件序列建模的Transformer，带自监督预训练",
+      "canonical_evidence": "用于异构事件序列建模的Transformer，带自监督预训练",
+      "llm_tldr_en": "SOHET is a hierarchical transformer for heterogeneous event sequences with self-supervised pretraining objectives.",
+      "llm_tldr_cn": "SOHET是用于异构事件序列的分层Transformer，具有自监督预训练目标。",
+      "llm_tldr": "SOHET是用于异构事件序列的分层Transformer，具有自监督预训练目标。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.21415v1",
+      "source": "arxiv",
+      "title": "One Size does not Fit All: Heterogeneous Latent Space Alignment for Unsupervised Domain Adaptation",
+      "abstract": "Domain shift remains a major obstacle to the reliable deployment of machine learning models in high-stakes environments such as healthcare. While Domain adaptation aims to mitigate these effects, existing approaches suffer from limited expressiveness of latent representations and a reliance on handcrafted, static augmentations. In this work, we address these limitations by proposing a novel deep learning architecture for Unsupervised Domain Adaptation (UDA), specifically optimized for medical image segmentation. Our framework, ADualVUOT, integrates a dual-encoder Variational Autoencoder (VAE) with Continuous Normalizing Flows (CNFs) to increase modeling flexibility and posterior expressiveness. To achieve domain alignment, we leverage Unbalanced Optimal Transport (UOT) through the Gaussian-Gromov-Wasserstein (GGW) distance, which handles structural and topological discrepancies between domains. Furthermore, we incorporate an adversarial augmentation scheme to synthesize worst-case compositions, thus enhancing model robustness. Extensive experiments on medical imaging benchmarks show significant gains over prior OT-based approaches.",
+      "authors": [
+        "Evangelia Koskinioti",
+        "Yi Shen",
+        "Georgios Stamou",
+        "Michael M. Zavlanos"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-19T13:33:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.21415v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "unsupervised domain adaptation for medical images with VAE and normalizing flows",
+      "llm_evidence_cn": "无监督领域自适应用于医学图像，采用VAE和归一化流",
+      "llm_evidence": "无监督领域自适应用于医学图像，采用VAE和归一化流",
+      "canonical_evidence": "无监督领域自适应用于医学图像，采用VAE和归一化流",
+      "llm_tldr_en": "Proposes a dual-encoder VAE with normalizing flows for unsupervised domain adaptation in medical image segmentation.",
+      "llm_tldr_cn": "提出双编码器VAE与归一化流，用于医学图像分割的无监督领域自适应。",
+      "llm_tldr": "提出双编码器VAE与归一化流，用于医学图像分割的无监督领域自适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.21072v1",
+      "source": "arxiv",
+      "title": "An Efficient and Effective Architecture for Large-Scale Traffic Prediction via Geometry-Adaptive Square Partitioning",
+      "abstract": "Traffic prediction is a core task in intelligent transportation systems and urban-scale decision making. Despite the effectiveness of mainstream neural-network based methods, their deployment in real-world settings with thousands of traffic sensors is jeopardized severely by their poor computational scalability. To address this, the community has attempted to incorporate spatial database partitioning techniques (e.g., Grid, Quadtree, and K-D Tree) to improve model scalability. However, these approaches rely on handcrafted geometric heuristics and often produce irregular or imbalanced data partitions, leading to boundary fragmentation, excessive padding overheads, and degraded model accuracy. In this paper, we propose SqLinear, an efficient and effective architecture for large-scale traffic prediction. First, we design Square Partition, a geometry-adaptive algorithm that partitions massive traffic sensors into balanced, non-overlapping, and near-square spatial regions. Unlike existing heuristic-based designs, Square Partition is theoretically grounded and provides provable guarantees on aspect ratio, balance, and partition utilization, establishing a high-quality foundation for downstream spatiotemporal modeling. Next, we propose a Hierarchical Linear Interaction (HLI) module that abandons the costly attention mechanisms commonly used in Transformer-based spatio-temporal models. HLI efficiently captures both local intra-region dynamics and global inter-region dependencies through a lightweight linear interaction scheme, enabling effective spatiotemporal modeling with linear computational complexity. Extensive experiments on four large-scale traffic datasets and 10 baselines show that SqLinear reduces MAE by 2.30% on average under standard setting and by 5.81% under extreme scalability settings, while reducing training runtime by 13.27%--30.84% in spatial- and horizon-scaling scenarios.",
+      "authors": [
+        "Yongfeng Su",
+        "Hongwen Li",
+        "Zijian Zhang",
+        "Ziquan Fang",
+        "Lu Chen",
+        "Christian S. Jensen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-19T03:41:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.21072v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "large-scale traffic prediction as sequential data modeling",
+      "llm_evidence_cn": "大规模交通预测作为序列数据建模",
+      "llm_evidence": "大规模交通预测作为序列数据建模",
+      "canonical_evidence": "大规模交通预测作为序列数据建模",
+      "llm_tldr_en": "Proposes geometry-adaptive square partitioning for efficient and accurate large-scale traffic prediction.",
+      "llm_tldr_cn": "提出几何自适应方形分区，实现高效准确的大规模交通预测。",
+      "llm_tldr": "提出几何自适应方形分区，实现高效准确的大规模交通预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.20954v1",
+      "source": "arxiv",
+      "title": "Learning What Not to Forget: Long-Horizon Agent Memory from a Few Kilobytes of Learning",
+      "abstract": "Long-running language-model systems accumulate interaction history that outgrows the context window, so they must continually evict. When an eviction policy drops a load-bearing detail, for example an access token issued at login or a path the next call needs, the action fails. We present LRE (Learned Relevance Eviction), a few kilobytes, CPU-only, language-model-free scorer that learns which units of history are load-bearing and keeps them by verbatim extraction. Under a matched-budget comparison, in our experiment, no baseline dominates LRE on the accuracy-cost plane. On agents, LRE matches the accuracy of keeping the entire history overall. On the simplest tasks, it exceeds that no-eviction baseline by 27%, while requiring zero compressor calls and reducing peak context size by up to 52%. A controlled study trace shows LRE completes tasks where the others loop, finishing one such task in 37% fewer calls than keeping everything and solving 14 tasks where no other run policy does. On conversational memory, LRE outranks dense and token-pruning encoders at zero neural cost. In downstream evaluation, LRE gives the best budgeted answer quality on LoCoMo reading 68% fewer tokens. Its supervision can also be annotation-free: training only on the system's own behavior recovers 95% of the supervised scorer's effectiveness. We argue that, because memory eviction in LLM agents is a fidelity problem, it requires a deployable proactive policy where the future query is unavailable and exact state is decisive, and that cheap learned relevance can be sufficient.",
+      "authors": [
+        "Nusrat Jahan Lia",
+        "Aritra Mazumder"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T21:39:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.20954v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learns relevance scores for history units to decide eviction",
+      "llm_evidence_cn": "学习历史单元的相关性分数以决定驱逐",
+      "llm_evidence": "学习历史单元的相关性分数以决定驱逐",
+      "canonical_evidence": "学习历史单元的相关性分数以决定驱逐",
+      "llm_tldr_en": "LRE learns which history units are load-bearing and keeps them, improving agent memory efficiency.",
+      "llm_tldr_cn": "LRE学习哪些历史单元是关键并保留它们，提高智能体内存效率。",
+      "llm_tldr": "LRE学习哪些历史单元是关键并保留它们，提高智能体内存效率。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.21289v1",
+      "source": "arxiv",
+      "title": "Reconstructing Randomly Masked Spectra Helps DNNs Identify Discriminant Wavenumbers",
+      "abstract": "Nondestructive detection methods, based on vibrational spectroscopy, are vitally important in a wide range of applications including industrial chemistry, pharmacy and national defense. Recently, deep learning has been introduced into vibrational spectroscopy showing great potential. Different from images, text, etc. that offer large labeled data sets, vibrational spectroscopic data is very limited, which requires novel concepts beyond transfer and meta learning. To tackle this, we propose a task-enhanced augmentation network (TeaNet). The key component of TeaNet is a reconstruction module that inputs randomly masked spectra and outputs reconstructed samples that are similar to the original ones, but include additional variations learned from the domain. These augmented samples are used to train the classification model. The reconstruction and prediction parts are trained simultaneously, end-to-end with back-propagation. Results on both synthetic and real-world datasets verified the superiority of the proposed method. In the most difficult synthetic scenarios TeaNet outperformed CNN by 17%. We visualized and analysed the neuron responses of TeaNet and CNN, and found that TeaNet's ability to identify discriminant wavenumbers was excellent compared to CNN. Our approach is general and can be easily adapted to other domains, offering a solution to more accurate and interpretable few-shot learning.",
+      "authors": [
+        "Yingying Wu",
+        "Jinchao Liu",
+        "Yan Wang",
+        "Stuart Gibson",
+        "Margarita Osadchy",
+        "Yongchun Fang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-19T10:13:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.21289v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses reconstruction of randomly masked spectra to learn meaningful representations",
+      "llm_evidence_cn": "使用随机遮蔽光谱的重建来学习有意义的表示",
+      "llm_evidence": "使用随机遮蔽光谱的重建来学习有意义的表示",
+      "canonical_evidence": "使用随机遮蔽光谱的重建来学习有意义的表示",
+      "llm_tldr_en": "TeaNet enhances representation learning by reconstructing masked spectra, aiding limited data scenarios",
+      "llm_tldr_cn": "TeaNet通过重构遮蔽光谱增强表示学习，适用于有限数据场景",
+      "llm_tldr": "TeaNet通过重构遮蔽光谱增强表示学习，适用于有限数据场景",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.21311v1",
+      "source": "arxiv",
+      "title": "Property-Specific Molecular Representations via Feature-Space Transfer Compression",
+      "abstract": "In many machine learning applications, molecules need to be transformed into representations, i.e. mathematical objects. Those representations are typically considered to be property-agnostic and as such are expected to be over-complete: for different physical properties, different parts or the representation may be relevant. In this work, we propose a method to sub-select and re-weight the representation by adapting it to the property in question. We find that in most cases this makes representations shorter and more accurate at the same time. The feature selection itself uses cheap semi-empirical data instead of high-quality labels. We study four properties (total energy, heat capacity, dipole moment, and polarizability) for three representations (cMBDF, FCHL19, and MACE-MP-0 descriptors) on two datasets (QM9 and VQM24). We can reduce the number of dimensions of a representation in the median by 72\\,\\% (range 36-98\\,\\%) while retaining the accuracy. Tuning for accuracy instead we can increase the learning efficiency for dipole moments such that the same accuracy can be reached with 19\\,\\% of the training data. Our approach yields data-driven interpretations of feature importance, lossless compact representations, and increased data efficiency, requiring only expendable surrogate data.",
+      "authors": [
+        "Ali Banjafar",
+        "Guido Falk von Rudorff"
+      ],
+      "primary_category": "physics.chem-ph",
+      "categories": [
+        "physics.chem-ph"
+      ],
+      "published": "2026-06-19T10:49:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.21311v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "feature sub-selection and re-weighting for molecular representations using semi-empirical data",
+      "llm_evidence_cn": "使用半经验数据对分子表示进行特征子选择和重加权",
+      "llm_evidence": "使用半经验数据对分子表示进行特征子选择和重加权",
+      "canonical_evidence": "使用半经验数据对分子表示进行特征子选择和重加权",
+      "llm_tldr_en": "Proposes a method to sub-select and re-weight molecular representations for property-specific accuracy and compactness.",
+      "llm_tldr_cn": "提出一种方法，用于子选择和重加权分子表示，以获得特定属性的准确性和紧凑性。",
+      "llm_tldr": "提出一种方法，用于子选择和重加权分子表示，以获得特定属性的准确性和紧凑性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.21329v1",
+      "source": "arxiv",
+      "title": "MedTS-TTT: Test-Time Training for Medical Time Series Classification",
+      "abstract": "Medical time series (MedTS) signals such as electroencephalography (EEG) and electrocardiography (ECG) support many clinical applications. However, substantial subject-level heterogeneity often induces subject-level distribution shift, causing a fixed parameter set to generalize poorly to unseen individuals. Compared with domain adaptation methods that often depend on extra adaptation components or target-batch statistics, Test-Time Training (TTT) provides a more practical solution for sequential clinical data by enabling online adaptation from unlabeled test samples. However, many representative TTT methods require iterative inner-loop optimization, increasing test-time overhead. In this paper, we propose MedTS-TTT, a test-time training framework for medical time series modeling. MedTS-TTT is built upon Closed-Loop Self-Alignment Test-Time Training (CLSA-TTT) and a Gated Convolutional Backbone (GCB). CLSA-TTT constructs a token-level self-supervised target and performs a single-step fast-weight update for intra-layer closed-loop alignment, enabling rapid sample-wise adaptation without iterative inner-loop optimization. GCB combines CLSA-TTT-based fast adaptation and token-level fusion with a gated convolutional branch to balance local dynamic modeling and information-flow control. On 4 public datasets (2 EEG and 2 ECG) with subject-independent splits, MedTS-TTT achieves 11 top-1 rankings out of 12 evaluations across 9 baselines and 3 metrics. The code is publicly available at https://github.com/mingzhi-c/MedTS-TTT.",
+      "authors": [
+        "Mingzhi Chen",
+        "Yiyu Gui",
+        "Guibo Luo"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-19T11:22:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.21329v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "test-time training for medical time series classification with subject adaptation",
+      "llm_evidence_cn": "用于医学时间序列分类并适应受试者的测试时训练",
+      "llm_evidence": "用于医学时间序列分类并适应受试者的测试时训练",
+      "canonical_evidence": "用于医学时间序列分类并适应受试者的测试时训练",
+      "llm_tldr_en": "Proposes test-time training to adapt medical time series classifiers to individual subjects.",
+      "llm_tldr_cn": "提出测试时训练以适应个体受试者的医学时间序列分类器。",
+      "llm_tldr": "提出测试时训练以适应个体受试者的医学时间序列分类器。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
