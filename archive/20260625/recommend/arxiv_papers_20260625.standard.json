@@ -1,0 +1,416 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-24T20:44:57.491884+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 66,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 118,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 15,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 10,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 16
+  },
+  "deep_dive": [
+    {
+      "id": "2606.24087v1",
+      "source": "arxiv",
+      "title": "NeuroSonic: Conditional Flow Matching for EEG-to-Speech Reconstruction",
+      "abstract": "Reconstructing continuous speech from scalp electroencephalography (EEG) remains fundamentally challenging. EEG provides a weak, spatially diffuse, and highly variable measurement of distributed cortical activity, whereas speech is organized as a coherent acoustic trajectory with strong harmonic and temporal structure. The resulting mismatch makes waveform regression unstable and causes stochastic multi-step generation to be sensitive to artifact-dependent conditioning and subject variability. We introduce NeuroSonic, a conditional flow-matching framework for EEG-to-speech reconstruction. Instead of predicting waveforms directly or refining them through stochastic denoising, NeuroSonic learns a deterministic probability-flow velocity field that transports a noise-corrupted acoustic state toward clean speech under EEG conditioning. EEG and audio are embedded into a shared token space and processed by a time-conditioned gated Transformer that parameterizes the transport ordinary differential equation. This formulation models trajectory evolution explicitly while avoiding iterative stochastic sampling. We evaluate NeuroSonic on the CineBrain and EAV benchmarks under cross-subject evaluation. Across both datasets, the proposed method improves distributional realism, spectral fidelity, and perceptual quality over representative GAN-, diffusion-, and mean-flow baselines, with up to a 26.3\\% gain in overall perceptual quality. The performance gap is most evident in artifact-heavy segments, where conditioning variability is strongest. These findings indicate that deterministic conditional transport provides a stable and effective formulation for EEG-driven speech reconstruction. Code is available at https://github.com/Y-Research-SBU/NeuroSonic/ .",
+      "authors": [
+        "Wenhao Gao",
+        "Yifan Wang",
+        "Yijia Ma",
+        "Carl Yang",
+        "Wen Li",
+        "Chenyu You"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-23T03:04:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.24087v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "decodes EEG signals into continuous speech",
+      "llm_evidence_cn": "将脑电图信号解码为连续语音",
+      "llm_evidence": "将脑电图信号解码为连续语音",
+      "canonical_evidence": "将脑电图信号解码为连续语音",
+      "llm_tldr_en": "NeuroSonic uses conditional flow matching to reconstruct speech from EEG",
+      "llm_tldr_cn": "NeuroSonic使用条件流匹配从脑电图重建语音",
+      "llm_tldr": "NeuroSonic使用条件流匹配从脑电图重建语音",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.21754v1",
+      "source": "arxiv",
+      "title": "Embedded Polygon Symbolic Transfer Entropy (EPSTE): A Geometric Token and Deep Learning Approach to Estimating Transfer Entropy in Neuroimaging Time Series",
+      "abstract": "Inferring directed interactions between neural systems from EEG and MEG remains challenging due to noise, nonstationarity, and the high sample complexity of information-theoretic estimators. Transfer Entropy (TE) provides a principled and model-free measure of directed information flow; however, its practical estimation is not stable in finite data regimes (particularly as embedding dimension increases). This work introduces Embedded Polygon Symbolic Transfer Entropy (EPSTE), a framework that reframes TE estimation as a learnable problem operating on structured symbolic representations of local temporal morphology rather than raw signal amplitudes. Neural time series are decomposed into sequences of geometric primitives derived from local triplets of samples encoding complementary aspects of waveform structure such as magnitude, curvature and directional change. These primitives are discretised into symbolic tokens, yielding a compact but expressive state space over which symbolic TE is estimated. A recurrent neural network with attention-based multiple-instance learning is trained to predict surrogate-validated TE values from bags of symbolic temporal windows. The method is evaluated on source-reconstructed MEG data parcellated using the AAL90 atlas and compared against a standard symbolic baseline using identical architectures and supervision. The results demonstrate that while local window-level predictions are noisy, aggregation across trials and channel pairs yields stable directed dependencies. At the pair level, EPSTE achieves near-perfect recovery of ground-truth directed structure and significantly lower absolute error than the baseline, indicating that representational geometry plays a critical role in enabling practical learnability of information-theoretic dependencies.",
+      "authors": [
+        "David Alexander Finnigan"
+      ],
+      "primary_category": "cs.IT",
+      "categories": [
+        "cs.IT",
+        "stat.ML"
+      ],
+      "published": "2026-06-19T21:13:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.21754v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "estimates transfer entropy in neural time series using symbolic representations",
+      "llm_evidence_cn": "使用符号表示估计神经时间序列中的传递熵",
+      "llm_evidence": "使用符号表示估计神经时间序列中的传递熵",
+      "canonical_evidence": "使用符号表示估计神经时间序列中的传递熵",
+      "llm_tldr_en": "EPSTE estimates transfer entropy in neural time series using deep learning on symbolic representations.",
+      "llm_tldr_cn": "EPSTE利用深度学习对符号表示来估计神经时间序列中的传递熵。",
+      "llm_tldr": "EPSTE利用深度学习对符号表示来估计神经时间序列中的传递熵。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22182v1",
+      "source": "arxiv",
+      "title": "Dual-Stream EEG Decoding for 3D Visual Perception",
+      "abstract": "This paper explores a novel brain decoding model for 3D shape perception through a dual pathway architecture mirroring biological vision. Our bio-inspired approach implements separate decoding modules for object identity and spatial orientation, inspired by ventral and dorsal pathways, during continuous rotations. We employ circular regression for angle prediction and develop EEG-conditioned multiview diffusion for 3D reconstruction. Our approach successfully decodes both object identity and spatial orientation from EEG signals and enables 3D reconstruction from neural activity, with interpretability analyses revealing temporally structured involvement of ventral, dorsal, and motor-related channels rather than a static ventral dominance in supporting object and angle decoding.",
+      "authors": [
+        "Ninon Lizé Masclef",
+        "Taisija Demcenko",
+        "Antonella Catanzaro",
+        "Nataliya Kosmyna"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-20T18:25:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.22182v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG decoding for 3D visual perception",
+      "llm_evidence_cn": "脑电解码3D视觉感知",
+      "llm_evidence": "脑电解码3D视觉感知",
+      "canonical_evidence": "脑电解码3D视觉感知",
+      "llm_tldr_en": "Dual-stream EEG decoding model for object identity and spatial orientation from neural signals",
+      "llm_tldr_cn": "双流脑电解码模型从神经信号中解码物体身份和空间方向",
+      "llm_tldr": "双流脑电解码模型从神经信号中解码物体身份和空间方向",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22259v1",
+      "source": "arxiv",
+      "title": "Convergence Analysis of Nyström Subsampling in Covariate Shift Adaptation for Misspecified case",
+      "abstract": "This paper investigates convergence properties of regularized Nyström subsampling applied to the unsupervised domain adaptation problem under covariate shift. We focus on the low-smoothness (misspecified) case where the target function lies outside the reproducing kernel Hilbert space. By combining Tikhonov regularization with Nyström projection onto a subsampled subspace, we obtain upper bounds on the excess risk that hold with high probability and are expressed in terms of the source condition, the effective dimension, and the sample sizes. We further extend the analysis to the setting where the Radon-Nikodym derivative between the target and source marginal distributions is unknown and must be approximated, and we identify the minimal additional sample sizes required to maintain the same convergence rate as in the oracle case.",
+      "authors": [
+        "Hanna Myleiko",
+        "Sergei Solodky",
+        "Vasyl Semenov"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "math.NA"
+      ],
+      "published": "2026-06-20T23:11:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.22259v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "domain adaptation under covariate shift with theoretical guarantees",
+      "llm_evidence_cn": "协变量偏移下的域适应，具有理论保证",
+      "llm_evidence": "协变量偏移下的域适应，具有理论保证",
+      "canonical_evidence": "协变量偏移下的域适应，具有理论保证",
+      "llm_tldr_en": "Convergence analysis of Nyström subsampling for unsupervised domain adaptation",
+      "llm_tldr_cn": "Nyström子采样在无监督域适应中的收敛性分析",
+      "llm_tldr": "Nyström子采样在无监督域适应中的收敛性分析",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22272v1",
+      "source": "arxiv",
+      "title": "MixedPEFT: Combining Multiple PEFT Methods with Mixed Objectives for Unsupervised Domain Adaptation",
+      "abstract": "Pre-trained language models struggle when applied to new domains, as full fine-tuning is computationally expensive and prone to catastrophic forgetting. This study addresses this challenge by presenting a novel parameter-efficient strategy for unsupervised domain adaptation that combines custom PEFT architectures with mixed-objective training. Our approach simultaneously optimizes classification performance on labeled source domain data and masked language modeling (MLM) on unlabeled target domain data, preserving target domain knowledge while adapting to source domain tasks. Our method employs a custom union of invertible adapters and Low-Rank Adaptation (LoRA) within a unified parameter-efficient framework. Through comprehensive evaluation on the Multi-Genre Natural Language Inference (MNLI) dataset across 20 domain shifts, our approach achieves significant improvements over existing methods: 1.41 percentage points over the current parameter-efficient state-of-the-art UDapter, 1.26 percentage points over the fully-tuned DANN baseline, and 0.86 percentage points over DSN, while utilizing only 7% of the model's trainable parameters. These results establish new benchmarks for parameter-efficient unsupervised domain adaptation and demonstrate that carefully designed PEFT combinations with concurrent optimization can outperform both existing parameter-efficient methods and traditional fully-tuned approaches.",
+      "authors": [
+        "Mohammed Rawhani",
+        "Dervis Karaboga",
+        "Ozkan Ufuk Nalbantoglu",
+        "Alper Basturk",
+        "Bahriye Akay"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-20T23:45:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.22272v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "unsupervised domain adaptation with parameter-efficient fine-tuning",
+      "llm_evidence_cn": "使用参数高效微调的无监督域适应",
+      "llm_evidence": "使用参数高效微调的无监督域适应",
+      "canonical_evidence": "使用参数高效微调的无监督域适应",
+      "llm_tldr_en": "Proposes MixedPEFT combining LoRA and invertible adapters for unsupervised domain adaptation.",
+      "llm_tldr_cn": "提出MixedPEFT，结合LoRA和可逆适配器进行无监督域适应。",
+      "llm_tldr": "提出MixedPEFT，结合LoRA和可逆适配器进行无监督域适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.21736v1",
+      "source": "arxiv",
+      "title": "Adversarial Domain Prompt Tuning and Generation for Single Domain Generalization",
+      "abstract": "Single domain generalization (SDG) aims to learn a robust model, which could perform well on many unseen domains while there is only one single domain available for training. One of the promising directions for achieving single-domain generalization is to generate out-of-domain (OOD) training data through data augmentation or image generation. Given the rapid advancements in AI-generated content (AIGC), this paper is the first to propose leveraging powerful pre-trained text-to-image (T2I) foundation models to create the training data. However, manually designing textual prompts to generate images for all possible domains is often impractical, and some domain characteristics may be too abstract to describe with words. To address these challenges, we propose a novel Progressive Adversarial Prompt Tuning (PAPT) framework for pre-trained diffusion models. Instead of relying on static textual domains, our approach learns two sets of abstract prompts as conditions for the diffusion model: one that captures domain-invariant category information and another that models domain-specific styles. This adversarial learning mechanism enables the T2I model to generate images in various domain styles while preserving key categorical features. Extensive experiments demonstrate the effectiveness of the proposed method, achieving superior performances to state-of-the-art single-domain generalization approaches.",
+      "authors": [
+        "Zhipeng Xu",
+        "De Cheng",
+        "Xinyang Jiang",
+        "Nannan Wang",
+        "Dongsheng Li",
+        "Xinbo Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-19T20:46:24+00:00",
+      "link": "https://arxiv.org/pdf/2606.21736v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "single domain generalization via prompt tuning and generation",
+      "llm_evidence_cn": "单域泛化通过提示调优和生成",
+      "llm_evidence": "单域泛化通过提示调优和生成",
+      "canonical_evidence": "单域泛化通过提示调优和生成",
+      "llm_tldr_en": "Adversarial domain prompt tuning and generation for single domain generalization using pretrained T2I models.",
+      "llm_tldr_cn": "利用预训练文本到图像模型进行对抗域提示调优和生成以实现单域泛化。",
+      "llm_tldr": "利用预训练文本到图像模型进行对抗域提示调优和生成以实现单域泛化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.21890v1",
+      "source": "arxiv",
+      "title": "Scaling Performance and Low-Resource Annotation with Many-Shot In-Context Learning for Named Entity Recognition",
+      "abstract": "In-context learning (ICL) with large language models (LLMs) has emerged as a powerful alternative to fine-tuning for Named Entity Recognition (NER), achieving strong performance with minimal annotation and no additional training. However, prior work has shown that despite their adaptability, LLMs still lag behind fully supervised models such as fine-tuned BERT in structured tasks like NER. While existing studies on ICL for NER have mainly explored few-shot settings, the potential of scaling to hundreds of demonstrations has not been thoroughly investigated. To address this gap, we conduct a comprehensive investigation of many-shot ICL for NER and further explore its effectiveness in annotating and refining data for low-resource NER tasks. Specifically, we evaluate various LLMs across multiple domains using hundreds of ICL examples and then assess the feasibility of using many-shot ICL as a data annotation framework. Our experiments demonstrate that: (1) scaling to hundreds of in-context examples enables LLMs to match or even surpass the performance of fully supervised BERT models; and (2) using about one hundred human-labeled examples as demonstrations, many-shot in-context annotation can generate high-quality labeled data, leading to approximately 10% absolute F1 improvement over existing state-of-the-art approaches when used to fine-tune BERT on low-resource NER.",
+      "authors": [
+        "Qi Zhang",
+        "Fangping Lan",
+        "Cornelia Caragea",
+        "Longin Jan Latecki",
+        "Eduard Dragut"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-20T05:39:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.21890v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "many-shot in-context learning reduces annotation for NER in low-resource settings",
+      "llm_evidence_cn": "多示例上下文学习减少低资源NER的标注需求",
+      "llm_evidence": "多示例上下文学习减少低资源NER的标注需求",
+      "canonical_evidence": "多示例上下文学习减少低资源NER的标注需求",
+      "llm_tldr_en": "Investigates many-shot in-context learning for NER, achieving strong performance with minimal annotation.",
+      "llm_tldr_cn": "研究多示例上下文学习用于NER，以极少标注实现强性能。",
+      "llm_tldr": "研究多示例上下文学习用于NER，以极少标注实现强性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.21776v1",
+      "source": "arxiv",
+      "title": "A Causal DAG Prior for Synthetic Time-Series Classification Datasets",
+      "abstract": "A Prior-data fitted Network learns the posterior predictive induced by its training prior; bringing this paradigm to multivariate time-series classification therefore calls for a synthetic generator that produces complete labelled datasets with temporal structure. We introduce a causal prior that synthesizes each dataset from a randomly sampled DAG over typed nodes across two modalities (tabular attributes and time series), natively producing multivariate, multi-class TSC datasets with cross-modal causal structure across channels, timesteps and labels, a regime not addressed by existing synthetic priors. To validate the prior, we finetune TabPFN v2.5 with minimal adaptations and evaluate on 75 UCR/UEA datasets within TabPFN's operating regime. Finetuning on our generator significantly outperforms both the unmodified upstream model and a tabular-only ablation of the same prior (Wilcoxon signed-rank $p=3.0\\times 10^{-8}$ on ROC-AUC), isolating the contribution of the cross-modal temporal structure.",
+      "authors": [
+        "Franco Martino O'Rourke",
+        "Ana Trisovic",
+        "Dimitris Bertsimas"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-19T21:50:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.21776v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "synthetic time-series classification with causal DAG prior",
+      "llm_evidence_cn": "基于因果DAG先验的合成时间序列分类",
+      "llm_evidence": "基于因果DAG先验的合成时间序列分类",
+      "canonical_evidence": "基于因果DAG先验的合成时间序列分类",
+      "llm_tldr_en": "Generates synthetic multivariate time-series datasets with causal structure for classification benchmark.",
+      "llm_tldr_cn": "生成具有因果结构的多变量时间序列合成数据集用于分类基准测试。",
+      "llm_tldr": "生成具有因果结构的多变量时间序列合成数据集用于分类基准测试。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.21851v1",
+      "source": "arxiv",
+      "title": "TALAS: Teacher-Anchored Layer Alignment with Adaptive Sharpness-Aware Minimization for Embedding Distillation",
+      "abstract": "Knowledge Distillation (KD) has established itself as a pivotal technique for compressing large pre-trained language models. However, existing methods that force a student to strictly mimic the teacher's sentence embeddings or internal features often incur prohibitive computational costs and yield suboptimal performance due to the inherent capacity gap. To address these challenges, we propose TALAS (Teacher-Anchored Layer Alignment with Sharpness-aware minimization), a unified framework that synergizes hierarchical (multi-layer) alignment with robust optimization. First, we introduce a Teacher-Anchored mechanism that selectively distills final sentence embeddings only into the student's upper layers, thereby reducing overhead while respecting capacity constraints. Second, we bridge the semantic gap in lower layers via Layer-Aligned Self-Distillation, which propagates knowledge top-down using internal geometric relational constraints in the embedding space. Finally, to prevent the student from memorizing point-wise teacher noise, we integrate Adaptive Sharpness-Aware Minimization (ASAM) into the training objective, guiding the model towards flat minima for enhanced generalization. Empirical results on standard sentence embedding benchmarks demonstrate that TALAS consistently outperforms strong distillation baselines while achieving superior training efficiency in terms of computational cost and memory footprint.",
+      "authors": [
+        "Quoc Phong Dao",
+        "Hoang Son Nguyen",
+        "Pham Khanh Chi",
+        "Linh Ngo Van",
+        "Nguyen Thi Ngoc Diep",
+        "Thien Huu Nguyen",
+        "Trung Le"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-20T03:17:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.21851v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "distills knowledge from pretrained teacher to student",
+      "llm_evidence_cn": "从预训练教师模型蒸馏知识给学生",
+      "llm_evidence": "从预训练教师模型蒸馏知识给学生",
+      "canonical_evidence": "从预训练教师模型蒸馏知识给学生",
+      "llm_tldr_en": "Proposes TALAS to improve knowledge distillation by anchoring teacher embeddings to student upper layers.",
+      "llm_tldr_cn": "提出TALAS通过锚定教师嵌入到学生上层来改进知识蒸馏。",
+      "llm_tldr": "提出TALAS通过锚定教师嵌入到学生上层来改进知识蒸馏。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.21888v1",
+      "source": "arxiv",
+      "title": "ProsoCodec: Prosody-Oriented Speech Codec for Voice Conversion",
+      "abstract": "Neural speech codecs efficiently compress speech and have become a foundation for speech generation, but they are typically learned as holistic representations that intertwine linguistic content, speaker identity, and prosody. While this design is effective for zero-shot voice cloning, it hinders downstream tasks that require prosody preservation or transfer, such as voice conversion. To address this, we introduce ProsoCodec, a prosody-oriented speech codec that models prosody as a conditional residual rather than as a disentangled stream. Specifically, by conditioning both the encoder and decoder on text and speaker embeddings as prefix tokens, the discrete bottleneck is encouraged to capture prosodic variation not explained by content and speaker. To further preserve prosody, we use the low-frequency mel band and train the model on paired same-speaker utterances. Experiments on voice conversion show improved prosody preservation and reduced source-timbre leakage.",
+      "authors": [
+        "Jeongsoo Choi",
+        "Ji-Hoon Kim",
+        "Shujie Hu",
+        "Joon Son Chung"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-06-20T05:19:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.21888v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns compact disentangled representations of speech via conditional residual",
+      "llm_evidence_cn": "通过条件残差学习紧凑解耦的语音表示",
+      "llm_evidence": "通过条件残差学习紧凑解耦的语音表示",
+      "canonical_evidence": "通过条件残差学习紧凑解耦的语音表示",
+      "llm_tldr_en": "ProsoCodec encodes prosody as residual for compact disentangled speech representation",
+      "llm_tldr_cn": "ProsoCodec将韵律编码为残差以学习紧凑解耦的语音表示",
+      "llm_tldr": "ProsoCodec将韵律编码为残差以学习紧凑解耦的语音表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

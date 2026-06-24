@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.21736v1/fig-001.webp",
+      "caption": "Figure 1. Comparison between our method with existing single domain generalization approaches: Left: the traditional domain augmentation-based method; Middle: the simple T2I foundation model with text description as prompt for domain augmentation; Right: our proposed method, which learns two sets of abstract prompts (i.e., category and domain) instead of the static textual domains, to instruct the diffusion-based T2I foundation model for generating images of a wide range of domain styles.",
+      "page": 1,
+      "index": 1,
+      "width": 488,
+      "height": 323
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21736v1/fig-005.webp",
+      "caption": "Figure 2. The framework of our proposed method. We first train a set of category prompts Ec k for each class to capture domain-invariant category information in step (a). Subsequently, we train domain prompts Ed o that represent abstract domain styles instead of rigid textual domains through adversarial domain prompt tuning in step (b). As new domain prompts are learned, they are added to a domain-specific memory bank. We then minimize the style similarity between the newly generated domain and previous domains in the memory bank, while maximizing the semantic consistency between generated images and the corresponding category in step (c).",
+      "page": 3,
+      "index": 5,
+      "width": 1029,
+      "height": 460
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21736v1/fig-007.webp",
+      "caption": "Figure 3. This figure shows the impact of the Progressive Training Scheme. By comparing the two figures, we found that after using the Progressive Training Scheme, the areas of classification errors have decreased. This observation indicates that the more diverse abstract domains we learn, the more likely we are to generate OOD images that are close to the classification boundary.",
+      "page": 5,
+      "index": 7,
+      "width": 489,
+      "height": 305
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21736v1/fig-003.webp",
+      "caption": "Table 1. SDG results (%) on PACS. One domain is used as the source domain and the others are used as the target domain.",
+      "page": 6,
+      "index": 3,
+      "width": 489,
+      "height": 260
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21736v1/fig-002.webp",
+      "caption": "Table 3. SDG results (%) on OfficeHome. One domain is used as the source domain and the others are used as the target domain.",
+      "page": 6,
+      "index": 2,
+      "width": 483,
+      "height": 383
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21736v1/fig-004.webp",
+      "caption": "Table 4. Multi-source DG results (%) on PACS, VLCS, OfficeHome, TerraInc, and DomainNet benchmark datasets.",
+      "page": 7,
+      "index": 4,
+      "width": 1029,
+      "height": 429
+    },
+    {
+      "url": "assets/figures/arxiv/2606.21736v1/fig-006.webp",
+      "caption": "Figure 6. Parameter analysis of λ in Eq. 15 on PACS dataset.",
+      "page": 8,
+      "index": 6,
+      "width": 481,
+      "height": 317
+    }
+  ]
+}
