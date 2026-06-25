@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-06-25
-- 运行时间：2026-06-25 04:47:41 北京时间
+- 最新运行日期：2026-06-26
+- 运行时间：2026-06-26 04:51:30 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读聚焦脑信号解码与因果分析：解析EEG语音重建新范式及几何传递熵估计方法。
-最值得关注——NeuroSonic以条件流匹配实现高保真脑电转语音，而EPSTE用几何标记提升神经时间序列传递熵估计。
-建议读者跟进流匹配在脑机接口中的生成突破，以及因果度量工具的几何化趋势。
-- 详情：[/202606/25/README](/202606/25/README)
+1) 今天我们聚焦跨学科建模，精读了融合联邦学习与混合模型预测全球碳排放的新方案，以及从不完整神经记录中推断因果信息流的方法。
+2) 最值得关注的方向：一是利用“联邦学习+统计-神经混合模型”在保护数据隐私下提升碳预测精度；二是用拼接功率谱从异步记录里还原脑网络中的有向信息流。
+3) 建议读者从这两篇9分论文入手，先掌握如何在限制条件下（数据隐私、记录缺失）构建可靠模型的核心思路，再拓展阅读癫痫检测与流感传播预测的演进。
+- 详情：[/202606/26/README](/202606/26/README)
 
 ### 精读区论文标签
-1. [NeuroSonic: Conditional Flow Matching for EEG-to-Speech Reconstruction](/202606/25/2606.24087v1-neurosonic-conditional-flow-matching-for-eeg-to-speech-reconstruction)  
-   标签：评分：10.0/10、query:ndai
-   evidence：将脑电图信号解码为连续语音
-2. [Embedded Polygon Symbolic Transfer Entropy (EPSTE): A Geometric Token and Deep Learning Approach to Estimating Transfer Entropy in Neuroimaging Time Series](/202606/25/2606.21754v1-embedded-polygon-symbolic-transfer-entropy-epste-a-geometric-token-and-deep-learning-approach-to-estimating-transfer-entropy-in-neuroimaging-time-series)  
+1. [Federated Learning for Global Carbon Emission Forecasting: A Hybrid Time-Series Approach with Statistical and Neural Models](/202606/26/2606.22618v1-federated-learning-for-global-carbon-emission-forecasting-a-hybrid-time-series-approach-with-statistical-and-neural-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用符号表示估计神经时间序列中的传递熵
-3. [Dual-Stream EEG Decoding for 3D Visual Perception](/202606/25/2606.22182v1-dual-stream-eeg-decoding-for-3d-visual-perception)  
+   evidence：结合ARIMA、GARCH、LSTM-Attention的混合时间序列预测
+2. [SPIDER -- Stitched Power-spectra for Inferring Directed information flow from incomplete and asynchronous Experimental Recordings](/202606/26/2606.22695v1-spider----stitched-power-spectra-for-inferring-directed-information-flow-from-incomplete-and-asynchronous-experimental-recordings)  
    标签：评分：9.0/10、query:ndai
-   evidence：脑电解码3D视觉感知
-4. [Convergence Analysis of Nyström Subsampling in Covariate Shift Adaptation for Misspecified case](/202606/25/2606.22259v1-convergence-analysis-of-nystrm-subsampling-in-covariate-shift-adaptation-for-misspecified-case)  
+   evidence：将神经信号解码为定向信息流
+3. [Understanding Knowledge Distillation in Post-Training: When It Helps and When It Fails](/202606/26/2606.22942v1-understanding-knowledge-distillation-in-post-training-when-it-helps-and-when-it-fails)  
    标签：评分：9.0/10、query:ndai
-   evidence：协变量偏移下的域适应，具有理论保证
-5. [MixedPEFT: Combining Multiple PEFT Methods with Mixed Objectives for Unsupervised Domain Adaptation](/202606/25/2606.22272v1-mixedpeft-combining-multiple-peft-methods-with-mixed-objectives-for-unsupervised-domain-adaptation)  
+   evidence：利用预训练模型的知识蒸馏
+4. [A Novel Approach to Temporal QoS Estimation via Extended Kalman Filter-Incorporated Latent Feature Analysis](/202606/26/2606.23010v1-a-novel-approach-to-temporal-qos-estimation-via-extended-kalman-filter-incorporated-latent-feature-analysis)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用参数高效微调的无监督域适应
+   evidence：使用EKF和潜在特征分析进行时序服务质量预测
+5. [Scheduling Thoughts: Learning the Order of Thought in Diffusion Language Models](/202606/26/2606.23567v1-scheduling-thoughts-learning-the-order-of-thought-in-diffusion-language-models)  
+   标签：评分：9.0/10、query:ndai
+   evidence：学习去掩码顺序，将模型输出转化为序列
 
 ### 速读区论文标签
-1. [Adversarial Domain Prompt Tuning and Generation for Single Domain Generalization](/202606/25/2606.21736v1-adversarial-domain-prompt-tuning-and-generation-for-single-domain-generalization)  
+1. [From Handcrafted Features to Functional Edge Learning: Evolution of EEG Seizure Detection Frameworks](/202606/26/2606.22258v1-from-handcrafted-features-to-functional-edge-learning-evolution-of-eeg-seizure-detection-frameworks)  
    标签：评分：8.0/10、query:ndai
-   evidence：单域泛化通过提示调优和生成
-2. [A Causal DAG Prior for Synthetic Time-Series Classification Datasets](/202606/25/2606.21776v1-a-causal-dag-prior-for-synthetic-time-series-classification-datasets)  
+   evidence：EEG癫痫检测框架综述
+2. [Inferring and Predicting Clade-Level Relative Transmission Fitness in Seasonal Influenza A Using Differential Population Growth Rate and Deep Learning](/202606/26/2606.22279v1-inferring-and-predicting-clade-level-relative-transmission-fitness-in-seasonal-influenza-a-using-differential-population-growth-rate-and-deep-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于因果DAG先验的合成时间序列分类
-3. [TALAS: Teacher-Anchored Layer Alignment with Adaptive Sharpness-Aware Minimization for Embedding Distillation](/202606/25/2606.21851v1-talas-teacher-anchored-layer-alignment-with-adaptive-sharpness-aware-minimization-for-embedding-distillation)  
+   evidence：利用深度学习从时间序列监测数据预测分支适应度
+3. [On the Sparsity-Storage-Accuracy Tradeoff in Parsimoniously Activated Dictionary Learning](/202606/26/2606.22352v1-on-the-sparsity-storage-accuracy-tradeoff-in-parsimoniously-activated-dictionary-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：从预训练教师模型蒸馏知识给学生
-4. [ProsoCodec: Prosody-Oriented Speech Codec for Voice Conversion](/202606/25/2606.21888v1-prosocodec-prosody-oriented-speech-codec-for-voice-conversion)  
+   evidence：精简激活字典学习用于紧凑表示
+4. [Multi-cancer detection using a computationally efficient CNN with transfer learning](/202606/26/2606.22400v1-multi-cancer-detection-using-a-computationally-efficient-cnn-with-transfer-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过条件残差学习紧凑解耦的语音表示
-5. [Scaling Performance and Low-Resource Annotation with Many-Shot In-Context Learning for Named Entity Recognition](/202606/25/2606.21890v1-scaling-performance-and-low-resource-annotation-with-many-shot-in-context-learning-for-named-entity-recognition)  
+   evidence：用于癌症检测的迁移学习
+5. [SamatNext v0.2-B: An Exploratory Study of RMS-Normalized Hybrid Decoders for Curriculum Retention in Small Code Models](/202606/26/2606.22248v1-samatnext-v02-b-an-exploratory-study-of-rms-normalized-hybrid-decoders-for-curriculum-retention-in-small-code-models)  
    标签：评分：7.0/10、query:ndai
-   evidence：多示例上下文学习减少低资源NER的标注需求
+   evidence：用于将模型表示转换为输出序列的混合序列解码器
 

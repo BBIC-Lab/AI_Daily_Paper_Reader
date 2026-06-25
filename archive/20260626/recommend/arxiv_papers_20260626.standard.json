@@ -1,0 +1,410 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-25T20:48:42.912439+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 42,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 98,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 15,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 10,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 16
+  },
+  "deep_dive": [
+    {
+      "id": "2606.22618v1",
+      "source": "arxiv",
+      "title": "Federated Learning for Global Carbon Emission Forecasting: A Hybrid Time-Series Approach with Statistical and Neural Models",
+      "abstract": "Climate change, primarily driven by carbon dioxide (CO2) emissions, requires accurate forecasting tools to support effective mitigation policies and sustainable development strategies. Existing forecasting approaches typically rely on centralized data collection, which is often restricted by privacy regulations and the distributed nature of emission data across countries and industrial sectors. This paper proposes a novel federated hybrid forecasting framework that integrates ARIMA-based trend modeling, GARCH-based volatility modeling, LSTM-Attention temporal representation learning, and XGBoost prediction within a privacy-preserving federated learning environment. The proposed framework enables collaborative learning among distributed clients without requiring the exchange of raw data. Experimental evaluation across 14 clients demonstrates strong forecasting performance, achieving client R2 values between 0.50 and 0.97 with an average of 0.73, RMSE values ranging from 0.06 to 2.35 with an average of 1.21, and MAPE values between 1.5% and 11.3% with an average of 6.5%. The results indicate that the proposed framework provides an accurate, scalable, and regulation-compliant solution for collaborative carbon-emission forecasting.",
+      "authors": [
+        "Attia Qammar",
+        "Qazi Haseeb Yousaf",
+        "Ali Azam",
+        "Ammar Ahmed",
+        "Abdenacer Naouri",
+        "Tianrui Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-21T17:58:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.22618v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "hybrid time-series forecasting with ARIMA, GARCH, LSTM-Attention",
+      "llm_evidence_cn": "结合ARIMA、GARCH、LSTM-Attention的混合时间序列预测",
+      "llm_evidence": "结合ARIMA、GARCH、LSTM-Attention的混合时间序列预测",
+      "canonical_evidence": "结合ARIMA、GARCH、LSTM-Attention的混合时间序列预测",
+      "llm_tldr_en": "Proposes federated hybrid time-series model for carbon emission forecasting.",
+      "llm_tldr_cn": "提出联邦混合时间序列模型用于碳排放预测。",
+      "llm_tldr": "提出联邦混合时间序列模型用于碳排放预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22695v1",
+      "source": "arxiv",
+      "title": "SPIDER -- Stitched Power-spectra for Inferring Directed information flow from incomplete and asynchronous Experimental Recordings",
+      "abstract": "Mapping the directed flow of information between brain regions -- their effective connectivity -- is central to understanding brain function, yet large-scale recordings sample only a fraction of the brain at a time: sessions, animals, and laboratories cover different, partially overlapping regions, usually without a shared temporal reference. Established directed-connectivity methods (Granger causality, dynamic causal modeling, partial directed coherence, PDC) require all regions to be recorded simultaneously and with a common clock. We introduce SPIDER, a non-parametric, frequency-domain framework that recovers directed information flow from such incomplete, asynchronous recordings: it stitches local power-spectral estimates from overlapping channel subsets into a global spectral matrix and obtains frequency-resolved directed interactions by canonical spectral factorization and PDC, without temporal alignment, while nuclear-norm completion fills in never-co-observed region pairs. With consistency guarantees, we validate SPIDER on simulations, two-photon calcium imaging, and the International Brain Laboratory Neuropixels dataset, recovering directed flow among 50 areas from 43 sessions in 12 laboratories never recorded together. Beyond validation, SPIDER reveals what no single recording can: brain-wide spontaneous flow is largely recurrent, but in the theta band it forms a significant feedforward hierarchy with the hippocampal formation at its source. Applied to resting human intracranial EEG (43 patients, non-overlapping coverage), it recovers the same theta-band hierarchy across species and modality. SPIDER makes whole-brain effective-connectivity analysis tractable for multi-session, multi-animal datasets previously incompatible with directed-flow inference.",
+      "authors": [
+        "Yisi S. Zhang",
+        "Daniel Y. Takahashi"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "stat.ME"
+      ],
+      "published": "2026-06-21T22:19:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.22695v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes neural signals into directed information flow",
+      "llm_evidence_cn": "将神经信号解码为定向信息流",
+      "llm_evidence": "将神经信号解码为定向信息流",
+      "canonical_evidence": "将神经信号解码为定向信息流",
+      "llm_tldr_en": "Non-parametric framework to infer directed connectivity from incomplete neural recordings",
+      "llm_tldr_cn": "从不完全神经记录推断定向连接的非参数框架",
+      "llm_tldr": "从不完全神经记录推断定向连接的非参数框架",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22942v1",
+      "source": "arxiv",
+      "title": "Understanding Knowledge Distillation in Post-Training: When It Helps and When It Fails",
+      "abstract": "Large language models (LLMs) achieve strong performance across many tasks, but their high computational cost limits deployment in resource-constrained environments. Knowledge Distillation (KD) offers a practical solution by transferring knowledge from a teacher model of a larger size to a smaller student model. While prior work has mainly examined task-specific or small-scale settings, the post-training stage for building general instruction-following models has received limited attention. In this paper, we conduct a systematic study of KD in post-training using the large-scale Tulu 3 dataset. We find that KD outperforms supervised fine-tuning (SFT) in low-data regimes, but its advantage diminishes as more training data is added. Distilling from a stronger instruction-tuned teacher restores substantial gains even with abundant data, indicating that KD remains effective when the teacher provides knowledge that the student cannot easily acquire from the training data alone. We further study domain-specific, low-resource scenarios and propose a two-stage KD strategy that leverages synthetic teacher-labeled data followed by refinement on human annotations. This method consistently improves student performance, providing practical guidance for building compact models in data-scarce environments.",
+      "authors": [
+        "Xin Liu",
+        "Simin Ma",
+        "Shujian Liu",
+        "Song Wang",
+        "Sathish Reddy Indurthi",
+        "Haoyun Deng",
+        "Lu Wang",
+        "Kaiqiang Song"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-22T07:19:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.22942v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "knowledge distillation for leveraging pretrained models",
+      "llm_evidence_cn": "利用预训练模型的知识蒸馏",
+      "llm_evidence": "利用预训练模型的知识蒸馏",
+      "canonical_evidence": "利用预训练模型的知识蒸馏",
+      "llm_tldr_en": "Studies knowledge distillation in post-training, showing advantage in low-data regimes.",
+      "llm_tldr_cn": "研究后训练中的知识蒸馏，显示在低数据场景下的优势。",
+      "llm_tldr": "研究后训练中的知识蒸馏，显示在低数据场景下的优势。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.23010v1",
+      "source": "arxiv",
+      "title": "A Novel Approach to Temporal QoS Estimation via Extended Kalman Filter-Incorporated Latent Feature Analysis",
+      "abstract": "Predicting temporal Quality of Service (QoS) data is critical for optimizing network services and rationalizing resource allocation in cloud computing and service-oriented systems. Existing mainstream methods have achieved promising predictive performance. However, their purely data-driven manner limits their ability to capture non-stationary temporal patterns, thereby leading to accuracy degradation when temporal QoS data exhibits fluctuations. To tackle this limitation, we propose a novel Extended Kalman Filter-Enhanced Latent Feature Analysis (EKL) model to perform efficient and accurate temporal QoS prediction from the perspective of bidirectional model-data-driven learning. Its main idea is three-fold: a) designing a model-driven feature producer to obtain the temporal latent features to capture the intricate temporal pattern following the principle of an Extended Kalman Filter; b) building a data-driven feature producer based on the alternating least squares algorithm to identify time-invariant latent features describing intrinsic user-service characteristics; c) exploiting a density-oriented parallel strategy that achieves workload balancing by sorting users in accordance with their service invocation density, which effectively elevates computational efficiency. In addition, we provide a rigorous theoretical analysis to formally prove the convergence of the proposed EKL. Experimental evaluations conducted on real-world temporal QoS datasets reveal that our proposed EKL surpasses existing state-of-the-art models with respect to both computational efficiency and prediction accuracy for missing temporal QoS data.",
+      "authors": [
+        "Ye Yuan",
+        "Song Wang",
+        "Hongxun Zhou",
+        "Ling Wang",
+        "Xin Luo"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-22T08:22:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.23010v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Temporal QoS prediction using EKF and latent feature analysis for sequential data",
+      "llm_evidence_cn": "使用EKF和潜在特征分析进行时序服务质量预测",
+      "llm_evidence": "使用EKF和潜在特征分析进行时序服务质量预测",
+      "canonical_evidence": "使用EKF和潜在特征分析进行时序服务质量预测",
+      "llm_tldr_en": "Proposes EKF-enhanced latent feature analysis for accurate temporal QoS prediction",
+      "llm_tldr_cn": "提出EKF增强的潜在特征分析用于准确时序服务质量预测",
+      "llm_tldr": "提出EKF增强的潜在特征分析用于准确时序服务质量预测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.23567v1",
+      "source": "arxiv",
+      "title": "Scheduling Thoughts: Learning the Order of Thought in Diffusion Language Models",
+      "abstract": "Masked diffusion language models decode by iteratively unmasking tokens, where the unmasking order defines an \"order of thought\" that strongly influences generation quality yet is typically chosen heuristically. We derive a tractable upper bound on the sequential decoding mismatch, measured by the Kullback-Leibler divergence and expressed in terms of the model's pathwise log-likelihood, with tightness under sufficient model expressivity. This bound induces a dense self-aware reward over ordered trajectories, casting order selection as a principled policy optimization problem with a frozen denoiser. We instantiate this idea as Self-Aware Scheduling (SAS), which learns a lightweight order policy using Group Relative Policy Optimization and applies seamlessly to both any-order and semi-autoregressive decoding. On Sudoku with 1B MDM, SAS improves puzzle accuracy from 82.0% (best heuristic schedule) to 91.8%, and reaches 97.5% with second-stage fine-tuning along learned trajectories. On mathematical reasoning with LLaDA-8B, SAS improves pass@1 on GSM8K from 64% to 76% and on MBPP from 39.5% to 41%, consistently matching or exceeding heuristic schedules across generation lengths and block sizes. Project page: https://jimmyxu123.github.io/SAS",
+      "authors": [
+        "Jiawei Xu",
+        "Minghui Liu",
+        "Aakriti Agrawal",
+        "Yifan Chen",
+        "Furong Huang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-22T16:32:25+00:00",
+      "link": "https://arxiv.org/pdf/2606.23567v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Learns order of thought for token unmasking, converting model outputs into sequences",
+      "llm_evidence_cn": "学习去掩码顺序，将模型输出转化为序列",
+      "llm_evidence": "学习去掩码顺序，将模型输出转化为序列",
+      "canonical_evidence": "学习去掩码顺序，将模型输出转化为序列",
+      "llm_tldr_en": "Proposes self-aware scheduling to learn optimal unmasking order in diffusion language models",
+      "llm_tldr_cn": "提出自感知调度学习扩散语言模型的最优去掩码顺序",
+      "llm_tldr": "提出自感知调度学习扩散语言模型的最优去掩码顺序",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.22258v1",
+      "source": "arxiv",
+      "title": "From Handcrafted Features to Functional Edge Learning: Evolution of EEG Seizure Detection Frameworks",
+      "abstract": "Electroencephalogram (EEG) analysis remains the clinical gold standard for epilepsy diagnosis and seizure detection. While Deep Learning (DL) has significantly advanced automated EEG interpretation, its transition from controlled experimental settings to routine clinical deployment is severely bottlenecked by fundamental architectural flaws. Standard DL models operate as opaque black-boxes lacking clinical interpretability, demand massive amounts of balanced annotated data, and incur steep computational costs incompatible with resource-constrained wearable or implantable neuromodulation devices. This paper presents a comprehensive review of these prevailing limitations and explores Kolmogorov-Arnold Networks (KANs) as a emerging paradigm for EEG-based seizure detection. By replacing the fixed activation functions of traditional neurons with flexible, learnable functions along the network's connections, KANs bridge the critical gap between predictive accuracy and mathematical transparency. We systematically analyze how KAN architectures resolve the shortcomings of traditional DL-based models by offering exceptional parameter efficiency, inherent interpretability for physician trust, and robust performance under data scarcity. Ultimately, this review establishes KANs not merely as an incremental algorithmic update, but as a fundamental paradigm shift necessary to actualize next-generation, patient-specific, and thoroughly transparent clinical EEG monitoring systems.",
+      "authors": [
+        "Sepideh Kheirollahi",
+        "Mohammad Rasoul Roshanshah"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "eess.SP"
+      ],
+      "published": "2026-06-20T23:10:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.22258v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "review of EEG seizure detection frameworks",
+      "llm_evidence_cn": "EEG癫痫检测框架综述",
+      "llm_evidence": "EEG癫痫检测框架综述",
+      "canonical_evidence": "EEG癫痫检测框架综述",
+      "llm_tldr_en": "Reviews limitations of deep learning for EEG seizure detection and explores KANs.",
+      "llm_tldr_cn": "综述深度学习在EEG癫痫检测中的局限并探索KANs。",
+      "llm_tldr": "综述深度学习在EEG癫痫检测中的局限并探索KANs。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.22248v1",
+      "source": "arxiv",
+      "title": "SamatNext v0.2-B: An Exploratory Study of RMS-Normalized Hybrid Decoders for Curriculum Retention in Small Code Models",
+      "abstract": "Standard autoregressive Transformer decoders can often exhibit substantial forgetting under sequential fine-tuning on shifting curriculum distributions. This technical report evaluates SamatNext v0.2-B, an experimental 356M-parameter hybrid sequence decoder that alternates Differential-Attention-style layers with DeltaNet-inspired simplified linear-state mixer layers using RMS normalization and output scale calibration. We study the model under a controlled staged Python code curriculum and compare it with a parameter-matched Transformer baseline. In this setting, SamatNext v0.2-B achieves a 100.0% pass rate on the controlled Stage 5 holdout while retaining 98.8% of adjacent Stage 3 semantic behavior and reaching 12.0% on the Stage 2E early syntax holdout. The strongest Transformer baseline reaches 97.6% on Stage 5 but retains only 6.0% of Stage 3 behavior. Both architectures remain weak on long-horizon early-stage retention, so the result should be interpreted as evidence of an altered retention/plasticity tradeoff in this controlled setting, not as a general solution to catastrophic forgetting. Code, model specifications, evaluation scripts, and result tables are provided for independent verification.",
+      "authors": [
+        "Samat Zharassov"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-06-20T22:20:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.22248v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hybrid sequence decoder for converting model representations to output sequences",
+      "llm_evidence_cn": "用于将模型表示转换为输出序列的混合序列解码器",
+      "llm_evidence": "用于将模型表示转换为输出序列的混合序列解码器",
+      "canonical_evidence": "用于将模型表示转换为输出序列的混合序列解码器",
+      "llm_tldr_en": "Evaluates a hybrid decoder achieving high retention in sequential code tasks.",
+      "llm_tldr_cn": "评估在顺序代码任务中实现高保留率的混合解码器。",
+      "llm_tldr": "评估在顺序代码任务中实现高保留率的混合解码器。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.22279v1",
+      "source": "arxiv",
+      "title": "Inferring and Predicting Clade-Level Relative Transmission Fitness in Seasonal Influenza A Using Differential Population Growth Rate and Deep Learning",
+      "abstract": "Seasonal influenza A evolves rapidly, allowing newly emerged clades to replace previously dominant lineages and complicate surveillance and vaccine evaluation. Here, we applied the Differential Population Growth Rate (DPGR) framework to GISAID-derived H3N2 and H1N1 surveillance data collected from 1 January 2014 to 12 February 2026, including the 2025-2026 influenza season, to estimate clade-level relative transmission fitness across continents and within the United States. We identified windows of co-circulation with sliding-window regression, reconstructed relative-fitness relationships among clades, and compared inferred growth advantages with independent WHO and CDC surveillance patterns. We further trained subtype-specific convolutional neural networks on complete viral genomes to predict DPGR from sequence, quantified predictive uncertainty with conformal prediction, and used SHAP to localize genomic contributors to fitness. DPGR recovered recurrent lineage turnover in both subtypes and consistently identified the emerging H3N2 subclade K as fitter than the 2025-2026 vaccine-lineage background across multiple regions. Genome-based models predicted DPGR accurately for H3N2 ($R^2 = 0.9577$) and H1N1 ($R^2 = 0.9871$), while interpretation highlighted known haemagglutinin antigenic sites together with contributions from internal genes. These results support DPGR as an interpretable surveillance signal and show that influenza fitness can be linked to genomic prediction and biological interpretation in a unified framework.",
+      "authors": [
+        "Ursula Senam Nkonu",
+        "Richard Annan",
+        "Letu Qingge",
+        "Hong Qin"
+      ],
+      "primary_category": "q-bio.PE",
+      "categories": [
+        "q-bio.PE"
+      ],
+      "published": "2026-06-21T00:13:48+00:00",
+      "link": "https://arxiv.org/pdf/2606.22279v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "predicts clade-level fitness from time-series surveillance data using deep learning",
+      "llm_evidence_cn": "利用深度学习从时间序列监测数据预测分支适应度",
+      "llm_evidence": "利用深度学习从时间序列监测数据预测分支适应度",
+      "canonical_evidence": "利用深度学习从时间序列监测数据预测分支适应度",
+      "llm_tldr_en": "Predicts influenza clade fitness over time using deep learning on genomic surveillance data.",
+      "llm_tldr_cn": "使用深度学习从基因组监测数据预测流感分支随时间变化的适应度。",
+      "llm_tldr": "使用深度学习从基因组监测数据预测流感分支随时间变化的适应度。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.22352v1",
+      "source": "arxiv",
+      "title": "On the Sparsity-Storage-Accuracy Tradeoff in Parsimoniously Activated Dictionary Learning",
+      "abstract": "Dictionary learning has long been studied from both optimization and probabilistic perspectives. While formulations with element-wise sparsity regularization (e.g., L1-based sparse coding) admit well-established probabilistic interpretations, many structured variants that impose global constraints lack a clear and tractable generative view. In this paper, we revisit a class of practically effective yet theoretically under-explored dictionary learning methods that impose a simple global regularization on the number of activated dictionary atoms, which we term parsimoniously activated dictionary learning (PADL). We show that PADL admits an equivalent formulation as maximum a posteriori estimation under a structured generative model, with auxiliary latent variables that govern global activation patterns. This formulation allows us to derive generalization guarantees that are difficult to obtain under the original formulation. More importantly, it yields an analytical characterization of the tradeoff between sparsity, storage cost, and reconstruction accuracy, enabling data-driven estimation of optimal hyperparameters. Based on this connection, we develop an efficient and interpretable PADL algorithm that eliminates manual hyperparameter tuning, achieving improved reconstruction performance under comparable sparsity levels on visual benchmarks. We further demonstrate its practical utility in accelerating inference for vision-language models.",
+      "authors": [
+        "Zihui Zhao",
+        "Yuanbo Tang",
+        "Yang Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-21T06:20:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.22352v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "parsimonious dictionary learning for compact representations",
+      "llm_evidence_cn": "精简激活字典学习用于紧凑表示",
+      "llm_evidence": "精简激活字典学习用于紧凑表示",
+      "canonical_evidence": "精简激活字典学习用于紧凑表示",
+      "llm_tldr_en": "Theoretical analysis of parsimoniously activated dictionary learning for sparse representations",
+      "llm_tldr_cn": "精简激活字典学习的理论分析，用于稀疏表示",
+      "llm_tldr": "精简激活字典学习的理论分析，用于稀疏表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.22400v1",
+      "source": "arxiv",
+      "title": "Multi-cancer detection using a computationally efficient CNN with transfer learning",
+      "abstract": "This study introduces a computationally efficient convolutional neural network (CNN) architecture enhanced with transfer learning for multi-cancer detection using biomedical images. The proposed lightweight CNN model is designed to reduce computational complexity while maintaining high classification performance, making it suitable for deployment in resource-constrained environments. We evaluate this approach on three distinct tumor datasets comprising brain magnetic resonance imaging (MRI) and lung and kidney computed tomography (CT) scans. The model achieves test accuracy of 90.85 +- 2.22%, 98.64 +- 2.43% and 99.92 +- 0.08% for brain, lung, and kidney cancer classification, respectively, using 5-fold stratified cross-validation (CV). Transfer learning is employed by pretraining the model on one cancer type and fine-tuning it on the others, requiring only 20 additional epochs to achieve performance comparable to models trained from scratch. The fine-tuning process involves updating the classification part of the CNN and requires approximately 0.014 seconds per image per epoch using an NVIDIA GeForce GTX 960. Comparative evaluations show that the proposed model outperforms several state-of-the-art pretrained architectures, such as Xception, VGG16, VGG19, MobileNetV2 and DenseNet121. Overall, the model's effectiveness is evaluated across three types of cancer with distinct morphological characteristics, assessing its performance on both MRI and CT imaging modalities and demonstrating robust performance across diverse tasks and data types. These findings underscore the potential of streamlined deep learning (DL) frameworks in accelerating cancer diagnosis without sacrificing accuracy, especially in settings with limited computational resources.",
+      "authors": [
+        "Vasileios E. Papageorgiou",
+        "Georgios Petmezas",
+        "Dimitrios-Panagiotis Papageorgiou",
+        "Leandros Stefanopoulos",
+        "Nicos Maglaveras"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-21T09:12:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.22400v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "transfer learning for cancer detection",
+      "llm_evidence_cn": "用于癌症检测的迁移学习",
+      "llm_evidence": "用于癌症检测的迁移学习",
+      "canonical_evidence": "用于癌症检测的迁移学习",
+      "llm_tldr_en": "Efficient CNN with transfer learning for multi-cancer detection.",
+      "llm_tldr_cn": "高效CNN结合迁移学习实现多癌症检测。",
+      "llm_tldr": "高效CNN结合迁移学习实现多癌症检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

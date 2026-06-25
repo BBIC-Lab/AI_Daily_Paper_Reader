@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.22942v1/fig-006.webp",
+      "caption": "Figure 1: Left: Performance of the student model (Llama3.1-8B) trained via SFT and KD under different initialization paradigms across varying training set sizes. Right: Task-level performance on the full training set. Across most data scales, the SFT-initialized student outperforms the base-initialized student, with the gap narrowing as data increases. When trained on the full dataset, their performances converge to nearly the same level, indicating that sufficient supervision largely closes the initialization gap. This suggests that prior SFT adaptation offers a stronger starting point for KD.",
+      "page": 5,
+      "index": 6,
+      "width": 792,
+      "height": 215
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22942v1/fig-007.webp",
+      "caption": "Figure 2: Performance of three student models (Llama3.2-1B, Llama3.2-3B, Llama3.1-8B) trained with SFT and KD across different training set sizes (logarithmic scale on the x-axis). Results are averaged over five benchmarks: BBH, GPQA, IFEval, InFoBench, and MMLU-Pro. KD provides clear gains in low-data regimes, while the advantage diminishes as more training data is used. Complete numerical results for all models and data sizes are provided in Appendix A.6.",
+      "page": 5,
+      "index": 7,
+      "width": 841,
+      "height": 210
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22942v1/fig-001.webp",
+      "caption": "Figure 3: Performance of Llama3.1-8B with GKD and GKD-IT on the full Tulu 3 dataset. Using a stronger instruction-tuned teacher (GKD-IT) yields notable improvements, indicating that distillation from a more capable teacher can still provide substantial benefits.",
+      "page": 6,
+      "index": 1,
+      "width": 832,
+      "height": 210
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22942v1/fig-002.webp",
+      "caption": "Figure 4: Performance of student models on Translation, Summarization, and ARC-Challenge. GKD improves over SFT across all tasks, but the gains diminish as the student model size increases.",
+      "page": 7,
+      "index": 2,
+      "width": 773,
+      "height": 212
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22942v1/fig-005.webp",
+      "caption": "Figure 5: Impact of synthetic data size on knowledge distillation. Performance improves as more synthetic data is added, with smaller models benefiting more, but the gains quickly saturate as data size grows.",
+      "page": 8,
+      "index": 5,
+      "width": 847,
+      "height": 214
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22942v1/fig-004.webp",
+      "caption": "Figure 6: Left: Effective Optimization Gain (∆L) during KD training. The Strong Teacher maintains consistently positive gains, while the Same-Dataset Teacher shows unstable and often negative ∆L, confirming saturation. Right: Training loss vs. frozen baseline. For the Strong Teacher, training loss remains below the frozen baseline; for the Same-Dataset Teacher, it frequently rises above.",
+      "page": 13,
+      "index": 4,
+      "width": 791,
+      "height": 300
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22942v1/fig-003.webp",
+      "caption": "Table 5: Detailed performance of student models (Llama3.2-1B, Llama3.2-3B, and Llama3.1-8B) trained with SFT and GKD across different training set sizes. Results are reported on five benchmarks (BBH, GPQA, IFEval, InFoBench, and MMLU-Pro).",
+      "page": 14,
+      "index": 3,
+      "width": 937,
+      "height": 1421
+    }
+  ]
+}

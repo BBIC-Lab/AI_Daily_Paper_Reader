@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-006.webp",
+      "caption": "Figure 1. High-level overview of Section 3: We overcome the intractability of latent ordering by deriving a theoretical framework that allows us to optimize a tractable, self-aware reward.",
+      "page": 3,
+      "index": 6,
+      "width": 468,
+      "height": 266
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-001.webp",
+      "caption": "Figure 2. Left: Our method (Order Policy) achieves significantly higher success accuracy (91.8%) on Sudoku puzzles compared to all baselines. Right: Visualization of the learned unmasking order. White cells represent fixed initial hints. Blue cells indicate generated tokens, where color intensity corresponds to the decoding step: lighter blue denotes early unmasking (highconfidence/foundational moves), while darker blue denotes later unmasking. For example, we red-boxed the first move located, which corresponds to the naked single of the initial state—the easiest position to solve.",
+      "page": 6,
+      "index": 1,
+      "width": 492,
+      "height": 266
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-002.webp",
+      "caption": "Figure 3. Self-aware reward vs. 0/1 terminal reward for learning the order policy on GSM8K (5-shot). Notation L--B: total length L and block size B. Bars represent the accuracy difference in percentage points.",
+      "page": 6,
+      "index": 2,
+      "width": 492,
+      "height": 296
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-009.webp",
+      "caption": "Figure 4. Comparison across generation length and semi-autoregressive decoding. We evaluate our proposed order policy against the other baselines across varying sequence lengths (L) and block numbers. The red dashed line represents standard Left-to-Right decoding heuristic of LLaDA-8B. Our method consistently outperforms the baseline. Notably, while Left-to-Right decoding is competitive at shorter lengths (L = 128), our order policy still achieves superior performance even in full diffusion generation at longer lengths.",
+      "page": 8,
+      "index": 9,
+      "width": 995,
+      "height": 517
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-008.webp",
+      "caption": "Figure 5. Overview of the Self-Aware Scheduling (SAS) framework. Left (Training): The order policy vϕ samples multiple unmasking permutations (σ1, σ2, . . . ) for a frozen diffusion model. These orders are evaluated using our Self-Aware Reward, which measures the cumulative log-likelihood of the generation under that specific order. The policy is then optimized via GRPO to favor orders that maximize the model’s own confidence. Right (Inference): The trained policy dictates the optimal unmasking sequence, guiding the diffusion model to generate high-quality outputs efficiently.",
+      "page": 13,
+      "index": 8,
+      "width": 1006,
+      "height": 453
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-007.webp",
+      "caption": "Figure 6. Training and Validation Metrics. (a) Training loss decreases over time. (b) Average training reward stabilizes. (c) Validation total reward converges.",
+      "page": 23,
+      "index": 7,
+      "width": 1017,
+      "height": 204
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-003.webp",
+      "caption": "Figure 7. Distribution of failing steps across different ordering strategies. (a) Random ordering fails early. (b) Confidence strategies show late-failure patterns. (c) Margin and (d) Learned policy shifts failures later, but failure still concentrates on the last 5 steps.",
+      "page": 25,
+      "index": 3,
+      "width": 1017,
+      "height": 826
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-004.webp",
+      "caption": "Table 5. Generalization across generation length and semi-autoregressive decoding. We report pass@1 accuracy with error bars on GSM8K (5-shot) and MBPP (3-shot). Notation: L--B denotes total generation length L and block size B; L--L is full diffusion decoding. We vary the number of decoding blocks K ∈ {1, 4, 8} across different generation lengths.",
+      "page": 26,
+      "index": 4,
+      "width": 1012,
+      "height": 261
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-010.webp",
+      "caption": "Figure 8. Visualization of learned decoding order on a multi-step reasoning task. Prompts = [“A factory produces notebooks over several days. First, determine a key parameter: on Monday, the factory produces notebooks at a constant rate and makes 180 notebooks in 6 hours. 1. Using the rate from second question, how many notebooks will the factory produce in 14 hours? 2. What is the production rate in notebooks per hour? 3. if the factory must package notebooks in boxes of 28, how many full boxes can be packed from the notebooks produced in those 14 hours?”]. The text is colored by generation step, transitioning from blue (generated first) to red (generated last). Notably, the model prioritizes answering Question 2 (calculating the rate) first, identifying it as a prerequisite before solving Question 1, which depends on that rate. This non-sequential ordering demonstrates the model’s capacity for global semantic understanding, allowing it to plan and resolve logical dependencies effectively.",
+      "page": 27,
+      "index": 10,
+      "width": 1017,
+      "height": 648
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23567v1/fig-005.webp",
+      "caption": "Table 9. Matched-setting comparison with reported results from prior order-learning methods. Each setting is denoted by L-B-T , where L is generation length, B is block size, and T is the number of decoding steps. Missing entries indicate that the corresponding setting was not reported in the prior work.",
+      "page": 29,
+      "index": 5,
+      "width": 504,
+      "height": 317
+    }
+  ]
+}

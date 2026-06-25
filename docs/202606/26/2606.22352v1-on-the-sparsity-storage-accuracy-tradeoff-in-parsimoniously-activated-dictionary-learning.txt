@@ -1,0 +1,1598 @@
+Title: On the Sparsity-Storage-Accuracy Tradeoff in Parsimoniously Activated Dictionary Learning
+
+URL Source: https://arxiv.org/pdf/2606.22352v1
+
+Published Time: Tue, 23 Jun 2026 02:23:49 GMT
+
+Number of Pages: 35
+
+Markdown Content:
+# On the Sparsity-Storage-Accuracy Tradeoff in Parsimoniously Activated Dictionary Learning 
+
+Zihui Zhao 1 Yuanbo Tang 1 Yang Li 1∗
+
+Tsinghua University, Institute of Data and Information Shenzhen Key Laboratory of Ubiquitous Data Enabling 
+
+# Abstract 
+
+Dictionary learning has long been studied from both optimization and probabilistic perspectives. While formulations with element-wise sparsity regularization (e.g., L1-based sparse coding) admit well-established probabilistic interpretations, many structured variants that impose global constraints lack a clear and tractable genera-tive view. In this paper, we revisit a class of practically effective yet theoretically under-explored dictionary learning methods that impose a simple global regulariza-tion on the number of activated dictionary atoms, which we term parsimoniously activated dictionary learning (PADL). We show that PADL admits an equivalent formulation as maximum a posteriori estimation under a structured generative model, with auxiliary latent variables that govern global activation patterns. This formulation allows us to derive generalization guarantees that are difficult to obtain under the original formulation. More importantly, it yields an analytical characteri-zation of the tradeoff between sparsity, storage cost, and reconstruction accuracy, enabling data-driven estimation of optimal hyperparameters. Based on this con-nection, we develop an efficient and interpretable PADL algorithm that eliminates manual hyperparameter tuning, achieving improved reconstruction performance under comparable sparsity levels on visual benchmarks. We further demonstrate its practical utility in accelerating inference for vision-language models. 
+
+# 1 Introduction 
+
+Dictionary learning has long been a fundamental tool in signal processing and machine learning, aiming to find sparse representations of data through an optimization framework [ 29 ]. From the optimization perspective, classical sparse coding-based methods, such as K-SVD, formulate dictionary and code estimation as regularized reconstruction problems, yielding scalable algorithms with direct control over reconstruction error and coefficient sparsity [ 29 , 2, 27 ]. From the probabilistic perspective, dictionary learning can be described by generative models over observations and latent coefficients, providing generalization analysis and uncertainty estimates [ 30 , 50 , 10 , 7, 33 ]. These two views are closely connected for element-wise sparsity constraints. For example, maximum a posteriori (MAP) estimation with Laplace coefficient priors yields the classic ℓ1 sparse-coding formulation [ 29 , 13 ], which makes classical sparse dictionary learning both computationally practical and statistically interpretable. However, this optimization–probabilistic bridge is much less developed for structured dictionary-learning objectives that impose global constraints on atom usage. These global constraints are particularly important [ 12 ], as they naturally introduce a form of model selection, leading to improved robustness and statistical efficiency. Group-sparse methods encourage block-level selection. For example, simultaneous sparse approximation [ 42 ] enforces that multiple sparse signals share the same support; activation-constrained formulations [ 19 , 38 ] impose constraints on the number of activated 
+
+> ∗Thanks to National Natural Science Foundation of China (62371270). 40th Conference on Neural Information Processing Systems (NeurIPS 2026).
+> arXiv:2606.22352v1 [cs.LG] 21 Jun 2026
+
+atoms; and recent dictionary-learning variants are increasingly used for scalable representation learning [ 42 , 19 , 38 ]. Such global constraints inherently call for hierarchical modeling. While hierarchical probabilistic approaches to dictionary learning, such as Beta–Bernoulli [ 30 , 50 ] and Indian Buffet Process models [ 10 ], have been studied, they are generally not directly connected to the optimization formulations used in practice. Motivated by this gap, we revisit a class of practically effective yet theoretically under-explored dictionary learning methods that impose a simple global regularization on the number of activated dictionary atoms [ 19 , 38 ], which we term parsimoniously activated dictionary learning (PADL). Its objective can be written in the unified form as: 
+
+min  
+
+> D,R
+
+∥X − DR ∥2 
+
+> F
+
++ λ1∥R∥1 + λ2
+
+> K
+
+X
+
+> k=1
+
+∥rk∥∞, (1) where X is the data matrix, D is the dictionary, R is the coefficient matrix, and rk is the k-th coefficient row. The ∥ · ∥ 2 
+
+> F
+
+term controls the reconstruction error and the ∥ · ∥ 1 term controls sample-level representation sparsity. The row-wise ℓ∞ term constrains global atom activation by penalizing whether a dictionary atom is used by any sample. This formulation is simple, easy to optimize with alternating optimization, and highly effective in fields including trajectory generation and DNA compression [ 37 , 38 , 1]. However, it requires hyperparameter grid search to select optimal λ1 and λ2,which hinders practical stability and efficiency. Our goal is to provide a generative probabilistic view of this formulation that enables principled optimal hyperparameter computation by characterizing the sparsity–storage–accuracy tradeoff. We derive this PADL formulation from a structured auxiliary-latent z formulation through MAP estimation with P (X, R, z ; D). The coefficient prior p(R) induces per-sample sparsity, while the latent variable P (z | r) models whether an atom is activated by the dataset. This dual formulation retains the computational simplicity of the optimization view while enabling several analytical results from its generative view. In particular, we derive a sufficient condition under which non-essential atoms are suppressed and establish a high-probability reconstruction-error bound. These results make explicit how the activation threshold and regularization weights govern the tradeoff among sparsity, storage, and reconstruction accuracy. Based on this formulation, we develop an efficient PADL algorithm with analytical data-driven hyperparameter estimation, reducing reliance on exhaustive hyperparameter search. With a smaller activated dictionary size, our method achieves better reconstruction quality and significantly reduces the time required for parameter search. We evaluate the framework on both classical image reconstruc-tion benchmarks and Vision–Language Model (VLM) inference acceleration via token compression. On image reconstruction tasks, our method achieves superior reconstruction performance and em-pirically aligns with the theoretical predictions on optimal hyperparameter selection and dictionary activation thresholds. On VLM inference acceleration tasks, our method consistently attains higher token compression ratios while preserving downstream task performance. Our contributions can be summarized as follows: • We revisit PADL, a storage-aware dictionary-learning framework that regularizes cross-sample atom activation and directly targets the sparsity–storage–accuracy tradeoff. • We provide a structured MAP-induced interpretation of PADL, linking the row-wise activa-tion penalty to an atom-level auxiliary latent activation model. • We derive suppression conditions, expected activated dictionary size, reconstruction-error bounds, and a data-driven activation-threshold rule. • We validate the framework on controlled image reconstruction benchmarks and report image and video VLM compression results as application-level validation. 22 Method 
+
+2.1 Problem Formulation 
+
+Given a data set X = {Xi}Ni=1 , where each Xi ∈ Rd corresponds to the feature vector of a sample, we introduce a dictionary D = [ d1, . . . , d K ] ∈ Rd×K . Each sample is generated as 
+
+Xi = DR i + ϵi,
+
+where Ri ∈ [0 , 1] K×1 and ϵi is isotropic Gaussian noise, yielding the likelihood 
+
+p(Xi | Ri; D) ∝ exp  − 12 ∥Xi − DR i∥22
+
+ .
+
+Specifically, we assume each coefficient follows an independent Beta distribution, 
+
+Rki ∼ Beta(1 , β ), β > 1, (2) where 1 ≤ k ≤ K with density 
+
+p(Rki ) = β(1 − Rki )β−1, Rki ∈ [0 , 1] . (3) This prior concentrates mass near zero and naturally favors sparse activations. To model the storage cost, we introduce a latent activation variable zk ∈ { 0, 1} for each dictionary atom dk, indicating whether the atom is effectively used across the samples. Let rk ∈ RN denote the k-th row of R, i.e., the coefficients of atom k across all samples. Conditioned on rk, we define 
+
+zk | rk ∼ Bernoulli 11 + exp   − γ(max i Rki − δ)!
+
+, (4) where δ ∈ [0 , 1] denotes an activation threshold and γ > 0 controls the sharpness of the decision. The quantity max i Rki summarizes whether atom k contributes significantly to at least one sample. An atom dk is considered active only if rk attains a sufficiently large coefficient for some sample (above the threshold). The threshold δ therefore acts as a direct control on activation, while the Beta prior governs per-sample sparsity. We can therefore define a joint distribution 
+
+P (X, R, z ; D) = 
+
+> N
+
+Y
+
+> i=1
+
+P (Xi | Ri; D) ·
+
+> K
+
+Y
+
+> k=1
+> N
+
+Y
+
+> i=1
+
+p(Rki ) ·
+
+> K
+
+Y
+
+> k=1
+
+P (zk | rk). (5) 
+
+2.2 MAP Objective and Algorithm 
+
+Under the probabilistic model introduced above, we apply maximum a posteriori (MAP) to learn model parameters given data set X. Taking the negative log-posterior yields an energy of the form 
+
+− log P (R, z | X; D) = 
+
+> N
+
+X
+
+> i=1
+
+12 ∥Xi − DR i∥22 − X
+
+> k,i
+
+log p(Rki ) − X
+
+> k
+
+log P (zk = 0 | rk) + C, 
+
+(6) where C is a constant independent of (R, z ).
+
+Proposition 2.1 (MAP-Induced Objective) . The MAP estimation of joint distribution P (X, R, z ; D)
+
+as described in Eq. 5 can be formulated as the following optimization problem: 
+
+min  
+
+> D∈Rd×K,R ∈[0 ,1] K×N
+
+∥X − DR ∥2 
+
+> F
+
++ λ1∥R∥1 + λ2
+
+> K
+
+X
+
+> k=1
+
+ϕγ
+
+  max  
+
+> i
+
+Rki − δ, (7) 
+
+where ϕγ (u) = log(1 + eγu ) , with λ1 = β − 1 and λ2 = 1 . For large γ, ϕγ (u) approaches a hard threshold barrier on max i Rki ≤ δ. Then Eq. 7 is equivalent to: 
+
+min  
+
+> D∈Rd×K,R ∈[0 ,1] K×N
+
+∥X − DR ∥2 
+
+> F
+
++ λ1∥R∥1 + λ2
+
+> K
+
+X
+
+> k=1
+
+∥rk∥∞, (8) 
+
+where ∥rk∥∞ = max i |Rki |.
+
+30.0 0.2 0.4 0.6 0.8 1.0 
+
+> 0
+> 200
+> 400
+> |S( )|  = 1
+> = 2
+> = 4
+> = 8
+> = 16
+
+Figure 1: The estimated dictionary activation size as a function of δ under different values of β,estimated on CIFAR-100. 
+
+Proof. See Appendix B. Intuitively, the Beta prior induces an ℓ1 penalty that promotes representation sparsity, while the activation prior gives rise to a soft barrier on max i Rki . The row-wise ℓ∞ term is the convex surrogate used to penalize the same peak-activation cost in the practical PADL objective. Unlike classical sparse coding objectives, which balance only reconstruction and coefficient sparsity, the PADL formulation explicitly models dictionary size as an optimization objective. The threshold 
+
+δ and the associated ℓ∞ term act as direct control parameters for dictionary size, enabling explicit regulation of the sparsity-storage-accuracy tradeoff. This formulation connects the hyperparameters λ1 and λ2 to the prior parameter β. In the next subsection, we illustrate how the error bound is affected by the hyperparameters and the activation threshold δ.
+
+2.3 Tradeoff Characterization 
+
+We now characterize how the PADL objective governs the interaction among reconstruction accuracy, representation sparsity, and dictionary usage. 
+
+Proposition 2.2 (Suppression of Non-essential Atoms) . Assume that a subset of atoms S can reconstruct the data with bounded error ϵ. For any additional atom k / ∈ S with nonzero coefficient row rk, let e = X − DS RS and suppose |e⊤ 
+
+> i
+
+dk| ≤ η for all i. If 
+
+λ1 + λ2
+
+∥rk∥∞
+
+∥rk∥1
+
+> 2η, (9) 
+
+then setting the coefficient vector rk to zero strictly decreases the objective. In particular, for atoms whose peak activation exceeds the threshold, ∥rk∥∞ ≥ δ, it is sufficient that 
+
+λ1 + λ2
+
+δ
+
+∥rk∥1
+
+> 2η. (10) 
+
+Proof. See Appendix C.1 This result formalizes the role of the activation penalty: atoms that only exhibit occasional or weak activations are eliminated, even if their coefficients satisfy the ℓ1 sparsity constraint. Such atoms correspond to spurious patterns that are likely caused by noise. The model therefore favors visual primitives that are consistently useful, yielding a compact and reusable dictionary. 
+
+Proposition 2.3 (Expected Activated Dictionary Size) . Assume that the activation coefficients satisfy 
+
+Rki i.i.d. 
+
+∼ Beta(1 , β ) for k = 1 , . . . , K and i = 1 , . . . , N . Define the active atom set induced by threshold δ as 
+
+S(δ) := { k : max  
+
+> i
+
+Rki > δ }.
+
+Let F (r) = 1 − (1 − r)β denote the cumulative distribution function of Beta(1 , β ). Then the expected size of the active set is 
+
+E |S(δ)| = K 1 − F (δ)N  = K
+
+h
+
+1 −  1 − (1 − δ)β N i
+
+. (11) 4In particular, E|S(δ)| is a strictly decreasing and smooth function of δ, with 
+
+E|S(0) | = K, E|S(1) | = 0 .
+
+Proof. See Appendix C.2 The activated dictionary size E|S(δ)| is strictly decreasing in δ, as shown in Figure 1, which indicates that a larger activation threshold decreases the dictionary size by activating fewer atoms. 
+
+Theorem 2.4 (High-Probability Reconstruction Bound) . Under the active-span restricted-eigenvalue condition stated in Appendix C.3, the average reconstruction error satisfies, with probability at least 
+
+1 − τ ,
+
+∥e∥2
+
+> F
+
+N ≤ C(|S|)
+
+
+
+λ1 + λ2δU (N, β, τ )
+
+2
+
+, (12) 
+
+where C(|S|) grows linearly with |S| and 
+
+U (N, β, τ ) := N
+
+1 + β +
+
+r N
+
+2 log 1
+
+τ
+
+grows linearly with N .Proof. See Appendix C.3 The average error bound depends jointly on the size of the activated dictionary and the activation threshold, both of which are inherently controlled by the threshold. 
+
+Corollary 2.5 (Optimal Activation Threshold Estimation) . For fixed data size, data distribution, and confidence level, the optimal threshold δ∗ satisfies: 
+
+N F (δ)N −1 f (δ)1 − F (δ)N = 2λ2
+
+U (N, β, τ )
+
+
+
+λ1 + λ2δU (N,β,τ )
+
+ . (13) 
+
+Here, 
+
+F (δ) := Pr( Rki ≤ δ) = 1 − (1 − δ)β , f (δ) := F ′(δ) = β(1 − δ)β−1.
+
+Proof. See Appendix D.4 As the number of samples N increases, U (N, β, τ ) grows linearly, so the threshold-dependent contribution in the reconstruction bound decays as O(1 /N ). This indicates that the threshold term does not inflate the average error bound, while the active dictionary size remains governed by the choice of δ.Together, these results provide a theoretical characterization of the activated dictionary size and reconstruction-error bound. They reduce the complex sparsity-storage-accuracy tradeoff to a sin-gle controlled variable δ with a computable optimal value, thereby reducing the need for tedious hyperparameter grid search with heuristic settings. 
+
+2.4 Dictionary Learning Algorithm 
+
+Using the above theoretical results, we proposed a modified PADL algorithm with analytical hy-perparameter estimation from data, as shown in Algorithm 1. This algorithm adopts alternating optimization [ 27 ] with projected gradient descent to jointly learn the dictionary and the sparse representation while ensuring convergence, a standard technique in previous literature [ 43 , 3, 6]. To estimate the hyperparameters, we first perform a warm-up phase with tentative initialization, during which we obtain the Beta parameter and compute the corresponding λ and δ∗, which are then used in the subsequent dictionary learning process. During testing, the dictionary remains fixed, and the hyperparameters and activation threshold are set to their estimated values; only the sparse representation R is updated. Note that, while the hyperparameters could be updated iteratively during alternating optimization to obtain a more precise estimate of the prior distribution, we empirically find that one-shot warm-up estimation is sufficient in our experiments, as shown in Appendix F.5. 5Algorithm 1 Parsimoniously Activated Dictionary Learning 
+
+Require: Data matrix X; dictionary size K; outer iterations T ; inner steps kr , k d; warm-up steps ts
+
+Ensure: Learned dictionary D ∈ Rd×K 
+
+> 1:
+
+Use preprocessed data: Xnorm ← X 
+
+> 2:
+
+Initialize D ∼ U [0 , 1] , R ∼ Beta(1 , 1)  
+
+> 3:
+
+Initialize (λ1, λ 2, δ ) ← (0 , 1, 0) as warm-up defaults  
+
+> 4:
+
+for t = 1 to T do  
+
+> 5:
+
+if t = ts then  
+
+> 6:
+
+Fit empirical R with Beta(1 , β ) 
+
+> 7:
+
+Compute λ1 ≈ β − 1, λ2 ← 1, and δ∗ using Eq. 13  
+
+> 8:
+
+Re-initialize D ∼ U [0 , 1] , R ∼ Beta(1 , β ) 
+
+> 9:
+
+end if  
+
+> 10:
+
+for ℓ = 1 to kr do  
+
+> 11:
+
+Update R by solving min R ∥Xnorm − DR ∥2 
+
+> F
+
++ λ1∥R∥1 + λ2
+
+PKk=1 ∥rk∥∞. 
+
+> 12:
+
+Project coefficients: R ← Π[0 ,1] (R). 
+
+> 13:
+
+end for  
+
+> 14:
+
+for ℓ = 1 to kd do  
+
+> 15:
+
+Update D by solving min D ∥Xnorm − DR ∥2 
+
+> F
+
+s.t. ∥dk∥2 = 1 , ∀k. 
+
+> 16:
+
+end for  
+
+> 17:
+
+end for  
+
+> 18:
+
+return D𝐀 
+
+> Vision Tokens
+> Dictionary
+> Atoms
+> Representation
+> Reconstructed
+> Vision Tokens
+> Direct
+> Inference
+> LLM
+> Backbone 𝐀 𝐀
+> D
+> 𝐀 𝐀
+> 𝐀 𝐀 ∗
+> 𝐀 𝐀
+> 𝐀 𝐀
+> (1)
+> (2)
+
+Figure 2: Two implementations on VLMs are considered: reconstructing visual tokens and performing direct inference via a fine-tuned adapter. 
+
+2.5 VLM Inference Compression 
+
+PADL can also be used as a structured visual compression module for VLM inference. Given visual tokens ZV produced by a vision encoder, we learn a visual dictionary DV and sparse codes RV such that ZV ≈ (DV RV )T . The row-wise activation regularizer selects a compact active sub-dictionary 
+
+DS , while the sparse codes can be quantized for transmission or storage. As shown in Figure 2, the compressed representation can be used in two ways: reconstructing visual tokens before feeding them to the LLM, or passing the sparse representation through a lightweight adapter for direct inference. The detailed VLM formulation, compression protocol, and adapter setting are provided in Appendix E. 
+
+# 3 Experiment 
+
+Our experimental evaluation focuses on validating the theoretical contributions of our framework, particularly the Bayesian interpretation and the parameter selection guidelines. We conduct experi-ments on CIFAR-100 [ 20 ] and SVHN [ 28 ] to demonstrate the practical implications of our theoretical framework. Each dataset contains color images of size 32 × 32. All images are converted to grayscale, and non-overlapping 8 × 8 patches are extracted for training and evaluation. The dictionary size is fixed at 128 atoms across all experiments. We use 20,000 random patches for training and reserve 2,000 patches for testing and performance evaluation. Unless otherwise specified, the number of activated atoms denotes the number of dictionary atoms satisfying max i |Rki | > δ ∗ on the evaluation set, using the same thresholding rule across methods. 60.2 0.4 0.6 0.8   
+
+> Activation threshold
+> 17
+> 18
+> 19
+> 20
+> 21
+> PSNR (dB)
+> CIFAR *
+> SVHN *
+> CIFAR PSNR
+> SVHN PSNR
+> CIFAR MSE
+> SVHN MSE
+> 0.09
+> 0.10
+> 0.11
+> 0.12
+> 0.13
+> 0.14
+> 0.15
+> 0.16
+> 0.17
+> MSE
+
+Figure 3: Reconstruction error un-der varying activation thresholds δ on CIFAR-100 and SVHN; dashed lines in-dicate the predicted δ∗.0 20 40 60 80 100 120      
+
+> Dictionary Atom Index
+> 10 2
+> 4 × 10 3
+> 6 × 10 3
+> 2 × 10 2
+> Frequency
+> L1Regularized
+> LRegularized
+
+Figure 4: Atom utilization frequency on CIFAR-100 under L∞- and L1-regularized dictionaries. For VLM applications, we conduct experiments with LLaVA-1.5 [ 23 ] on VQA tasks for image inputs and Video-LLaVA [ 22 ] for video inputs. The dictionary size is fixed at 1024 atoms. For image inputs, our evaluation includes VQAv2 [ 16 ], ScienceQA [ 25 ], TextVQA [ 36 ], POPE hallucination bench-mark [ 21 ], MME [ 15 ] and MMBench [ 24 ]. We apply 4× dimensional compression together with 2×
+
+quantization. The adapter layer is fine-tuned on the LLaVA-1.5 instruction-tuning dataset [ 23 ]. For video inputs, our evaluation is conducted on MSVD-QA [ 8], MSRVTT-QA [ 45 ], TGIF-QA [ 18 ] and ActivityNet-QA [ 46 ]. We apply 8× dimensional compression together with 2× quantization. The adapter layer is fine-tuned on a dataset provided by Valley [ 26 ]. We compare our method with two SOTA token reduction methods: LLaVA-PruMerge [ 35 ] and freePruner [ 44 ]. The variant without fine-tuning is denoted as PADL , while the variant with fine-tuning is denoted as PADL+ . For image benchmarks, we follow the standard evaluation metrics of each benchmark. For video QA, we report accuracy (%) and GPT-based answer-quality scores assessed using GPT-3.5-Turbo, following prior work. Experiments were run on Ubuntu 22.04.5 with two Intel Xeon Gold 6348 CPUs, and a single NVIDIA A800 80GB PCIe GPU. The CUDA version was 12.2. 
+
+3.1 Hyperparameter Estimation Validation 
+
+Table 1: Validation of theoretical parameter estimates. 
+
+Parameter Theoretical Empirical Relative Error %
+
+λ1 1.31 1.33 1.5 
+
+λ2 1.00 1.01 1.0 
+
+To validate the precision of our theoretically predicted hyperparameter settings, we compared the theoretically recommended parameters with empirically optimal values found through extensive grid search. Table 1 reports the results and corresponding relative errors. To validate the error trend under different activation thresholds δ, we conduct experiments with varying δ values on both datasets. As shown in Figure 3, the theoretically predicted optimal δ∗ is indicated by the vertical dashed lines. These results show that our theoretical predictions closely align with the empirical optima, supporting the derived threshold-selection rule and the associated theoretical characterization. 
+
+3.2 Parsimonious Activation Validation 
+
+Figure 4 presents a comparison of dictionary atom usage frequencies between the L∞- and L1-regularized dictionaries, evaluated under identical parameter configurations and averaged over the CIFAR-100 test set. The usage in the PADL model is concentrated on a smaller subset of the original dictionary, suggesting that the regularization on R encourages a more compact and efficient representation. 7Table 2: Reconstruction performance comparison on CIFAR-100 and SVHN. For recent baselines and PADL, results are reported as mean ± standard deviation over 10 repeated runs.                                                                                                              
+
+> Method CIFAR-100 SVHN RMSE PSNR SSIM RMSE PSNR SSIM
+> KSVD [2] 0.152 17.87 0.472 0.147 16.34 0.449 DDL [39] 0.132 18.07 0.514 0.124 18.01 0.527 GDDL [40] 0.123 18.32 0.519 0.118 19.33 0.539 BPFA [30] 0.127 18.14 0.520 0.121 18.72 0.529 IBP [10] 0.119 18.58 0.535 0.119 19.57 0.545 CRsAE [41] 0.106 ±0.007 20 .13 ±0.56 0.558 ±0.035 0.092 ±0.006 20 .30 ±0.60 0.565 ±0.025
+> JumpReLU SAE [34] 0.104 ±0.016 19 .58 ±0.97 0.520 ±0.041 0.091 ±0.010 20 .01 ±1.19 0.518 ±0.042
+> L1-Regularized DL 0.112 ±0.006 18 .98 ±0.54 0.545 ±0.030 0.094 ±0.012 20 .46 ±1.03 0.559 ±0.037
+> PADL 0.099 ±0.009 20 .56 ±0.55 0.568 ±0.030 0.090 ±0.006 20 .88 ±1.03 0.583 ±0.037
+
+Table 3: Computational-cost summary on CIFAR-100 using 2,000 training patches. 
+
+Method Cost Outcome K-SVD [2] 661.4s 20 atoms / 0.152 RMSE CRsAE [41] 32.0s 56 atoms / 0.106 RMSE JumpReLU SAE [34] 3.1s 61 atoms / 0.104 RMSE PADL 44.2s 19 atoms / 0.099 RMSE 
+
+Table 4: Ablation study on CIFAR-100. 
+
+Configuration RMSE PSNR SSIM PADL 0.099 20.56 0.568 w/o L∞ 0.112 18.98 0.545 w/o L1 0.108 19.17 0.549 w/o L1 & L∞ 0.117 18.49 0.525 
+
+3.3 Comparative Reconstruction Performance 
+
+While our primary focus is theoretical validation, we include a concise comparison of reconstruc-tion performance to demonstrate practical utility. Table 2 shows that the PADL method achieves competitive reconstruction quality while providing theoretical guarantees. 
+
+3.4 Computational Cost 
+
+Since PADL introduces a row-wise activation regularizer, we explicitly report training cost in the main text. The cost study uses a smaller 2,000-patch training subset to make wall-clock comparisons across baselines tractable. Table 3 summarizes training-time cost on the controlled dictionary-learning benchmark. Although PADL is not the fastest training procedure among all baselines, it remains within a practical wall-clock range while producing the smallest activated dictionary and the lowest RMSE in this comparison. Detailed training-time and warm-up-cost studies are provided in Appendices F.2 and F.10. 3% 5% 9% 16% 30% 50% 
+
+> Activated Dictionary Size
+> 17.0
+> 17.5
+> 18.0
+> 18.5
+> 19.0
+> 19.5
+> 20.0
+> 20.5
+> 21.0
+> PSNR (dB)
+> Cifar100-L
+> SVHN-L
+> Cifar100-L1
+> SVHN-L1
+
+Figure 5: PSNR comparison on CIFAR-100 and SVHN under varying dictionary activation levels. 8Table 5: Performance comparison on image VQA benchmarks. PADL is used as a visual-representation compression module. PADL denotes the version without adapter fine-tuning, while PADL+ denotes the version with adapter fine-tuning. 
+
+Method LLM VQA v2 SQA I VQA T POPE MME MMB InstructBLIP Vicuna-7B - 60.5 50.1 - - 36.0 InstructBLIP Vicuna-13B - 63.1 50.7 78.9 1212.8 -Shikra Vicuna-13B 77.4 - - - - 58.8 IDEFICS-9B LLaMA-7B 50.9 - 25.9 - - 48.2 IDEFICS-80B LLaMA-65B 60.0 - 30.9 - - 54.5 Qwen-VL Qwen-7B 78.8 67.1 63.8 - - 38.2 LLaVA-1.5 Vicuna-7B 78.5 66.8 58.2 85.9 1510.7 64.3 LLaVA-1.5 + PruMerge Vicuna-7B 76.6 67.5 55.6 86.5 1414.0 62.9 LLaVA-1.5 + FreePruner Vicuna-7B 77.6 68.6 60.0 87.7 1485.2 63.8 LLaVA-1.5 + PADL (8×) Vicuna-7B 76.9 65.5 57.7 84.6 1473.1 64.1 LLaVA-1.5 + PADL+ (8×) Vicuna-7B 78.2 68.8 61.0 88.5 1485.1 64.7 
+
+Table 6: Performance comparison on video reasoning benchmarks.                                                                                         
+
+> Methods LLM size MSVD-QA MSRVTT-QA ActivityNet-QA TGIF-QA Accuracy Score Accuracy Score Accuracy Score Accuracy Score
+> VideoChat 7B 56.3 2.8 45.0 2.5 –2.2 34.4 2.3 LLaMA-Adapter 7B 54.9 3.1 43.8 2.7 34.2 2.7 --Video-ChatGPT 7B 64.9 3.3 49.3 2.8 35.2 2.7 51.4 3.0 Video-LLaVA 7B 70.7 3.9 59.2 3.5 45.3 3.3 70.0 4.0 Video-LLaVA + PruMerge 7B 71.1 3.9 58.4 3.5 48.3 3.4 --Video-LLaVA + FreePruner 7B 71.3 3.9 59.5 3.5 48.4 3.4 --Video-LLaVA + PADL (16 ×)7B 72.3 3.9 61.1 3.5 48.1 3.4 69.9 4.1 Video-LLaVA + PADL+ (16 ×)7B 75.2 4.1 64.1 3.7 49.7 3.4 75.3 4.3
+
+3.5 Ablation Studies 
+
+We conducted ablation studies to evaluate the contribution of each component in our framework. Table 4 shows the performance of different configurations. Figure 5 shows the sensitivity of recon-struction error to sparsity variations. Compared with the L1-regularized approach, PADL achieves better reconstruction performance while using fewer activated dictionary atoms. The results show that both regularization terms contribute significantly to the performance, with the ℓ∞ term providing particularly important theoretical properties. 
+
+3.6 VLM Compression Results 
+
+We further evaluate PADL as a visual compression module for image and video VLMs. Table 5 reports image VQA results. Compared with the original LLaVA-1.5 backbone, PADL achieves substantial visual representation compression while largely preserving downstream performance. With adapter fine-tuning, PADL+ recovers or improves performance on several benchmarks. Table 6 reports video QA results. PADL achieves a 16 × representation-size reduction, and PADL+ further improves downstream reasoning performance after adapter fine-tuning. Detailed formulation, compression settings, and threshold validation are provided in Appendix E. 
+
+# 4 Conclusion 
+
+In this work, we revisit PADL, a dictionary-learning formulation for balancing sparsity, storage, and accuracy, through a structured probabilistic perspective. By connecting the PADL objective to an auxiliary latent-variable MAP-induced formulation, we obtain interpretable parameter-calibration rules, suppression conditions, activated-dictionary-size estimates, reconstruction-error bounds, and a solvable activation-threshold condition. Compared with dictionary-learning analyses that focus 9primarily on reconstruction accuracy and coefficient sparsity, this view explicitly accounts for the activated dictionary size, which directly corresponds to storage cost. The resulting calibration proce-dure is simple to implement and reduces reliance on exhaustive hyperparameter search. Experiments on classical image reconstruction benchmarks validate the predicted sparsity–storage–accuracy be-havior, and additional VLM experiments suggest that the same principle can be useful for sparse visual-representation compression. 
+
+# References 
+
+[1] Don Adjeroh, Yong Zhang, Amar Mukherjee, Matt Powell, and Tim Bell. Dna sequence compression using the burrows-wheeler transform. In Proceedings. IEEE computer society bioinformatics conference , pages 303–313. IEEE, 2002. [2] Michal Aharon, Michael Elad, and Alfred Bruckstein. K-svd: An algorithm for designing overcomplete dictionaries for sparse representation. IEEE Transactions on signal processing ,54(11):4311–4322, 2006. [3] Hedy Attouch, Jérôme Bolte, and Benar Fux Svaiter. Convergence of descent methods for semi-algebraic and tame problems: proximal algorithms, forward–backward splitting, and regularized gauss–seidel methods. Mathematical programming , 137(1):91–129, 2013. [4] S Derin Babacan, Shinichi Nakajima, and Minh N Do. Bayesian group-sparse modeling and variational inference. IEEE transactions on signal processing , 62(11):2906–2921, 2014. [5] Alberto Bocchinfuso, Daniela Calvetti, and Erkki Somersalo. Bayesian sparsity and class sparsity priors for dictionary learning and coding. arXiv preprint arXiv:2309.00999 , 2023. [6] Jérôme Bolte, Shoham Sabach, and Marc Teboulle. Proximal alternating linearized minimization for nonconvex and nonsmooth problems. Mathematical Programming , 146(1):459–494, 2014. [7] Trevor Campbell and Boyan Beronov. Sparse variational inference: Bayesian coresets from scratch. Advances in Neural Information Processing Systems , 32, 2019. [8] Feilong Chen, Minglun Han, Haozhi Zhao, Qingyang Zhang, Jing Shi, Shuang Xu, and Bo Xu. X-llm: Bootstrapping advanced large language models by treating multi-modalities as foreign languages. arXiv preprint arXiv:2305.04160 , 2023. [9] Scott Shaobing Chen, David L Donoho, and Michael A Saunders. Atomic decomposition by basis pursuit. SIAM review , 43(1):129–159, 2001. [10] Hong-Phuong Dang and Pierre Chainais. Indian buffet process dictionary learning: algorithms and applications to image processing. International Journal of Approximate Reasoning , 83: 1–20, 2017. [11] Hong Phuong Dang and Pierre Chainais. Towards dictionaries of optimal size: A bayesian non parametric approach. Journal of Signal Processing Systems , 90(2):221–232, 2018. [12] Bogdan Dumitrescu and Ciprian Doru Giurc˘ aneanu. Adaptive-size dictionary learning using information theoretic criteria. Algorithms , 12(9):178, 2019. [13] Michael Elad. Sparse and redundant representations: from theory to applications in signal and image processing . Springer Science & Business Media, 2010. [14] Georgios Exarchakis and Jorg Lucke. Discrete sparse coding. Neural computation , 29(11): 2979–3013, 2017. [15] Chaoyou Fu, Peixian Chen, Yunhang Shen, Yulei Qin, Mengdan Zhang, Xu Lin, Jinrui Yang, Xiawu Zheng, Ke Li, Xing Sun, et al. Mme: A comprehensive evaluation benchmark for multimodal large language models. arXiv preprint arXiv:2306.13394 , 2023. [16] Yash Goyal, Tejas Khot, Douglas Summers-Stay, Dhruv Batra, and Devi Parikh. Making the v in vqa matter: Elevating the role of image understanding in visual question answering. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 6904–6913, 2017. 10 [17] Marc Henniges, Gervasio Puertas, Jörg Bornschein, Julian Eggert, and Jörg Lücke. Binary sparse coding. In International Conference on Latent Variable Analysis and Signal Separation ,pages 450–457. Springer, 2010. [18] Yunseok Jang, Yale Song, Youngjae Yu, Youngjin Kim, and Gunhee Kim. Tgif-qa: Toward spatio-temporal reasoning in visual question answering. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 2758–2766, 2017. [19] Andreas Krause and Volkan Cevher. Submodular dictionary selection for sparse representation. In International Conference on Machine Learning (ICML) , 2010. [20] Alex Krizhevsky, Geoffrey Hinton, et al. Learning multiple layers of features from tiny images. 2009. [21] Yifan Li, Yifan Du, Kun Zhou, Jinpeng Wang, Wayne Xin Zhao, and Ji-Rong Wen. Evaluating object hallucination in large vision-language models. arXiv preprint arXiv:2305.10355 , 2023. [22] Bin Lin, Yang Ye, Bin Zhu, Jiaxi Cui, Munan Ning, Peng Jin, and Li Yuan. Video-llava: Learning united visual representation by alignment before projection. In Proceedings of the 2024 conference on empirical methods in natural language processing , pages 5971–5984, 2024. [23] Haotian Liu, Chunyuan Li, Yuheng Li, and Yong Jae Lee. Improved baselines with visual instruction tuning. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 26296–26306, 2024. [24] Yuan Liu, Haodong Duan, Yuanhan Zhang, Bo Li, Songyang Zhang, Wangbo Zhao, Yike Yuan, Jiaqi Wang, Conghui He, Ziwei Liu, et al. Mmbench: Is your multi-modal model an all-around player? In European conference on computer vision , pages 216–233. Springer, 2024. [25] Pan Lu, Swaroop Mishra, Tanglin Xia, Liang Qiu, Kai-Wei Chang, Song-Chun Zhu, Oyvind Tafjord, Peter Clark, and Ashwin Kalyan. Learn to explain: Multimodal reasoning via thought chains for science question answering. Advances in Neural Information Processing Systems , 35: 2507–2521, 2022. [26] Ruipu Luo, Ziwang Zhao, Min Yang, Junwei Dong, Da Li, Pengcheng Lu, Tao Wang, Linmei Hu, Minghui Qiu, and Zhongyu Wei. Valley: Video assistant with large language model enhanced ability. arXiv preprint arXiv:2306.07207 , 2023. [27] Julien Mairal, Francis Bach, Jean Ponce, and Guillermo Sapiro. Online dictionary learning for sparse coding. In Proceedings of the 26th annual international conference on machine learning ,pages 689–696, 2009. [28] Yuval Netzer, Tao Wang, Adam Coates, Alessandro Bissacco, Baolin Wu, Andrew Y Ng, et al. Reading digits in natural images with unsupervised feature learning. In NIPS workshop on deep learning and unsupervised feature learning , volume 2011, page 7. Granada, 2011. [29] Bruno A Olshausen and David J Field. Sparse coding with an overcomplete basis set: A strategy employed by v1? Vision research , 37(23):3311–3325, 1997. [30] John Paisley and Lawrence Carin. Nonparametric factor analysis with beta process priors. In 
+
+Proceedings of the 26th annual international conference on machine learning , pages 777–784, 2009. [31] Vardan Papyan, Jeremias Sulam, and Michael Elad. Working locally thinking globally: Theoret-ical guarantees for convolutional sparse coding. IEEE Transactions on Signal Processing , 65 (21):5687–5701, 2017. [32] Vardan Papyan, Yaniv Romano, Jeremias Sulam, and Michael Elad. Theoretical foundations of deep learning via sparse representations: A multilayer sparse model and its connection to convolutional neural networks. IEEE Signal Processing Magazine , 35(4):72–89, 2018. [33] Sangha Park, Seungryong Yoo, Jisoo Mok, and Sungroh Yoon. Save: Sparse autoencoder-driven visual information enhancement for mitigating object hallucination. arXiv preprint arXiv:2512.07730 , 2025. 11 [34] Senthooran Rajamanoharan, Tom Lieberum, Nicolas Sonnerat, Arthur Conmy, Vikrant Varma, János Kramár, and Neel Nanda. Jumping ahead: Improving reconstruction fidelity with jumprelu sparse autoencoders. arXiv preprint arXiv:2407.14435 , 2024. [35] Yuzhang Shang, Mu Cai, Bingxin Xu, Yong Jae Lee, and Yan Yan. Llava-prumrge: Adaptive token reduction for efficient large multimodal models. arXiv preprint arXiv:2403.15388 , 2024. [36] Amanpreet Singh, Vivek Natarajan, Meet Shah, Yu Jiang, Xinlei Chen, Dhruv Batra, Devi Parikh, and Marcus Rohrbach. Towards vqa models that can read. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 8317–8326, 2019. [37] Yan Tang, Zihui Zhao, Zixuan Zhang, Yang Li, et al. Data-efficient and robust trajectory generation through pathlet dictionary learning. In The Third Conference on Parsimony and Learning (Proceedings Track) .[38] Yuanbo Tang, Zhiyuan Peng, and Yang Li. Explainable trajectory representation through dictionary learning. In Proceedings of the 31st ACM International Conference on Advances in Geographic Information Systems , pages 1–4, 2023. [39] Snigdha Tariyal, Angshul Majumdar, Richa Singh, and Mayank Vatsa. Deep dictionary learning. 
+
+IEEE Access , 4:10096–10109, 2016. [40] Snigdha Tariyal, Angshul Majumdar, Richa Singh, and Mayank Vatsa. Greedy deep dictionary learning. arXiv preprint arXiv:1602.00203 , 2016. [41] Bahareh Tolooshams, Sourav Dey, and Demba Ba. Deep residual autoencoders for expectation maximization-inspired dictionary learning. IEEE Transactions on neural networks and learning systems , 32(6):2415–2429, 2020. [42] Joel A Tropp, Anna C Gilbert, and Martin J Strauss. Algorithms for simultaneous sparse approximation. part i: Greedy pursuit. Signal processing , 86(3):572–588, 2006. [43] Paul Tseng. Convergence of a block coordinate descent method for nondifferentiable minimiza-tion. Journal of optimization theory and applications , 109(3):475–494, 2001. [44] Bingxin Xu, Yuzhang Shang, Yunhao Ge, Qian Lou, and Yan Yan. freepruner: A training-free approach for large multimodal model acceleration. arXiv preprint arXiv:2411.15446 , 2024. [45] Jun Xu, Tao Mei, Ting Yao, and Yong Rui. Msr-vtt: A large video description dataset for bridging video and language. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 5288–5296, 2016. [46] Zhou Yu, Dejing Xu, Jun Yu, Ting Yu, Zhou Zhao, Yueting Zhuang, and Dacheng Tao. Activitynet-qa: A dataset for understanding complex web videos via question answering. In Proceedings of the AAAI Conference on Artificial Intelligence , volume 33, pages 9127–9134, 2019. [47] Ming Yuan and Yi Lin. Model selection and estimation in regression with grouped variables. 
+
+Journal of the Royal Statistical Society Series B: Statistical Methodology , 68(1):49–67, 2006. [48] Jusheng Zhang, Xiaoyang Guo, Kaitong Cai, Qinhan Lv, Yijia Fan, Wenhao Chai, Jian Wang, and Keze Wang. Hybridtoken-vlm: Hybrid token compression for vision-language models. 
+
+arXiv preprint arXiv:2512.08240 , 2025. [49] Sipeng Zheng, Bohan Zhou, Yicheng Feng, Ye Wang, and Zongqing Lu. Unicode: Learning a unified codebook for multimodal large language models. In European Conference on Computer Vision , pages 426–443. Springer, 2024. [50] Mingyuan Zhou, Haojun Chen, Lu Ren, Guillermo Sapiro, Lawrence Carin, and John Paisley. Non-parametric bayesian dictionary learning for sparse image representations. Advances in neural information processing systems , 22, 2009. 12 A Related Works 
+
+A.1 Dictionary Learning and Sparse Representation 
+
+Traditional dictionary learning aims to represent data using a small number of dictionary atoms while preserving reconstruction fidelity. Sparse coding and the seminal work of Olshausen and Field [ 29 ]established this formulation as a central model for sparse representation, and subsequent algorithms such as K-SVD [ 2 ] and online dictionary learning [ 27 ] made dictionary learning scalable to larger datasets. These classical methods primarily control sparsity at the coefficient level, typically through explicit sparsity constraints or ℓ1-type regularization. In this paper, we focus on a different but related quantity: the number of dictionary atoms that are effectively activated across a dataset, which is directly tied to storage and deployment cost. From the probabilistic perspective, dictionary learning is formulated through generative models over observations, latent coefficients, and sometimes latent usage variables. Bayesian sparse coding and nonparametric dictionary-learning models use such variables to infer sparsity patterns and dictionary size from data [ 30 , 50 , 10 , 11 ]. Closely related models such as binary sparse coding [ 17 ] and discrete sparse coding [ 14 ] introduce discrete latent variables to represent sparse activations. These formulations provide a natural way to reason about posterior uncertainty, latent dimensionality, sample complexity, and generalization [ 30 , 50 , 10 ]. In these probabilistic formulations, the latent usage variables are commonly part of the reconstruction mechanism, for example by gating sample-level coefficients or factors [ 30 , 50 , 10 , 17 , 14 ]. Our formulation instead introduces an auxiliary atom-level activation variable that does not directly participate in reconstruction, but induces a row-wise activation prior corresponding to cross-sample atom usage. From the optimization perspective, dictionary learning is commonly posed as a regularized recon-struction problem. This view leads to efficient objectives and algorithms, and it supports theoretical analyses of sparse recovery, stability, identifiability, and convergence [ 9, 31 , 32 ]. Classical sparse coding, K-SVD, and online dictionary learning fall into this category [ 29 , 2 , 27 ]. Their regularizers are usually imposed on individual coefficients or sample-level sparse codes, making the learned representation compact but not explicitly controlling how many atoms are activated across the full dataset. As a result, the regularization weights that govern sparsity and dictionary usage are typically selected as external hyperparameters. Structured sparse modeling extends this optimization view by introducing group or joint sparsity constraints. Group Lasso and simultaneous sparse approximation encourage structured selection across predefined groups or multiple related signals [ 47 , 42 ]. Bayesian group-sparse modeling provides probabilistic interpretations of group selection [ 4], and recent dictionary-coding work further explores sparsity and class-sparsity priors for discarding irrelevant dictionary components [ 5]. These works are closely related in that they impose structure beyond element-wise sparsity. The constraint considered here is positioned differently: it is atom-wise but defined across samples, so that the row of coefficients associated with an atom determines whether that atom contributes to the effective dictionary size. PADL is designed to connect these two perspectives. On the optimization side, it gives a tractable objective with reconstruction, coefficient sparsity, and cross-sample atom activation terms. On the probabilistic side, it admits an auxiliary-latent MAP formulation in which the activation variable induces the row-wise regularizer without gating the reconstruction likelihood. This connection allows us to retain the computational form of regularized dictionary learning while deriving quantities that are more naturally obtained from a probabilistic view, including expected activated dictionary size, generalization bounds, and a data-driven activation-threshold rule. 
+
+A.2 Compositional Learning Methods on VLM 
+
+As a broader interpretation of dictionary learning, recent work on VLMs has increasingly emphasized compositional representations, where complex visual or multimodal inputs are decomposed into a small set of reusable primitives. UniCode [ 49 ] proposes a unified codebook that maps heterogeneous modalities into a shared discrete space, enabling cross-modal compositionality and efficient reuse. SAVE [ 33 ] leverages sparse autoencoders to extract semantically meaningful visual factors, showing that structured sparsity can mitigate object hallucination by enforcing interpretable latent components. HybridToken-VLM and HTC-VLM [ 48 ] compress visual prefixes through hybrid token represen-13 Table 7: High-level comparison of representative dictionary-learning formulations.          
+
+> Perspective Representative works Relation to PADL Optimization-based Sparse coding, K-SVD, online DL [29, 2, 27] Optimizes reconstruction with coefficient sparsity; PADL further regularizes atom activation across sam-ples. Probabilistic Bayesian sparse coding, IBP/Beta-process DL, binary/discrete sparse coding [30, 50, 10, 11, 17, 14] Provides generative views of sparsity and dictionary size; PADL uses an auxiliary activation variable to induce a row-wise MAP regularizer. Global-constraint Group Lasso, simultaneous sparse approximation, Bayesian group spar-sity [47, 42, 4, 5] Models group or shared-support structure; PADL fo-cuses on atom-wise activation across the dataset.
+> PADL This work Connects a storage-aware optimization objective with an auxiliary-latent probabilistic formulation.
+
+tations, combining semantic abstraction with token-level efficiency. These methods demonstrate that replacing dense visual streams with structured, compositional units can significantly improve both efficiency and robustness in VLMs. However, existing approaches typically introduce such structure heuristically or implicitly, without a principled mechanism to control the tradeoff among representation sparsity, dictionary size, and reconstruction fidelity. Our work complements these efforts by providing a probabilistically grounded dictionary learning framework that makes this tradeoff explicit and optimizable, enabling compositional compression in VLMs with theoretical guarantees. 
+
+# B Proof of MAP Objective 
+
+This appendix provides the full derivation of the MAP objective in Proposition 2.1. We show that, under the probabilistic model, maximum a posteriori (MAP) estimation of (D, R ) yields the deterministic objective consisting of a quadratic reconstruction term, an ℓ1 penalty on coefficients, and a row-wise ℓ∞ activation penalty. 
+
+B.1 Posterior Energy 
+
+Recall the joint distribution 
+
+P (X, R, z ; D) = 
+
+> N
+
+Y
+
+> i=1
+
+P (Xi | Ri; D) ·
+
+> K
+
+Y
+
+> k=1
+> N
+
+Y
+
+> i=1
+
+p(Rki ) ·
+
+> K
+
+Y
+
+> k=1
+
+P (zk | rk),
+
+where rk = ( Rk1, . . . , R kN ) is the k-th row of R. Taking the negative log-posterior and using the inactive event zk = 0 for the storage term gives 
+
+− log P (R, z | X; D) = 
+
+> N
+
+X
+
+> i=1
+
+12 ∥Xi − DR i∥22 − X
+
+> k,i
+
+log p(Rki ) − X
+
+> k
+
+log P (zk = 0 | rk) + C, 
+
+(14) where C is a constant independent of (R, z ).In the following, we analyze the two prior-induced terms and show that they correspond to ℓ1 and 
+
+ℓ∞-type regularization. 
+
+B.2 Beta Prior Induces ℓ1 Regularization Lemma B.1 (Beta Prior and ℓ1 Regularization) . Suppose Rki ∼ Beta(1 , β ) with β > 1 and that 
+
+Rki are in the small-coefficient regime ( Rki ≪ 1). Then 
+
+− X
+
+> k,i
+
+log p(Rki ) ≈ const + ( β − 1) ∥R∥1, (15) 
+
+where ∥R∥1 = P 
+
+> k,i
+
+|Rki | and the constant term does not depend on R.
+
+14 Proof. For each coefficient, 
+
+p(Rki ) = β(1 − Rki )β−1,
+
+and hence 
+
+− log p(Rki ) = − log β − (β − 1) log(1 − Rki ).
+
+For Rki ≪ 1, we use the first-order Taylor approximation log(1 − Rki ) ≈ − Rki , yielding 
+
+− log p(Rki ) ≈ − log β + ( β − 1) Rki .
+
+Summing over all (k, i ) gives 
+
+− X
+
+> k,i
+
+log p(Rki ) ≈ − KN log β + ( β − 1) X
+
+> k,i
+
+Rki 
+
+= const + ( β − 1) ∥R∥1,
+
+which completes the proof. Lemma B.1 shows that the Beta prior asymptotically induces an ℓ1 penalty with weight λ1 = β − 1,promoting per-sample sparsity. 
+
+B.3 Activation Prior Induces a Row-wise ℓ∞ Barrier 
+
+Recall the activation model 
+
+zk | rk ∼ Bernoulli 
+
+ 11 + exp( −γ(max i Rki − δ)) 
+
+
+
+.
+
+Define the softplus function 
+
+ϕγ (u) = log(1 + eγu ).
+
+Lemma B.2 (Activation Prior and ℓ∞ Barrier) . Up to an additive constant independent of R,
+
+− log P (zk = 0 | rk) ≃ ϕγ (max  
+
+> i
+
+Rki − δ).
+
+Moreover, as γ → ∞ , ϕγ converges to a hard barrier: 
+
+lim  
+
+> γ→∞
+
+ϕγ (u) = 
+
+0, u < 0,
+
+∞, u > 0.
+
+Proof. We have 
+
+P (zk = 1 | rk) = 11 + exp( −γ(max i Rki − δ)) ,
+
+and hence 
+
+P (zk = 0 | rk) = 11 + exp( γ(max i Rki − δ)) .
+
+Therefore, 
+
+− log P (zk = 0 | rk) = log  1 + exp( γ(max  
+
+> i
+
+Rki − δ))  = ϕγ (max  
+
+> i
+
+Rki − δ).
+
+For u < 0, γu → −∞ as γ → ∞ , so ϕγ (u) → 0. For u > 0, γu → +∞ and ϕγ (u) → ∞ . This establishes the barrier behavior. Lemma B.2 shows that the activation prior penalizes the row-wise peak max i Rki and converges to a hard constraint max i Rki ≤ δ as γ → ∞ . This corresponds to a row-wise ℓ∞ regularization on R.15 B.4 Derivation of the MAP Objective 
+
+Substituting Lemmas B.1 and B.2 into the posterior energy 14, and setting the noise scale to σ = 1 
+
+by normalization, we obtain the MAP objective 
+
+min  
+
+> D,R
+
+∥X − DR ∥2 
+
+> F
+
++ ( β − 1) ∥R∥1 +
+
+> K
+
+X
+
+> k=1
+
+ϕγ (max  
+
+> i
+
+Rki − δ).
+
+Writing λ1 = β − 1 and introducing a scaling constant λ2 > 0 for the activation prior yields 
+
+min  
+
+> D,R
+
+∥X − DR ∥2 
+
+> F
+
++ λ1∥R∥1 + λ2
+
+> K
+
+X
+
+> k=1
+
+ϕγ (max  
+
+> i
+
+Rki − δ),
+
+which corresponds to Eq. 7 in the main text. The soft barrier penalizes the row-wise peak max i Rki 
+
+and, for large γ, approaches a hard threshold constraint at δ. The computational objective in Eq. 8 uses the row-wise ℓ∞ term as a convex activation surrogate for this peak-activation cost, thereby completing the proof of Proposition 2.1. 
+
+# C Technical Lemmas for Tradeoff Characterization 
+
+This appendix provides the technical foundations for the tradeoff analysis. We establish sufficient conditions under which non-essential atoms are suppressed, derive a high-probability upper bound on the aggregate activation mass of an atom, and combine these results to obtain a reconstruction error bound. Throughout this section, let rk = ( Rk1, . . . , R kN ) denote the coefficient row corresponding to atom 
+
+dk, and define the objective 
+
+f (D, R ) = ∥X − DR ∥2 
+
+> F
+
++ λ1∥R∥1 + λ2
+
+> K
+
+X
+
+> k=1
+
+∥rk∥∞,
+
+where ∥rk∥∞ = max i |Rki |.
+
+C.1 Sufficient Condition for Atom Suppression Lemma C.1 (Sufficient Condition for Atom Suppression) . Assume that a subset of atoms S satisfies 
+
+∥X − DS RS ∥2 
+
+> F
+
+≤ ε, 
+
+where DS and RS denote the dictionary and coefficients restricted to S. For an atom k / ∈ S, let rk
+
+be its coefficient row and define the residual e = X − DS RS . Suppose ∥dk∥2 = 1 and that 
+
+|e⊤ 
+
+> i
+
+dk| ≤ η for all i. 
+
+If rk̸ = 0 and 
+
+λ1 + λ2
+
+∥rk∥∞
+
+∥rk∥1
+
+> 2η, (16) 
+
+then setting rk = 0 strictly decreases the objective, i.e., f (D, R −k) − f (D, R ) < 0. In particular, for an atom whose peak activation satisfies ∥rk∥∞ ≥ δ, it is sufficient that 
+
+λ1 + λ2
+
+δ
+
+∥rk∥1
+
+> 2η. (17) 
+
+Proof. Let R−k denote the coefficient matrix obtained by zeroing the k-th row of R, and define 
+
+∆f := f (D, R −k) − f (D, R ).16 Reconstruction term. Using X − DR = e − dkr⊤ 
+
+> k
+
+and ∥dk∥2 = 1 , we have 
+
+∥X − DR ∥2 
+
+> F
+
+= ∥e∥2 
+
+> F
+
+− 2
+
+> N
+
+X
+
+> i=1
+
+e⊤ 
+
+> i
+
+dk Rki + ∥rk∥22.
+
+Therefore, 
+
+∆rec = ∥e∥2 
+
+> F
+
+− ∥ X − DR ∥2 
+
+> F
+
+= 2 
+
+> N
+
+X
+
+> i=1
+
+e⊤ 
+
+> i
+
+dk Rki − ∥ rk∥22 ≤ 2η ∥rk∥1,
+
+where the negative quadratic term has been dropped to obtain a valid upper bound. 
+
+Regularization term. Zeroing rk reduces the ℓ1 penalty by λ1∥rk∥1 and reduces the row-wise ℓ∞
+
+penalty by λ2∥rk∥∞. Hence 
+
+∆reg = −λ1∥rk∥1 − λ2∥rk∥∞.
+
+Combining terms. Combining the two bounds gives 
+
+∆f ≤ (2 η − λ1)∥rk∥1 − λ2∥rk∥∞.
+
+Thus ∆f < 0 whenever Eq. 16 holds. If ∥rk∥∞ ≥ δ, then ∥rk∥∞/∥rk∥1 ≥ δ/ ∥rk∥1, and the simpler threshold-dependent condition in Eq. 17 implies Eq. 16. 
+
+C.2 Expected Dictionary Activation Size 
+
+For each atom k, define the indicator of being active under threshold δ:
+
+1k(δ) := I
+
+
+
+max  
+
+> 1≤i≤N
+
+Rki > δ 
+
+
+
+.
+
+Then the active set size satisfies 
+
+|S(δ)| =
+
+> K
+
+X
+
+> k=1
+
+1k(δ), ⇒ E|S(δ)| =
+
+> K
+
+X
+
+> k=1
+
+E 1k(δ).
+
+By identical distribution across k, it suffices to compute E 11(δ) = Pr(max i R1i > δ ).Since {R1i}Ni=1 are i.i.d. with CDF F , we have 
+
+Pr 
+
+
+
+max  
+
+> 1≤i≤N
+
+R1i ≤ δ
+
+
+
+=
+
+> N
+
+Y
+
+> i=1
+
+Pr( R1i ≤ δ) = F (δ)N .
+
+Therefore, 
+
+Pr 
+
+
+
+max  
+
+> 1≤i≤N
+
+R1i > δ 
+
+
+
+= 1 − F (δ)N ,
+
+and hence 
+
+E|S(δ)| =
+
+> K
+
+X
+
+> k=1
+
+Pr 
+
+
+
+max  
+
+> 1≤i≤N
+
+Rki > δ 
+
+
+
+= K 1 − F (δ)N .
+
+Substituting F (δ) = 1 − (1 − δ)β yields 
+
+E|S(δ)| = K
+
+h
+
+1 −  1 − (1 − δ)β N i
+
+,
+
+which proves 24. To show monotonicity and smoothness, note that for β > 0, F (δ) is smooth and strictly increasing on (0 , 1) with density 
+
+f (δ) = F ′(δ) = β(1 − δ)β−1 > 0.
+
+Thus, E|S(δ)| is smooth on (0 , 1) and 
+
+ddδ E|S(δ)| = −K N F (δ)N −1f (δ) < 0,
+
+so it is strictly decreasing in δ.Finally, the endpoint values follow immediately: F (0) = 0 ⇒ E|S(0) | = K(1 − 0) = K, and 
+
+F (1) = 1 ⇒ E|S(1) | = K(1 − 1) = 0 .17 C.3 High-Probability Reconstruction Error Bound Lemma C.2 (High-Probability Upper Bound on ∥rk∥1). Assume Rki 
+
+> i.i.d.
+
+∼ Beta(1 , β ) with β > 1.Then for any τ ∈ (0 , 1) , with probability at least 1 − τ ,
+
+∥rk∥1 ≤ U (N, β, τ ) := N
+
+1 + β +
+
+r N
+
+2 log 1
+
+τ . (18) 
+
+Proof. Each Rki lies in [0 , 1] and satisfies E[Rki ] = 11+ β . Let Sk = PNi=1 Rki = ∥rk∥1. By Hoeffding’s inequality, 
+
+Pr( Sk − E[Sk] ≥ t) ≤ exp 
+
+
+
+− 2t2
+
+N
+
+
+
+.
+
+Setting t =
+
+q N 
+
+> 2
+
+log 1 
+
+> τ
+
+yields 
+
+Pr Sk ≥ N
+
+1 + β +
+
+r N
+
+2 log 1
+
+τ
+
+!
+
+≤ τ, 
+
+which proves the claim. 
+
+Lemma C.3 (High-Probability Reconstruction Bound) . Let e = X − DS RS be the residual using the active atom set S, and define 
+
+η := max  
+
+> i,k
+
+|e⊤ 
+
+> i
+
+dk|.
+
+Assume that every non-essential active candidate k / ∈ S satisfies ∥rk∥∞ ≥ δ. Assume also that the active sub-dictionary satisfies the restricted active-span condition 
+
+∥D⊤ 
+
+> S
+
+ei∥22 ≥ αS ∥ei∥22 for all i, (19) 
+
+for some αS > 0. Then, for any τ ∈ (0 , 1) , with probability at least 1 − τ ,a sufficient condition for suppressing each fixed non-essential atom is 
+
+2η ≤ λ1 + λ2δU (N, β, τ ) . (20) 
+
+Under this condition, the reconstruction error satisfies 
+
+∥e∥2 
+
+> F
+
+≤ N
+
+4
+
+|S|
+
+αS
+
+
+
+λ1 + λ2δU (N, β, τ )
+
+2
+
+with probability at least 1 − τ. (21) 
+
+Proof. From Lemma C.1, if ∥rk∥∞ ≥ δ, a sufficient condition for suppressing a non-essential atom 
+
+k / ∈ S is 
+
+2η ≤ λ1 + λ2
+
+δ
+
+∥rk∥1
+
+.
+
+By Lemma C.2, with probability at least 1 − τ , ∥rk∥1 ≤ U (N, β, τ ). Therefore δ/ ∥rk∥1 ≥
+
+δ/U (N, β, τ ), and Eq. 20 is a sufficient condition. For the geometric part, Eq. 19 gives 
+
+αS ∥ei∥22 ≤ ∥ D⊤ 
+
+> S
+
+ei∥22 = X
+
+> k∈S
+
+(e⊤ 
+
+> i
+
+dk)2.
+
+Since (e⊤ 
+
+> i
+
+dk)2 ≤ η2, we have P 
+
+> k∈S
+
+(e⊤ 
+
+> i
+
+dk)2 ≤ | S|η2, hence 
+
+∥ei∥22 ≤ |S|
+
+αS
+
+η2.
+
+Summing over all i yields 
+
+∥e∥2 
+
+> F
+
+≤ N |S|
+
+αS
+
+η2.
+
+Substituting the bound on η from 20 gives 21. 
+
+Remark C.4 (Geometry of the active-span condition) . The condition in Eq. 19 avoids requiring 
+
+DS D⊤ 
+
+> S
+
+to be full rank. If residuals are restricted to span( DS ) and D⊤ 
+
+> S
+
+DS ⪰ αS I, then Eq. 19 holds. For arbitrary residuals, the same argument controls the component projected onto the active span. 18 D Scaling Behavior and Interpretation 
+
+Recall from Lemma C.3 that, with probability at least 1 − τ , the reconstruction error satisfies 
+
+∥e∥2 
+
+> F
+
+≤ N
+
+4
+
+|S|
+
+αS
+
+
+
+λ1 + λ2δU (N, β, τ )
+
+2
+
+, (22) where S is the active atom set, |S| its cardinality, and αS is the restricted active-span constant from Eq. 19. 
+
+D.1 Dependence on the Number of Samples 
+
+For fixed β and confidence level τ ,
+
+U (N, β, τ ) = N
+
+1 + β +
+
+r N
+
+2 log 1
+
+τ
+
+grows linearly with N as N → ∞ . Consequently, the contribution of the activation term inside the parentheses in Eq. 22 decays as O(1 /N ), and the bound asymptotically simplifies to 
+
+∥e∥2
+
+> F
+
+N = O
+
+ |S|
+
+αS
+
+λ21
+
+
+
+. (23) Thus, the reconstruction error per sample remains bounded in the large-sample regime. Intuitively, as more visual samples become available, the aggregate activation mass ∥rk∥1 of each atom concentrates around its expectation under the Beta prior. The threshold contribution 
+
+λ2δ/U (N, β, τ ) therefore vanishes in the large-sample regime, while the active set size is still controlled by the threshold through E|S(δ)|.
+
+D.2 Roles of ℓ1 and ℓ∞
+
+The two regularizers in the objective contribute in complementary ways. The ℓ1 term determines the asymptotic error floor through λ1. It controls the average magnitude and count of coefficients within each sample, thereby governing per-sample representation complexity. In the large-N regime, λ1 becomes the dominant factor shaping the reconstruction error. In contrast, the row-wise ℓ∞ term enters the suppression condition through 
+
+∥rk∥∞
+
+∥rk∥1
+
+,
+
+and, for atoms whose peak exceeds the threshold, through the conservative quantity δ/U (N, β, τ ).This ratio is large for atoms whose usage is concentrated in a small number of samples, so such atoms are more easily suppressed when they are weakly aligned with the residual. Conversely, atoms that contribute frequently across samples incur only a vanishing activation penalty as N grows. This mechanism formalizes the intended behavior of the combined ℓ1–ℓ∞ regularization: it favors atoms that provide stable, compositional structure while eliminating peak-only or idiosyncratic components. In the context of visual representations, the model retains primitives that recur across many samples and discards those that encode transient or sample-specific artifacts. 
+
+D.3 Dependence on Dictionary Geometry 
+
+The factor |S|/α S in Eq. 22 captures the effective model complexity. The cardinality |S| measures how many atoms are actually used, while αS quantifies how well the active span captures the residual directions being bounded. Even with a large nominal dictionary, the bound depends only on the active subset and its restricted active-span conditioning. Poorly conditioned or overly redundant selections (small αS ) can inflate the bound, whereas compact and well-spread subsets yield tighter guarantees. This reveals that reconstruction accuracy is governed jointly by statistical regularization and the geometry of the selected representation. 19 D.4 Optimal Activation Threshold δ⋆
+
+We can further obtain an explicit characterization of the optimal activation threshold δ by minimizing a proxy of the theoretical upper bound. The key observation is that δ controls the expected active dictionary size through the Beta prior, while simultaneously entering the reconstruction bound through the activation penalty term. 
+
+Active set size as a function of δ. Define the active atom set induced by thresholding 
+
+S(δ) := {k ∈ [K] : max  
+
+> 1≤i≤N
+
+Rki > δ }.
+
+Under Rki i.i.d. 
+
+∼ Beta(1 , β ), let 
+
+F (δ) := Pr( Rki ≤ δ) = 1 − (1 − δ)β , f (δ) := F ′(δ) = β(1 − δ)β−1.
+
+Then 
+
+E|S(δ)| = K
+
+
+
+1 − F (δ)N 
+
+, (24) since Pr(max i Rki ≤ δ) = F (δ)N .
+
+A bound-driven objective. From Lemma C.3, the reconstruction error bound takes the form 
+
+∥e∥2 
+
+> F
+
+≲ N
+
+4
+
+|S|
+
+αS
+
+
+
+λ1 + λ2δU (N, β, τ )
+
+2
+
+.
+
+Treating αS as approximately constant with respect to δ (standard in such proxy optimization), and replacing |S| by its expectation in 24, we minimize the scalar objective 
+
+Φ( δ) := 
+
+
+
+1 − F (δ)N  
+
+λ1 + λ2δU (N, β, τ )
+
+2
+
+, δ ∈ [0 , 1] . (25) This objective explicitly captures the sparsity–storage–accuracy tradeoff: 1 − F (δ)N decreases with 
+
+δ (fewer active atoms, lower storage), while the factor λ1 + λ2δ/U (·) increases with δ (stronger activation constraint, potentially higher error). 
+
+Closed-form optimality condition. A stationary point δ⋆ ∈ (0 , 1) of 25 satisfies 
+
+N F (δ)N −1 f (δ)1 − F (δ)N = 2λ2
+
+U (N, β, τ )
+
+
+
+λ1 + λ2δU (N,β,τ )
+
+ . (26) The left-hand side is determined solely by the Beta prior and sample count N , while the right-hand side depends on the regularization scale λ1, activation weight λ2, and concentration term U (N, β, τ ).In practice, δ⋆ can be obtained efficiently by one-dimensional root finding (e.g., bisection or Newton’s method), yielding a stable and deterministic hyperparameter selection rule. 
+
+Remark D.1 (Non-degenerate regime) . The bound in Proposition 2.4 is derived under the restricted active-span condition in Eq. 19. When δ → 1, the active set S(δ) becomes empty and this condition is violated, so the bound no longer applies. Therefore, the endpoint δ = 1 corresponds to a degenerate regime and is excluded from the feasible domain. The meaningful optimum lies in the interior 
+
+δ ∈ (0 , 1) , where the stationary condition in Eq. 26 characterizes the trade-off between sparsity, storage, and accuracy. 
+
+D.5 Interpretation from an MDL Perspective 
+
+From a Minimum Description Length (MDL) viewpoint, the objective 
+
+∥X − DR ∥2 
+
+> F
+
++ λ1∥R∥1 +
+
+> K
+
+X
+
+> k=1
+
+∥rk∥∞
+
+can be interpreted as trading off three code lengths: the cost of encoding the residual, the cost of encoding sparse coefficients, and the cost of instantiating dictionary atoms. 20 The ℓ1 term penalizes the number and magnitude of nonzero coefficients, corresponding to the description length of per-sample codes. The row-wise ℓ∞ term penalizes whether an atom is used at all, corresponding to the cost of introducing a new primitive into the model. In this sense, the activation penalty performs model selection over atoms, while the sparsity penalty performs compression within the selected model. The theory therefore shows that the PADL formulation can be interpreted as Bayesian model selection under an auxiliary activation prior. 
+
+# E VLM Inference Compression 
+
+This section provides the detailed VLM formulation, compression protocol, and supplementary validation for PADL-based visual-representation compression. The main image and video results are reported in the main text, while the appendix focuses on implementation details and threshold validation. 
+
+E.1 VLM Integration 
+
+The parsimoniously activated dictionary learning paradigm can be naturally integrated into VLM inference as a structured visual compression module. In modern multimodal systems, images and videos are encoded into long sequences of visual tokens that often contain substantial redundancy. These dense prefixes dominate both computation and communication cost, especially in edge-cloud deployment scenarios, where visual features must be transmitted to a remote language model. Consider a standard VLM pipeline. An image I ∈ RC×H×W or a video Ivid ∈ RNt×C×H×W is processed by a vision encoder that partitions each frame into Ns = Hp × Wp non-overlapping patches and maps each patch to a d-dimensional embedding. For frame i, this yields 
+
+Z(i) 
+
+> V
+
+= [ zi, 1, . . . , zi,N s ] ∈ RNs×d, zi,j ∈ Rd.
+
+Aggregating all frames gives a visual token matrix 
+
+ZV ∈ RNV ×d, NV = NtNs,
+
+which is concatenated with the textual embedding ZT ∈ RLT ×d and fed into the LLM for autoregres-sive generation. Our method inserts a dictionary-based compression layer on ZV . We learn a visual dictionary 
+
+DV ∈ Rd×K and compute a sparse representation 
+
+ZV ≈ (DV RV )T , RV ∈ RK×NV ,
+
+where each column of RV is sparse and only a small subset of atoms in DV are globally activated. In an edge-cloud setting, the sparse codes can be quantized and transmitted: 
+
+eRV = Quantize( RV ),
+
+together with the activated sub-dictionary DS ⊂ DV . As shown in Figure 2, on the cloud side, visual tokens can be reconstructed by 
+
+Z∗ 
+
+> V
+
+= ( DS eRV )T ,
+
+and then concatenated with ZT for standard VLM inference. Alternatively, a lightweight adapter fa
+
+can be trained to directly process the sparse representation: 
+
+eZ∗ 
+
+> V
+
+= fa( eRV , DS ),
+
+bypassing explicit reconstruction. This enables the language model to operate on compressed visual features, yielding further acceleration. In both modes, our framework reduces the visual representation size and controls the number of stored primitives through a principled sparsity-storage-accuracy tradeoff. 21 E.2 Compression Setting and Evaluation Protocol 
+
+We evaluate PADL as a sparse visual-representation compression module. In this setting, the visual features produced by the vision encoder are projected onto a learned dictionary, and the resulting sparse codes are used as compact visual representations. The reported compression ratio refers to the reduction in visual representation size induced by dimensional compression and quantization. Specifically, for image inputs we apply 4× dimensional compression together with 2× quantization, resulting in an overall 8× representation-size reduction. For video inputs, we apply 8× dimensional compression together with 2× quantization, resulting in an overall 16 × representation-size reduction. For image VQA experiments, we use LLaVA-1.5 [ 23 ] as the backbone and evaluate on VQAv2 [ 16 ], ScienceQA-IMG [ 25 ], TextVQA [ 36 ], POPE [ 21 ], MME [ 15 ], and MMBench [ 24 ]. The dictionary contains 1024 atoms. We compare the original LLaVA-1.5 model with LLaVA-PruMerge [ 35 ], FreePruner [ 44 ], PADL without adapter fine-tuning, and PADL with a lightweight adapter. We denote the version without adapter fine-tuning as PADL , and the version with adapter fine-tuning as PADL+ .The adapter is trained on the LLaVA-1.5 instruction-tuning dataset. For video VQA experiments, we use Video-LLaVA as the backbone and evaluate on MSVD-QA [ 8], MSRVTT-QA [ 45 ], ActivityNet-QA [ 46 ], and TGIF-QA [ 18 ]. The adapter is fine-tuned on the Valley dataset [ 26 ]. The evaluation follows the same protocol as prior video VQA work, reporting both accuracy and GPT-based answer-quality scores where applicable. 
+
+E.3 Computational Overhead 
+
+Table 8 reports the parameter and FLOP overhead introduced by the PADL-based VLM compression module. The dictionary encoding and adapter introduce additional computation, but this overhead is substantially smaller than the downstream LLM-side computation saved by compressing visual representations. This supports the practical motivation of applying PADL to VLM inference, where the visual prefix can contribute significantly to the total computational cost. In the direct-adapter mode, the adapter maps the compressed sparse representation to a shorter visual prefix before LLM decoding, which accounts for the reported LLM-side FLOP saving. Table 8: Parameter and FLOP overhead of the PADL-based VLM compression module. The LLM-side computation saving is measured under the video-input setting.         
+
+> Item Parameters FLOPs Dictionary encoding 8.91M +1.973T Adapter 38.05M +13.0G LLM-side computation saving –−25 .64 T
+
+E.4 Threshold Validation on VLM Compression 
+
+To examine whether the threshold predicted by our theory remains meaningful in the VLM setting, we perform a threshold sweep on VQAv2 using PADL without adapter fine-tuning. We vary the activation threshold δ from 0.38 to 0.46 with step size 0.02. The theoretically predicted optimal threshold is δ = 0 .412 , which is close to the empirical optimum at δ = 0 .42 .Table 9: Threshold validation for PADL-based VLM compression on VQAv2 without adapter fine-tuning. The theoretically predicted threshold δ = 0 .412 closely matches the empirical optimum around δ = 0 .42 .          
+
+> δ0.38 0.40 0.42 0.44 0.46 VQAv2 Accuracy 71.5 74.8 77.0 76.8 76.7
+
+These results suggest that the proposed data-driven threshold estimation can provide a useful operating point even in the VLM compression setting. We emphasize that this experiment is not intended to replace the controlled reconstruction experiments in the main text, but rather to show that the threshold-selection principle transfers to a larger multimodal application scenario. 22 E.5 Main VLM Results 
+
+The main image and video VQA results are reported in Tables 5 and 6. This appendix focuses on the detailed compression setup, computational overhead, and threshold validation. 
+
+E.6 Discussion 
+
+The VLM experiments support three observations. First, PADL can be used as a plug-in visual compression module for both image and video VLMs. Second, the predicted activation threshold provides a useful operating point in the VLM setting, as shown by the VQAv2 threshold sweep in Table 9. Third, adapter fine-tuning can further align compressed sparse representations with the downstream language model, improving the performance of PADL+ over the no-adapter variant. We emphasize that these experiments are not intended to claim that PADL universally dominates all VLM token-pruning or token-merging methods. Instead, they show that this SSA-based dictionary learning framework can be integrated into multimodal inference pipelines and can achieve favorable compression–performance tradeoffs. The main theoretical and empirical claims of the paper are supported by the controlled reconstruction experiments in the main text, where reconstruction accuracy, coefficient sparsity, and activated dictionary size can be directly measured. 
+
+# F Additional Dictionary Learning Experiments 
+
+This section reports additional dictionary-learning experiments that further support the empirical claims in the main paper. These experiments are designed to evaluate modern sparse-representation baselines, optimization stability, robustness to warm-up length and nominal dictionary size, mini-batch approximation, post-training pruning, and the effect of patch-boundary artifacts on SSIM. They are placed in the appendix because the main text focuses on the core sparsity–storage–accuracy (SSA) tradeoff and the corresponding theoretical analysis. 
+
+F.1 Comparison with Recent Sparse-Representation Baselines 
+
+In addition to classical dictionary-learning and Bayesian sparse coding baselines, we compare PADL with recent sparse-representation methods, including CRsAE and JumpReLU SAE. We also report an 
+
+L1-regularized dictionary learning baseline to isolate the effect of the proposed row-wise activation regularization. All results are averaged over 10 repeated runs. Table 10: Comparison with recent sparse-representation baselines on CIFAR-100 and SVHN. Results are reported as mean and standard deviation over 10 repeated runs. Lower RMSE is better; higher PSNR and SSIM are better.                                                                             
+
+> Dataset Method RMSE PSNR SSIM CIFAR-100 CRsAE [41] 0.106 ±0.007 20 .128 ±0.561 0.557 ±0.035
+> JumpReLU SAE [34] 0.104 ±0.016 19 .584 ±0.971 0.520 ±0.041
+> L1-Regularized DL 0.112 ±0.006 18 .980 ±0.540 0.545 ±0.030
+> PADL 0.099 ±0.009 20 .560 ±0.554 0.568 ±0.030
+> SVHN CRsAE [41] 0.092 ±0.006 20 .302 ±0.599 0.565 ±0.025
+> JumpReLU SAE [34] 0.091 ±0.010 20 .008 ±1.194 0.518 ±0.042
+> L1-Regularized DL 0.094 ±0.012 20 .465 ±1.031 0.559 ±0.037
+> PADL 0.090 ±0.006 20 .880 ±1.030 0.583 ±0.037
+
+These results show that PADL is competitive not only with classical sparse coding methods, but also with more recent sparse-representation baselines. The improvement over the L1-regularized baseline suggests that the row-wise activation-aware term provides benefits beyond ordinary element-wise sparsity. 23 F.2 Training Time and Activated Dictionary Size 
+
+We further compare training time, activated atoms, and reconstruction error on CIFAR-100 using 2000 samples, 8 × 8 patches, and 400 training iterations. The number of activated atoms measures the effective dictionary size after training. Table 11: Training time, activated atoms, and reconstruction error on CIFAR-100. PADL is not the fastest method, but it achieves the lowest RMSE while using the fewest activated atoms among the recent sparse-representation baselines.                
+
+> Method Train Time Activated Atoms RMSE K-SVD 661.4s 20 0.152 CRsAE [41] 32.0s 56 0.106 JumpReLU SAE [34] 3.1s 61 0.104
+> PADL 44.2s 19 0.099
+
+The results indicate that PADL remains within a practical training-time range while learning a more compact effective dictionary. Compared with CRsAE and JumpReLU SAE, PADL uses fewer activated atoms and achieves lower reconstruction error. This supports the claim that PADL improves the sparsity–storage–accuracy tradeoff rather than merely improving reconstruction accuracy. 
+
+F.3 Effect of Patch-Boundary Artifacts on SSIM 
+
+The relatively low SSIM values in the main patch-based reconstruction protocol are partly caused by patch-boundary artifacts. To verify this, we conduct an additional experiment on CIFAR-100 using overlapping reconstruction. The overlap reduces stitching artifacts between neighboring patches. Table 12: Reconstruction performance on CIFAR-100 with overlapping reconstruction. The improve-ment in SSIM confirms that the lower SSIM in the original patch-based protocol is partly caused by patch-boundary artifacts.             
+
+> Method SSIM RMSE PSNR CRsAE [41] 0.8337 0.1012 23.0179 JumpReLU SAE [34] 0.7366 0.0959 23.9402
+> PADL 0.8402 0.0937 24.7478
+
+With overlapping reconstruction, PADL achieves an SSIM of 0.8402, substantially higher than the value obtained under the non-overlapping patch protocol. This suggests that the original SSIM scores should be interpreted together with the patch-based evaluation setting, and that PADL remains competitive when patch-boundary artifacts are mitigated. 
+
+F.4 Optimization Stability 
+
+Although the PADL objective is non-convex and contains a non-smooth row-wise ℓ∞-type regu-larization term, the alternating optimization procedure is empirically stable. Table 13 reports the evolution of the reconstruction term, the element-wise sparsity term, and the row-wise activation term on CIFAR-100 and SVHN. Each term is averaged by sample size. The reconstruction and regularization terms show clear descent and stabilization behavior on both datasets. On SVHN, the L1 term slightly increases from iteration 300 to 400, but the overall optimiza-tion remains stable and the reconstruction term continues to decrease. These results provide empirical evidence that the non-smooth activation-aware regularization does not cause severe oscillation or divergence under our training settings. 24 Table 13: Optimization behavior of the three objective terms on CIFAR-100 and SVHN. The objective terms generally decrease and stabilize during training, suggesting stable empirical optimization behavior.                                      
+
+> Iter CIFAR-100 SVHN Recon L1L∞Recon L1L∞
+> 20 0.774834 0.252 0.748664 1.344806 0.251 0.701239 100 0.658850 0.186 0.701099 1.084268 0.224 0.507329 200 0.649933 0.165 0.594202 0.737957 0.214 0.451594 300 0.647558 0.151 0.518092 0.583525 0.203 0.447624 400 0.647077 0.141 0.507625 0.545520 0.209 0.439489
+
+F.5 Robustness to Warm-Up Length 
+
+PADL estimates prior-related parameters during a warm-up stage. To evaluate whether the method is sensitive to the exact warm-up length, we vary the number of warm-up steps ts on CIFAR-100 and report results over 10 repeated runs. Table 14: Effect of warm-up steps ts on CIFAR-100. Results are reported over 10 repeated runs.                     
+
+> ts10 30 50 70 100 RMSE 0.1074 ±0.0127 0.1015 ±0.0115 0.0994 ±0.0093 0.0992 ±0.0101 0.0989 ±0.0088
+
+When ts increases from 10 to 100, RMSE improves from 0.1074 to 0.0989. More importantly, once the warm-up length reaches a moderate range, performance becomes stable: the difference between 
+
+ts = 50 , ts = 70 , and ts = 100 is small. This indicates that PADL is not highly sensitive to the exact warm-up length as long as a reasonable warm-up stage is used. 
+
+F.6 Robustness to Nominal Dictionary Size 
+
+We next vary the nominal dictionary size K on CIFAR-100. Since PADL is designed to control the effective activated dictionary size, the number of activated atoms should grow much more slowly than the nominal dictionary size. Table 15: Effect of nominal dictionary size K on CIFAR-100. Results are reported over 10 repeated runs. Although K increases by 16 ×, the number of activated atoms grows only moderately.                               
+
+> K32 64 128 256 512 RMSE 0.1013 ±0.0119 0.0997 ±0.0113 0.0994 ±0.0093 0.1002 ±0.0102 0.1030 ±0.0129
+> Activated Atoms 13 14 19 21 24 Activated Ratio 41% 22% 15% 8% 5%
+
+Although the nominal dictionary size increases from 32 to 512, the number of activated atoms only increases from 13 to 24. This demonstrates that PADL does not simply activate proportionally more atoms as the initial dictionary becomes larger. Instead, it maintains a relatively compact effective active subset, which is consistent with the intended role of the row-wise activation regularization. 
+
+F.7 Mini-Batch Approximation 
+
+The row-wise activation term introduces cross-sample dependence at the latent-code level. For large-scale datasets, full-batch optimization may be impractical, so we use mini-batch approximation in large-scale settings. Table 16 compares full-batch and mini-batch optimization on CIFAR-100. The difference between full-batch and mini-batch optimization is small under this setting. This supports the use of mini-batch approximation when scaling PADL to larger datasets or higher-dimensional visual features. 25 Table 16: Comparison between full-batch and mini-batch optimization on CIFAR-100. Mini-batch optimization closely matches the full-batch result.              
+
+> Setting RMSE PSNR SSIM Full-batch, N= 2000 0.099 20.56 0.568 Mini-batch, B= 256 0.101 20.54 0.567
+
+F.8 Post-Training Dictionary Pruning 
+
+PADL does not dynamically shrink the nominal dictionary size during training. Instead, it encourages the data to concentrate usage on a compact subset of atoms, which makes post-training pruning possi-ble. To evaluate this effect, we prune low-utilization atoms after training and measure reconstruction performance on CIFAR-100. Table 17: Post-training pruning on CIFAR-100. PADL supports substantial atom pruning with limited degradation, indicating that it learns a compact effective dictionary.                     
+
+> Pruning Ratio 30% 40% 50% 60% 70% RMSE 0.098 0.100 0.101 0.101 0.102 PSNR 20.05 20.03 19.98 19.91 19.81 SSIM 0.561 0.557 0.551 0.544 0.536
+
+Even when 60% of atoms are pruned, RMSE only changes to 0.101. This suggests that many low-utilization atoms are not essential for reconstruction and that PADL concentrates representation usage onto a compact active subset. Therefore, the main efficiency benefit of PADL should be understood as effective dictionary compression and deployment-time pruning, rather than training-time reduction of the nominal dictionary size. 
+
+F.9 Empirical Reasonableness of the Beta Surrogate 
+
+The probabilistic derivation of PADL uses a Beta-inspired surrogate prior over coefficients. We do not interpret optimized coefficients as literal i.i.d. Beta samples. Instead, the Beta prior is used as a tractable surrogate that induces an interpretable objective and enables data-driven hyperparameter estimation. To assess the empirical reasonableness of this surrogate, we fit a Beta distribution to the warm-up coefficients on CIFAR-100. Table 18: Empirical Beta fit of warm-up coefficients on CIFAR-100. The fitted distribution is close to the assumed Beta(1 , β ) family.       
+
+> ˆαˆβKS Statistic Q-Q RMSE 0.956 2.31 0.0115 0.005366
+
+The fitted value ˆα = 0 .956 is close to 1, and the discrepancy measures are small. This supports the use of the Beta(1 , β ) family as a practical approximation for deriving a tractable MAP surrogate and estimating hyperparameters from warm-up coefficients. 
+
+F.10 Warm-Up Cost Compared with Grid Search 
+
+The warm-up stage is used for one-shot data-driven parameter estimation. It is not a repeated hyperparameter search procedure. To illustrate the difference, we compare the cost of our warm-up-based estimation with repeated parameter search on 2000 CIFAR-100 samples. These results show that warm-up estimation is substantially cheaper than repeated parameter search. This supports our characterization of warm-up as a one-shot parameter-estimation step rather than a bi-level or grid-search procedure. 26 Table 19: Cost comparison between warm-up-based parameter estimation and repeated parameter search on 2000 CIFAR-100 samples.           
+
+> Procedure Time Cost PADL warm-up + training 52.5651s 10 rounds of parameter search 395.2022s Estimated 10 ×10 ×10 grid search 10.98h
+
+F.11 Additional Baseline: Group-Sparse Regularization 
+
+The row-wise activation regularization in PADL is related to structured sparsity, but it is not equivalent to a standard group-sparse penalty. To examine this distinction, we compare with an ℓ2,1-regularized baseline on CIFAR-100. Table 20: Comparison with an ℓ2,1-regularized baseline on CIFAR-100. The ℓ2,1 baseline uses 23% of atoms but gives worse reconstruction than PADL.       
+
+> Method Activated Atom Ratio RMSE
+> ℓ2,1-Regularized Baseline 23% 0.115
+> PADL 15% 0.099
+
+This result suggests that PADL is not merely replacing the element-wise sparsity penalty with a generic group-sparse regularizer. The row-wise activation-aware term is designed to control the effective activated dictionary size across samples, which leads to a better reconstruction–storage tradeoff under this setting. 
+
+F.12 Summary 
+
+The additional experiments support the main claims from several perspectives. First, PADL remains competitive against recent sparse-representation baselines while using fewer activated atoms. Second, the optimization process is empirically stable despite the non-convex and non-smooth objective. Third, the method is robust to moderate changes in warm-up length and nominal dictionary size. Fourth, mini-batch approximation closely matches full-batch optimization in the controlled setting. Fifth, post-training pruning confirms that PADL concentrates usage on a compact effective dictionary. Finally, the Beta-fit experiment and warm-up cost comparison support the practical role of the probabilistic surrogate and the one-shot parameter-estimation procedure. 
+
+# G Limitations 
+
+This work focuses on revisiting PADL through a probabilistic lens and deriving practical calibration rules, rather than exhaustively covering all dictionary-learning variants. The analysis uses a Beta-inspired surrogate prior and an active-span condition to obtain tractable characterizations of atom suppression, activated dictionary size, and reconstruction error. These assumptions are used to guide data-driven hyperparameter estimation, and our empirical results suggest that the resulting estimates provide useful operating points. The current implementation adopts a one-shot warm-up stage for efficiency; iterative parameter re-estimation may further refine the calibration. The VLM experiments serve as application-level validation for visual-representation compression, and broader evaluation across additional backbones and deployment settings is left for future work. 
+
+# H Broader Impacts 
+
+This work primarily contributes to the academic study of dictionary learning, sparse representation, and structured compression. By revisiting PADL through a probabilistic perspective, the paper provides a bridge between optimization-based dictionary-learning objectives and generative modeling interpretations. We expect this connection to be useful for future research on theoretically grounded sparse coding, interpretable representation learning, and data-driven hyperparameter calibration. 27 A potential positive impact of this work is that it encourages more systematic analysis of the tradeoff among sparsity, storage, and accuracy. This tradeoff is increasingly important as machine learning models are deployed in settings where memory, communication, and computational resources are constrained. The proposed analysis may help researchers design more compact representations without relying solely on exhaustive hyperparameter search, thereby improving the accessibility and efficiency of experimental research. The VLM experiments further suggest that storage-aware dictionary learning may be a useful tool for studying visual-representation compression in multimodal systems. In this sense, the work may support future academic research on efficient VLM inference, edge-cloud collaboration, and compositional visual representations. At the same time, the proposed method is a general representation-compression technique and does not by itself address the broader risks of downstream multimodal models, such as hallucination, bias, privacy leakage, or misuse. When integrated into deployed VLM systems, it may inherit the risks and limitations of those systems. We therefore view the VLM results as application-level validation of the sparsity–storage–accuracy principle rather than as a standalone deployment-ready solution. 28 NeurIPS Paper Checklist 
+
+1. Claims 
+
+Question: Do the main claims made in the abstract and introduction accurately reflect the paper’s contributions and scope? Answer: [Yes] Justification: The abstract and introduction state the scope of the proposed PADL framework, including its probabilistic motivation, activation-aware regularization, theoretical analysis, and empirical validation. The claims are aligned with the theoretical results and experimental evidence presented in the main text and appendix. Guidelines: In the introduction we highlighted the theoretical contributions with experimen-tal validations. • The answer [N/A] means that the abstract and introduction do not include the claims made in the paper. • The abstract and/or introduction should clearly state the claims made, including the contributions made in the paper and important assumptions and limitations. A [No] or [N/A] answer to this question will not be perceived well by the reviewers. • The claims made should match theoretical and experimental results, and reflect how much the results can be expected to generalize to other settings. • It is fine to include aspirational goals as motivation as long as it is clear that these goals are not attained by the paper. 2. Limitations 
+
+Question: Does the paper discuss the limitations of the work performed by the authors? Answer: [Yes] Justification: The paper discusses limitations related to computational cost, parameter sensitivity, storage–accuracy trade-offs, and the experimental scope. Additional runtime, parameter, and ablation results are provided in the experiments and appendix. Guidelines: • The answer [N/A] means that the paper has no limitation while the answer [No] means that the paper has limitations, but those are not discussed in the paper. • The authors are encouraged to create a separate “Limitations” section in their paper. • The paper should point out any strong assumptions and how robust the results are to violations of these assumptions (e.g., independence assumptions, noiseless settings, model well-specification, asymptotic approximations only holding locally). The authors should reflect on how these assumptions might be violated in practice and what the implications would be. • The authors should reflect on the scope of the claims made, e.g., if the approach was only tested on a few datasets or with a few runs. In general, empirical results often depend on implicit assumptions, which should be articulated. • The authors should reflect on the factors that influence the performance of the approach. For example, a facial recognition algorithm may perform poorly when image resolution is low or images are taken in low lighting. Or a speech-to-text system might not be used reliably to provide closed captions for online lectures because it fails to handle technical jargon. • The authors should discuss the computational efficiency of the proposed algorithms and how they scale with dataset size. • If applicable, the authors should discuss possible limitations of their approach to address problems of privacy and fairness. • While the authors might fear that complete honesty about limitations might be used by reviewers as grounds for rejection, a worse outcome might be that reviewers discover limitations that aren’t acknowledged in the paper. The authors should use their best judgment and recognize that individual actions in favor of transparency play an impor-tant role in developing norms that preserve the integrity of the community. Reviewers will be specifically instructed to not penalize honesty concerning limitations. 29 3. Theory assumptions and proofs 
+
+Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof? Answer: [Yes] Justification: The main theoretical statements explicitly state the required assumptions, including the probabilistic model, activation thresholding rule, and restricted active-span condition. Complete derivations and proofs are provided in the appendix, with the main text presenting the key statements and intuition. Guidelines: • The answer [N/A] means that the paper does not include theoretical results. • All the theorems, formulas, and proofs in the paper should be numbered and cross-referenced. • All assumptions should be clearly stated or referenced in the statement of any theorems. • The proofs can either appear in the main paper or the supplemental material, but if they appear in the supplemental material, the authors are encouraged to provide a short proof sketch to provide intuition. • Inversely, any informal proof provided in the core of the paper should be complemented by formal proofs provided in appendix or supplemental material. • Theorems and Lemmas that the proof relies upon should be properly referenced. 4. Experimental result reproducibility 
+
+Question: Does the paper fully disclose all the information needed to reproduce the main ex-perimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper (regardless of whether the code and data are provided or not)? Answer: [Yes] Justification: The paper reports the datasets, preprocessing procedures, model configurations, dictionary sizes, optimization settings, hyperparameter calibration procedure, and baseline configurations needed to reproduce the main experimental results. Additional details are included in the appendix. Guidelines: • The answer [N/A] means that the paper does not include experiments. • If the paper includes experiments, a [No] answer to this question will not be perceived well by the reviewers: Making the paper reproducible is important, regardless of whether the code and data are provided or not. • If the contribution is a dataset and/or model, the authors should describe the steps taken to make their results reproducible or verifiable. • Depending on the contribution, reproducibility can be accomplished in various ways. For example, if the contribution is a novel architecture, describing the architecture fully might suffice, or if the contribution is a specific model and empirical evaluation, it may be necessary to either make it possible for others to replicate the model with the same dataset, or provide access to the model. In general. releasing code and data is often one good way to accomplish this, but reproducibility can also be provided via detailed instructions for how to replicate the results, access to a hosted model (e.g., in the case of a large language model), releasing of a model checkpoint, or other means that are appropriate to the research performed. • While NeurIPS does not require releasing code, the conference does require all submis-sions to provide some reasonable avenue for reproducibility, which may depend on the nature of the contribution. For example (a) If the contribution is primarily a new algorithm, the paper should make it clear how to reproduce that algorithm. (b) If the contribution is primarily a new model architecture, the paper should describe the architecture clearly and fully. (c) If the contribution is a new model (e.g., a large language model), then there should either be a way to access this model for reproducing the results or a way to reproduce the model (e.g., with an open-source dataset or instructions for how to construct the dataset). 30 (d) We recognize that reproducibility may be tricky in some cases, in which case authors are welcome to describe the particular way they provide for reproducibility. In the case of closed-source models, it may be that access to the model is limited in some way (e.g., to registered users), but it should be possible for other researchers to have some path to reproducing or verifying the results. 5. Open access to data and code 
+
+Question: Does the paper provide open access to the data and code, with sufficient instruc-tions to faithfully reproduce the main experimental results, as described in supplemental material? Answer: [No] Justification: The current submission does not include a public code release. Nevertheless, the paper provides algorithmic details, dataset descriptions, preprocessing procedures, and experimental settings to support independent reimplementation; an anonymized code release is planned. Guidelines: • The answer [N/A] means that paper does not include experiments requiring code. • Please see the NeurIPS code and data submission guidelines ( https://neurips.cc/ public/guides/CodeSubmissionPolicy ) for more details. • While we encourage the release of code and data, we understand that this might not be possible, so [No] is an acceptable answer. Papers cannot be rejected simply for not including code, unless this is central to the contribution (e.g., for a new open-source benchmark). • The instructions should contain the exact command and environment needed to run to reproduce the results. See the NeurIPS code and data submission guidelines ( https: //neurips.cc/public/guides/CodeSubmissionPolicy ) for more details. • The authors should provide instructions on data access and preparation, including how to access the raw data, preprocessed data, intermediate data, and generated data, etc. • The authors should provide scripts to reproduce all experimental results for the new proposed method and baselines. If only a subset of experiments are reproducible, they should state which ones are omitted from the script and why. • At submission time, to preserve anonymity, the authors should release anonymized versions (if applicable). • Providing as much information as possible in supplemental material (appended to the paper) is recommended, but including URLs to data and code is permitted. 6. Experimental setting/details 
+
+Question: Does the paper specify all the training and test details (e.g., data splits, hyperpa-rameters, how they were chosen, type of optimizer) necessary to understand the results? Answer: [Yes] Justification: The experimental section and appendix specify the data splits, preprocessing, dictionary sizes, training schedules, hyperparameters, hyperparameter selection procedure, optimizer settings, and baseline implementations used in the reported experiments. Guidelines: • The answer [N/A] means that the paper does not include experiments. • The experimental setting should be presented in the core of the paper to a level of detail that is necessary to appreciate the results and make sense of them. • The full details can be provided either with the code, in appendix, or as supplemental material. 7. Experiment statistical significance 
+
+Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments? Answer: [Yes] 31 Justification: The appendix reports standard deviations for repeated experimental runs where applicable. These error estimates quantify variability across repeated runs under the same experimental settings. Guidelines: • The answer [N/A] means that the paper does not include experiments. • The authors should answer [Yes] if the results are accompanied by error bars, confidence intervals, or statistical significance tests, at least for the experiments that support the main claims of the paper. • The factors of variability that the error bars are capturing should be clearly stated (for example, train/test split, initialization, random drawing of some parameter, or overall run with given experimental conditions). • The method for calculating the error bars should be explained (closed form formula, call to a library function, bootstrap, etc.) • The assumptions made should be given (e.g., Normally distributed errors). • It should be clear whether the error bar is the standard deviation or the standard error of the mean. • It is OK to report 1-sigma error bars, but one should state it. The authors should preferably report a 2-sigma error bar than state that they have a 96% CI, if the hypothesis of Normality of errors is not verified. • For asymmetric distributions, the authors should be careful not to show in tables or figures symmetric error bars that would yield results that are out of range (e.g., negative error rates). • If error bars are reported in tables or plots, the authors should explain in the text how they were calculated and reference the corresponding figures or tables in the text. 8. Experiments compute resources 
+
+Question: For each experiment, does the paper provide sufficient information on the com-puter resources (type of compute workers, memory, time of execution) needed to reproduce the experiments? Answer: [Yes] Justification: The paper reports the computational resources used for the experiments, including the relevant hardware setting and runtime or overhead measurements. Additional compute-related details are provided in the appendix. Guidelines: • The answer [N/A] means that the paper does not include experiments. • The paper should indicate the type of compute workers CPU or GPU, internal cluster, or cloud provider, including relevant memory and storage. • The paper should provide the amount of compute required for each of the individual experimental runs as well as estimate the total compute. • The paper should disclose whether the full research project required more compute than the experiments reported in the paper (e.g., preliminary or failed experiments that didn’t make it into the paper). 9. Code of ethics 
+
+Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics https://neurips.cc/public/EthicsGuidelines ?Answer: [Yes] Justification: The research follows the NeurIPS Code of Ethics. The work uses standard public datasets and pretrained models, does not involve human-subject studies, and is reported in an anonymized form for submission. Guidelines: • The answer [N/A] means that the authors have not reviewed the NeurIPS Code of Ethics. • If the authors answer [No], they should explain the special circumstances that require a deviation from the Code of Ethics. 32 • The authors should make sure to preserve anonymity (e.g., if there is a special consid-eration due to laws or regulations in their jurisdiction). 10. Broader impacts 
+
+Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work performed? Answer: [N/A] Justification: This is a fundamental research and not tied to particular applications. Guidelines: • The answer [N/A] means that there is no societal impact of the work performed. • If the authors answer [N/A] or [No], they should explain why their work has no societal impact or why the paper does not address societal impact. • Examples of negative societal impacts include potential malicious or unintended uses (e.g., disinformation, generating fake profiles, surveillance), fairness considerations (e.g., deployment of technologies that could make decisions that unfairly impact specific groups), privacy considerations, and security considerations. • The conference expects that many papers will be foundational research and not tied to particular applications, let alone deployments. However, if there is a direct path to any negative applications, the authors should point it out. For example, it is legitimate to point out that an improvement in the quality of generative models could be used to generate Deepfakes for disinformation. On the other hand, it is not needed to point out that a generic algorithm for optimizing neural networks could enable people to train models that generate Deepfakes faster. • The authors should consider possible harms that could arise when the technology is being used as intended and functioning correctly, harms that could arise when the technology is being used as intended but gives incorrect results, and harms following from (intentional or unintentional) misuse of the technology. • If there are negative societal impacts, the authors could also discuss possible mitigation strategies (e.g., gated release of models, providing defenses in addition to attacks, mechanisms for monitoring misuse, mechanisms to monitor how a system learns from feedback over time, improving the efficiency and accessibility of ML). 11. Safeguards 
+
+Question: Does the paper describe safeguards that have been put in place for responsible release of data or models that have a high risk for misuse (e.g., pre-trained language models, image generators, or scraped datasets)? Answer: [N/A] Justification: The paper poses no such risks. Guidelines: • The answer [N/A] means that the paper poses no such risks. • Released models that have a high risk for misuse or dual-use should be released with necessary safeguards to allow for controlled use of the model, for example by requiring that users adhere to usage guidelines or restrictions to access the model or implementing safety filters. • Datasets that have been scraped from the Internet could pose safety risks. The authors should describe how they avoided releasing unsafe images. • We recognize that providing effective safeguards is challenging, and many papers do not require this, but we encourage authors to take this into account and make a best faith effort. 12. Licenses for existing assets 
+
+Question: Are the creators or original owners of assets (e.g., code, data, models), used in the paper, properly credited and are the license and terms of use explicitly mentioned and properly respected? Answer: [Yes] 33 Justification: The paper cites the public datasets, pretrained models, and baseline methods used in the experiments, and respects their stated licenses and terms of use. No existing assets are redistributed as part of this submission. Guidelines: • The answer [N/A] means that the paper does not use existing assets. • The authors should cite the original paper that produced the code package or dataset. • The authors should state which version of the asset is used and, if possible, include a URL. • The name of the license (e.g., CC-BY 4.0) should be included for each asset. • For scraped data from a particular source (e.g., website), the copyright and terms of service of that source should be provided. • If assets are released, the license, copyright information, and terms of use in the package should be provided. For popular datasets, paperswithcode.com/datasets 
+
+has curated licenses for some datasets. Their licensing guide can help determine the license of a dataset. • For existing datasets that are re-packaged, both the original license and the license of the derived asset (if it has changed) should be provided. • If this information is not available online, the authors are encouraged to reach out to the asset’s creators. 13. New assets 
+
+Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets? Answer: [N/A] Justification: The paper does not release new assets. Guidelines: • The answer [N/A] means that the paper does not release new assets. • Researchers should communicate the details of the dataset/code/model as part of their submissions via structured templates. This includes details about training, license, limitations, etc. • The paper should discuss whether and how consent was obtained from people whose asset is used. • At submission time, remember to anonymize your assets (if applicable). You can either create an anonymized URL or include an anonymized zip file. 14. Crowdsourcing and research with human subjects 
+
+Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and screenshots, if applicable, as well as details about compensation (if any)? Answer: [N/A] Justification: The paper does not involve crowdsourcing nor research with human subjects. Guidelines: • The answer [N/A] means that the paper does not involve crowdsourcing nor research with human subjects. • Including this information in the supplemental material is fine, but if the main contribu-tion of the paper involves human subjects, then as much detail as possible should be included in the main paper. • According to the NeurIPS Code of Ethics, workers involved in data collection, curation, or other labor should be paid at least the minimum wage in the country of the data collector. 15. Institutional review board (IRB) approvals or equivalent for research with human subjects 
+
+34 Question: Does the paper describe potential risks incurred by study participants, whether such risks were disclosed to the subjects, and whether Institutional Review Board (IRB) approvals (or an equivalent approval/review based on the requirements of your country or institution) were obtained? Answer: [N/A] Justification: The paper does not involve crowdsourcing nor research with human subjects. Guidelines: • The answer [N/A] means that the paper does not involve crowdsourcing nor research with human subjects. • Depending on the country in which research is conducted, IRB approval (or equivalent) may be required for any human subjects research. If you obtained IRB approval, you should clearly state this in the paper. • We recognize that the procedures for this may vary significantly between institutions and locations, and we expect authors to adhere to the NeurIPS Code of Ethics and the guidelines for their institution. • For initial submissions, do not include any information that would break anonymity (if applicable), such as the institution conducting the review. 16. Declaration of LLM usage 
+
+Question: Does the paper describe the usage of LLMs if it is an important, original, or non-standard component of the core methods in this research? Note that if the LLM is used only for writing, editing, or formatting purposes and does not impact the core methodology, scientific rigor, or originality of the research, declaration is not required. Answer: [N/A] Justification: The core method development in this research does not involve LLMs as any important, original, or non-standard components. Guidelines: • The answer [N/A] means that the core method development in this research does not involve LLMs as any important, original, or non-standard components. • Please refer to our LLM policy in the NeurIPS handbook for what should or should not be described. 35
