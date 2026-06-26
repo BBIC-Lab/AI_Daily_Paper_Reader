@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-006.webp",
+      "caption": "Figure 2. SpotAttention for a single query. The lightweight Indexer (a small selector) scores every past block; a dual top-𝑝 rule then selects a block index set 𝐼 comprising a sink prefix, a recency window, and the top-𝑝 content blocks, and attention runs only over the gathered 𝐾𝐼 , 𝑉𝐼 . The dashed top band shows the teacher path used during training: the backbone’s attention 𝑝𝜏 serves as the target, and the selector’s distribution 𝑝𝜎 is fit to it by KL divergence.",
+      "page": 3,
+      "index": 6,
+      "width": 965,
+      "height": 370
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-009.webp",
+      "caption": "Figure 3. Training dynamics. (a) Selector KL loss vs. training step for seven backbones across three families (Qwen3 4B–32B, Qwen3.5-4B/9B, Qwen3.6-27B); every curve falls to near zero within the first ∼200 steps, so one recipe converges across scale and architecture. (b) Held-out perplexity for the five evaluation backbones under sparse selection at 𝐾 ∈ {0.25, 0.5, 0.75}𝐿, against the dense floor (gray); sparse perplexity matches the floor at every budget (error bars: ±1 standard error over held-out 16K blocks).",
+      "page": 4,
+      "index": 9,
+      "width": 971,
+      "height": 355
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-002.webp",
+      "caption": "Table 2. Accuracy parity across backbones. Each cell is themean of the per-dataset overall accuracies on RULER, BABILong, and LongBench-v2, with bootstrap standard errors in parentheses (Appendix C.5); InfiniteBench is excluded so the average is apples-to-apples across Qwen3 (32K cap) and Qwen3.5 (128K). All five backbones land within a single standard error of dense at both static budgets and at dual top-𝑝=0.9; only the most aggressive setting, top-𝑝=0.7, trails on the larger Qwen3 backbones.",
+      "page": 6,
+      "index": 2,
+      "width": 752,
+      "height": 223
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-001.webp",
+      "caption": "Figure 4. Decode throughput across context length on Qwen3-8B. SpotAttention sustains the highest throughput across all three selection modes from 𝐿 = 8K to 𝐿 = 512K. Twilight OOMs at 𝐿 = 256K, while FlashAttention OOMs at 𝐿 = 512K.",
+      "page": 6,
+      "index": 1,
+      "width": 556,
+      "height": 389
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-004.webp",
+      "caption": "Figure 5. Training-length generalization. Mean accuracy across context lengths for SpotAttention static 𝐾=0.5𝐿 (blue) and SpotAttention dual top-𝑝=0.9 (red) follows the dense curve without an accuracy gap.",
+      "page": 7,
+      "index": 4,
+      "width": 950,
+      "height": 528
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-008.webp",
+      "caption": "Figure 6. Per-layer 𝐾 selected under dual top-𝑝. Mean 𝐾 per attention layer at 𝑝=0.9 on RULER at 16K context. Dashed line marks the static 𝐾=0.5𝐿 reference. Left: the three dense Qwen3 backbones show early-to-middle layers reaching 𝐾∕𝐿 ≈ 0.7–0.85, while the last third of each network uses very few tokens. Right: Qwen3.5’s hybrid backbones carry only eight full-attention layers, and even at that depth the selector picks a U-shaped range.",
+      "page": 8,
+      "index": 8,
+      "width": 950,
+      "height": 325
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-013.webp",
+      "caption": "Figure 7. KL-scope determines selector shape. Cumulative residual mass against blocks kept in descending score order, measured at the last query. Curves: teacher (gray), DenseKL student (red), SparseKL student (blue). DenseKL hits cumulative mass 0.9 within ∼10 blocks; SparseKL tracks the teacher curve.",
+      "page": 9,
+      "index": 13,
+      "width": 552,
+      "height": 429
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-011.webp",
+      "caption": "Table 3. Default hyperparameters for the selector retrofit. Training settings (top groups) and inference selection settings (bottom group) are identical across all seven backbones; only the pretrained-checkpoint identifier varies per run.",
+      "page": 17,
+      "index": 11,
+      "width": 460,
+      "height": 1246
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-010.webp",
+      "caption": "Table 6. Full accuracy grid: Qwen3 family. Three Qwen3 backbones (32K context cap) across RULER, BABILong, and LongBench-v2. Static-𝐾 rows use 𝐾 ∈ {0.25, 0.5, 0.75}𝐿; dual top-𝑝 rows use 𝑝 ∈ {0.7, 0.8, 0.9} and live below the static block on each backbone. Cells are mean accuracy (bootstrap standard error in parentheses, Appendix C.5) aggregated across length bins the cell ran at. InfiniteBench is excluded because its 64K / 128K bins exceed the Qwen3 context cap.",
+      "page": 19,
+      "index": 10,
+      "width": 802,
+      "height": 1106
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-014.webp",
+      "caption": "Table 7. Full accuracy grid: Qwen3.5 family. Two hybrid Qwen3.5 backbones (128K native context) across the four long-context benchmarks. Static-𝐾 rows use 𝐾 ∈ {0.25, 0.5, 0.75}𝐿; dual top-𝑝 rows use 𝑝 ∈ {0.7, 0.8, 0.9}. Cells are mean accuracy (bootstrap standard error in parentheses, Appendix C.5) aggregated across length bins the cell ran at. Quest and Twilight have not yet been run on this family; the Qwen3 family table is the only complete head-to-head against training-free baselines.",
+      "page": 20,
+      "index": 14,
+      "width": 864,
+      "height": 435
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-015.webp",
+      "caption": "Table 8. Per-task accuracy on Qwen3-4B. Vanilla against SpotAttention static 𝐾=0.5𝐿 and dual top-𝑝=0.9 on every subtask of RULER, BABILong, and LongBench-v2; mean over all length bins the model ran at, with bootstrap standard error in parentheses (Appendix C.5).",
+      "page": 20,
+      "index": 15,
+      "width": 490,
+      "height": 443
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-003.webp",
+      "caption": "Figure 8. Per-layer 𝐾∕𝐿 across datasets and top-𝑝 values, 16K context. Rows: backbones; columns: datasets; lines within each panel: 𝑝 ∈ {0.7, 0.8, 0.9} (light→ dark). Dashed reference at 𝐾∕𝐿=0.5.",
+      "page": 21,
+      "index": 3,
+      "width": 855,
+      "height": 953
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-005.webp",
+      "caption": "Figure 9. Last-query softmax distributions, [layer × key bin], 𝐿 = 32K. Top row: Qwen3-4B (36 full-attention layers, 𝐾train=8K). Bottom row: Qwen3.5-4B (8 full-attention layers, 𝐾train=2K). Columns: teacher / DenseKL student / SparseKL student. Colour: log10 𝑃 per bin (lower bound −5). DenseKL collapses essentially all mass into a single bin per query (panel reads as black with sparse bright pixels at the right edge), while SparseKL preserves the teacher’s diffuse pattern.",
+      "page": 22,
+      "index": 5,
+      "width": 945,
+      "height": 784
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-007.webp",
+      "caption": "Figure 10. Teacher vs. SparseKL student across the backbone family. Each row is one backbone; columns are the frozen-backbone dense attention (teacher, left) and the trained SparseKL selector (right). Cells are last-query [layer × key bin] softmax heatmaps at 𝐿 = 32K, colour log10 𝑃. Across Qwen3-{4B, 8B, 14B} and Qwen3.5-{4B, 9B}, the SparseKL panel recovers the corresponding teacher’s spread; the recipe transfers across scale and architecture.",
+      "page": 23,
+      "index": 7,
+      "width": 693,
+      "height": 1125
+    },
+    {
+      "url": "assets/figures/arxiv/2606.22874v1/fig-012.webp",
+      "caption": "Table 9. Selector quantization across the Qwen3 family. Top-𝑝=0.9 accuracy with the selector’s queries and key cache stored at five precisions, on Qwen3-4B, -8B, and -32B. Cells are mean accuracy (bootstrap standard error in parentheses, Appendix C.5). Every quantized variant stays within bootstrap error of the BF16 reference on the dataset-mean column at every backbone. Selector K-cache footprint per precision: INT8 / FP8 store at 0.500× BF16; INT4 / FP4 use group-32 microscale at 4.5 bits per element (0.281×). The backbone KV cache is unchanged; the selector learns under BF16 and is quantized at inference only.",
+      "page": 24,
+      "index": 12,
+      "width": 686,
+      "height": 472
+    }
+  ]
+}

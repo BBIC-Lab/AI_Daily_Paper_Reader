@@ -1,0 +1,1247 @@
+Title: Dynamic estimation of slowly varying sequences
+
+URL Source: https://arxiv.org/pdf/2606.23655v1
+
+Published Time: Tue, 23 Jun 2026 03:36:39 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# Dynamic estimation of slowly varying sequences 
+
+Prashant Gokhale 
+
+University of Wisconsin–Madison 
+
+prashant.gokhale@wisc.edu 
+
+Mikhail Khodak 
+
+University of Wisconsin–Madison 
+
+khodak@wisc.edu 
+
+Sandeep Silwal 
+
+University of Wisconsin–Madison 
+
+silwal@wisc.edu 
+
+## Abstract 
+
+We consider the problem of sequentially approximating functions of each element in a slowly-varying sequence, i.e. one where the magnitude αi of the difference between the elements at positions i and i−1 is small. Recent work on implicit trace estimation shows that when αt is small, reusing queries to past sequence elements can reduce the overall cost [Dharangutte & Musco, NeurIPS 2021; Woodruff et al., NeurIPS 2022]. We introduce a framework generalizing this to a variety of linear and nonlinear functions on diverse vector spaces, obtaining novel sequential esti-mation results for matrix powers, spectral densities, Monte Carlo integration, and a boundary value problem from partial differential equations (PDEs). Furthermore, we develop a novel algorithm for use with this framework that locally scales the estimation budget with αt, obtaining sharper path-length-style variation bounds of form O(Pmi=1 αi) on the cost of estimating a sequence of length m. This improves upon the previous implicit trace estimation bound of O(m · max i αi) [Dharangutte & Musco, NeurIPS 2021], which is achieved by fixing the query budget using the worst-case αi and is thus inefficient for stable sequences with rare bursts. Lastly, while all past work assumes a known bound on αi, we show in certain cases how the changes can be estimated on-the-fly with (nearly) no added cost. In summary, our framework makes the sequential approximation toolkit general-purpose and adap-tive while improving upon state-of-the-art-guarantees for dynamic trace estimation. 
+
+## 1 Introduction 
+
+In many areas of theory and practice, we face a slowly evolving system and wish to estimate its properties given only limited, structured access to its state. Examples of this problem include estimating evolving probability distributions given sample access [ 23 , 22 ], tracking metrics on evolving social networks given only local subgraphs [ 12 , 28 , 6 , 7, 4 ], maintaining statistics of a drifting data stream [ 31 , 17 , 14 ], or tracking the loss curvature during neural network optimization [ 20 , 30 , 15 ]. We propose a general framework for solving such estimation problems when the underlying sequence consists of m elements of a vector space and the distance between consecutive elements is bounded by 
+
+αt. This setting is inspired by past work on estimating traces given only matrix-vector product queries and a bound on the maximum distance between them [ 10 , 29 ]; our framework enables us to find direct applicability to other vector spaces (e.g. L∞ functions), derive results for certain nonlinear maps (e.g. eigenvalue distributions), develop a novel algorithm whose cost scales with Pmi=1 αi (instead of prior works’ looser bound of m · max i αi), and design a lightweight mechanism that estimates αi on-the-fly (instead of assuming a known global bound). To achieve this, we require only a linear estimator that has sub-exponential concentration around its target property for every element of the vector space, with 
+
+> Preprint.
+> arXiv:2606.23655v1 [cs.LG] 22 Jun 2026
+
+concentration parameters that scale with the element’s norm. Such estimators exist in multiple settings and allow us to show results for both linear and nonlinear properties, as evidenced in our contributions: 1. A general-purpose and adaptive framework: We introduce a flexible meta-algorithm for sequen-tial stochastic approximation that accepts a well-concentrated static estimator and dynamically adjusts the number of queries based on the local change αi; we also show how the latter can some-times be adaptively estimated. Our approach’s query complexity scales with the sum Pmi=1 αi of local changes rather than with the worst-case change m · max i αi, resulting in sequential trace estimation bounds that are both sharper and more adaptive than past works’ [10]. 2. Diverse applications: A strength of our framework is its broad applicability, which we demon-strate via novel theoretical results for sequential estimation of matrix powers, spectral densities, function integrals, and solutions to boundary value problems (see Table 1). 3. Empirical efficiency: Our algorithm is simple to implement and requires significantly fewer samples than prior methods for dynamic trace estimation. We demonstrate this with experiments on synthetic matrix sequences and Hessians from neural network optimization trajectories. Our method is simple to implement, and we provide code for our experiments that should be easy to adapt to other estimators. 
+
+Related Work. A representative problem in this setting is trace estimation in the implicit matrix model. Here, we have matrix-vector product (MVP) access to a sequence of matrices A1, · · · , A m (for simplicity, assume ∥Ai∥F ≤ 1 by scaling), and we wish to maintain an approximation of tr (Ai) up to additive ϵ error every step while minimizing the total number of MVPs. This problem has received a lot of recent attention due to its importance in machine learning and data science, such as when analyzing moments of the Hessian spectral density during neural network optimization [ 30 , 15 ], counting triangles in massive, dynamically changing graphs [ 3 , 12 ], while training Gaussian processes [ 11 , 13 ], and so on. Here, the assumption that consecutive matrices differ by a small amount is natural: the Hessian of a neural network training loss evolves slowly, a graph receives a few edge updates per round, a covariance matrix is updated via rank-one modifications, etc. In such smoothly evolving settings, naively applying a static estimator, such as Hutchinson’s estimator for traces, at each step leads to an undesired multiplicative O(m) overhead. Recent work has shown how to dramatically improve on this [ 10 , 29 ], obtaining query complexity that scales with the maximum of the largest local change m·max i αi for αi := ∥Ai −Ai−1∥. We obtain query complexity scaling with P αi, a natural measure of how ‘varying’ the sequence is similar to path-length-style bounds in online learning [ 2, 32 ], and show how their approach can be broadly generalized to other sequential estimation problems. 
+
+## 2 General Adaptive Framework 
+
+We first set up the general problem, define notation used throughout the paper, and specify our assumptions regarding the static estimator. 
+
+Vector Spaces and the Linear Map. Let V and W be normed vector spaces equipped with norms 
+
+∥ · ∥ V and ∥ · ∥ W , respectively. We consider a linear map L : V → W , which represents the quantity of interest that we wish to estimate. 
+
+The Dynamic System. Let v1, v 2, . . . , v m ∈ V be a sequence of elements representing the evolving state of the underlying system across m time steps. We assume that the states are bounded such that ∥vt∥V ≤ 1 for all t ∈ [m]. Furthermore, we assume that the system changes relatively slowly between consecutive steps. To quantify this, we define the local step size αt as the distance between consecutive states: 
+
+αt = ∥vt − vt−1∥V for t = 2 , . . . , m. (1) 
+
+Static Estimator. We assume the existence of a static randomized estimator satisfying a sub-exponential concentration property, specifically that its errors are random variables X such that 
+
+E
+
+h
+
+eλ(X−μ)i
+
+≤ eλ2ν2/2 for all |λ| < 1/β. 
+
+for some mean μ, variance ν2 ≥ 0, and scale β ≥ 0. This is commonly satisfied for tasks like trace estimation and Monte Carlo integration (among other applications) and can be extended to handle vector-valued estimators using a norm-based convention (c.f. Appendix A). Crucially, our framework 2Table 1: Mapping of framework parameters to their counterparts in each dynamic application. Note that for trace of matrix powers and spectral density, while the maps are non-linear; we are still able to reduce it to trace estimation.                                 
+
+> Application Underlying Object Map Norm Estimator
+> Trace Estimation (§ 3) Matrix Attr (At)∥ · ∥ FHutchinson’s – Matrix Powers (§ 3.1) Matrix Attr (Akt)∥ · ∥ FHutchinson’s – Spectral Density (§ 3.2) Matrix At{tr (Akt)}Kk=1 ∥ · ∥ FHutchinson’s Monte Carlo Integration (§ 4) Function ftE[ft(x)] ∥ · ∥ ∞MC sampling – Dirichlet Problem (§ 4.1) Boundary Function gtInterpolation ut(x)∥ · ∥ ∞Random Walk
+
+relies on the concentration parameters ν and β scaling with the sample (or query) budget k, which also often arises because most estimators are averages of independent trials. This brings us to the following definition: 
+
+Definition 1 (Well-Concentrated Estimator) . We say that a randomized estimator E(v, k ) is a well-concentrated estimator for the linear map L : V → W with respect to the norm ∥ · ∥ V if there exist constants c1, c 2, c 3 ≥ 0 such that, for any state v ∈ V and sample budget k ≥ 1, the estimator is unbiased, i.e. 
+
+E[E(v, k )] = L(v),
+
+and the error e = E(v, k ) − L(v) has sub-exponential norm concentration in the sense of Appendix A, with parameters satisfying 
+
+ν ≤ c1∥v∥V
+
+√k and β ≤ c2∥v∥V + c3
+
+k .
+
+With this, we can now formally state the algorithmic problem we consider in this paper: 
+
+Definition 2 (The Dynamic Estimation Problem) . Given an evolving sequence of states 
+
+v1, v 2, . . . , v m ∈ V and access to a well-concentrated estimator E, dynamically maintain a se-quence of running estimates ˜L1, ˜L2, . . . , ˜Lm ∈ W . The goal is to minimize the total cumulative sample complexity required to guarantee ∥ ˜Lt − L(vt)∥W ≤ ϵ with probability 1 − δ simultaneously across all steps. 
+
+2.1 Known Step Sizes 
+
+We now present our main contribution: an adaptive algorithm that efficiently tracks dynamic quantities when the local step sizes are known. The main theorem is the following. 
+
+Theorem 1 (Dynamic Sample Complexity, known step sizes) . Assume ∥vt∥V ≤ 1 for all t. Given a well-concentrated estimator E (Definition 1), Algorithm 1 guarantees that with probability at least 
+
+1 − δ, the estimates satisfy ∥ ˜Lt − L(vt)∥W ≤ ϵ simultaneously for all t ∈ [m]. The total cumulative sample complexity is bounded by: 
+
+O
+
+ c21
+
+ϵ2 + c2
+
+ϵ
+
+
+
+log( m/δ ) 1 + 
+
+> m
+
+X
+
+> t=2
+
+αt
+
+!
+
++ c3m log( m/δ )
+
+ϵ
+
+!
+
+Note that the non-dynamic baseline has sample complexity ˜O(m/ε 2), so Theorem 1 improves upon it if Pmt=2 αt = o(m). The rest of this subsection is devoted to proving Theorem 1; we then generalize it in Section 2.2 to the case where we do not know the step sizes but have a suitable norm estimation oracle that approximates them on the fly (cf. Theorem 2). 
+
+Our Algorithm The naive approach to maintaining running estimates is to recompute them from scratch at every step. By Lemma 1, this leads to a total sample complexity of 
+
+O
+
+
+
+m
+
+ c21 
+
+> ϵ2
+
++ c2+c3
+
+> ϵ
+
+
+
+log( m/δ )
+
+
+
+. Intuitively, instead of recomputing estimates from scratch at each step—which incurs this total cost—the algorithm updates its running estimate by sampling only the 3Algorithm 1 Adaptive Algorithm  
+
+> 1:
+
+Input: Sequence of states v1, . . . , v m, step sizes αt, accuracy ϵ, failure prob. δ, estimator E. 
+
+> 2:
+
+Set concentration thresholds: N ← ϵ2 
+
+> 2 log(2 m/δ )
+
+and B ← ϵ 
+
+> 2 log(2 m/δ )
+
+. 
+
+> 3:
+
+Base Case ( t = 1 ):  
+
+> 4:
+
+Set base budget k1 ←
+
+l
+
+max 
+
+ c21∥v1∥2 
+
+> V
+> N
+
+, c2∥v1∥V +c3
+
+> B
+
+m 
+
+. 
+
+> 5:
+
+Compute base estimate ˜L1 ← E (v1, k 1). 
+
+> 6:
+
+for t = 2 to m do  
+
+> 7:
+
+Set damping factor γt ← min(1 , α t). 
+
+> 8:
+
+Set residual state ut ← vt − (1 − γt)vt−1. 
+
+> 9:
+
+Set local sample budget kt ←
+
+l
+
+max 
+
+ 4c21αt 
+
+> N
+
+, 2c2αt+c3
+
+> B
+
+m 
+
+. 
+
+> 10:
+
+Estimate residual ˆLt ← E (ut, k t). 
+
+> 11:
+
+Update running estimate ˜Lt ← (1 − γt) ˜Lt−1 + ˆLt. 
+
+> 12:
+
+Output: Sequence of running estimates ˜L1, . . . , ˜Lm.difference between consecutive steps and reusing the previous estimate. We also use a damping factor to reduce the variance of these accumulated updates (taking inspiration from the idea in [10 ]). Assuming for now that the local step sizes αt are known (an assumption we relax in the next subsection), the algorithm dynamically scales both the sample budget and the damping factor directly in proportion to αt (as opposed to scaling only the damping factor in [ 10 ]). Specifically, to avoid recomputing the estimate from scratch, we recycle the previous estimate ˜Lt−1 by damping it by a factor of (1 − γt) and adding an estimate of the change (the residual); see Algorithm 1. 
+
+Proving Theorem 1. We now prove that the adaptive algorithm maintains the desired error bound ϵ
+
+for all times. Note that assuming all vi norms are bounded by 1 is without loss of generality, as this can be achieved by scaling. At a high level, the proof proceeds by induction on the sub-exponential parameters of the estimates at each time. To guarantee the target error via Lemma 1, we need these random variables to remain sufficiently “well-concentrated,” meaning their sub-exponential parameters must stay below the concentration thresholds N and B. We establish this by first verifying that the base case holds for the initial estimate, and then using Lemma 2 in the scalar case, or the vector-valued norm-concentration assumption in Definition 6, to inductively show this concentration holds at every subsequent step. Finally this yields an improved bound that replaces mα max in [ 10 ]with a sharper P αi term. 
+
+Proof. Let N = ϵ2 
+
+> 2 log(2 m/δ )
+
+and B = ϵ 
+
+> 2 log(2 m/δ )
+
+. Let the estimation error at step t be et =˜Lt − L(vt). We prove by induction that for all t, the error et is sub-exponential with parameters 
+
+ν2 
+
+> t
+
+≤ N and βt ≤ B. By standard sub-exponential tail bounds (Lemma 1), these parameters guarantee P[∥et∥W ≥ ϵ] ≤ 2 exp 
+
+
+
+− min 
+
+ ϵ2 
+
+> 2N
+
+, ϵ
+
+> 2B
+
+ 
+
+≤ δm . A union bound over m steps then yields the global success probability of at least 1 − δ.
+
+Base Case ( t = 1 ): The base estimate ˜L1 is computed with budget k1. It is easy to verify by plugging in k1 that its sub-exponential parameters satisfy ν21 ≤ c21∥v1∥2 
+
+> V
+> k1
+
+≤ N and β1 ≤ c2∥v1∥V +c3 
+
+> k1
+
+≤ B.Thus, the base case holds. 
+
+Inductive Step ( t > 1): Assume the inductive hypothesis ν2 
+
+> t−1
+
+≤ N and βt−1 ≤ B. By the linearity of the algorithm, the update rule can be written in terms of errors as et = (1 − γt)et−1 + ηt, where 
+
+ηt = ˆLt − L(ut) is the unbiased error of the fresh estimate. First, we bound the norm of the residual state ut: ∥ut∥V = ∥vt − vt−1 + γtvt−1∥V ≤ ∥ vt − vt−1∥V + γt∥vt−1∥V ≤ αt + αt = 2 αt.In the scalar case, Lemma 2 gives the following parameter update. In the vector-valued case, this is the corresponding norm-concentration assumed in Definition 6. Thus, the variance parameter ν2
+
+> t
+
+satisfies: ν2 
+
+> t
+
+= (1 − γt)2ν2 
+
+> t−1
+
++ ν2 
+
+> f resh
+
+≤ (1 − αt)2N + ν2
+
+> f resh
+
+. For the fresh estimate error ηt, its variance parameter is bounded by ν2 
+
+> f resh
+
+≤ c21∥ut∥2 
+
+> V
+> kt
+
+≤ 4c21α2 
+
+> t
+> kt
+
+. To maintain the induction, we require 4ν2 
+
+> t
+
+≤ N . This condition is met if: 
+
+(1 − αt)2N + 4c21α2
+
+> t
+
+kt
+
+≤ N =⇒ 4c21α2
+
+> t
+
+kt
+
+≤ N (2 αt − α2 
+
+> t
+
+) = ⇒ kt ≥ 4c21αt
+
+N (2 − αt) (2) Since αt ∈ [0 , 1] , it holds that (2 − αt) ≥ 1. Thus, setting kt ≥ 4c21αt 
+
+> N
+
+is enough to ensure ν2 
+
+> t
+
+≤ N .Similarly, the scale parameter βt satisfies βt ≤ max((1 − γt)βt−1, β f resh ). For the fresh estimate, substituting our earlier bound ∥ut∥V ≤ 2αt into Definition 1 yields βf resh ≤ c2∥ut∥V +c3 
+
+> kt
+
+≤ 
+
+> 2c2αt+c3
+> kt
+
+. We require βf resh ≤ B, which implies kt ≥ 2c2αt+c3 
+
+> B
+
+. Thus, the induction holds. By a simple union bound and using Lemma 1, with probability at least 1 − δ, the estimates satisfy 
+
+∥ ˜Lt − L(vt)∥W ≤ ϵ simultaneously for all t ∈ [m]. Now we bound the cumulative sample complexity. Summing the local sample budgets kt over all m steps completes the proof. First we have Pmt=1 kt ≤ k1 + Pmt=2 
+
+ 4c21αt 
+
+> N
+
++ 2c2αt+c3
+
+> B
+
+
+
+. Simplifying, this is equal to 
+
+O
+
+ c21
+
+ϵ2 + c2 + c3
+
+ϵ
+
+
+
+log( m/δ )
+
+
+
++
+
+> m
+
+X
+
+> t=2
+
+αt · O 
+
+ c21
+
+ϵ2 + c2
+
+ϵ
+
+
+
+log( m/δ )
+
+
+
++
+
+> m
+
+X
+
+> t=2
+
+O
+
+ c3 log( m/δ )
+
+ϵ
+
+
+
+= O
+
+ c21
+
+ϵ2 + c2
+
+ϵ
+
+
+
+log( m/δ ) 1 + 
+
+> m
+
+X
+
+> t=2
+
+αt
+
+!
+
++ c3m log( m/δ )
+
+ϵ
+
+!
+
+.
+
+2.2 Unknown Step Sizes 
+
+In the preceding analysis, we assumed explicit knowledge of the local step sizes αt = ∥vt − vt−1∥V
+
+to set our parameters. In practice, αt is often unknown, but oftentimes can be efficiently estimated on the fly, as we will see in our applications in Sections 3 and 4. Abstractly, let us assume access to a Norm Estimation Oracle, N (v, k ), which takes an input state v ∈ V and a resource budget k, and outputs an approximation of the norm ∥v∥V . We split the computation at each time step t into two phases as follows: 1. Estimating αt: We query the norm oracle N (vt − vt−1, k norm ) to estimate the change magnitude 
+
+αt. We allocate a budget knorm to obtain an estimate ˆαt such that ˆαt ≥ 0.9αt with a failure probability of at most δ/m . We then construct our proxy step size by dividing this estimate by 0.9 (we use 0.9 for illustrative purposes; any constant c ∈ (0 , 1) works here), setting ˜αt = ˆ αt/0.9.This ensures that ˜αt ≥ αt with failure probability δ/m and ˜αt = Θ( αt).2. Estimating L(vt): We instantiate the target budget kt and damping factor γt using the proxy step size ˜αt in place of the true αt, and use the Adaptive Algorithm (Algorithm 1). The main idea is that approximating αt up to a constant factor is sufficient; this only increases the sample complexity by a constant factor while still ensuring correctness, yielding the following result: 
+
+Theorem 2 (Dynamic Sample Complexity, unknown step sizes) . Assume ∥vt∥V ≤ 1 for all t. Given a well-concentrated estimator E and a Norm Estimation Oracle N that requires knorm queries per step to return an estimate ˆαt ≥ 0.9αt with failure prob. δ/m , setting the proxy step size to 
+
+˜αt = ˆ αt/0.9, the two-phase adaptive algorithm guarantees that with prob. ≥ 1 − 2δ, the estimates satisfy ∥ ˜Lt − L(vt)∥W ≤ ϵ simultaneously for all t ∈ [m]. The cumulative sample complexity is 
+
+O
+
+ c21
+
+ϵ2 + c2
+
+ϵ
+
+
+
+log( m/δ ) 1 + 
+
+> m
+
+X
+
+> t=2
+
+αt
+
+!
+
++ c3m log( m/δ )
+
+ϵ +
+
+> m
+
+X
+
+> t=2
+
+knorm 
+
+!
+
+.
+
+As compared to Theorem 1, Theorem 2 only has an extra overhead term of Pmt=2 knorm for estimating step sizes on the fly. The proof of Theorem 2 appears in Appendix B.1. In our later applications (see Section 3), this overhead typically does not have an ϵ dependency. 
+
+## 3 Application: Dynamic Trace Estimation 
+
+We first apply our general framework to the problem of dynamic matrix trace estimation in the matrix-vector product model, as introduced in Section 1. 5Definition 3 (The Dynamic Trace Estimation Problem) . Given implicit matrix-vector multiplication access to a sequence of matrices A1, . . . , A m ∈ Rn×n, maintain trace estimates t1, . . . , t m such that at every step i, |ti − tr (Ai)| ≤ ϵ with high probability. We assume bounded Frobenius norms 
+
+∥Ai∥F ≤ 1 and unknown local step sizes αi = ∥Ai − Ai−1∥F ≤ 1.
+
+In relation to our general framework, we observe that the vector space V = Rn×n equipped with the Frobenius norm || · || F , and the target space W = R with the absolute value norm. The linear map is the trace operator, L(A) = tr (A).
+
+Hutchinson’s Static Estimator The standard randomized algorithm for implicit trace estimation is Hutchinson’s estimator [ 16 ]. For a budget of k queries, it is defined as: E(A, k ) = hk(A) = 
+
+> 1
+> k
+
+Pkj=1 g⊤ 
+
+> j
+
+Ag j where g1, . . . , g k ∈ Rn are independent Rademacher vectors. It is known that Hutchinson’s estimator is unbiased ( E[hk(A)] = tr (A)) and has sub-exponential tail bounds [ 26 ]. Specifically, the estimator error is sub-exponential with variance parameter ν ≤ c1∥A∥F 
+
+> √k
+
+and scale parameter β ≤ c2∥A∥F 
+
+> k
+
+for some constants c1, c 2. Thus, Hutchinson’s estimator satisfies the properties of a Well-Concentrated Estimator (Definition 1) with c1, c 2 and c3 = 0 .
+
+3.0.1 Estimating Step Sizes on the Fly 
+
+In practice, the exact Frobenius norm of the difference, αt = || At − At−1|| F , is unknown. However, we can construct the Norm Estimation Oracle N required by our two-phase procedure using Hutchin-son’s estimator. Let ∆t = At − At−1. Observe that the squared Frobenius norm is the trace of its positive semi-definite Gram matrix: α2 
+
+> t
+
+= || ∆t|| 2 
+
+> F
+
+= tr (∆ ⊤ 
+
+> t
+
+∆t). We apply Hutchinson’s estimator to the matrix M = ∆ ⊤ 
+
+> t
+
+∆t to obtain an estimate y of α2 
+
+> t
+
+= tr (M ).We need our initial estimate ˆαt = √y to satisfy ˆαt ≥ 0.9αt, or y ≥ 0.81 α2 
+
+> t
+
+. This implies that our Hutchinson’s estimator must have additive error of at most ϵ′ = α2 
+
+> t
+
+− 0.81 α2 
+
+> t
+
+= 0 .19 α2 
+
+> t
+
+. We now calculate the sample budget knorm required to achieve this error ϵ′ with a failure probability of δ/m .From sub-exponential concentration (Lemma 1), the required sample complexity is: 
+
+knorm = O
+
+
+
+max 
+
+ || M || 2 
+
+> F
+
+log( m/δ )(ϵ′)2 , || M || F log( m/δ )
+
+ϵ′
+
+ 
+
+(3) Because M = ∆⊤ 
+
+> t
+
+∆t is positive semi-definite, we have || M || F ≤ tr (M ) = α2 
+
+> t
+
+. Sub-stituting this and our target error ϵ′ = 0.19 α2 
+
+> t
+
+into the equation yields: knorm =
+
+O
+
+
+
+max 
+
+ (α2    
+
+> t)2log( m/δ )(0 .19 α2
+> t)2
+
+, α2 
+
+> tlog( m/δ )0.19 α2
+> t
+
+ 
+
+= O(log( m/δ )) . The terms nicely cancel. Thus, allocating budget knorm = O(log( m/δ )) samples guarantees that ˆαt ≥ 0.9αt with probability at least 1 − δ/m .Following our framework, setting the proxy step size to ˜αt = ˆ αt/0.9 ensures ˜αt ≥ αt with prob. at least 1 − δ/m . By Theorem 2 (setting c3 = 0 ) we get the following theorem. 
+
+Theorem 3 (Dynamic Trace Estimation, unknown step sizes) . Let ϵ, δ ∈ (0 , 1) . Given a sequence of matrices A1, . . . , A m with unknown step sizes αi = ∥Ai − Ai−1∥F , the two-phase estima-tion procedure guarantees that with probability at least 1 − 2δ, the dynamic trace estimates sat-isfy |ti − tr (Ai)| ≤ ϵ simultaneously for all i ∈ [m]. The total MVPS required is bounded by: 
+
+O
+
+
+
+m log( m/δ ) + log( m/δ ) 
+
+> ϵ2
+
+(1 + Pmi=2 αi)
+
+
+
+.
+
+The bound of [ 10 ] for known steps is log( m/δ ) 
+
+> ϵ2
+
+(1 + mα max ) . Our result replaces the mα max term with the sharper quantity Pmi=2 αi in this setting, and moreover provides a way to estimate the step sizes on the fly with only an additional m log( m/δ ) overhead. 
+
+3.1 Dynamic Trace of Matrix Powers 
+
+We now show that our framework naturally extends to tracking the trace of matrix powers. Note that while this is a non-linear function, we can still essentially reduce it to trace estimation. The main idea is that one can show (by standard telescoping) that powers of slowly changing matrices also evolve slowly, which allows us to apply our framework. As before, we assume MVP access to a sequence of matrices and we wish to maintain an ϵ approximation of tr (Akt ) at all steps t.6Our starting point is that for consecutive matrices, the change in the k-th power can be written as Akt −
+
+Akt−1 = Pk−1 
+
+> j=0
+
+Ajt (At − At−1)Ak−1−jt−1 . Taking the Frobenius norm and using sub-multiplicativity of the Frobenius norm ( ∥XY ∥F ≤ ∥ X∥2∥Y ∥F ), we obtain ∥Akt − Akt−1∥F ≤ Pk−1 
+
+> j=0
+
+∥At∥j
+
+> 2
+
+∥At −
+
+At−1∥F ∥At−1∥k−1−j 
+
+> 2
+
+≤ kα t. Thus, the local step size for the k-th matrix power sequence is bounded by kα t. Because we only assume MVP access to the sequence At, evaluating Hutchinson’s estimator on the k-th matrix power requires computing products of the form Akt v. We simulate this by applying the matrix sequentially, At(At(. . . A t(v) . . . )) , which incurs a multiplicative overhead of k per sample. When the step sizes αt are unknown, we estimate them dynamically. Since ∥Akt − Akt−1∥2 
+
+> F
+
+=
+
+tr (( Akt − Akt−1)T (Akt − Akt−1)) , we can approximate the step size of the k-th powers via Hutchinson’s estimator as in Section 3.0.1. Again, computing the matrix-vector product (Akt − Akt−1)v involves applying At and At−1 sequentially k times, which is also a k multiplicative overhead. Applying the Adaptive Algorithm with unknown step sizes requires O
+
+ log( m/δ ) 
+
+> ϵ2
+
+(1 + Pmt=2 kα t)
+
+
+
+total samples, which we multiply by a k for the sample complexity. 
+
+Corollary 4 (Dynamic Trace of Matrix Powers) . Let ϵ, δ ∈ (0 , 1) and integer k ≥ 1. Given a sequence of matrices A1, . . . , A m with unknown step sizes αt = ∥At − At−1∥F , the Adaptive Algorithm guarantees that with probability at least 1 − δ, the trace estimates satisfy | ˜Tt − tr (Akt )| ≤ ϵ
+
+simultaneously for all t ∈ [m]. The total matrix-vector multiplications (MVPs) required across the sequence is bounded by: O
+
+ log( m/δ )
+
+> ϵ2
+
+ k + k2 Pmt=2 αt
+
+
+
+.
+
+3.2 Application: Dynamic Spectral Density Estimation 
+
+As a direct application of tracking the trace of matrix powers, we consider the problem of estimating a matrix’s spectral density. For an n × n matrix, the spectrum is the vector of its sorted eigenvalues, 
+
+λ = ( λ1, . . . , λ n) where λ1 ≥ · · · ≥ λn. We consider an ϵ-approximate spectrum defined as  
+
+> 1
+> n
+
+∥˜λ − λ∥1 ≤ ϵ. This is also the Wasserstein distance between the discrete distribution of eigenvalue approximations to the true eigenvalues. Applications include estimating the spectrum of the (changing) Hessian, which is useful to study the dynamics of training [ 15 ] and the spectral density of a graph Laplacian, which reveals the presence of communities at multiple scales [ 8 ]. It is known that in the static case, roughly eO(1 /ϵ ) MVPs suffice to obtain this estimation [ 8 ] (see Theorem 8). In the following theorem, we run K independent instances of our Adaptive Algorithm, where the k-th stream tracks the k-th spectral moment tr (Akt ). To guarantee uniform success across all K streams and m steps with probability 1 − δ, we set the failure probability for each instance to δ/K . The proof of the theorem is deferred to Appendix B.2. 
+
+Theorem 5 (Dynamic Spectral Estimation) . Let ϵ, δ ∈ (0 , 1) . Given implicit matrix-vector mul-tiplication access to a sequence of symmetric matrices A1, . . . , A m with eigenvalues bounded in 
+
+[−1, 1] , bounded Frobenius norms ∥At∥F ≤ 1, and unknown local step sizes αt = ∥At − At−1∥F ,the dynamic estimation procedure outlined above guarantees that with probability at least 1 − δ, the maintained eigenvalue estimates form an ϵ-approximate spectrum in Wasserstein distance simultane-ously for all t ∈ [m]. The cumulative MVPs is bounded by eO(1 /ϵ ) log( m/δ )  1 + 1
+
+> ϵ
+
+Pmt=2 αt
+
+ .
+
+We can compare Theorem 5 to the baseline of recomputing the K spectral moments from scratch at every step. Estimating K moments to precision ϵ′ at a single step requires PKk=1 k ·O(log( K/δ )/(ϵ′)2) = O(K2 log( K/δ )/(ϵ′)2) MVPs. Evaluated independently over m steps, the baseline requires O(mK 2 log( mK/δ )/(ϵ′)2) MVPs. Our dynamic method replaces the factor of m
+
+with (1 + K P αt). For matrix sequences where P αt ≪ mϵ (which is the case for example α’s are of the order ϵ2), our dynamic algorithm yields an asymptotic speedup. 
+
+## 4 Application: Dynamic Monte Carlo Integration 
+
+We now apply our framework to efficiently maintain estimates of slowly changing integrals. 
+
+Definition 4 (The Dynamic Monte Carlo Integration Problem) . Given sampling access to a fixed probability density function p(x) over a domain Ω, and oracle access to evaluate a sequence of evolving functions f1, . . . , f m : Ω → R, maintain running integral estimates ˜I1, . . . , ˜Im such that at every step t, | ˜It − R 
+
+> Ω
+
+ft(x)p(x)dx | ≤ ϵ with probability 1 − δ. We assume a global bound 
+
+7on the supremum norm ∥ft∥∞ ≤ 1. The local known step sizes are αt = ∥ft − ft−1∥2,p =pEx∼p[( ft(x) − ft−1(x)) 2].
+
+We must first show that the standard Monte Carlo estimator E(f, k ) = 1
+
+> k
+
+Pkj=1 f (xj ), where 
+
+x1, . . . , x k ∼ p are drawn i.i.d., satisfies the properties of a Well-Concentrated Estimator (Def-inition 1) with respect to the ∥ · ∥ 2,p norm. Let L(f ) = R 
+
+> Ω
+
+f (x)p(x)dx = Ex∼p[f (x)] denote the true integral. For a single sample x ∼ p, let Z = f (x) − L(f ). The estimator error is the sample mean of k independent copies of Z. Clearly, E[Z] = 0 . Because ∥f ∥∞ ≤ 1 and by triangle inequality, we have |Z| ≤ 2. Furthermore, the variance of Z is: Var (Z) = E[Z2] = 
+
+Ex∼p[f (x)2] − 2L(f )Ex∼p[f (x)] + L(f )2 ≤ Ex∼p[f (x)2] = ∥f ∥22,p . Bernstein’s inequality [ 5 , 27 ]states that for independent, zero-mean random variables Z1, . . . , Z k bounded by c, the mean ¯Z
+
+satisfies P(| ¯Z| > t ) ≤ 2 exp 
+
+
+
+− kt 2
+
+> 2σ2+2 ct/ 3
+
+
+
+where σ2 is the variance of Z. Plugging in our bound 
+
+σ2 ≤ ∥ f ∥22,p and c = 2 , we obtain P(|E (f, k ) − L(f )| > t ) ≤ 2 exp 
+
+
+
+− kt 2 
+
+> 2∥f∥22,p +4 t/ 3
+
+
+
+. This matches the sub-exponential concentration requirement of our framework. Specifically, the estimator’s vari-ance parameter is bounded by ν ≤ ∥f ∥2,p  
+
+> √k
+
+and scale parameter by β ≤ 23k . That is, it is a Well Concen-trated Estimator with c1 = 1 , c 2 = 0 , and c3 = 2 /3. We obtain the following performance guarantee: 
+
+Theorem 6 (Dynamic Monte Carlo Integration) . Let ϵ, δ ∈ (0 , 1) . Given sample access to p(x) and a sequence of bounded functions f1, . . . , f m with known local step sizes αt = ∥ft − ft−1∥2,p , the Adaptive Algorithm guarantees that with probability at least 1 − δ, the integral estimates satisfy 
+
+| ˜It − R 
+
+> Ω
+
+ft(x)p(x)dx | ≤ ϵ simultaneously for all t ∈ [m]. The total number of function evaluations required across the sequence is bounded by: O
+
+ log( m/δ ) 
+
+> ϵ2
+
+(1 + Pmt=2 αt) + m log( m/δ )
+
+> ϵ
+
+
+
+.
+
+4.1 Application: Dynamic Dirichlet Problem 
+
+A classical problem in mathematical physics is the Dirichlet problem for Laplace’s equation [ 1 , 9, 19 ]. Given a domain Ω ⊂ Rd and a continuous boundary function g : ∂Ω → R, the goal is to find a smooth interpolation u(x) into the interior such that ∆u = 0 on Ω and u = g on ∂Ω. Here, ∆ is the standard Laplacian operator, that is ∆u = ∇ · ∇ u.By Kakutani’s theorem [ 18 ], the smooth interpolation solution u(x) evaluated at a specific interior point x can be expressed as an integral of the boundary values g with respect to the harmonic measure 
+
+P (x, ·): u(x) = R 
+
+> ∂Ω
+
+g(y)P (x, dy ). This harmonic measure represents the probability distribution of the location where a random Brownian motion, originating at x, first intersects the boundary ∂Ω.Because u(x) is formulated as an integral over a probability measure, we can estimate it using Monte Carlo integration. Specifically, we can obtain an unbiased estimate of u(x) by simulating multiple random walks starting from x and averaging the values of g at their respective boundary exit points. In practice, the sampling step can be implemented via the Walk on Spheres (WoS) method [ 24 ]. Although that algorithm’s cost is usually dominated by the walk itself, our result may be useful in settings where evaluating the boundary function is the true bottleneck, such as when querying it involves inference of a neural network or solving a different PDE. We consider the following dynamic setting. Suppose the boundary condition is changing slowly over time, yielding a sequence of boundary functions g1, g 2, . . . , g m. This corresponds to a dynamic Dirichlet problem where we wish to track the evolving solution ut(x) at a fixed evaluation point. As a direct application of Theorem 6, we get Corollary 7. 
+
+Definition 5 (The Dynamic Dirichlet Problem) . Given a domain Ω ⊂ Rd, a fixed evaluation point 
+
+x ∈ Ω, and a sequence of evolving continuous boundary functions g1, . . . , g m : ∂Ω → R, maintain running solution estimates ˜u1(x), . . . , ˜um(x) such that at every step t, |˜ut(x) − ut(x)| ≤ ϵ with high probability. We assume bounded supremum norms ∥gt∥∞ ≤ 1. The local step sizes are given by the 
+
+L2 difference over the harmonic measure: αt = ∥gt − gt−1∥2,P (x, ·), and are assumed to be known. 
+
+Corollary 7 (Dynamic Dirichlet Evaluation) . Let ϵ, δ ∈ (0 , 1) . Given a sequence of bounded bound-ary functions g1, . . . , g m with known step sizes αt = ∥gt − gt−1∥2,P (x, ·), the Adaptive Algorithm guarantees that with probability at least 1−δ, the PDE estimates at point x satisfy |˜ut(x)−ut(x)| ≤ ϵ
+
+simultaneously for all t ∈ [m]. The total number of boundary samples required across the sequence is bounded by: O
+
+ log( m/δ ) 
+
+> ϵ2
+
+(1 + Pmt=2 αt) + m log( m/δ )
+
+> ϵ
+
+
+
+.
+
+80 25 50 75 100 125 150 175 200     
+
+> Timestep
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> 1.2
+> Cumulative Matrix-Vector Products
+> ×10 5Computational Cost over Time ( ε= 0.15, δ= 0.05)
+> Baseline: Param-Free DeltaShift (Fixed Budget)
+> Ours: Adaptive Algorithm (Dynamic Budget)
+> Step Size ( αt)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> 1.2
+> Matrix Change Magnitude ( αt)
+
+Figure 1: Our adaptive method requires fewer samples to estimate traces of a sequence of matrices. 0.000 0.025 0.050 0.075 0.100 0.125 0.150 0.175      
+
+> Max Error →
+> 0.00
+> 0.25
+> 0.50
+> 0.75
+> 1.00
+> 1.25
+> 1.50
+> 1.75
+> Total Matrix-Vector Products (Cost)  ×10 6Max Error
+> Baseline
+> Ours
+> 0.00 0.01 0.02 0.03 0.04 0.05
+> Mean Error →
+> 0.00
+> 0.25
+> 0.50
+> 0.75
+> 1.00
+> 1.25
+> 1.50
+> 1.75 ×10 6Mean Error
+> 0.00 0.01 0.02 0.03 0.04 0.05 0.06
+> Weighted Mean Error →
+> 0.00
+> 0.25
+> 0.50
+> 0.75
+> 1.00
+> 1.25
+> 1.50
+> 1.75 ×10 6Weighted Mean Error
+
+Figure 2: Cost vs. Empirical Error Pareto Frontier. At equivalent computational budgets, the adaptive algorithm achieves strictly lower errors across all three evaluation metrics. 
+
+## 5 Experiments 
+
+We empirically evaluate our proposed adaptive algorithm. We compare it against the parameter-free DeltaShift baseline [ 10 ], the current state-of-the-art for dynamic trace estimation for Frobenius norms. 
+
+Comparing Cost across a sequence and Ablations. In our first experiment, we generate a synthetic sequence of 2000 × 2000 matrices over m = 200 timesteps. We introduce rare, large perturbations to simulate a stable sequence punctuated by bursts. As shown in Figure 1, the baseline method decides its (fixed) query budget based on the worst-case step size ( αmax ). On the other hand, our adaptive algorithm scales down its query budget during stable periods, resulting in a significantly lower total matrix-vector product (MVP) cost. Furthermore, Figure 4 confirms that this cost reduction holds across a wide range of target error tolerances ( ϵ) and failure probabilities ( δ). 
+
+Cost vs. Empirical Error Pareto Frontier. In our second experiment, we evaluate the trade-off between total computational cost (MVPs) and empirical error. To generate a single point on the trade-off graph, we first run our adaptive method for a specific target error tolerance, record its total budget, and then evaluate the baseline by dividing that exact budget evenly across all timesteps (as the baseline cannot adjust adaptively). We repeat this procedure across varying error tolerances to construct the Pareto plots. Figure 2 shows the results for three metrics: Maximum Absolute Error, Mean Absolute Error, and Weighted Mean Error (which penalizes errors heavily during large matrix jumps). Across all three metrics, our method performs better. 
+
+Hessian Trace Tracking During Neural Network Training. In our final experiment, we evaluate dynamic Hessian trace estimation on an actual neural network training trajectory. We train a 2, 410 -parameter Multilayer Perceptron (MLP) on a classification task for 200 steps with SGDR (Stochastic Gradient Descent with Warm Restarts) [ 21 ] learning rate schedule with a period of T0 = 50 . Matrix-vector products are approximated by backpropagation using Pearlmutter’s trick [25]. 90 25 50 75 100 125 150 175 200          
+
+> Training Step ( t)
+> 0
+> 1
+> 2
+> 3
+> 4
+> 5
+> 6
+> Cumulative HVP Queries
+> ×10 5Computational Cost over Time
+> Baseline
+> Ours
+> Hessian Step Size ( αt)
+> 025 50 75 100 125 150 175 200
+> Training Step ( t)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Absolute Trace Error
+> Empirical Trace Error
+> Baseline
+> Ours
+> Hessian Step Size ( αt)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> 1.2
+> Hessian Step Size ( αt)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> 1.2
+> Hessian Step Size ( αt)
+
+Figure 3: Hessian Trace Estimation during SGDR. (Left) Cumulative queries over time. The shaded background shows the Hessian step size ( αt), which spikes heavily during the 50-step SGDR restarts. (Right) Empirical trace error. This shows that while both algorithms roughly maintain the same error, our adaptive method is more efficient since it can dynamically adjust the budget. 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 
+
+Target Tolerance ( ε)
+
+0.0 
+
+0.2 
+
+0.4 
+
+0.6 
+
+0.8 
+
+1.0 
+
+> Total Matrix-Vector Products
+
+×10 6 Cost vs. Tolerance ( ε)
+
+Baseline 
+
+Ours 
+
+0.00 0.05 0.10 0.15 0.20 0.25 0.30 
+
+Failure Probability ( δ)
+
+0.6 
+
+0.8 
+
+1.0 
+
+1.2 
+
+1.4 
+
+×10 5 Cost vs. Probability ( δ)
+
+Parameter Ablation Studies (Defaults: ε = 0.15 , δ = 0.05 , m = 200 )
+
+Figure 4: Ablations. Our method performs better the baseline across varying target tolerances ( ϵ)and failure probabilities ( δ). 10 References 
+
+[1] Måns Alskog. The history of the dirichlet problem for laplace’s equation. Bachelor’s thesis, Linköping University, 2023. URN: urn:nbn:se:liu:diva-192752. [2] Peter Auer, Nicolò Cesa-Bianchi, Yoav Freund, and Robert E. Schapire. The nonstochastic multiarmed bandit problem. SIAM Journal of Computing , 32:48–77, 2002. [3] Haim Avron. Counting triangles in large graphs using randomized matrix trace estimation. In 
+
+Proceedings of the Workshop on Large-Scale Data Mining: Theory and Applications (LSDM) ,2010. [4] Bernhard Beckermann, Daniel Kressner, and Marcel Schweitzer. Low-rank updates of matrix functions. SIAM Journal on Matrix Analysis and Applications , 39(1):539–565, 2018. [5] Sergius N Bernstein. On a modification of chebyshev’s inequality and of the error formula of laplace. Ann. Sci. Inst. Sav. Ukraine, Sect. Math , 1(4):38–49, 1924. [6] Hau Chan, Leman Akoglu, and Hanghang Tong. Make It or Break It: Manipulating Robustness in Large Networks , pages 325–333. [7] Chen Chen, Ruiyue Peng, Lei Ying, and Hanghang Tong. Network connectivity optimization: Fundamental limits and effective algorithms. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining , KDD ’18, page 1167–1176, New York, NY, USA, 2018. Association for Computing Machinery. [8] David Cohen-Steiner, Weihao Kong, Christian Sohler, and Gregory Valiant. Approximating the spectrum of a graph. arXiv preprint arXiv:1712.01725 , 2017. [9] Richard Courant and David Hilbert. Methods of Mathematical Physics, Vol. 1 . Interscience Publishers, 1953. [10] Prathamesh Dharangutte and Christopher Musco. Dynamic trace estimation. In M. Ranzato, A. Beygelzimer, Y. Dauphin, P.S. Liang, and J. Wortman Vaughan, editors, Advances in Neural Information Processing Systems , volume 34, pages 30088–30099. Curran Associates, Inc., 2021. [11] Kun Dong, David Eriksson, Hannes Nickisch, David Bindel, and Andrew Gordon Wilson. Scalable log determinants for gaussian process kernel learning. In Proceedings of the 31st International Conference on Neural Information Processing Systems , NIPS’17, page 6330–6340, Red Hook, NY, USA, 2017. Curran Associates Inc. [12] Ernesto Estrada and Naomichi Hatano. Communicability in complex networks. Phys. Rev. E ,77:036111, Mar 2008. [13] Jack Fitzsimons, Diego Granziol, Kurt Cutajar, Michael Osborne, Maurizio Filippone, and Stephen Roberts. Entropic trace estimates for log determinants. In Michelangelo Ceci, Jaakko Hollmén, Ljupˇ co Todorovski, Celine Vens, and Sašo Džeroski, editors, Machine Learning and Knowledge Discovery in Databases , pages 323–338, Cham, 2017. Springer International Publishing. [14] Gereon Frahling, Piotr Indyk, and Christian Sohler. Sampling in dynamic data streams and ap-plications. In Proceedings of the Twenty-First Annual Symposium on Computational Geometry ,SCG ’05, page 142–149, New York, NY, USA, 2005. Association for Computing Machinery. [15] Behrooz Ghorbani, Shankar Krishnan, and Ying Xiao. An investigation into neural net opti-mization via hessian eigenvalue density. In Kamalika Chaudhuri and Ruslan Salakhutdinov, editors, Proceedings of the 36th International Conference on Machine Learning , volume 97 of 
+
+Proceedings of Machine Learning Research , pages 2232–2241. PMLR, 09–15 Jun 2019. [16] M. F. Hutchinson. A stochastic estimator of the trace of the influence matrix for laplacian smoothing splines. Communications in Statistics - Simulation and Computation , 18(3):1059– 1076, 1989. 11 [17] T. S. Jayram, Andrew McGregor, S. Muthukrishnan, and Erik Vee. Estimating statistical aggregates on probabilistic data streams. ACM Trans. Database Syst. , 33(4), December 2008. [18] Shizuo Kakutani. Two-dimensional Brownian motion and harmonic functions. Proceedings of the Imperial Academy , 20(10):706 – 714, 1944. [19] Steven G. Krantz. Handbook of Complex Variables . Birkhäuser Boston, 1999. [20] Hao Li, Zheng Xu, Gavin Taylor, Christoph Studer, and Tom Goldstein. Visualizing the loss landscape of neural nets. In Proceedings of the 32nd International Conference on Neural Information Processing Systems , NIPS’18, page 6391–6401, Red Hook, NY, USA, 2018. Curran Associates Inc. [21] Ilya Loshchilov and Frank Hutter. SGDR: Stochastic gradient descent with warm restarts. In 
+
+International Conference on Learning Representations , 2017. [22] Alessio Mazzetto. An improved algorithm for learning drifting discrete distributions. In 
+
+Proceedings of The 27th International Conference on Artificial Intelligence and Statistics , 2024. [23] Alessio Mazzetto and Eli Upfal. Nonparametric density estimation under distribution drift. In 
+
+Proceedings of the 40th International Conference on Machine Learning , 2023. [24] Mervin E. Muller. Some Continuous Monte Carlo Methods for the Dirichlet Problem. The Annals of Mathematical Statistics , 27(3):569 – 589, 1956. [25] Barak A. Pearlmutter. Fast exact multiplication by the hessian. Neural Computation , 6(1):147– 160, 1994. [26] Mark Rudelson and Roman Vershynin. Hanson–wright inequality and sub-gaussian concentra-tion. Electronic Communications in Probability , 18:1–9, 2013. [27] Roman Vershynin. High-dimensional probability: An introduction with applications in data science , volume 47. Cambridge university press, 2018. [28] Sheng Wang, Yuan Sun, Christopher Musco, and Zhifeng Bao. Public transport planning: When transit network connectivity meets commuting demand. In Proceedings of the 2021 International Conference on Management of Data , SIGMOD ’21, page 1906–1919, New York, NY, USA, 2021. Association for Computing Machinery. [29] David Woodruff, Fred Zhang, and Richard Zhang. Optimal query complexities for dynamic trace estimation. Advances in Neural Information Processing Systems , 35:35049–35060, 2022. [30] Zhewei Yao, Amir Gholami, Kurt Keutzer, and Michael W. Mahoney. Pyhessian: Neural networks through the lens of the hessian. In Proceedings of the 2020 IEEE International Conference on Big Data (Big Data) , pages 581–590. IEEE, 2020. [31] Yunyue Zhu and Dennis Shasha. Chapter 32 - statstream: Statistical monitoring of thou-sands of data streams in real time**work supported in part by u.s. nsf grants iis-9988345 and n2010:0115586. In Philip A. Bernstein, Yannis E. Ioannidis, Raghu Ramakrishnan, and Dimitris Papadias, editors, VLDB ’02: Proceedings of the 28th International Conference on Very Large Databases , pages 358–369. Morgan Kaufmann, San Francisco, 2002. [32] Martin Zinkevich. Online convex programming and generalized infinitesimal gradient ascent. In Proceedings of the 20th International Conference on Machine Learning , 2003. 12 A Additional Preliminaries 
+
+Definition 6 (Sub-exponential scalar variables and norm-concentrated vector errors) . A scalar random variable X with mean μ is sub-exponential with variance parameter ν2 ≥ 0 and scale parameter 
+
+β ≥ 0 if 
+
+E
+
+h
+
+eλ(X−μ)i
+
+≤ eλ2ν2/2 for all |λ| < 1/β. 
+
+For a W -valued estimator error e, we say that e has sub-exponential norm concentration with parameters (ν2, β ) if, for every ϵ > 0,
+
+P[∥e∥W ≥ ϵ] ≤ 2 exp 
+
+
+
+− min 
+
+ ϵ2
+
+2ν2 , ϵ
+
+2β
+
+ 
+
+.
+
+This is the vector-valued concentration property used in our guarantees. 
+
+We use the following two standard facts about scalar sub-exponential random variables. For vector-valued errors, Definition 1 assumes the corresponding norm concentration directly. 
+
+Lemma 1 (Sub-exponential Concentration) . Let X be a sub-exponential random variable with mean 
+
+μ, variance parameter ν2, and scale parameter β. Then for any ϵ > 0:
+
+P[|X − μ| ≥ ϵ] ≤ 2 exp 
+
+
+
+− min 
+
+ ϵ2
+
+2ν2 , ϵ
+
+2β
+
+ 
+
+(4) 
+
+The same sufficient parameter thresholds apply to a vector-valued error e whenever it has sub-exponential norm concentration as in Definition 6. Consequently, to guarantee that the error exceeds 
+
+ϵ with probability at most δ, it is sufficient to ensure the parameters satisfy ν2 ≤ ϵ2 
+
+> 2 log(2 /δ )
+
+and 
+
+β ≤ ϵ 
+
+> 2 log(2 /δ )
+
+.
+
+Lemma 2 (Linear Combinations of Sub-exponentials) . Linear combinations of independent sub-exponential variables remain sub-exponential. Let X1, . . . , X k be independent sub-exponential random variables, where each Xi has parameters (ν2 
+
+> i
+
+, β i). For any constants ai ∈ R, the sum 
+
+Y = Pki=1 aiXi is sub-exponential with parameters: 
+
+ν2 
+
+> ∗
+
+=
+
+> k
+
+X
+
+> i=1
+
+a2 
+
+> i
+
+ν2 
+
+> i
+
+and β∗ = max  
+
+> i
+
+|ai|βi (5) 
+
+Theorem 8 ([ 8]) . To recover an ϵ-approximate spectrum of a matrix A in Wasserstein distance, it suffices to compute its first K = O(1 /ϵ ) spectral moments, given by tr (Ak) for k ∈ { 1, . . . , K },each to an additive error bounded by ϵ′ = exp( −Ω(1 /ϵ )) .
+
+## B Omitted Proofs 
+
+B.1 Proof of Theorem 2 
+
+Proof of Theorem 2. By a union bound over the oracle queries, with probability at least 1 − δ, the condition ˜αt ≥ αt holds simultaneously for all t ∈ [m]. Conditioned on this, the sample budget allocated in the second phase satisfies kt(˜ αt) ≥ kt(αt). Since the budget monotonically increases with step size, drawing kt(˜ αt) samples is sufficient to ensure the sub-exponential parameters satisfy 
+
+ν2 
+
+> t
+
+≤ N and βt ≤ B, and thus the inductive proof. Applying Theorem 1 with proxy step sizes ˜αt
+
+adds a failure probability of at most δ, thus the total failure probability is at most 2δ. Adding the Phase 1 additive sample overhead of P knorm yields the final bound. 
+
+B.2 Proof of Theorem 5 
+
+Proof of Theorem 5. We apply the bound from Corollary 4 (Dynamic Trace of Matrix Powers). Summing the required MVPs across all K instances, we obtain: 
+
+> K
+
+X
+
+> k=1
+
+O log( mK/δ )(ϵ′)2 k + k2
+
+> m
+
+X
+
+> t=2
+
+αt
+
+!! 
+
+= O log( mK/δ )(ϵ′)2
+
+> K
+
+X
+
+> k=1
+
+k +
+
+> K
+
+X
+
+> k=1
+
+k2
+
+! mX
+
+> t=2
+
+αt
+
+!! 
+
+13 which simplifies to 
+
+> K
+
+X
+
+> k=1
+
+O log( mK/δ )(ϵ′)2 k + k2
+
+> m
+
+X
+
+> t=2
+
+αt
+
+!! 
+
+= O log( mK/δ )(ϵ′)2
+
+> K
+
+X
+
+> k=1
+
+k +
+
+> K
+
+X
+
+> k=1
+
+k2
+
+! mX
+
+> t=2
+
+αt
+
+!! 
+
+= O log( mK/δ )(ϵ′)2 K2 + K3
+
+> m
+
+X
+
+> t=2
+
+αt
+
+!! 
+
+,
+
+as desired. 14

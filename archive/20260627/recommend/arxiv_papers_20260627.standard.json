@@ -1,0 +1,414 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-26T20:57:19.916041+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 43,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 88,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 14,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 9,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 15
+  },
+  "deep_dive": [
+    {
+      "id": "2606.25456v1",
+      "source": "arxiv",
+      "title": "Towards Robust EEG Decoding Based on Riemannian Self-Attention",
+      "abstract": "Brain-Computer Interface (BCI) based on electroencephalography (EEG) enables direct interaction between the brain and external environments and has significant applications in assistive technologies, medical rehabilitation, and entertainment. Recently, EEG decoding methods based on Symmetric Positive Definite (SPD) learning have demonstrated superior performance. However, these methods typically employ basic network architectures and do not explicitly capture local relationships between EEG signals. This limitation is problematic for EEG signals due to their inherently low Signal-to-Noise Ratio (SNR). Moreover, most existing Riemannian manifold-based methods are restricted to specific metrics. The most widely used is the Affine-Invariant Metric (AIM). However, it has a quadratic dependency on the SPD matrices and cannot handle ill-conditioned SPD matrices, which hinders the effectiveness of networks. In contrast, the Bures-Wasserstein Metric (BWM) exhibits linear dependence on SPD matrices and demonstrates superior performance for ill conditioning. To overcome these challenges, we propose a Riemannian self-attention network based on the BWM. Additionally, the recently introduced power-deformed generalized Bures-Wasserstein metric reveals a nonlinear relationship between SPD matrices and matrix power deformation. This metric provides a more nuanced representation of the geometric structure of the SPD manifold. Consequently, we extend our model to a learnable version. For simplicity, we refer to it as GBWAtt. Experimental results on three EEG benchmarking datasets validate the robustness and effectiveness of our proposed method. The code is available at https://github.com/jissc/GBWAtt.",
+      "authors": [
+        "Shaocheng Jin",
+        "Tao Zhou",
+        "Rui Wang",
+        "Ziheng Chen",
+        "Xiaoqing Luo",
+        "Xiaojun Wu",
+        "Josef Kittler"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-24T06:31:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.25456v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Riemannian self-attention for robust EEG decoding in BCI",
+      "llm_evidence_cn": "用于BCI中鲁棒EEG解码的黎曼自注意力",
+      "llm_evidence": "用于BCI中鲁棒EEG解码的黎曼自注意力",
+      "canonical_evidence": "用于BCI中鲁棒EEG解码的黎曼自注意力",
+      "llm_tldr_en": "Proposes Riemannian self-attention to improve EEG decoding robustness for BCI applications.",
+      "llm_tldr_cn": "提出黎曼自注意力以提高BCI应用中EEG解码的鲁棒性。",
+      "llm_tldr": "提出黎曼自注意力以提高BCI应用中EEG解码的鲁棒性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22730v1",
+      "source": "arxiv",
+      "title": "Optimal Estimating Equations for Compact-Memory Hawkes Processes",
+      "abstract": "Likelihood is standard for Hawkes-process inference, while less computationally demanding methods have largely developed separately. We show that least squares, Takács--Fiksel, and related moment-based estimators form a single class of compensator-based estimating equations, with the likelihood score as the efficient benchmark. For fixed-dimensional multivariate Hawkes processes with compact memory, nonlinear positive links, and signed kernels allowing inhibition, every suitably regular predictable functional of a fixed lag window yields an unbiased estimating equation when integrated against $\\text{d} N-λ\\,\\text{d} t$. Under common regularity, identification, and rank conditions, estimators based on every admissible finite library achieve uniform high-probability and pointwise almost-sure $\\mathcal O(\\sqrt{\\log(T)/T})$ rates, asymptotic normality with Godambe covariance, and admit feasible two-step optimal weighting. A projection identity quantifies each library's exact efficiency loss as the score information outside its predictable span; a two-point bound shows the root-$T$ scale cannot be improved uniformly. Although compact memory localizes the intensity rather than the stationary law, exponential forgetting yields Bernstein-type concentration and transfers the theory to nonstationary starts after a logarithmic burn-in. Within this scope, the compensator class is exhaustive for finite-library comparisons: it contains the score, gives admissible libraries common guarantees, and quantifies their efficiency gaps exactly.",
+      "authors": [
+        "Louis Davis",
+        "Conor Kresin"
+      ],
+      "primary_category": "math.ST",
+      "categories": [
+        "math.ST"
+      ],
+      "published": "2026-06-22T00:16:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.22730v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "methods for analyzing and predicting sequential event data via Hawkes processes",
+      "llm_evidence_cn": "通过霍克斯过程分析和预测顺序事件数据",
+      "llm_evidence": "通过霍克斯过程分析和预测顺序事件数据",
+      "canonical_evidence": "通过霍克斯过程分析和预测顺序事件数据",
+      "llm_tldr_en": "Unifies moment-based estimators for Hawkes processes with compact memory.",
+      "llm_tldr_cn": "统一了紧凑记忆霍克斯过程的矩估计方法。",
+      "llm_tldr": "统一了紧凑记忆霍克斯过程的矩估计方法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.23391v1",
+      "source": "arxiv",
+      "title": "Distribution-Aware Diffusion-LLM for Robust Ultra-Long-Term Time Series Forecasting",
+      "abstract": "Time series forecasting is a fundamental machine learning task. Recent work has explored Large Language Models (LLMs) for this purpose due to their strong generalization, pattern recognition, and zero-shot or few-shot capabilities. Despite their suitability for long-context learning, LLMs face challenges in multimodal settings: they lack calibrated probabilistic modeling for non-text data and struggle to align heterogeneous representations. To address these issues, we propose a new framework Diffusion-LLM that integrates a conditional diffusion model into an LLM-based forecasting pipeline. This joint design enables learning the conditional distribution of future data while improving semantic alignment in a shared latent space. We evaluate Diffusion-LLM on six long-term forecasting benchmarks, including ETT, Weather, and ECL. Our method consistently outperforms existing LLM-based baseline, achieving notable gains in ultra-long-term and few-shot forecasting and demonstrating the value of distribution-aware regularization for enhancing robustness and generalization in time series LLMs.",
+      "authors": [
+        "Falguni Ghosh",
+        "Vahid Hashemi",
+        "Bernhard Kainz"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-22T14:18:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.23391v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "time series forecasting with diffusion-LLM",
+      "llm_evidence_cn": "使用Diffusion-LLM进行时间序列预测",
+      "llm_evidence": "使用Diffusion-LLM进行时间序列预测",
+      "canonical_evidence": "使用Diffusion-LLM进行时间序列预测",
+      "llm_tldr_en": "Integrates diffusion model with LLM for robust ultra-long-term time series forecasting.",
+      "llm_tldr_cn": "将扩散模型与LLM集成以实现鲁棒的超长期时间序列预测。",
+      "llm_tldr": "将扩散模型与LLM集成以实现鲁棒的超长期时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.23655v1",
+      "source": "arxiv",
+      "title": "Dynamic estimation of slowly varying sequences",
+      "abstract": "We consider the problem of sequentially approximating functions of each element in a slowly-varying sequence, i.e. one where the magnitude $α_i$ of the difference between the elements at positions $i$ and $i-1$ is small. Recent work on implicit trace estimation shows that when $α_t$ is small, reusing queries to past sequence elements can reduce the overall cost [Dharangutte \\& Musco, NeurIPS~2021; Woodruff et al., NeurIPS~2022]. We introduce a framework generalizing this to a variety of linear and nonlinear functions on diverse vector spaces, obtaining novel sequential estimation results for matrix powers, spectral densities, Monte Carlo integration, and a boundary value problem from partial differential equations~(PDEs). Furthermore, we develop a novel algorithm for use with this framework that locally scales the estimation budget with $α_t$, obtaining sharper path-length-style variation bounds of form $\\mathcal O(\\sum_{i=1}^mα_i)$ on the cost of estimating a sequence of length $m$. This improves upon the previous implicit trace estimation bound of $\\mathcal O(m\\cdot\\max_iα_i)$ [Dharangutte \\& Musco, NeurIPS~2021], which is achieved by fixing the query budget using the worst-case $α_i$ and is thus inefficient for stable sequences with rare bursts. Lastly, while all past work assumes a known bound on $α_i$, we show in certain cases how the changes can be estimated on-the-fly with (nearly) no added cost. In summary, our framework makes the sequential approximation toolkit general-purpose and adaptive while improving upon state-of-the-art-guarantees for dynamic trace estimation.",
+      "authors": [
+        "Prashant Gokhale",
+        "Mikhail Khodak",
+        "Sandeep Silwal"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.DS"
+      ],
+      "published": "2026-06-22T17:40:49+00:00",
+      "link": "https://arxiv.org/pdf/2606.23655v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "analyzing and predicting slowly-varying sequential data via dynamic estimation",
+      "llm_evidence_cn": "通过动态估计分析和预测慢变序列数据",
+      "llm_evidence": "通过动态估计分析和预测慢变序列数据",
+      "canonical_evidence": "通过动态估计分析和预测慢变序列数据",
+      "llm_tldr_en": "Framework for sequential approximation of functions on slowly varying sequences.",
+      "llm_tldr_cn": "慢变序列上函数顺序逼近的框架。",
+      "llm_tldr": "慢变序列上函数顺序逼近的框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.24164v1",
+      "source": "arxiv",
+      "title": "Breaking Shortcut Learning for Cross-Trial EEG-Guided Target Speech Extraction via Two-Stage Training",
+      "abstract": "Recent end-to-end models for EEG-guided target speech extraction report impressive results, underscoring potential for neuro-steered hearing technologies. However, our analysis reveals that high within-trial performance can be driven by trial-specific EEG structure that acts as shortcuts for target selection, leading to poor generalization on unseen trials. To overcome this gap, we propose TRUST-TSE, a two-stage framework to mitigate shortcut learning. By introducing contrastive pretraining with attended-speaker negative sampling, we encourage the EEG encoder to capture fine-grained EEG--speech alignment while suppressing trial-identity cues. We also employ a confidence-weighted extraction objective based on EEG--source similarity to guide extraction using the learned representations. Experiments on KUL and DTU datasets show that TRUST-TSE outperforms end-to-end baselines under strict cross-trial protocols, addressing a key reliability bottleneck of existing approaches.",
+      "authors": [
+        "Wonchul Shin",
+        "Inyong Choi",
+        "Kyogu Lee"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.AI",
+        "cs.SD"
+      ],
+      "published": "2026-06-23T05:37:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.24164v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "TRUST-TSE decodes EEG to extract target speech",
+      "llm_evidence_cn": "TRUST-TSE从脑电图解码提取目标语音",
+      "llm_evidence": "TRUST-TSE从脑电图解码提取目标语音",
+      "canonical_evidence": "TRUST-TSE从脑电图解码提取目标语音",
+      "llm_tldr_en": "A two-stage framework to avoid shortcut learning in EEG-guided speech extraction",
+      "llm_tldr_cn": "一种避免脑电图引导语音提取中捷径学习的两阶段框架",
+      "llm_tldr": "一种避免脑电图引导语音提取中捷径学习的两阶段框架",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.22874v1",
+      "source": "arxiv",
+      "title": "SpotAttention: Plug-In Block-Sparse Routing for Pretrained Long-Context Transformers",
+      "abstract": "Long contexts have become standard in pretrained LLMs, yet they remain expensive to run: prefill compute grows quadratically with sequence length, and every decode step re-reads a key-value cache that grows linearly with it. Sparse attention cuts these costs by attending only to a relevant subset of past tokens, but selecting that subset is itself expensive. We present SpotAttention, a lightweight selector that attaches to a frozen pretrained transformer and learns by KL distillation to estimate its attention distribution. The selector picks the top-K keys each query attends to, and because its estimate is a calibrated distribution, a dual top-p rule reads the per-query, per-layer budget directly from it. Across Qwen3 (dense, 4B-32B) and Qwen3.5 (hybrid linear/full attention, 4B-9B), SpotAttention matches dense accuracy at contexts up to 128K tokens, eight times the training length. Decode at L=128K runs 3.9x faster than FlashAttention and 1.8x faster than Twilight, the strongest training-free baseline. Quantizing the selector's K-cache to INT4 or FP4 microscale shrinks it 3.5x at no accuracy cost.",
+      "authors": [
+        "Huzama Ahmad",
+        "Se-Young Yun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-22T05:39:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.22874v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns attention weight estimates via distillation for sparse routing",
+      "llm_evidence_cn": "通过蒸馏学习注意力权重估计以实现稀疏路由",
+      "llm_evidence": "通过蒸馏学习注意力权重估计以实现稀疏路由",
+      "canonical_evidence": "通过蒸馏学习注意力权重估计以实现稀疏路由",
+      "llm_tldr_en": "SpotAttention uses KL distillation to learn attention distributions and select top-K keys for sparse attention.",
+      "llm_tldr_cn": "SpotAttention使用KL蒸馏学习注意力分布并选择top-K键实现稀疏注意力。",
+      "llm_tldr": "SpotAttention使用KL蒸馏学习注意力分布并选择top-K键实现稀疏注意力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.22901v1",
+      "source": "arxiv",
+      "title": "Explainable AI in Speaker Recognition -- Attention Map Visualisation and Evaluation",
+      "abstract": "Explaining and understanding the decision-making process of artificial intelligence (AI) systems, particularly those implemented by neural networks, falls within the field of explainable AI (XAI). Analogous to the human attention mechanism, neural networks are assumed to possess their own attention mechanisms that selectively process information during decision-making. This work proposes to study one XAI topic: analysing and visualising the attention mechanisms of neural networks. Our experiments are performed on speaker recognition neural networks that are trained to identify speaker identity from a given utterance.   Previous studies have widely used class activation map (CAM)-based methods to analyse and visualise the attention mechanisms of neural networks. Each of these methods produces an attention map for each network input, highlighting which input regions are selectively processed when the speaker recognition network makes decisions. However, the evaluation of attention maps produced by these methods remains largely underexplored. This work systematically reviews an existing attention map evaluation algorithm, establishing key concepts and identifying its shortcomings. On the basis of this existing evaluation algorithm, a new version is then proposed to address the identified shortcomings, called the Modified Randomised Input Sampling for Explanation - Evaluation algorithm (Modified RISE-eval). Using Modified RISE-eval, we evaluate the attention maps produced by two representative CAM-based methods, GradCAM and LayerCAM, applied to a certain speaker recognition network. The evaluation results demonstrate that GradCAM and LayerCAM each exhibit distinct advantages when applied under different experimental conditions in the speaker recognition task.",
+      "authors": [
+        "Yanze Xu",
+        "Mark D. Plumbley",
+        "Wenwu Wang"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.AI",
+        "eess.SP"
+      ],
+      "published": "2026-06-22T06:31:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.22901v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "attention maps as importance weights for features",
+      "llm_evidence_cn": "注意力图作为特征重要性权重",
+      "llm_evidence": "注意力图作为特征重要性权重",
+      "canonical_evidence": "注意力图作为特征重要性权重",
+      "llm_tldr_en": "Visualizes and evaluates attention mechanisms for explainable speaker recognition.",
+      "llm_tldr_cn": "可视化并评估语音识别中的注意力机制以实现可解释性。",
+      "llm_tldr": "可视化并评估语音识别中的注意力机制以实现可解释性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.22925v1",
+      "source": "arxiv",
+      "title": "EEG Benchmarking Needs a Task Specification Layer: NeuroDoc for Rulebook-Guided, Executable Benchmark Construction",
+      "abstract": "Electroencephalography (EEG) foundation models increasingly rely on multi-dataset training and evaluation, yet public EEG datasets still lack a shared task specification layer that can turn heterogeneous recordings into reusable benchmark units. Existing standards organize files, metadata, and provenance, but they do not specify EEG tasks under a common language and rulebook, leaving critical task semantics scattered across papers, code, and manual interpretation. We investigate whether heterogeneous public EEG datasets can be standardized through a structured task specification language paired with a shared rulebook. Our methodology represents each benchmark entry as a task document synchronized with an executable task kernel, with the rulebook defining task fields, evidence requirements, document-kernel alignment, review states, and machine-checkable constraints. Using this methodology, we release a community-reviewed EEG benchmark corpus centered on 53 completed and reviewed entries with 245 task definitions spanning diverse paradigms, and we introduce NeuroDoc and NeuroAudit as the operational support layer for rulebook-guided drafting, upgrading, review, amendment, and release management. We further examine whether the resulting benchmark units can be instantiated in a shared downstream setting across four EEG foundation model backbones, providing execution-based evidence for reusable, auditable, and executable EEG benchmarking infrastructure.",
+      "authors": [
+        "Chengxuan Qin",
+        "Zhige Chen",
+        "Shu Peng",
+        "Rui Yang",
+        "Jiping Cui",
+        "Yikai Dong",
+        "Jun Li",
+        "Liu Peng",
+        "Zhida Shang",
+        "Mingze Tang",
+        "Kay Chen Tan",
+        "Jibin Wu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.NE"
+      ],
+      "published": "2026-06-22T07:02:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.22925v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "standardizes EEG benchmark construction with rulebook-guided task specification",
+      "llm_evidence_cn": "通过规则书指导的任务规范标准化EEG基准构建",
+      "llm_evidence": "通过规则书指导的任务规范标准化EEG基准构建",
+      "canonical_evidence": "通过规则书指导的任务规范标准化EEG基准构建",
+      "llm_tldr_en": "Proposes NeuroDoc, a task specification layer for constructing executable EEG benchmarks.",
+      "llm_tldr_cn": "提出NeuroDoc，一种用于构建可执行EEG基准的任务规范层。",
+      "llm_tldr": "提出NeuroDoc，一种用于构建可执行EEG基准的任务规范层。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.22991v1",
+      "source": "arxiv",
+      "title": "Neural Architecture Search of Sample Reweighting Networks for Complex Distribution Shift",
+      "abstract": "Sample reweighting is a major approach to addressing distribution shifts, such as label noise and class imbalance. Meta-Weight-Net (MW-Net) is a promising sample reweighting network that computes weights based on classification loss. Although MW-Net improves prediction performance under a single type of distribution shift using a simple neural network, its performance degrades when facing both label noise and class imbalance, where it is hard to determine appropriate weights solely from classification loss and using a simple network. In this study, we introduce neural architecture search to MW-Net to mitigate such performance degradation. Using the tree-structured Parzen estimator, we explore the optimal number of hidden layers and nodes and select the most suitable intermediate layer in the classification model to serve as the input for MW-Net. Experimental results on the CIFAR-10 and CIFAR-100 datasets that were modified to include both label noise and class imbalance demonstrate the effectiveness of neural architecture search for MW-Net.",
+      "authors": [
+        "Keisuke Sugawara",
+        "Kento Uchida",
+        "Shinichi Shirakawa"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-22T08:11:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.22991v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sample reweighting for distribution shift",
+      "llm_evidence_cn": "样本重加权应对分布偏移",
+      "llm_evidence": "样本重加权应对分布偏移",
+      "canonical_evidence": "样本重加权应对分布偏移",
+      "llm_tldr_en": "NAS optimizes sample reweighting networks to handle label noise and class imbalance.",
+      "llm_tldr_cn": "神经架构搜索优化样本重加权网络以处理标签噪声和类别不平衡。",
+      "llm_tldr": "神经架构搜索优化样本重加权网络以处理标签噪声和类别不平衡。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.22992v1",
+      "source": "arxiv",
+      "title": "Predicate Importance Estimation and Decoupled Rationale-Score Distillation for Entity Alignment",
+      "abstract": "Knowledge graphs (KGs) are increasingly used as structured context for Large Language Models (LLMs), but industrial KG-RAG systems often need to integrate public and domain-specific KGs constructed from heterogeneous databases. This integration relies on Entity Alignment (EA), where lexical matching alone is insufficient under predicate-name variation and incomplete local neighborhoods. We address EA for KG integration by constructing a pairwise EA dataset and proposing two complementary modules: Predicate Importance Estimation (PIE) and Decoupled Rationale-Score Distillation (DRSD). PIE is a compact embedding-based approach that removes the subject information from each 1-hop triple, encodes the resulting subjectless triples, and aggregates them with learnable predicate-importance weights to build predicate-aware entity embeddings. DRSD trains a distilled small language model (SLM) with pseudo-answers produced by a teacher LLM through distinct prompts. By converting binary EA labels into text-based supervision and decoupling confidence-score estimation from label-consistent rationales, DRSD enables the SLM to learn task-specific reasoning while retaining a less label-biased confidence signal. Experiments show that PIE and DRSD improve EA classification. Moreover, because DRSD decouples confidence-score estimation from the decision, a discrepancy between the two flags an uncertain prediction for human review, thereby enabling a practical discrepancy between automatic acceptance and human-in-the-loop verification.",
+      "authors": [
+        "Keunha Kim",
+        "Yoonjin Jang",
+        "Hyeon-gu Lee",
+        "Sihyung Kim",
+        "Youngjoong Ko"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-22T08:11:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.22992v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Proposes Predicate Importance Estimation (PIE) for entity alignment, computing importance weights for predicates",
+      "llm_evidence_cn": "提出谓词重要性估计（PIE）用于实体对齐，计算谓词重要性权重",
+      "llm_evidence": "提出谓词重要性估计（PIE）用于实体对齐，计算谓词重要性权重",
+      "canonical_evidence": "提出谓词重要性估计（PIE）用于实体对齐，计算谓词重要性权重",
+      "llm_tldr_en": "Proposes PIE and DRSD modules for entity alignment in knowledge graph integration",
+      "llm_tldr_cn": "提出PIE和DRSD模块用于知识图谱整合中的实体对齐",
+      "llm_tldr": "提出PIE和DRSD模块用于知识图谱整合中的实体对齐",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
