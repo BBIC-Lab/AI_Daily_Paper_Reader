@@ -1,0 +1,696 @@
+Title: Delay-Penalty Comparison for Sequential Testing and Quickest Detection in State-Dependent Diffusion Models
+
+URL Source: https://arxiv.org/pdf/2606.23962v1
+
+Published Time: Wed, 24 Jun 2026 00:21:27 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# Delay-Penalty Comparison for Sequential Testing and Quickest Detection in State-Dependent Diffusion Models 
+
+## Ye Liang 
+
+College of Engineering, The University of Iowa, Iowa City, 52242, IA,USA. Corresponding author(s). E-mail(s): ye-liang@uiowa.edu; 
+
+Abstract 
+
+We study sequential testing and Bayesian quickest detection for diffusion obser-vations whose drift changes between two alternatives while the signal-to-noise ratio may depend on the current observation. In this setting the posterior prob-ability is generally not a closed one-dimensional Markov statistic: the natural sufficient state is the augmented process consisting of the posterior (or likeli-hood ratio) and the observed diffusion. We formulate both testing and quickest detection within this common filtering framework and identify the correspond-ing degenerate free-boundary problems. The main contribution is a delay-penalty comparison principle. For a common terminal false-alarm or terminal decision cost, a pointwise larger running delay penalty increases the value of continuation, shrinks the continuation region, and yields earlier stopping. When the stopping set has a one-sided posterior representation, this gives an order relation for the optimal alarm boundaries. The result applies to linear delay costs and to nonlin-ear marginal delay penalties after the appropriate Markovian augmentation, and is illustrated by a constant signal-to-noise Shiryaev example in which the alarm threshold is computed numerically and shown to be monotone in the delay cost. The framework clarifies how state-dependent information and nonlinear delay costs jointly affect the geometry of sequential testing and quickest-detection rules. 
+
+Keywords: sequential testing; quickest detection; disorder problem; diffusion process; delay penalty; comparison principle; optimal stopping; free-boundary problem; variational inequality. 
+
+MSC Classification: 62L10; 62L15; 60G40; 60J60; 93E11 
+
+1
+
+> arXiv:2606.23962v1 [math.AP] 22 Jun 2026
+
+# 1 Introduction 
+
+Sequential methods determine endogenously when accumulated data justify a terminal action, balancing the cost of further observation against the quality of the eventual decision [1–10]. Two problems organize much of the field. In sequential testing an observer watches a process whose law is governed by one of two simple hypotheses and must choose, as a function of the data, both a stopping time and a terminal decision so as to trade sampling cost against the probabilities of a wrong decision [11– 13]. In quickest detection , or the disorder problem , the law of the observation changes at an unobservable time, and the observer raises an alarm to trade the frequency of false alarms against the delay incurred in detecting a true change [14–18]. Minimax counterparts of the detection problem replace the prior on the change time by a worst-case criterion and lead to the CUSUM and Shiryaev–Roberts procedures [19–33]. The present paper is Bayesian and optimal-stopping based. Both problems arise across applied domains. In quantitative finance a regime shift in a return or volatility process must be detected promptly while controlling false alarms; in statistical process control a manufacturing stream must be monitored for a shift in mean; in structural health monitoring, surveillance, and intrusion detection a sensor stream must be screened for the onset of an anomaly; and in epidemiolog-ical monitoring an incidence series must be watched for the start of an outbreak. In each case the natural observation model is a continuously sampled diffusion, the cost of a missed or delayed detection is problem specific and frequently nonlinear, and the practitioner needs to understand how the rule—and in particular the alarm threshold—moves when the penalty structure changes. That comparative question, rather than the explicit solution of any single model, is the focus of this paper. By filtering, both problems reduce to fully observed optimal stopping for a Marko-vian sufficient statistic, after which the value function solves a variational inequality and the optimal rule is a first-exit time from a continuation region [11, 34–41]. For Brownian observations with constant drift alternatives the sufficient statistic is a one-dimensional posterior diffusion and the rules are explicit thresholds. The situation changes when the diffusion coefficients are state dependent: the signal-to-noise ratio 
+
+then depends on the current observation, the posterior equation no longer closes in the posterior coordinate alone, and the sufficient statistic becomes multidimensional. This is the regime we study, and it is the regime in which the comparative-statics question is least understood. 
+
+Contribution. 
+
+This paper makes two related contributions. First, we give a unified formulation of sequential testing and Bayesian quickest detection for state-dependent diffusion observations. The formulation makes explicit that, unless the signal-to-noise ratio is constant or otherwise reducible, the posterior probability is not a closed Markov state; the closed sufficient statistic is the augmented process (Π t, X t), or equivalently (Φ t, X t), with an explicit degenerate generator. Second, and more importantly, we prove a delay-penalty comparison theorem for the resulting optimal stopping prob-lems. For a fixed terminal cost, increasing the running delay penalty increases the 2value function, shrinks the continuation region, and induces earlier stopping. When-ever the stopping region is known to be one-sided in the posterior coordinate, this gives a monotone ordering of the alarm boundaries. This comparative-static result applies directly to linear delay costs and extends to nonlinear marginal delay penalties after adding the appropriate penalty-memory state. A worked Shiryaev example com-putes the alarm threshold numerically by a finite-difference solution of the variational inequality and exhibits the predicted monotonicity. 
+
+Organization. 
+
+Section 3 develops the filtering reductions for both problems and proves the closed Markov-state result. Section 4 states the generic optimal stopping problem and the variational inequality in complementarity form. Section 5 proves the delay-penalty comparison theorem and its linear and nonlinear specializations and gives the sampling-cost analogue for testing. Section 6 gives the free-boundary interpretation and the martingale verification. Section 7 is the worked Shiryaev example with the numerical method described in full. Section 8 relates the framework to CUSUM and Shiryaev–Roberts procedures, and Section 9 concludes. 
+
+# 2 Literature Review 
+
+Relation to existing literature. 
+
+The literature relevant to the present work lies at the intersection of sequential analysis, quickest detection, filtering, and optimal stopping. On the sequential-analysis side, the foundations were laid by Wald and coau-thors through the theory of sequential testing and optimal stopping of experiments [1, 2, 5, 6, 42]. In parallel, Shiryaev initiated the Bayesian disorder problem, in which an unobservable change point must be detected as rapidly as possible while control-ling false alarms [14]. These developments evolved into the modern theory of quickest detection, encompassing both Bayesian and minimax formulations, with comprehen-sive treatments given by Shiryaev’s monographs and retrospective survey and by the unified treatment of Poor and Hadjiliadis and others [11, 29, 30, 43–49]. The Bayesian formulation is naturally expressed as a Markov optimal stopping problem after filtering, while minimax formulations lead to procedures such as CUSUM and Shiryaev–Roberts [19, 26, 29, 30, 32, 33, 50, 51]. The field now provides a unified framework for applications ranging from engineering and finance to surveillance and epidemiology. A second strand of literature concerns diffusion observations and state-dependent signal structures. For Brownian models with constant signal-to-noise ratio, filtering reduces the problem to a one-dimensional posterior diffusion and optimal rules are characterized by scalar thresholds. The situation becomes substantially more difficult when the signal-to-noise ratio depends on the current state of the observed diffu-sion. In this setting, the posterior probability alone generally fails to form a closed Markov state. A line of research initiated by Gapeev and Shiryaev [52, 53] devel-oped sequential testing and quickest detection formulations for diffusion processes 3with state-dependent coefficients. Subsequent analyses by Johnson and Peskir [54– 56] revealed the rich boundary structure that may arise even in special cases such as Bessel-process observations. Most recently, Ernst and Peskir [57] resolved the Gapeev– Shiryaev conjecture by proving that monotonicity of the signal-to-noise ratio implies monotonicity of the associated optimal stopping boundaries. A related body of work studies multidimensional and multi-source detection prob-lems. When observations are collected from multiple sensors or coupled systems, the filtering state becomes vector valued and the stopping region is typically a hyper-surface rather than a scalar threshold. Such models arise in distributed surveillance, sensor networks, and structural monitoring, and provide natural examples where finite-dimensional sufficient statistics remain available but the geometry of the stopping rule becomes substantially more complex [58–63]. Methodologically, the present paper belongs to the optimal-stopping and free-boundary literature [35]. After filtering, both sequential testing and Bayesian quickest detection reduce to variational inequalities for Markov sufficient statistics, with opti-mal rules represented as first-entry times into stopping regions [37–40]. Much of the existing literature focuses on deriving explicit solutions, characterizing free boundaries, or establishing structural properties of stopping regions for a fixed penalty speci-fication. In diffusion-based optimal stopping problem, the principal questions have traditionally been existence, regularity, smooth fit, and stochastic control of optimal boundaries [64–67]. The present paper addresses a different question. We do not seek a new explicit solution of a particular diffusion stopping problem. Instead, we study how the optimal rule changes when the delay-penalty structure changes. Our object is therefore the comparative-statics map penalty profile 7 −→ value function 7 −→ continuation region 7 −→ stopping boundary .
+
+Once a filtering reduction and optimal-stopping formulation are available, we show that larger marginal delay penalties increase the value function, shrink continuation regions, induce earlier stopping, and, whenever a one-sided boundary representation is known, produce a monotone ordering of alarm boundaries. Thus the contribution of the paper is not a new boundary formula but a structural comparison principle that applies across a broad class of diffusion-based sequential testing and quickest-detection models. 
+
+# 3 Filtering Reductions for Diffusion Sequential Problems 
+
+Throughout, (Ω , F, F, P) carries a standard Brownian motion B = ( Bt)t≥0, the obser-vation is a one-dimensional diffusion X = ( Xt)t≥0 on a state space I ⊆ R, and 
+
+FX = ( FXt )t≥0 is the augmented right-continuous observation filtration. We write 
+
+Pi := P( · | θ = i) for the conditional laws under the two hypotheses and Ei, Eπ for the corresponding expectations. 43.1 Sequential testing 
+
+Under hypothesis Hi, i ∈ { 0, 1}, the observation solves dXt = μi(Xt) d t + σ(Xt) d Bt, X0 = x0, (1) with μ0̸ ≡ μ1 and σ > 0. The hidden hypothesis θ ∈ { 0, 1} has prior π := P(θ = 1) ∈
+
+(0 , 1). A testing rule is a pair ( τ, d ) consisting of an FX -stopping time τ and an FXτ -measurable terminal decision d ∈ { 0, 1}. With unit sampling cost per unit time and error costs a, b > 0 for the two types of error, the Bayes risk is 
+
+Rπ (τ, d ) = Eπ [τ ] + a Pπ (d = 1 , θ = 0) + b Pπ (d = 0 , θ = 1) . (2) Let Π t := Pπ (θ = 1 | F Xt ) be the posterior probability of H1. For a fixed stopping time, the terminal-error part of (2) is minimized by deciding H1 when its posterior cost is smaller, that is, d∗ = 1{Πτ ≥p†} with p† = a/ (a + b), and the resulting conditional terminal cost is 
+
+Eπ
+
+a 1{d∗=1 ,θ =0 } + b 1{d∗=0 ,θ =1 } | F Xτ
+
+ = min {bΠτ , a (1 − Πτ )} =: M (Π τ ), (3) where M is concave and piecewise linear with apex at p†. Substituting d∗ collapses (2) to the optimal stopping problem 
+
+V (π, x 0) = inf  
+
+> τ
+
+Eπ,x 0
+
+τ + M (Π τ ). (4) Under P1 ≪ P0 on FXt , Girsanov’s theorem gives the likelihood ratio 
+
+Lt = dP1
+
+dP0 FXt
+
+= exp 
+
+Z t
+
+> 0
+
+μ1 − μ0
+
+σ2 (Xs) d Xs − 12
+
+Z t
+
+> 0
+
+μ21 − μ20
+
+σ2 (Xs) d s
+
+
+
+. (5) Introducing the signal-to-noise ratio 
+
+ϑ(x) := μ1(x) − μ0(x)
+
+σ(x) , (6) one has d Lt/L t = ϑ(Xt) d B0 
+
+> t
+
+under P0, where B0 is the P0-driving Brownian motion, so L is a P0-martingale. The posterior odds are Φ t := Π t/(1 − Πt) = π 
+
+> 1−π
+
+Lt. The innovation process ¯Bt =
+
+Z t
+
+> 0
+
+1
+
+σ(Xs)
+
+
+
+dXs − μ0(Xs) + ( μ1 − μ0)( Xs)Π s
+
+ ds
+
+
+
+(7) is a standard FX -Brownian motion [34], and the Kushner–Stratonovich equation for the two-valued hidden variable gives the posterior diffusion together with the 5observation in innovation form, dΠ t = ϑ(Xt) Π t(1 − Πt) d ¯Bt, dXt = μ0(Xt) + ( μ1 − μ0)( Xt)Π t
+
+ dt + σ(Xt) d ¯Bt.
+
+(8) The odds process is the smooth image Φ = Π /(1 − Π) of Π under the bijection 
+
+p 7 → p/ (1 −p) of (0 , 1) onto (0 , ∞); we therefore use (Π , X ) and (Φ , X ) interchangeably as state descriptors and do not record a separate stochastic differential for Φ, which carries an Itˆ o correction relative to (8). 
+
+## 3.2 Bayesian quickest detection 
+
+Now the drift switches at an unobservable change time θ ≥ 0: dXt = μ0(Xt) d t+σ(Xt) d Bt (t < θ ), dXt = μ1(Xt) d t+σ(Xt) d Bt (t ≥ θ), (9) with the standard prior placing an atom at the origin and an exponential tail, 
+
+P(θ = 0) = π, P(θ > t | θ > 0) = e−λt , λ > 0. (10) For an alarm time τ the linear-delay Bayes risk weighs the probability of a false alarm against the expected detection delay, 
+
+Rπ (τ ) = Pπ (τ < θ ) + c Eπ
+
+(τ − θ)+, c > 0. (11) Let Π t := Pπ (θ ≤ t | F Xt ). The false-alarm probability is Pπ (τ < θ ) = Eπ [Pπ (θ > τ |FXτ )] = Eπ [1 − Πτ ], and, by Fubini and the optional projection, 
+
+Eπ
+
+(τ − θ)+ = Eπ
+
+Z τ
+
+> 0
+
+1{θ≤s} ds
+
+
+
+= Eπ
+
+Z τ
+
+> 0
+
+Pπ (θ ≤ s | F Xs ) d s
+
+
+
+= Eπ
+
+Z τ
+
+> 0
+
+Πs ds
+
+
+
+.
+
+(12) Hence (11) becomes the optimal stopping problem 
+
+V (π) = inf  
+
+> τ
+
+Eπ
+
+
+
+(1 − Πτ ) + c
+
+Z τ
+
+> 0
+
+Πs ds
+
+
+
+, (13) with running cost f (p) = cp and terminal cost G(p) = 1 − p. The analytically conve-nient Shiryaev (weighted likelihood-ratio) statistic is the posterior odds, which admits the explicit representation Φt := Πt
+
+1 − Πt
+
+= π
+
+1 − π eλt Lt + λ
+
+Z t
+
+> 0
+
+eλ(t−s) Lt
+
+Ls
+
+ds, (14) where Lt/L s is the post-change-to-pre-change likelihood ratio over [ s, t ] formed from (5). The filtering equation for the posterior, with the compensator λ(1 − Πt) of 1{θ≤t}
+
+induced by (10), is dΠ t = λ(1 − Πt) d t + ϑ(Xt) Π t(1 − Πt) d ¯Bt, (15) 6with X as in (8). As above, (Φ , X ) is the equivalent state under the bijection p 7 →
+
+p/ (1 − p). 
+
+## 3.3 Closed Markov state and generator 
+
+The reductions (4) and (13) are optimal stopping problems driven by the posterior. Whether the posterior is by itself a closed Markov state depends on the signal-to-noise ratio. 
+
+Assumption 1. μ0, μ 1, σ are locally Lipschitz on I, σ > 0 on I, and (1) admits weakly unique nonexplosive solutions under H0 and H1. Moreover, for each finite T > 0, 
+
+Ei
+
+"
+
+exp 
+
+n 12
+
+Z T
+
+> 0
+
+ϑ2(Xs) d s
+
+o#
+
+< ∞ (i = 0 , 1) ,
+
+so that (5) is a true P0-martingale on finite horizons. 
+
+Theorem 2 (Closed Markov state for diffusion observations) . Under Assumption 1, the pair (Π t, X t)t≥0 is a time-homogeneous FX -Markov sufficient statistic for the sequential decision problem, in both the testing and quickest-detection settings. Its generator on w ∈ C2((0 , 1) × I) is 
+
+(L T w)( p, x ) = 12 ϑ2(x) p2(1 − p)2wpp + ϑ(x)σ(x) p(1 − p) wpx 
+
++ 12 σ2(x) wxx + μ0(x) + ( μ1 − μ0)( x) p wx
+
+(16) 
+
+in the testing case, and L D = L T + λ(1 − p) ∂p in the quickest-detection case. If ϑ is constant, the posterior coordinate has closed one-dimensional Markov dynamics and the problem projects onto Π alone, with generator 
+
+(L0w)( p) = λ(1 − p) w′(p) + 12 ϑ2p2(1 − p)2w′′ (p) (17) 
+
+(omitting the λ-drift in the testing case). If ϑ is state dependent, the posterior SDE is not closed in Π alone. Thus (Π , X ) provides the natural closed Markov realization of the filtering state. We do not attempt to characterize exceptional projection cases in which the posterior marginal may nevertheless be Markov. 
+
+Proof Assumption 1 is Novikov’s criterion, so (5) is a true martingale and Girsanov’s theorem yields the odds representations of Sections 3.1–3.2. The innovation theorem [34] gives the 
+
+FX -Brownian motion ¯B of (7), and the Kushner–Stratonovich equation for the two-valued hidden variable produces (8) and, with the compensator λ(1 − Πt) of 1{θ≤t} under the prior (10), (15). Writing X in the innovation gives the joint dynamics, with quadratic covariation d⟨Π, X ⟩t = ϑ(Xt) σ(Xt) Π t(1 − Πt) d t. (18) Applying Itˆ o’s formula to w(Π t, X t) and collecting drift terms yields (16) and, with the extra posterior drift, L D ; the cross term in (16) is exactly (18). All coefficients are time-independent functions of the current value (Π t, X t), so (Π , X ) is a time-homogeneous Markov 
+
+7process; sufficiency for the decision problem is inherited from the posterior being a sufficient statistic for θ. If ϑ is constant and w depends on p only, (16) collapses to (17) and the marginal law of Π is determined by Π alone. When ϑ is state dependent, the coefficient of the posterior martingale term in (8)–(15) depends on Xt, so the posterior equation is not autonomous in Πt. The augmented process supplies a closed Markov state; possible exceptional Markovian projections are outside the scope of the present comparison result. □
+
+Remark 3 (On the cross term and projection) . The cross term wpx in (16) reflects the common innovation noise driving both the posterior and the observation. When ϑ
+
+is constant the posterior coordinate has closed one-dimensional Markov dynamics and the stopping problem can be projected onto Π alone; the cross term persists only in the redundant two-dimensional representation (Π , X ). State dependence of ϑ removes the projection and makes (Π , X ) the operative state. 
+
+Remark 4 (Degeneracy and regularity) . The diffusion matrix in (16), 
+
+ϑ2p2(1 − p)2 ϑσp (1 − p)
+
+ϑσp (1 − p) σ2
+
+
+
+,
+
+has determinant zero, so (Π , X ) diffuses along a single direction in ( p, x )-space: both coordinates are driven by the one innovation ¯B. The operator is therefore degen-erate elliptic rather than uniformly elliptic. Hypoellipticity nonetheless holds under H¨ ormander-type conditions on ( ϑ, σ, μ i), which underlies the regularity and continuity of the resulting two-dimensional stopping boundaries [57, 64]. 
+
+Example 5 (State-dependent signal-to-noise: Bessel dimension) . With σ ≡ 1 and 
+
+μi(x) = ( di − 1) /(2 x) on I = (0 , ∞), the process X is a Bessel process of dimension 
+
+di under Hi, and ϑ(x) = ( d1 − d0)/(2 x) is state dependent. The likelihood ratio (5) becomes 
+
+Lt = exp 
+
+n d1−d0
+
+> 2
+
+Z t
+
+> 0
+
+X−1 
+
+> s
+
+dXs − (d1−d0)( d1+d0−2) 8
+
+Z t
+
+> 0
+
+X−2 
+
+> s
+
+ds
+
+o
+
+,
+
+and does not yield a closed one-dimensional posterior equation; the augmented pair (Π , X ) is the closed state. The resulting two-dimensional stopping problem admits an analytic characterization in terms of special functions and the associated free-boundary conditions [54, 56]. 
+
+# 4 Generic Optimal Stopping Formulation 
+
+The reductions above are instances of a single optimal stopping problem. Let Y =(Yt)t≥0 be a time-homogeneous Markov process on a state space S with generator L
+
+(for example Y = Π, (Π , X ), or (Φ , X )). Given a running cost f ≥ 0 and a terminal cost G, set 
+
+V (y) = inf  
+
+> τ
+
+Ey
+
+Z τ
+
+> 0
+
+f (Ys) d s + G(Yτ )
+
+
+
+, y ∈ S , (19) 8with continuation and stopping regions 
+
+C = {y : V (y) < G (y)}, D = {y : V (y) = G(y)}. (20) For sequential testing f ≡ 1 and G = M of (4); for quickest detection f (p) = cp and 
+
+G(p) = 1 − p of (13). 
+
+Standing assumptions. 
+
+We assume throughout the comparison results that, for the running and terminal costs under consideration, the value function (19) is finite on S and the first-entry time 
+
+τ ∗ = inf {t ≥ 0 : Yt ∈ D} is optimal in (19). These are mild and standard under, for instance, lower semicontinuity of G, continuity of f , and a moment or transience condition ensuring finiteness; they hold in the diffusion models considered here [35]. The dynamic programming principle then gives 
+
+V ≤ G, L V + f = 0 on C, L V + f ≥ 0 on D, (21) or, equivalently, the variational inequality max  −  L V + f , V − G = 0 on S, (22) which is in turn equivalent to the complementarity system 
+
+V ≤ G, L V + f ≥ 0, (G − V ) ( L V + f ) = 0 . (23) Both arguments of the maximum in (22) are nonpositive, which makes the sign con-vention transparent: on C one has L V + f = 0, and on D one has L V + f ≥ 0, equivalently L G + f ≥ 0. 1 Interpretations are in the classical, Sobolev, or viscosity sense according to the regularity of V . The optimal rule is τ ∗ = inf {t : Yt ∈ D} .
+
+# 5 Delay-Penalty Comparison 
+
+The central result orders sequential rules by their running cost. It is purely comparative and does not require solving (22). 
+
+Theorem 6 (Delay-penalty ordering of sequential rules) . Let Y be a Markov process on S with generator L , fix a common terminal cost G, and for i = 1 , 2 let fi ≥ 0 be measurable running costs with value functions Vi, regions Ci, Di as in (19) –(20) , and optimal first-entry times τ ∗ 
+
+> i
+
+= inf {t : Yt ∈ D i}. Assume f1 ≥ f2 pointwise on S. Then: 1. (Value) V1 ≥ V2 on S.2. (Regions and stopping times) C1 ⊆ C 2, D2 ⊆ D 1, and τ ∗ 
+
+> 1
+
+≤ τ ∗ 
+
+> 2
+
+Py -almost surely for every y. Apart from the standing assumptions that the value               
+
+> 1The compact form min {LV+f, G −V}= 0 is equivalent to (22)–(23); we adopt the maximum/com-plementarity form because both of its arguments are manifestly nonpositive and the equality LV+f= 0 on Cis then immediate.
+
+9functions are finite and that the displayed first-entry times are optimal, no monotonicity, smoothness, or one-sidedness of the stopping set is needed. 3. (Boundaries) If, in addition, each stopping region is one-sided in the pos-terior coordinate, Di = {(p, x ) ∈ S : p ≥ bi(x)} for boundary functions 
+
+bi : I → [0 , 1] —the structure established under a monotone signal-to-noise condition by Gapeev and Shiryaev [52, 53], Ernst and Peskir [57]—then 
+
+b1(x) ≤ b2(x) for all x ∈ I.
+
+Proof (i) For each admissible τ , pathwise f1 ≥ f2 ≥ 0 gives R τ 
+
+> 0
+
+f1(Ys) d s ≥ R τ 
+
+> 0
+
+f2(Ys) d s,hence Ey [R τ 
+
+> 0
+
+f1 ds + G(Yτ )] ≥ Ey [R τ 
+
+> 0
+
+f2 ds + G(Yτ )]; taking the infimum over τ yields V1(y) ≥
+
+V2(y). 
+
+(ii) Choosing τ ≡ 0 shows Vi ≤ G. If y ∈ C 1, i.e. V1(y) < G (y), then by (i) V2(y) ≤
+
+V1(y) < G (y), so y ∈ C 2; thus C1 ⊆ C 2 and, complementarily, D2 ⊆ D 1. Since τ ∗ 
+
+> 1
+
+and τ ∗ 
+
+> 2
+
+are first-entry times of the same process Y into D1 ⊇ D 2, any entry of Y into D2 already lies in 
+
+D1; hence τ ∗ 
+
+> 1
+
+≤ τ ∗ 
+
+> 2
+
+almost surely. 
+
+(iii) Under the one-sided representation, D2 ⊆ D 1 reads {p ≥ b2(x)} ⊆ { p ≥ b1(x)} for each fixed x, which holds if and only if b1(x) ≤ b2(x). □
+
+The monotonicity of the optimal stopping boundary with respect to the marginal delay penalty is intuitively depicted in Figure 1. When the system faces a more strin-gent delay penalty (i.e., c1 > c 2), the decision-maker becomes more conservative, which structurally shrinks the continuation region. Consequently, the optimal threshold shifts downward, yielding bc1 (x) ≤ bc2 (x) for all given states Xt.System State ( Xt)   
+
+> Posterior Probability ( pt)
+> p= 1
+> bc2(x) (Low Penalty)
+> bc1(x) (High Penalty)
+
+Continuation Region Cc1
+
+Stopping Region Dc1         
+
+> (X0, p 0)
+> Alarm Triggered τ∗
+> Vc1=G
+> Marginal delay penalty
+> c1> c 2=⇒bc1≤bc2
+
+Fig. 1 Illustration of the optimal stopping boundaries in the ( Xt, p t) state space. The optimal policy partitions the space into a continuation region Cc1 and a stopping region Dc1 , separated by the boundary bc1 (x). A sample trajectory of the augmented process is shown, which starts at ( X0, p 0)and triggers an alarm at the optimal stopping time τ ∗ upon hitting the boundary. Additionally, the figure demonstrates the comparative statics: a higher marginal delay penalty ( c1 > c 2) strictly lowers the optimal stopping threshold, such that bc1 (x) ≤ bc2 (x). 
+
+10 Remark 7 (Comparative-statics reading) . Parts (i)–(ii) hold under only the standing assumptions and deliver the operational message: a uniformly larger marginal delay penalty makes continuation less attractive everywhere and triggers (weakly) earlier alarms, hence shorter expected delay at the cost of more false alarms. Part (iii) trans-lates this into boundary geometry, but only once the stopping region is known to be one-sided—a property that need not hold for arbitrary state-dependent diffusions and is exactly what the monotone signal-to-noise results secure. We do not establish the one-sided structure here; we invoke it from Gapeev and Shiryaev [52, 53], Ernst and Peskir [57]. 
+
+## 5.1 Linear delay cost 
+
+The classical disorder problem has f (p) = cp and G(p) = 1 − p on the common state 
+
+Y . Theorem 6 with fi = ci p specializes as follows. 
+
+Corollary 8 (Linear delay cost) . Let c1 ≥ c2 > 0 in the Bayesian disorder problem with common state Y and terminal cost G(p) = 1 − p. Then 
+
+Vc1 ≥ Vc2 , Cc1 ⊆ C c2 , τ ∗ 
+
+> c1
+
+≤ τ ∗ 
+
+> c2
+
+Py -a.s. If the stopping set has the form Dc = {(p, x ) : p ≥ bc(x)}, then bc1 (x) ≤ bc2 (x)
+
+for all x ∈ I. In particular, in the constant-SNR case the single threshold satisfies 
+
+p∗(c1) ≤ p∗(c2): a larger delay cost rate implies an earlier alarm. 
+
+## 5.2 Sampling cost in sequential testing 
+
+The same principle applies on the testing side, where the running cost is the sampling cost. Scaling the sampling rate to κ > 0 replaces (4) by Vκ(π, x ) = inf τ E[κτ +M (Π τ )], i.e. f ≡ κ with common terminal cost G = M .
+
+Corollary 9 (Sampling cost) . Let κ1 ≥ κ2 > 0 in the sequential testing problem with common terminal cost G = M . Then Vκ1 ≥ Vκ2 , Cκ1 ⊆ C κ2 , and τ ∗ 
+
+> κ1
+
+≤ τ ∗ 
+
+> κ2
+
+almost surely: a more expensive observation stream induces an earlier terminal decision and a narrower continuation band around the indifference point p†.
+
+## 5.3 Nonlinear marginal delay penalties 
+
+For a general delay profile the risk is Rπ (τ ) = Pπ (τ < θ ) + c Eπ [g(( τ − θ)+)] with 
+
+g ≥ 0 nondecreasing and g(0) = 0. The running cost is then no longer a function of Π t
+
+alone, because the marginal delay cost at time t depends on the unobserved elapsed post-change duration t − θ. The next proposition isolates the relevant statistic. 
+
+Proposition 10 (Marginal-cost augmentation) . Let g be absolutely continuous, nondecreasing, with g(0) = 0 , and suppose 
+
+Eπ
+
+Z τ
+
+> 0
+
+g′(t − θ) 1{θ≤t} dt
+
+
+
+< ∞
+
+11 for the stopping times τ under consideration. Then 
+
+Eπ
+
+g(( τ − θ)+) = Eπ
+
+Z τ
+
+> 0
+
+Eπ
+
+g′(t − θ) 1{θ≤t} | F Xt
+
+ dt
+
+
+
+. (24) 
+
+Consequently the nonlinear-delay disorder problem is the optimal stopping problem 
+
+(19) with terminal cost G(p) = 1 − p and running cost 
+
+ft = c Ψt, Ψt = Eπ
+
+g′(t − θ) 1{θ≤t} | F Xt
+
+. (25)                          
+
+> Proof By absolute continuity and g(0) = 0, g(( τ−θ)+) = R(τ−θ)+
+> 0g′(u) d u=Rτ
+> 0g′(t−
+> θ)1{θ≤t}dtpathwise. The integrability hypothesis legitimizes taking Eπand applying Fubini together with the optional projection of the integrand onto FX(valid since τis an FX-stopping time), which gives (24) and hence the running-cost representation (25). □
+
+Whether ft = cΨt yields a finite-dimensional Markov stopping problem depends on g and is not automatic. Three cases are representative. 
+
+(a) Linear delay, g(u) = u. Then g′ ≡ 1 and Ψ t = Pπ (θ ≤ t | F Xt ) = Π t, recovering 
+
+f = cΠt on the state of Theorem 2. 
+
+(b) Exponential delay, g(u) = (eβu − 1) /β with β > 0. Then g′(u) = eβu 
+
+and the process Ψ t can be represented through a weighted likelihood-ratio statistic, Ψt = eβt Eπ [e−βθ 1{θ≤t} | F Xt ]. In state-dependent diffusion models this statistic must still be combined with the observation state Xt to obtain a closed Markov state; the representation is not a universal dimension reduction, and the resulting alarm boundary is generally observation-dependent [53]. 
+
+(c) General g. The statistic Ψ t need not admit a finite-dimensional filter, and the state must be augmented with accumulated-penalty information for the stopping problem to be Markovian. In every case in which a common Markov state Y carries the statistics for two penalties g1, g 2, the pointwise ordering of marginal penalties g′ 
+
+> 1
+
+≥ g′ 
+
+> 2
+
+transfers, via (25) and the monotonicity of conditional expectation, to f1 ≥ f2. Theorem 6 then applies and yields the corresponding ordering of value functions, continuation regions, stopping times, and—where the one-sided structure holds—alarm boundaries. The convex (e.g. exponential) case has g′ increasing, so a larger β produces a pointwise-larger marginal penalty and an earlier alarm than the linear benchmark. 
+
+# 6 Free-Boundary Interpretation and Verification 
+
+On the Markov state Y = (Π , X ) (or its one-dimensional reduction), (22) is a free-boundary problem: L V +f = 0 on C, V = G on D, with matching conditions across the free boundary ∂C. The continuous-fit condition V |∂C = G|∂C always holds; the smooth-fit condition ∇V |∂C = ∇G|∂C holds when the boundary point is probabilistically regular for the interior of D and the diffusion is nondegenerate there. For regular one-dimensional diffusions smooth fit is standard [35]. In the present degenerate two-dimensional setting it may fail where the diffusion coefficient ϑ(x) p(1 −p) vanishes (at 12 p ∈ { 0, 1} or where ϑ(x) = 0) or where the boundary is otherwise irregular; there only continuous fit is available, and the boundary’s continuity is itself a delicate question [64]. When ϑ is constant the free-boundary problem reduces to the ordinary differential equation L0V +f = 0 on the continuation interval, with L0 of (17), and the boundary is a single threshold determined by smooth fit; this is the setting of Section 7. When 
+
+ϑ is state dependent, the operator is degenerate elliptic in ( p, x ), ∂C is a curve, and— consistent with the two-boundary structure found by Gapeev and Shiryaev [52]—the alarm is the first exit of the posterior from a region bounded by observation-dependent 
+
+(stochastic) boundaries; explicit solutions exist only in special cases, and the boundary is otherwise characterized by systems of nonlinear integral equations arising from the change-of-variable formula with local time on curves, or computed numerically. A candidate solution of (22) is confirmed optimal by martingale verification. 
+
+Proposition 11 (Verification) . Let bV be continuous on S, of polynomial growth, C1
+
+across ∂ bC, and C2 on the interiors of bC = { bV < G } and bD = { bV = G}, and suppose 
+
+L bV + f ≥ 0 on S, bV ≤ G on S, L bV + f = 0 on bC.
+
+Suppose moreover that for every admissible τ the local martingale M · in (26) below, stopped along a localizing sequence τn ↑ ∞ , is uniformly integrable in the limit (e.g. a square-integrability or sublinear-growth condition on ∇ bV · σ(Y )). Then bV = V , and 
+
+τ ∗ = inf {t : Yt ∈ bD} is optimal whenever Ey [τ ∗] < ∞.
+
+Proof For an admissible τ and a localizing sequence τn ↑ ∞ , the Itˆ o–Tanaka formula applied to bV (Y·) gives 
+
+bV (Yτ ∧τn ) + 
+
+Z τ ∧τn
+
+> 0
+
+f (Ys) d s = bV (y) + 
+
+Z τ ∧τn
+
+> 0
+
+(L bV + f )( Ys) d s + Mτ ∧τn , (26) where M is a local martingale. The C1 (smooth-fit) hypothesis across ∂ bC ensures that the local-time term on the free boundary, which would otherwise appear because L bV has a jump in its second derivatives there, vanishes; where only continuous fit holds, the local-time term is nonnegative and is retained in the inequality below without affecting its direction. Since L bV +
+
+f ≥ 0, taking expectations and letting n → ∞ (using the growth and uniform-integrability hypotheses so that Ey [Mτ ∧τn ] → 0) gives bV (y) ≤ Ey [R τ 
+
+> 0
+
+f ds+ bV (Yτ )] ≤ Ey [R τ 
+
+> 0
+
+f ds+G(Yτ )], hence bV ≤ V . For τ = τ ∗ the integrand L bV + f vanishes on bC and bV (Yτ ∗ ) = G(Yτ ∗ ), so the inequalities are equalities and bV (y) = Ey [R τ ∗ 
+
+> 0
+
+f ds + G(Yτ ∗ )] ≥ V (y). Thus bV = V and τ ∗ is optimal. □
+
+13 7 Worked Example: Threshold Monotonicity in the Shiryaev Diffusion Model 
+
+We illustrate Corollary 8 in the constant-SNR quickest-detection model, where the posterior is a closed one-dimensional diffusion dΠ t = λ(1 − Πt) d t + ρ Πt(1 − Πt) d ¯Bt, ρ := ϑ = const . (27) With running cost f (p) = cp and terminal cost G(p) = 1 − p, the value function solves the variational inequality (22) with the one-dimensional generator (17). On the continuation region the equation L0V + cp = 0 reads  
+
+> 12
+
+ρ2p2(1 − p)2 V ′′ (p) + λ(1 − p) V ′(p) + c p = 0 , (28) and on the stopping region V = G with L0G + cp = cp − λ(1 − p) ≥ 0 required by (23), i.e. p ≥ λ/ (c + λ). 
+
+Numerical method. 
+
+We solve the obstacle problem (23) numerically rather than relying on a closed entrance-boundary shooting condition. The interval [0 , 1] was discretized with a uni-form grid of size ∆ p. The degenerate diffusion coefficient 12 ρ2p2(1 − p)2 was evaluated at grid points and discretized by central differences; the drift term λ(1 − p) ≥ 0 was upwinded (forward difference), which renders the discrete generator a monotone M -matrix. The degenerate left end p = 0, where the diffusion coefficient vanishes and the drift is λ > 0, supplies its own discrete relation V0 = V1 through the upwinded opera-tor, so no entrance-boundary derivative condition is imposed by hand; at p = 1 we set 
+
+V = G = 0. The obstacle problem was then solved by projected (policy) iteration— each sweep performs a Gauss–Seidel/successive-overrelaxation update of LhV + f = 0 followed by the projection V ← min {V, G } onto the obstacle—iterated until the active set stabilized and the update fell below 10 −11 . The reported thresholds were stable under halving of ∆ p (grids of 500 , 1000 , 2000 , 4000 points agree to the displayed dig-its) and were cross-checked against an entrance-boundary shooting solution of (28); the two methods agree. 
+
+Results. 
+
+Table 1 reports the optimal posterior threshold p∗(c) for λ = 0 .05 and ρ = 1 .0, together with the implied likelihood-ratio threshold Φ ∗ = p∗/(1 − p∗). The threshold decreases monotonically as the delay cost rate c increases. One checks directly that the computed thresholds satisfy p∗ ≥ λ/ (c + λ), so the candidate solves the variational inequality and is optimal by Proposition 11. Figure 2 shows the value functions peeling away from the obstacle—continuation regions shrinking as c grows—and the monotone curve 
+
+c 7 → p∗(c). We emphasize that the monotonicity observed in the computed thresholds is not used as evidence for Corollary 8; it only illustrates the theorem, which is proved independently in Section 5. 14 λ ρ c threshold p∗(c) (Φ ∗ = p∗/(1 − p∗)) 0.05 1.0 0.5 0.1735 (0 .2099) 0.05 1.0 1.0 0.0705 (0 .0759) 0.05 1.0 2.0 0.0303 (0 .0313) 0.05 1.0 5.0 0.0109 (0 .0110) 
+
+Table 1 Monotone decrease of the Shiryaev alarm threshold as the delay cost rate c increases, illustrating Corollary 8 ( p∗(c1) ≤ p∗(c2) when c1 ≥ c2). Values from the finite-difference solution of the variational inequality, stable under halving of the grid spacing. 0.0 0.1 0.2 0.3 0.4 0.5                         
+
+> posterior p
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 1.0
+> value  Vc(p)
+> (a) value functions and continuation regions
+> obstacle G(p) = 1 −p
+> Vc, c = 0 .5
+> Vc, c = 1 .0
+> Vc, c = 2 .0
+> Vc, c = 5 .0
+> 012345678
+> delay cost rate c
+> 0.0
+> 0.1
+> 0.2
+> 0.3
+> 0.4
+> optimal threshold  p ∗ (c)
+> c= 0 .5
+> c= 1 .0
+> c= 2 .0
+> c= 5 .0
+> (b) monotone decrease of p∗(c)
+
+Fig. 2 Constant-SNR Shiryaev model ( λ = 0 .05, ρ = 1 .0). (a) Value functions Vc below the obstacle 
+
+G(p) = 1 − p; the smooth-fit points p∗(c) (markers) move left and the continuation region shrinks as c increases. (b) The optimal threshold p∗(c) is monotone decreasing in the delay cost rate c, as predicted by Corollary 8. 
+
+Interpretation. 
+
+The comparative-statics content is direct. A higher per-unit delay cost makes the observer less willing to wait, so the alarm is raised at a lower posterior probability of disorder: the threshold p∗(c), and with it the likelihood-ratio threshold Φ ∗(c), decreases in c. By Theorem 6(ii) the associated alarm times are ordered pathwise, τ ∗
+
+c1 ≤ τ ∗
+
+c2
+
+for c1 ≥ c2, so a costlier delay yields uniformly earlier alarms; the price is a higher false-alarm probability, since stopping at a lower posterior is more often premature. The same qualitative picture persists for state-dependent ϑ, where p∗ is replaced by an observation-dependent boundary bc(x) ordered as in Theorem 6(iii). 
+
+# 8 Relation to CUSUM and Shiryaev–Roberts Procedures 
+
+The present comparison result is Bayesian and optimal-stopping based. It is therefore closest to the Shiryaev procedure and its limiting Shiryaev–Roberts forms [14, 30, 33], 15 and it is not a minimax optimality statement for CUSUM [26, 29]. Nevertheless, the same state-dependence issue appears in the minimax formulations: when the likelihood increments d log Lt = − 12 ϑ2(Xt) d t + ϑ(Xt) d ¯Bt depend on the current diffusion state, the CUSUM and Shiryaev–Roberts statistics are not closed one-dimensional Markov processes unless the observation state Xt is included, and exactly characterized rules then involve the joint process ( · , X ). A comparison principle for the minimax thresh-olds analogous to Theorem 6 would require monotonicity of the worst-case detection delay in the penalty parameters and is left for future work. 
+
+# 9 Conclusion 
+
+We have organized sequential testing and Bayesian quickest detection for state-dependent diffusion observations around two facts. The first is a closed Markov-state reduction identifying (Π , X ) as the sufficient statistic whenever the signal-to-noise ratio is state dependent, with an explicit degenerate generator. The second, and the methodological core of the paper, is a delay-penalty comparison theorem: uni-formly larger marginal delay costs raise the value, shrink the continuation region, order the stopping times pathwise, and—under a one-sided boundary representation— lower the alarm boundary. The same principle gives a sampling-cost comparison for sequential testing. A constant-SNR Shiryaev example, solved through the variational inequality, exhibits the predicted threshold monotonicity. The comparison is deliber-ately structural rather than constructive: it presumes a stopping formulation and, for the boundary statement, the one-sided structure secured by monotone signal-to-noise conditions [57], and it does not provide new explicit boundary solutions. Natural exten-sions include multi-source and multi-hypothesis detection, where the posterior lives on a simplex and the stopping regions are separated by hypersurfaces [68]; nonlinear penalties whose marginal statistic (25) requires genuine state augmentation; and min-imax analogues of the comparison principle. In each case the comparison continues to apply whenever a common Markov state and terminal cost are available. 
+
+# References 
+
+[1] Wald, A.: Sequential Analysis. Courier Corporation (2004) [2] Wald, A., Wolfowitz, J.: Optimum character of the sequential probability ratio test. The Annals of Mathematical Statistics, 326–339 (1948) [3] Rincon, D.F., McCabe, I., Crowder, D.W.: Sequential testing of complementary hypotheses about population density. Methods in Ecology and Evolution 16 (6), 1228–1238 (2025) [4] Wang, L.S., Yu, J.: Analysis framework for stochastic predator–prey model with demographic noise. Results in Applied Mathematics 27 , 100621 (2025) [5] Chow, Y.S., Robbins, H., Siegmund, D., et al.: Great expectations: The theory of optimal stopping. Houghton Mifflin, Boston (1971) 16 [6] Griffith, T., Baker, S.-A., Lepora, N.F.: The statistics of optimal decision mak-ing: Exploring the relationship between signal detection theory and sequential analysis. Journal of Mathematical Psychology 103 , 102544 (2021) [7] Silva, I.R., Kulldorff, M., Katherine Yih, W.: Optimal alpha spending for sequen-tial analysis with binomial data. Journal of the Royal Statistical Society Series B: Statistical Methodology 82 (4), 1141–1164 (2020) [8] Silva, I.R., Kulldorff, M.: Continuous versus group sequential analysis for post-market drug and vaccine safety surveillance. Biometrics 71 (3), 851–858 (2015) [9] Wang, L.S., Yu, J., Li, S., Liu, Z.: Analysis and mean-field limit of a hybrid PDE-ABM modeling angiogenesis-regulated resistance evolution. Mathematics 13 (17), 2898 (2025) [10] Fischer, L., Ramdas, A.: Improving wald’s (approximate) sequential probabil-ity ratio test by avoiding overshoot. IEEE Transactions on Information Theory (2026) [11] Shiryaev, A.N.: Optimal stopping rules. In: International Encyclopedia of Statis-tical Science, pp. 1828–1831. Springer (2025) [12] Pabbaraju, C., Valiant, G., Verma, R.: A simple geometric proof of the optimality of the sequential probability ratio test for symmetric bernoulli hypotheses. In: 2026 SIAM Symposium on Simplicity in Algorithms (SOSA), pp. 365–384 (2026). SIAM [13] Liu, Z., Wang, L.S., Yu, J., Zhang, J., Martel, E., Li, S.: Bidirectional endothelial feedback drives turing-vascular patterning and drug-resistance niches: a hybrid PDE-agent-based study. Bioengineering 12 (10), 1097 (2025) [14] Shiryaev, A.N.: On optimum methods in quickest detection problems. Theory of Probability & Its Applications 8(1), 22–46 (1963) [15] Naha, A., Teixeira, A.M., Ahl´ en, A., Dey, S.: Quickest detection of deception attacks on cyber–physical systems with a parsimonious watermarking policy. Automatica 155 , 111147 (2023) [16] Snow, L., Krishnamurthy, V., Sadler, B.M.: Quickest detection for human-sensor systems using quantum decision theory. IEEE Transactions on Signal Processing 
+
+72 , 368–383 (2024) [17] Sha, F., Zhang, R.: Quickest detection of the change in community structure via the stochastic block model with two clusters. Sequential Analysis 44 (4), 505–523 (2025) [18] Liang, Y., Wang, L.S., Yu, J., Liu, Z.: Global well-posedness and stability of 17 nonlocal damage-structured lineage model with feedback and dedifferentiation. Mathematics 13 (22), 3583 (2025) [19] Page, E.S.: Continuous inspection schemes. Biometrika 41 (1/2), 100–115 (1954) [20] Banerjee, T., Gurram, P., Whipps, G.: Minimax asymptotically optimal quickest change detection for statistically periodic data. Signal Processing 215 , 109290 (2024) [21] Xie, L.: Minimax robust quickest change detection using wasserstein ambiguity sets. In: 2022 IEEE International Symposium on Information Theory (ISIT), pp. 1909–1914 (2022). IEEE [22] Wang, L.S., Yu, J.: Algebraic–spectral thresholds and discrete–continuous stabil-ity transfer in Leslie–Gower systems. Electronic Research Archive 34 (1), 251–290 (2026) [23] Fromont, M., Grela, F., Le Gu´ evel, R.: Minimax and adaptive tests for detecting abrupt and possibly transitory changes in a poisson process. Electronic Journal of Statistics 17 (2), 2575–2744 (2023) [24] Yang, Y., Xie, L.: Sequential wasserstein uncertainty sets for minimax robust online change detection. In: ICASSP 2024-2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), pp. 9491–9495 (2024). IEEE [25] H¨ uselitz, A., Li, H., Munk, A.: Online jump and kink detection in segmented linear regression: Statistical optimality meets computational efficiency. Journal of Time Series Analysis 47 (3), 727–748 (2026) [26] Lorden, G.: Procedures for reacting to a change in distribution. The annals of mathematical statistics, 1897–1908 (1971) [27] Tosun, F.E., Teixeira, A.: Robust sequential detection of non-stealthy sensor deception attacks in an artificial pancreas system. In: 2023 62nd IEEE Conference on Decision and Control (CDC), pp. 2827–2832 (2023). IEEE [28] Yu, Y., Padilla, O.H.M., Wang, D., Rinaldo, A.: Network online change point localization. SIAM Journal on Mathematics of Data Science 6(1), 176–198 (2024) [29] Moustakides, G.V.: Optimal stopping times for detecting changes in distributions. the Annals of Statistics 14 (4), 1379–1387 (1986) [30] Pollak, M.: Optimal detection of a change in distribution. The Annals of Statistics, 206–227 (1985) [31] Wang, L.S., Yu, J., Liu, Z.: A damage-structured PDE model of stem cell hier-archies: The dual role of dedifferentiation in tissue homeostasis and aging. Plos one 21 (2), 0335163 (2026) 18 [32] Polunchenko, A.S., Raghavan, V.: Comparative performance analysis of the cumu-lative sum chart and the shiryaev-roberts procedure for detecting changes in autocorrelated data. Applied Stochastic Models in Business and Industry 34 (6), 922–948 (2018) [33] Pollak, M., Tartakovsky, A.G.: Optimality properties of the shiryaev-roberts procedure. Statistica Sinica, 1729–1739 (2009) [34] Liptser, R.S., Shiriaev, A.N.: Statistics of Random Processes: General Theory vol. 394. Springer (1977) [35] Peskir, G., Shiryaev, A.: Optimal Stopping and Free-boundary Problems. Springer (2006) [36] Yu, J., Wang, L.S., Liu, Z., Liu, J.: Pattern suppression and recovery under one-way versus two-way chemotactic coupling in hybrid partial differential equation– ordinary differential equation models. Transport Phenomena (0) (2026) [37] Peskir, G., Shiryaev, A.N.: Sequential testing problems for poisson processes. Annals of Statistics, 837–859 (2000) [38] Epstein, L.G., Ji, S.: Optimal learning under robustness and time-consistency. Operations Research 70 (3), 1317–1329 (2022) [39] Ekstr¨ om, E., Wang, Y.: Multi-dimensional sequential testing and detection. Stochastics 94 (5), 789–806 (2022) [40] Ankirchner, S., Klein, M.: Bayesian sequential testing with expectation con-straints. ESAIM: Control, Optimisation and Calculus of Variations 26 , 51 (2020) [41] Wang, L.S., Yu, J., Liang, Y., Zhang, J.: The breakdown of linear quasi-cycles: Demographic noise and absorbing boundaries in finite predator–prey systems. Electronic Research Archive 34 (6), 4248–4289 (2026) [42] Yu, J., Wang, L.S., Liang, Y.: Rigorous analysis of a nonlocal transport–renewal system for physiologically structured populations. Mathematical Methods in the Applied Sciences (2026) [43] Poor, H.V., Hadjiliadis, O.: Quickest detection. Cambridge, UK (2009) [44] Shiryaev, A.N.: Quickest detection problems: Fifty years later. Sequential Anal-ysis 29 (4), 345–385 (2010) [45] Yu, J., Wang, L.S.: Beyond diagonal noise: A better predator-prey modeling framework with cross-covariance. PLoS One 21 (5), 0350127 (2026) [46] Shiryaev, A.: On stochastic models and optimal methods in the quickest detection 19 problems. Theory of Probability & Its Applications 53 (3), 385–401 (2009) [47] Pollak, M., Siegmund, D.: A diffusion process and its applications to detecting a change in the drift of brownian motion. Biometrika 72 (2), 267–280 (1985) [48] Shiryaev, A.N.: Stochastic Disorder Problems vol. 20. Springer (2019) [49] Cai, J., Chen, X., Gu, L., Chen, J., Chu, N., Wang, L.S., Liang, Y., Yu, J.: Optimal harvesting for nonlinear size-structured populations with nonlocal environmental feedback. Mathematics (2026) [50] Wang, Z., Wang, D., Yu, J.: Multi-strategy hybrid improved intelligent algorithm for solving UAV-MTSP. Information Technology and Control 54 (2), 413–438 (2025) [51] Gao, Y., Li, L., Yu, J.: Rolling prediction model of closing price based on EEMD data noise reduction and HGS-DELM. In: 2022 International Conference on Data Analytics, Computing and Artificial Intelligence (ICDACAI), pp. 255–260 (2022). IEEE [52] Gapeev, P.V., Shiryaev, A.N.: On the sequential testing problem for some diffu-sion processes. Stochastics An International Journal of Probability and Stochastic Processes 83 (4-6), 519–535 (2011) [53] Gapeev, P.V., Shiryaev, A.N.: Bayesian quickest detection problems for some diffusion processes. Advances in Applied Probability 45 (1), 164–185 (2013) [54] Johnson, P., Peskir, G.: Quickest detection problems for bessel processes. Ann. Appl. Probab 27 (2), 1003–1056 (2017) [55] Yu, J., Wang, L.S., Ban, S., Liang, Y.: From microscopic damage to macroscopic games: a dimensionality reduction of stem cell homeostasis. Transport Phenomena 
+
+1(2), 20260037 (2026) [56] Johnson, P., Peskir, G.: Sequential testing problems for bessel processes. Trans-actions of the American Mathematical Society 370 (3), 2085–2113 (2018) [57] Ernst, P.A., Peskir, G.: The gapeev-shiryaev conjecture. arXiv preprint arXiv:2405.01685 (2024) [58] Ludkovski, M.: Bayesian quickest detection in sensor arrays. Sequential Analysis 
+
+31 (4), 481–504 (2012) [59] Zhang, H., Hadjiliadis, O., Sch¨ afer, T., Poor, H.V.: Quickest detection in coupled systems. SIAM Journal on Control and Optimization 52 (3), 1567–1596 (2014) [60] Kurt, M.N., Wang, X.: Multisensor sequential change detection with unknown change propagation pattern. IEEE Transactions on Aerospace and Electronic 20 Systems 55 (3), 1498–1518 (2018) [61] Konev, V., Vorobeychikov, S.: Quickest detection of parameter changes in stochas-tic regression: nonparametric cusum. IEEE Transactions on Information Theory 
+
+63 (9), 5588–5602 (2017) [62] Didi, L.L., Gafni, T., Cohen, K.: Active change point anomaly detection over com-posite hypotheses. In: 2024 60th Annual Allerton Conference on Communication, Control, and Computing, pp. 1–6 (2024). IEEE [63] Dayanik, S., Sezer, S.O.: Sequential sensor installation for wiener disorder detection. Mathematics of Operations Research 41 (3), 827–850 (2016) [64] Peskir, G.: Continuity of the optimal stopping boundary for two-dimensional diffusions. The Annals of Applied Probability 29 (1), 505–530 (2019) [65] Arkin, V., Slastnikov, A.: A variational approach to optimal stopping problems for diffusion processes. Theory of Probability & Its Applications 53 (3), 467–480 (2009) [66] Oshima, Y.: On an optimal stopping problem of time inhomogeneous diffusion processes. SIAM journal on control and optimization 45 (2), 565–579 (2006) [67] Øksendal, B., Sulem, A., et al. : Applied Stochastic Control of Jump Diffusions vol. 3. Springer (2019) [68] Dayanik, S., Poor, H.V., Sezer, S.O.: Multisource bayesian sequential change detection. The Annals of Applied Probability 18 (2), 552–590 (2008) 21

@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-001.webp",
+      "caption": "Figure 1: Attention scores are heavy-tailed: ∼80% of cumulative mass concentrates on the first ∼15% of token positions (black curve), with a small head of high-score tokens (top-left cluster) and a long, noisy tail of marginalscore tokens (bottom band) where deterministic top-K eviction is forced to choose between near-identical scores.",
+      "page": 2,
+      "index": 1,
+      "width": 567,
+      "height": 419
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-007.webp",
+      "caption": "Figure 2: Overview of Nexus Sampling at one eviction step. Nexus scoring (top) combines a direct importance term (windowed per-query attention) with a bridge term obtained by an iterative walk over the same query rows. Streaming reservoir sampling (bottom) then draws the retained blocks with inclusion probability proportional to the resulting weight, replacing the deterministic top-K used by every prior eviction method.",
+      "page": 4,
+      "index": 7,
+      "width": 960,
+      "height": 608
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-002.webp",
+      "caption": "Table 1: LongBench accuracy at 80% KV cache eviction (B/Nk = 0.20, i.e., Density = 20%) across three models and 16 tasks. Prefill blocks evict only during the prefill phase (baselines: SnapKV, PyramidKV); Prefill + Decode blocks evict throughout the entire inference stream (baselines: H2O, MorphKV). Bold marks the leading method per row across the eviction methods (Full Attention shown for reference).",
+      "page": 7,
+      "index": 2,
+      "width": 1130,
+      "height": 537
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-006.webp",
+      "caption": "Table 2: RULER accuracy (%) across 4K–64K context lengths at 80% KV cache eviction. Prefill blocks evict only during prefill; Prefill + Decode blocks evict throughout the entire inference stream. Bold marks the leading eviction method per row (Full Attention shown for reference). Qwen3-8B supports a maximum context length of 32K, so its 64K column cannot be evaluated and is reported as “–”.",
+      "page": 8,
+      "index": 6,
+      "width": 794,
+      "height": 781
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-008.webp",
+      "caption": "Table 3: Agentic coding accuracy (Resolved/Pass@1 over 50 tasks) at 20% KV density (80% eviction). Full context every turn re-prefills and re-compresses the entire history at every agent turn (evicted tokens can return); True eviction carries a persistent cache across turns (evicted tokens are gone for good). Bold marks the leading eviction method per block (Dense shown for reference).",
+      "page": 9,
+      "index": 8,
+      "width": 768,
+      "height": 584
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-004.webp",
+      "caption": "Figure 3: Ablations of the five Nexus knobs on Llama-3.1-8B at 20% density, evaluated on three multi-hop QA tasks (HotpotQA, 2WikiMQA, MultiFieldQA-en).",
+      "page": 10,
+      "index": 4,
+      "width": 960,
+      "height": 534
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-003.webp",
+      "caption": "Table 4: Decode throughput (tokens/s) and per-step latency (ms) at Tp = 8K prefill, batch size 1, on Llama-3.1-8BInstruct (H200, bf16). Higher is better for throughput; lower is better for per-step latency. Bold marks the best value per row.",
+      "page": 10,
+      "index": 3,
+      "width": 682,
+      "height": 237
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-005.webp",
+      "caption": "Table 6: Notation used in §2 and Appendix A.",
+      "page": 14,
+      "index": 5,
+      "width": 1127,
+      "height": 598
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-009.webp",
+      "caption": "Table 7: Prefill-only LongBench accuracy at 20% density, isolating the orthogonal head-adaptive budget allocation of Ada-KV [8]. Ada-SnapKV applies the Ada-KV allocation on top of the SnapKV score; Nexus Sampling uses a uniform per-head budget. Bold marks the leading method per row across the eviction methods (Full Attention shown for reference).",
+      "page": 20,
+      "index": 9,
+      "width": 1130,
+      "height": 258
+    },
+    {
+      "url": "assets/figures/arxiv/2606.23961v1/fig-010.webp",
+      "caption": "Table 8: Prefill-only RULER accuracy (%) across 4K–64K context lengths at 20% density with the orthogonal Ada-KV [8] head-adaptive budget allocation applied to each scoring rule. Bold marks the leading method per row across the eviction methods (Full Attention shown for reference).",
+      "page": 20,
+      "index": 10,
+      "width": 794,
+      "height": 455
+    }
+  ]
+}
