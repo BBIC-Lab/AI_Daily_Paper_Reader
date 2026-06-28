@@ -1,0 +1,407 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-28T21:10:01.582064+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 37,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 73,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 9,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 4,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2606.25415v1",
+      "source": "arxiv",
+      "title": "S2-CAR: Segmentation-Supervised Complexity-Adaptive Recommendation",
+      "abstract": "Sequential recommendation aims to predict user preferences from interaction histories, yet existing models often struggle when behavior patterns become complex and heterogeneous. A key reason is that interaction histories are rarely uniform: users' interests shift in a latent way over time, yet existing models either treat the full sequence as a homogeneous context or rely on rigid time-window segmentation that misaligns with true intent boundaries. This mis-segmentation not only introduces cross-intent interference at intermediate sequence positions but also leads to over-reliance on short-term interest signals. To address this, we propose S2-CAR, a segmentation-supervised and complexity-adaptive framework for sequential recommendation that models user intent as a continuous latent energy state. Specifically, it uses the Context-Aware Soft Temporal Point Process (Soft-TPP) to segment boundaries triggered by the natural decay of latent-state energy rather than fixed intervals, enabling intent segmentation without fixed time-gap rules. Next, upon this segmentation, a Segment-Count-Adaptive Multi-Intent Extraction module hierarchically aggregates intent-coherent segments into a compact set of multi-interest representations. Extensive experiments on 3 representative public benchmark datasets spanning movie, e-commerce, and gaming domains across 13 baselines demonstrate that S2-CAR consistently outperforms state-of-the-art methods across all datasets and metrics. Further analysis shows that the proposed energy-based segmentation serves as a plug-and-play module, yielding consistent improvements when integrated into existing sequential recommendation backbones.",
+      "authors": [
+        "Linjiang Guo",
+        "Nitin Bisht",
+        "Shiqing Wu",
+        "Xianzhi Wang",
+        "Guandong Xu"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-06-24T05:24:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.25415v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "sequential recommendation with adaptive segmentation",
+      "llm_evidence_cn": "自适应分割的序列推荐",
+      "llm_evidence": "自适应分割的序列推荐",
+      "canonical_evidence": "自适应分割的序列推荐",
+      "llm_tldr_en": "Proposes a segmentation-supervised framework for adaptive sequential recommendation.",
+      "llm_tldr_cn": "提出了一种基于分割监督的自适应序列推荐框架。",
+      "llm_tldr": "提出了一种基于分割监督的自适应序列推荐框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.25718v1",
+      "source": "arxiv",
+      "title": "What Does the Brain See? Multiview Neural Representations to Demystify the Brain-Visual Alignment",
+      "abstract": "Zero-shot visual decoding from electroencephalography (EEG) aims to infer visual semantics from non-invasive neural recordings, but remains challenging due to the low signal-to-noise ratio, non-stationarity, and limited spatial resolution of EEG. Existing EEG-vision alignment methods often rely on holistic EEG embeddings, which can obscure the complementary temporal, spectral, and spatial structure underlying visual perception. We introduce a unified multiview EEG representation learning framework for aligning brain responses with visual semantic embeddings. Our method builds an EEG encoder that jointly models three complementary views: input-conditioned state-space temporal dynamics, learnable wavelet-based spectral decomposition for sample-adaptive frequency modeling, and attention-modulated graph learning for structured electrode interactions. The resulting multiview EEG embeddings are fused and aligned with pretrained visual representations in a shared semantic space using contrastive learning with EEG-specific regularization, enabling 200-way zero-shot visual classification. Experiments on THINGS-EEG benchmark show that our method achieves state-of-the-art performance, with 54.8% Top-1 and 85.6% Top-5 accuracy in the within-subject setting and 15.3% Top-1 and 45.4% Top-5 accuracy in the cross-subject setting. We further present the first systematic cross-session EEG-image decoding evaluation, achieving 40.8% Top-1 and 78.0% Top-5 accuracy. These results suggest that explicitly modeling multiview neural structure improves both semantic alignment and generalization in EEG-based visual decoding.",
+      "authors": [
+        "Salini Yadav",
+        "Taveena Lotey",
+        "Pravendra Singh",
+        "Partha Pratim Roy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-24T11:33:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.25718v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multiview EEG representation for visual decoding",
+      "llm_evidence_cn": "多视图EEG表示用于视觉解码",
+      "llm_evidence": "多视图EEG表示用于视觉解码",
+      "canonical_evidence": "多视图EEG表示用于视觉解码",
+      "llm_tldr_en": "Multiview EEG representation learning enables zero-shot visual decoding from brain signals.",
+      "llm_tldr_cn": "多视图EEG表示学习实现从脑信号零样本视觉解码。",
+      "llm_tldr": "多视图EEG表示学习实现从脑信号零样本视觉解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.25986v1",
+      "source": "arxiv",
+      "title": "The Inference-Compute Frontier and a Latency-Efficient Architecture for Limit Order Book Prediction",
+      "abstract": "We study whether a scaling-law-style inference-compute frontier appears in limit order book prediction. Using FI-2010 and a suite of models ranging from small decision trees to neural LOB architectures, we find that the realized empirical frontier of predictive loss versus structural forward work is well summarized by a power law. In particular, with MLPLOB held out as an architecture family, a power-law fit to the low- and mid-compute non-MLPLOB frontier extrapolates across multiple orders of magnitude and attains $R^2=0.941$ on the excluded high-compute MLPLOB target frontier.   A similar exercise in latency space gives substantially weaker results, showing that latency is not merely noisy compute. We use this gap to motivate FastBiNLOB, a dense axis-separable LOB mixer built from hardware-friendly temporal and feature mixing operations. In a five-seed experiment, FastBiNLOB exceeds the published $y_{10}$ and $y_{100}$ macro-F1 targets at notably lower latency than existing published SOTA architectures.",
+      "authors": [
+        "C. Evans Hedges"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "q-fin.ST",
+        "q-fin.TR"
+      ],
+      "published": "2026-06-24T15:54:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.25986v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "analyzing and predicting limit order book sequences over time",
+      "llm_evidence_cn": "分析预测限价订单簿的时序数据",
+      "llm_evidence": "分析预测限价订单簿的时序数据",
+      "canonical_evidence": "分析预测限价订单簿的时序数据",
+      "llm_tldr_en": "Studies inference-compute frontier for limit order book prediction, a sequential time series task.",
+      "llm_tldr_cn": "研究限价订单簿预测的推理-计算前沿，属于时序预测任务。",
+      "llm_tldr": "研究限价订单簿预测的推理-计算前沿，属于时序预测任务。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26337v1",
+      "source": "arxiv",
+      "title": "EMA-FS: Accelerating GBDT Training via Gain-Informed Feature Screening",
+      "abstract": "Gradient Boosted Decision Trees (GBDT), exemplified by LightGBM, spend a dominant fraction of training time -- typically 65-70% -- constructing per-feature histograms. Existing approaches such as random feature subsampling (feature_fraction) discard features without regard for their predictive utility. We propose EMA-based Feature Screening (EMA-FS), an algorithm-level optimization that maintains an exponential moving average (EMA) of per-feature split gains across boosting iterations and, after a short warmup, restricts histogram construction to the top-K features ranked by historical gain. Unlike random subsampling, EMA-FS is informed: it retains high-gain features while screening out low-gain ones. Operating at the per-tree level, it preserves full compatibility with LightGBM's histogram subtraction trick, requiring no changes to core routines.   We evaluate EMA-FS on datasets spanning financial fraud detection, advertising click-through prediction, industrial quality control, and synthetic benchmarks, with feature dimensionalities from 29 to 968. On dense, moderate-to-high-dimensional data it achieves significant speedups: 2.61x on a 500-feature synthetic benchmark and 1.45x on the 432-feature IEEE-CIS Fraud dataset at 30% retention. At 70% retention it improves AUC by 0.11 points while delivering a 1.34x speedup. On extremely sparse data (Bosch, >90% missing) it yields no speedup, as LightGBM's sparse bin optimization already bypasses empty values.   We further introduce Stochastic EMA-FS (S-EMA-FS), which replaces deterministic top-K selection with gain-weighted random sampling controlled by a concentration parameter beta, unifying deterministic EMA-FS (beta -> infinity) and random subsampling (beta = 0) in one framework. Both are implemented in ~120 lines of C++ across all six LightGBM tree learners and are fully backward-compatible.",
+      "authors": [
+        "Yan Song"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-24T19:28:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.26337v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses historical split gains as importance weights for feature selection",
+      "llm_evidence_cn": "使用历史分裂增益作为特征选择的重要性权重",
+      "llm_evidence": "使用历史分裂增益作为特征选择的重要性权重",
+      "canonical_evidence": "使用历史分裂增益作为特征选择的重要性权重",
+      "llm_tldr_en": "Proposes gain-informed feature screening to accelerate GBDT training",
+      "llm_tldr_cn": "提出增益感知的特征筛选加速GBDT训练",
+      "llm_tldr": "提出增益感知的特征筛选加速GBDT训练",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26457v1",
+      "source": "arxiv",
+      "title": "A probabilistic framework for online test-time adaptation",
+      "abstract": "This paper presents a probabilistic framework for online test-time adaptation problems. In them, a model is trained on labeled data but must adapt to unlabeled data at test time under the assumption that training and test distributions potentially differ, that is, there might have been a distributional shift. The framework is based on a state-space modelling architecture from which parameter learning, parameter time evolution, prior tuning, and prediction can be characterized.",
+      "authors": [
+        "Daniel Corrales",
+        "David Ríos Insua"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-06-24T23:37:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.26457v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "online test-time adaptation to distribution shift",
+      "llm_evidence_cn": "在线测试时自适应分布偏移",
+      "llm_evidence": "在线测试时自适应分布偏移",
+      "canonical_evidence": "在线测试时自适应分布偏移",
+      "llm_tldr_en": "Probabilistic framework for online test-time adaptation under distribution shift.",
+      "llm_tldr_cn": "概率框架实现在线测试时自适应分布偏移。",
+      "llm_tldr": "概率框架实现在线测试时自适应分布偏移。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.25439v1",
+      "source": "arxiv",
+      "title": "TopoCast: A Topological Fidelity Framework for Evaluating Transformer-Based Time Series Forecasting",
+      "abstract": "Deep learning-based models have achieved state-of-the-art performance in Time Series Forecasting (TSF), yet their evaluation remains dominated by pointwise error metrics such as Mean Squared Error (MSE), which quantify numerical accuracy but overlook structural properties of the forecast signal, including recurrent dynamics, oscillatory behavior, and phase alignment. As a result, forecasts exhibiting over-smoothing, phase shifts, or frequency distortions may achieve favorable error scores despite substantial structural degradation. To address this limitation, we propose TopoCast, a topology-driven framework for evaluating structural fidelity in TSF. TopoCast reconstructs phase-space representations of forecast and ground-truth sequences using Takens delay embedding and applies persistent homology to characterize their intrinsic dynamics. We derive four complementary topological fidelity measures from persistence diagrams and aggregate them into a Topological Fidelity Score (TFS). We further introduce dominant cycle overlap, a novel metric that maps persistent topological features to the temporal domain to assess whether dominant oscillatory patterns occur at the correct time points. Combined with TFS, this yields the Localized Topological Fidelity Score (LTFS), a phase-aware measure that captures temporal localization errors invisible to existing evaluation metrics. Experiments on five Transformer architectures across three real-world benchmark datasets demonstrate that models with similar forecasting errors can exhibit markedly different structural fidelity profiles, revealing failure modes overlooked by conventional evaluation and highlighting the value of topology-aware forecast assessment.",
+      "authors": [
+        "Sandeepa Weerasekara",
+        "Sandareka Wickramanayake"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T06:03:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.25439v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "topology-driven evaluation of time series forecasting structural fidelity",
+      "llm_evidence_cn": "拓扑驱动的时序预测结构保真度评估",
+      "llm_evidence": "拓扑驱动的时序预测结构保真度评估",
+      "canonical_evidence": "拓扑驱动的时序预测结构保真度评估",
+      "llm_tldr_en": "TopoCast framework evaluates structural fidelity in time series forecasting beyond pointwise metrics",
+      "llm_tldr_cn": "TopoCast框架超越逐点指标评估时序预测的结构保真度",
+      "llm_tldr": "TopoCast框架超越逐点指标评估时序预测的结构保真度",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.25225v1",
+      "source": "arxiv",
+      "title": "MJEPA: A Simple and Scalable Joint-Embedding Predictive Architecture for Audio-Visual Learning",
+      "abstract": "Self-supervised learning from large-scale video data has emerged as a dominant paradigm for visual representation learning. Since audio and visual streams naturally co-occur in video data, extending this success to jointly learn from both modalities is a natural next step, yet it remains challenging. Existing audio-visual self-supervised methods rely on modality-specific encoders and complex combinations of contrastive or reconstruction objectives, limiting cross-modal synergy and scalability. Joint Embedding Predictive Architectures (JEPAs) offer a simple, modality-agnostic alternative, but have to date been applied primarily to individual modalities. We introduce MJEPA, a joint-embedding predictive architecture for audio-visual learning that uses a single, unified encoder for both modalities. Our approach uses only a single predictive objective, applied both within and across modalities. We show that cross-modal prediction is critical: without it, a shared encoder degrades below unimodal baselines; with it, each modality's representation benefits from the other. Our frozen ViT-g model outperforms the best prior frozen baseline by over 6.8 mAP on AudioSet-20K, surpasses fully finetuned models on ESC-50 and FSD50K, and is competitive on video benchmarks despite using 10x less video data.",
+      "authors": [
+        "Revant Teotia",
+        "Adrien Bardes",
+        "Michael Rabbat",
+        "Sumit Chopra",
+        "Matthew J. Muckley",
+        "Nicolas Ballas"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-23T22:48:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.25225v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "joint-embedding predictive architecture for audio-visual representation learning",
+      "llm_evidence_cn": "联合嵌入预测架构用于视听表示学习",
+      "llm_evidence": "联合嵌入预测架构用于视听表示学习",
+      "canonical_evidence": "联合嵌入预测架构用于视听表示学习",
+      "llm_tldr_en": "MJEPA is a simple and scalable self-supervised audio-visual representation learning method.",
+      "llm_tldr_cn": "MJEPA是一种简单可扩展的自监督视听表示学习方法。",
+      "llm_tldr": "MJEPA是一种简单可扩展的自监督视听表示学习方法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.25488v1",
+      "source": "arxiv",
+      "title": "Distill on a Diet: Efficient Knowledge Distillation via Learnable Data Pruning",
+      "abstract": "Knowledge Distillation (KD) is widely used to obtain compact models for efficient inference in resource-constrained environments. Yet the computational overhead of the distillation process itself is often overlooked, raising the question of whether a better student model can be obtained with less data and less compute via data pruning. However, existing data pruning methods are not designed for KD: some introduce substantial overhead, such as obtaining training dynamics through retraining, while others rely on heuristic selection rules that fail to capture what KD actually requires, often resulting in suboptimal subsets. To address these issues, we propose IF-Beta, an efficient data pruning framework that combines influence functions with a learnable sampling policy. Empirically, we first demonstrate that influence functions can serve as an effective and efficient estimator of sample impact in KD settings, where only a pretrained teacher is available. Building on this, our sampling policy is specifically parameterized by a Beta distribution, whose highly flexible two-parameter family allows the policy to adapt to diverse pruning regimes rather than being tied to fixed heuristic forms. Next, we formulate KD pruning as optimizing this policy through a bilevel objective, where the inner loop operates in the teacher feature space with a KD-aligned objective, enabling fast proxy training, while the outer loop updates the policy parameters to maximize distillation performance. This design ensures that IF-Beta is both computationally efficient and inherently aligned with the goals of KD. Extensive experiments on CIFAR-10/100 and ImageNet show that IF-Beta consistently outperforms other baselines across a wide range of pruning ratios. Remarkably, IF-Beta enables students trained on less data and less compute to surpass the performance of students distilled on the full dataset.",
+      "authors": [
+        "Yifan Wu",
+        "Yiqi Wang",
+        "Xichen Ye",
+        "Wenjing Yan",
+        "Xiaoqiang Li",
+        "Cheng Jin",
+        "Xiangyu Yue",
+        "Weizhong Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-24T07:17:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.25488v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "influence functions for computing importance weights of training samples",
+      "llm_evidence_cn": "使用影响函数计算训练样本重要性权重",
+      "llm_evidence": "使用影响函数计算训练样本重要性权重",
+      "canonical_evidence": "使用影响函数计算训练样本重要性权重",
+      "llm_tldr_en": "Proposes IF-Beta for efficient data pruning using influence functions, which compute importance weights.",
+      "llm_tldr_cn": "提出IF-Beta，利用影响函数进行高效数据剪枝，计算重要性权重。",
+      "llm_tldr": "提出IF-Beta，利用影响函数进行高效数据剪枝，计算重要性权重。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.25657v1",
+      "source": "arxiv",
+      "title": "Steering Vision-Language Models with Joint Sparse Autoencoders",
+      "abstract": "Sparse Autoencoders (SAEs) have shown promise for analyzing language models, but applying them to vision-language models (VLMs) often yields representations that are difficult to use as controllable cross-modal steering directions. We introduce the Joint Sparse Autoencoder (JSAE), which uses an explicit alignment constraint to jointly factorize sequence-pooled vision and language activations into shared, interpretable image/caption-level features. Applied to LLaVA, JSAE recovers cross-modal features for recognizable concepts (e.g., food and animals). Through bidirectional interventions (additive steering and suppression), we observe a layer-dependent asymmetry under our protocol: additive steering peaks at mid-to-late (pre-output) layers and weakens at both ends, whereas suppression scores remain within a comparable range across all probed layers within statistical noise. Experiments on three VLMs, namely LLaVA-v1.6-Mistral-7B, Llama3-LLaVA-8B, and the MoE-based Qwen3-VL-30B, show related layer-localized effects across architectures. Together, these results suggest that explicitly aligned sparse representations support more controllable intervention-based analysis of multimodal features, within an identifiable layer range, than the unconstrained alternatives tested here.",
+      "authors": [
+        "Huizhen Shu",
+        "Xuying Li",
+        "Hongxu Lin",
+        "Wenjie Sun",
+        "Hui Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T10:11:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.25657v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Joint Sparse Autoencoder learns compact interpretable representations from vision-language model activations",
+      "llm_evidence_cn": "联合稀疏自编码器从视觉-语言模型激活中学习紧凑可解释表示",
+      "llm_evidence": "联合稀疏自编码器从视觉-语言模型激活中学习紧凑可解释表示",
+      "canonical_evidence": "联合稀疏自编码器从视觉-语言模型激活中学习紧凑可解释表示",
+      "llm_tldr_en": "Proposes a Joint Sparse Autoencoder to learn shared cross-modal features from vision-language models",
+      "llm_tldr_cn": "提出联合稀疏自编码器从视觉-语言模型学习共享跨模态特征",
+      "llm_tldr": "提出联合稀疏自编码器从视觉-语言模型学习共享跨模态特征",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.25665v1",
+      "source": "arxiv",
+      "title": "Learning Subset-Shared Invariances for Domain Generalization with Mixture-of-Experts",
+      "abstract": "Domain generalization (DG) aims to learn a model from one or more source domains that generalizes to an unseen target domain without accessing target data during training. A common approach enforces invariance of representations across all source domains, assuming predictive structure is globally shared. However, we demonstrate that enforcing invariance across more domains gradually restricts the feasible representation space, discarding transferable predictive factors that are not universally shared. To address this limitation, we propose subset-shared invariance, where predictive structure is assumed stable only within domain subsets. We implement this principle with a mixture-of-experts architecture, where each expert aligns the specific domains it serves and a routing mechanism composes subset-invariant components for prediction. This creates a routing-conditioned invariance, jointly learned with the representation. To facilitate effective decomposition, we develop training objectives that encourage selective alignment, confident and balanced routing, and diverse expert specialization. Experiments on DomainBed benchmarks demonstrate improved out-of-domain generalization and greater robustness under increasing domain heterogeneity. Our results suggest that DG should move beyond enforcing a single global invariance and instead model invariance through partially shared structure across domain subsets.",
+      "authors": [
+        "Tien-Hung Nguyen",
+        "Tien-Dat Tran",
+        "M. -Duong Nguyen",
+        "Kok-Seng Wong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-24T10:24:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.25665v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "domain generalization via subset-shared invariance with limited labeled data",
+      "llm_evidence_cn": "通过子集共享不变性进行域泛化，使用有限标注数据",
+      "llm_evidence": "通过子集共享不变性进行域泛化，使用有限标注数据",
+      "canonical_evidence": "通过子集共享不变性进行域泛化，使用有限标注数据",
+      "llm_tldr_en": "Proposes subset-shared invariance with MoE for domain generalization under limited labels.",
+      "llm_tldr_cn": "提出基于MoE的子集共享不变性，用于有限标签下的域泛化。",
+      "llm_tldr": "提出基于MoE的子集共享不变性，用于有限标签下的域泛化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

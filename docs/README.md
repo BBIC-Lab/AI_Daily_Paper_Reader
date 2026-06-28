@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-06-28
-- 运行时间：2026-06-28 05:09:16 北京时间
+- 最新运行日期：2026-06-29
+- 运行时间：2026-06-29 05:12:22 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-精读聚焦大模型多智能体自主解析脑信号与扩散模型序贯检测，速览了无注意力变换、神经形态感知等前沿进展。  
-今日最高分《BrainAgent》展示LLM驱动框架直接从脑信号推理科学结论，另一精读则揭示了状态依赖扩散中延迟与惩罚的权衡新结论。  
-建议关注大模型在神经解码中的自动化应用潜力，并思考序贯决策理论在实时监测场景的迁移可能性。
-- 详情：[/202606/28/README](/202606/28/README)
+今日聚焦5篇前沿研究，从推荐系统的精准适配到脑视觉的对齐解读，兼顾时间序列与模型蒸馏新法。  
+最值得关注的分割引导推荐与脑神经多视图表征，前者以9.0分展示复杂场景下的自适应突破。  
+建议读者优先从这两篇高分精读入手，再深入速读中的拓扑保真与稀疏自编码器，把握高效评估与干预机制。
+- 详情：[/202606/29/README](/202606/29/README)
 
 ### 精读区论文标签
-1. [BrainAgent: A Large Language Model-Driven Multi-Agent Framework for Autonomous Brain Signal Understanding](/202606/28/2606.25400v1-brainagent-a-large-language-model-driven-multi-agent-framework-for-autonomous-brain-signal-understanding)  
-   标签：评分：10.0/10、query:ndai
-   evidence：通过LLM多智能体框架将神经信号解码为语言或动作
-2. [Delay-Penalty Comparison for Sequential Testing and Quickest Detection in State-Dependent Diffusion Models](/202606/28/2606.23962v1-delay-penalty-comparison-for-sequential-testing-and-quickest-detection-in-state-dependent-diffusion-models)  
+1. [S2-CAR: Segmentation-Supervised Complexity-Adaptive Recommendation](/202606/29/2606.25415v1-s2-car-segmentation-supervised-complexity-adaptive-recommendation)  
    标签：评分：9.0/10、query:ndai
-   evidence：扩散模型中的序列检验与最快检测
-3. [Average Rankings Mask Per-Subject Optimality: A Friedman-Nemenyi Benchmark of EEG Motor-Imagery BCI Decoders](/202606/28/2606.24394v1-average-rankings-mask-per-subject-optimality-a-friedman-nemenyi-benchmark-of-eeg-motor-imagery-bci-decoders)  
+   evidence：自适应分割的序列推荐
+2. [What Does the Brain See? Multiview Neural Representations to Demystify the Brain-Visual Alignment](/202606/29/2606.25718v1-what-does-the-brain-see-multiview-neural-representations-to-demystify-the-brain-visual-alignment)  
    标签：评分：9.0/10、query:ndai
-   evidence：脑电图运动想象脑机接口解码器基准测试
-4. [Efficient Adaptive Data Acquisition via Pretrained Belief Representations](/202606/28/2606.25197v1-efficient-adaptive-data-acquisition-via-pretrained-belief-representations)  
+   evidence：多视图EEG表示用于视觉解码
+3. [The Inference-Compute Frontier and a Latency-Efficient Architecture for Limit Order Book Prediction](/202606/29/2606.25986v1-the-inference-compute-frontier-and-a-latency-efficient-architecture-for-limit-order-book-prediction)  
    标签：评分：9.0/10、query:ndai
-   evidence：利用预训练基础模型作为信念状态编码器进行策略学习
-5. [Interpretable Concept-Guided Polynomial Tabular Kolmogorov-Arnold Network for EEG-Based Mild Cognitive Impairment Detection](/202606/28/2606.25434v1-interpretable-concept-guided-polynomial-tabular-kolmogorov-arnold-network-for-eeg-based-mild-cognitive-impairment-detection)  
+   evidence：分析预测限价订单簿的时序数据
+4. [EMA-FS: Accelerating GBDT Training via Gain-Informed Feature Screening](/202606/29/2606.26337v1-ema-fs-accelerating-gbdt-training-via-gain-informed-feature-screening)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于EEG神经活动的可解释概念引导表示学习
+   evidence：使用历史分裂增益作为特征选择的重要性权重
+5. [A probabilistic framework for online test-time adaptation](/202606/29/2606.26457v1-a-probabilistic-framework-for-online-test-time-adaptation)  
+   标签：评分：9.0/10、query:ndai
+   evidence：在线测试时自适应分布偏移
 
 ### 速读区论文标签
-1. [Learning the Koopman Operator using Attention Free Transformers](/202606/28/2606.23957v1-learning-the-koopman-operator-using-attention-free-transformers)  
+1. [TopoCast: A Topological Fidelity Framework for Evaluating Transformer-Based Time Series Forecasting](/202606/29/2606.25439v1-topocast-a-topological-fidelity-framework-for-evaluating-transformer-based-time-series-forecasting)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用无注意力变换器的Koopman算子学习预测序列数据
-2. [End-to-End Radar and Communication Modulation Recognition with Neuromorphic Computing](/202606/28/2606.24075v1-end-to-end-radar-and-communication-modulation-recognition-with-neuromorphic-computing)  
+   evidence：拓扑驱动的时序预测结构保真度评估
+2. [Distill on a Diet: Efficient Knowledge Distillation via Learnable Data Pruning](/202606/29/2606.25488v1-distill-on-a-diet-efficient-knowledge-distillation-via-learnable-data-pruning)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于时序调制识别的脉冲Transformer
-3. [SURGELLM: Rethinking Multi-Task Evaluation through Task-Aware Feature Gating with Class-Balanced Normalization](/202606/28/2606.24259v1-surgellm-rethinking-multi-task-evaluation-through-task-aware-feature-gating-with-class-balanced-normalization)  
+   evidence：使用影响函数计算训练样本重要性权重
+3. [Steering Vision-Language Models with Joint Sparse Autoencoders](/202606/29/2606.25657v1-steering-vision-language-models-with-joint-sparse-autoencoders)  
    标签：评分：8.0/10、query:ndai
-   evidence：手术特征门计算输入特征的重要性权重
-4. [Hierarchical Spatial and Channel Aggregation for Cross-domain Few-shot Segmentation](/202606/28/2606.24296v1-hierarchical-spatial-and-channel-aggregation-for-cross-domain-few-shot-segmentation)  
+   evidence：联合稀疏自编码器从视觉-语言模型激活中学习紧凑可解释表示
+4. [Learning Subset-Shared Invariances for Domain Generalization with Mixture-of-Experts](/202606/29/2606.25665v1-learning-subset-shared-invariances-for-domain-generalization-with-mixture-of-experts)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于有限标注数据的跨域小样本分割与层次聚合
-5. [Forget Without Compromise: Nexus Sampling for Streaming KV-Cache Eviction Under Fixed Budgets](/202606/28/2606.23961v1-forget-without-compromise-nexus-sampling-for-streaming-kv-cache-eviction-under-fixed-budgets)  
+   evidence：通过子集共享不变性进行域泛化，使用有限标注数据
+5. [MJEPA: A Simple and Scalable Joint-Embedding Predictive Architecture for Audio-Visual Learning](/202606/29/2606.25225v1-mjepa-a-simple-and-scalable-joint-embedding-predictive-architecture-for-audio-visual-learning)  
    标签：评分：7.0/10、query:ndai
-   evidence：通过Nexus评分计算令牌保留的重要性分数
+   evidence：联合嵌入预测架构用于视听表示学习
 

@@ -1,0 +1,562 @@
+Title: A probabilistic framework for online test-time adaptation
+
+URL Source: https://arxiv.org/pdf/2606.26457v1
+
+Published Time: Fri, 26 Jun 2026 00:24:09 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+# A probabilistic framework for online test-time adaptation 
+
+Daniel Corrales a, b and David R´ ıos Insua a
+
+> a
+
+Institute of Mathematical Sciences, ICMAT-CSIC, 28049 Madrid, Spain 
+
+> b
+
+Escuela de Doctorado, Universidad Aut´ onoma de Madrid, 28049 Madrid, Spain 
+
+Abstract 
+
+This paper presents a probabilistic framework for online test-time adaptation problems. In them, a model is trained on labeled data but must adapt to unlabeled data at test time under the assumption that training and test distributions potentially differ, that is, there might have been a distributional shift. The framework is based on a state-space modelling architecture from which parameter learning, parameter time evolution, prior tuning, and prediction can be characterized. 
+
+# 1 Introduction and prior work 
+
+One limitation of standard supervised discriminative learning [2] is that it assumes the envi-ronment is static after learning and, once the learning stage is over, the new incoming data is identically distributed, so the model will perform as well as it did in the learning phase. However, this is not always the case [26]. Some examples include recommender systems af-fected by changes in user behaviour, disease-monitoring models deployed in different hospitals on patients with different characteristics, or automatic driving systems as they circulate on roads under different atmospheric conditions [15], not to mention cases in which adversaries alter data with malicious purposes [1]. To solve this issue, we may need to collect labeled data from the new environment and update and redo, at least, part of the learning process. Yet, both label collection and retraining are expensive tasks in terms of time and money. Thus, developing techniques to reduce such costs is desirable for the practical deployment of discriminative models in real-world scenarios. Although standard supervised discriminative learning is generally framed in such a way that it cannot leverage unlabelled data, several structural assumptions can be imposed in the learning process of a discriminative model to account for both labeled and unlabeled data simultaneously, resulting in the field of semi-supervised learning [29]. Some of these structural assumptions include smoothness (if two data points in a high-density region are close, then so should be their corresponding labels); the manifold assumption (high-dimensional data lie roughly on a low-dimensional manifold); or low-density separation (for classification problems, decision boundaries should lie in low-density regions). Although these properties naturally arise in statistical learning, they actually become a design choice in semi-supervised learning. Test-time adaptation [30] deals with the situation in which we have a pretrained para-metric model, p(yS |xS , Θ), parameterized by Θ, trained using source labeled data DS =
+
+{(xSn , ySn )}Nn=1 , and used for multi-class classification, together with an unlabeled dataset 
+
+X T = {xTm}Mm=1 , with potential distributional shift from the data used in training. If this pre-trained model could correctly predict over the whole data space, then a change in p(x) would not affect the predictions in any way. However, data is usually scarce, and predictive models are accurate only in parts of the input space close to the training data. Therefore, they can be 1
+
+> arXiv:2606.26457v1 [stat.ML] 24 Jun 2026
+
+affected by covariate shift, that is, situations in which p(xS )̸ = p(xT ). The main motivation of TTA is to adapt the parameters of a pretrained model to improve its predictive performance on the target domain, or on both source and target domains. Online TTA (OTTA) deals with the situation in which there is a temporal covariate shift, for which adaptation shall be done sequentially [21, 34]. The vast majority of works on TTA [24, 27, 31, 35] employ entropy minimization [9] to leverage unlabeled data. This entails a low-density assumption that relies on the premise that all inputs X should have a corresponding unique labelling Y , and thus the data aleatoric uncertainty should be low. Usually employed in the form of a loss function, entropy min-imization separates clusters of features and forces the classification boundary to be as far from the clusters as possible. Using this unsupervised loss naively on any random parameter initialization will most likely not result in good predictive results. However, recall that, in TTA, this loss is used on a pretrained model. Therefore, the decision boundary is already a good fit, and, given similar but shifted data, this loss will find low-density separation regions to improve predictive capabilities in the new data. In modelling terms, most of these works deal with pretrained deep neural networks and, during adaptation, only a few of their param-eters are adapted while the rest remain frozen. In particular, within the image domain, these unfrozen parameters usually include batch normalization and layer normalization parameters, but last-layer methods are also popular, as they greatly simplify inference. Although much of the TTA literature focuses on deterministic methods, such as [24, 31], some works on TTA exist within a probabilistic setting. For example, Zhou and Levine [36] characterize the data-generating process graphically and employ entropy minimization in the construction of a prior distribution. More recent works focus on a Bayesian filter for the noisy parameter updates resulting from using entropy minimization as a proxy loss [17, 18, 19]. Other relevant works involve using generative models to model cluster prototypes [28]. However, there is still a significant literature gap on general probabilistic modelling of TTA problems, as most works bypass the full specification of the modelling decisions without many arguments. This work develops a probabilistic OTTA methodology for sequential data that provides uncertainty estimates on predictions, in a similar fashion to previous work on probabilistic online learning [6]. Our main contributions are the following. First, we propose a fully prob-abilistic setting for classification OTTA classification, in which uncertainty can be quantified at all steps of the pipeline. Second, we characterize each of the building blocks leveraging concepts from dynamic linear models [33] and Gibbs posteriors [3]. Finally, we approximate these posteriors using Gaussian distributions for real-time sequential Bayesian filtering and decision-support [7, 12]. We argue that this probabilistic approach serves as an umbrella for a vast collection of state-of-the-art TTA methods as special cases and design choices of structural elements of this framework, while also proposing novel competitive TTA techniques. 
+
+# 2 OTTA problem set up 
+
+Let DS = {(xSn , y Sn )}Nn=1 denote the source dataset used to pretrain a model with parameter 
+
+θS ∈ ΘS , and let θt ∈ Θt, with t ∈ N, denote the parameters that are adapted sequentially based on test data at time t. Both parameter sets, Θ S and Θ t, may coincide (e.g., the parameters of a logistic regression model), one may be a subset of the other (e.g., adapt the last layer of a pretrained neural network), or they might be independent from each other, each set representing different types of parameters (e.g., prototype based model that uses source neural features). We do assume for simplicity that the parameter set at test-time Θ t is constant for all t. At test time, we observe an unlabeled sequence {X t}t∈N drawn from target 2distributions that may differ from the source, while the corresponding label sequence {Y t}t∈N
+
+is never observed. The objective in OTTA is to predict yT ∈ Y T at any time T for each xT ∈ X T using information accumulated up to time τ (T ), where τ (T ) ∈ { 1, ..., T } is a function specifying which test observations are used to adapt the parameters before predicting at time t. The predictive choice τ (T ) = T − 1, in which the output at any time depends only on past inputs, is the standard in online learning but discards the distributional information that xT carries about the current state of θT . Under covariate shift, xT carries information about the current parameter state θT but is conditionally independent of yT given θT in the measurement model, so introducing it into the filtering posterior before predicting may be justified as it adds information with no label leakage. This is the main argument behind filter choice 
+
+τ (T ) = T in TTA, where the output at any time depends on the current and past inputs. This is implicitly assumed in most of the methods in the literature and has connections with transductive learning [4]. 
+
+DS
+
+θS
+
+θ0 θ1
+
+y1
+
+x1 . . . 
+
+. . . 
+
+. . . 
+
+xt−1
+
+yt−1
+
+θt−1
+
+xt
+
+yt
+
+θt
+
+. . . 
+
+. . . 
+
+. . . 
+
+N1 Nt−1 Nt
+
+Figure 1: TTA probabilistic model. Grey nodes represent observed variables. White nodes, unobserved ones. Circled nodes are random variables, while squared nodes are deterministic for TTA. Rounded boxes imply that data may be coming in batches. Solid arcs represent true conditionals. Dashed arcs represent the Gibbs observation model. Figure 1 represents the graphical model defining our probabilistic OTTA framework. Pro-ceeding temporally, the first nodes define a conditional distribution p(θS |D S ), which is the pretrained model posterior on θS after observing source labeled data DS . After that, adap-tation parameters θt are initialized at t = 0 based on their architectural relationship with 
+
+θS . At any time t, we have a classifier with joint form p(Xt, Yt|θt). As Yt is not available, our observation model will be p(Xt|θt), which will be characterized either by a latent variable model or by a loss-based model. Importantly, even though Yt is not available at time t, we will be interested in prediction and thus a predictive model p(Yt|X t, θt) will also need to be specified. As a last step, as we are in a sequential setting, we will also need to characterize a transition for the parameters of the form p(θt|θt−1). Table 1 provides a summary of the necessary building blocks for this framework, which will be characterized in the following section. Observe that at time T , the joint parameter posterior will be factorized as 
+
+p(θS , θ0: T |X 1: T , DS ) ∝ p(θS |D S ) · p(θ0|θS ) ·
+
+> T
+
+Y
+
+> t=1
+
+p(θt|θt−1) · p(Xt|θt) (1) We may also define the propagation, updating, and predicting schemes at each time step. Proceeding temporally, we propagate the prior uncertainty at t−1, denoted by p(θt−1|X 1: t−1, DS ), 3using the transition function p(θt|θt−1) to obtain a prior distribution at time tp(θt|X 1: t−1, DS ) = 
+
+Z
+
+p(θt|θt−1) · p(θt−1|X 1: t−1, DS ) dθt−1 (2) At this time step, we only observe Xt (and not Yt). The updated posterior for θt will then be 
+
+p(θt|X 1: t, DS ) ∝ p(Xt|θt) · p(θt|X 1: t−1, DS ) (3) We shall be interested in doing same-step prediction, as we have not observed any Yt;therefore, we predict labels through 
+
+p(Yt|X 1: t, DS ) = 
+
+Z
+
+p(Yt|X t, θt) · p(θt|X 1: t, DS )dθt (4) Note that doing prediction in this way is not strictly double-counting the data, as the obser-vation model does not depend on Yt, which is unobserved. This approach has the taste of transductive learning [4], as the posterior of θt is conditioned on Xt, and then used to predict 
+
+Yt, implying that the goal might not necessarily be to find a general mapping between any X
+
+and Y , but a specific mapping between Xt and Yt. However, as we repeat this procedure in an online fashion for different Xt, we assume that the posterior of θt accumulates information about all the previous steps and therefore may generalize well over all X. As we will see, this is not guaranteed and can lead to instabilities or catastrophic forgetting issues, so we will need to find ways to control for this. 
+
+Building block Description 
+
+p(θS |D S ) Source posterior 
+
+p(θ0|θS ) Adaptation parameter initialization 
+
+p(Yt|X t, θt) Predictive model 
+
+p(Xt|θt) Observation model 
+
+p(θt|θt−1) Parameter transition Table 1: Building blocks for OTTA characterization 
+
+# 3 Model characterization 
+
+As Table 1, the model gets fully characterized by choosing how the design of the source pos-terior, the adaptation parameter initialization, the predictive model, the observation model, and the parameter transition. 
+
+3.1 Source posterior p(θS |D S )
+
+In the standard TTA literature, fundamentally based on point-wise optimization methods, the source posterior is approximated via a single optimal parameter bθ, which translates to using a point-mass distribution 
+
+p(θS |D S ) = δ(θS − θ∗ 
+
+> S
+
+). (5) This is straightforward as θ∗ 
+
+> S
+
+corresponds to the optimal parameter after training a point-estimate model, and is computationally free beyond training, as it does not require any additional computation to estimate uncertainty. Many of the state-of-the-art works on image classification via neural networks (NNs) [18, 24, 27, 31] make this assumption. 4However, a better approximation of the source posterior could be used, even for complex intractable distributions, as when using NNs. A principled tractable choice for approximating the source posterior, valid even for deterministic models, is the Laplace approximation [23]. Here, the source posterior is approximated by a Gaussian 
+
+p(θS |D S ) ≈ N (θ∗ 
+
+> S
+
+, Λ−1 
+
+> S
+
+) (6) where θ∗ 
+
+> S
+
+is the maximum a posteriori (MAP) solution and Λ −1 
+
+> S
+
+is the Hessian of the nega-tive log posterior evaluated at the MAP, which may be approximated to ensure its positive definiteness [5]. This source posterior approximation is relatively standard in the continual learning literature. It connects directly with Elastic Weight Consolidation [13], a technique to avoid catastrophic forgetting in continual problems with NNs, essentially regularizing learning through the source posterior. If the pretrained model is a probabilistic model itself, then we would already have an ap-proximation of the actual source posterior that we could use for adaptation, and we would not require post-hoc methods such as the Laplace approximation. This is the case, for example, of Bayesian logistic regression, Bayesian kernel methods, or Bayesian NNs. 
+
+3.2 OTTA parameter initialization p(θ0|θS )
+
+Given a choice of source posterior, the initialization p(θ0|θS ) specifies the distribution over adaptable parameters before any test observation arrives. Its specification first requires es-tablishing the structural relationship between θS and θt, for which two main scenarios arise. When Θ t ⊆ ΘS , the adaptable parameters are a subset of the source ones. The extreme case where Θ t = Θ S adapts the entire model, thus maximising adaptation flexibility. Restrict-ing to a strict subset Θ t ⊂ ΘS trades adaptation flexibility for computational tractability and is the approach followed by most TTA works, which may adapt only batch/layer normaliza-tion parameters [31] or last layer parameters [11, 28] of a neural network. The initialization is then the marginal of the source posterior of Section 3.1 over Θ t,
+
+p(θ0 | θS ) = 
+
+Z
+
+p(θS | D S ) dθS\θ0 , (7) where θS\0 denotes the non-adaptable source parameters. For a deterministic source, this marginal is a point mass at θ∗ 
+
+> S|θ0
+
+, the components of the source MAP belonging to the adaptable subspace. For a Laplace or otherwise Gaussian source, it is the Gaussian block 
+
+N (θS|θ0 , Λ−1 
+
+> S|θ0
+
+), with θS|θ0 and Λ −1 
+
+> S|θ0
+
+the corresponding blocks of Equation (6), restricted to the adaptable subspace. When Θ t ∩ ΘS = ∅, the adaptable parameters are introduced at test time with no source counterpart. This is the case for last-layer methods based on mixture models [28], where parameters model class-prototype dynamics, and for low-rank adaptation (LoRA) techniques [10, 16], where auxiliary parameters are added to frozen source parameters via low-rank coupling. With no source posterior to marginalise, p(θ0 | θS ) must be specified independently — typically as a point mass at a chosen initial value (e.g., zero for LoRA adapters) or a broad Gaussian prior. 
+
+3.3 Predictive model p(yt|xt, θt)
+
+The predictive model p(yt|xt, θt) specifies how predictions are formed from the current pa-rameter state. For classification with K classes, it adopts the general form 
+
+p(Y |X t, θt) = Categorical(Softmax( f (Xt; θt))) , (8) 5(a) Θt ⊆ ΘS                           
+
+> ΘS
+> Θt
+> p(θ0|θS) =
+> Z
+> p(θS| D S)dθS\0
+> (b) Θt∩ΘS=∅
+> ΘSΘt
+> p(θ0|θS) = p(θ0)
+> sub-cases sub-case
+> Full
+> θϕW
+> feature map head
+> e.g., BNN
+> Head
+> θϕW
+> feature map head
+> e.g., last-layer adapt.
+> Feature map
+> θϕW
+> feature map head
+> e.g., TENT
+> Coupled
+> θϕW
+> θt
+> e.g., LoRA
+> Legend: frozen adapted, source-inherited init. adapted, independent prior
+
+Figure 2: Structural relationships between source parameters θS and adaptable parameters 
+
+θt. Top: two cases distinguished by the set-theoretic relation between Θ S and Θ t, with the corresponding initialisation p(θ0 | θS ) shown beneath each. Bottom: sub-cases distinguished by which component of the predictive model carries θt. In (b), disjointness refers to parameter structure, that is, the auxiliary parameters are not in θS . However, they are not functional independent, as the dashed coupling arrows indicate. where f : X × Θt → RK is a differentiable scoring function whose dependence on θt is determined by which parameters are adapted at test time. The simplest case is when f is linear in θt. That is the case, for example, of Bayesian logistic regression or methods that adapt only a linear classification head on top of a frozen feature extractor [28]. More commonly in modern TTA, f is nonlinear in θt. Examples of this include adapting internal parameters of a neural feature map, such as normalization statistics [31, 35], and injecting auxiliary parameters into a frozen feature map via low-rank coupling [16]. Figure 2 summarizes the predictive model possibilities together with the adaptation parameter initialization. 
+
+3.4 Observation model p(Xt|θt)
+
+As mentioned earlier, due to the absence of labels, most of the works on TTA focus on optimizing the model’s parameters based on a loss function of choice, generally relying on 
+
+entropy minimization and its variants [9, 24, 36]. Modelling the observation model using a loss-based component as a pseudo-likelihood is well justified in the Gibbs posterior literature [3, 14]. We follow this approach and define the observation model as 
+
+p(Xt|θt) = exp ( −βtℓ(Xt, θt)) (9) where βt > 0 is a temperature parameter that controls the trade-off between trusting the prior and fitting the new data. Note that this expression is, in general, not a joint generative model due to the absence of the label sequence {Y t}t∈N. It can be thought of as a scoring function that assigns a posterior weight to any parameter configuration given the observed test sequence. The standard supervised likelihood of the strictly Bayesian approach is replaced with an exponentiated loss while preserving the consistency of the update. This leaves the loss as a modelling choice that determines, in a decision theoretic approach, how each unlabeled 6test point xt ∈ X t provides information about θt according to a specific measure of fit, as justified in the generalized Bayesian framework [3, 14]. The choice of the loss function for the Gibbs posterior is a central modelling decision, as it determines what information each unlabeled test point xt provides about θt. Different choices correspond to different structural assumptions in the feature space and different probabilistic interpretations. Table 2 shows several types of losses that serve as a basis for most TTA works in the field. Note that for all of them, ℓ(Xt; θt) = 1
+
+> Nt
+
+P 
+
+> xt∈X t
+
+ℓ(xt; θt)                                   
+
+> ℓ(xt;θt)Description
+> −P
+> kp(yt=k|xt,θt)·log p(yt=k|xt,θt)Entropy minimization [9, 31, 36]
+> −P
+> kp(yt=k|xt,θt)·log
+> p(yt=k|xt,θt)1−p(yt=k|xt,θt)
+> 
+> Soft-likelihood ratio [18, 24]
+> −log p(ˆyt|xt,θt), ˆyt= arg max kp(yt=k|xt,θt)Pseudo-label [8]
+> ℓSS (xt;θt)Self-supervised [22, 30]
+
+Table 2: Basic losses in TTA In the case in which the loss is the negative log marginal likelihood , and βt = 1, we recover the proper Bayesian posterior with target yt. This, of course, would require the specification of a class-conditional generative model characterized by θt, as in the prototype-based case [11, 28]. In other cases, the loss will be a surrogate that does not correspond with a proper likelihood, with β controlling for the strength of the data term relative to the prior. Entropy minimization and soft-likelihood ratio are based on the low-density separation assumption, the latter being more robust as it maintains non-vanishing gradients for confident predictions, preventing the frequent convergence collapse in entropy minimization. The pseudo-label loss uses predictions as true labels, while the self-supervised loss uses data augmentation techniques to enforce robustness, e.g, image transformations or adversarial perturbations []. Note that losses can be classified based on whether they are self-referential or not, that is, whether they use the model’s current output p(yt|xt, θt) or not. These kinds of losses may lead to instabilities or collapse due to the moving-target problem, in which as θt evolves, so does the loss landscape. 
+
+Choice of βt As mentioned earlier, βt calibrates how much data information is meant to update the prior. A straightforward choice for this parameter is to set it to a constant scalar, that is, βt = β, which can be selected as a hyperparameter of the model. However, this assumes that all samples carry equal information about θt, which is rarely the case in TTA. A more adaptive choice is to modulate βt,i , a weight parameter per sample i in the batch at time t, based on the model’s current predictive confidence. Under reliability weighting , we define the complement of the normalised predictive entropy wt,i = 1 −H  p(yit|xit, θt) / log C ∈
+
+[0 , 1], with C the number of classes, and set βt,i = β · wt,i . The motivation is that samples on which the model is already uncertain yield noisier pseudo-targets, and should arguably contribute less precision to the update. With this scheme, β acts as a ceiling on the per-sample observation precision, and the total information injected in a step decreases naturally when the batch is collectively uncertain. 
+
+3.5 Transition model p(θt|θt−1)
+
+Once we have characterized the measurement function and the learning procedure, we will carry on to characterize the parameter transition model, which is the last element needed for computing the parameter prior and posterior at each time step t.7The transition function may be written as a Gaussian over the parameters of the previous step posterior, having the expression 
+
+θt = Gtθt−1 + ct + wt wt ∼ N (0 , Wt) (10) for some state matrix Gt, vector ct, and covariance matrix Wt. This construction of the tran-sition function is standard in the dynamic linear model (DLM) literature [33], in which Gt
+
+encodes structural assumptions about the deterministic component of parameter dynamics. When the feature space has a direct physical interpretation, the addition of structural com-ponents through Gt is very meaningful. For example, a local linear trend model can encode acceleration drift, or a seasonal component can encode periodicity or oscillatory dynamics. If θt parametrizes quantities with a direct relationship to the data-generating process, then these interpretations are fully justified. 
+
+Example 1. Figure 3 shows the effect on 1D linear regression that different structural com-ponents of G have on the parameter prior. We plot the parameter dynamics only — no data are observed — and fix an initial intercept θ0 = 0 and an initial slope θ1 = 12 . The ran-dom walk causes the intercept to drift unboundedly due to accumulated noise. The polynomial trend does likewise, but with momentum from the hidden velocity state. The seasonal compo-nent oscillates periodically around the initial value. The Ornstein Uhlenbeck process confines both parameters to a stationary distribution centered at their initial values, with the degree of confinement controlled by ρ.
+
+Figure 3: Prior parameter dynamics induced by four choices of transition matrix G. Top row : sample paths and prior mean in ( θ0, θ1) parameter space, coloured by time. Middle row : marginal time series of each parameter. Bottom row : induced prior over regression lines 
+
+η = θ1x1 + θ0.
+
+△
+
+8When θt are general discriminative parameters in a complex representation space without direct physical intuition, a structured Gt would be difficult to justify. The random walk 
+
+Gt = I does not assume the direction of drift and is the default when the nature of the distribution shift is unknown. Source mean reversion, where Gt = ρI and ct = (1 − ρ)μ0 with 
+
+ρ ∈ [0 , 1], encodes the belief that adaptation should decay without sustained evidence towards the source mean μ0, preventing unbounded drift from the source parameter distribution. The matrix Wt controls the speed and geometry of the stochastic parameter drift and is the more consequential design choice, with three main structural options. The first one is discounting [33], in which Wt = δ−1 
+
+> δ
+
+Σt−1, with δ ∈ (0 , 1] is a hyperparameter and where 
+
+Σt−1 is the covariance matrix of the previous-step posterior. Notice that this choice reduces computations of a new matrix while inflating the accumulated posterior by 1 /δ before seeing the data, becoming less confident before the next temporal step. Another option is the full specification of a matrix Wt, the simplest example being isotropic noise Wt = σ2I, which corresponds to uniform adaptation across all parameter directions, and is equivalent to the implicit process noise of a fixed learning rate in point-wise optimization methods. Finally, we could also consider dropping the covariance Σt−1 completely, that is Wt = cWt − Σt−1,and letting cWt = σ2I be the only curvature component. This option discards any previous curvature information and may deal better with large covariate shifts. The scale σ2 is not directly identifiable from unlabeled test data alone and, thus, is left as a hyperparameter. 
+
+# 4 Inference 
+
+After building and exemplifying the necessary blocks, we focus on inference methods that estimate the posterior density of the parameters. We introduce two methods that assume Gaussian posteriors: linear-Gaussian approximations via linearization, and variational infer-ence. For full inference, we require computing the current-step prior distribution, which involves the previous-step posterior p(θt−1|X 1: t−1, DS ) and the transition function p(θt|θt−1), 
+
+p(θt|X 1: t−1, DS ) = 
+
+Z
+
+p(θt|θt−1) × p(θt−1|X 1: t−1, DS ) dθt−1 (11) To simplify inference and retain conjugacy, we may approximate the previous-step posterior by a Gaussian p(θt−1|X 1: t−1, DS ) ≈ N (μt−1, Σt−1). Then, as the transition function has been defined also as a Gaussian p(θt|θt−1) = N (Gtθt−1 + ct, Wt), the current-step prior will have the expression 
+
+p(θt|X 1: t−1, DS ) = N (μt|t−1, Σt|t−1), (12) where μt|t−1 = Gtμt−1 + ct and Σt|t−1 = Σt−1 + Wt. Thus, the current-step prior will also be Gaussian, and this property will be leveraged by the following inference methods. 
+
+4.1 Linear-Gaussian approximation via Taylor expansion of the loss 
+
+Given that 12 is Gaussian, the Gibbs posterior [3] at any time-step will have the expression 
+
+p(θt|X 1: t, DS ) ∝ p(θt|X 1: t−1, DS ) exp( −βtℓt(Xt, θt)) (13) 
+
+∝ exp 
+
+
+
+− 12 (θt − μt|t−1)T ΣTt−1(θt − μt|t−1) − βtℓt(Xt, θt)
+
+
+
+. (14) 9To get closed-form posterior, we can complete the square in the exponent by approximating the loss functions via a second-order Taylor expansion around the prior mean, that is, 
+
+ℓt(Xt, θt) ≈ ℓt(Xt, μt|t−1) + gTt (θt − μt|t−1) + 12 (θt − μt|t−1)T Ht(θt − μt|t−1) (15) where gt = ∇ℓt(Xt, θt)|θt=μt|t−1 and Ht = ∇2ℓTt (Xt, θt)|θt=μt|t−1 . This results in a Gaussian with parameters 
+
+(μt = μt|t−1 − βtΣtgt
+
+Σ−1 
+
+> t
+
+= Σ−1 
+
+> t|t−1
+
++ βtHt
+
+(16) Notice that this approach is equivalent to adopting a Newton-Raphson optimization step. The precision matrix accumulates the local curvature of the loss, and the mean moves based on the local gradient pre-conditioned by that curvature. One limitation of this approximation is that it evaluates the gradient and the Hessian only at a single point, the mean μt|t−1, which for highly non-convex parameter spaces may lead to overconfident updates. 
+
+4.2 Variational Bayes 
+
+The above issue leads to an alternative method for approximating the parameter posterior distribution through Variational Bayes (VB) [2], which transforms an estimation problem into an optimization problem. The idea is to approximate the posterior using a candidate parametric distribution (usually a Gaussian), chosen by minimizing the Kullback-Leibler di-vergence between the candidate distribution and the true posterior. The problem involves finding q(θ∗ 
+
+> t
+
+) ∼ (μ∗ 
+
+> t
+
+, Σ∗ 
+
+> t
+
+) such that (μ∗ 
+
+> t
+
+, Σ∗ 
+
+> t
+
+) = arg min 
+
+> μt,Σt
+
+DKL (N (μt, Σt)|| exp( −βtℓt(Xt, θt)) p(θt|X 1: t−1, DS )) (17) Note that the normalization constant of the posterior may be ignored, a huge computational benefit of VB. Further, VB does not require linearization by construction. However, VB also has some drawbacks, as it requires an iterative optimization loop to converge to a solution and does not benefit from the sequentiality of the problem, necessitating the execution of a different optimization loop at each time step. 
+
+4.3 Bayesian online natural gradient 
+
+We leverage the work by Jones et al. [12], which solves the VB computation issue by using one-step Natural Gradient Descent on the variational parameters for sequential variational Bayes, proving that it yields exact Bayesian inference when models are conjugate and serves as a relaxation of the Bayesian update for the non-conjugate variational case. The method, which assumes the variational family is Gaussian, leads to the following update: 
+
+(μt = μt|t−1 − βtΣtEq(θt)[∇θt ℓt(Xt, θt)] 
+
+Σ−1 
+
+> t
+
+= Σ−1 
+
+> t|t−1
+
++ βtEq(θt)[∇2 
+
+> θt
+
+ℓt(Xt, θt)] (18) Notice how the update equations (16) and (18) look nearly identical. The difference is that Equation (18) evaluates an expected gradient and Hessian loss instead of point-estimates, thus leading to flatter and more robust minima compared to the linearization method. The integrals defined through these expectations are generally intractable, so they shall require an approximation. One option is using a Monte Carlo (MC) approximation, taking several 10 independent samples from q(θt) and estimating the expectation as the empirical mean of the inside terms evaluated at the selected samples. Another option is linearizing the loss over the previous step mean. This will exactly lead to Equation (16), thus showing the connection between the two approaches. As said, we will use a Gaussian variational family to approximate the posterior distri-bution. However, different assumptions can be made regarding the covariance matrix Σt.We will show examples of mean-field, diagonal-plus-low-rank, and full VI in the experiments section. 
+
+4.4 Approximating the Hessian 
+
+Both inference approaches require calculating the Hessian Ht, which, to avoid numerical issues, is generally approximated using the positive-semidefinite Fisher Information Matrix (FIM) [25] 
+
+Ht ≈ E[∇θt log p(Xt|θt) · ∇ θt log p(Xt|θt)T ] (19) = λ2E[( ∇θt ℓt(Xt, θt) − E[∇θt ℓt(Xt, θt)) · (∇θt ℓt(Xt, θt) − E[∇θt ℓt(Xt, θt)) T ] (20) = λ2Var[ ∇θt ℓt(Xt, θt)] , (21) where expectations are calculated with respect to p(Xt|θt). Since we cannot sample from this distribution directly, we may approximate the expectation via the empirical distribution, resulting in the empirical FIM 
+
+ˆHt = λ2
+
+NtNtX
+
+> i=1
+
+ ∇θt ℓt(X it , θt) − gt
+
+ ·  ∇θt ℓt(X it , θt) − gt
+
+T , (22) where gt = 1
+
+> Nt
+
+PNt 
+
+> i=1
+
+∇θt ℓt(X it , θt)Even calculating the FIM becomes computationally involved when the number of param-eters is large, as it is a matrix of size d × d, where d is the number of parameters. However, modern computational methods to approximate and reduce this burden exist, based on factor approximations of this matrix, such as diagonal factorization, Kronecker-factored approximate curvature methods and low-rank factorizations [5]. 
+
+# 5 Prediction 
+
+At each test step t, predictions are obtained by marginalising the generative model over the adapted posterior 
+
+p(Y |X 1: t, DS ) = 
+
+Z
+
+p(Y |X t, θt) · p(θt|X 1: t, DS ) dθt, (23) where p(θt|X 1: t, DS ) = N (μt, Σt) is the Gaussian posterior over adaptation parameters after incorporating all past unlabelled test data and the source prior. This integral is intractable in general and needs to be approximated. Three main approximation methods exist: 
+
+• The MAP approximation substitutes the posterior mean for the full distribution, p(Y |X t, DS ) ≈
+
+p(Y |X t, μt), discarding all posterior uncertainty. 
+
+• The Monte Carlo approximation draws S samples θ(s) 
+
+> t
+
+∼ N (μt, Σt) and estimates the predictive as p(Y |X t, DS ) ≈ 1
+
+> S
+
+P 
+
+> s
+
+p(Y | X t, θ(s) 
+
+> t
+
+), an unbiased estimator that converges as S → ∞ .11 • The linearised approximation yields a deterministic, closed-form predictive that prop-agates the full posterior covariance at the cost of a single Jacobian-vector product per class. This is cheaper than Monte Carlo and, unlike the MAP estimate, is sensitive to posterior uncertainty. Let f (Xt; θt) denote the logit function of Equation (8). Afirst-order Taylor expansion of f around the posterior mean μt gives 
+
+f (Xt; θt) ≈ f (Xt; μt) + J(Xt)( θt − μt), (24) where J(Xt) = ∂f /∂ θt θt=μt
+
+is the Jacobian of the logits with respect to the adaptation parameters. We write Jc(Xt) ∈ R|θt| for the (column) gradient of the c-th logit. Since 
+
+θt ∼ N (μt, Σt), the linearisation induces a Gaussian distribution over f (Xt; θt) with per-class predictive variance 
+
+σ2 
+
+> c
+
+= Jc(Xt)⊤ΣtJc(Xt). (25) The expected softmax under a Gaussian over logits has no closed form, so we apply the probit approximation [2] per class and renormalise, giving 
+
+p(Y |X 1: t, DS ) ≈ Categorical (Softmax ( κ ⊙ f (Xt; μt))) , (26) where κc =  1 + π 
+
+> 8
+
+σ2
+
+> c
+
+−1/2 ∈ (0 , 1]. 
+
+# 6 Experiments 
+
+6.1 Linear model 
+
+Example 2 (2D logistic regression with covariate shift under TTA) . Consider a continuous stream of 2D data belonging to two classes and subject to a diagonal covariate shift. The drift is continuous, but its exact direction is unknown a priori. Hence, we decouple our parameter dynamics using a Dynamic Generalized Linear Model (DGLM) architecture. For this, we define our state vector as θt = [ θt,poly , θTt,reg ]T ∈ R3, where θt,poly ∈ R repre-sents the model bias, and θt,reg ∈ R2 represents the spatial regression weights. To encourage spatial stability while allowing the boundary to shift dynamically, we model the bias as a ran-dom walk (a zero-order polynomial trend) and the spatial weights as an Ornstein-Uhlenbeck (OU) process. Using the prior precision (inverse of covariance) of the spatial weights Λθt,reg = Σ−10,θt,reg 
+
+and a mean-reversion rate η = 0 .001 , we assemble a time-constant block-diagonal state tran-sition matrix G and affine drift vector c
+
+Gt =
+
+1 0T
+
+0 I2 − ηΛθ0,reg 
+
+
+
+, c =
+
+ 0
+
+ηΛθ0,reg μθ0,reg 
+
+
+
+(27) 
+
+Following a standard supervised initialization to establish our prior N (μ0, Σ0), we enter into the unsupervised Test-Time Adaptation (TTA) regime. At each time step t, we first project our beliefs forward. The mean transitions according to the affine DGLM dynamics, whereas the covariance expands by the block-diagonal system noise matrix W :
+
+p(θt|x0: t−1) = N (μt|t−1, Σt|t−1)
+
+(
+
+μt|t−1 = Gtμt−1 + c
+
+Σt|t−1 = GΣt−1GT + Wt
+
+(28) 12 Upon receiving an unlabeled data point xt ∈ R2, we construct the design vector Ft = [1 , xTt ]T .We rely on entropy minimization to force the decision boundary to track the data drift. The exact gradient of the entropy loss gt = ∇θt ℓ(xt, θt)|θt=μt|t−1 evaluates to: 
+
+gt = −ηt
+
+ πt(1 − πt)Ft, (29) 
+
+where ηt = FTt μt|t−1 is the predicted logit and πt = σ(ηt) its corresponding probability. By exponentiating this loss and performing a second-order Taylor expansion around the prior mean, we compute the Hessian Ht (or its outer-product approximation). We update our Gaussian approximation using the standard Extended Kalman Filter (EKF) equations in information form: 
+
+p(θt|x0: t) ≈ N (μt, Σt)
+
+(Σ−1 
+
+> t
+
+= Σ−1 
+
+> t|t−1
+
++ Ht
+
+μt = μt|t−1 − Σtgt
+
+(30) 
+
+We can observe how adaptation maintains predictive performance and detects the data sep-
+
+Figure 4: Classification boundary evolution 
+
+aration region correctly. As time evolves, the predictor becomes more certain of the data distribution and uncertainty shrinks. 
+
+△
+
+6.2 Non-linear models 
+
+Example 3 (Two-moons shift dataset) . Consider a stream of 2D two-moon data, in which more data accumulates at opposite ends of each moon. Using a simple 4th-degree polynomial feature transformation and using logistic regression on the transformed features, we get via BONG inference the resulting predictive distributions shown in Figure 5. It is easy to see how the unlabeled data moves the decision boundary, maintaining a predictive posterior with good predictive performance. Uncertainty seems to shrink as time evolves, but it stays high in regions far from the observed data. △
+
+Example 4 (Three-class pinwheel shift dataset) . Now consider a stream of 2D data with the shape of a pinwheel in which each of the blades belongs to a class. Using a 7th-degree poly-nomial feature transformation, and fitting the model using a Brier loss on Gaussian feature augmentations, we get via BONG inference the resulting predictive distributions shown in Fig-ure 5. We can see how the unlabeled data moves the decision boundaries, while all predictions also become more certain as time evolves. △
+
+6.3 Neural network TTA 
+
+6.3.1 Batch-norm adaptation Example 5 (Online preconditioned gradient descent) . As a particular case of our frame-work, we can define an online preconditioned gradient descent algorithm that leverages the 
+
+13 Figure 5: Classification boundary evolution 
+
+Figure 6: Classification boundary evolution 
+
+loss curvature information of the current step and discards the curvatures of previous steps. We define the parameters, following the previously used notation, as μt = μt|t−1 − βtΣtgt
+
+and Σ−1 
+
+> t
+
+= W −1 
+
+> r
+
++ βtHt. The covariance matrix does not use previous step information but uses noise-inflated curvature information of the current step. This approach may be seen as a curvature-informative point-based method for optimizing the parameters of the adapted model based on a degenerate distribution with point-mass at μt.Table 3 shows the results of applying the online preconditioned gradient descent, with information maximization as loss function and a constant βt = 2 , to the batch normalization parameters of a ResNet28-C pretrained on CIFAR10. The network is adapted independently to 15 different image corruptions as in the CIFAR10-C dataset, and Table 3 shows the average accuracy over the 15 corruptions. Additionally, it compares with other state-of-the-art methods solving the same problem. 
+
+TTA Method Source BN test TENT EATA Ours Avg Accuracy 0.56 0.79 0.80 0.80 0.82 
+
+Table 3: CIFAR10-C: Average accuracy comparison with SOTA methods on corrupted CI-FAR10 with 15 different corruptions, adapting batch normalization parameters of a ResNet-28. 
+
+△
+
+# 7 Comparison with other TTA methods 
+
+Most existing TTA methods can be recovered as special cases of the MAP limit of the proposed framework, with specific instantiations of the remaining components. TENT [31] corresponds to an entropy loss with constant β and no source anchor; SHOT [20] to an information-maximization objective; and pseudo-label methods [8] to cross-entropy against hard argmax targets. Several methods additionally incorporate source regularization: EATA’s [27] Fisher 14 penalty and CoTTA’s [32] stochastic parameter restore both serve to prevent unbounded drift from the source, playing an analogous role to the OU mean-reversion transition in our ap-proach. In the MAP limit with a discount covariance propagation ( Σt|t−1 = Σt−1/δ ), the framework further reduces to an exponential moving average over past gradient information, connecting to EMA-based adaptation schemes. In all these mentioned cases, however, the pos-terior covariance is discarded after each update, and no uncertainty is propagated across steps. The general probabilistic framework we propose extends beyond this family by maintaining a full posterior over θt across steps and encoding non-stationary parameter dynamics via the DGLM transition, neither of which is representable within gradient-based TTA methods. 
+
+# 8 Conclusion 
+
+This work presents a probabilistic model for test-time adaptation, whose characterization is modular and structured in clear building blocks. We separate the possible design choices based on data geometry assumptions from the distributional approximations needed to accelerate inference. We motivate the necessity for probabilistic approaches to test-time adaptation by showing that these can leverage model averaging and uncertainty estimation naturally, two elements that are crucial for better performance in test-time data-shifted scenarios. Increased predictive performance is shown in the linear and nonlinear simple scenarios, as well as for the adaptation of a pretrained neural network for corrupted image classification. 15 References 
+
+[1] P. G. Arce, R. Naveiro, and D. R. Insua. Evasion attacks against bayesian predictive models. In Proceedings of the Forty-First Conference on Uncertainty in Artificial Intel-ligence , pages 184–202, 2025. [2] C. M. Bishop and N. M. Nasrabadi. Pattern recognition and machine learning , volume 4. Springer, 2006. [3] P. G. Bissiri, C. C. Holmes, and S. G. Walker. A general framework for updating belief distributions. Journal of the Royal Statistical Society Series B: Statistical Methodology ,78(5):1103–1130, 2016. [4] O. Chapelle, B. Sch¨ olkopf, and A. Zien, editors. Semi-supervised learning . Adap-tive computation and machine learning. MIT Press, Cambridge, Mass, 2006. ISBN 9780262033589. [5] E. Daxberger, A. Kristiadi, A. Immer, R. Eschenhagen, M. Bauer, and P. Hennig. Laplace redux-effortless bayesian deep learning. Advances in neural information processing sys-tems , 34:20089–20103, 2021. [6] G. Duran-Martin, L. S´ anchez-Betancourt, A. Y. Shestopaloff, and K. Murphy. A unifying framework for generalised bayesian online learning in non-stationary environments. arXiv preprint arXiv:2411.10153 , 2024. [7] G. Duran-Martin, L. S´ anchez-Betancourt, ´A. Cartea, and K. Murphy. Martingale poste-rior neural networks for fast sequential decision making. Advances in Neural Information Processing Systems , 38:87940–87988, 2026. [8] S. Goyal, M. Sun, A. Raghunathan, and J. Z. Kolter. Test time adaptation via conjugate pseudo-labels. Advances in Neural Information Processing Systems , 35:6204–6218, 2022. [9] Y. Grandvalet and Y. Bengio. Semi-supervised learning by entropy minimization. Ad-vances in neural information processing systems , 17, 2004. [10] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen, et al. Lora: Low-rank adaptation of large language models. Iclr , 1(2):3, 2022. [11] Y. Iwasawa and Y. Matsuo. Test-time classifier adjustment module for model-agnostic domain generalization. Advances in Neural Information Processing Systems , 34:2427– 2440, 2021. [12] M. Jones, P. Chang, and K. Murphy. Bayesian online natural gradient (bong). Advances in Neural Information Processing Systems , 37:131104–131153, 2024. [13] J. Kirkpatrick, R. Pascanu, N. Rabinowitz, J. Veness, G. Desjardins, A. A. Rusu, K. Mi-lan, J. Quan, T. Ramalho, A. Grabska-Barwinska, et al. Overcoming catastrophic for-getting in neural networks. Proceedings of the national academy of sciences , 114(13): 3521–3526, 2017. [14] J. Knoblauch, J. Jewson, and T. Damoulas. An optimization-centric view on bayes’ rule: Reviewing and generalizing variational inference. Journal of Machine Learning Research ,23(132):1–109, 2022. 16 [15] P. W. Koh, S. Sagawa, H. Marklund, S. M. Xie, M. Zhang, A. Balsubramani, W. Hu, M. Yasunaga, R. L. Phillips, I. Gao, et al. Wilds: A benchmark of in-the-wild distribution shifts. In International conference on machine learning , pages 5637–5664. PMLR, 2021. [16] Y. Kojima, J. Xu, X. Zou, and X. Wang. Lora-ttt: Low-rank test-time training for vision-language models. arXiv preprint arXiv:2502.02069 , 2025. [17] J.-H. Lee. Bayesian weight enhancement with steady-state adaptation for test-time adap-tation in dynamic environments. In Forty-second International Conference on Machine Learning , 2025. [18] J.-H. Lee and J.-H. Chang. Continual momentum filtering on parameter space for online test-time adaptation. In The Twelfth International Conference on Learning Representa-tions , 2024. [19] J.-H. Lee and J.-H. Chang. Stationary latent weight inference for unreliable observations from online test-time adaptation. In Forty-first International Conference on Machine Learning , 2024. [20] J. Liang, D. Hu, and J. Feng. Do we really need to access the source data? source hypothesis transfer for unsupervised domain adaptation. In International conference on machine learning , pages 6028–6039. PMLR, 2020. [21] J. Liang, R. He, and T. Tan. A comprehensive survey on test-time adaptation under distribution shifts. International Journal of Computer Vision , 133(1):31–64, 2025. [22] Y. Liu, P. Kothari, B. Van Delft, B. Bellot-Gurlet, T. Mordan, and A. Alahi. Ttt++: When does self-supervised test-time training fail or thrive? Advances in Neural Infor-mation Processing Systems , 34:21808–21820, 2021. [23] D. J. MacKay. A practical bayesian framework for backpropagation networks. Neural computation , 4(3):448–472, 1992. [24] R. A. Marsden, M. D¨ obler, and B. Yang. Universal test-time adaptation through weight ensembling, diversity weighting, and prior correction. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision , pages 2555–2565, 2024. [25] J. Martens. New insights and perspectives on the natural gradient method. Journal of Machine Learning Research , 21(146):1–76, 2020. [26] K. P. Murphy. Probabilistic machine learning: Advanced topics . MIT press, 2023. [27] S. Niu, J. Wu, Y. Zhang, Y. Chen, S. Zheng, P. Zhao, and M. Tan. Efficient test-time model adaptation without forgetting. In International conference on machine learning ,pages 16888–16905. PMLR, 2022. [28] M. Schirmer, D. Zhang, and E. Nalisnick. Temporal Test-Time Adaptation with State-Space Models, Nov. 2025. URL http://arxiv.org/abs/2407.12492 . arXiv:2407.12492 [cs]. [29] M. Seeger. Learning with labeled and unlabeled data. Technical report, Institute for Adaptive and Neural Computation, University of Edinburgh, 2000. [30] Y. Sun, X. Wang, Z. Liu, J. Miller, A. Efros, and M. Hardt. Test-time training with self-supervision for generalization under distribution shifts. In International conference on machine learning , pages 9229–9248. PMLR, 2020. 17 [31] D. Wang, E. Shelhamer, S. Liu, B. Olshausen, and T. Darrell. Tent: Fully test-time adaptation by entropy minimization. In International Conference on Learning Represen-tations , 2021. [32] Q. Wang, O. Fink, L. Van Gool, and D. Dai. Continual test-time domain adaptation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,pages 7201–7211, 2022. [33] M. West and J. Harrison. Bayesian forecasting and dynamic models . Springer, 1997. [34] Z. Xiao and C. G. Snoek. Beyond model adaptation at test time: A survey. arXiv preprint arXiv:2411.03687 , 2024. [35] M. Zhang, S. Levine, and C. Finn. Memo: Test time robustness via adaptation and augmentation. Advances in neural information processing systems , 35:38629–38642, 2022. [36] A. Zhou and S. Levine. Bayesian adaptation for covariate shift. Advances in neural information processing systems , 34:914–927, 2021. 18
