@@ -1,0 +1,428 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-29T21:04:04.731090+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 31,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 68,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 7,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 2,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2606.26485v1",
+      "source": "arxiv",
+      "title": "Utilizing Cognitive Signals Generated during Human Reading to Enhance Keyphrase Extraction from Microblogs",
+      "abstract": "Microblogging platforms generate massive amounts of short, noisy, and dispersed user content, making automatic keyphrase extraction (AKE) an important but challenging task. Prior studies have used eye-tracking signals to improve microblog-based AKE because such signals reflect readers' attention to salient words. However, eye tracking alone is limited by physiological, acquisition, and feature-decoding constraints. To address this issue, we investigate whether electroencephalogram (EEG) signals can complement eye-tracking signals for AKE. Using the ZuCo cognitive language processing corpus, we select 8 EEG features and 17 eye-tracking features and incorporate them into microblog-based AKE models. To reduce possible distortion of cognitive signals by model structures, we inject these features into the input of the soft-attention layer and the query vectors of the self-attention layer. We then evaluate different combinations of cognitive signals across AKE models. The results show that cognitive signals produced during reading consistently improve AKE performance, regardless of feature combinations and model architectures. EEG features bring the largest gains, while combining EEG and eye-tracking features yields performance between the two individual signal types, suggesting partial complementarity but also possible redundancy or noise. These findings indicate that EEG signals provide useful cognitive evidence for microblog-based AKE and that multimodal cognitive signals deserve further investigation.",
+      "authors": [
+        "Xinyi Yan",
+        "Yingyi Zhang",
+        "Chengzhi Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.DL",
+        "cs.HC",
+        "cs.IR"
+      ],
+      "published": "2026-06-25T00:43:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.26485v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG signals used to enhance keyphrase extraction from microblogs",
+      "llm_evidence_cn": "使用EEG信号增强关键词提取",
+      "llm_evidence": "使用EEG信号增强关键词提取",
+      "canonical_evidence": "使用EEG信号增强关键词提取",
+      "llm_tldr_en": "Enhances keyphrase extraction by incorporating EEG and eye-tracking signals.",
+      "llm_tldr_cn": "通过融合EEG和眼动信号提升关键词提取。",
+      "llm_tldr": "通过融合EEG和眼动信号提升关键词提取。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26620v1",
+      "source": "arxiv",
+      "title": "Discovering Millions of Interpretable Features with Sparse Autoencoders",
+      "abstract": "Sparse autoencoders (SAEs) have emerged as a powerful tool for decomposing superposed language model representations into sparse and interpretable features. However, training SAEs is computationally expensive, and available open-source SAE models remain limited. In this work, we introduce \\textbf{Qwen3-Instruct SAE}, a comprehensive suite of SAEs trained on the Qwen3 instruction-tuned model family, covering Qwen3-1.7B, Qwen3-4B, and Qwen3-8B. For Qwen3-1.7B and Qwen3-4B, we train layer-wise SAEs at three key activation sites: residual streams, MLP outputs, and attention outputs. For Qwen3-8B, we train SAEs on a subset of residual stream layers. We systematically evaluate these SAEs using both activation-level reconstruction metrics and model-level recovery metrics, revealing distinct sparsity--fidelity trade-offs across layers and components. Finally, we demonstrate the utility of Qwen3-Instruct SAE through a refusal-steering case study, showing that selected SAE features can causally steer instruction-tuned Qwen3 models toward refusal behavior. Our release provides a practical resource for studying sparse representations, feature-level mechanisms, and behavioral interventions in instruction-tuned language models",
+      "authors": [
+        "XinYang He",
+        "Wei Wang",
+        "Bing Zhao",
+        "Xuan Ren",
+        "WenBo Li",
+        "WeiXu Qiao",
+        "Hu Wei",
+        "Lin Qu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-25T05:33:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.26620v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learns interpretable sparse features from LLM representations",
+      "llm_evidence_cn": "从大语言模型表示中学习可解释的稀疏特征",
+      "llm_evidence": "从大语言模型表示中学习可解释的稀疏特征",
+      "canonical_evidence": "从大语言模型表示中学习可解释的稀疏特征",
+      "llm_tldr_en": "Sparse autoencoders decompose LLM representations into millions of interpretable features, enabling better understanding.",
+      "llm_tldr_cn": "稀疏自编码器将LLM表示分解为百万级可解释特征，促进理解。",
+      "llm_tldr": "稀疏自编码器将LLM表示分解为百万级可解释特征，促进理解。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.26880v1",
+      "source": "arxiv",
+      "title": "Heterogeneous Neural Predictivity from Language Models During Naturalistic Comprehension",
+      "abstract": "Language-model representations provide structured, high-dimensional annotations of naturalistic language stimuli and can serve as informative neural predictors during comprehension. We analyzed locked derived data from Brain Treebank, MEG-MASC, and Podcast ECoG with eight frozen language models, blocked encoding models, and matched temporal, nuisance, and representation-capacity controls. Positive held-out prediction and gains over low-level baselines were widespread in source-level summaries. Across Brain Treebank and Podcast ECoG, 67 of 432 evaluable rows met a controlled predictive-only criterion, and model-side feature ablations changed prediction scores in most evaluable source rows. Brain-derived, timing-linked, acoustic, and implanted-signal controls confirmed component-level sensitivity of the analysis pipeline. These findings show that language-model-derived quantities can annotate neural activity during natural speech and text comprehension. Participant-level matched-control advantages were localized rather than uniform, response-profile and feature-specificity contrasts bounded representational or computational interpretations, and complete co-indexed integrated interpretation will require future jointly indexed coverage. Together, the analyses identify language-model features as useful neural predictors and separate predictive usefulness from claims about shared neural organization or language-processing computations.",
+      "authors": [
+        "Xiao Jia"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-06-25T11:08:49+00:00",
+      "link": "https://arxiv.org/pdf/2606.26880v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses language model representations for neural activity prediction",
+      "llm_evidence_cn": "利用语言模型表示进行神经活动预测",
+      "llm_evidence": "利用语言模型表示进行神经活动预测",
+      "canonical_evidence": "利用语言模型表示进行神经活动预测",
+      "llm_tldr_en": "Uses language model representations to predict neural activity during naturalistic language comprehension.",
+      "llm_tldr_cn": "利用语言模型表示预测自然语言理解过程中的神经活动。",
+      "llm_tldr": "利用语言模型表示预测自然语言理解过程中的神经活动。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.27561v1",
+      "source": "arxiv",
+      "title": "Quantum Generative Diffusion Model for Real-World Time Series",
+      "abstract": "Generative models have achieved remarkable success in data synthesis, though recent advances driven by increasing model scale have introduced challenges in computational cost and efficiency. Quantum machine learning offers a promising alternative, representing complex data distributions using compact, highly expressive models. Here, we propose QDiffusion-TS, the first quantum generative diffusion model for time series synthesis, and validate it on the IQM quantum processor. The framework extends a classical diffusion architecture by replacing feed-forward components within the denoising transformer with quantum neural networks, yielding a hybrid quantum transformer that reduces the number of trainable parameters in each replaced component by nearly three orders of magnitude. Evaluated on financial time series from Apple and Amazon, the model generates synthetic data that more accurately reproduces the real distributions, reducing Wasserstein distance by approximately 44% relative to its classical counterpart across both datasets. In a downstream forecasting task, augmentation with the generated data improves predictive performance by up to 71% in RMSE over a baseline trained solely on real data. These results show that quantum enhanced architectures can consistently match and frequently surpass classical performance with substantially fewer parameters, establishing a practical framework towards more efficient and scalable data-driven generative modelling.",
+      "authors": [
+        "Jack Waller",
+        "Filippo Caruso",
+        "Dimitrios Makris",
+        "Rajagopal Nilavalan",
+        "Xing Liang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "quant-ph"
+      ],
+      "published": "2026-06-25T21:33:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.27561v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "quantum generative diffusion model for time series synthesis",
+      "llm_evidence_cn": "量子生成扩散模型用于时间序列合成",
+      "llm_evidence": "量子生成扩散模型用于时间序列合成",
+      "canonical_evidence": "量子生成扩散模型用于时间序列合成",
+      "llm_tldr_en": "First quantum generative diffusion model for real-world time series, reducing parameters drastically.",
+      "llm_tldr_cn": "提出首个量子生成扩散模型用于真实世界时间序列合成，参数大幅减少。",
+      "llm_tldr": "提出首个量子生成扩散模型用于真实世界时间序列合成，参数大幅减少。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.27807v1",
+      "source": "arxiv",
+      "title": "SpikeVLA: Vision-Language-Action Models with Spiking Neural Networks",
+      "abstract": "Vision-Language-Action (VLA) models have become a dominant paradigm for embodied intelligence. However, most existing approaches are built on large-scale transformers, resulting in substantial inference latency and energy consumption that limit their practical deployment in low-power, real-time scenarios. We propose SpikeVLA, a spiking VLA architecture for embodied navigation with energy-efficient inference, consisting of three key components. (i) A spiking vision encoder, Spike-V, that replaces dense continuous layers with event-driven spiking layers to reduce the energy consumption of visual representation learning. (ii) A multi-modal spiking large language model, Spike-L, that reformulates cross-modal reasoning with spiking dynamics and token-level event-driven sparsity to further lower computational cost. (iii) A spiking action policy network, Spike-A employs Laplacian-kernel population coding with a multi-layer fully connected SNN, and decodes spiking activities into stable and robust continuous control with energy-efficient inference under low-power constraints. Experiments on navigation and robotic control tasks show that SpikeVLA significantly reduces energy consumption and computational cost while maintaining competitive performance, highlighting its potential for low-power, real-time embodied intelligence.",
+      "authors": [
+        "Ruiqi Song",
+        "Dujun Nie",
+        "Siyu Teng",
+        "Baiyong Ding",
+        "Xiaotong Zhang",
+        "Dong Li",
+        "Chenming Zhang",
+        "Yuchen Li",
+        "Hangbin Wu",
+        "Long Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-26T07:45:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.27807v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes spiking neural signals into navigation actions",
+      "llm_evidence_cn": "将脉冲神经信号解码为导航动作",
+      "llm_evidence": "将脉冲神经信号解码为导航动作",
+      "canonical_evidence": "将脉冲神经信号解码为导航动作",
+      "llm_tldr_en": "Spiking VLA model enables energy-efficient embodied navigation from visual and language inputs",
+      "llm_tldr_cn": "脉冲VLA模型从视觉和语言输入实现节能的具身导航",
+      "llm_tldr": "脉冲VLA模型从视觉和语言输入实现节能的具身导航",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.26487v1",
+      "source": "arxiv",
+      "title": "Speaking Numbers to LLMs: Multi-Wavelet Number Embeddings for Time Series Forecasting",
+      "abstract": "Large language models (LLMs) are attractive for context-aware time series forecasting because they can integrate heterogeneous textual signals, yet their discrete, language-oriented tokenization and embedding interfaces are misaligned with continuous numerical values, often harming numerical ordering and forecasting reliability. We propose TempoWave, a plug-and-play temporal wavelet digit interface that maps each scalar observation into digit-wise embeddings constructed from multi-wavelet, multi-scale coefficients. By directly overriding standard token representations, TempoWave seamlessly exposes both fine-grained local fluctuations and macro global structures in a transformer-compatible form, ensuring that precise numerical formatting, distinct digit identity, and robustness to common normalization operations are maintained throughout the LLM pipeline. Experiments across five context-enriched forecasting benchmarks demonstrate that TempoWave consistently improves LLM-based forecasters over standard numeric tokenization and alternative embedding interfaces, achieving a new state-of-the-art. These results highlight the numeric interface as a key bottleneck and suggest that principled multi-resolution embeddings can better couple LLMs' contextual reasoning with precise forecasting. Our code is available at https://github.com/DC-research/TempoWAVE and our model can be accessed at https://huggingface.co/Melady/TempoWAVE.",
+      "authors": [
+        "Defu Cao",
+        "Zijie Lei",
+        "Muyan Weng",
+        "Jiao Sun",
+        "Yan Liu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-25T00:44:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.26487v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Multi-wavelet number embeddings for time series forecasting",
+      "llm_evidence_cn": "多小波数字嵌入用于时间序列预测",
+      "llm_evidence": "多小波数字嵌入用于时间序列预测",
+      "canonical_evidence": "多小波数字嵌入用于时间序列预测",
+      "llm_tldr_en": "Proposes plug-and-play wavelet digit interface for LLM time series forecasting",
+      "llm_tldr_cn": "为LLM时间序列预测提出即插即用的小波数字接口",
+      "llm_tldr": "为LLM时间序列预测提出即插即用的小波数字接口",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.26452v1",
+      "source": "arxiv",
+      "title": "AnySimLite: A Lightweight Few-Shot Similarity Encoder for On-Device Speech-Adjacent Classification",
+      "abstract": "To minimize privacy concerns and inference latency on edge devices like smartphones, lightweight on-device models remain important for end-user applications. Many of these applications involve natural language classification, but deploying multiple specialized models creates a memory footprint challenge. We investigate: Can a single lightweight architecture solve multiple Speech-Adjacent (SA) classification tasks through reduction to a nuanced text similarity formulation? We propose AnySimLite, a lightweight similarity encoder that combines word-level and character-level channels. Together with a dataset transformation strategy, we evaluate AnySimLite across multiple SA classification tasks and show that it consistently achieves state-of-the-art (SOTA) or SOTA-competitive performance in few-shot settings while maintaining a low memory footprint. Even in the worst case, the performance drop remains below 7% while using $<\\frac{1}{250}^{\\mathrm{th}}$ of the model size of the SOTA qLLaMA_LoRA-7B baseline.",
+      "authors": [
+        "Sourav Ghosh",
+        "Yash Bhatia",
+        "Keshav Goyal",
+        "Sahil Singh Bagri",
+        "Mohamed Akram Ulla Shariff",
+        "Saravana Balaji Shanmugam"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.SD"
+      ],
+      "published": "2026-06-24T23:25:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.26452v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "few-shot similarity encoder for on-device classification",
+      "llm_evidence_cn": "用于设备上分类的少样本相似度编码器",
+      "llm_evidence": "用于设备上分类的少样本相似度编码器",
+      "canonical_evidence": "用于设备上分类的少样本相似度编码器",
+      "llm_tldr_en": "Lightweight few-shot encoder for speech-adjacent tasks",
+      "llm_tldr_cn": "用于语音相关任务的轻量级少样本编码器",
+      "llm_tldr": "用于语音相关任务的轻量级少样本编码器",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.26506v1",
+      "source": "arxiv",
+      "title": "TinyCNNDeep: Lightweight Attention-Based CNN for EEG Classification of Eye States and Sleep Deprivation",
+      "abstract": "Sleep deprivation impairs vigilance and cognitive function, yet jointly identifying the sleep condition (normal vs deprived) and the eye state (open vs closed) from electroencephalography (EEG) remains underexplored. We address this four-class problem with TinyCNNDeep, a lightweight convolutional neural network that combines residual learning with a Squeeze-and-Excitation (SE) attention module. We convert short multi-channel EEG segments from five physiologically relevant channels (Fp1, Fp2, O1, Oz, O2) into 224x224 grayscale images through per-channel Z-score normalization, min-max scaling, and center padding, enabling 2D convolutions to jointly model inter-channel and temporal structure. On a 35-subject dataset recorded under normal-sleep and sleep-deprivation sessions, TinyCNNDeep attains a subject-wise mean accuracy of 83.69%, outperforming the strongest baseline (Random Forest with combined time-frequency features, 47.66%) by 36.03 percentage points, while three established EEG architectures (EEGNet, ShallowConvNet, DeepConvNet) operate near chance. Per-subject analysis quantifies inter-subject variability, and confusion-matrix inspection shows that residual misclassifications concentrate between eyes-closed states across sleep conditions. These results indicate that an image-based EEG representation paired with residual feature extraction and channel attention provides an accurate and computationally efficient framework for multiclass sleep-related EEG classification under a minimal electrode configuration.",
+      "authors": [
+        "Thien Nhan Vo",
+        "Yen Nhi Tran Thi",
+        "Ngan Nguyen Xuan Phuong",
+        "Xuan-The Tran"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC"
+      ],
+      "published": "2026-06-25T01:25:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.26506v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "lightweight CNN for EEG classification with SE attention",
+      "llm_evidence_cn": "轻量级CNN用于EEG分类",
+      "llm_evidence": "轻量级CNN用于EEG分类",
+      "canonical_evidence": "轻量级CNN用于EEG分类",
+      "llm_tldr_en": "Classifies EEG eye states and sleep deprivation with attention-based CNN.",
+      "llm_tldr_cn": "使用注意力CNN分类EEG眼状态和睡眠剥夺。",
+      "llm_tldr": "使用注意力CNN分类EEG眼状态和睡眠剥夺。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.26556v1",
+      "source": "arxiv",
+      "title": "WQ-Fusion: Dynamic Gated Attention for Cross-Domain Audio Representation",
+      "abstract": "While pre-trained models excel in specialized tasks, learning universal representations across diverse acoustic domains remains challenging. To address this, we propose WQ-Fusion, a robust dual-encoder framework for cross-domain audio representation learning. Overcoming the limitations of static concatenation, WQ-Fusion integrates whisper and qwen via an Adaptive Feature Modulation module and a novel element-wise gated attention mechanism. This design enables dynamic feature selection, allowing the model to selectively emphasize relevant acoustic and semantic dimensions. Extensive experiments on the Interspeech 2026 Audio Encoder Capability Challenge (Track A) benchmark demonstrate that by effectively routing heterogeneous information, WQ-Fusion achieves a superior overall score of 0.836, significantly outperforming the strongest single-encoder baseline.",
+      "authors": [
+        "Mingda Lin",
+        "Lei Ding",
+        "Xinyue Zhou",
+        "Tiantian Xiong",
+        "Hanchen Pei",
+        "Gongping Huang",
+        "Hao Zhang",
+        "Jingdong Chen",
+        "Jacob Benesty"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.MM",
+        "eess.AS"
+      ],
+      "published": "2026-06-25T03:07:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.26556v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "leverages pretrained whisper and qwen for cross-domain audio representation",
+      "llm_evidence_cn": "利用预训练的whisper和qwen进行跨域音频表征",
+      "llm_evidence": "利用预训练的whisper和qwen进行跨域音频表征",
+      "canonical_evidence": "利用预训练的whisper和qwen进行跨域音频表征",
+      "llm_tldr_en": "Dual-encoder with gated attention fuses pretrained models for universal audio representation",
+      "llm_tldr_cn": "带门控注意力的双编码器融合预训练模型实现通用音频表征",
+      "llm_tldr": "带门控注意力的双编码器融合预训练模型实现通用音频表征",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.26617v1",
+      "source": "arxiv",
+      "title": "Sketched Linear Contrastive Learning: Approximation, Optimization, and Statistical Scaling",
+      "abstract": "Scaling laws describe how learning performance varies with model size, data size, and compute. While recent theoretical work has established scaling laws for sketched linear regression, much less is understood for contrastive representation learning. In this paper, we study a sketched linear model for contrastive learning under a paired Gaussian latent-variable setup. The learner observes only sketched views of two correlated variables and trains a bilinear contrastive score by full-batch empirical gradient descent. We analyze a Gaussian-negative quadratic contrastive surrogate under aligned power-law spectra and a contrastive source condition, where we derive a risk decomposition into irreducible risk, approximation error, GD bias, GD variance, and a cross term. The cross term is controlled by the bias and variance and therefore does not affect the upper-bound scaling. Our main theorem gives an explicit scaling law with respect to sketch dimension $M$, sample size $N$, and effective optimization horizon $L_{\\mathrm{eff}}γ$. Compared with standard linear-regression scaling laws, the contrastive setting must learn interactions between two views, and this changes how optimization and finite-sample noise scale with model size, data, and training time. This provides a first theoretical step toward understanding scaling behavior in contrastive learning and gives guidance for balancing model size, data, and optimization compute.",
+      "authors": [
+        "Ziyan Chen",
+        "Zhongzhu Zhou",
+        "Ding-Xuan Zhou"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-25T05:20:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.26617v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "contrastive representation learning from sketched views",
+      "llm_evidence_cn": "对比表示学习",
+      "llm_evidence": "对比表示学习",
+      "canonical_evidence": "对比表示学习",
+      "llm_tldr_en": "Studies scaling laws for sketched linear contrastive learning.",
+      "llm_tldr_cn": "研究草图线性对比学习的缩放规律。",
+      "llm_tldr": "研究草图线性对比学习的缩放规律。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
