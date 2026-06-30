@@ -1,0 +1,675 @@
+Title: UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning
+
+URL Source: https://arxiv.org/pdf/2606.27747v1
+
+Published Time: Mon, 29 Jun 2026 00:27:25 GMT
+
+Number of Pages: 24
+
+Markdown Content:
+# UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning 
+
+YE FAN, Nanjing University, China 
+
+JIDONG GE ∗, Nanjing University, China 
+
+CHUANYI LI, Nanjing University, China 
+
+LIGUO HUANG, Southern Methodist University, USA 
+
+BIN LUO, Nanjing University, China While pre-trained models have achieved remarkable success in code search, their multilingual capabilities remain a major hurdle, plagued by data imbalance, cross-lingual semantic interference, and the loss of critical information from existing unified representations like Abstract Syntax Trees (ASTs) or Intermediate Representations (IRs). Furthermore, conventional contrastive learning strategies often rely on simplistic hard negative sampling while overlooking the potential of mining hard positives to learn code’s intrinsic semantic invariance. To address these challenges, we introduce UNICS, a framework for multilingual code search built on a two-stage training strategy. In the first stage, UNICS is pre-trained on a novel dataset we constructed, which uses pseudo-code as a unified representation to learn a cross-lingual, algorithm-level logic that preserves full semantic fidelity. The second stage employs a multi-task transfer learning strategy that adapts this general knowledge to specific languages by decomposing code into semantic slices (e.g., API calls, function bodies) and incorporating tasks for hard positive mining and cross-lingual dynamic hard negative sampling. Experimental results demonstrate that UNICS achieves state-of-the-art performance across multiple multilingual and cross-lingual benchmarks, showcasing superior generalization and performance balance, especially in zero-shot transfer tasks to low-resource languages. CCS Concepts: • Information systems → Retrieval models and ranking ; • Software and its engineering 
+
+→ Search-based software engineering .Additional Key Words and Phrases: Code Search, Pretrained Language Models, Zero-Shot Learning, Cross-Domain 
+
+ACM Reference Format: 
+
+Ye Fan, Jidong Ge, Chuanyi Li, LiGuo Huang, and Bin Luo. 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning. Proc. ACM Softw. Eng. 3, FSE, Article FSE005 (July 2026), 24 pages. https://doi.org/10.1145/3797067 
+
+1 Introduction 
+
+Code Search, which aims to retrieve functionally relevant code snippets from vast codebases based on natural language queries, is a key technology for enhancing developer productivity and 
+
+> ∗
+
+Corresponding author. Authors’ Contact Information: Ye Fan, State Key Laboratory for Novel Software Technology, Department of Computer Science, Nanjing University, Nanjing, China, yefan@smail.nju.edu.cn; Jidong Ge, State Key Laboratory for Novel Software Technology, Department of Computer Science, Nanjing University, Nanjing, China, gjd@nju.edu.cn; Chuanyi Li, State Key Laboratory for Novel Software Technology, Department of Computer Science, Nanjing University, Nanjing, China, lcy@nju.edu.cn; LiGuo Huang, Department of Computer Science, Southern Methodist University, Dallas, USA, lghuang@ lyle.smu.edu; Bin Luo, State Key Laboratory for Novel Software Technology, Department of Computer Science, Nanjing University, Nanjing, China, luobin@nju.edu.cn. 
+
+This work is licensed under a Creative Commons Attribution 4.0 International License. 
+
+© 2026 Copyright held by the owner/author(s). ACM 2994-970X/2026/7-ARTFSE005 https://doi.org/10.1145/3797067 Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026.  
+
+> arXiv:2606.27747v1 [cs.SE] 26 Jun 2026 FSE005:2 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo
+
+promoting code reuse [ 5 , 36 ]. In recent years, the rise of deep pre-trained models has significantly advanced code search technology, with performance far surpassing traditional text-matching methods [ 4 , 9 , 11 , 23 , 33 ]. In downstream tasks such as API recommendation, code completion, and bug fixing, using retrieval models to enhance contextual information has become the mainstream choice, outperforming conventional solutions [ 30 , 39 , 40 , 43 , 59 , 62 ]. Particularly in the wave of agent-based automated software development, leveraging Retrieval-Augmented Generation (RAG) to dynamically organize context has become a standard configuration and critical infrastructure for assisting code generation [ 42 , 49 ]. However, while existing models perform exceptionally well in specific languages, their multi-lingual code retrieval capabilities face severe challenges in real-world development scenarios [3, 8, 10, 34, 44, 57]. Multi-lingual retrieval requires a model to accurately identify relevant code within a mixed-language codebase. In large code communities like GitHub and Stack Overflow, as well as in enterprise-level internal repositories, code resources often coexist in multiple languages. Neglecting non-mainstream languages can lead to a sharp decline in retrieval quality, preventing users from obtaining desired results. Furthermore, in smart IDE environments, both code completion tools and development agents need the ability to search within a user’s local repository. This means the model must handle complex information, including a mix of programming languages (e.g., Python, JavaScript) and configuration files (e.g., JSON, YAML, HTML), and even semi-structured text like README documents, developer tutorials, or issue logs. Therefore, the multi-lingual scenario is not only a touchstone for evaluating a model’s gen-eralization ability but also a core obstacle that must be overcome for practical application. To achieve robust multi-lingual retrieval, a model must learn to distinguish and understand diverse programming syntaxes and paradigms during the pre-training phase. However, current research faces several major bottlenecks. The primary challenge in achieving powerful multi-lingual retrieval capabilities lies in the scarcity and imbalance of training data. The high cost of annotating high-quality "code-query" pairs means that existing mainstream pre-training datasets (e.g., CodeSearchNet, CoSQA) only cover a few popular programming languages like Python and Java. This data bias causes existing models to exhibit significant performance imbalances in multi-lingual environments, making it difficult to effectively generalize their capabilities to low-resource or niche programming languages not present in the training data. To mitigate the data scarcity problem, researchers often employ transfer learning strategies, pre-training a model on data from popular languages and then fine-tuning it on a target language (e.g., using code translation datasets or niche language datasets). However, this seemingly straightforward solution is often plagued by data noise and semantic interference, and can even lead to catastrophic forgetting, which degrades the model’s performance on the source languages. 
+
+Data Noise: The methods used to construct cross-lingual datasets introduce a significant amount of noise. For example, many code translation datasets rely on automated tools that use lexical or syntactic similarity to match functionally equivalent snippets in different languages. These heuristic methods are not rigorous and introduce many false positives where the code snippets are not functionally matched. 
+
+Semantic Interference: Different programming languages have vast differences in syntax, nam-ing conventions, and programming paradigms, and direct transfer can cause semantic interference. For instance, the keyword ‘let‘ defines a mutable, block-scoped variable in JavaScript, whereas in Rust and Swift, it denotes an immutable binding. Similarly, the ‘static‘ keyword has different scope and lifecycle implications in C++ and Java. When a model learns patterns from one language, it can easily conflict with its knowledge of another.  
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:3
+
+This conflict has prompted researchers to ask: can we find a Unified Representation for code that bypasses the surface-level differences between languages to achieve more efficient and lossless knowledge transfer? Some research has attempted to use graph-based intermediate representations (IR), such as Abstract Syntax Trees (ASTs) or Control Flow Graphs (CFGs), to unify code from different program-ming languages [ 38 ]. The intention is to enable the model to explicitly learn the syntactic structure and execution logic of the code, such as conditional branches, loops, and return paths within a function. This does provide the model with structural insights that a pure text representation lacks. However, for tasks like code search that heavily rely on semantic understanding, this over-dependence on structure can be counterproductive. First, abstracting code into a graph structure inevitably leads to the loss of critical textual information. For example, indentation, which is crucial in Python, code comments, and the carefully chosen variable names by developers are all simplified or discarded in an AST. Second, API call sequences and specific keywords (like ‘async/await‘) are often direct indicators of a code’s core functionality, but in a graph representation, they may be relegated to mere node labels, diminishing their rich semantic weight. Finally, the training paradigms of existing methods, especially those based on contrastive learning, also have significant limitations. First, to teach the model to distinguish subtle differences between code snippets, many studies rely on training with hard negatives. However, their methods for generating these hard negatives are often too simplistic, such as random token replacement or simple in-batch sampling. This static or random negative sampling strategy overlooks a critical dynamic issue: the similarity of code representations continuously changes as the model trains. A negative example considered "easy" at the beginning of training may become difficult to distinguish from a positive example later on, and vice versa. A fixed sampling strategy cannot dynamically adapt to the model’s evolution, often leading to overfitting on simple examples while failing to learn sufficiently from genuinely difficult ones. Second, existing methods overemphasize learning "dissimilarity" from negative samples while neglecting to learn "invariance" from positive samples. In addition to the original positive pairs, we can generate functionally equivalent but representationally different hard positives through code transformations and slicing. Introducing these samples forces the model to learn more robust and abstract semantic representations, thereby effectively mitigating overfitting. Finally, most contrastive learning methods are confined to a single-language setting, failing to fully leverage cross-lingual data. Functionally similar (positive examples) or functionally approxi-mate (hard negative examples) code snippets exist across different programming languages. Ignoring these cross-lingual contrastive signals severely limits the model’s multi-lingual understanding and generalization ability and wastes the valuable cross-lingual supervisory signals embedded in massive codebases. In summary, no existing work has addressed the interference issues arising from multi-lingual settings, the information loss caused by unified IR representations, or the problems stemming from neglecting positive samples during training. Based on these observations, we propose UNICS ,a transfer learning framework for multi-lingual code retrieval based on a unified representa-tion. UNICS consists of two training stages: In the first stage, we construct a dataset based on a pseudocode-like unified representation of code. We use contrastive learning to pre-train the model, loading the knowledge from this unified representation. In the second stage, we employ a multi-lingual transfer learning approach. We use a code slicing method to split data from different languages into components with varying semantics. Through multiple tasks—including a slice-type prediction task, hard positive contrastive learning, and hard negative contrastive learning—we transfer the pre-trained knowledge from the first stage to different languages.  
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. FSE005:4 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo
+
+We compare UNICS with several state-of-the-art models and find that UNICS achieves SOTA performance on multi-lingual retrieval tasks. We observe that UNICS can be effectively transferred to niche language retrieval and mixed-language retrieval tasks with minimal transfer loss. Empirical studies show that UNICS exhibits far superior generalization capabilities across programming language scenarios with varying granularities and syntactic types compared to existing models. In summary, we make the following contributions: 
+
+• We propose the UNICS training framework. Through our designed lossless unified code rep-resentation and a multi-task, multi-lingual contrastive learning approach, we have developed a state-of-the-art (SOTA) multilingual code search model. 
+
+• We have constructed a dataset that includes a detailed design for the unified code repre-sentation. We have also innovatively designed multiple hard positive generation methods, multi-lingual pre-training tasks, and a dynamic hard negative learning method. 
+
+• Our experimental results demonstrate that our model achieves leading results in multi-lingual search and search tasks across various niche programming languages, with lower transfer loss. The remainder of this paper is organized as follows. We present the relevant work in Section 2. Section 3 overviews our proposed approach. The experimental setup and results are then described in Sections 4 and 5 respectively.We discuss threats to validity in Section 6 and conclude in Section 7. 
+
+2 Related Work 2.1 Code Pretrained Model 
+
+In the field of code intelligence, it has become a mainstream paradigm to pre-train models on large-scale code corpora and then fine-tune them for downstream tasks, such as code retrieval. The core contribution of such research lies in designing diverse pre-training tasks aimed at learning unified and generalizable knowledge representations from code [42]. One line of work focuses on utilizing the structural information of code. For example, models like UnixCoder [ 20 ], SynCoBERT [ 52 ], and GraphCodeBERT [ 21 ] employ Abstract Syntax Trees (ASTs) to capture the syntactic structure of code. However, due to significant structural differences in ASTs across various programming languages, this approach struggles to learn universal cross-lingual structural knowledge. Its role is mainly limited to enhancing the model’s understanding of the code structure of a specific language. Another category of methods explores Intermediate Representation (IR). For instance, some models convert code from different languages into a unified IR and learn the internal structural labels and dependencies of the code using graph neural networks (such as GGNN) [ 25 , 38 ]. Although IR, to some extent, ignores the syntactic details of a language, experiments have shown that methods incorporating such structural information still achieve performance improvements over traditional approaches, which confirms the importance of structural information in code representation learning [48, 51]. Furthermore, to learn multi-granularity semantic information from code, some models segment code into units of different granularities, such as lines, code blocks, and functions, and aggregates features through mean pooling [ 25 ]. However, the performance improvement of this method is limited. We argue that a powerful pre-trained model should be able to adaptively learn semantic features at different levels during the training process, rather than relying on explicit manual segmentation [47, 50]. Inspired by the aforementioned work, this study aims to find a unified code representation that is more general-purpose and has less information loss. We propose using pseudocode as a normalized representation of code. Compared to AST or IR, this method preserves the semantics of  
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:5
+
+the original code to the greatest extent while maintaining language-agnosticism. Additionally, we have designed a semantic-based segmentation strategy instead of a simple physical size-based one. This strategy can decompose code into units with different semantic functions, thereby achieving more refined feature learning [17, 19, 28, 35, 45, 46, 54]. 
+
+2.2 Multilingual Code Retrieval 
+
+In the domain of multilingual code retrieval, existing research primarily extends single-language models by introducing specific pre-training tasks to enhance the model’s cross-lingual understand-ing and alignment capabilities. Some studies focus on mitigating the data imbalance problem. For example, some work has noted significant performance disparities of models across different languages and, for this reason, introduced a language label prediction task to enhance the model’s ability to discriminate language features, while also adjusting the sampling ratio of each language during data loading [ 31 ]. However, this strategy offers limited benefits for improving the model’s generalization ability to unseen languages and may violate the fundamental assumption of independent and identically distributed (i.i.d.) training data, thereby harming the model’s overall generalization performance [63]. A portion of the work is dedicated to optimizing the contrastive learning framework. For instance, LamCODE [ 25 ] uses functionally matching code pairs as positive samples for contrastive learning and combines this with a random masking strategy for training, but this method risks introducing noisy samples. Contriever [ 27 ], on the other hand, employs in-batch and cross-batch negative sampling strategies. We believe that such static negative sampling methods fail to fully utilize all available negative samples, because as the model parameters are iteratively updated, the distribution of hard negatives also changes dynamically. In view of this, this paper proposes a dynamically updated cross-lingual negative sample mining mechanism, which has achieved better training results [6, 37]. Other research has attempted to leverage cross-lingual code translation datasets to improve the model’s cross-lingual capabilities. For example, CodeRetriever constructs a parallel code corpus by retrieving similar documents and function names [ 32 ]. However, this construction method lacks strict alignment guarantees, is prone to introducing noise, and its applicability is limited to specific programming languages and scenarios, making it difficult to generalize to low-resource languages [ 14 ]. Some approaches utilize translation data of human languages for learning [ 20 ], but we believe that this type of method offers limited help for the multilingual code retrieval task. The fundamental reason is that the differences between programming languages are mainly reflected in syntactic structure, keywords, and API calls, rather than the diversity of natural languages—most programming languages are still based on English lexicographically [58]. In comparison, the method proposed in this study has two major advantages: first, the pseudocode representation we adopt is a nearly lossless unified paradigm, with information fidelity far exceeding that of code translation datasets; second, we have designed targeted pre-training tasks to specifically learn the differences in syntactic structure and API usage across different languages, thereby more directly and effectively enhancing the model’s cross-lingual code understanding and retrieval capabilities. 
+
+3 Method 
+
+In this section, we introduce the methodology of UNICS for learning the differences between various programming languages. As illustrated in Figure 1, the UNICS workflow begins with dataset construction and is centered around two core training stages: Pretraining and Transfer Learning, followed by a final Code Search (inference) stage. We will detail each stage in the following sections. 
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026.
+
+FSE005:6 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo 1 Pretrain Stage Text Encoder Code Encoder Pseudo Encoder                     
+
+> Shared Weights Shared Weights [CLS] + NL Query [CLS] + Code Snippet [CLS] + Pseudo NL Embedding Code Embedding Pseudo Embedding UP Loss
+> 2Transfer Learning Stage Text Encoder Code Encoder Pseudo Encoder
+> Shared Weights Shared Weights [CLS] + NL Query [CLS] + Code Snippet [CLS] + Slice NL Embedding Code Embedding Slice Embedding HP Loss SP Loss HN Loss
+> 3Code Search Stage Trained Model Codebase NL Query Query Embedding Code Embedding Code Embedding Code Embedding Code Embedding Cosine Distance No.1 Code Snippet No.k Code Snippet No.2 Code Snippet
+
+…… 
+
+> TopK Result
+
+Fig. 1. The overall workflow of UNICS, which includes a pre-training stage, a transfer learning stage, and a final code search (inference) stage. 
+
+3.1 Pretraining Stage 
+
+3.1.1 Definition and Design Principles of Universal Code. Universal Code is a standardized rep-resentation for expressing algorithmic logic. It describes each step of an algorithm in a manner close to natural language and mathematical formulas, aiming to abstract away the syntactic details of specific programming languages and the complexities of machine implementation, while fully preserving the essential algorithmic logic. This characteristic makes it an ideal bridge between human thought and program implementation, often used in algorithm teaching and software development documentation. By abstracting code from different programming languages into a unified pseudocode, we can construct a Unified Semantic Carrier . This carrier effectively eliminates the surface-level syntac-tic differences among various programming languages, achieving deep cross-lingual semantic alignment while ensuring the process is lossless. To ensure that the generated pseudocode meets high-quality standards, we have established the following three core design principles: 
+
+• Lossless: The pseudocode must completely preserve all core semantic elements of the original code. To achieve this, we not only require the use of keywords that can express rich semantics but also stipulate that the model must clearly describe key implementation logic in comments, ensuring every detail of the algorithm is faithfully reflected. 
+
+• Consistent: For code snippets that have the same functionality but different implementations (e.g., loops or API calls in different languages), the generated pseudocode must be as consistent 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:7 
+
+as possible. To this end, we require the model to eliminate language-specific information, such as converting a specific API call (e.g., requests.get ) into a natural language description of its function (e.g., make an HTTP GET request ), and expanding common abbreviations in the code to make its expression closer to general natural language. 
+
+• Faithful: The generation of pseudocode must strictly adhere to the semantic boundaries of the original code, without introducing any external information or making out-of-scope infer-ences. We require the model to ensure through repeated verification that every statement in the pseudocode has a clear one-to-one correspondence with a logic block in the original code. Figure 2 details the prompt we used to guide the Large Language Model (LLM) in generating pseudocode, which includes the detailed specifications we have formulated. ## Definition of Universal Code:              
+
+> 1. Comments: Use // for single-line comments and /* ... */ for multi-line comments. Comments must explain the core logic or purpose of code sections. 2. Variables & Functions: Use untyped, clear, and descriptive names that reflect their purpose. Indicate functions with FUNCTION. 3. Core Structures: *Conditionals: Employ IF, ELSIF, ELSE and explicitly end blocks with END IF. *Loops: Use FOR, WHILE, DO...WHILE, allow BREAK/CONTINUE, and explicitly end blocks with END LOOP. *Functions: Define with FUNCTION, use RETURN for output, and explicitly end definitions with END FUNCTION. 4. Operators: Use standard arithmetic (+, -, *), comparison (==, !=, <), and logical (AND, OR, NOT) operators. 5. Advanced Operations: Abstract common programming paradigms: *Data Structures: Use NULL, [] for arrays/lists, LENGTH(Str), SUBSTRING(Str, Start, Length). *System Calls: Use generic forms like OPEN(File, Mode), GET_DATE(). *Concurrency: Map to THREAD_START(Task), LOCK(Resource), UNLOCK(Resource). *Exception Handling: Use a unified TRY...CATCH(ExceptionType)...FINALLY structure. 6. Formatting: Maintain consistent 4-space indentation for clarity.
+> ### Your Task
+> This is the optimized final paragraph written in the defined pseudocode style. The core objective of this pseudocode standard is to facilitate the creation of algorithm descriptions through a unified and easily understandable framework. This methodology aims to deconstruct complex logic into clear, manageable steps. The resulting pseudocode should be logically rigorous, highly readable, and universally applicable, serving as an effective bridge between human conceptualization and machine execution.
+
+Fig. 2. The prompt used to guide the LLM in generating our Universal Code, containing detailed specifications and an example. 
+
+The design advantage of this comprehensive specification lies in its Dual-Focus capability. First, by mandating descriptive comments, variable names, and function names, it preserves the High-Level Semantic Intent of the code. This ensures that the core logic and design philosophy ("what it does" and "why it does it") are not lost during abstraction, directly addressing the issue of critical textual information loss often seen in AST or IR representations due to oversimplification. Second, the specification introduces a set of strict, structured syntax, particularly explicit block terminators (e.g., END IF , END LOOP , END FUNCTION ), to build an unambiguous syntactic framework. This design is crucial as it forces the mapping of variously formed syntactic structures from different programming languages (e.g., Python’s indentation, C++/Java’s curly braces) onto a unique Semantic Signature . This systematic alignment effectively eliminates Semantic Interference caused by syntactic differences, providing a solid foundation for the model to learn universal structural knowledge across languages. Furthermore, by uniformly abstracting advanced programming paradigms such as concurrency, exception handling, and file I/O, our pseudocode can more comprehensively cover the complexity of real-world code, ensuring the completeness and generalization ability of 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. FSE005:8 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo 
+
+the representation. In summary, this design, which balances semantic richness with structural consistency, makes the generated pseudocode an ideal intermediate representation that maximally promotes efficient and lossless transfer of cross-lingual knowledge. 
+
+3.1.2 Construction Process of Instruction-Following Dataset. We employ a Large Language Model (LLM) 1 to automate the construction of a dataset containing the Universal Code representation. The core process follows the paradigm of "Construction From Instruction Dataset" and consists of the following steps: First, for any given programming language 𝐿 , we utilize an existing high-quality code instruction dataset 𝐷 𝐿 𝑠 . This dataset consists of pairs (𝑞 𝛼 , 𝑎 𝛼 ) ∈ 𝐷 𝐿 𝑠 , where 𝑞 𝛼 is a natural language question and 𝑎 𝛼 is the corresponding source code answer. Second, through carefully designed Prompt Engineering, we guide an LLM to generate the corresponding Universal Code representation 𝑝 𝛼 for each pair. As shown in Figure 2 and described in our methodology, our designed prompt template includes three key slots: {Definition of Universal Code}, {Question}, and {Answer}, which are filled with the predefined pseudocode specification, the original natural language query 𝑞 𝛼 , and the source code answer 𝑎 𝛼 , respectively. Finally, we integrate the original query, source code, and the generated pseudocode to construct a Universal Code instruction dataset 𝐷 𝐿 𝑢𝛼 containing triplets (𝑞 𝛼 , 𝑎 𝛼 , 𝑝 𝛼 ).We extend this process to 𝐾 different programming languages 𝐿 𝑎𝑙𝑙 = {𝐿 𝑘 }𝐾 𝑘 =1, thereby creating a large-scale, multilingual Universal Code instruction dataset 𝐷 ∗ 
+
+> 𝑢𝛼
+
+= {𝐷 𝐿 𝑢𝛼 𝑘 }𝐾 𝑘 =1. This dataset serves as the core training data for subsequent Supervised Fine-Tuning (SFT) of the model. In this study, we selected open-source instruction datasets as our starting point to ensure the reproducibility and fairness of our experiments. 
+
+3.1.3 Quality Verification of Universal Code. To ensure the high-fidelity semantic preservation of the generated pseudocode, we employed a rigorous dual-verification mechanism: 
+
+Structural Verification via AST: We utilized Abstract Syntax Trees (AST) as a strict structural filter. Pseudocode that contradicts the control flow structure of the original code (e.g., missing crucial loops or conditional branches) is automatically discarded. This ensures the structural soundness of the dataset. 
+
+Semantic Verification via Human Evaluation: To validate full semantic equivalence, we conducted a human evaluation on 100 randomly sampled code-pseudocode pairs. Three senior PhD students annotated the samples, achieving an inter-annotator agreement (Cohen’s Kappa) of 0.79, which indicates strong consensus. Experts rated the samples on a 1-5 scale. The evaluation yielded a Semantic Preservation Score of 4.83, a Consistency Score of 4.65, and a Faithfulness Score of 4.92. These high scores confirm that our rigorous filtering pipeline successfully avoids the vast majority of generation errors. 
+
+Error Analysis: Through our manual analysis, we identified three primary error types that occasionally occur during LLM generation: (1) Misinterpretation of syntactic sugar , where the model fails to accurately abstract language-specific shortcuts; (2) Hallucinated API expansions , where the model incorrectly predicts the underlying implementation details of a high-level API; and (3) Scope ambiguity in closures , where the variable scope within nested functions is inaccurately represented. 
+
+3.1.4 Unified Contrastive Learning Pretraining Loss (UP). To align the semantic spaces represented by the triplets (𝑞 𝛼 , 𝑎 𝛼 , 𝑝 𝛼 )—natural language query, source code, and pseudocode—we introduce a contrastive learning method. The core idea is to pull closer the vectors of the query, code, and  
+
+> 1Specifically, we use Qwen3-Coder-30B-A3B-Instruct: https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct. Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:9
+
+pseudocode generated from the same instruction triplet (positive pairs) in the embedding space, while pushing apart the vectors of elements from different triplets (negative pairs). Specifically, we construct three pairwise contrastive learning tasks, using the pseudocode 𝑝 𝛼 
+
+as a bridge connecting the natural language 𝑞 𝛼 and the source code 𝑎 𝛼 . We use the InfoNCE loss function to optimize the model [ 16 ]. For a mini-batch of size 𝑁 , the loss functions are defined as follows: 
+
+Natural Language-Code Alignment Loss ( 𝐿 𝑞 ↔𝑎 ): This loss aims to align the natural language query 𝑞 𝛼 with its corresponding source code 𝑎 𝛼 .
+
+𝐿 𝑞 ↔𝑎 = −
+
+> 𝑁
+
+∑︁ 
+
+> 𝑖 =1
+
+log exp (sim (𝑞 𝑖 , 𝑎 𝑖 )/ 𝜏 )
+
+Í𝑁 𝑗 =1 exp (sim (𝑞 𝑖 , 𝑎 𝑗 )/ 𝜏 ) (1) 
+
+Natural Language-Pseudocode Alignment Loss ( 𝐿 𝑞 ↔𝑝 ): This loss aligns the natural language query 𝑞 𝛼 with its corresponding pseudocode representation 𝑝 𝛼 .
+
+𝐿 𝑞 ↔𝑝 = −
+
+> 𝑁
+
+∑︁ 
+
+> 𝑖 =1
+
+log exp (sim (𝑞 𝑖 , 𝑝 𝑖 )/ 𝜏 )
+
+Í𝑁 𝑗 =1 exp (sim (𝑞 𝑖 , 𝑝 𝑗 )/ 𝜏 ) (2) 
+
+Pseudocode-Code Alignment Loss ( 𝐿 𝑝 ↔𝑎 ): This loss treats the pseudocode 𝑝 𝛼 as an interme-diate representation and aligns its semantics with the final source code 𝑎 𝛼 .
+
+𝐿 𝑝 ↔𝑎 = −
+
+> 𝑁
+
+∑︁ 
+
+> 𝑖 =1
+
+log exp (sim (𝑝 𝑖 , 𝑎 𝑖 )/ 𝜏 )
+
+Í𝑁 𝑗 =1 exp (sim (𝑝 𝑖 , 𝑎 𝑗 )/ 𝜏 ) (3) In the above equations: 
+
+• ( 𝑞 𝑖 , 𝑎 𝑖 , 𝑝 𝑖 ) represent the vector embeddings of the 𝑖 -th triplet in the batch. 
+
+• sim (· , ·) denotes the cosine similarity function. 
+
+• 𝜏 is a temperature hyperparameter that adjusts the smoothness of the probability distribution [ 60 ]. 
+
+• The summation in the denominator iterates over all negative samples in the batch (when 𝑗 ≠ 𝑖 )and one positive sample (when 𝑗 = 𝑖 ). Finally, the total contrastive learning loss for the model is the sum of the three loss terms: 
+
+𝐿 UP = 𝐿 𝑞 ↔𝑎 + 𝐿 𝑞 ↔𝑝 + 𝐿 𝑝 ↔𝑎 (4) By minimizing this total loss, the model learns a unified representation space where semantically equivalent natural language, source code, and pseudocode are mapped to nearby locations [ 18 , 29 ]. 
+
+3.2 Transfer Learning Stage 
+
+In the pretraining stage, the model learns universal algorithmic logic that transcends language barriers through the unified pseudocode representation. However, to achieve precise retrieval in real-world multilingual codebases, the model must also deeply understand the unique syntactic features, keyword usage, and API call paradigms of each programming language. To this end, we design a multitask joint learning transfer stage aimed at efficiently and specifically transferring the general knowledge acquired during pretraining to fine-grained, language-specific representations. The core idea of this stage is to decompose code into Code Slices with different semantic functions and design a series of specialized contrastive and classification tasks. This forces the model to focus on different components of the code, thereby learning more robust and refined multilingual code representations. 
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026.
+
+FSE005:10 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo public class Solution {                                                          
+
+> public static Integer findMax (int [] numbers ) {
+> // Handle null or empty array case
+> if (numbers == null || numbers.length == 0) {
+> return null ;
+> }
+> int maxVal =numbers[ 0];
+> // Iterate through the array to find max
+> for (int i=1;i<numbers.length ;i++ ) {
+> if (numbers[ i]>maxVal ) {
+> // A larger number is found
+> maxVal =numbers[ i];
+> }
+> }
+> return maxVal ;
+> }
+> }
+> FUNCTION find_max (numbers_list )
+> // Check if the input list is empty or null to avoid errors.
+> IF numbers_list == NULL OR LENGTH (numbers_list )== 0
+> RETURN NULL
+> END IF
+> // Initialize a variable with the first element as the current maximum.
+> max_value =numbers_list [0]
+> // Iterate through the rest of the list to find the true maximum value.
+> FOR each number in SLICE (numbers_list ,1,LENGTH (numbers_list )-1)
+> IF number >max_value
+> // If a larger number is found, update the maximum value.
+> max_value =number
+> END IF
+> END LOOP
+> // Return the final maximum value found.
+> RETURN max_value
+> END FUNCTION
+
+Original Code Snippet 
+
+LLM 
+
+1 2
+
+3                 
+
+> IF numbers_list == NULL OR LENGTH (numbers_list )== 0
+> RETURN NULL
+> END IF
+> max_value =numbers_list [0]
+> FOR each number in SLICE (numbers_list ,1,LENGTH (numbers_list )-1)
+> IF number >max_value
+> // If a larger number is found, update the maximum value.
+> max_value =number
+> END IF
+> END LOOP
+
+Universal Code Representation 
+
+Code Slice for Hard Positive Mining 
+
+Function Body          
+
+> IF numbers_list == NULL OR
+> LENGTH (numbers_list )== 0
+> RETURN NULL
+> END IF
+> IF number >max_value
+> max_value =number
+> END IF
+
+Conditional Logic     
+
+> max_value =numbers_list [0]
+> FOR each number in SLICE (... )
+
+Variable Declaration     
+
+> // Call to get the size of the data structure.
+> LENGTH (numbers_list )
+> // Call to get a sub -section of the data structure.
+> SLICE (numbers_list ,1,LENGTH (numbers_list )-1)
+
+API Call 
+
+Fig. 3. Examples of four semantic code slices. 
+
+3.2.1 Semantic Code Slicing. Traditional methods encode the entire function body as a single unit, which can lead the model to over-rely on surface-level features like function names, while neglecting the internal implementation logic, thereby harming generalization. To address this issue, we decompose source code functions into four types of slices, each carrying different semantic information, to ensure the model can understand the code from multiple dimensions. These four slice examples are shown in the Figure 3 
+
+• Function Body Slice: We remove the function signature (including the function name and parameters), retaining only the function body. This forces the model to delve into the internal implementation logic of the code rather than relying on surface-level information from the interface. 
+
+• Conditional Logic Slice: We extract conditional branching statements like if-else and their corresponding code blocks. This helps the model capture the core execution paths and logic of the code. 
+
+• Variable Declaration Slice: We isolate the declaration and initialization parts of variables as a separate slice. This helps the model understand the data flow, lifecycle, and scope of variables in the code. 
+
+• API Call Slice: This part is crucial for multilingual code search. One of the most significant differences between programming languages is their distinct API ecosystems. For example, Python’s requests.get() and JavaScript’s fetch() are functionally equivalent but lexically completely different. Extracting API call sequences as a specialized slice for training forces the model to learn cross-lingual API functional alignment, breaking the semantic gap caused by different language ecosystems and enhancing its ability to decode high-density information containing numerous abbreviations and domain-specific terms. 
+
+3.2.2 Multitask Joint Learning. We designed a multitask joint learning framework that integrates hard positive mining, slice type detection, and dynamic hard negative mining. The original code, its four types of slices, and the natural language query are simultaneously fed into the model. Their output embedding vectors are jointly used to compute a combined loss function, optimizing the model collaboratively. 
+
+Hard Positive Mining Task (HP). This task aims to strengthen the model’s understanding of "semantic invariance." We innovatively treat the natural language query 𝑞 and its corresponding four 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:11 
+
+code slices 𝑠 𝑗 (where 𝑗 ∈ { body, cond, var, api } ) as "hard positive" pairs. Since each slice contains only partial semantic information, the model, in order to align them with a query describing the full functionality, must learn more abstract and robust feature representations. The loss function for this task, 𝐿 HP , is composed of multiple InfoNCE-based contrastive loss terms that use only in-batch negatives. For the 𝑖 -th sample in a batch, its loss is: 
+
+𝐿 HP 𝑖 = 𝐿 InfoNCE-IB (𝑞 𝑖 , 𝑐 𝑖 ) + ∑︁  
+
+> 𝑗 ∈𝑆
+
+𝐿 InfoNCE-IB (𝑞 𝑖 , 𝑠 𝑖,𝑗 ) (5) where 𝑆 = {body, cond, var, api }, 𝑐 𝑖 is the original complete code snippet, and 𝐿 InfoNCE-IB is the InfoNCE loss using in-batch negatives: 
+
+𝐿 InfoNCE-IB (𝑥 𝑖 , 𝑦 + 
+
+> 𝑖
+
+) = − log exp (sim (e𝑥 𝑖 , e𝑦 + 
+
+> 𝑖
+
+)/ 𝜏 )
+
+exp (sim (e𝑥 𝑖 , e𝑦 + 
+
+> 𝑖
+
+)/ 𝜏 ) + Í𝑦 −  
+
+> 𝑗 ∈𝑁 𝑖𝑏
+
+exp (sim (e𝑥 𝑖 , e𝑦 − 
+
+> 𝑗
+
+)/ 𝜏 ) (6) Here, 𝑁 𝑖𝑏 represents the set of negative samples within the batch. The complete batch loss 𝐿 HP is the average of all sample losses. 
+
+Code Slice Detection Task (SP). To enable the model to explicitly distinguish the semantic roles of different code components, we introduce an auxiliary classification task. A classification head is added on top of the model’s output slice embeddings to predict their corresponding categories. This task is optimized using the standard Cross-Entropy Loss: 
+
+𝐿 SP = − 1
+
+𝐵 · 𝑀 
+
+> 𝐵
+
+∑︁ 
+
+> 𝑖 =1
+> 𝑀
+
+∑︁ 
+
+> 𝑗 =1
+> 𝐾
+
+∑︁ 
+
+> 𝑘 =1
+
+𝑦 𝑖 𝑗,𝑘 log ( ˆ𝑦 𝑖 𝑗,𝑘 ) (7) where: 
+
+• 𝐵 is the batch size, 𝑀 = 4 is the number of slice types, and 𝐾 = 4 is the total number of classes. 
+
+• 𝑦 𝑖 𝑗,𝑘 is a one-hot vector indicating whether the 𝑗 -th slice of the 𝑖 -th sample belongs to class 𝑘 .
+
+• ˆ𝑦 𝑖 𝑗,𝑘 is the probability predicted by the model that it belongs to class 𝑘 .
+
+Hard Negative Mining Task (HN). To teach the model to distinguish between highly similar yet functionally different code snippets, we introduce a dedicated hard negative contrastive learning task. This is crucial for refining the model’s decision boundaries in a dense multilingual embedding space [6]. We maintain a cross-lingual First-In-First-Out (FIFO) feature queue 𝑄 , which stores code and query embeddings from recent batches. For each positive pair (𝑞 𝑖 , 𝑐 𝑖 ) in the current batch, we dynamically mine the top-𝐻 most similar code snippets {𝑐 ′ 
+
+> 𝑖,𝑘
+
+}𝐻 𝑘 =1 from the queue to serve as hard negatives for the query 𝑞 𝑖 . Symmetrically, we also mine the top-𝐻 most similar queries {𝑞 ′ 
+
+> 𝑖,𝑘
+
+}𝐻 𝑘 =1 as hard negatives for the code 𝑐 𝑖 [13, 55]. The hard negative contrastive loss, 𝐿 HN , is then defined as a sum of two symmetric terms. For each query 𝑞 𝑖 , we contrast its positive code pairing 𝑐 𝑖 against its mined hard negative codes. The same is done for each code 𝑐 𝑖 against its hard negative queries. The total loss for a batch of size 𝐵 is: 
+
+𝐿 HN = − 1
+
+𝐵 
+
+> 𝐵
+
+∑︁ 
+
+> 𝑖 =1
+
+log exp (sim (𝑞 𝑖 , 𝑐 𝑖 )/ 𝜏 )
+
+exp (sim (𝑞 𝑖 , 𝑐 𝑖 )/ 𝜏 ) + Í𝐻 𝑘 =1 exp (sim (𝑞 𝑖 , 𝑐 ′ 
+
+> 𝑖,𝑘
+
+)/ 𝜏 )+ log exp (sim (𝑐 𝑖 , 𝑞 𝑖 )/ 𝜏 )
+
+exp (sim (𝑐 𝑖 , 𝑞 𝑖 )/ 𝜏 ) + Í𝐻 𝑘 =1 exp (sim (𝑐 𝑖 , 𝑞 ′ 
+
+> 𝑖,𝑘
+
+)/ 𝜏 )
+
+! (8) This formulation directly forces the model to learn fine-grained distinctions by penalizing it for placing hard negatives too close to the query-code anchor pair [15, 56].  
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. FSE005:12 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo
+
+Joint Learning. Finally, we jointly optimize the aforementioned tasks. The total training loss 𝐿 final 
+
+is a weighted sum of the hard positive contrastive learning loss, the semantic slicing prediction loss, and the hard negative contrastive loss: 
+
+𝐿 final = 𝐿 HP + 𝜆 𝑆𝑃 · 𝐿 SP + 𝜆 𝐻 𝑁 · 𝐿 HN (9) where 𝜆 𝑆𝑃 and 𝜆 𝐻 𝑁 are hyperparameters that balance the importance of the three tasks. By mini-mizing 𝐿 final , the model not only inherits the general knowledge from the pretraining stage but also specifically learns the features, structures, and key differences of multilingual code, ultimately forming a powerful and balanced multilingual code retrieval engine. 
+
+3.3 Code Search Stage (CS) 
+
+After training is complete, we use the trained model for code search. We input a query 𝑞 and search for code that matches the intent within a given code repository 𝐶 = {𝑐 1, 𝑐 2, ..., 𝑐 𝑛 }.Specifically, the trained model embeds the query 𝑞 and each code snippet 𝑐 𝑖 in the repository 
+
+𝐶 into vectors 𝑒 𝑞 and 𝑒 𝑐 𝑖 , respectively. It then calculates the cosine similarity between 𝑒 𝑞 and 𝑒 𝑐 𝑖 
+
+using the following formula: CosineSimilarity (𝑞, 𝑐 𝑖 ) = 𝑒 𝑞 · 𝑒 𝑐 𝑖 
+
+∥𝑒 𝑞 ∥ · ∥ 𝑒 𝑐 𝑖 ∥ (10) Finally, the model ranks the code snippets based on their cosine similarity scores and outputs the top-𝐾 results most relevant to the query 𝑞 .
+
+4 Experimental Setup 
+
+This section outlines the research questions guiding our evaluation, the datasets and baselines used, the evaluation metrics, and the experimental environment. Our goal is to assess the effectiveness and advancements of UNICS. 
+
+4.1 Research Questions 
+
+• RQ1: Multilingual Retrieval Capability. How does UNICS perform in multilingual code search scenarios compared to state-of-the-art baselines? 
+
+• RQ2: Cross-Lingual Retrieval Capability. How effective is UNICS in cross-lingual search, where the query and code are in different languages? 
+
+• RQ3: Transfer Learning to Niche Languages. How well does UNICS perform on niche and low-resource programming languages in a zero-shot setting? 
+
+• RQ4: Ablation Study. What is the contribution of each key component of the UNICS framework? 
+
+4.2 Datasets and Baselines 
+
+4.2.1 Datasets. 
+
+Mainstream Programming Languages. To evaluate retrieval capabilities in mainstream program-ming languages, we use CodeSearchNet, CoSQA, and APPS. CodeSearchNet(CSN) [ 26 ] contains six subdatasets for six programming languages (i.e., Ruby, Java, Python, JavaScript, Golang, PHP), where each data instance is a pair of a code snippet and its corresponding text description. The 
+
+CoSQA [ 24 ] dataset comprises 20,604 labeled pairs of natural language queries and codes, anno-tated by at least three human annotators. APPS [22] is a code generation benchmark with 10,000 problems, which we use to evaluate retrieval from natural language specifications.  
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:13
+
+Multilingual Code Retrieval. To evaluate multilingual code retrieval, we use data from XLCoST, Stack Overflow, and CodeFeedBack. The XLCoST [ 63 ] dataset contains practical code search examples from GeeksForGeeks, covering eight languages. We utilize its natural language-to-code retrieval subset. CodeFeedBack-ST [ 61 ] consists of a corpus of 156k documents and 31k queries. 
+
+StackOverflow QA [61 ] reflects real-world developer queries, making it ideal for evaluating models on practical retrieval tasks. 
+
+Cross-lingual Code-to-Code Retrieval. To evaluate cross-lingual code-to-code retrieval, we use the CodeTransOcean [ 58 ] dataset. It is a large-scale benchmark supporting a wide variety of programming languages for code translation, including multilingual, niche, and deep learning framework translation tasks. 
+
+Niche Programming Languages. To evaluate the model’s capabilities in niche programming lan-guages, we collected a large dataset from GitHub [ 1 ], covering 32 languages, including functional languages (Haskell, OCaml), older languages (Pascal, Fortran), and others. Following the Code-SearchNet strategy, we filtered out snippets with excessive whitespace, non-ASCII characters, and length < 3 lines to ensure high-quality semantic content. After filtering, 89k instances remain for testing our model’s performance on these languages. More details are available in our repository. 
+
+4.2.2 Baselines. We compare UNICS with several powerful baseline models: 
+
+• openai-ada: [41] OpenAI’s highly efficient embedding model 2.
+
+• text-embedding-3-small: [41 ] OpenAI’s latest highly capable and cost-effective embedding model. 
+
+• UniXCoder [20 ]: A unified cross-modal pre-trained model that leverages code, comments, and ASTs, showing strong performance in zero-shot code search. 
+
+• Contriever [ 27 ]: A model from Facebook AI optimized for multilingual scenarios using in-batch negative sampling. 
+
+• Code Retriever [ 32 ]: Learns function-level code semantics through large-scale code-text contrastive pre-training. 
+
+• BGE [12 ]: A state-of-the-art multilingual retrieval model designed for multi-linguality, multi-granularities, and multi-functionality. 
+
+4.3 Metrics 
+
+To comprehensively evaluate retrieval performance, we employ three widely adopted metrics: 
+
+Mean Reciprocal Rank (MRR) , Normalized Discounted Cumulative Gain (NDCG) , and 
+
+Top@k accuracy. MRR measures the average of the reciprocal ranks of the first relevant retrieved code snippet, reflecting the model’s ability to return the correct answer at the very top. NDCG [ 7 ]assesses the overall ranked list by assigning higher scores to more relevant items ranked higher, thus evaluating the general ranking quality. Finally, Top@k measures the percentage of queries where at least one correct code snippet appears in the top 𝑘 results, making it highly indicative of practical usability in developer-facing scenarios. We primarily report MRR, NDCG@10 [ 53 ], and Top@10 across our benchmarks. 
+
+4.4 Hyperparameters and Experimental Environment 
+
+We set the learning rate for the representation alignment stage to 1 × 10 −6 and for the multi-task joint learning stage to 2 × 10 −5. The temperature 𝜏 was set to 0.1, and the loss weighting coefficients 
+
+𝜆 𝑆𝑃 and 𝜆 𝐻 𝑁 were both set to 0.5. We used the Adam optimizer with a batch size 𝐵 of 64. The queue  
+
+> 2https://platform.openai.com/docs/guides/embeddings Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. FSE005:14 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo
+
+size for dynamic hard negative mining was set to 3 times the batch size. We use UniXCoder-base [ 20 ]as our base model. We employed an early stopping strategy, terminating training if performance on a validation set did not improve for 10 consecutive epochs, with a maximum of 100 epochs. All experiments were conducted on a machine equipped with eight 40G NVIDIA A100 GPUs. 
+
+5 Experiments and Results 5.1 RQ1: Multilingual Retrieval Capability 
+
+Experimental Goal. To evaluate the overall performance of UNICS in multilingual code retrieval tasks, comparing its effectiveness and language balance against state-of-the-art baselines. 
+
+Experimental Design. We trained all models exclusively on the CodeSearchNet dataset. Evalua-tions were conducted in a zero-shot manner on seven diverse benchmarks: CodeSearchNet, CoSQA, APPS, StackOverflow QA, and CodeFeedBack (ST/MT). We used consistent hyperparameters and input lengths for all models. The primary metrics we examine include MRR, NDCG@k, and Top@10. Each experiment was repeated with three different random seeds, and we report the mean and standard deviation. 
+
+Experimental Results. As shown in Table 1, UNICS demonstrates superior performance across all seven multilingual benchmarks. Evaluated comprehensively across robust multi-rank metrics (MRR, NDCG@10, and Top@10), UNICS achieves phenomenal combined average scores of 58.76%, 54.44%, and 67.93% respectively. This constitutes a significant improvement of roughly 9.0 to 18.0 percentage points across metrics over the baselines. The performance gains are particularly pronounced on datasets with long-context queries and noisy real-world data, such as APPS, StackOverflow, and CodeFeedback, where the Top@10 accuracy consistently reaches excellent tiers (e.g., above 90% on average). The results seamlessly validate the practicality and discriminative power of UNICS’s semantic slicing and dynamic hard negative learning. Statistical significance tests confirm that these improvements are highly robust (p < 0.05). 
+
+Summary for RQ1 
+
+UNICS achieves a new state-of-the-art in multilingual code retrieval. Its superior perfor-mance and language balance stem from the unified pseudo-code representation, which mitigates cross-lingual syntactic differences, and the semantic slicing and dynamic con-trastive learning, which foster a deeper understanding of semantic invariance and clearer decision boundaries. 
+
+5.2 RQ2: Cross-Lingual Retrieval Capability 
+
+Experimental Goal. To assess the alignment and generalization capabilities of UNICS in cross-lingual retrieval scenarios, particularly on unseen language pairs and under real-world semantic divergences. 
+
+Experimental Design. We used the XLCoST (Text-to-Code subset, split by language) and Code-TransOcean datasets. Models were trained solely on CodeSearchNet’s monolingual data and evalu-ated in a zero-shot cross-lingual setting. The retrieval index consisted of code in the target language, while queries were from a different source language (natural language or pseudocode). Performance was measured using NDCG@k. 
+
+Results and Discussion. Table 2 shows that UNICS consistently leads in cross-lingual retrieval. On average, UNICS achieves an NDCG of 54.66, outperforming the strongest baselines by 3.49  
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:15
+
+Table 1. Performance (MRR / NDCG@10 / Top@10, %) on Multilingual Code Retrieval Benchmarks. All models were trained only on CodeSearchNet and evaluated in a zero-shot setting. UNICS consistently outperforms all baselines. The improvements of UNICS over the best baseline are statistically significant (p < 0.05). Note that MRR, NDCG, and Top@10 values are reported as percentages (%). 
+
+Model Metric CSN APPS CoSQA XLCoST(T2C) SO QA CF-ST CF-MT Average 
+
+OpenAI-Ada-002 MRR 74.59 9.39 31.16 80.07 78.12 50.84 19.14 49.04 NDCG 69.13 8.70 28.88 74.21 72.40 47.12 17.74 45.45 Top@10 86.27 10.86 36.04 92.61 90.36 58.81 22.14 56.73 text-embedding-3 MRR 76.32 9.95 32.85 81.15 79.68 52.11 19.62 50.24 NDCG 70.73 9.22 30.45 75.21 73.85 48.30 18.18 46.56 Top@10 88.27 11.51 38.00 93.86 92.17 60.28 22.69 58.11 BGE-Base-en MRR 49.16 4.37 35.35 75.10 79.36 70.12 33.90 49.62 NDCG 45.56 4.05 32.76 69.60 73.55 64.99 31.42 45.99 Top@10 56.86 5.05 40.88 86.86 91.79 81.11 39.21 57.39 Contriever MRR 38.56 5.55 15.33 37.46 71.27 59.46 42.33 38.56 NDCG 35.74 5.14 14.21 34.72 66.05 55.11 39.23 35.74 Top@10 44.60 6.41 17.73 43.33 82.43 68.78 48.96 44.60 CodeRetriever MRR 66.06 4.23 29.87 67.84 50.85 41.49 29.01 41.34 NDCG 61.22 3.92 27.68 62.87 47.13 38.45 26.89 38.31 Top@10 76.40 4.89 34.54 78.46 58.82 47.99 33.56 47.81 UniXCoder MRR 62.97 1.47 27.13 64.96 48.20 38.87 26.12 38.53 NDCG 58.36 1.36 25.14 60.20 44.67 36.02 24.21 35.71 Top@10 72.83 1.70 31.37 75.13 55.75 44.95 30.21 44.56 
+
+UNICS (Ours) 
+
+MRR 78.20 10.58 36.50 84.79 81.94 73.80 45.53 58.76 
+
+NDCG 72.45 9.80 33.82 78.56 75.92 68.37 42.18 54.44 
+
+Top@10 90.40 12.23 42.21 98.02 94.73 85.31 52.63 67.93 
+
+to 10.85 points. The model shows consistent gains across various language pairs, including C++, Java, Python, and C#. The advantage is particularly evident on the complex CodeTransOcean dataset, which features diverse programming frameworks and styles. This suggests that our ap-proach—combining a unified pseudo-code representation with API call slicing—effectively mitigates the challenges posed by differing API ecosystems and naming conventions across languages. The unified representation bridges lexical gaps, while API slicing directly aligns semantically equivalent library calls. Furthermore, the dynamic cross-lingual hard negative mining strategy ensures that the model maintains sharp decision boundaries even among the most confusingly similar code snippets from different languages. 
+
+Summary for RQ2 
+
+UNICS establishes a new state-of-the-art in zero-shot cross-lingual retrieval. Its success is attributed to a combination of three key factors: a unified pseudo-code representation that reduces lexical and stylistic noise, API call slicing that aligns functionally equivalent library calls, and a dynamic cross-lingual hard negative mining strategy that continuously refines the model’s discriminative ability. 
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026.
+
+FSE005:16 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo 
+
+Table 2. Performance (MRR / NDCG@10 / Top@10, %) on Cross-Lingual Retrieval Benchmarks. UNICS shows robust performance in translating intent across language barriers. Note that metric values are reported as percentages (%).                                                                                                                                                                                
+
+> Model Metric CodeTransOcean XLCoST C++ XLCoST Java XLCoST Py XLCoST C# XLCoST JS XLCoST PHP XLCoST C Average
+> OpenAI-Ada-002 MRR 57.55 51.38 48.63 51.05 48.73 51.25 46.17 41.52 49.54 NDCG 53.34 47.62 45.07 47.31 45.16 47.50 42.79 38.48 45.91 Top@10 66.57 59.43 56.25 59.04 56.36 59.28 53.40 48.02 57.29 BGE-Base-en-v1.5 MRR 41.54 52.78 51.61 52.99 52.05 53.50 48.20 43.29 49.50 NDCG 38.50 48.92 47.83 49.11 48.24 49.58 44.67 40.12 45.87 Top@10 48.05 61.05 59.69 61.29 60.20 61.88 55.75 50.07 57.25 Contriever MRR 47.65 47.82 47.67 48.78 49.99 49.76 45.05 41.47 47.27 NDCG 44.16 44.32 44.18 45.21 46.33 46.12 41.75 38.43 43.81 Top@10 55.11 55.31 55.14 56.42 57.82 57.56 52.10 47.96 54.68 Code Retriever MRR 66.06 55.41 54.89 55.48 55.34 55.22 51.61 47.71 55.22 NDCG 61.22 51.35 50.87 51.42 51.29 51.18 47.83 44.22 51.17 Top@10 76.40 64.08 63.49 64.17 64.01 63.87 59.69 55.19 63.86 UniXCoder MRR 45.12 52.56 52.76 51.75 52.46 52.40 47.93 44.54 49.94 NDCG 41.82 48.71 48.90 47.96 48.62 48.56 44.42 41.28 46.28 Top@10 52.19 60.79 61.03 59.85 60.68 60.60 55.44 51.52 57.76
+> UNICS (Ours)
+> MRR 73.86 ∗61.31 ∗58.65 ∗58.18 ∗57.63 ∗58.56 ∗53.79 ∗49.83 ∗58.98 ∗
+> NDCG 68.45 ∗56.82 ∗54.36 ∗53.92 ∗53.41 ∗54.27 ∗49.85 ∗46.18 ∗54.66 ∗
+> Top@10 85.43 ∗70.91 ∗67.84 ∗67.29 ∗66.66 ∗67.73 ∗62.21 ∗57.63 ∗68.21 ∗∗indicates improvement over the best baseline is statistically significant ( 𝑝 <0.05 ) in the Approx. Randomization Test.
+
+5.3 RQ3: Transfer Learning to Niche Languages 
+
+Experimental Goal. To evaluate the zero-shot retrieval capabilities of UNICS on niche and low-resource programming languages, verifying its ability to generalize robustly while maintaining performance balance. 
+
+Experimental Design. We used our self-curated NicheLang test set, which includes 32 low-resource languages such as Haskell, OCaml, Pascal, and Lua. Models were trained only on Code-SearchNet and evaluated on NicheLang in a zero-shot setting, without any language-specific fine-tuning. 
+
+Experimental Results. As shown in Table 3, UNICS demonstrates a remarkable ability to general-ize to unseen, niche languages. Examining the comprehensive metrics, it achieves multi-metric average scores (MRR / NDCG@10 / Top@10) of 25.40%, 23.53%, and 29.36%, significantly outper-forming the next-best baseline, Code Retriever. The performance gains are completely unified across different language paradigms, including functional languages (Haskell, OCaml) and established procedural languages (Pascal, Fortran). We also incorporated state-of-the-art broad scale baseline 
+
+text-embedding-3-small , which improved representation stability, but still fundamentally lagged behind UNICS’s specialized domain alignment. This confirms that our unified pseudo-code prop-erly abstracts away syntactic idiosyncrasies, enabling the model to consistently rank equivalent algorithmic logics favorably. This generalization validates the effectiveness of our approach. 
+
+Analysis of Stability and Language Discrimination. As illustrated in our analysis, the model demonstrates both strong performance and cross-lingual discrimination. Figure 4 (left) presents a bar chart comparing the performance of UNICS against baselines on niche languages, visually reinforcing its superiority. Concurrently, the t-SNE visualization in Figure 4 (right) reveals that our approach yields well-separated clusters for different languages. This clear separation shows that our methodology successfully captures distinct linguistic features, creating a more robust and effective cross-lingual retrieval system. 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:17 (a) We analyze stability through agrouped bar chart with error bars, whichshowcases the variability of our results. (b). The t-SNE visualization demonstrates that our methodprovides better discrimination for different languages. 
+
+Fig. 4. Visualization of Performance and Language Discrimination in UNICS. 
+
+Summary for RQ3 
+
+UNICS achieves stable and significant zero-shot improvements on niche languages, demon-strating robust generalization to low-resource scenarios. This success is primarily due to the "de-lexicalized" unified pseudo-code, semantic slicing that highlights key programming mechanisms, and continuous discriminative learning from cross-lingual dynamic hard negatives. 
+
+Table 3. Performance (MRR / NDCG@10 / Top@10, %) on the Niche Programming Languages Benchmark (NicheLang). UNICS shows strong zero-shot generalization to unseen languages. Note that Metric values are reported as percentages (%). 
+
+Model Metric Haskell OCaml Scheme Racket Pascal Fortran Lua Others Average 
+
+OpenAI-Ada-002 MRR 14.29 13.69 12.92 13.29 15.28 16.73 14.88 11.31 14.05 NDCG 13.24 12.68 11.97 12.31 14.16 15.50 13.79 10.48 13.02 Top@10 16.52 15.82 14.94 15.36 17.67 19.34 17.21 13.08 16.24 text-embedding-3 MRR 15.10 14.45 13.58 14.01 16.10 17.63 15.68 11.92 14.81 NDCG 13.99 13.38 12.58 12.98 14.92 16.34 14.53 11.05 13.72 Top@10 17.46 16.70 15.70 16.19 18.62 20.38 18.14 13.79 17.12 BGE-Base-en MRR 15.65 15.02 16.01 15.23 17.53 18.98 16.91 12.00 15.92 NDCG 14.50 13.92 14.83 14.11 16.24 17.58 15.67 11.12 14.75 Top@10 18.09 17.37 18.50 17.61 20.26 21.94 19.55 13.88 18.40 Contriever MRR 9.89 8.98 7.75 8.86 11.15 12.00 10.52 6.94 9.51 NDCG 9.16 8.32 7.18 8.21 10.33 11.12 9.75 6.43 8.81 Top@10 11.43 10.38 8.96 10.24 12.89 13.88 12.17 8.02 11.00 CodeRetriever MRR 17.51 16.57 16.05 16.64 18.66 19.62 18.17 13.19 17.05 NDCG 16.22 15.35 14.87 15.42 17.29 18.18 16.83 12.22 15.80 Top@10 20.24 19.15 18.55 19.24 21.57 22.68 21.00 15.25 19.71 UniXCoder MRR 11.68 10.48 9.61 10.75 12.54 13.56 11.25 7.86 10.97 NDCG 10.82 9.71 8.90 9.96 11.62 12.56 10.42 7.28 10.16 Top@10 13.50 12.12 11.11 12.43 14.50 15.67 13.00 9.08 12.68 
+
+UNICS (Ours) 
+
+MRR 25.31 ∗ 24.63 ∗ 23.05 ∗ 24.74 ∗ 28.51 ∗ 29.43 ∗ 26.82 ∗ 20.70 ∗ 25.40 ∗
+
+NDCG 23.45 ∗ 22.82 ∗ 21.36 ∗ 22.92 ∗ 26.41 ∗ 27.27 ∗ 24.85 ∗ 19.18 ∗ 23.53 ∗
+
+Top@10 29.26 ∗ 28.47 ∗ 26.65 ∗ 28.60 ∗ 32.95 ∗ 34.02 ∗ 31.00 ∗ 23.93 ∗ 29.36 ∗
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. FSE005:18 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo 
+
+5.4 RQ4: Model Ablation Study 
+
+Experimental Goal. To validate the individual and cumulative contributions of each key com-ponent of UNICS (UP: Unified Pseudo-code; SP: Semantic Slicing; HP: Hard Positive contrastive learning; HN: cross-lingual dynamic Hard Negative mining) through an ablation study. 
+
+Experimental Design. We started with a base retrieval model and progressively added each UNICS component. We evaluated each variant on a representative subset of our benchmarks, including NicheLang, CodeTransOcean, XLCoST, CodeSearchNet, StackOverflow QA, and CodeFeedback-MT, using NDCG@k as the primary metric. 
+
+Experimental Results. The results of the ablation study, presented in Table 4, demonstrate the incremental benefits of each component. Compared to the Base Model , we first evaluated a 
+
+Rule-based Pseudo-code (+ Rule-based UP) generation method using AST parsing and regular expressions (e.g., snake_case removal, explicit type abstraction). While providing some structural benefits, it achieved only 72.50% MRR (corresponding to an estimated 67.19% NDCG) on Code-SearchNet, structurally struggling to abstract complex logic into high-level intent. In contrast, replacing it with our LLM-driven Unified Pseudo-code (+UP) yields a much more significant and universal performance boost (average NDCG from 39.03 to 43.78, and normalizing API calls across languages). This confirms that the LLM-generated unified representation is critical for effectively reducing cross-lingual noise. Introducing Semantic Slicing (+SP) further improves performance, particularly in tasks requiring nuanced understanding. The addition of Hard Positive mining (+HP) brings another substantial gain (average NDCG to 51.06), especially on benchmarks with complex queries like StackOverflow and CodeFeedback, validating its role in learning semantic invariance. Finally, the full UNICS model, which incorporates dynamic Hard Negative mining (+HN) , consistently achieves the highest performance. This final component solidifies the model’s advantage, particularly on multilingual datasets like NicheLang and CodeTransOcean, by sharpen-ing its discriminative capabilities against confusing cross-lingual examples and demonstrating the synergistic effect of all components. 
+
+Summary for RQ4 
+
+Each component of UNICS provides a distinct and cumulative contribution. The unified pseudo-code and semantic slicing lay the foundation for cross-lingual semantic alignment. Hard positive mining enhances robust representation learning, while dynamic hard negative mining refines the model’s ability to distinguish between closely related code snippets. Together, these components enable UNICS to achieve stable, state-of-the-art performance across a wide range of code retrieval tasks. 
+
+5.5 Qualitative Error Analysis 
+
+To conduct a qualitative analysis, we selected a representative set of samples from our test data. The selection process prioritized cases where UNICS and the baseline models exhibited divergent behavior. We focused on samples from niche programming languages (e.g., Rust, Lua, Swift) to highlight improvements in low-resource scenarios, while also including mainstream languages for comparison. 
+
+Success Case (Niche Language). For a query in Rust asking "how to safely dereference a raw pointer," baseline models returned generic code snippets containing the ‘*‘ operator but ignored Rust’s core "safety" constraint. In contrast, UNICS successfully retrieved a canonical code example 
+
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026.
+
+UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:19 
+
+Table 4. Ablation Study of UNICS Components (MRR / NDCG@10 / Top@10, %). Each component provides a significant and cumulative performance improvement. (UP: Unified Pseudo-code Pretraining; SP: Semantic Slicing Prediction; HP: Hard Positive Contrastive Learning; HN: cross-lingual dynamic Hard Negative mining. * indicates estimated NDCG derived from the originally evaluated 72.50% MRR score).                                                                                                                                                          
+
+> Model Variant Metric NicheLang CodeTransOcean XLCoST(C2C) CodeSearchNet XLCoST(T2C) SO QA CodeFeedBack-MT Average
+> Base Model MRR 13.11 43.43 50.60 62.00 46.17 52.31 27.20 42.12 NDCG 12.15 40.25 46.90 57.46 42.79 48.48 25.21 39.03 Top@10 15.16 50.23 58.53 71.71 53.40 60.50 31.46 48.71 + UP MRR 17.05 47.13 53.20 67.70 52.83 57.76 35.04 47.24 NDCG 15.80 43.68 49.30 62.74 48.96 53.53 32.47 43.78 Top@10 19.72 54.51 61.53 78.30 61.10 66.81 40.52 54.64 + SP MRR 18.07 48.71 54.11 69.01 55.43 59.47 36.77 48.80 NDCG 16.75 45.14 50.15 63.96 51.37 55.12 34.08 45.22 Top@10 20.90 56.33 62.59 79.82 64.11 68.79 42.53 56.44 + HP MRR 22.60 53.65 55.51 73.25 70.32 68.68 41.67 55.10 NDCG 20.95 49.72 51.45 67.89 65.17 63.65 38.62 51.06 Top@10 26.15 62.05 64.21 84.73 81.33 79.44 48.20 63.73 Full w/ RB-UP MRR 24.63 67.38 52.54 72.50 ∗78.29 74.36 41.20 58.70 NDCG 22.83 62.45 48.69 67.19 ∗72.56 68.92 38.18 54.40 Top@10 28.49 77.94 60.76 83.85 ∗90.55 86.01 47.65 67.89
+> UNICS (Full, with +HN)
+> MRR 25.39 73.86 56.85 78.17 84.77 81.92 45.51 63.78
+> NDCG 23.53 68.45 52.69 72.45 78.56 75.92 42.18 59.11
+> Top@10 29.37 85.43 65.76 90.42 98.04 94.75 52.64 73.77
+
+using an ‘unsafe‘ block coupled with a null pointer check. This demonstrates that UNICS has a deeper understanding of language-specific philosophies and safety paradigms. 
+
+Failure Cases and Limitations. Despite its strong overall performance, our manual analysis of real-world retrieval errors by UNICS reveals three primary failure modes: 
+
+• Hard Negatives: The model occasionally fails to distinguish code snippets that are lexically very similar but functionally opposite (e.g., confusing 𝑡𝑟𝑖𝑚 _𝑠𝑡𝑎𝑟𝑡 vs. 𝑡𝑟𝑖𝑚 _𝑒𝑛𝑑 ). 
+
+• API Mismatch: When confronted with extremely rare or obscure third-party libraries, particu-larly in low-resource environments, the model sometimes fails to correctly link the specific API calls to the expected high-level algorithmic intent. 
+
+• Test Code Interference: In repository-level searches, test code or scripts often contain additional assertions, mock variables, and setup logistics. The model may misinterpret this supplementary information as core functionality, resulting in inaccurate retrieval. These instances indicate that while the model excels at high-level semantic alignment, there remains room for improvement in handling fine-grained functional nuances, which clearly points out our future research directions. 
+
+6 Threats to Validity 
+
+Despite the demonstrated advantages of UNICS, our work is subject to several potential threats to validity that warrant consideration. 
+
+Construct Validity. The accuracy of the generated pseudo-code cannot be fully guaranteed. Furthermore, it is uncertain whether this process introduces extraneous knowledge from the Large Language Model (LLM) used for generation. However, we argue that our experimental design is fundamentally fair. Firstly, all pseudo-code undergoes verification via Abstract Syntax Tree (AST) slicing, which ensures its structural soundness. Secondly, even if some knowledge from the LLM is introduced, it is confined to fundamental programming paradigms. Therefore, we believe the improvements in multilingual capabilities are primarily attributable to our designed training tasks rather than the data itself. 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. FSE005:20 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo 
+
+Internal Validity. We have not exhaustively explored the full space of hyperparameter configura-tions or alternative code slicing methods. Nevertheless, the current implementation has sufficiently demonstrated the effectiveness of our approach. It is plausible that a more comprehensive hyperpa-rameter search could yield further performance gains. 
+
+External Validity. While our proposed method is designed to be model-agnostic, we have not yet validated its efficacy on other model architectures (e.g., GPT-series models) or on models substantially larger than the 1B parameter scale. However, based on established trends in the field, we hypothesize that larger models would likely derive even more significant benefits from our approach. 
+
+7 Conclusion and Future Work 
+
+In this paper, we addressed the significant challenge of creating a unified code representation for effective multilingual and cross-lingual code retrieval. To this end, we introduced UNICS, a novel framework that leverages pseudo-code generation and a multi-task transfer learning strategy to align the semantic spaces of diverse programming languages. By employing a series of carefully designed pre-training tasks, including contrastive learning with dynamic hard negatives and hard positives, UNICS learns a robust unified representation that captures both high-level algorithmic logic and fine-grained structural details. Our extensive experiments on a wide range of bench-marks—spanning mainstream, multilingual, and niche programming languages—demonstrate that UNICS significantly outperforms existing state-of-the-art models, establishing a new benchmark for universal code embedding. Future work we will scale the UNICS framework to larger models (e.g., >10B parameters) and test its generalization across different architectures, including closed-source models like the GPT series. Additionally, we aim to continually expand our Niche Programming Language dataset to support an even broader spectrum of a developer’s tooling. 
+
+8 Data Availability 
+
+All datasets and source code are publicly available [ 2]. This repository includes the raw code, metadata, and filtering scripts for the NicheLang dataset. 
+
+Acknowledgments 
+
+This work is supported by the National Science Foundation of China (92582204), and the 6th "333 Project" Leading Talent Team Project of Jiangsu Province. Jidong Ge is the corresponding author. 
+
+References        
+
+> [1] 2023. Github Website. https://www.github.com. [2] 2026. Code Embedding. https://bitbucket.org/anonymous_code/code_embedding. [3] Shushan Arakelyan, Anna Hakhverdyan, Miltiadis Allamanis, Luis Garcia, Christophe Hauser, and Xiang Ren. 2022. NS3: Neuro-symbolic Semantic Code Search. (2022). doi:10.52202/068431-0761 [4] Joel Brandt, Mira Dontcheva, Marcos Weskamp, and Scott R. Klemmer. 2010. Example-centric programming: integrating web search into the development environment. In Proceedings of the 28th International Conference on Human Factors in Computing Systems, CHI 2010, Atlanta, Georgia, USA, April 10-15, 2010 , Elizabeth D. Mynatt, Don Schoner, Geraldine Fitzpatrick, Scott E. Hudson, W. Keith Edwards, and Tom Rodden (Eds.). ACM, 513–522. doi:10.1145/1753326.1753402 [5] Joel Brandt, Philip J. Guo, Joel Lewenstein, Mira Dontcheva, and Scott R. Klemmer. 2009. Two studies of opportunistic programming: interleaving web foraging, learning, and writing code. In Proceedings of the 27th International Conference on Human Factors in Computing Systems, CHI 2009, Boston, MA, USA, April 4-9, 2009 , Dan R. Olsen Jr., Richard B. Arthur, Ken Hinckley, Meredith Ringel Morris, Scott E. Hudson, and Saul Greenberg (Eds.). ACM, 1589–1598. doi:10.1145/ 1518701.1518944 [6] Nghi D. Q. Bui, Yijun Yu, and Lingxiao Jiang. 2021. Self-Supervised Contrastive Learning for Code Retrieval and Summarization via Semantic-Preserving Transformations. In SIGIR ’21: The 44th International ACM SIGIR Conference
+> Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026.
+
+UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:21 
+
+on Research and Development in Information Retrieval, Virtual Event, Canada, July 11-15, 2021 , Fernando Diaz, Chirag Shah, Torsten Suel, Pablo Castells, Rosie Jones, and Tetsuya Sakai (Eds.). ACM, 511–521. doi:10.1145/3404835.3462840 [7] Róbert Busa-Fekete, György Szarvas, Tamás Elteto, and Balázs Kégl. 2012. An apple-to-apple comparison of learning-to-rank algorithms in terms of normalized discounted cumulative gain. In ECAI 2012-20th European Conference on Artificial Intelligence: Preference Learning: Problems and Applications in AI Workshop , Vol. 242. Ios Press. [8] José Cambronero, Hongyu Li, Seohyun Kim, Koushik Sen, and Satish Chandra. 2019. When deep learning met code search. In Proceedings of the ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering, ESEC/SIGSOFT FSE 2019, Tallinn, Estonia, August 26-30, 2019 , Marlon Dumas, Dietmar Pfahl, Sven Apel, and Alessandra Russo (Eds.). ACM, 964–974. doi:10.1145/3338906.3340458 [9] Brock Angus Campbell and Christoph Treude. 2017. NLP2Code: Code Snippet Content Assist via Natural Language Tasks. In 2017 IEEE International Conference on Software Maintenance and Evolution, ICSME 2017, Shanghai, China, September 17-22, 2017 . IEEE Computer Society, 628–632. doi:10.1109/ICSME.2017.56 [10] Yitian Chai, Hongyu Zhang, Beijun Shen, and Xiaodong Gu. 2022. Cross-Domain Deep Code Search with Meta Learning. In 44th IEEE/ACM 44th International Conference on Software Engineering, ICSE 2022, Pittsburgh, PA, USA, May 25-27, 2022 . ACM, 487–498. doi:10.1145/3510003.3510125 [11] Wing-Kwan Chan, Hong Cheng, and David Lo. 2012. Searching connected API subgraph via text phrases. In 20th ACM SIGSOFT Symposium on the Foundations of Software Engineering (FSE-20), SIGSOFT/FSE’12, Cary, NC, USA - November 11 - 16, 2012 , Will Tracz, Martin P. Robillard, and Tevfik Bultan (Eds.). ACM, 10. doi:10.1145/2393596.2393606 [12] Jianlv Chen, Shitao Xiao, Peitian Zhang, Kun Luo, Defu Lian, and Zheng Liu. 2024. Bge m3-embedding: Multi-lingual, multi-functionality, multi-granularity text embeddings through self-knowledge distillation. arXiv preprint arXiv:2402.03216 (2024). doi:10.48550/arXiv.2402.03216 [13] Guanyi Chu, Xiao Wang, Chuan Shi, and Xunqiang Jiang. 2021. CuCo: Graph Representation with Curriculum Contrastive Learning.. In IJCAI . 2300–2306. doi:10.24963/ijcai.2021/317 [14] Samip Dahal, Adyasha Maharana, and Mohit Bansal. 2022. Scotch: A Semantic Code Search Engine for IDEs. In Deep Learning for Code Workshop . https://openreview.net/forum?id=rSxfCiOZk-c [15] Jingtao Ding, Yuhan Quan, Quanming Yao, Yong Li, and Depeng Jin. 2020. Simplify and robustify negative sampling for implicit collaborative filtering. Advances in Neural Information Processing Systems 33 (2020), 1094–1105. doi:10. 48550/arXiv.2009.03376 [16] Hongchao Fang and Pengtao Xie. 2020. CERT: Contrastive Self-supervised Learning for Language Understanding. 
+
+CoRR abs/2005.12766 (2020). arXiv:2005.12766 doi:10.48550/arXiv.2005.12766 [17] Zhangyin Feng, Daya Guo, Duyu Tang, Nan Duan, Xiaocheng Feng, Ming Gong, Linjun Shou, Bing Qin, Ting Liu, Daxin Jiang, and Ming Zhou. 2020. CodeBERT: A Pre-Trained Model for Programming and Natural Languages. In 
+
+Findings of the Association for Computational Linguistics: EMNLP 2020, Online Event, 16-20 November 2020 (Findings of ACL, Vol. EMNLP 2020) , Trevor Cohn, Yulan He, and Yang Liu (Eds.). Association for Computational Linguistics, 1536–1547. doi:10.18653/V1/2020.FINDINGS-EMNLP.139 [18] Tianyu Gao, Xingcheng Yao, and Danqi Chen. 2021. SimCSE: Simple Contrastive Learning of Sentence Embeddings. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, EMNLP 2021, Virtual Event / Punta Cana, Dominican Republic, 7-11 November, 2021 , Marie-Francine Moens, Xuanjing Huang, Lucia Specia, and Scott Wen-tau Yih (Eds.). Association for Computational Linguistics, 6894–6910. doi:10.18653/V1/2021.EMNLP-MAIN.552 [19] Xiaodong Gu, Hongyu Zhang, and Sunghun Kim. 2018. Deep code search. In Proceedings of the 40th International Conference on Software Engineering, ICSE 2018, Gothenburg, Sweden, May 27 - June 03, 2018 , Michel Chaudron, Ivica Crnkovic, Marsha Chechik, and Mark Harman (Eds.). ACM, 933–944. doi:10.1145/3180155.3180167 [20] Daya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming Zhou, and Jian Yin. 2022. UniXcoder: Unified Cross-Modal Pre-training for Code Representation. In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), ACL 2022, Dublin, Ireland, May 22-27, 2022 , Smaranda Muresan, Preslav Nakov, and Aline Villavicencio (Eds.). Association for Computational Linguistics, 7212–7225. doi:10.18653/V1/2022.ACL-LONG.499 [21] Daya Guo, Shuo Ren, Shuai Lu, Zhangyin Feng, Duyu Tang, Shujie Liu, Long Zhou, Nan Duan, Alexey Svyatkovskiy, Shengyu Fu, Michele Tufano, Shao Kun Deng, Colin B. Clement, Dawn Drain, Neel Sundaresan, Jian Yin, Daxin Jiang, and Ming Zhou. 2021. GraphCodeBERT: Pre-training Code Representations with Data Flow. In 9th International Conference on Learning Representations, ICLR 2021, Virtual Event, Austria, May 3-7, 2021 . OpenReview.net. doi:10.48550/ arXiv.2009.08366 [22] Dan Hendrycks, Steven Basart, Saurav Kadavath, Mantas Mazeika, Akul Arora, Ethan Guo, Collin Burns, Samir Puranik, Horace He, Dawn Song, et al . 2021. Measuring coding challenge competence with apps. arXiv preprint arXiv:2105.09938 
+
+(2021). doi:10.48550/arXiv.2105.09938 [23] Reid Holmes, Rylan Cottrell, Robert J. Walker, and Jörg Denzinger. 2009. The end-to-end use of source code examples: An exploratory study. In 25th IEEE International Conference on Software Maintenance (ICSM 2009), September 20-26, 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. FSE005:22 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo 
+
+2009, Edmonton, Alberta, Canada . IEEE Computer Society, 555–558. doi:10.1109/ICSM.2009.5306387 [24] Junjie Huang, Duyu Tang, Linjun Shou, Ming Gong, Ke Xu, Daxin Jiang, Ming Zhou, and Nan Duan. 2021. CoSQA: 20, 000+ Web Queries for Code Search and Question Answering. In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing, ACL/IJCNLP 2021, (Volume 1: Long Papers), Virtual Event, August 1-6, 2021 , Chengqing Zong, Fei Xia, Wenjie Li, and Roberto Navigli (Eds.). Association for Computational Linguistics, 5690–5700. doi:10.18653/V1/2021.ACL-LONG.442 [25] Xiangbing Huang, Yingwei Ma, Haifang Zhou, Zhijie Jiang, Yuanliang Zhang, Teng Wang, and Shanshan Li. 2023. Towards better multilingual code search through cross-lingual contrastive learning. In Proceedings of the 14th Asia-Pacific Symposium on Internetware . 22–32. doi:10.1145/3609437.3609439 [26] Hamel Husain, Ho-Hsiang Wu, Tiferet Gazit, Miltiadis Allamanis, and Marc Brockschmidt. 2019. CodeSearchNet Challenge: Evaluating the State of Semantic Code Search. CoRR abs/1909.09436 (2019). arXiv:1909.09436 doi:10.48550/ arXiv.1909.09436 [27] Gautier Izacard, Mathilde Caron, Lucas Hosseini, Sebastian Riedel, Piotr Bojanowski, Armand Joulin, and Edouard Grave. 2021. Unsupervised dense information retrieval with contrastive learning. arXiv preprint arXiv:2112.09118 
+
+(2021). doi:10.48550/arXiv.2112.09118 [28] Paras Jain, Ajay Jain, Tianjun Zhang, Pieter Abbeel, Joseph Gonzalez, and Ion Stoica. 2021. Contrastive Code Representation Learning. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, EMNLP 2021, Virtual Event / Punta Cana, Dominican Republic, 7-11 November, 2021 , Marie-Francine Moens, Xuanjing Huang, Lucia Specia, and Scott Wen-tau Yih (Eds.). Association for Computational Linguistics, 5954–5971. doi:10. 18653/V1/2021.EMNLP-MAIN.482 [29] Vladimir Karpukhin, Barlas Oguz, Sewon Min, Patrick S. H. Lewis, Ledell Wu, Sergey Edunov, Danqi Chen, and Wen-tau Yih. 2020. Dense Passage Retrieval for Open-Domain Question Answering. In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing, EMNLP 2020, Online, November 16-20, 2020 , Bonnie Webber, Trevor Cohn, Yulan He, and Yang Liu (Eds.). Association for Computational Linguistics, 6769–6781. doi:10.18653/V1/2020. EMNLP-MAIN.550 [30] Iman Keivanloo, Juergen Rilling, and Ying Zou. 2014. Spotting working code examples. In 36th International Conference on Software Engineering, ICSE ’14, Hyderabad, India - May 31 - June 07, 2014 , Pankaj Jalote, Lionel C. Briand, and André van der Hoek (Eds.). ACM, 664–675. doi:10.1145/2568225.2568292 [31] Rui Li, Liyang He, Qi Liu, Yuze Zhao, Zheng Zhang, Zhenya Huang, Yu Su, and Shijin Wang. 2024. Consider: Commonalities and specialties driven multilingual code retrieval framework. In Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 38. 8679–8687. doi:10.1609/aaai.v38i8.28713 [32] Xiaonan Li, Yeyun Gong, Yelong Shen, Xipeng Qiu, Hang Zhang, Bolun Yao, Weizhen Qi, Daxin Jiang, Weizhu Chen, and Nan Duan. 2022. CodeRetriever: Unimodal and Bimodal Contrastive Learning. CoRR abs/2201.10866 (2022). arXiv:2201.10866 doi:10.48550/arXiv.2201.10866 [33] Xuan Li, Zerui Wang, Qianxiang Wang, Shoumeng Yan, Tao Xie, and Hong Mei. 2016. Relationship-aware code search for JavaScript frameworks. In Proceedings of the 24th ACM SIGSOFT International Symposium on Foundations of Software Engineering, FSE 2016, Seattle, WA, USA, November 13-18, 2016 , Thomas Zimmermann, Jane Cleland-Huang, and Zhendong Su (Eds.). ACM, 690–701. doi:10.1145/2950290.2950341 [34] Erik Linstead, Sushil Krishna Bajracharya, Trung Chi Ngo, Paul Rigor, Cristina Videira Lopes, and Pierre Baldi. 2009. Sourcerer: mining and searching internet-scale software repositories. Data Min. Knowl. Discov. 18, 2 (2009), 300–336. doi:10.1007/S10618-008-0118-X [35] Shuai Lu, Daya Guo, Shuo Ren, Junjie Huang, Alexey Svyatkovskiy, Ambrosio Blanco, Colin B. Clement, Dawn Drain, Daxin Jiang, Duyu Tang, Ge Li, Lidong Zhou, Linjun Shou, Long Zhou, Michele Tufano, Ming Gong, Ming Zhou, Nan Duan, Neel Sundaresan, Shao Kun Deng, Shengyu Fu, and Shujie Liu. 2021. CodeXGLUE: A Machine Learning Benchmark Dataset for Code Understanding and Generation. In Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks 1, NeurIPS Datasets and Benchmarks 2021, December 2021, virtual , Joaquin Vanschoren and Sai-Kit Yeung (Eds.). doi:10.48550/arXiv.2102.04664 [36] Fei Lv, Hongyu Zhang, Jian-Guang Lou, Shaowei Wang, Dongmei Zhang, and Jianjun Zhao. 2015. CodeHow: Effective Code Search Based on API Understanding and Extended Boolean Model (E). In 30th IEEE/ACM International Conference on Automated Software Engineering, ASE 2015, Lincoln, NE, USA, November 9-13, 2015 , Myra B. Cohen, Lars Grunske, and Michael Whalen (Eds.). IEEE Computer Society, 260–270. doi:10.1109/ASE.2015.42 [37] Xiaofei Ma, Cícero Nogueira dos Santos, and Andrew O. Arnold. 2021. Contrastive Fine-tuning Improves Robustness for Neural Rankers. In Findings of the Association for Computational Linguistics: ACL/IJCNLP 2021, Online Event, August 1-6, 2021 (Findings of ACL, Vol. ACL/IJCNLP 2021) , Chengqing Zong, Fei Xia, Wenjie Li, and Roberto Navigli (Eds.). Association for Computational Linguistics, 570–582. doi:10.18653/V1/2021.FINDINGS-ACL.51 [38] Yingwei Ma, Yue Yu, Shanshan Li, Zhouyang Jia, Jun Ma, Rulin Xu, Wei Dong, and Xiangke Liao. 2023. Mulcs: Towards a unified deep representation for multilingual code search. In 2023 IEEE International Conference on Software Analysis, 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning FSE005:23 
+
+Evolution and Reengineering (SANER) . IEEE, 120–131. doi:10.1109/SANER56733.2023.00021 [39] Collin McMillan, Mark Grechanik, Denys Poshyvanyk, Chen Fu, and Qing Xie. 2012. Exemplar: A Source Code Search Engine for Finding Highly Relevant Applications. IEEE Trans. Software Eng. 38, 5 (2012), 1069–1087. doi:10.1109/TSE. 2011.84 [40] Collin McMillan, Mark Grechanik, Denys Poshyvanyk, Qing Xie, and Chen Fu. 2011. Portfolio: finding relevant functions and their usage. In Proceedings of the 33rd International Conference on Software Engineering, ICSE 2011, Waikiki, Honolulu , HI, USA, May 21-28, 2011 , Richard N. Taylor, Harald C. Gall, and Nenad Medvidovic (Eds.). ACM, 111–120. doi:10.1145/1985793.1985809 [41] Arvind Neelakantan, Tao Xu, Raul Puri, Alec Radford, Jesse Michael Han, Jerry Tworek, Qiming Yuan, Nikolas Tezak, Jong Wook Kim, Chris Hallacy, et al . 2022. Text and code embeddings by contrastive pre-training. arXiv preprint arXiv:2201.10005 (2022). doi:10.48550/arXiv.2201.10005 [42] Changan Niu, Chuanyi Li, Bin Luo, and Vincent Ng. 2022. Deep Learning Meets Software Engineering: A Survey on Pre-Trained Models of Source Code. In Proceedings of the Thirty-First International Joint Conference on Artificial Intelligence, IJCAI 2022, Vienna, Austria, 23-29 July 2022 , Luc De Raedt (Ed.). ijcai.org, 5546–5555. doi:10.24963/IJCAI.2022/775 [43] Luca Ponzanelli, Gabriele Bavota, Massimiliano Di Penta, Rocco Oliveto, and Michele Lanza. 2014. Mining StackOverflow to turn the IDE into a self-confident programming prompter. In 11th Working Conference on Mining Software Repositories, MSR 2014, Proceedings, May 31 - June 1, 2014, Hyderabad, India , Premkumar T. Devanbu, Sung Kim, and Martin Pinzger (Eds.). ACM, 102–111. doi:10.1145/2597073.2597077 [44] Saksham Sachdev, Hongyu Li, Sifei Luan, Seohyun Kim, Koushik Sen, and Satish Chandra. 2018. Retrieval on source code: a neural code search. In Proceedings of the 2nd ACM SIGPLAN International Workshop on Machine Learning and Programming Languages, MAPL@PLDI 2018, Philadelphia, PA, USA, June 18-22, 2018 , Justin Gottschlich and Alvin Cheung (Eds.). ACM, 31–41. doi:10.1145/3211346.3211353 [45] Ensheng Shi, Wenchao Gu, Yanlin Wang, Lun Du, Hongyu Zhang, Shi Han, Dongmei Zhang, and Hongbin Sun. 2022. Enhancing Semantic Code Search with Multimodal Contrastive Learning and Soft Data Augmentation. CoRR 
+
+abs/2204.03293 (2022). arXiv:2204.03293 doi:10.48550/ARXIV.2204.03293 [46] Ensheng Shi, Yanlin Wang, Wenchao Gu, Lun Du, Hongyu Zhang, Shi Han, Dongmei Zhang, and Hongbin Sun. 2023. CoCoSoDa: Effective Contrastive Learning for Code Search. In Proceedings of the 45th International Conference on Software Engineering (Melbourne, Victoria, Australia) (ICSE ’23) . IEEE Press, 2198–2210. doi:10.1109/ICSE48619.2023. 00185 [47] Jianhang Shuai, Ling Xu, Chao Liu, Meng Yan, Xin Xia, and Yan Lei. 2020. Improving Code Search with Co-Attentive Representation Learning. In ICPC ’20: 28th International Conference on Program Comprehension, Seoul, Republic of Korea, July 13-15, 2020 . ACM, 196–207. doi:10.1145/3387904.3389269 [48] Jeffrey Svajlenko, Judith F. Islam, Iman Keivanloo, Chanchal Kumar Roy, and Mohammad Mamun Mia. 2014. Towards a Big Data Curated Benchmark of Inter-project Code Clones. In 30th IEEE International Conference on Software Maintenance and Evolution, Victoria, BC, Canada, September 29 - October 3, 2014 . IEEE Computer Society, 476–480. doi:10.1109/ICSME.2014.77 [49] Alexey Svyatkovskiy, Shao Kun Deng, Shengyu Fu, and Neel Sundaresan. 2020. IntelliCode compose: code generation using transformer. In ESEC/FSE ’20: 28th ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering, Virtual Event, USA, November 8-13, 2020 , Prem Devanbu, Myra B. Cohen, and Thomas Zimmermann (Eds.). ACM, 1433–1443. doi:10.1145/3368089.3417058 [50] Yao Wan, Jingdong Shu, Yulei Sui, Guandong Xu, Zhou Zhao, Jian Wu, and Philip S. Yu. 2019. Multi-modal Attention Network Learning for Semantic Source Code Retrieval. In 34th IEEE/ACM International Conference on Automated Software Engineering, ASE 2019, San Diego, CA, USA, November 11-15, 2019 . IEEE, 13–25. doi:10.1109/ASE.2019.00012 [51] Wenhan Wang, Ge Li, Bo Ma, Xin Xia, and Zhi Jin. 2020. Detecting Code Clones with Graph Neural Network and Flow-Augmented Abstract Syntax Tree. In 27th IEEE International Conference on Software Analysis, Evolution and Reengineering, SANER 2020, London, ON, Canada, February 18-21, 2020 , Kostas Kontogiannis, Foutse Khomh, Alexander Chatzigeorgiou, Marios-Eleftherios Fokaefs, and Minghui Zhou (Eds.). IEEE, 261–271. doi:10.1109/SANER48275.2020.9054857 [52] Xin Wang, Yasheng Wang, Fei Mi, Pingyi Zhou, Yao Wan, Xiao Liu, Li Li, Hao Wu, Jin Liu, and Xin Jiang. 2021. Syncobert: Syntax-guided multi-modal contrastive pre-training for code representation. arXiv preprint arXiv:2108.04556 
+
+(2021). doi:10.48550/arXiv.2108.04556 [53] Yining Wang, Liwei Wang, Yuanzhi Li, Di He, and Tie-Yan Liu. 2013. A Theoretical Analysis of NDCG Type Ranking Measures. In COLT 2013 - The 26th Annual Conference on Learning Theory, June 12-14, 2013, Princeton University, NJ, USA (JMLR Workshop and Conference Proceedings, Vol. 30) , Shai Shalev-Shwartz and Ingo Steinwart (Eds.). JMLR.org, 25–54. doi:10.48550/arXiv.1304.6480 [54] Yue Wang, Weishi Wang, Shafiq R. Joty, and Steven C. H. Hoi. 2021. CodeT5: Identifier-aware Unified Pre-trained Encoder-Decoder Models for Code Understanding and Generation. In Proceedings of the 2021 Conference on Em-pirical Methods in Natural Language Processing, EMNLP 2021, Virtual Event / Punta Cana, Dominican Republic, 7-11 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026. FSE005:24 Ye Fan, Jidong Ge, Chuanyi Li, Liguo Huang, and Bin Luo 
+
+November, 2021 , Marie-Francine Moens, Xuanjing Huang, Lucia Specia, and Scott Wen-tau Yih (Eds.). Association for Computational Linguistics, 8696–8708. doi:10.18653/V1/2021.EMNLP-MAIN.685 [55] Jun Xia, Lirong Wu, Ge Wang, Jintao Chen, and Stan Z Li. 2021. Progcl: Rethinking hard negative mining in graph contrastive learning. arXiv preprint arXiv:2110.02027 (2021). doi:10.48550/arXiv.2110.02027 [56] Huang Xie, Okko Räsänen, and Tuomas Virtanen. 2023. On negative sampling for contrastive audio-text retrieval. In ICASSP 2023-2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 1–5. doi:10.1109/ICASSP49357.2023.10095319 [57] Shuhan Yan, Hang Yu, Yuting Chen, Beijun Shen, and Lingxiao Jiang. 2020. Are the Code Snippets What We Are Searching for? A Benchmark and an Empirical Study on Code Search with Natural-Language Queries. In 27th IEEE International Conference on Software Analysis, Evolution and Reengineering, SANER 2020, London, ON, Canada, February 18-21, 2020 , Kostas Kontogiannis, Foutse Khomh, Alexander Chatzigeorgiou, Marios-Eleftherios Fokaefs, and Minghui Zhou (Eds.). IEEE, 344–354. doi:10.1109/SANER48275.2020.9054840 [58] Weixiang Yan, Yuchen Tian, Yunzhe Li, Qian Chen, and Wen Wang. 2023. Codetransocean: A comprehensive multilingual benchmark for code translation. arXiv preprint arXiv:2310.04951 (2023). doi:10.48550/arXiv.2310.04951 [59] Hongyu Zhang, Anuj Jain, Gaurav Khandelwal, Chandrashekhar Kaushik, Scott Ge, and Wenxiang Hu. 2016. Bing developer assistant: improving developer productivity by recommending sample code. In Proceedings of the 24th ACM SIGSOFT International Symposium on Foundations of Software Engineering, FSE 2016, Seattle, WA, USA, November 13-18, 2016 , Thomas Zimmermann, Jane Cleland-Huang, and Zhendong Su (Eds.). ACM, 956–961. doi:10.1145/2950290.2983955 [60] Zhilu Zhang and Mert R. Sabuncu. 2018. Generalized Cross Entropy Loss for Training Deep Neural Networks with Noisy Labels. In Advances in Neural Information Processing Systems 31: Annual Conference on Neural Information Processing Systems 2018, NeurIPS 2018, December 3-8, 2018, Montréal, Canada , Samy Bengio, Hanna M. Wallach, Hugo Larochelle, Kristen Grauman, Nicolò Cesa-Bianchi, and Roman Garnett (Eds.). 8792–8802. doi:10.48550/arXiv.1805.07836 [61] Tianyu Zheng, Ge Zhang, Tianhao Shen, Xueling Liu, Bill Yuchen Lin, Jie Fu, Wenhu Chen, and Xiang Yue. 2024. Opencodeinterpreter: Integrating code generation with execution and refinement. arXiv preprint arXiv:2402.14658 
+
+(2024). doi:10.48550/arXiv.2402.14658 [62] Jing Zhou and Robert J. Walker. 2016. API deprecation: a retrospective analysis and detection method for code examples on the web. In Proceedings of the 24th ACM SIGSOFT International Symposium on Foundations of Software Engineering, FSE 2016, Seattle, WA, USA, November 13-18, 2016 , Thomas Zimmermann, Jane Cleland-Huang, and Zhendong Su (Eds.). ACM, 266–277. doi:10.1145/2950290.2950298 [63] Ming Zhu, Aneesh Jain, Karthik Suresh, Roshan Ravindran, Sindhu Tipirneni, and Chandan K. Reddy. 2022. XLCoST: A Benchmark Dataset for Cross-lingual Code Intelligence. arXiv:2206.08474 doi:10.48550/arXiv.2206.08474 
+
+Received 2025-09-12; accepted 2025-12-22 
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE005. Publication date: July 2026.

@@ -1,0 +1,142 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-009.webp",
+      "caption": "Figure 1: Overview of the Simulacrum framework. The analyst specifies a generative world Π, which defines the mechanisms, parameter ranges, and possible contaminations on which the estimator should perform well. Training uses a two-stage simulation scheme: an outer loop samples data-generating processes from the world, and an inner loop generates replicated trajectories from each process. These simulations provide supervised targets and process-level Monte Carlo estimates, allowing a neural network to learn near-optimal forecasting or inference rules.",
+      "page": 10,
+      "index": 9,
+      "width": 941,
+      "height": 465
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-003.webp",
+      "caption": "Table 1: Comparison of Parameter Estimation Errors (MSE and Bias Squared) for Holt-Winters Exponential Smoothing. The neural estimators show better bias and squared error than Maximum Likelihood (HW-MLE)",
+      "page": 15,
+      "index": 3,
+      "width": 713,
+      "height": 288
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-004.webp",
+      "caption": "Figure 2: Comparison of risk (left) and bias (right) for estimators of α in Simple Exponential Smoothing. Neural-Unif has better overall performance than Maximum Likelihood and a Bayesian procedure. Neural-Debias pays a price in risk for reduced bias. Neural-Minimax has lower maximum risk than all other estimators. Maximum Likelihood has strong negative bias (towards 0). Other estimators bias toward 0.5, while Neural-Debias strongly reduces bias.",
+      "page": 15,
+      "index": 4,
+      "width": 943,
+      "height": 279
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-017.webp",
+      "caption": "Figure 3: Squared forecast error of neural estimators (orange) versus maximum likelihood (blue) as a function of the forecasting horizon. The left panel corresponds to Simple Exponential Smoothing, while the right panel shows Holt–Winters.",
+      "page": 16,
+      "index": 17,
+      "width": 900,
+      "height": 247
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-012.webp",
+      "caption": "Figure 4: Scaling laws for the forecast error performance of the Neural-Unif estimator relative to maximum likelihood. The horizontal axis shows the training set size used for the neural estimator (simulated time series), while the vertical axis reports the percentage of wins, defined as the proportion of test cases in which the neural estimator attains lower forecast error than MLE. Results for Simple Exponential Smoothing are shown on the left, and Holt–Winters on the right. Each panel reports three series lengths (16, 32, and 64). Neural estimators can outperform MLE with sufficient training data, but require increasingly larger datasets as the series length grows and the underlying process becomes more complex (one parameter versus three parameters).",
+      "page": 17,
+      "index": 12,
+      "width": 900,
+      "height": 248
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-011.webp",
+      "caption": "Table 3: Median APE: all M1 Competition data (1001). The Neural-ETS estimator outperforms all other methods that participated in the M1 competition.",
+      "page": 19,
+      "index": 11,
+      "width": 756,
+      "height": 738
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-016.webp",
+      "caption": "Figure 5: Forecast-error distribution for HW-MLE, Neural-Unif, and Neural-Minimax on the M3 Yearly dataset. The left panel shows the empirical quantile functions (EQFs) of log forecast MSE. The right panel shows smoothed ratios of the EQF of Neural-Minimax relative to HWMLE and Neural-Unif. Values below 1 indicate smaller errors for the minimax estimator. Neural-Minimax is slightly worse at low quantiles but improves in the upper tail, consistent with its goal of reducing extreme forecast errors.",
+      "page": 20,
+      "index": 16,
+      "width": 966,
+      "height": 304
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-005.webp",
+      "caption": "Table 4: Inference errors MSE and bias2 for estimation of coefficients in an AR(5) for neural and classic estimators, averaging across each of the parameters. The Neural-Unif estimator achieves best overall performance for all dimensions, the Neural-Debias effectively reduces the bias. The best classic estimator is Exact Maximum Likelihood (AR-MLE) followed by Burg (AR-BURG)",
+      "page": 21,
+      "index": 5,
+      "width": 980,
+      "height": 427
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-008.webp",
+      "caption": "Figure 6: Detailed performance comparison for parameter ϕ4 in the AR(5) class. Left panel: Estimation MSE for each value of ϕ4 parameter in an AR(5) model. Classic and Neural estimators for the AR(5) are compared. Neural-Unif achieves best overall performance but Maximum Likelihood is better for ϕ4 ≤ −0.5. The Neural-Debias estimator has overall worse MSE, trading off error for bias. Right panel: Estimation bias for each value of ϕ4 parameter in an AR(5) model, centered (closer to 0 is better). Classic and Neural estimators for the AR(5) are compared. The Neural-Debias estimator strongly reduces bias over all other alternatives, which exhibit bias towards 0 (or around 0).",
+      "page": 22,
+      "index": 8,
+      "width": 943,
+      "height": 314
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-015.webp",
+      "caption": "Figure 7: Distributional forecast performance for the 0.95 quantile in AR(5). Panel (c) is the main result: Neural-Unif achieves nominal coverage only on average, while Neural-Calibr removes the systematic coverage bias across ϕ1 and attains near-uniform calibration. Panel (a) shows that neural estimators also reduce pinball loss; panel (b) shows that classical intervals undercover because they ignore parameter uncertainty; and panel (d) shows that Neural-Simult attains nominal simultaneous coverage of the forecast path, unlike pointwise methods.",
+      "page": 24,
+      "index": 15,
+      "width": 943,
+      "height": 649
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-001.webp",
+      "caption": "Table 5: Comparison of forecasting approaches for finite-sample distributional objectives",
+      "page": 25,
+      "index": 1,
+      "width": 967,
+      "height": 248
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-002.webp",
+      "caption": "Table 7: Confusion Matrix for Seasonality Period Selection. Neural-Selection (bold) achieves 97.8% overall accuracy, surpassing ETS-AIC (italics) at 94.5%.",
+      "page": 26,
+      "index": 2,
+      "width": 696,
+      "height": 181
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-014.webp",
+      "caption": "Figure 8: Model selection accuracy vs. Series Length. The Neural estimator (Orange) consistently outperforms ETS-AIC (Blue) for both (a) Trend detection and (b) Seasonality period detection.",
+      "page": 27,
+      "index": 14,
+      "width": 854,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-006.webp",
+      "caption": "Table 8: Forecasting performance across neural estimators trained on ARIMA, ETS, and combined ARIMA–ETS worlds for yearly and quarterly benchmark datasets. The “Convex Win %” row reports the proportion of individual series for which Neural-Puzzle achieves lower error than the corresponding single-model estimator. An asterisk indicates that the reported value improves on the best model in the Monash benchmark comparison snapshot described in the text.",
+      "page": 29,
+      "index": 6,
+      "width": 833,
+      "height": 852
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-007.webp",
+      "caption": "Table 9: Convex Combination vs. Post-hoc Equal Weights. Values represent the % of series where the trained Convex estimator yielded lower error than simple averaging. Values near 50% indicate that the learned combination performs similarly to equal weights, consistent with the robustness of equal weighting in forecast combination.",
+      "page": 29,
+      "index": 7,
+      "width": 646,
+      "height": 225
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-010.webp",
+      "caption": "Table 11: Average MAPE: all M1 Competition data (1001). The Neural-ETS estimator gets a strong performance compared to other methods that participated in the M1 Competition.",
+      "page": 40,
+      "index": 10,
+      "width": 944,
+      "height": 800
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27711v1/fig-013.webp",
+      "caption": "Figure 9: Squared Prediction Error of SES-MLE (blue) and Neural estimator (orange) vs Time Series Length.",
+      "page": 41,
+      "index": 13,
+      "width": 850,
+      "height": 512
+    }
+  ]
+}

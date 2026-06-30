@@ -1,0 +1,397 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-30T20:33:44.529365+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 58,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 106,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 17,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 12,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 18
+  },
+  "deep_dive": [
+    {
+      "id": "2606.27711v1",
+      "source": "arxiv",
+      "title": "The Simulacrum: Decision-Theoretic Pretraining for Near-Optimal Time-Series Forecasting and Inference",
+      "abstract": "We introduce a neural network-based framework for learning time series estimators through a process we term decision-theoretic pretraining. Analysts specify a generative world, a distribution over data-generating processes, and a target decision objective. A neural network trained on stratified simulations from this world approximates the corresponding optimal decision rule, yielding a neural estimator that provides forecasts, parameter estimates, predictive intervals, or model-selection for zero-shot inference on previously unseen time series.   The joint specification of the generative world and objective enables the estimators to directly approximate process-level, finite-sample properties: near-optimal risk, bias control, minimax performance, and uniform calibration. Our experiments demonstrate that these neural estimators can outperform traditional baselines such as maximum likelihood estimation and model selection via AICc, for the same model structural model classes. Furthermore, even when trained purely on simulations of structural models, they achieve competitive or state-of-the-art forecasting accuracy on major real-world benchmarks, compared with statistical, neural or large pre-trained models.   We illustrate the framework by addressing two longstanding challenges: finite-sample bias and miscalibration in AR(p) models, and the forecast combination puzzle. These applications highlight the approach's main advantage: its ability to approximate solutions to analytically intractable or computationally prohibitive time series problems, including complex structural equations or optimality criteria. Ultimately, by enabling explicit control over decision-theoretic trade-offs, the framework equips analysts with highly efficient estimation tools tailored to their specific analytical needs.",
+      "authors": [
+        "Pablo Montero-Manso",
+        "Marcel Scharth"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "stat.CO"
+      ],
+      "published": "2026-06-26T04:25:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.27711v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decision-theoretic pretraining for time series forecasting",
+      "llm_evidence_cn": "时间序列预测的决策理论预训练",
+      "llm_evidence": "时间序列预测的决策理论预训练",
+      "canonical_evidence": "时间序列预测的决策理论预训练",
+      "llm_tldr_en": "Learns neural estimators for time series via decision-theoretic pretraining.",
+      "llm_tldr_cn": "通过决策理论预训练学习时间序列神经估计器。",
+      "llm_tldr": "通过决策理论预训练学习时间序列神经估计器。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.27900v1",
+      "source": "arxiv",
+      "title": "Long-Term Prediction of Local and Global Human Motion with Occlusion Recovery",
+      "abstract": "Human motion describes the three-dimensional full-body movement of a person. Anticipating such motion holds significant relevance across a wide range of application domains such as human-robot interaction, autonomous driving, animation, and healthcare. In recent research, spatial and temporal dependencies are modeled by bidirectional attention mechanisms. These typically anticipate human motion in an autoregressive manner which could cause an accumulation of errors over time. As a consequence, they solely focus on local pose forecasting. To address these limitations, we propose a non-autoregressive transformer based on spatio-temporal attention, and train it not only for local pose anticipation, but also for global motion prediction in space. Furthermore, to enhance its applicability in real-world scenarios, our model is also trained to recover missing joints due to occlusions, and is capable of processing varying lengths of history observations. Our code is publicly available at https://github.com/Q-Y-Yang/Prediction-of-Local-and-Global-Human-Motion.",
+      "authors": [
+        "Qiaoyue Yang",
+        "Sven Heutger",
+        "Christopher Niemann",
+        "Magnus Jung",
+        "Ayoub Al-Hamadi",
+        "Sven Wachsmuth"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-26T09:49:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.27900v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "long-term human motion prediction with spatio-temporal attention",
+      "llm_evidence_cn": "使用时空注意力进行长期人体运动预测",
+      "llm_evidence": "使用时空注意力进行长期人体运动预测",
+      "canonical_evidence": "使用时空注意力进行长期人体运动预测",
+      "llm_tldr_en": "Non-autoregressive transformer for long-term human motion prediction.",
+      "llm_tldr_cn": "非自回归变压器用于长期人体运动预测。",
+      "llm_tldr": "非自回归变压器用于长期人体运动预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.27980v1",
+      "source": "arxiv",
+      "title": "Listwise Explanation of Embedding-Based Rankings via Semantic Chunk Grouping",
+      "abstract": "Dense embedding rankers score documents through contextual sentence- and passage-level representations. Yet many listwise explanation methods still attribute rankings to isolated words. This feature-unit mismatch leaves word-level features too fragmented for dense semantic ranking. We introduce ChunkGroupSHAP, a listwise Shapley method that clusters semantically related chunks into shared cross-document features. Masking a group perturbs all documents with related evidence, attributing rankings at a granularity closer to dense representations while preserving the listwise setup. Our findings across MS MARCO, FinanceBench, AILACaseDocs, and FinQA with E5 rankers and BM25 show that the best explanation unit is setting-dependent: word features for lexical BM25, corpus-level groups for dense rankers, and query-local grouping for heterogeneous web retrieval. Feature units should thus follow both the ranker's representational granularity and the structure of the retrieved corpus.",
+      "authors": [
+        "Hyunkyu Kim",
+        "Yeeun Yoo",
+        "Youngjun Kwak"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-06-26T11:30:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.27980v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Listwise Shapley method for computing importance weights of input features",
+      "llm_evidence_cn": "列表级Shapley方法计算输入特征重要性权重",
+      "llm_evidence": "列表级Shapley方法计算输入特征重要性权重",
+      "canonical_evidence": "列表级Shapley方法计算输入特征重要性权重",
+      "llm_tldr_en": "Proposes ChunkGroupSHAP for listwise explanation of dense embedding rankings via semantic chunk grouping",
+      "llm_tldr_cn": "提出ChunkGroupSHAP通过语义块分组对密集嵌入排序进行列表级解释",
+      "llm_tldr": "提出ChunkGroupSHAP通过语义块分组对密集嵌入排序进行列表级解释",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.28202v1",
+      "source": "arxiv",
+      "title": "An Enhanced Source-Free Unsupervised Domain Adaptation Framework for Cross-Dataset EEG Emotion Recognition via Predictive Coding and Test-Time Training",
+      "abstract": "EEG-based emotion recognition is widely used in affective computing but suffers from poor generalization due to domain shifts caused by inter-subject variability, dataset differences, and recording conditions, especially in cross-dataset settings. Conventional unsupervised domain adaptation methods require source data, which is often unavailable due to privacy constraints. Although source-free UDA addresses this limitation, existing methods still struggle with large domain gaps, noisy pseudo-labels, and unstable adaptation. To address these challenges, we propose an enhanced source-free unsupervised domain adaptation (SF-UDA) framework for cross-dataset EEG emotion recognition. The framework introduces a non-contrastive predictive coding-based self-supervised pretraining strategy to learn robust and transferable EEG representations by modeling temporal dependencies in a reconstruction-based manner. During adaptation, we estimate target-domain structure through class-wise clustering and prediction disagreement, and optimize the model using a dual-stage strategy consisting of Multi-Loss Adaptive Regularization and Localized Consistency Learning, improving stability and neighborhood consistency under noisy pseudo-labels. We also propose a lightweight test-time training mechanism that enables selective online updates for uncertain samples using predictive reconstruction loss and entropy minimization. Experiments on DEAP, SEED, and DREAMER show consistent improvements over state-of-the-art SF-UDA methods, achieving 69.56% and 63.03% accuracy on SEED and DREAMER when trained on DEAP, and 61.38% and 68.90% when trained on SEED.",
+      "authors": [
+        "Md Niaz Imtiaz",
+        "Naimul Khan"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-06-26T15:50:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.28202v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "source-free unsupervised domain adaptation for cross-dataset EEG emotion recognition",
+      "llm_evidence_cn": "跨数据集脑电情绪识别的无源无监督域适应",
+      "llm_evidence": "跨数据集脑电情绪识别的无源无监督域适应",
+      "canonical_evidence": "跨数据集脑电情绪识别的无源无监督域适应",
+      "llm_tldr_en": "Proposes a source-free domain adaptation framework for EEG emotion recognition using predictive coding and test-time training.",
+      "llm_tldr_cn": "提出基于预测编码和测试时训练的无源域适应框架用于脑电情绪识别。",
+      "llm_tldr": "提出基于预测编码和测试时训练的无源域适应框架用于脑电情绪识别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.28228v1",
+      "source": "arxiv",
+      "title": "Disentangling Continuous-Time Latent Dynamics: Identifiability of Latent SDEs via Diffusion Shifts",
+      "abstract": "Causal representation learning for time series has developed strong identifiability results in discrete-time latent causal models, but identifiability in continuous-time latent stochastic differential equation (SDE) models remains largely open. We address this gap using environment-induced shifts in diffusion covariance. We study additive-noise latent SDEs observed through an unknown nonlinear diffeomorphism, with shared drift but environment-specific diffusion covariance. We show that two diagonal diffusion regimes with pairwise distinct coordinate-wise variance ratios identify the latent coordinates up to permutation and scaling, without any sparsity assumption on the drift. We first prove this result for linear Ornstein--Uhlenbeck systems and then extend it to general additive-noise latent SDEs. Under mild smoothness, the instantaneous drift-Jacobian causal graph is identifiable up to the same permutation. We propose a two-stage estimator for latent disentanglement and optional graph recovery; experiments on synthetic systems confirm the predicted identifiability boundary, and an application to Hardanger Bridge monitoring data illustrates the approach on real sensor trajectories.",
+      "authors": [
+        "Yuanyuan Wang",
+        "Wenjie Wang",
+        "Haoxuan Li",
+        "Mingming Gong",
+        "Kun Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-06-26T16:18:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.28228v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "identifiability of latent SDEs for time series",
+      "llm_evidence_cn": "时间序列隐SDE的可识别性",
+      "llm_evidence": "时间序列隐SDE的可识别性",
+      "canonical_evidence": "时间序列隐SDE的可识别性",
+      "llm_tldr_en": "Proves identifiability of continuous-time latent SDEs using diffusion shifts.",
+      "llm_tldr_cn": "利用扩散偏移证明连续时间隐SDE的可识别性。",
+      "llm_tldr": "利用扩散偏移证明连续时间隐SDE的可识别性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.27547v1",
+      "source": "arxiv",
+      "title": "Beyond MoCap: Scaling Motion Tokenizers with Synthetic Human Motion for Generative Modeling",
+      "abstract": "Human motion generation models are fundamentally constrained by the limited diversity of motion capture datasets, which predominantly contain common, repetitive actions and fail to cover the long tail of complex human movements, resulting in a restricted motion vocabulary in learned latent representations and poor generalization to rare, compositional, and highly dynamic motions. In this work, we propose a framework for expanding the motion representation space by leveraging large-scale synthetic human motion, introducing a data generation pipeline that produces diverse, physically plausible motion sequences beyond the distribution of existing datasets and integrating it with a redesigned VQ-VAE tokenizer that adapts to this expanded motion space. Unlike conventional tokenizers trained on narrow data distributions, our approach jointly scales both the training distribution and the discrete codebook, enabling the model to capture a significantly richer set of motion primitives. We demonstrate that training with synthetic motion substantially improves the coverage and compositionality of the learned motion vocabulary, leading to consistent gains across motion generation tasks such as text-to-motion and motion continuation, while remaining fully compatible with existing frameworks including MotionGPT. Our results suggest that the primary bottleneck lies in the limited support of the learned motion representation, rather than model architecture alone. Scaling synthetic motion in tandem with representation learning offers a principled path toward more expressive, controllable, and generalizable human motion synthesis.",
+      "authors": [
+        "Yiwen Yan",
+        "Wanning He",
+        "Yu-Wing Tai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-25T20:50:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.27547v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Motion tokenizer converting human motion into discrete sequences",
+      "llm_evidence_cn": "将人体运动转换为离散序列的运动分词器",
+      "llm_evidence": "将人体运动转换为离散序列的运动分词器",
+      "canonical_evidence": "将人体运动转换为离散序列的运动分词器",
+      "llm_tldr_en": "Scales motion tokenization using synthetic data for improved generative modeling of human motion.",
+      "llm_tldr_cn": "利用合成数据扩展运动分词以改善人体运动生成建模。",
+      "llm_tldr": "利用合成数据扩展运动分词以改善人体运动生成建模。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.27599v1",
+      "source": "arxiv",
+      "title": "Global Explanations for Multivariate Time Series Forecasting Models via $K$-Order Markov Approximations",
+      "abstract": "While many explainable AI (XAI) methods have been proposed, most are not designed for time-series forecasting models and often rely on the implicit assumption that timestamp features are independent. This assumption ignores the fundamental property of temporal dependence and can lead to explanations that violate the sequential and causal structure of the data. We introduce \\textsc{KARMA}, a method for explaining time-series predictors by constructing a Markov surrogate model that captures the temporal dependencies learned by the predictor. Our approach revolves around three main aspects: identifying the minimal history length $K$ that is predictively sufficient for the model, estimating the best-fitting $K$-order Markov transition kernel from the discretized history space, and a five-level global explanation hierarchy that can be derived from the Markov transition kernel, which we illustrate using real-world weather data (Beijing PM 2.5). We also certify using complex synthetic data with known true causal edges that KARMA (i) recovers the data causal structure as learned by the model via a controlled experiment and (ii) identifies temporal dependencies better than established attribution methods such as TimeSHAP.",
+      "authors": [
+        "Amadeo Tunyi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-25T23:09:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.27599v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Global explanations for time series forecasting via Markov approximations capturing temporal dependencies",
+      "llm_evidence_cn": "通过马尔可夫近似捕捉时间依赖性的时间序列预测全局解释",
+      "llm_evidence": "通过马尔可夫近似捕捉时间依赖性的时间序列预测全局解释",
+      "canonical_evidence": "通过马尔可夫近似捕捉时间依赖性的时间序列预测全局解释",
+      "llm_tldr_en": "KARMA explains time series models by building a Markov surrogate that respects temporal structure.",
+      "llm_tldr_cn": "KARMA通过构建尊重时间结构的马尔可夫代理模型解释时间序列模型。",
+      "llm_tldr": "KARMA通过构建尊重时间结构的马尔可夫代理模型解释时间序列模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.27670v1",
+      "source": "arxiv",
+      "title": "CryptoGAT: Are Time Series Models Effective for Cryptocurrency Forecasting?",
+      "abstract": "Cryptocurrency price prediction is a significant challenge in quantitative investment. In recent years, time series models have made significant progress in financial forecasting tasks, especially in the stock market. Despite the growing performance over the past few years, we question the validity of this line of research in cryptocurrency prediction. Specifically, time series models (e.g., LSTM, GRU, and Transformers) are effective at extracting temporal relationships in stock market data. However, in pure price-based cryptocurrency prediction, facing data with extreme volatility and wild swings, time series models have difficulty learning effective information. To validate our claim, we propose CryptoGAT, a lightweight Graph Attention Network that recasts cryptocurrency pure price prediction as a cross-asset graph problem rather than a temporal modeling task. Extensive experiments on real cryptocurrency benchmarks demonstrate that our proposed CryptoGAT outperforms various state-of-the-art forecasting methods with a notable margin. Moreover, we conduct comprehensive empirical studies to explore the fundamental differences exposed by time series models in stock and cryptocurrency prediction: differences in predictability of the signal and cross-asset dependencies. This finding opens up new research directions for the cryptocurrency pure price prediction task and inspires further graph-based exploration in the field. The source code is available at https://github.com/FanBroWell/CryptoGAT",
+      "authors": [
+        "Yu Peng",
+        "Matloob Khushi",
+        "Josiah Poon"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE",
+        "q-fin.ST"
+      ],
+      "published": "2026-06-26T03:05:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.27670v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "time series forecasting with LSTM/GRU/Transformers",
+      "llm_evidence_cn": "使用LSTM/GRU/Transformer的时间序列预测",
+      "llm_evidence": "使用LSTM/GRU/Transformer的时间序列预测",
+      "canonical_evidence": "使用LSTM/GRU/Transformer的时间序列预测",
+      "llm_tldr_en": "Proposes CryptoGAT for cryptocurrency forecasting and evaluates time series models.",
+      "llm_tldr_cn": "提出CryptoGAT用于加密货币预测并评估时间序列模型。",
+      "llm_tldr": "提出CryptoGAT用于加密货币预测并评估时间序列模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.27672v1",
+      "source": "arxiv",
+      "title": "Are Time-Series Foundation Models Ready for E-Nose Data? An Empirical Assessment of Their Embeddings",
+      "abstract": "Inspired by advances in natural language processing and computer vision, \"time-series foundation models\" (TSFMs) have recently been introduced with the promise of strong generalization across diverse time-series tasks, including forecasting, classification, and anomaly detection, as well as across domains such as healthcare, climate science, and manufacturing. However, their utility for gas-sensing data remains largely unexplored. To address this gap, this paper systematically evaluates recent TSFMs on electronic nose (E-Nose) data. In particular, we investigate whether embeddings produced by representative TSFMs, including Chronos-2 and MOMENT, provide effective representations for gas identification and concentration prediction. Specifically, we show that fine-tuning is necessary to achieve satisfactory performance on E-Nose data, and fusing TSFM embeddings with representations learned by specialized predictive models can further improve the performance, suggesting both the potential and limitations of current TSFMs for gas-sensing applications.",
+      "authors": [
+        "Taeyeong Choi",
+        "Mohammed Kamruzzaman"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-26T03:07:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.27672v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "evaluates time-series foundation models for forecasting and classification",
+      "llm_evidence_cn": "评估时间序列基础模型用于预测和分类",
+      "llm_evidence": "评估时间序列基础模型用于预测和分类",
+      "canonical_evidence": "评估时间序列基础模型用于预测和分类",
+      "llm_tldr_en": "This paper assesses how well embeddings from time-series foundation models generalize to E-Nose data for forecasting and classification.",
+      "llm_tldr_cn": "本文评估时间序列基础模型的嵌入在电子鼻数据上对预测和分类的泛化能力。",
+      "llm_tldr": "本文评估时间序列基础模型的嵌入在电子鼻数据上对预测和分类的泛化能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.27747v1",
+      "source": "arxiv",
+      "title": "UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning",
+      "abstract": "While pre-trained models have achieved remarkable success in code search, their multilingual capabilities remain a major hurdle, plagued by data imbalance, cross-lingual semantic interference, and the loss of critical information from existing unified representations like Abstract Syntax Trees (ASTs) or Intermediate Representations (IRs). Furthermore, conventional contrastive learning strategies often rely on simplistic hard negative sampling while overlooking the potential of mining hard positives to learn code's intrinsic semantic invariance. To address these challenges, we introduce UNICS, a framework for multilingual code search built on a two-stage training strategy. In the first stage, UNICS is pre-trained on a novel dataset we constructed, which uses pseudo-code as a unified representation to learn a cross-lingual, algorithm-level logic that preserves full semantic fidelity. The second stage employs a multi-task transfer learning strategy that adapts this general knowledge to specific languages by decomposing code into semantic slices (e.g., API calls, function bodies) and incorporating tasks for hard positive mining and cross-lingual dynamic hard negative sampling. Experimental results demonstrate that UNICS achieves state-of-the-art performance across multiple multilingual and cross-lingual benchmarks, showcasing superior generalization and performance balance, especially in zero-shot transfer tasks to low-resource languages.",
+      "authors": [
+        "Ye Fan",
+        "Jidong Ge",
+        "Chuanyi Li",
+        "Liguo Huang",
+        "Bin Luo"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-06-26T06:03:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.27747v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Contrastive transfer learning for code search",
+      "llm_evidence_cn": "用于代码搜索的对比迁移学习",
+      "llm_evidence": "用于代码搜索的对比迁移学习",
+      "canonical_evidence": "用于代码搜索的对比迁移学习",
+      "llm_tldr_en": "UNICS uses contrastive transfer learning with pseudocode for multilingual code search.",
+      "llm_tldr_cn": "UNICS利用对比迁移学习和伪代码实现多语言代码搜索。",
+      "llm_tldr": "UNICS利用对比迁移学习和伪代码实现多语言代码搜索。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

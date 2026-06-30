@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.27599v1/fig-002.webp",
+      "caption": "Figure 2: Five-level KARMA explanation hierarchy applied to a TCN (W = 24, hidden 64, 2 layers, kernel 3) trained on the Beijing PM2.5 dataset (D = 11, N = 3, K∗ = 4, ε = 0.049, λ = 0.025, ∆̂pred = 0.046). All levels are derived from the single estimated kernel T̂ f,dK∗ without additional oracle queries. History indices h follow the mixed-radix encoding h = ∑ k,d h d k · ND(K∗−1−k)+(D−1−d). (a) Level 1 — Variable importance Φ̃d ′ : DEWP dominates; the remaining wind-direction and precipitation variables receive certified-zero attributions (< λ). (b) Level 2 — Lag profiles ϕd ′ k : active variables peak sharply at k = 1 and decay over the K∗ = 4 retained lags, with TEMP retaining secondary influence (certified-zero variables omitted). (c) Level 4 — Ranked interventional effects ρ(e): self-loops dominate the top-25 retained edges; the strongest cross-variable effect is DEWP→TEMP. (d) Level 3 — Regime distance matrix (target PM2.5): pairwise total-variation distances ∥T̂ f,dK∗ (· | h)− T̂ f,dK∗ (· | h′)∥TV between histories, hierarchically clustered; bright off-diagonal blocks mark distinctive regimes where the model’s conditional forecast departs from its typical behaviour, the pairwise view from which Ψd(h) aggregates. (e) Level 5 — Uncertaintyaware explanation (π̂∗-weighted): (A) per-history aleatoric entropy Hd h (bits, averaged over variables); (B) epistemic",
+      "page": 7,
+      "index": 2,
+      "width": 968,
+      "height": 737
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27599v1/fig-003.webp",
+      "caption": "Table 3: AUClag@25% under VAR-conditional imputation. Higher is better.",
+      "page": 10,
+      "index": 3,
+      "width": 506,
+      "height": 276
+    },
+    {
+      "url": "assets/figures/arxiv/2606.27599v1/fig-001.webp",
+      "caption": "Figure 3: Lag AUC removal curves for all datasets and architectures. Each curve shows cumulative |∆ŷ| as the fraction of removed timesteps grows from 0 to 1.",
+      "page": 11,
+      "index": 1,
+      "width": 958,
+      "height": 691
+    }
+  ]
+}

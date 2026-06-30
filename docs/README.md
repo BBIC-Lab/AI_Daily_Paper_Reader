@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-06-30
-- 运行时间：2026-06-30 05:06:49 北京时间
+- 最新运行日期：2026-07-01
+- 运行时间：2026-07-01 04:36:25 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读2篇高分论文，速览3篇前沿成果，聚焦认知增强与模型可解释性。  
-认知信号可显著提升微博关键短语提取，稀疏自编码器首次从大模型中解出百万级可解释特征，评分均达9.0。  
-建议关注“脑信号+NLP”新范式，或用稀疏自编码器给大模型做“透明体检”。
-- 详情：[/202606/30/README](/202606/30/README)
+前沿时间序列与人体运动生成双线突破：决策理论预训练与长期遮挡恢复精读满分  
+值得深挖“Simulacrum”型时序模型与“长期局部-全局人体运动遮挡恢复”两大高精度结论  
+普通读者可先从合成人体动捕与加密货币时序实证入手，跟踪这两条路径的落地潜力
+- 详情：[/202607/01/README](/202607/01/README)
 
 ### 精读区论文标签
-1. [Utilizing Cognitive Signals Generated during Human Reading to Enhance Keyphrase Extraction from Microblogs](/202606/30/2606.26485v1-utilizing-cognitive-signals-generated-during-human-reading-to-enhance-keyphrase-extraction-from-microblogs)  
+1. [The Simulacrum: Decision-Theoretic Pretraining for Near-Optimal Time-Series Forecasting and Inference](/202607/01/2606.27711v1-the-simulacrum-decision-theoretic-pretraining-for-near-optimal-time-series-forecasting-and-inference)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用EEG信号增强关键词提取
-2. [Discovering Millions of Interpretable Features with Sparse Autoencoders](/202606/30/2606.26620v1-discovering-millions-of-interpretable-features-with-sparse-autoencoders)  
+   evidence：时间序列预测的决策理论预训练
+2. [Long-Term Prediction of Local and Global Human Motion with Occlusion Recovery](/202607/01/2606.27900v1-long-term-prediction-of-local-and-global-human-motion-with-occlusion-recovery)  
    标签：评分：9.0/10、query:ndai
-   evidence：从大语言模型表示中学习可解释的稀疏特征
-3. [Heterogeneous Neural Predictivity from Language Models During Naturalistic Comprehension](/202606/30/2606.26880v1-heterogeneous-neural-predictivity-from-language-models-during-naturalistic-comprehension)  
+   evidence：使用时空注意力进行长期人体运动预测
+3. [Listwise Explanation of Embedding-Based Rankings via Semantic Chunk Grouping](/202607/01/2606.27980v1-listwise-explanation-of-embedding-based-rankings-via-semantic-chunk-grouping)  
    标签：评分：9.0/10、query:ndai
-   evidence：利用语言模型表示进行神经活动预测
-4. [Quantum Generative Diffusion Model for Real-World Time Series](/202606/30/2606.27561v1-quantum-generative-diffusion-model-for-real-world-time-series)  
+   evidence：列表级Shapley方法计算输入特征重要性权重
+4. [An Enhanced Source-Free Unsupervised Domain Adaptation Framework for Cross-Dataset EEG Emotion Recognition via Predictive Coding and Test-Time Training](/202607/01/2606.28202v1-an-enhanced-source-free-unsupervised-domain-adaptation-framework-for-cross-dataset-eeg-emotion-recognition-via-predictive-coding-and-test-time-training)  
    标签：评分：9.0/10、query:ndai
-   evidence：量子生成扩散模型用于时间序列合成
-5. [SpikeVLA: Vision-Language-Action Models with Spiking Neural Networks](/202606/30/2606.27807v1-spikevla-vision-language-action-models-with-spiking-neural-networks)  
+   evidence：跨数据集脑电情绪识别的无源无监督域适应
+5. [Disentangling Continuous-Time Latent Dynamics: Identifiability of Latent SDEs via Diffusion Shifts](/202607/01/2606.28228v1-disentangling-continuous-time-latent-dynamics-identifiability-of-latent-sdes-via-diffusion-shifts)  
    标签：评分：9.0/10、query:ndai
-   evidence：将脉冲神经信号解码为导航动作
+   evidence：时间序列隐SDE的可识别性
 
 ### 速读区论文标签
-1. [Speaking Numbers to LLMs: Multi-Wavelet Number Embeddings for Time Series Forecasting](/202606/30/2606.26487v1-speaking-numbers-to-llms-multi-wavelet-number-embeddings-for-time-series-forecasting)  
+1. [Beyond MoCap: Scaling Motion Tokenizers with Synthetic Human Motion for Generative Modeling](/202607/01/2606.27547v1-beyond-mocap-scaling-motion-tokenizers-with-synthetic-human-motion-for-generative-modeling)  
    标签：评分：8.0/10、query:ndai
-   evidence：多小波数字嵌入用于时间序列预测
-2. [TinyCNNDeep: Lightweight Attention-Based CNN for EEG Classification of Eye States and Sleep Deprivation](/202606/30/2606.26506v1-tinycnndeep-lightweight-attention-based-cnn-for-eeg-classification-of-eye-states-and-sleep-deprivation)  
+   evidence：将人体运动转换为离散序列的运动分词器
+2. [CryptoGAT: Are Time Series Models Effective for Cryptocurrency Forecasting?](/202607/01/2606.27670v1-cryptogat-are-time-series-models-effective-for-cryptocurrency-forecasting)  
    标签：评分：8.0/10、query:ndai
-   evidence：轻量级CNN用于EEG分类
-3. [WQ-Fusion: Dynamic Gated Attention for Cross-Domain Audio Representation](/202606/30/2606.26556v1-wq-fusion-dynamic-gated-attention-for-cross-domain-audio-representation)  
+   evidence：使用LSTM/GRU/Transformer的时间序列预测
+3. [Are Time-Series Foundation Models Ready for E-Nose Data? An Empirical Assessment of Their Embeddings](/202607/01/2606.27672v1-are-time-series-foundation-models-ready-for-e-nose-data-an-empirical-assessment-of-their-embeddings)  
    标签：评分：8.0/10、query:ndai
-   evidence：利用预训练的whisper和qwen进行跨域音频表征
-4. [Sketched Linear Contrastive Learning: Approximation, Optimization, and Statistical Scaling](/202606/30/2606.26617v1-sketched-linear-contrastive-learning-approximation-optimization-and-statistical-scaling)  
+   evidence：评估时间序列基础模型用于预测和分类
+4. [UNICS: Multilingual Code Search via Unified Pseudocode and Contrastive Transfer Learning](/202607/01/2606.27747v1-unics-multilingual-code-search-via-unified-pseudocode-and-contrastive-transfer-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：对比表示学习
-5. [AnySimLite: A Lightweight Few-Shot Similarity Encoder for On-Device Speech-Adjacent Classification](/202606/30/2606.26452v1-anysimlite-a-lightweight-few-shot-similarity-encoder-for-on-device-speech-adjacent-classification)  
+   evidence：用于代码搜索的对比迁移学习
+5. [Global Explanations for Multivariate Time Series Forecasting Models via $K$-Order Markov Approximations](/202607/01/2606.27599v1-global-explanations-for-multivariate-time-series-forecasting-models-via-k-order-markov-approximations)  
    标签：评分：7.0/10、query:ndai
-   evidence：用于设备上分类的少样本相似度编码器
+   evidence：通过马尔可夫近似捕捉时间依赖性的时间序列预测全局解释
 
