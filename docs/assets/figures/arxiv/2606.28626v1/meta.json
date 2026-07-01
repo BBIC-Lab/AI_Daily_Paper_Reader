@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-003.webp",
+      "caption": "Fig. 1: Comparison between prior SLT methods and our framework. While existing models are language-specific and fail to generalise across other sign languages, SIGNET integrates multiple pretrained backbones via adaptive gating.",
+      "page": 2,
+      "index": 3,
+      "width": 365,
+      "height": 352
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-008.webp",
+      "caption": "Fig. 2: Overview of SIGNET. Stage I pretrains sign language backbones and their LLM encoder-decoders on large-scale datasets (CSL, ASL, and BSL), where each backbone (bottom left) learns part-specific motion cues via ST-GCN modules. Frozen pretrained backbones provide hand priors to the feature aggregation module, which computes a global expert descriptor to guide the gating fusion network. Stage II aligns visual and textual spaces via cross-modal pretraining, followed by Stage III fine-tuning. See Fig. 3 for a detailed view of the aggregation and gating modules.",
+      "page": 4,
+      "index": 8,
+      "width": 725,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-001.webp",
+      "caption": "Fig. 3: Feature Aggregation and Gating Fusion modules. The feature aggregation module (left) computes a global expert descriptor Hglobal from hand priors via attentive pooling. The gating fusion module (right) routes Hglobal through a learned router to dynamically weight expert contributions, using Gumbel-Softmax during training and top-k selection at inference.",
+      "page": 6,
+      "index": 1,
+      "width": 725,
+      "height": 202
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-006.webp",
+      "caption": "Table 1: SLT results on Phoenix14T and CSL-Daily. BLEU-1, BLEU-4, and ROUGEL are abbreviated as B-1, B-4, and R.",
+      "page": 10,
+      "index": 6,
+      "width": 725,
+      "height": 349
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-009.webp",
+      "caption": "Table 5: Computational efficiency comparison. Parameters in millions (M); forward latency in milliseconds (ms) per training batch (batch size 8). †Backbone features can be pre-computed and cached after Stage I. The reported latency is non-cached (all three backbones run per batch).",
+      "page": 12,
+      "index": 9,
+      "width": 616,
+      "height": 228
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-005.webp",
+      "caption": "Fig. 6: Visualisation of 2D keypoints extracted.",
+      "page": 22,
+      "index": 5,
+      "width": 725,
+      "height": 184
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-010.webp",
+      "caption": "Fig. 7: Qualitative results on CSL-Daily test set. Green text indicates correct predictions matching the Ground Truth (GT).",
+      "page": 27,
+      "index": 10,
+      "width": 725,
+      "height": 691
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-007.webp",
+      "caption": "Fig. 8: Qualitative results on How2Sign test set. Green text indicates correct predictions matching the Ground Truth (GT).",
+      "page": 28,
+      "index": 7,
+      "width": 725,
+      "height": 771
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-004.webp",
+      "caption": "Fig. 9: Qualitative results on Phoenix14T. Green text indicates correct predictions matching the Ground Truth (GT).",
+      "page": 29,
+      "index": 4,
+      "width": 725,
+      "height": 846
+    },
+    {
+      "url": "assets/figures/arxiv/2606.28626v1/fig-002.webp",
+      "caption": "Fig. 10: Qualitative results on MeineDGS test set. Green text indicates correct predictions matching the Ground Truth (GT).",
+      "page": 30,
+      "index": 2,
+      "width": 725,
+      "height": 466
+    }
+  ]
+}

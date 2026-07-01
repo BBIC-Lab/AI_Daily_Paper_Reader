@@ -1,0 +1,400 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-01T21:16:24.162706+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 38,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 75,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 10,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2606.28670v1",
+      "source": "arxiv",
+      "title": "MACROCAST: A Vintage-Consistent Time Series Foundation Model for Real-Time Macroeconomic Forecasting",
+      "abstract": "We introduce MACROCAST, a lightweight Time Series Foundation Model (TSFM) for real-time macroeconomic forecasting. Existing TSFMs suffer from data leakage in two forms: temporal contamination, as the model may have seen the realized values of the series it forecasts, and revision bias, as training on fully revised data diverges from the preliminary, vintage-specific releases available to real-time forecasters. MACROCAST is, to our knowledge, the first TSFM that rules out both forms of leakage entirely: at no stage of training is the model exposed to information that would not have been available to a forecaster in real time. We train MACROCAST first on purely synthetic time series in approximately one GPU-day and then fine-tune it on synthetic time series drawn from Bayesian VARs, dynamic factor models, and ARIMA specifications estimated on vintage-specific ALFRED data. Because pretraining uses only simulated data and fine-tuning uses only real-time vintages, no observed future or revised value ever enters the model; each fine-tuning run takes nine minutes. Evaluated on the FRED-MD database in a genuine real-time out-of-sample exercise, MACROCAST improves on the AR(1) benchmark for roughly 80% of series-horizon pairs, matches or surpasses Chronos-2 -- the strongest currently available TSFM -- and outperforms the Bayesian VAR and dynamic factor model benchmarks, all in a data-leakage-free manner.",
+      "authors": [
+        "Andrea Carriero",
+        "Davide Pettenuzzo",
+        "Shubhranshu Shekhar"
+      ],
+      "primary_category": "econ.EM",
+      "categories": [
+        "econ.EM",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-27T01:08:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.28670v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "time series foundation model for forecasting",
+      "llm_evidence_cn": "时间序列基础模型用于预测",
+      "llm_evidence": "时间序列基础模型用于预测",
+      "canonical_evidence": "时间序列基础模型用于预测",
+      "llm_tldr_en": "A vintage-consistent time series foundation model for real-time macroeconomic forecasting.",
+      "llm_tldr_cn": "一种用于宏观经济实时预测的时序基础模型。",
+      "llm_tldr": "一种用于宏观经济实时预测的时序基础模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.28732v1",
+      "source": "arxiv",
+      "title": "CTC-Seeded Token Edit Refinement for Non-Autoregressive Speech Recognition",
+      "abstract": "Non-autoregressive automatic speech recognition (ASR) enables parallel decoding, but many refinement-based methods begin from random, fully masked, or fixed-length token sequences, requiring multiple iterations to reconstruct the complete transcript. We instead formulate ASR decoding as a variable-length edit refinement of a greedy connectionist temporal classification (CTC) hypothesis. An acoustic-conditioned Edit Flow decoder operates directly on the collapsed CTC hypothesis, predicting insertion, deletion, and substitution operations in parallel. The Edit Flow decoder is jointly trained with a CTC model using a continuous-time discrete diffusion loss. During inference, we find that just two edit steps yield substantial Word Error Rate (WER) reductions, and classifier-free guidance (CFG) further enhances recognition quality by focusing the model on audio features. We also constrain edit proposals using CTC confidence to improve accuracy. Finally, ablation studies validate our design choices, while decoder pretraining and pretrained encoder integration yield significant additional performance gains.",
+      "authors": [
+        "Wanting Huang",
+        "Weiran Wang"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-06-27T04:48:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.28732v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "converts CTC outputs into refined sequence via edit operations",
+      "llm_evidence_cn": "通过编辑操作将CTC输出转换为精炼序列",
+      "llm_evidence": "通过编辑操作将CTC输出转换为精炼序列",
+      "canonical_evidence": "通过编辑操作将CTC输出转换为精炼序列",
+      "llm_tldr_en": "CTC-seeded edit refinement converts model outputs to accurate transcripts with few steps.",
+      "llm_tldr_cn": "基于CTC种子的编辑精炼用少量步骤将模型输出转换为准确转录。",
+      "llm_tldr": "基于CTC种子的编辑精炼用少量步骤将模型输出转换为准确转录。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29186v1",
+      "source": "arxiv",
+      "title": "Computing Lewis weights to high precision using local relative smoothness",
+      "abstract": "We provide algorithms that compute $ε$-estimates of the $\\ell_p$-Lewis weights of a matrix $A \\in \\mathbb{R}^{m \\times n}$ for $p \\geq 4$ using $O(p^2 \\log(m/ε))$ rounds of leverage score computation, where $\\ell_p$-Lewis weights and leverage scores are both standard measures of row importance. This improves upon the state-of-the-art round complexity of $O(p^3 \\log(m/ε))$ due to Fazel, Lee, Padmanabha, and Sidford (2022). We obtain our results by carefully applying a local variant of relatively smooth gradient descent to primal and dual forms of the $\\ell_p$-Lewis weight optimization problem and providing tools to convert between different notions of approximate $\\ell_p$-Lewis weights.",
+      "authors": [
+        "Sander Gribling",
+        "Aaron Sidford",
+        "Chenyi Zhang"
+      ],
+      "primary_category": "cs.DS",
+      "categories": [
+        "cs.DS",
+        "math.OC"
+      ],
+      "published": "2026-06-28T04:15:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.29186v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Computes importance weights (Lewis weights) for matrix rows",
+      "llm_evidence_cn": "计算矩阵行的Lewis权重作为重要性度量",
+      "llm_evidence": "计算矩阵行的Lewis权重作为重要性度量",
+      "canonical_evidence": "计算矩阵行的Lewis权重作为重要性度量",
+      "llm_tldr_en": "Efficient algorithm to compute high-precision Lewis weights for row importance.",
+      "llm_tldr_cn": "高效算法计算高精度Lewis权重用于行重要性。",
+      "llm_tldr": "高效算法计算高精度Lewis权重用于行重要性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29200v1",
+      "source": "arxiv",
+      "title": "BrainRiem: Riemannian Prototype Learning for Source-Free Cross-Site Brain Network Diagnosis",
+      "abstract": "Multi-site functional MRI (fMRI) studies are essential for robust neuropsychiatric diagnosis yet suffer severe domain shifts from scanner heterogeneity, demographics, and site-specific acquisition protocols. Traditional domain adaptation requires concurrent source and target data access, violating clinical privacy regulations. Moreover, functional connectivity matrices lie on the Symmetric Positive Definite (SPD) manifold, where Euclidean operations cause geometric distortions corrupting diagnostic patterns. We propose BrainRiem, a source-free domain adaptation framework learning compact Riemannian brain prototypes via manifold-aware bi-level optimization. It employs the Log-Euclidean Metric to ensure prototypes remain valid SPD matrices, while Dirichlet Energy spectral calibration aligns their frequency characteristics with real brain networks. Only anonymized prototypes are transmitted to target sites, serving as stable anchors for training local models without source data access and reducing leakage under the evaluated attacks. Comprehensive experiments on ABIDE and REST-meta-MDD show BrainRiem consistently outperforms state-of-the-art source-free, traditional, and graph domain adaptation methods across diverse scanners and demographics. Notably, learned prototypes exhibit biologically interpretable connectivity patterns aligning with established neuroscience findings, validating the necessity of Riemannian geometry for brain network analysis.",
+      "authors": [
+        "Kunyu Zhang",
+        "Tianxiang Xu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-28T04:59:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.29200v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "source-free domain adaptation for brain networks",
+      "llm_evidence_cn": "无源域适应的脑网络诊断",
+      "llm_evidence": "无源域适应的脑网络诊断",
+      "canonical_evidence": "无源域适应的脑网络诊断",
+      "llm_tldr_en": "Proposes Riemannian prototype learning for source-free cross-site brain network diagnosis.",
+      "llm_tldr_cn": "提出黎曼原型学习实现无源跨站点脑网络诊断。",
+      "llm_tldr": "提出黎曼原型学习实现无源跨站点脑网络诊断。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29463v1",
+      "source": "arxiv",
+      "title": "CellDETR: A Detection-Guided Framework for Scalable Cell Representation Learning from Histopathology Images",
+      "abstract": "Recent advances in pathology foundation models have substantially improved patch and slide level representation learning from whole-slide images (WSIs).However, cell-level representations learning remain underexplored, limiting cell resolved interpretability, biological discovery, and clinical translation. We propose CellDETR, a detection-guided framework built on Deformable DETR for scalable cell representation learning from WSIs. By introducing location feature decoupling and box-constrained attention mechanism, CellDETR enables automated extraction of cell-level embeddings, and outperform existing state-of-the-art methods in supervised cell classification on PanNuke data. In addition, by incorporating contrastive learning design, we build a CellDETR-based pretraining model for scalable cell representation learning from unlabeled WSIs, which improves downstream cell classification performance. Furthermore, we show that after pretraining with Xenium spatial transcriptomics-derived cell annotations, CellDETR achieves accurate cross-dataset cell classification, demonstrating the transferability and biological relevance of the learned cell embeddings. Together, CellDETR provides a scalable route toward general cell-level representation learning framework for interpretable computational patholog",
+      "authors": [
+        "Shikang Zhang",
+        "Guojun Li",
+        "Yicong Mao",
+        "Chulin Sha"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-28T15:39:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.29463v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learning compact cell representations from raw histopathology images",
+      "llm_evidence_cn": "从原始病理图像学习紧凑的细胞表示",
+      "llm_evidence": "从原始病理图像学习紧凑的细胞表示",
+      "canonical_evidence": "从原始病理图像学习紧凑的细胞表示",
+      "llm_tldr_en": "CellDETR learns cell-level representations from whole-slide images using a detection-guided framework.",
+      "llm_tldr_cn": "CellDETR使用检测引导框架从全切片图像学习细胞级表示。",
+      "llm_tldr": "CellDETR使用检测引导框架从全切片图像学习细胞级表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.28623v1",
+      "source": "arxiv",
+      "title": "Improving Patient Subtyping on Longitudinal Data using Representations from Mamba-based Architecture",
+      "abstract": "Effective sub-typing (also known as grouping or clustering) of patients using their electronic health record (EHR) data can greatly inform precision medicine efforts. However, subtyping temporal EHR datasets is known to be challenging due to inherent EHR issues, including complexity and irregularity. In this study, we propose a self-supervised Mamba-based model that learns effective EHR representations and enables enhanced patient subtyping. We evaluate the proposed model on public and private real-world EHR datasets to classify the data based on the available labels and subtype patients based on the representations learned from the model. Through an extensive set of experiments, we demonstrate that our model's design choices lead to better performance compared to competitive baseline models for prediction. Moreover, we evaluate several clustering techniques to demonstrate that our findings offer valuable insights into subtyping patients based on temporal records from EHR models\\footnote{Our implementations are available at https://github.com/healthylaife/triplet_mamba.",
+      "authors": [
+        "Md Mozaharul Mottalib",
+        "Rahmatollah Beheshti"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-06-26T21:45:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.28623v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised Mamba-based model for longitudinal EHR representation learning",
+      "llm_evidence_cn": "基于Mamba的纵向电子病历自监督表示学习",
+      "llm_evidence": "基于Mamba的纵向电子病历自监督表示学习",
+      "canonical_evidence": "基于Mamba的纵向电子病历自监督表示学习",
+      "llm_tldr_en": "Proposes a Mamba-based self-supervised model for patient subtyping from temporal EHR data.",
+      "llm_tldr_cn": "提出基于Mamba的自监督模型从时间序列电子病历中进行患者亚型分类。",
+      "llm_tldr": "提出基于Mamba的自监督模型从时间序列电子病历中进行患者亚型分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.28626v1",
+      "source": "arxiv",
+      "title": "SIGNET: Motion-Level Knowledge Transfer for Cross-Language Sign Language Translation",
+      "abstract": "Sign language translation (SLT) remains challenging due to its high spatio-temporal complexity, long sequences, and the need to model multiple articulators without relying on gloss annotations. Existing approaches are typically tailored to individual datasets or languages and struggle to scale, while overlooking the relationships between sign languages that could inform more effective cross-lingual transfer. We present \\textbf{SIGNET}, a framework that enables motion-level knowledge transfer for cross-language sign language translation. Our key insight is that, although sign languages differ in grammar and lexicon, pretrained models capture motion-level visual patterns that can be reused across datasets and languages. \\textbf{SIGNET} integrates multiple pretrained sign language backbones through an attention-based, hand-prior aggregation mechanism that guides a gated fusion network in dynamically selecting the most relevant experts. Comprehensive experiments on four benchmarks (How2Sign, Phoenix14T, CSL-Daily, and MeineDGS) demonstrate state-of-the-art translation performance, and \\textbf{SIGNET} also surpasses prior methods on WLASL for sign language recognition.",
+      "authors": [
+        "Sobhan Asasi",
+        "Ozge Mercanoglu Sincan",
+        "Richard Bowden"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-26T21:58:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.28626v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "motion-level knowledge transfer from pretrained models for sign language translation",
+      "llm_evidence_cn": "从预训练模型迁移运动级知识用于手语翻译",
+      "llm_evidence": "从预训练模型迁移运动级知识用于手语翻译",
+      "canonical_evidence": "从预训练模型迁移运动级知识用于手语翻译",
+      "llm_tldr_en": "SIGNET transfers motion-level visual patterns across sign languages using pretrained models",
+      "llm_tldr_cn": "SIGNET利用预训练模型跨手语迁移运动级视觉模式",
+      "llm_tldr": "SIGNET利用预训练模型跨手语迁移运动级视觉模式",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.28719v1",
+      "source": "arxiv",
+      "title": "ComMem: Complementary Memory Systems for Test-Time Adaptation of Vision-Language Models",
+      "abstract": "Test-time adaptation (TTA) of vision-language models (VLMs) is essential for their robust deployment in dynamic, real-world environments. However, existing TTA methods often adapt locally without accumulating knowledge over time, or operating within a single modality without exploiting VLMs' inherently multi-modal nature. Inspired by the \\textbf{Com}plementary \\textbf{Mem}ory systems of the biological brain, we propose \\textbf{ComMem}, an innovative approach that mimics the distinct but cooperative roles of the hippocampus and neocortex to enable effective TTA for VLMs. ComMem consists of two key components: a fast-adapting detailed memory, akin to the hippocampus, that forms a dynamic visual cache from high-confidence test samples; and a slow-integrating abstract memory, akin to the neocortex, that continually refines global textual prototypes. For each test instance, ComMem jointly optimizes both memory systems to ensure cross-modal consistency. Extensive experiments on 15 benchmark datasets show that ComMem significantly outperforms state-of-the-art methods under both natural distribution shifts and cross-dataset generalization, offering a promising direction for enhancing VLMs' practical adaptability.",
+      "authors": [
+        "Guanglong Sun",
+        "Shuang Cui",
+        "Bo Lei",
+        "Liyuan Wang",
+        "Zihan Zhai",
+        "Hongwei Yan",
+        "Hang Su",
+        "Jun Zhu",
+        "Yi Zhong"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-27T03:55:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.28719v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "test-time adaptation for VLMs using complementary memories",
+      "llm_evidence_cn": "使用互补记忆的视觉语言模型测试时自适应",
+      "llm_evidence": "使用互补记忆的视觉语言模型测试时自适应",
+      "canonical_evidence": "使用互补记忆的视觉语言模型测试时自适应",
+      "llm_tldr_en": "ComMem adapts VLMs at test time via fast and slow memory mimicking brain memory systems.",
+      "llm_tldr_cn": "ComMem通过模拟大脑记忆系统实现视觉语言模型的测试时自适应。",
+      "llm_tldr": "ComMem通过模拟大脑记忆系统实现视觉语言模型的测试时自适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.28823v1",
+      "source": "arxiv",
+      "title": "Labeling Training Data for Entity Matching Using Large Language Models",
+      "abstract": "Recent large language models (LLMs) achieve strong performance on entity matching without requiring task-specific training data. However, applying these models to large sets of candidate pairs remains slow and costly. In contrast, entity matchers using traditional machine learning methods or small language models (SLMs), such as RoBERTa, offer much faster inference but require task-specific training data.   This paper investigates whether the need to provide task-specific training data can be avoided by using knowledge-distillation workflows, in which an LLM serves as a teacher model to label training pairs that are subsequently used to train a smaller student model. We investigate knowledge distillation for entity matching along the following dimensions: pair-selection strategy, teacher model, label post-processing method, and student model. We evaluate the workflows using the Abt-Buy, Walmart-Amazon, WDC Products, DBLP-ACM, and DBLP-Scholar benchmarks, and compare the performance of student models trained with machine-labeled data to the performance of the same models trained using the benchmark training sets.   Our experiments show that student models trained using the machine-labeled sets perform approximately on par with models trained on the benchmark training sets, with the remaining differences in both directions staying below two F1 points. Using GPT-5.2 to label the training sets for all five benchmarks costs US\\$28.31 to US\\$40.88, whereas manually labeling the same training sets is estimated to require 470 hours of work. At inference time, Ditto is 41.5 to 534 times faster than directly using an LLM to perform the matching tasks.   These results indicate that current LLMs, when combined with a suitable pair-selection method, can substantially reduce or even eliminate the manual effort required to label use case-specific training data for entity matching.",
+      "authors": [
+        "Aaron Steiner",
+        "Christian Bizer"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-06-27T09:15:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.28823v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "leverages pretrained LLMs as teachers to label data for downstream entity matching",
+      "llm_evidence_cn": "利用预训练LLM作为教师标注数据用于下游实体匹配",
+      "llm_evidence": "利用预训练LLM作为教师标注数据用于下游实体匹配",
+      "canonical_evidence": "利用预训练LLM作为教师标注数据用于下游实体匹配",
+      "llm_tldr_en": "LLM labels training data for entity matching via knowledge distillation, enabling efficient student models.",
+      "llm_tldr_cn": "通过知识蒸馏用LLM标注实体匹配训练数据，实现高效学生模型。",
+      "llm_tldr": "通过知识蒸馏用LLM标注实体匹配训练数据，实现高效学生模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.28864v1",
+      "source": "arxiv",
+      "title": "On Test-Time Scaling for Vision-Language Models",
+      "abstract": "Test-time scaling is a paradigm where large models use additional compute at inference to achieve better performance, without changing model weights. While it has been widely studied for Large Language Models (LLMs), its applicability to Large Vision-Language Models (LVLMs) remains less explored and analyzed, with limited analysis of whether, when, and to what extent these approaches transfer to LVLMs. In this work, we ask a simple but fundamental question: can conventional test-time scaling methods developed for LLMs be directly applied to LVLMs? We present the first comprehensive study of test-time scaling for LVLMs, spanning multiple models and model sizes, nine test-time scaling methods, and six diverse benchmarks. Our main findings is that 1) different from previous findings, small, well-performing models benefit the most from test-time scaling, enabling performance improvements of up to around 30\\%, reaching large models performance, and often outperforming them, 2) LVLMs lose focus when given more compute than necessary, and 3) Visual information is encoded early in the reasoning chain, after which the chain is dominated by text-only reasoning and the contribution of image tokens drops significantly. Finally, we also provide a global and fine-grained analysis on the quality and information sufficiency of the reasoning chains produced. Overall, our findings and analysis provide practical guidance and insights into LVLMs and their deployment in research and industry.",
+      "authors": [
+        "Fawaz Sammani",
+        "Tzoulio Chamiti",
+        "Nikos Deligiannis"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-27T11:12:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.28864v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "test-time scaling to improve pretrained vision-language models without weight changes",
+      "llm_evidence_cn": "测试时缩放提升预训练视觉语言模型性能，无需修改权重",
+      "llm_evidence": "测试时缩放提升预训练视觉语言模型性能，无需修改权重",
+      "canonical_evidence": "测试时缩放提升预训练视觉语言模型性能，无需修改权重",
+      "llm_tldr_en": "Systematic study of test-time scaling methods for LVLMs to enhance downstream performance.",
+      "llm_tldr_cn": "系统研究测试时缩放方法以提升大型视觉语言模型的下游性能。",
+      "llm_tldr": "系统研究测试时缩放方法以提升大型视觉语言模型的下游性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
