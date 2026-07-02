@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-02
-- 运行时间：2026-07-02 05:19:59 北京时间
+- 最新运行日期：2026-07-03
+- 运行时间：2026-07-03 04:32:08 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日聚焦前沿时序模型与语音识别突破，精读两篇9分研究揭示宏观经济预测与语音识别的创新框架。  
-最值得关注的是《MACROCAST》通过保持时间一致性打造实时宏观预测基础模型，以及《CTC-Seeded》用令牌编辑提升非自回归语音识别。  
-建议读者把这两项技术当作“稳定时间感知”和“错误自纠正”的案例，思考它们在你所在领域的迁移可能。
-- 详情：[/202607/02/README](/202607/02/README)
+今日精读聚焦脑机统一建模与EEG时序特征，速读覆盖触觉提示、高效微调及稳健信息抽取前沿。  
+满分之作 BrainJanus 首次实现脑信号与视觉、语言的统一理解与生成，EEG 基础模型的时间特征提取对比实验给出明确选型建议。  
+建议普通读者关注跨越生物信号与生成式AI的融合趋势，可先从触觉提示与语言动作模型入手跟进具身智能进展。
+- 详情：[/202607/03/README](/202607/03/README)
 
 ### 精读区论文标签
-1. [MACROCAST: A Vintage-Consistent Time Series Foundation Model for Real-Time Macroeconomic Forecasting](/202607/02/2606.28670v1-macrocast-a-vintage-consistent-time-series-foundation-model-for-real-time-macroeconomic-forecasting)  
+1. [BrainJanus: A Unified Model for Understanding and Generation across Brain, Vision, and Language](/202607/03/2606.30319v1-brainjanus-a-unified-model-for-understanding-and-generation-across-brain-vision-and-language)  
+   标签：评分：10.0/10、query:ndai
+   evidence：统一脑模型将神经信号解码为语言和动作
+2. [Temporal Feature Extractors in EEG Foundation Models: A Controlled Comparison Including a Pretrained Time-Series Model](/202607/03/2606.30104v1-temporal-feature-extractors-in-eeg-foundation-models-a-controlled-comparison-including-a-pretrained-time-series-model)  
    标签：评分：9.0/10、query:ndai
-   evidence：时间序列基础模型用于预测
-2. [CTC-Seeded Token Edit Refinement for Non-Autoregressive Speech Recognition](/202607/02/2606.28732v1-ctc-seeded-token-edit-refinement-for-non-autoregressive-speech-recognition)  
+   evidence：EEG基础模型中的时序特征提取器
+3. [MuonSSM: Orthogonalizing State Space Models for Sequence Modeling](/202607/03/2606.30461v1-muonssm-orthogonalizing-state-space-models-for-sequence-modeling)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过编辑操作将CTC输出转换为精炼序列
-3. [Computing Lewis weights to high precision using local relative smoothness](/202607/02/2606.29186v1-computing-lewis-weights-to-high-precision-using-local-relative-smoothness)  
+   evidence：用于长序列建模和预测的状态空间模型
+4. [SIGMA: Saliency-Guided Sparse Mask Attacks for Speech Emotion Recognition](/202607/03/2606.30550v1-sigma-saliency-guided-sparse-mask-attacks-for-speech-emotion-recognition)  
    标签：评分：9.0/10、query:ndai
-   evidence：计算矩阵行的Lewis权重作为重要性度量
-4. [BrainRiem: Riemannian Prototype Learning for Source-Free Cross-Site Brain Network Diagnosis](/202607/02/2606.29200v1-brainriem-riemannian-prototype-learning-for-source-free-cross-site-brain-network-diagnosis)  
+   evidence：使用显著性图作为语音情感识别中输入特征的重要性权重
+5. [Creating Intelligence: A Computational Foundation for AGI](/202607/03/2606.31819v1-creating-intelligence-a-computational-foundation-for-agi)  
    标签：评分：9.0/10、query:ndai
-   evidence：无源域适应的脑网络诊断
-5. [CellDETR: A Detection-Guided Framework for Scalable Cell Representation Learning from Histopathology Images](/202607/02/2606.29463v1-celldetr-a-detection-guided-framework-for-scalable-cell-representation-learning-from-histopathology-images)  
-   标签：评分：9.0/10、query:ndai
-   evidence：从原始病理图像学习紧凑的细胞表示
+   evidence：使用超维计算模拟生物神经群体编码
 
 ### 速读区论文标签
-1. [Improving Patient Subtyping on Longitudinal Data using Representations from Mamba-based Architecture](/202607/02/2606.28623v1-improving-patient-subtyping-on-longitudinal-data-using-representations-from-mamba-based-architecture)  
+1. [TAP-VLA: Tactile Annotation Prompting for Vision Language Action Models](/202607/03/2606.29089v1-tap-vla-tactile-annotation-prompting-for-vision-language-action-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于Mamba的纵向电子病历自监督表示学习
-2. [ComMem: Complementary Memory Systems for Test-Time Adaptation of Vision-Language Models](/202607/02/2606.28719v1-commem-complementary-memory-systems-for-test-time-adaptation-of-vision-language-models)  
+   evidence：利用预训练VLA并通过注释提示适应触觉领域
+2. [BaRA: Bayesian Adaptive Rank Allocation for Parameter-Efficient Fine-Tuning](/202607/03/2606.29184v1-bara-bayesian-adaptive-rank-allocation-for-parameter-efficient-fine-tuning)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用互补记忆的视觉语言模型测试时自适应
-3. [Labeling Training Data for Entity Matching Using Large Language Models](/202607/02/2606.28823v1-labeling-training-data-for-entity-matching-using-large-language-models)  
+   evidence：贝叶斯自适应秩分配用于低数据场景下的参数高效微调
+3. [LC-ICL: Label-Guided Contrastive In-Context Learning for Robust Information Extraction](/202607/03/2606.29407v1-lc-icl-label-guided-contrastive-in-context-learning-for-robust-information-extraction)  
    标签：评分：8.0/10、query:ndai
-   evidence：利用预训练LLM作为教师标注数据用于下游实体匹配
-4. [On Test-Time Scaling for Vision-Language Models](/202607/02/2606.28864v1-on-test-time-scaling-for-vision-language-models)  
+   evidence：利用正负样本的上下文学习进行少样本信息抽取
+4. [Robust Zero-shot Anomaly Detection under Limited Auxiliary Anomaly Priors](/202607/03/2606.29428v1-robust-zero-shot-anomaly-detection-under-limited-auxiliary-anomaly-priors)  
    标签：评分：8.0/10、query:ndai
-   evidence：测试时缩放提升预训练视觉语言模型性能，无需修改权重
-5. [SIGNET: Motion-Level Knowledge Transfer for Cross-Language Sign Language Translation](/202607/02/2606.28626v1-signet-motion-level-knowledge-transfer-for-cross-language-sign-language-translation)  
+   evidence：有限辅助异常先验下的零样本异常检测
+5. [Unified Complex-valued Neural Network: A Magnitude-Phase Computational Model for Event-Driven Neuromorphic Learning](/202607/03/2606.29099v1-unified-complex-valued-neural-network-a-magnitude-phase-computational-model-for-event-driven-neuromorphic-learning)  
    标签：评分：7.0/10、query:ndai
-   evidence：从预训练模型迁移运动级知识用于手语翻译
+   evidence：用于事件驱动神经形态学习的复数神经网络；幅度-相位表示适合神经活动
 

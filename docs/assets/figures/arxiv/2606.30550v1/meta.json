@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.30550v1/fig-003.webp",
+      "caption": "Fig. 1. Workflow of SIGMA for SER. Raw waveforms are first encoded by a self-supervised speech encoder into frame-level features. An XAI saliency extractor on a surrogate classifier assigns per-frame importance. The top-k salient coordinates define a binary mask under a fixed sparsity budget. Attacks then update only inside the mask under a norm budget for a small number of iterations, yielding adversarial features. The perturbation process is conducted in the feature space as a controlled analytical setting.",
+      "page": 3,
+      "index": 3,
+      "width": 910,
+      "height": 471
+    },
+    {
+      "url": "assets/figures/arxiv/2606.30550v1/fig-001.webp",
+      "caption": "TABLE III SPARSE WHITE-BOX COMPARISON UNDER THE SAME BUDGET ON IEMOCAP. “AVG TIME” IS COMPUTED OVER SUCCESSFUL SAMPLES ONLY.",
+      "page": 7,
+      "index": 1,
+      "width": 740,
+      "height": 444
+    },
+    {
+      "url": "assets/figures/arxiv/2606.30550v1/fig-002.webp",
+      "caption": "TABLE IV SPARSE WHITE-BOX COMPARISON UNDER THE SAME BUDGET ON TESS. “AVG TIME” IS COMPUTED OVER SUCCESSFUL SAMPLES ONLY; SALIENCY PRECOMPUTE TIME FOR OURS IS REPORTED ELSEWHERE.",
+      "page": 7,
+      "index": 2,
+      "width": 740,
+      "height": 454
+    },
+    {
+      "url": "assets/figures/arxiv/2606.30550v1/fig-004.webp",
+      "caption": "TABLE VI WHITE-BOX SPARSE PGD0 SHIFT ON EMOTION2VEC ON TESS. (BASELINE = PGD0 , ε = 0.02, K = 20%, STEPS= 10). METRICS (MEAN±STD) ON TARGET CLEAN-CORRECT SAMPLES WITH TARGET-SIDE SALIENCY. ∗ DENOTE SIGNIFICANT DIFFERENCES VS BASELINE BY PAIRED TEST (p<0.001)",
+      "page": 8,
+      "index": 4,
+      "width": 748,
+      "height": 343
+    },
+    {
+      "url": "assets/figures/arxiv/2606.30550v1/fig-005.webp",
+      "caption": "TABLE V WHITE-BOX SPARSE PGD0 SHIFT ON EMOTION2VEC ON IEMOCAP (BASELINE = PGD0 , ε = 0.02, K = 20%, STEPS= 10). METRICS (MEAN±STD) ON TARGET CLEAN-CORRECT SAMPLES WITH TARGET-SIDE SALIENCY. ∗ DENOTE SIGNIFICANT DIFFERENCES VS BASELINE BY PAIRED TEST (p<0.001)",
+      "page": 8,
+      "index": 5,
+      "width": 748,
+      "height": 344
+    },
+    {
+      "url": "assets/figures/arxiv/2606.30550v1/fig-006.webp",
+      "caption": "TABLE VII WHITE-BOX TRANSFER RESULTS ON IEMOCAP. BASELINE RESULTS REPRESENT DIRECT TARGET-SPECIFIC WHITE-BOX ATTACKS (SERVING AS UPPER BOUNDS), AS THEIR SPARSE SELECTION INDICES ARE HIGHLY TARGET-DEPENDENT.",
+      "page": 9,
+      "index": 6,
+      "width": 520,
+      "height": 519
+    },
+    {
+      "url": "assets/figures/arxiv/2606.30550v1/fig-007.webp",
+      "caption": "TABLE VIII BLACK-BOX ONE-SHOT 0-QUERY TRANSFER ON IEMOCAP. THE SURROGATE IS FIXED TO BaseModel FOR EACH SSL. ADVERSARIAL EXAMPLES ARE CRAFTED ONCE ON THE SURROGATE AND APPLIED TO EACH TARGET WITHOUT ANY QUERIES. BUDGETS ARE ALIGNED WITHIN EACH SSL. STARS INDICATE A SIGNIFICANT IMPROVEMENT OVER MI-FGSM ON THE SAME TARGET BY MCNEMAR’S EXACT TWO-SIDED TEST (∗p<.001).",
+      "page": 9,
+      "index": 7,
+      "width": 488,
+      "height": 350
+    }
+  ]
+}

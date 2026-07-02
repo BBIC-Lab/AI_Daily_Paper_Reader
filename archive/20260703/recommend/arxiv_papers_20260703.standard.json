@@ -1,0 +1,415 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-02T20:28:37.226851+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 37,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 83,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 9,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 4,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2606.30319v1",
+      "source": "arxiv",
+      "title": "BrainJanus: A Unified Model for Understanding and Generation across Brain, Vision, and Language",
+      "abstract": "Modeling the bidirectional correspondence between external sensory stimuli and internal neural activity has emerged as a critical frontier in neuroscience. However, existing approaches predominantly treat brain encoding and decoding as isolated tasks, relying heavily on unimodal alignment and external priors while overlooking the brain's intrinsic nature as a multimodal integration system. To address these limitations, we propose BrainJanus, the first unified brain model that integrates brain, vision, and language within a single framework. Specifically, we introduce a Unified Brain Tokenizer to quantize continuous neural dynamics into discrete tokens aligned with visual and linguistic representations in a shared Omni space. Building on this, we utilize an All-in-One autoregressive architecture that leverages next-token prediction to enable seamless any-to-any generation, which encompasses image-to-brain and text-to-brain encoding, and brain-to-image and brain-to-text decoding. Extensive experiments demonstrate that BrainJanus achieves superior performance across diverse benchmarks. Furthermore, our framework exhibits zero-shot generalization and preserves interpretable biological topography, highlighting its potential as a general-purpose brain modeling paradigm. The code is available at \\href{https://github.com/HaitaoWuTJU/BrainJanus}{GitHub}.",
+      "authors": [
+        "Haitao Wu",
+        "Qirui Zhang",
+        "Zhouheng Yao",
+        "Shangquan Sun",
+        "Qihao Zheng",
+        "Mianxin Liu",
+        "Chi Zhang",
+        "Wanli Ouyang",
+        "Chunfeng Song",
+        "Changqing Zhang",
+        "Jiamin Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-29T14:02:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.30319v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "unified brain model for decoding neural signals into language and actions",
+      "llm_evidence_cn": "统一脑模型将神经信号解码为语言和动作",
+      "llm_evidence": "统一脑模型将神经信号解码为语言和动作",
+      "canonical_evidence": "统一脑模型将神经信号解码为语言和动作",
+      "llm_tldr_en": "Unified model integrating brain, vision, and language for bidirectional encoding-decoding.",
+      "llm_tldr_cn": "统一脑视觉语言模型实现双向编码解码",
+      "llm_tldr": "统一脑视觉语言模型实现双向编码解码",
+      "llm_tags": [
+        "query:ndai:composite"
+      ],
+      "matched_query_tag": "query:ndai:composite",
+      "matched_query_text": "Papers central to AI启发神经解码方法, especially work that connects or combines: methods for analyzing and predicting sequential data over time; learning compact and meaningful representations from raw data; algorithms for converting model outputs into sequences; techniques for adapting models to new domains with limited labeled data; leveraging knowledge from pretrained models for downstream tasks; methods that compute importance weights for input features; decoding neural signals into language or actions; transfer learning for brain computer interfaces; sequence modeling for neural data; representation learning for neural activity.",
+      "matched_requirement_id": "req-composite-ndai",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.30104v1",
+      "source": "arxiv",
+      "title": "Temporal Feature Extractors in EEG Foundation Models: A Controlled Comparison Including a Pretrained Time-Series Model",
+      "abstract": "Electroencephalography (EEG) foundation models aim to learn generalizable representations from large-scale brain recordings. However, the role of temporal feature extractors and whether pretrained time-series foundation models (TSFMs) can be effectively transferred to this setting remains underexplored. We conduct a controlled comparison of three temporal feature extraction strategies, including a linear baseline, a convolutional encoder, and a frozen pretrained TSFM (MOMENT), within a unified EEG foundation model. We evaluate their impact on representation quality using two downstream tasks: motor imagery and emotion recognition. Results reveal different trends across the evaluated benchmarks. On the motor imagery dataset, simple temporal representations perform competitively, whereas the emotion dataset benefits from richer temporal modeling. Although not specifically adapted to EEG, the pretrained TSFM serves as an effective temporal feature extractor, suggesting that general-purpose time-series representations can be transferred as frozen temporal feature extractors within EEG foundation models.",
+      "authors": [
+        "Ayşe Betül Yüce",
+        "Chris Joey Leffler",
+        "Sarun Varghese",
+        "Myra Spiliopoulou",
+        "Sebastian Stober"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-29T10:39:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.30104v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "temporal feature extractors for EEG foundation models",
+      "llm_evidence_cn": "EEG基础模型中的时序特征提取器",
+      "llm_evidence": "EEG基础模型中的时序特征提取器",
+      "canonical_evidence": "EEG基础模型中的时序特征提取器",
+      "llm_tldr_en": "Controlled comparison of temporal features for EEG foundation models on two downstream tasks.",
+      "llm_tldr_cn": "在EEG基础模型中比较时序特征提取策略，评估其在下游任务上的表现。",
+      "llm_tldr": "在EEG基础模型中比较时序特征提取策略，评估其在下游任务上的表现。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.30461v1",
+      "source": "arxiv",
+      "title": "MuonSSM: Orthogonalizing State Space Models for Sequence Modeling",
+      "abstract": "State space models (SSMs) have emerged as efficient linear-time alternatives to attention for long-sequence modeling. However, existing SSMs often suffer from instability and memory degradation over extended horizons due to poorly conditioned first-order updates and unbalanced update geometry. We introduce MuonSSM, a general framework that stabilizes SSM training by explicitly conditioning the geometry of memory updates rather than the recurrent transition matrix. MuonSSM augments SSMs with a momentum-based pathway and a lightweight Newton Schulz transformation on low-rank input injections, yielding bounded and spectrally conditioned updates while preserving parallel scan complexity. Theory shows that MuonSSM improves gradient propagation, mitigates spectral amplification, and enriches memory representations over long horizons. Extensive experiments across language, vision, and time-series benchmarks show consistent gains in accuracy, robustness, and long-context performance when integrated into diverse SSM backbones. These results establish geometric conditioning of updates as a principled pathway to stable, scalable sequence modeling.",
+      "authors": [
+        "Thai-Khanh Nguyen",
+        "Ngoc-Bich-Uyen Vo",
+        "Thieu N. Vo",
+        "Tan M. Nguyen",
+        "Cuong Pham"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-29T15:27:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.30461v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "state space models for long sequence modeling and prediction",
+      "llm_evidence_cn": "用于长序列建模和预测的状态空间模型",
+      "llm_evidence": "用于长序列建模和预测的状态空间模型",
+      "canonical_evidence": "用于长序列建模和预测的状态空间模型",
+      "llm_tldr_en": "Introduces MuonSSM to stabilize SSM training for improved long-sequence modeling",
+      "llm_tldr_cn": "提出MuonSSM以稳定状态空间模型训练，提升长序列建模",
+      "llm_tldr": "提出MuonSSM以稳定状态空间模型训练，提升长序列建模",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.30550v1",
+      "source": "arxiv",
+      "title": "SIGMA: Saliency-Guided Sparse Mask Attacks for Speech Emotion Recognition",
+      "abstract": "Speech conveys rich emotional information. As Speech Emotion Recognition (SER) is usually deployed in privacy-sensitive and reliability-critical environments, adversarial attacks on SER have attracted increasing attention. Existing sparse attacks control the number of perturbed elements, yet, they often lack explainability guidance and explicit measures of explanation consistency. A unified treatment of sparsity and magnitude constraints is also uncommon. In addition, transferability across attack families and target models remains limited. Hence, we propose a SalIency-Guided sparse Mask Attack (SIGMA). On self-supervised speech features, we use post-hoc explainable artificial intelligence (XAI) techniques to produce saliency maps and identify the scope of the mask, and then restrict magnitude-bounded updates to this mask. The mask is computed once and can be reused across models and different sparsity attacks to amortise cost. We evaluate on the IEMOCAP and TESS datasets. Under matched budgets and across multiple sparse-attack settings, SIGMA maintains competitive attack success rates, navigating a conscious trade-off between attack efficacy and explanation consistency. SIGMA therefore provides an efficient and interpretable framework for analysing the vulnerability and explanation behaviour of SER models under structured perturbations.",
+      "authors": [
+        "Qiyang Sun",
+        "Yi Chang",
+        "Zixing Zhang",
+        "Björn W. Schuller"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-06-29T16:48:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.30550v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses saliency maps as importance weights for input features in speech emotion recognition",
+      "llm_evidence_cn": "使用显著性图作为语音情感识别中输入特征的重要性权重",
+      "llm_evidence": "使用显著性图作为语音情感识别中输入特征的重要性权重",
+      "canonical_evidence": "使用显著性图作为语音情感识别中输入特征的重要性权重",
+      "llm_tldr_en": "SIGMA uses saliency-guided sparse masks for adversarial attacks on speech emotion recognition.",
+      "llm_tldr_cn": "SIGMA使用显著性引导的稀疏掩码进行语音情感识别对抗攻击。",
+      "llm_tldr": "SIGMA使用显著性引导的稀疏掩码进行语音情感识别对抗攻击。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31819v1",
+      "source": "arxiv",
+      "title": "Creating Intelligence: A Computational Foundation for AGI",
+      "abstract": "This work introduces a new computational theory of mind grounded in set theory and hyperdimensional computing. Whereas traditional neural networks rely on continuous weights and matrix multiplication, this framework works with sparse binary data. It represents information as discrete sets, directly modeling biological neural population codes. I demonstrate that associative memory emerges naturally from network topologies featuring a combinatorially expanded hidden layer. Learning is driven by topological plasticity rather than scalar weight adjustments. This architecture unifies auto-associative and hetero-associative learning under a single core algorithm: information retrieval via subset pattern matching and exact nearest-neighbor search. Operating with constant-time complexity, these mechanisms bridge perceptual data (sparse distributed representations) and symbols (sparse holographic representations) without continuous bottlenecks. Mapping this framework to neuroanatomy, I propose that both the cerebellum and the neocortex implement variants of this algorithm, making subset pattern matching the fundamental engine of cognition. Because it relies on discrete logic rather than matrix arithmetic, this algorithm translates directly into in-memory hardware. This opens a new route toward synthetic intelligence with human-level energy efficiency.",
+      "authors": [
+        "Peter Overmann"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-30T15:30:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.31819v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "models biological neural population codes using hyperdimensional computing",
+      "llm_evidence_cn": "使用超维计算模拟生物神经群体编码",
+      "llm_evidence": "使用超维计算模拟生物神经群体编码",
+      "canonical_evidence": "使用超维计算模拟生物神经群体编码",
+      "llm_tldr_en": "A new computational theory using set theory and hyperdimensional computing models neural representation.",
+      "llm_tldr_cn": "基于集合论和超维计算的新计算理论模拟神经表征。",
+      "llm_tldr": "基于集合论和超维计算的新计算理论模拟神经表征。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.29089v1",
+      "source": "arxiv",
+      "title": "TAP-VLA: Tactile Annotation Prompting for Vision Language Action Models",
+      "abstract": "Vision-Language-Action (VLA) models demonstrate impressive reasoning over visual, semantic, and spatial task variations by leveraging large-scale vision and language pre-training. They remain, however, largely blind to contact forces, which seldom manifest clearly in visual feedback but are central to contact-rich manipulation. Tactile sensing measures these forces directly, but integrating it into VLAs is difficult: tactile data is absent from the large-scale corpora used to pre-train VLAs, so adding it as a new input modality induces a distribution shift that erodes the very pre-training that makes VLAs effective. We propose Tactile Annotation Prompting for Vision-Language-Action models (TAP-VLA), a simple framework that supplies tactile feedback through visual augmentation rather than architectural change. TAP-VLA extracts shear fields from visuo-tactile sensors and overlays them as spatially-grounded vectors onto the multi-view RGB images the policy already consumes, yielding a clear, interpretable tactile cue in the VLA's native observation space. Because the architecture is untouched, the approach requires no tactile pre-training, adds negligible compute, and stays close to the pre-training distribution. Across four contact-rich tasks, TAP-VLA succeeds on 78% of trials, compared to under 50% for vision-only fine-tuning and alternative tactile-fusion baselines -- including tasks where the baselines perform no better than chance.",
+      "authors": [
+        "Mark Van der Merwe",
+        "Mohamad Louai Shehab",
+        "Jayjun Lee",
+        "Youngsun Wi",
+        "Yinpei Dai",
+        "Dmitry Berenson",
+        "Nima Fazeli"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-27T21:06:06+00:00",
+      "link": "https://arxiv.org/pdf/2606.29089v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "leverages pretrained VLAs and adapts to tactile domain via annotation prompting",
+      "llm_evidence_cn": "利用预训练VLA并通过注释提示适应触觉领域",
+      "llm_evidence": "利用预训练VLA并通过注释提示适应触觉领域",
+      "canonical_evidence": "利用预训练VLA并通过注释提示适应触觉领域",
+      "llm_tldr_en": "Proposes TAP-VLA to integrate tactile feedback into vision-language-action models without retraining.",
+      "llm_tldr_cn": "提出TAP-VLA，无需重新训练即可将触觉反馈集成到视觉-语言-动作模型中。",
+      "llm_tldr": "提出TAP-VLA，无需重新训练即可将触觉反馈集成到视觉-语言-动作模型中。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29099v1",
+      "source": "arxiv",
+      "title": "Unified Complex-valued Neural Network: A Magnitude-Phase Computational Model for Event-Driven Neuromorphic Learning",
+      "abstract": "Artificial neural networks (ANN) provide accurate continuous-valued representation, whereas spiking neural networks (SNN) offer event-driven temporal processing, yet both paradigms face limitations when value encoding and timing dynamics must be learned within a single computational structure. This paper introduces a network based on Unified Complex-valued Neuron (UCN), a new neural computational model that integrates continuous activation and phase-driven event generation through an asymmetric complex-valued state. In the UCN, magnitude encodes signal strength while phase governs intrinsic temporal evolution and valued spike emission. A foundational training framework combining backpropagation (BP) and backpropagation through time (BPTT) is first developed to optimize magnitude and phase pathways in a unified way. To reduce computational complexity, an event-driven adaptive phase learning (EAPL) rule is then introduced as a more efficient alternative. The proposed model is evaluated through object tracking and Lorenz attractor learning. Results demonstrate that UCN-based Network (UCNN) provides accurate, stable, and interpretable spatiotemporal learning while preserving sparse event-driven computation for neuromorphic and edge-AI applications.",
+      "authors": [
+        "Reza Ahmadvand",
+        "Sarah Safura Sharif",
+        "Yaser Mike Banad"
+      ],
+      "primary_category": "cs.NE",
+      "categories": [
+        "cs.NE",
+        "cs.AI"
+      ],
+      "published": "2026-06-27T21:59:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.29099v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "complex-valued neural network for event-driven neuromorphic learning; magnitude-phase representation suitable for neural activity",
+      "llm_evidence_cn": "用于事件驱动神经形态学习的复数神经网络；幅度-相位表示适合神经活动",
+      "llm_evidence": "用于事件驱动神经形态学习的复数神经网络；幅度-相位表示适合神经活动",
+      "canonical_evidence": "用于事件驱动神经形态学习的复数神经网络；幅度-相位表示适合神经活动",
+      "llm_tldr_en": "Unified Complex-valued Neural Network integrates magnitude and phase for event-driven neuromorphic learning.",
+      "llm_tldr_cn": "统一复数神经网络结合幅度和相位用于事件驱动的神经形态学习。",
+      "llm_tldr": "统一复数神经网络结合幅度和相位用于事件驱动的神经形态学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29184v1",
+      "source": "arxiv",
+      "title": "BaRA: Bayesian Adaptive Rank Allocation for Parameter-Efficient Fine-Tuning",
+      "abstract": "While Low-rank adaptation (LoRA) enables highly efficient fine-tuning by constraining task-specific updates to fixed low-rank subspaces, this rigid design limits representational flexibility and often results in overconfident predictions and miscalibrated uncertainty, especially in low-data regimes. Recent Bayesian LoRA variants improve uncertainty estimation by modeling posterior distributions over adaptation parameters. However, these approaches typically rely on fixed or heuristically determined ranks, overlooking the inherently context-dependent nature of adaptation capacity. In this paper, we propose BaRA, a Bayesian Adaptive Rank Allocation framework for parameter-efficient fine-tuning. Drawing inspiration from probabilistic topic models, BaRA dynamically allocates adaptation capacity by activating a sparse, context-dependent subset of disentangled latent factors, enabling instance-wise variation in effective rank. This Bayesian formulation provides principled, data-driven capacity control, mitigating over-parameterization while preserving expressiveness. Beyond the modeling contribution, we provide a complexity-theoretic generalization analysis showing that the generalization gap of BaRA depends on the learned joint effective rank $\\bar{s}_{Φ,θ}$ induced by the global-local gate, rather than the maximum rank $r$. This result explains why sparse adaptive rank allocation can reduce the effective hypothesis complexity while preserving input-dependent expressiveness. Extensive experiments on diverse natural language benchmarks demonstrate that BaRA consistently improves predictive performance, robustness, and uncertainty calibration compared to standard LoRA and existing Bayesian LoRA variants.",
+      "authors": [
+        "Zhibin Duan",
+        "Yuhong Wang",
+        "Jiahong Fu",
+        "Zongsheng Yue",
+        "Bo Chen",
+        "Zongben Xu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-28T04:08:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.29184v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Bayesian adaptive rank allocation for parameter-efficient fine-tuning in low-data regimes",
+      "llm_evidence_cn": "贝叶斯自适应秩分配用于低数据场景下的参数高效微调",
+      "llm_evidence": "贝叶斯自适应秩分配用于低数据场景下的参数高效微调",
+      "canonical_evidence": "贝叶斯自适应秩分配用于低数据场景下的参数高效微调",
+      "llm_tldr_en": "Proposes Bayesian adaptive rank allocation for fine-tuning pretrained models, improving adaptation with limited data.",
+      "llm_tldr_cn": "提出贝叶斯自适应秩分配微调预训练模型，在有限数据下提升适配效果。",
+      "llm_tldr": "提出贝叶斯自适应秩分配微调预训练模型，在有限数据下提升适配效果。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29407v1",
+      "source": "arxiv",
+      "title": "LC-ICL: Label-Guided Contrastive In-Context Learning for Robust Information Extraction",
+      "abstract": "There has been increasing interest in exploring the capabilities of advanced large language models (LLMs) in the field of information extraction (IE), specifically focusing on tasks related to named entity recognition (NER) and relation extraction (RE).Although researchers are exploring the use of few-shot information extraction through in-context learning with LLMs, they tend to focus only on using correct or positive examples for demonstration, neglecting the potential value of incorporating incorrect or negative examples into the learning process.In this paper, we present LC-ICL a novel few-shot technique that leverages both correct and incorrect sample constructions to create in-context learning demonstrations. This approach enhances the ability of LLMs to extract entities and relations by combining positive samples with negative samples annotated by error-cause labels. These labels expose more detailed error features in erroneous examples, enabling the model to understand why similar predictions fail and avoid repeating such errors during inference.Specifically, our proposed method taps into the inherent contextual information and valuable information in hard negative samples and the nearest positive neighbors to the test and then applies the in-context learning demonstrations based on LLMs. Our experiments on various datasets indicate that LC-ICL outperforms previous few-shot in-context learning methods, delivering substantial enhancements in performance across a broad spectrum of related tasks. These improvements are noteworthy, showcasing the versatility of our approach in diverse scenarios.",
+      "authors": [
+        "Xiao You",
+        "Tianwei Yan",
+        "Shan Zhao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-06-28T14:01:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.29407v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Few-shot information extraction using in-context learning with positive and negative examples",
+      "llm_evidence_cn": "利用正负样本的上下文学习进行少样本信息抽取",
+      "llm_evidence": "利用正负样本的上下文学习进行少样本信息抽取",
+      "canonical_evidence": "利用正负样本的上下文学习进行少样本信息抽取",
+      "llm_tldr_en": "LC-ICL improves few-shot IE by incorporating both correct and incorrect examples in demonstrations.",
+      "llm_tldr_cn": "LC-ICL通过在示范中纳入正确和错误示例来改进少样本信息抽取。",
+      "llm_tldr": "LC-ICL通过在示范中纳入正确和错误示例来改进少样本信息抽取。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29428v1",
+      "source": "arxiv",
+      "title": "Robust Zero-shot Anomaly Detection under Limited Auxiliary Anomaly Priors",
+      "abstract": "Zero-shot anomaly detection aims to identify defects in arbitrary novel domains; however, existing models assume that the auxiliary data contains a rich diversity of anomalies, neglecting the far more complex and unpredictable variations in real-world target domains. This study introduces DIVE, the first approach to investigate the scenario of limited auxiliary anomaly priors and resolve the resulting substantial performance degradation. Through a shallow-and-deep text embedding injection strategy during visual encoding, DIVE learns to abstract generic anomaly concepts shared across the auxiliary training domain and diverse target domains. Moreover, we propose a disentanglement mechanism to tackle the suboptimal alignment between visual embeddings entangled with object semantics and object-agnostic textual prompts. Experiments demonstrate that, under the setting of limited anomaly patterns in auxiliary data, DIVE outperforms SOTA baselines by up to 16.2% and 28.5% on two classification metrics, and 23.4%, 24.1%, and 47.0% on three segmentation metrics, in terms of average performance across twelve datasets. Furthermore, it maintains highly competitive performance when auxiliary data exhibits sufficient anomaly diversity.",
+      "authors": [
+        "Guanyu Lu",
+        "Fang Zhou",
+        "Cheqing Jin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-28T14:44:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.29428v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "zero-shot anomaly detection with limited auxiliary anomaly priors",
+      "llm_evidence_cn": "有限辅助异常先验下的零样本异常检测",
+      "llm_evidence": "有限辅助异常先验下的零样本异常检测",
+      "canonical_evidence": "有限辅助异常先验下的零样本异常检测",
+      "llm_tldr_en": "DIVE adapts to novel domains with limited anomaly priors using text embeddings and disentanglement.",
+      "llm_tldr_cn": "DIVE利用文本嵌入和解耦机制，在有限异常先验下适应新领域。",
+      "llm_tldr": "DIVE利用文本嵌入和解耦机制，在有限异常先验下适应新领域。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

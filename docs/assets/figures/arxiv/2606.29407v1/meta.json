@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.29407v1/fig-001.webp",
+      "caption": "Fig. 1. Using the relation extraction (RE) task as an example, this figure illustrates the core mechanism of LC-ICL. When performing direct inference, large models are prone to generating a large number of errors with specific patterns. LC-ICL introduces an error labeling system that feeds back error types to the model, guiding it to refine its generation, thereby significantly reducing errors and improving inference accuracy.",
+      "page": 1,
+      "index": 1,
+      "width": 520,
+      "height": 296
+    },
+    {
+      "url": "assets/figures/arxiv/2606.29407v1/fig-007.webp",
+      "caption": "TABLE I PERFORMANCE COMPARISON ON RE BENCHMARKS IN TERMS OF F1 SCORE (%). ICL DENOTES THE MODEL PERFORMING IN-CONTEXT LEARNING WITHOUT PARAMETER UPDATES. PE REFERS TO USING ONLY POSITIVE EXAMPLES, WHICH IS THE TRADITIONAL ICL, WHILE LC-ICL, OUR METHOD, INCLUDES BOTH POSITIVE AND NEGATIVE EXAMPLES.",
+      "page": 5,
+      "index": 7,
+      "width": 990,
+      "height": 208
+    },
+    {
+      "url": "assets/figures/arxiv/2606.29407v1/fig-008.webp",
+      "caption": "TABLE II PERFORMANCE COMPARISON ON NER BENCHMARKS IN TERMS OF F1 SCORE (%). W/O ICL REPRESENTS ZERO-SHOT PERFORMANCE, WHILE ICL DENOTES IN-CONTEXT LEARNING. DI REFERS TO DIRECT INFERENCE, CONTRASTING WITH PE, WHICH USES ONLY POSITIVE EXAMPLES AS IN TRADITIONAL ICL. OUR METHOD, LC-ICL, INCORPORATES BOTH POSITIVE AND NEGATIVE EXAMPLES.",
+      "page": 5,
+      "index": 8,
+      "width": 990,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2606.29407v1/fig-004.webp",
+      "caption": "Fig. 4. Comparison of experimental results under two settings: using only labels (Label) versus using labels accompanied by definitional explanations (Label_Def). The results are evaluated on both NER and RE datasets. Here, Label_Def refers to the setting where definitional explanations are provided for each label, while Label represents the setting where only the label itself is provided (which is the approach adopted in this paper).",
+      "page": 8,
+      "index": 4,
+      "width": 500,
+      "height": 688
+    },
+    {
+      "url": "assets/figures/arxiv/2606.29407v1/fig-005.webp",
+      "caption": "Fig. 5. Comparison of RE and NER task performance of various methods under random retrieval strategy. We selected the ACE04 and CoNLL04 datasets to evaluate the performance of different methods. w/o_ICL indicates that ICL is not used, and the large model performs zero-shot inference directly on the test text.",
+      "page": 8,
+      "index": 5,
+      "width": 529,
+      "height": 265
+    },
+    {
+      "url": "assets/figures/arxiv/2606.29407v1/fig-006.webp",
+      "caption": "Fig. 6. A comparison of prompts between LC-ICL and ICL methods on the same RE task. The traditional ICL approach (right) includes positive examples, instructions, and a test instance. In contrast, LC-ICL (left) augments this setup by additionally incorporating a negative example, which not only presents an instance where the large language model makes a reasoning error, but also provides a set of labels indicating the reasons behind the error. For the NER task and additional examples, please refer to the appendix.",
+      "page": 9,
+      "index": 6,
+      "width": 524,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2606.29407v1/fig-003.webp",
+      "caption": "Fig. 7. Label Categorization Illustration. In the Relation Extraction (RE) task, labels are categorized into six classes, while in the Named Entity Recognition (NER) task, they are divided into five classes, each accompanied by corresponding label definitions.",
+      "page": 14,
+      "index": 3,
+      "width": 1052,
+      "height": 592
+    },
+    {
+      "url": "assets/figures/arxiv/2606.29407v1/fig-002.webp",
+      "caption": "Fig. 8. A supplementary case study on label-guided contrastive in-context learning is presented. The left side shows the results of our method, while the right side presents those of the standard ICL approach. The purple text highlights the annotated reasons for errors in negative samples. Figure 8a illustrates the results of the Named Entity Recognition (NER) task, and Figure 8b shows the results of the Relation Extraction (RE) task.",
+      "page": 15,
+      "index": 2,
+      "width": 1010,
+      "height": 1302
+    }
+  ]
+}
