@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-03
-- 运行时间：2026-07-03 04:32:08 北京时间
+- 最新运行日期：2026-07-04
+- 运行时间：2026-07-04 05:34:33 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读聚焦脑机统一建模与EEG时序特征，速读覆盖触觉提示、高效微调及稳健信息抽取前沿。  
-满分之作 BrainJanus 首次实现脑信号与视觉、语言的统一理解与生成，EEG 基础模型的时间特征提取对比实验给出明确选型建议。  
-建议普通读者关注跨越生物信号与生成式AI的融合趋势，可先从触觉提示与语言动作模型入手跟进具身智能进展。
-- 详情：[/202607/03/README](/202607/03/README)
+今日精读了跨脑-视觉-语言统一模型 BrainJanus 与神经网络训练动力学的标量表示，并速览了触觉 Transformer 等跨域迁移进展。  
+最值得关注：BrainJanus 首次用单个模型打通脑信号、视觉和语言的生成与理解；标量表示则把训练轨迹压缩为简洁几何量，揭示优化路径本质。  
+建议读者从 BrainJanus 入手体验脑启发的多模态统一，再追踪标量动力学如何简化对训练过程的可视化诊断。
+- 详情：[/202607/04/README](/202607/04/README)
 
 ### 精读区论文标签
-1. [BrainJanus: A Unified Model for Understanding and Generation across Brain, Vision, and Language](/202607/03/2606.30319v1-brainjanus-a-unified-model-for-understanding-and-generation-across-brain-vision-and-language)  
-   标签：评分：10.0/10、query:ndai
-   evidence：统一脑模型将神经信号解码为语言和动作
-2. [Temporal Feature Extractors in EEG Foundation Models: A Controlled Comparison Including a Pretrained Time-Series Model](/202607/03/2606.30104v1-temporal-feature-extractors-in-eeg-foundation-models-a-controlled-comparison-including-a-pretrained-time-series-model)  
+1. [BrainJanus: A Unified Model for Understanding and Generation across Brain, Vision, and Language](/202607/04/2606.30319v1-brainjanus-a-unified-model-for-understanding-and-generation-across-brain-vision-and-language)  
    标签：评分：9.0/10、query:ndai
-   evidence：EEG基础模型中的时序特征提取器
-3. [MuonSSM: Orthogonalizing State Space Models for Sequence Modeling](/202607/03/2606.30461v1-muonssm-orthogonalizing-state-space-models-for-sequence-modeling)  
+   evidence：跨模态脑解码与生成的统一模型
+2. [Scalar Representations of Neural Network Training Dynamics](/202607/04/2606.30384v1-scalar-representations-of-neural-network-training-dynamics)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于长序列建模和预测的状态空间模型
-4. [SIGMA: Saliency-Guided Sparse Mask Attacks for Speech Emotion Recognition](/202607/03/2606.30550v1-sigma-saliency-guided-sparse-mask-attacks-for-speech-emotion-recognition)  
+   evidence：训练轨迹的标量嵌入作为紧凑表示
+3. [PGUDA: Pressure-Guided Unsupervised Domain Adaptation with Cross-Modal Knowledge Distillation for sEMG-Based Gesture Recognition](/202607/04/2606.31349v1-pguda-pressure-guided-unsupervised-domain-adaptation-with-cross-modal-knowledge-distillation-for-semg-based-gesture-recognition)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用显著性图作为语音情感识别中输入特征的重要性权重
-5. [Creating Intelligence: A Computational Foundation for AGI](/202607/03/2606.31819v1-creating-intelligence-a-computational-foundation-for-agi)  
+   evidence：跨被试sEMG手势识别的域适应
+4. [BP-TTA: Balanced and Prototype-Guided Test-Time Adaptation in Dynamic Scenarios](/202607/04/2606.31420v1-bp-tta-balanced-and-prototype-guided-test-time-adaptation-in-dynamic-scenarios)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用超维计算模拟生物神经群体编码
+   evidence：通过平衡采样和原型引导的测试时适应，应对动态域漂移和有限标签
+5. [Sequential RC-TGAN: Generating Relational Time Series with Spectral Envelope Loss](/202607/04/2606.31904v1-sequential-rc-tgan-generating-relational-time-series-with-spectral-envelope-loss)  
+   标签：评分：9.0/10、query:ndai
+   evidence：通过谱包络损失生成保持周期结构的关系时间序列
 
 ### 速读区论文标签
-1. [TAP-VLA: Tactile Annotation Prompting for Vision Language Action Models](/202607/03/2606.29089v1-tap-vla-tactile-annotation-prompting-for-vision-language-action-models)  
+1. [Multi-Source Transfer Learning of Sparse Single-Index Models](/202607/04/2606.29658v1-multi-source-transfer-learning-of-sparse-single-index-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：利用预训练VLA并通过注释提示适应触觉领域
-2. [BaRA: Bayesian Adaptive Rank Allocation for Parameter-Efficient Fine-Tuning](/202607/03/2606.29184v1-bara-bayesian-adaptive-rank-allocation-for-parameter-efficient-fine-tuning)  
+   evidence：无源数据迁移学习适应新领域
+2. [Progressive Self-Supervised Learning with Individualized Community Assignment for Brain Network Analysis](/202607/04/2606.29695v1-progressive-self-supervised-learning-with-individualized-community-assignment-for-brain-network-analysis)  
    标签：评分：8.0/10、query:ndai
-   evidence：贝叶斯自适应秩分配用于低数据场景下的参数高效微调
-3. [LC-ICL: Label-Guided Contrastive In-Context Learning for Robust Information Extraction](/202607/03/2606.29407v1-lc-icl-label-guided-contrastive-in-context-learning-for-robust-information-extraction)  
+   evidence：面向脑网络的自监督表示学习与置信度评分
+3. [Heterogeneous Tactile Transformer](/202607/04/2606.29948v1-heterogeneous-tactile-transformer)  
    标签：评分：8.0/10、query:ndai
-   evidence：利用正负样本的上下文学习进行少样本信息抽取
-4. [Robust Zero-shot Anomaly Detection under Limited Auxiliary Anomaly Priors](/202607/03/2606.29428v1-robust-zero-shot-anomaly-detection-under-limited-auxiliary-anomaly-priors)  
+   evidence：跨异构触觉传感器的预训练共享表征
+4. [Neural Subspace Reallocation: Continual Learning as Retrieval-Based Subspace Memory Management](/202607/04/2606.30067v1-neural-subspace-reallocation-continual-learning-as-retrieval-based-subspace-memory-management)  
    标签：评分：8.0/10、query:ndai
-   evidence：有限辅助异常先验下的零样本异常检测
-5. [Unified Complex-valued Neural Network: A Magnitude-Phase Computational Model for Event-Driven Neuromorphic Learning](/202607/03/2606.29099v1-unified-complex-valued-neural-network-a-magnitude-phase-computational-model-for-event-driven-neuromorphic-learning)  
+   evidence：通过子空间重分配持续学习适应新任务
+5. [Robust Trajectory Distillation: Hybrid Reweighting Meets Teacher-Inspired Targets](/202607/04/2606.29837v1-robust-trajectory-distillation-hybrid-reweighting-meets-teacher-inspired-targets)  
    标签：评分：7.0/10、query:ndai
-   evidence：用于事件驱动神经形态学习的复数神经网络；幅度-相位表示适合神经活动
+   evidence：数据集蒸馏用于紧凑表示
 

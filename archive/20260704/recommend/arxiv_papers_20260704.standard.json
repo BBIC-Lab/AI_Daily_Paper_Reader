@@ -1,0 +1,426 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-03T21:31:47.696607+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 49,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 90,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 16,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 11,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 17
+  },
+  "deep_dive": [
+    {
+      "id": "2606.30319v1",
+      "source": "arxiv",
+      "title": "BrainJanus: A Unified Model for Understanding and Generation across Brain, Vision, and Language",
+      "abstract": "Modeling the bidirectional correspondence between external sensory stimuli and internal neural activity has emerged as a critical frontier in neuroscience. However, existing approaches predominantly treat brain encoding and decoding as isolated tasks, relying heavily on unimodal alignment and external priors while overlooking the brain's intrinsic nature as a multimodal integration system. To address these limitations, we propose BrainJanus, the first unified brain model that integrates brain, vision, and language within a single framework. Specifically, we introduce a Unified Brain Tokenizer to quantize continuous neural dynamics into discrete tokens aligned with visual and linguistic representations in a shared Omni space. Building on this, we utilize an All-in-One autoregressive architecture that leverages next-token prediction to enable seamless any-to-any generation, which encompasses image-to-brain and text-to-brain encoding, and brain-to-image and brain-to-text decoding. Extensive experiments demonstrate that BrainJanus achieves superior performance across diverse benchmarks. Furthermore, our framework exhibits zero-shot generalization and preserves interpretable biological topography, highlighting its potential as a general-purpose brain modeling paradigm. The code is available at \\href{https://github.com/HaitaoWuTJU/BrainJanus}{GitHub}.",
+      "authors": [
+        "Haitao Wu",
+        "Qirui Zhang",
+        "Zhouheng Yao",
+        "Shangquan Sun",
+        "Qihao Zheng",
+        "Mianxin Liu",
+        "Chi Zhang",
+        "Wanli Ouyang",
+        "Chunfeng Song",
+        "Changqing Zhang",
+        "Jiamin Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-29T14:02:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.30319v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "unified model for brain decoding and generation across modalities",
+      "llm_evidence_cn": "跨模态脑解码与生成的统一模型",
+      "llm_evidence": "跨模态脑解码与生成的统一模型",
+      "canonical_evidence": "跨模态脑解码与生成的统一模型",
+      "llm_tldr_en": "BrainJanus integrates brain, vision, and language via a unified tokenizer for bidirectional neural decoding and generation.",
+      "llm_tldr_cn": "BrainJanus通过统一分词器整合脑、视觉和语言，实现双向神经解码与生成。",
+      "llm_tldr": "BrainJanus通过统一分词器整合脑、视觉和语言，实现双向神经解码与生成。",
+      "llm_tags": [
+        "query:ndai:composite"
+      ],
+      "matched_query_tag": "query:ndai:composite",
+      "matched_query_text": "Papers central to AI启发神经解码方法, especially work that connects or combines: methods for analyzing and predicting sequential data over time; learning compact and meaningful representations from raw data; algorithms for converting model outputs into sequences; techniques for adapting models to new domains with limited labeled data; leveraging knowledge from pretrained models for downstream tasks; methods that compute importance weights for input features; decoding neural signals into language or actions; transfer learning for brain computer interfaces; sequence modeling for neural data; representation learning for neural activity.",
+      "matched_requirement_id": "req-composite-ndai",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.30384v1",
+      "source": "arxiv",
+      "title": "Scalar Representations of Neural Network Training Dynamics",
+      "abstract": "Training in artificial neural networks can be viewed as a trajectory evolving through a high-dimensional loss landscape. However, the large number of trainable parameters makes the direct analysis of these dynamics challenging. In this work, we treat such training trajectories as temporal networks and apply recently proposed strategies for the scalar embedding of temporal networks. We investigate whether such a scalar embedding provides a meaningful low-dimensional representation of neural network training dynamics. Using a multilayer perceptron trained on the MNIST classification task, we show that the embedding preserves the main dynamical features observed in the original parameter space, including the emergence of sensitivity to initial conditions for specific learning rate regimes and an accurate reconstruction of the network's maximum Lyapunov exponent. We then use the embedded scalar trajectory to define a characteristic time, analogous to a Lyapunov time, after which the exponential separation between initially close embedded trajectories saturates. This characteristic time captures the typical decorrelation time between initially close network trajectories in the original high-dimensional system. Finally, we investigate the statistical organization of asymptotic training states through a spacing observable defined in the embedded space. We find that the distributions of rescaled asymptotic spacings collapse onto a common form across initial conditions and are compatible with a skew lognormal distribution. Altogether, our results suggest that scalar low-dimensional embeddings provide a useful framework for studying and visualizing the dynamical properties of neural network optimization trajectories.",
+      "authors": [
+        "Pedro Jiménez-González",
+        "Miguel C. Soriano",
+        "Lucas Lacasa"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cond-mat.dis-nn",
+        "nlin.CD",
+        "physics.data-an"
+      ],
+      "published": "2026-06-29T14:40:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.30384v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "scalar embedding of temporal training trajectories as compact representation",
+      "llm_evidence_cn": "训练轨迹的标量嵌入作为紧凑表示",
+      "llm_evidence": "训练轨迹的标量嵌入作为紧凑表示",
+      "canonical_evidence": "训练轨迹的标量嵌入作为紧凑表示",
+      "llm_tldr_en": "Scalar embedding of neural network training dynamics yields low-dimensional representation preserving key features.",
+      "llm_tldr_cn": "神经网络训练动态的标量嵌入获得保留关键特征的低维表示。",
+      "llm_tldr": "神经网络训练动态的标量嵌入获得保留关键特征的低维表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31349v1",
+      "source": "arxiv",
+      "title": "PGUDA: Pressure-Guided Unsupervised Domain Adaptation with Cross-Modal Knowledge Distillation for sEMG-Based Gesture Recognition",
+      "abstract": "Surface electromyography (sEMG)-based gesture recognition has emerged as a promising technology for natural human-computer interaction. However, its practical deployment remains challenging due to severe performance degradation caused by feature distribution discrepancies across different subjects and recording sessions. Although domain adaptation (DA) techniques are commonly employed to mitigate such discrepancies, conventional methods often struggle to effectively aligning sEMG features, primarily due to their inherent stochasticity and the scarcity of labeled data. To address these limitations, this paper proposes a novel Pressure-Guided Unsupervised Domain Adaptation (PGUDA) framework, which leverages the robustness and stability of pressure signals to introduce a cross-modal knowledge distillation strategy that transfers consistent physical semantics across modalities. Specifically, a teacher network trained on pressure signals guides an sEMG student network on unlabeled target domains, thereby regularizing the representation learning process with transferable and modality-invariant knowledge. Extensive experiments conducted on a self-collected multimodal dataset involving eleven subjects validate the effectiveness of the proposed PGUDA framework. The results demonstrate that our proposed PGUDA achieves leading performance in both cross-subject and cross-session classification tasks, achieving average accuracies of 58.08% and substantially outperforming existing DA approaches. Notably, PGUDA exhibits remarkable label efficiency: it attains classification accuracy comparable to fully supervised benchmarks while requiring only 5% of labeled data for teacher network training. This framework offers a robust and data-efficient solution that can significantly reduce the calibration burden in practical sEMG-based gesture recognition systems.",
+      "authors": [
+        "Yurui Liu",
+        "Xiao-Cong Zhong",
+        "Qisong Wang",
+        "Xuefu Wang",
+        "Dan Liu",
+        "Jinwei Sun"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.AI"
+      ],
+      "published": "2026-06-30T08:45:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.31349v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "domain adaptation for sEMG-based gesture recognition across subjects",
+      "llm_evidence_cn": "跨被试sEMG手势识别的域适应",
+      "llm_evidence": "跨被试sEMG手势识别的域适应",
+      "canonical_evidence": "跨被试sEMG手势识别的域适应",
+      "llm_tldr_en": "PGUDA uses pressure-guided domain adaptation and knowledge distillation to improve cross-subject sEMG gesture recognition.",
+      "llm_tldr_cn": "PGUDA通过压力引导的域适应和知识蒸馏提高跨被试sEMG手势识别性能。",
+      "llm_tldr": "PGUDA通过压力引导的域适应和知识蒸馏提高跨被试sEMG手势识别性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31420v1",
+      "source": "arxiv",
+      "title": "BP-TTA: Balanced and Prototype-Guided Test-Time Adaptation in Dynamic Scenarios",
+      "abstract": "Test-Time Adaptation (TTA) enables models trained on a source domain to adapt online to unlabeled test data under distribution shifts. While recent TTA methods have moved beyond static settings and begun to consider continual domain shifts, they primarily address distribution drift and fail to account for class imbalance in dynamic scenarios. In real-world test-time streams, class imbalance and continual domain shifts often occur at the same time and interact with each other. In this paper, we propose a novel Balanced and Prototype-Guided Test-Time Adaptation (BP-TTA) method, which combines batch-balanced sampling with prototype-guided adaptation to handle the class imbalance and continual domain shift problems. BP-TTA constructs balanced adaptation batches by integrating current samples with high-confidence historical instances, effectively mitigating bias toward dominant classes and stabilizing online updates. Meanwhile, BP-TTA maintains evolving class prototypes during inference and leverages prototype similarity as a constraint for model adaptation, thereby improving the reliability of pseudo-labels and enhancing the stability of online updates under persistent domain shifts. Extensive experiments demonstrate that BP-TTA consistently outperforms state-of-the-art TTA methods in dynamic test-time streaming settings.",
+      "authors": [
+        "Shaoyang Huang",
+        "Yashi Zhu",
+        "Yichen Yu",
+        "Lei Zhang",
+        "Zhang Yi",
+        "Tao He"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-30T09:43:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.31420v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "balanced and prototype-guided test-time adaptation for dynamic domain shifts with limited labels",
+      "llm_evidence_cn": "通过平衡采样和原型引导的测试时适应，应对动态域漂移和有限标签",
+      "llm_evidence": "通过平衡采样和原型引导的测试时适应，应对动态域漂移和有限标签",
+      "canonical_evidence": "通过平衡采样和原型引导的测试时适应，应对动态域漂移和有限标签",
+      "llm_tldr_en": "BP-TTA handles class imbalance and continual domain shifts in test-time adaptation.",
+      "llm_tldr_cn": "BP-TTA在测试时适应中处理类别不平衡和连续域漂移。",
+      "llm_tldr": "BP-TTA在测试时适应中处理类别不平衡和连续域漂移。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31904v1",
+      "source": "arxiv",
+      "title": "Sequential RC-TGAN: Generating Relational Time Series with Spectral Envelope Loss",
+      "abstract": "The generation of synthetic relational databases often involves modeling complex temporal dynamics, such as transaction logs or event sequences. A significant challenge in this domain is the handling of categorical time series (e.g., status codes), where standard encoding methods like one-hot encoding fail to capture intrinsic frequency-domain features such as seasonality and cyclicity. In this paper, we introduce Sequential RC-TGAN (Seq. RC-TGAN), a temporal extension of the RC-TGAN framework, equipped with a novel integrated loss function based on the \\textit{Spectral Envelope Theory}. This differentiable loss allows the generator to directly optimize the preservation of latent periodic structures via backpropagation. While spectral envelope theory is inherently designed for categorical sequences, we extend this frequency-domain regularization to continuous time series by employing a Variational Gaussian Mixture Model (VGM) discretization strategy. To establish a mathematically rigorous evaluation standard, we simulate categorical time series governed by a parameter $α$, with exactly known theoretical spectral envelopes. Integrating these dynamic sequences into the child tables of a relational database yields a robust ground-truth benchmark for evaluating the frequency-domain fidelity of our generative framework. Furthermore, we address the lack of robust evaluation standards for relational time series by proposing two new metrics: Spectral Density Divergence and Spectral Envelope Divergence. Experimental results on real-world datasets, as well as our simulated benchmarks, demonstrate that our end-to-end approach significantly outperforms state-of-the-art systems in reproducing cyclic patterns and long-term seasonality across both categorical and continuous features.",
+      "authors": [
+        "Mohamed Gueye",
+        "Yazid Attabi",
+        "Manuel Morales",
+        "Maxime Dumas"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-30T16:09:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.31904v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "generates relational time series with spectral envelope loss preserving periodic structures",
+      "llm_evidence_cn": "通过谱包络损失生成保持周期结构的关系时间序列",
+      "llm_evidence": "通过谱包络损失生成保持周期结构的关系时间序列",
+      "canonical_evidence": "通过谱包络损失生成保持周期结构的关系时间序列",
+      "llm_tldr_en": "Seq. RC-TGAN generates realistic relational time series by optimizing frequency-domain features via spectral envelope loss.",
+      "llm_tldr_cn": "Seq. RC-TGAN通过谱包络损失优化频域特征，生成逼真的关系时间序列。",
+      "llm_tldr": "Seq. RC-TGAN通过谱包络损失优化频域特征，生成逼真的关系时间序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.29658v1",
+      "source": "arxiv",
+      "title": "Multi-Source Transfer Learning of Sparse Single-Index Models",
+      "abstract": "Transfer learning leverages knowledge from related source domains to improve learning in a target domain. Recent theoretical advances cover a broad range of regression settings within (generalized) linear models. Despite their diversity, these methods share two common constraints: they assume a known link function or linear structure and require direct access to raw source data. To move beyond these constraints, we propose a source-data-free transfer learning framework based on the single-index model (SIM). Instead of requiring raw source data, our method transfers only summary statistics derived from a generalized Stein's lemma in a one-time communication. This design preserves privacy and avoids side effects caused by dissimilarities of unknown nonlinear link functions across domains. To capture flexible, unknown nonlinearity, we employ a multilayer perceptron guided by the pre-estimated index from the transferred statistics, which significantly mitigates overfitting. Extensive experiments on synthetic data and a real-world application demonstrate consistent improvements over existing (generalized) linear model-based approaches. The proposed framework thus offers a practical, privacy-preserving, and nonlinear-adaptive solution for transfer learning.",
+      "authors": [
+        "Ye Tian"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME",
+        "stat.ML"
+      ],
+      "published": "2026-06-28T23:55:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.29658v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "source-data-free transfer learning for adapting to new domains",
+      "llm_evidence_cn": "无源数据迁移学习适应新领域",
+      "llm_evidence": "无源数据迁移学习适应新领域",
+      "canonical_evidence": "无源数据迁移学习适应新领域",
+      "llm_tldr_en": "Proposes a source-data-free transfer learning framework using single-index models.",
+      "llm_tldr_cn": "提出基于单索引模型的无源数据迁移学习框架。",
+      "llm_tldr": "提出基于单索引模型的无源数据迁移学习框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29837v1",
+      "source": "arxiv",
+      "title": "Robust Trajectory Distillation: Hybrid Reweighting Meets Teacher-Inspired Targets",
+      "abstract": "Dataset distillation (DD) condenses large corpora into compact, information-rich subsets for efficient training and reuse. However, under noisy supervision, DD risks condensing corrupted associations together with useful signals, degrading robustness. Conventional noisy-label remedies (sample selection, loss weighting, label correction) tightly couple noise estimation with model optimization, often require clean anchors, and can amplify confirmation bias-assumptions that are misaligned with DD's goal of compact, plug-and-play supervision. We therefore propose a trajectory-based DD framework that jointly suppresses noise and preserves transferable knowledge without relabeling or clean subsets. It comprises two complementary components: Selective Guidance Reweighting (SGR), which fuses global forgetting patterns (second-split forgetting) with local neighborhood consistency into a progressive reweighting scheme that prioritizes clean supervision along the teacher trajectory; and Teacher-Inspired Auxiliary Targets (TIAT), which inject auxiliary residual guidance distilled from intermediate teacher dynamics to reinforce informative signals while remaining internally consistent. Together, SGR and TIAT produce distilled datasets with cleaner and richer representations under noisy supervision. The framework is robust, label-preserving, computationally lightweight, and broadly applicable, yielding consistent gains over state-of-the-art DD baselines across symmetric, asymmetric, and real-world noise.",
+      "authors": [
+        "Kaifeng Chen",
+        "Lechao Cheng",
+        "Jiyang Li",
+        "Shengeng Tang",
+        "Fan Zhang",
+        "Yantao Pan",
+        "Yaxiong Wang",
+        "Tuanrui Hui",
+        "Zhun Zhong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-29T06:24:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.29837v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "dataset distillation for compact representations",
+      "llm_evidence_cn": "数据集蒸馏用于紧凑表示",
+      "llm_evidence": "数据集蒸馏用于紧凑表示",
+      "canonical_evidence": "数据集蒸馏用于紧凑表示",
+      "llm_tldr_en": "Proposes robust trajectory-based dataset distillation for noisy labels.",
+      "llm_tldr_cn": "提出基于轨迹的鲁棒数据集蒸馏方法，应对噪声标签。",
+      "llm_tldr": "提出基于轨迹的鲁棒数据集蒸馏方法，应对噪声标签。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29695v1",
+      "source": "arxiv",
+      "title": "Progressive Self-Supervised Learning with Individualized Community Assignment for Brain Network Analysis",
+      "abstract": "Brain networks exhibit a modular community structure that varies across individuals and neurological conditions. However, existing self-supervised learning (SSL) methods often overlook this heterogeneity, relying on generic masking strategies that fail to capture subject-specific functional organization. We propose BrainPICM, a self-supervised framework for brain network analysis via progressive individualized community aware masking. BrainPICM formulates ROI-to-community mapping as a progressive unbalanced optimal transport process, yielding soft assignments and per-ROI confidence scores. Guided by these confidence estimates, a curriculum-style masking strategy gradually incorporates low-confidence, potentially pathological regions into training, enabling the model to learn both stable modular structures and individual variations. Additionally, a deviation-aware aggregation module quantifies functional reorganization by measuring mass redistribution relative to a population template, enhancing interpretability and downstream prediction. Experiments on three fMRI datasets (ABIDE-I, ADHD-200, ADNI) show that BrainPICM consistently outperforms state-of-the-art supervised and SSL methods in diagnostic accuracy, indicating that explicitly injecting modular community structure into masked modeling yields more functionally consistent and generalizable representations. The source code for this approach will be released at https://github.com/Hrychen7/BrainPICM.",
+      "authors": [
+        "Hairui Chen",
+        "Yanwu Yang",
+        "Jianfeng Cao",
+        "Hanyang Peng",
+        "Chenfei Ye",
+        "Ting Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-29T01:56:23+00:00",
+      "link": "https://arxiv.org/pdf/2606.29695v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised representation learning for brain networks with confidence scoring",
+      "llm_evidence_cn": "面向脑网络的自监督表示学习与置信度评分",
+      "llm_evidence": "面向脑网络的自监督表示学习与置信度评分",
+      "canonical_evidence": "面向脑网络的自监督表示学习与置信度评分",
+      "llm_tldr_en": "Proposes progressive self-supervised framework for brain network analysis via individualized community masking and confidence-guided curriculum.",
+      "llm_tldr_cn": "提出渐进式自监督框架，通过个性化社区掩码和置信度引导课程进行脑网络分析。",
+      "llm_tldr": "提出渐进式自监督框架，通过个性化社区掩码和置信度引导课程进行脑网络分析。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29948v1",
+      "source": "arxiv",
+      "title": "Heterogeneous Tactile Transformer",
+      "abstract": "Tactile sensors are inherently heterogeneous: a model trained on one sensor cannot be directly used on another, which limits learning contact-rich manipulation policies from diverse tactile data at scale. To bridge this gap, we propose the Heterogeneous Tactile Transformer (HTT), a framework that learns shared tactile representations across heterogeneous sensors. HTT consists of sensor-specific encoders and a shared transformer trunk, and is pretrained with per-modality masked reconstruction together with cross-modal alignment between paired sensors. Pretraining uses our novel Heterogeneous Paired Tactile (HPT) dataset, containing 1.6M synchronized paired frames across four vision- and array-based tactile sensors. Across distinct tactile perception and real-world manipulation tasks, HTT is shown to learn transferable representations that adapt to new tasks and previously unseen sensors. Dataset, code, and model checkpoints will be released upon publication at https://jxbi1010.github.io/htt-gh-page/.",
+      "authors": [
+        "Jianxin Bi",
+        "Qiang Wang",
+        "Jayaram Reddy",
+        "Kelvin Lin",
+        "Soibkhon Khajikhanov",
+        "Ruihan Gao",
+        "Harold Soh"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-29T08:24:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.29948v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "pretrained shared representations across heterogeneous tactile sensors",
+      "llm_evidence_cn": "跨异构触觉传感器的预训练共享表征",
+      "llm_evidence": "跨异构触觉传感器的预训练共享表征",
+      "canonical_evidence": "跨异构触觉传感器的预训练共享表征",
+      "llm_tldr_en": "Heterogeneous Tactile Transformer learns shared tactile representations via pretraining and cross-modal alignment enabling transfer across different sensors.",
+      "llm_tldr_cn": "异构触觉变换器通过预训练和跨模态对齐学习共享触觉表征，实现跨传感器迁移。",
+      "llm_tldr": "异构触觉变换器通过预训练和跨模态对齐学习共享触觉表征，实现跨传感器迁移。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.30067v1",
+      "source": "arxiv",
+      "title": "Neural Subspace Reallocation: Continual Learning as Retrieval-Based Subspace Memory Management",
+      "abstract": "We introduce Neural Subspace Reallocation (NSR), which reframes continual learning as memory management over parameter subspaces. Instead of treating Low-Rank Adaptation (LoRA) modules as disposable per-task adapters, NSR manages them as compressible, retrievable memory units on a frozen backbone through a recurring cycle: (1) compress learned LoRAs via SVD, (2) reserve them in a TaskKnowledgeBank, (3) recall related past LoRAs by embedding similarity to warm-start new or returning tasks, and (4) reallocate the active subspace accordingly, with distillation protecting prior tasks. We prove that in cyclic environments any memoryless allocation policy incurs cumulative regret Omega(T(M-1)Delta_switch) relative to a history-aware policy backed by the Bank (Theorem 1). Empirically, on Split-CIFAR-100 the Bank reduces cyclic recovery time by 10x, exactly as predicted, and on the heterogeneous 5-Datasets benchmark NSR achieves the highest accuracy and the least forgetting, about 9x closer to zero backward transfer than the memoryless heuristics. Crucially, we run a controlled study that isolates which component matters: holding the Bank fixed and varying only the allocation rule, we find that a simple similarity-based retrieval rule matches or beats a learned reinforcement-learning controller (recovering recurring tasks in 0 vs 1.8 steps and reaching equal accuracy). Our central, honest finding is therefore that the memory mechanism -- compression and similarity retrieval -- rather than a learned allocation policy, drives continual-learning performance under fixed capacity. A memory-budget analysis confirms the compressed Bank stays small -- 0.29 MB of parameter memory per task -- so a top-K retention cap bounds the total footprint while preserving fast recovery for retained tasks.",
+      "authors": [
+        "Byeong Hoon Yoon"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-06-29T10:00:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.30067v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "continual learning via subspace reallocation adapts to new tasks",
+      "llm_evidence_cn": "通过子空间重分配持续学习适应新任务",
+      "llm_evidence": "通过子空间重分配持续学习适应新任务",
+      "canonical_evidence": "通过子空间重分配持续学习适应新任务",
+      "llm_tldr_en": "Reusing LoRA modules as memory enables efficient continual learning",
+      "llm_tldr_cn": "重用LoRA模块作为记忆实现高效持续学习",
+      "llm_tldr": "重用LoRA模块作为记忆实现高效持续学习",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

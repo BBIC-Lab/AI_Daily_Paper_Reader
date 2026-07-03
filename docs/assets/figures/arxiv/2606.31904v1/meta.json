@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.31904v1/fig-006.webp",
+      "caption": "Fig. 1: Architecture schema of the Sequential RC-TGAN with Spectral Loss. The diagram illustrates the generation process conditioned on parent attributes, and the dual optimization setup where the generator receives adversarial feedback from the discriminator and frequency-domain feedback via the spectral envelope loss (Lspec).",
+      "page": 5,
+      "index": 6,
+      "width": 517,
+      "height": 475
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31904v1/fig-001.webp",
+      "caption": "Fig. 2: Detailed training flow of the generator via the Spectral Envelope Loss. Categorical sequences from both real and synthetic mini-batches undergo one-hot encoding to estimate their respective multivariate spectral density and variance matrices. The spectral envelopes are derived by solving the generalized eigenvalue problem. The loss explicitly minimizes the L2 distance between the batch-averaged envelopes, providing continuous, differentiable frequency-domain gradients (∇θLspec) to update the recurrent generator.",
+      "page": 6,
+      "index": 1,
+      "width": 517,
+      "height": 384
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31904v1/fig-003.webp",
+      "caption": "Fig. 3: Spectral envelopes of the benchmark Markov chains (K = 7) on a logarithmic scale. Upper: The NCP exhibits peaks close to the fundamental frequency (1/7 ≈ 0.14) and its harmonics. As the cycle strength α → 1 (darker lines), the process approaches a deterministic clock with Dirac-like peaks. Lower α values introduce phase noise, broadening the peaks into wide spectral hills. The log scale is used to visualize the large dynamic range between stochastic and near-deterministic regimes. Bottom: The SSP acts as a low-pass filter. As the persistence α → 1 (darker lines), the spectral energy concentrates strictly at ω = 0, representing system inertia. Lower α values result in a flat, white-noiselike spectrum.",
+      "page": 8,
+      "index": 3,
+      "width": 414,
+      "height": 517
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31904v1/fig-002.webp",
+      "caption": "TABLE I: Perfomance on simulated datasets: Comparison of Denv between our proposed method and baselines across different state space sizes (K). Lower is better.",
+      "page": 11,
+      "index": 2,
+      "width": 513,
+      "height": 277
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31904v1/fig-004.webp",
+      "caption": "Fig. 4: Spectral Envelope Evaluation on Simulated Data (K = 7). The black dashed line represents the theoretical ground truth. Top Row (Sticky): The proposed Seq. RC-TGAN (blue) accurately captures the low-pass behavior, with spectral mass concentrating at ω = 0 as persistence (α) increases. Bottom Row (Cyclic): Seq. RC-TGAN successfully aligns with the fundamental harmonic peaks (e.g., ω ≈ 0.14) and their sharpening as cycle strength (α) increases. Conversely, sequential baselines—including DoppelGANger (purple), TimeGAN (brown), and the unregularized Seq. RC-TGAN (no Lspec) (red)—fail to capture these periodic structures, collapsing into flat or erratic noise.",
+      "page": 12,
+      "index": 4,
+      "width": 1052,
+      "height": 488
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31904v1/fig-005.webp",
+      "caption": "Fig. 5: Autocorrelation Function (ACF) Analysis. The dashed black line represents the ground truth. Top Row (a, b): Comparison against baselines. Static models like SDV (pink) and ClavaDDPM (green) fail to capture seasonality (recurring peaks at lag 7 for Rossman and lag 12 for Walmart). Bottom Row (c, d): Ablation study. The static RC-TGAN (orange) produces a flat line, and the unregularized Seq. RC-TGAN (no Lspec) (red) captures local transitions but underestimates global amplitudes. The proposed Seq. RC-TGAN (blue) accurately reproduces the overarching seasonal correlation structure.",
+      "page": 12,
+      "index": 5,
+      "width": 1052,
+      "height": 370
+    }
+  ]
+}
