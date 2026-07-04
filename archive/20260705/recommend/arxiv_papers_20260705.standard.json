@@ -1,0 +1,411 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-04T19:56:36.494328+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 43,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 84,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 12,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 7,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 13
+  },
+  "deep_dive": [
+    {
+      "id": "2606.31686v1",
+      "source": "arxiv",
+      "title": "When to Truncate a Feature Ranking: A Residual-Overlap Stopping Rule for Subset Selection",
+      "abstract": "Feature rankings are widely used in supervised feature selection because they are simple, scalable and easy to interpret. Variables are first ranked by a relevance score, and a subset is then obtained by retaining the top-ranked variables. Although the first stage has been extensively studied, the second is often governed by an arbitrary cardinality, an empirical threshold or cross-validation, without a direct interpretation. This raises a basic question: given a feature ranking, when is there enough accumulated class-separation evidence to stop selecting features?   This paper develops a distributional framework for transforming supervised feature rankings into class-independent subsets through an explicit risk-calibrated stopping rule. For each variable and each pair of classes, marginal separation is measured by the Bhattacharyya coefficient between the corresponding class-conditional distributions. The proposed method selects a single global subset shared by all classes by retaining the shortest prefix of a ranking whose residual product overlap falls below a prescribed threshold for every relevant class contrast. We derive binary and multiclass Bayes-risk bounds for the labelled product marginal problem, and obtain prior-dependent and prior-free calibrations of the residual-overlap threshold from a target all-pairs risk level.   An empirical comparison on high-dimensional genomic datasets illustrates that the rule can reduce tens of thousands of variables to a few dozen while maintaining predictive performance statistically comparable to the all-features baseline. As the stopping rule only requires one-dimensional marginal overlap estimates and scans a precomputed ranking, it is well suited to very high-dimensional settings where exhaustive subset search is infeasible and interpretable truncation of feature rankings is essential.",
+      "authors": [
+        "Jesus S. Aguilar-Ruiz"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-30T14:00:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.31686v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "develops stopping rule for feature ranking subset selection",
+      "llm_evidence_cn": "为特征排序子集选择提出停止规则",
+      "llm_evidence": "为特征排序子集选择提出停止规则",
+      "canonical_evidence": "为特征排序子集选择提出停止规则",
+      "llm_tldr_en": "proposes rule to decide when to stop selecting features based on class-separation evidence",
+      "llm_tldr_cn": "基于类别分离证据提出何时停止选择特征的规则",
+      "llm_tldr": "基于类别分离证据提出何时停止选择特征的规则",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31789v1",
+      "source": "arxiv",
+      "title": "Distributed Hierarchical Temporal Memory with Shared Associative Memory for Cross-Entity Preemptive Warning",
+      "abstract": "Anomaly detection in multivariate time series remains a critical challenge in large-scale distributed systems, where related entities may exhibit transferable precursor behavior prior to anomaly onset. Existing methods typically operate independently on each data stream and therefore remain fundamentally reactive. To address this limitation, we introduce Distributed Hierarchical Temporal Memory (D-HTM), a neuromorphic framework that enables cross-entity preemptive warning through a Shared Associative Memory (SAM).   D-HTM combines a Spatial Pooler (SP) that projects observations into a common Sparse Distributed Representation (SDR) space, Temporal Memory (TM) modules that learn entity-specific dynamics online, and a Shared Associative Memory that stores recurring pre-anomaly signatures. By reusing precursor knowledge across related entities, D-HTM can issue warnings prior to local anomaly onset while preserving HTM's online learning capabilities.   We evaluate D-HTM on the Server Machine Dataset (SMD), the Soil Moisture Active Passive (SMAP) dataset, the Mars Science Laboratory (MSL) dataset, and a synthetic cascade benchmark designed to isolate precursor transfer. Experimental results demonstrate effective cross-entity warning propagation while maintaining competitive reactive anomaly detection performance. Across the real-world datasets, D-HTM provides an average warning lead time of 8.1 samples prior to anomaly onset.   These findings demonstrate that transferable precursor structure can emerge within a shared SDR space and be reused for preemptive warning generation, extending HTM beyond isolated reactive detection toward distributed predictive reasoning.",
+      "authors": [
+        "Pavia Bera",
+        "Jennifer Adorno",
+        "Sanjukta Bhanja"
+      ],
+      "primary_category": "cs.NE",
+      "categories": [
+        "cs.NE"
+      ],
+      "published": "2026-06-30T15:11:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.31789v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "HTM-based sequential anomaly detection",
+      "llm_evidence_cn": "基于HTM的序列异常检测",
+      "llm_evidence": "基于HTM的序列异常检测",
+      "canonical_evidence": "基于HTM的序列异常检测",
+      "llm_tldr_en": "D-HTM uses hierarchical temporal memory for cross-entity preemptive warning in time series",
+      "llm_tldr_cn": "分布式HTM利用时序记忆实现跨实体预警",
+      "llm_tldr": "分布式HTM利用时序记忆实现跨实体预警",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.00358v1",
+      "source": "arxiv",
+      "title": "PRISM: Prioritized Channel Importance with Semi-supervised Domain Adaptation for Cross-Subject EEG Emotion Recognition",
+      "abstract": "Electroencephalogram (EEG) captures endogenous brain activity with high temporal fidelity and holds substantial promise for precise emotion decoding. However, channel redundancy and pronounced inter-subject variability remain key obstacles to scalable generalization. To address these limitations, we propose a novel framework termed PRioritized channel Importance with Semi-supervised doMain adaptation (PRISM), enabling label-efficient cross-subject emotion decoding. On the channel side, PRISM assigns differentiable, data-dependent channel weights via a lightweight expert ensemble, amplifying reliable electrodes while suppressing distractors. On the domain side, PRISM leverages unlabeled data through confidence-filtered pseudo-labels to drive consistency regularization and domain alignment, mitigating subject-specific heterogeneity. Extensive experiments show that PRISM surpasses state-of-the-art methods on DEAP, DREAMER, and SEED datasets, achieving robust cross-subject generalization given limited annotations.",
+      "authors": [
+        "Xin Zhou",
+        "Xiang Zhang",
+        "Hao Deng",
+        "Lijun Yin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-01T02:57:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.00358v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "assigns differentiable channel weights to prioritize important EEG channels",
+      "llm_evidence_cn": "分配可微分通道权重以优先处理重要EEG通道",
+      "llm_evidence": "分配可微分通道权重以优先处理重要EEG通道",
+      "canonical_evidence": "分配可微分通道权重以优先处理重要EEG通道",
+      "llm_tldr_en": "Proposes PRISM with channel importance weighting and semi-supervised domain adaptation for EEG emotion recognition.",
+      "llm_tldr_cn": "提出PRISM，结合通道重要性加权和半监督域适应用于EEG情绪识别。",
+      "llm_tldr": "提出PRISM，结合通道重要性加权和半监督域适应用于EEG情绪识别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.00391v1",
+      "source": "arxiv",
+      "title": "Data-Adaptive Learning of Dynamical Systems by Matching Transfer Operators and Invariant Measures",
+      "abstract": "Trajectory-based learning of dynamical systems is often fragile in the presence of noise, chaos, or sparse observations, as small pointwise errors can rapidly amplify. We introduce a transition-statistics approach to system identification that learns dynamics by matching the induced motion of probability mass across a data-adaptive mesh. Given trajectory data, we build an unstructured partition of state space and approximate the Perron--Frobenius operator with a regularized Ulam transition matrix. We replace hard cell indicators with continuous, piecewise-smooth partition-of-unity weights, yielding a Markov matrix supporting gradient-based optimization with respect to the parameters of a learned vector field. This enables two related training objectives: matching invariant measures through the stationary eigenvectors of the transition matrices, and matching the full transition matrices to capture transport between regions of state space. Numerical experiments on Lorenz-63, Lorenz-96, and a reduced-order NOAA sea surface temperature forecasting problem show that transition-statistics matching gives more reliable long-time dynamics than pointwise trajectory matching, particularly under measurement noise and sparse sampling. The approach provides a robust operator-theoretic alternative to trajectory-level losses for learning chaotic and partially observed dynamical systems.",
+      "authors": [
+        "Yinong Huang",
+        "Jonah Botvinick-Greenhouse",
+        "Yunan Yang"
+      ],
+      "primary_category": "math.NA",
+      "categories": [
+        "math.NA",
+        "math.DS"
+      ],
+      "published": "2026-07-01T03:34:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.00391v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learning dynamical systems from trajectory data",
+      "llm_evidence_cn": "从轨迹数据学习动力学系统",
+      "llm_evidence": "从轨迹数据学习动力学系统",
+      "canonical_evidence": "从轨迹数据学习动力学系统",
+      "llm_tldr_en": "Matches transfer operators and invariant measures for robust system identification",
+      "llm_tldr_cn": "通过匹配转移算子与不变测度实现鲁棒系统辨识",
+      "llm_tldr": "通过匹配转移算子与不变测度实现鲁棒系统辨识",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.00573v1",
+      "source": "arxiv",
+      "title": "BrainFIBRE: A Foundation Model via Information Decomposition for Brain Microstructure",
+      "abstract": "Diffusion MRI probes brain microstructure with particular sensitivity to early cerebrovascular and neurodegenerative changes. Neurite Orientation Dispersion and Density Imaging (NODDI) decomposes the diffusion signal into three biophysically interpretable maps: neurite density index (NDI), orientation dispersion index (ODI), and free water fraction (FWF), capturing neurite packing, fiber coherence, and extracellular fluid. These 3D maps offer a rich substrate for transferable microstructural representations, yet integrating them is challenging: standard representation learning struggles to disentangle the unique information in each map from their shared and synergistic interactions. We present BrainFIBRE, the first foundation model for brain microstructure, pretrained on NODDI-derived maps from 55,592 UK Biobank participants. We propose Self-supervised Partial Information Decomposition (SPID), which extends PID-guided multimodal learning to the self-supervised regime for the first time. A novel Counterfactual Candidate Construction (CCC) paradigm perturbs inter-modality alignment through modality dropping and swapping, providing the contrastive signal for a Mixture-of-Experts architecture to disentangle unique, synergistic, and redundant information without any downstream label. On both Caucasian and Asian cohorts, BrainFIBRE achieves state-of-the-art performance across diverse tasks predicting age, sex, cerebrovascular and neurodegenerative markers, and cognition, while yielding neurobiologically interpretable representations that reveal task- and cohort-specific interaction patterns. BrainFIBRE establishes a versatile foundation for neuroimaging analysis at the microstructural level.",
+      "authors": [
+        "Zijian Dong",
+        "Yi Lin",
+        "Ji Fang",
+        "Jianxiong Zhou",
+        "Kwun Kei Ng",
+        "Juan Helen Zhou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-01T07:59:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.00573v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "foundation model for brain microstructure representations",
+      "llm_evidence_cn": "脑微结构表示的基础模型",
+      "llm_evidence": "脑微结构表示的基础模型",
+      "canonical_evidence": "脑微结构表示的基础模型",
+      "llm_tldr_en": "BrainFIBRE learns transferable representations from diffusion MRI maps via information decomposition",
+      "llm_tldr_cn": "BrainFIBRE通过信息分解从弥散MRI图学习可迁移表示",
+      "llm_tldr": "BrainFIBRE通过信息分解从弥散MRI图学习可迁移表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.30926v1",
+      "source": "arxiv",
+      "title": "SpikON: A Dual-Parallel and Efficient Accelerator for Online Spiking Neural Networks Learning",
+      "abstract": "Spiking neural networks (SNNs) have emerged as a promising paradigm for energy-efficient brain-inspired computing. However, existing online unsupervised SNN learning suffers from low training accuracy and poor scalability. Although current online supervised learning algorithms perform well on large-scale datasets and networks, the non-hardware-friendly operations hinder efficient edge deployment. In this work, we propose SpikON, the first algorithm-hardware co-design framework for efficient and scalable end-to-end online supervised SNN learning. We first propose the learnable threshold through time and scaled weight centralization through time techniques to address the inefficiency of traditional algorithms. Moreover, to reduce latency and energy consumption, we introduce the novel training dataflow and cascade computation reuse scheme for SNNs that allows concurrent forward-backward computation and temporal reuse across timesteps. We further design the dedicated SNN accelerator with a dual-parallel engine and customized SIMD-based SNN core for efficient end-to-end online learning. Experiments show that the SpikON algorithm achieves 32.2% and 35.0% reductions in training latency and energy consumption over the baseline, without sacrificing accuracy. Moreover, the SpikON co-design achieves 7.2x (11.5x) and 26.8x (15.8x) training throughput (energy efficiency) compared with the edge Apple M4 GPU and TPU-like accelerator, respectively. The code is available at https://github.com/peilin-chen/SpikON.",
+      "authors": [
+        "Peilin Chen",
+        "Xiaoxuan Yang"
+      ],
+      "primary_category": "cs.AR",
+      "categories": [
+        "cs.AR"
+      ],
+      "published": "2026-06-29T21:21:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.30926v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "spiking neural networks for sequence modeling",
+      "llm_evidence_cn": "脉冲神经网络用于序列建模",
+      "llm_evidence": "脉冲神经网络用于序列建模",
+      "canonical_evidence": "脉冲神经网络用于序列建模",
+      "llm_tldr_en": "SpikON is an efficient accelerator for online supervised SNN learning",
+      "llm_tldr_cn": "SpikON是一种高效的在线监督SNN学习加速器",
+      "llm_tldr": "SpikON是一种高效的在线监督SNN学习加速器",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.30944v1",
+      "source": "arxiv",
+      "title": "Preserving Speech-to-Text LLM Capabilities in Speech-to-Speech Generation",
+      "abstract": "Strong speech-to-text (S2T) LLMs already provide robust speech perception and text reasoning, but adding speech-to-speech (S2S) output is challenging: fine-tuning the backbone can degrade the original S2T performance, while attaching a downstream talker reintroduces a serial text-to-speech bottleneck. We present PRIME-Speech, a frozen-backbone S2S conversion framework that trains only speech-generation modules. PRIME-Speech synchronizes a causal audio post-decoder with intermediate hidden states of the frozen backbone, so codec tokens are generated from the model's evolving reasoning trajectory rather than from completed text chunks. The post-decoder uses mixed hidden-state, text, and audio-history conditioning, and a training-time packing strategy with turn-level audio KV-cache and position reset stabilizes multi-turn spoken interaction without additional multi-turn S2S training data. Multi-token prediction further reduces the effective codec prediction rate and improves first-audio latency without modifying the reasoning path. Across speech translation, spoken QA, speech understanding, and multi-turn dialogue, PRIME-Speech preserves the S2T behavior of the frozen backbone while producing accurate, low-WER spoken responses.",
+      "authors": [
+        "Yuxuan Hu",
+        "Heng Lu",
+        "Ruchao Fan",
+        "Yao Qian",
+        "Xiaofei Wang",
+        "Jian Xue",
+        "Heming Wang",
+        "Shuohang Wang",
+        "Young Jin Kim",
+        "Yelong Shen",
+        "Jinyu Li"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-06-29T21:55:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.30944v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "converts LLM outputs into speech token sequences",
+      "llm_evidence_cn": "将LLM输出转换为语音令牌序列",
+      "llm_evidence": "将LLM输出转换为语音令牌序列",
+      "canonical_evidence": "将LLM输出转换为语音令牌序列",
+      "llm_tldr_en": "PRIME-Speech generates speech from LLM hidden states while preserving original S2T capabilities.",
+      "llm_tldr_cn": "PRIME-Speech从LLM隐藏状态生成语音，同时保持原有S2T能力。",
+      "llm_tldr": "PRIME-Speech从LLM隐藏状态生成语音，同时保持原有S2T能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.31121v1",
+      "source": "arxiv",
+      "title": "The Past Is Prologue: A Plug-in Controller for Selective Updates in Sequentially Evolving LLM Memory",
+      "abstract": "Sequentially evolving LLM memory enables agents to reuse past experience, but existing systems usually deploy each locally generated memory update without checking whether it improves future behavior. As a result, updates that help the current task may overwrite useful knowledge, introduce over-specific rules, or bias the final memory toward recent examples. We propose Janus, a plug-in memory controller that decides whether to accept a candidate memory update or retain the previous memory. To make this decision efficient, Janus uses a Memory Momentum Trigger to identify suspicious deviations in the memory-update trajectory, and compares old and new memories on a compact hybrid evaluation set of coverage, boundary, and fresh tasks instead of replaying the full history. Janus is method-agnostic and wraps existing updaters without changing their update rules. Across six datasets, two backbone LLMs, and two memory updaters, Janus improves average accuracy by +2.7 to +4.6 points over the corresponding base updaters.",
+      "authors": [
+        "Zihan Chen",
+        "Songwei Dong",
+        "Chengshuai Shi",
+        "Peng Wang",
+        "Song Wang",
+        "Cong Shen",
+        "Jundong Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-30T04:33:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.31121v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sequential memory updates, selective controller, trajectory deviation",
+      "llm_evidence_cn": "序列记忆更新，选择性控制器，轨迹偏差",
+      "llm_evidence": "序列记忆更新，选择性控制器，轨迹偏差",
+      "canonical_evidence": "序列记忆更新，选择性控制器，轨迹偏差",
+      "llm_tldr_en": "Plug-in controller for selective memory updates in sequentially evolving LLM memory.",
+      "llm_tldr_cn": "序列演化LLM记忆的选择性更新控制器。",
+      "llm_tldr": "序列演化LLM记忆的选择性更新控制器。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.31236v1",
+      "source": "arxiv",
+      "title": "TactX: Learning Shared Tactile Representations Across Diverse Sensors",
+      "abstract": "Tactile sensors provide critical information for contact-rich manipulation, yet tactile representations and policies remain tightly coupled to each specific sensor, limiting transferability across robots and hardware platforms. We propose TactX, a framework for learning a transferable tactile representation across sensors spanning three fundamentally different transduction modalities: resistive, magnetic, and vision-based. TactX maps heterogeneous tactile observations into a shared latent space through modality-specific encoders trained on paired contact data. Such paired interactions provide a natural alignment signal across modalities, and the encoders are jointly trained across all sensor pairs, inducing a consistent latent space for all sensor types. Our experiments show that TactX aligns tactile representations across sensors while preserving object-level contact information, as evidenced by sensor-identity prediction and object classification in the learned latent space. We evaluate TactX on four contact-rich manipulation tasks: pick-and-place, plug insertion, board wiping, and object reorientation, and show that policies trained with one sensor transfer zero-shot to physically distinct sensors through the shared latent. This improves the average success rate from 27.5% for vision-only policy to 45.9%, providing a step toward sensor-agnostic tactile manipulation.",
+      "authors": [
+        "Junsung Park",
+        "Sachin Bhadang",
+        "Carmelo Sferrazza",
+        "Sha Yi",
+        "Xiaolong Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T07:09:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.31236v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns shared tactile representations from raw sensor data",
+      "llm_evidence_cn": "从原始传感器数据学习共享触觉表示",
+      "llm_evidence": "从原始传感器数据学习共享触觉表示",
+      "canonical_evidence": "从原始传感器数据学习共享触觉表示",
+      "llm_tldr_en": "TactX learns transferable tactile representations across sensors via shared latent space",
+      "llm_tldr_cn": "TactX通过共享潜空间学习跨传感器的可迁移触觉表示",
+      "llm_tldr": "TactX通过共享潜空间学习跨传感器的可迁移触觉表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.31275v1",
+      "source": "arxiv",
+      "title": "CLIMB: Centroid-Based Hierarchical Memory for Online Continual Self-Supervised Learning",
+      "abstract": "Online Continual Self-Supervised Learning (OCSSL) aims to learn representations from a continuous stream of unlabeled data, without knowledge of task boundaries and under memory constraints. Existing methods rely either on replay buffers that exploit latent space structure, or on regularization alone. We present CLIMB (Continual Learning with Intelligent Memory Bank), which combines both simultaneously. Our method introduces a hierarchical centroid-based memory, bounded in total number of stored images, combined with knowledge distillation on replayed examples to limit representation drift. The memory groups similar images into centroids, providing hard-to-discriminate examples for contrastive learning while covering the diversity of observed distributions. Experiments on Split CIFAR-100 and Split ImageNet-100, on standard benchmarks from the state-of-the-art as well as a new protocol with irregular task distributions show that CLIMB outperforms state-of-the-art OCSSL methods.",
+      "authors": [
+        "Julien Lefebvre",
+        "Stefan Duffner",
+        "Mathieu Lefort"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-30T07:47:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.31275v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns compact representations from continuous unlabeled data stream",
+      "llm_evidence_cn": "从连续无标签数据流中学习紧凑表示",
+      "llm_evidence": "从连续无标签数据流中学习紧凑表示",
+      "canonical_evidence": "从连续无标签数据流中学习紧凑表示",
+      "llm_tldr_en": "CLIMB uses centroid-based memory for online continual self-supervised representation learning.",
+      "llm_tldr_cn": "CLIMB使用基于质心的记忆进行在线持续自监督表示学习。",
+      "llm_tldr": "CLIMB使用基于质心的记忆进行在线持续自监督表示学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

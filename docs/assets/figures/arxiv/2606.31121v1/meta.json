@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.31121v1/fig-001.webp",
+      "caption": "Figure 1: Top: Existing sequential memory updates do not guarantee that the final memory will better support future tasks. Bottom: On GPQA, intermediate memory snapshots from two sequential memory methods exhibit non-monotonic test set performance, motivating the need to control which memory updates are deployed.",
+      "page": 1,
+      "index": 1,
+      "width": 473,
+      "height": 521
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31121v1/fig-005.webp",
+      "caption": "Table 1: Main results on six datasets with two LLMs.Accuracy (%) is reported for each dataset. Janus is applied as a plug-in controller to two base memory updaters. Shaded rows indicate Janus-enhanced variants.",
+      "page": 5,
+      "index": 5,
+      "width": 842,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31121v1/fig-002.webp",
+      "caption": "Table 2: Ablation study of the Memory Momentum Trigger. We compare Janus with alternative trigger policies using Qwen3-8B on GPQA and HumanEval. “Base” denotes the base updater without Janus.“Always” compares old and new memory after every task, while “Random” and “Periodic” trigger comparisons under comparable trigger budgets to Janus.",
+      "page": 6,
+      "index": 2,
+      "width": 423,
+      "height": 301
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31121v1/fig-003.webp",
+      "caption": "Figure 4: Old-vs-new deployment decision ablation. We evaluate memory checkpoints obtained after processing 20%, 40%, 60%, 80%, and 100% of the task stream using Qwen3-8B on GPQA and MMLU-Pro (Eng.). The base updater directly deploys every candidate memory, while Janus selectively accepts or rejects candidate updates.",
+      "page": 7,
+      "index": 3,
+      "width": 445,
+      "height": 519
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31121v1/fig-004.webp",
+      "caption": "Figure 5: Stream order analysis. We evaluate the final frozen-memory test accuracy under five different shuffled task-stream orders using Qwen3-8B on HumanEval. Each point corresponds to one stream order, and error bars show the variation across orders.",
+      "page": 12,
+      "index": 4,
+      "width": 441,
+      "height": 293
+    }
+  ]
+}

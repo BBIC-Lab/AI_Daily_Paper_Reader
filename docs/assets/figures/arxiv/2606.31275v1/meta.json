@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-007.webp",
+      "caption": "Figure 1: Overview of CLIMB’s architecture. At each step, a stream mini-batch bs is combined with a replay batch br sampled from the hierarchical centroid memory to form the final batch b = bs ∪ br. The online network (fθ, gθ) processes b under two augmented views, producing embeddings z = gθ(fθ(t(b))) for the contrastive loss LSSL. The alignment loss Lalign is computed as the negative cosine similarity between present representations of the replay subset, passed through projection head aϕ, and past representations z′r = gθ′(fθ′(t(br))) produced by the frozen EMA target network (fθ′ , gθ′ ). Embeddings of replay examples zr are also used to update the centroid positions in memory.",
+      "page": 4,
+      "index": 7,
+      "width": 492,
+      "height": 383
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-012.webp",
+      "caption": "Figure 2: Overview of CLIMB’s hierarchical memory. ci denotes centroid positions in the projected latent space, and di denotes the cosine distances between each centroid and the current image embedding. The short-term memory (STM) is shown in orange and the long-term memory (LTM) in green. 1⃝ If min(di) > τ , a new centroid is instantiated from the current image. 2⃝ Otherwise, the image is assigned to the nearest centroid if it belongs to the STM. 3⃝When a centroid reaches M examples, it is promoted to the LTM and removed from the STM.",
+      "page": 5,
+      "index": 12,
+      "width": 684,
+      "height": 245
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-006.webp",
+      "caption": "Table 1: Classification performances of the OCSSL methods on 20, 50, and 100 tasks class-incremental settings.",
+      "page": 8,
+      "index": 6,
+      "width": 782,
+      "height": 657
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-011.webp",
+      "caption": "Table 2: Classification performances of OCSSL methods with irregular task distribution on Split CIFAR-100 and Split ImageNet-100.",
+      "page": 9,
+      "index": 11,
+      "width": 593,
+      "height": 346
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-010.webp",
+      "caption": "Figure 3: Frequency histogram of the number of classes per task pooled over all 20 seeds, for the 20-task (left) and 50-task (right) configurations. The dashed line indicates the mean value, which corresponds to the fixed number of classes per task in the regular protocol.",
+      "page": 12,
+      "index": 10,
+      "width": 955,
+      "height": 334
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-004.webp",
+      "caption": "Table 4: Sensitivity to memory architecture parameters on Split ImageNet-100 (20 tasks, 5 seeds). Underlined: reference configuration.",
+      "page": 13,
+      "index": 4,
+      "width": 483,
+      "height": 492
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-005.webp",
+      "caption": "Table 5: Sensitivity to update-rule parameters on Split ImageNet-100 (20 tasks, 5 seeds). Underlined: reference configuration.",
+      "page": 13,
+      "index": 5,
+      "width": 502,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-003.webp",
+      "caption": "Figure 4: Number of images stored in the STM (left) and LTM (right) as a function of task.",
+      "page": 14,
+      "index": 3,
+      "width": 959,
+      "height": 305
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-001.webp",
+      "caption": "Figure 5: Left: cumulative number of STM→LTM promotions (74 total). Right: adaptive novelty threshold τ , computed as the 95th percentile of the last w = 1000 observed minimum distances.",
+      "page": 15,
+      "index": 1,
+      "width": 959,
+      "height": 306
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-002.webp",
+      "caption": "Table 7: Memory diversity metrics at end of training on Split ImageNet-100 (20 tasks). All buffers operate under capacity N = 2500.",
+      "page": 15,
+      "index": 2,
+      "width": 811,
+      "height": 202
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-013.webp",
+      "caption": "Figure 6: Total training time (hours, log scale) on Split ImageNet-100 as a function of the number of tasks, measured on a single NVIDIA V100 32GB GPU.",
+      "page": 16,
+      "index": 13,
+      "width": 566,
+      "height": 441
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-008.webp",
+      "caption": "Table 8: Classification performances with SimSiam on Split CIFAR-100 and Split ImageNet-100 (5 seeds).",
+      "page": 17,
+      "index": 8,
+      "width": 589,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2606.31275v1/fig-009.webp",
+      "caption": "Table 9: Forgetting metric (%) on Split CIFAR-100 and Split ImageNet-100 (5 seeds, lower is better).",
+      "page": 17,
+      "index": 9,
+      "width": 393,
+      "height": 442
+    }
+  ]
+}
