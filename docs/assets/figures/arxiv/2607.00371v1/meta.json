@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.00371v1/fig-001.webp",
+      "caption": "Fig. 1: Empirical analysis of representation space and expert load. (a) VAR learns different features across scales with a shared architecture, resulting in conflicts of optimization objectives. (b) Semantic errors at small and intermediate scales can propagate across scales and induce unpleasing results. Correct semantics at early stage are critical for predictions at later stage.",
+      "page": 2,
+      "index": 1,
+      "width": 719,
+      "height": 403
+    },
+    {
+      "url": "assets/figures/arxiv/2607.00371v1/fig-006.webp",
+      "caption": "Fig. 2: An overview of our proposed MEPA framework. We follow the next-scale prediction paradigm of VAR [49], and introduce MoE layers to route tokens across scales, allowing them to adaptively select experts. During training, the outputs of the middle block in small and intermediate scales are aggregated to align with a pretrained visual encoder’s features.",
+      "page": 5,
+      "index": 6,
+      "width": 716,
+      "height": 252
+    },
+    {
+      "url": "assets/figures/arxiv/2607.00371v1/fig-005.webp",
+      "caption": "Fig. 3: Generation results of MEPA on VAR-d16. We use classifier-free guidance with 𝑤 = 4.0.",
+      "page": 9,
+      "index": 5,
+      "width": 696,
+      "height": 465
+    },
+    {
+      "url": "assets/figures/arxiv/2607.00371v1/fig-002.webp",
+      "caption": "Table 2: Qualitative comparison on class-conditional ImageNet 256×256. ↑ and ↓ denote that higher and lower values are better, respectively. Param represents the number of parameters, while Step indicates the number of steps required to generate an image. ‡ means we reproduce this baseline with our setting.",
+      "page": 10,
+      "index": 2,
+      "width": 712,
+      "height": 890
+    },
+    {
+      "url": "assets/figures/arxiv/2607.00371v1/fig-004.webp",
+      "caption": "Fig. 4: Routing heatmaps of SMoE and STMoE. We visualize the routing heatmap of VARd16 models based on SMoE and STMoE in the penultimate layer. All the models are trained without semantic guidance. For better visualization, we highlight several points with relatively low activation values using red boxes.",
+      "page": 12,
+      "index": 4,
+      "width": 702,
+      "height": 228
+    },
+    {
+      "url": "assets/figures/arxiv/2607.00371v1/fig-003.webp",
+      "caption": "Table 7: Qualitative comparison with REPA. We conduct a qualitative comparison between MEPA and REPA. Param represents the number of parameters. Inference denotes the inference time per image, while Train indicates the training time of one epoch.",
+      "page": 14,
+      "index": 3,
+      "width": 708,
+      "height": 196
+    }
+  ]
+}

@@ -1,46 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-05
-- 运行时间：2026-07-05 03:59:56 北京时间
+- 最新运行日期：2026-07-06
+- 运行时间：2026-07-06 04:50:20 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读两
-- 详情：[/202607/05/README](/202607/05/README)
+今日精读两篇9分长文，聚焦时间序列预测与时空模型泛化，并速读多模态诊断、在线动作定位等前沿应用。  
+StateFlow以双状态循环建模突破长时预测瓶颈，Device Passport用设备指纹实现跨输入布局的预训练泛化。  
+建议关心时序预测的读者细读StateFlow，对自监督泛化感兴趣的务必查看Device Passport的轻量适配思路。
+- 详情：[/202607/06/README](/202607/06/README)
 
 ### 精读区论文标签
-1. [When to Truncate a Feature Ranking: A Residual-Overlap Stopping Rule for Subset Selection](/202607/05/2606.31686v1-when-to-truncate-a-feature-ranking-a-residual-overlap-stopping-rule-for-subset-selection)  
+1. [StateFlow: Dual-State Recurrent Modeling for Long-Horizon Time Series Forecasting](/202607/06/2607.00197v1-stateflow-dual-state-recurrent-modeling-for-long-horizon-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：为特征排序子集选择提出停止规则
-2. [Distributed Hierarchical Temporal Memory with Shared Associative Memory for Cross-Entity Preemptive Warning](/202607/05/2606.31789v1-distributed-hierarchical-temporal-memory-with-shared-associative-memory-for-cross-entity-preemptive-warning)  
+   evidence：用于长周期时间序列预测的双状态循环建模
+2. [Device Passport: Enabling Spatio-Temporal Pretrained Models to Generalize Across Input Layouts](/202607/06/2607.00249v1-device-passport-enabling-spatio-temporal-pretrained-models-to-generalize-across-input-layouts)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于HTM的序列异常检测
-3. [PRISM: Prioritized Channel Importance with Semi-supervised Domain Adaptation for Cross-Subject EEG Emotion Recognition](/202607/05/2607.00358v1-prism-prioritized-channel-importance-with-semi-supervised-domain-adaptation-for-cross-subject-eeg-emotion-recognition)  
+   evidence：生物信号模型的跨布局迁移学习
+3. [MindAU: EEG-Conditioned Facial Action Unit Editing via Dual-Stream Manifold Alignment](/202607/06/2607.00410v1-mindau-eeg-conditioned-facial-action-unit-editing-via-dual-stream-manifold-alignment)  
    标签：评分：9.0/10、query:ndai
-   evidence：分配可微分通道权重以优先处理重要EEG通道
-4. [Data-Adaptive Learning of Dynamical Systems by Matching Transfer Operators and Invariant Measures](/202607/05/2607.00391v1-data-adaptive-learning-of-dynamical-systems-by-matching-transfer-operators-and-invariant-measures)  
+   evidence：EEG条件的面部动作单元编辑
+4. [Detecting the Undetectable: Enhancing Unsupervised time series Anomaly Detection via Active Learning](/202607/06/2607.00720v1-detecting-the-undetectable-enhancing-unsupervised-time-series-anomaly-detection-via-active-learning)  
    标签：评分：9.0/10、query:ndai
-   evidence：从轨迹数据学习动力学系统
-5. [BrainFIBRE: A Foundation Model via Information Decomposition for Brain Microstructure](/202607/05/2607.00573v1-brainfibre-a-foundation-model-via-information-decomposition-for-brain-microstructure)  
+   evidence：时间序列异常检测结合主动学习
+5. [Task-Relevant Representation Decoupling for Visual Reinforcement Learning Generalization](/202607/06/2607.00796v1-task-relevant-representation-decoupling-for-visual-reinforcement-learning-generalization)  
    标签：评分：9.0/10、query:ndai
-   evidence：脑微结构表示的基础模型
+   evidence：自监督解耦任务相关表示以提升泛化
 
 ### 速读区论文标签
-1. [SpikON: A Dual-Parallel and Efficient Accelerator for Online Spiking Neural Networks Learning](/202607/05/2606.30926v1-spikon-a-dual-parallel-and-efficient-accelerator-for-online-spiking-neural-networks-learning)  
+1. [Do Multimodal Large Language Models Need Reasoning to Classify Dementia from Speech?](/202607/06/2607.00260v2-do-multimodal-large-language-models-need-reasoning-to-classify-dementia-from-speech)  
    标签：评分：8.0/10、query:ndai
-   evidence：脉冲神经网络用于序列建模
-2. [The Past Is Prologue: A Plug-in Controller for Selective Updates in Sequentially Evolving LLM Memory](/202607/05/2606.31121v1-the-past-is-prologue-a-plug-in-controller-for-selective-updates-in-sequentially-evolving-llm-memory)  
+   evidence：使用多模态大模型从语音中分类痴呆
+2. [OnPoint: Offline-to-Online Multi-Level Distillation for Point-Supervised Online Temporal Action Localization](/202607/06/2607.00289v1-onpoint-offline-to-online-multi-level-distillation-for-point-supervised-online-temporal-action-localization)  
    标签：评分：8.0/10、query:ndai
-   evidence：序列记忆更新，选择性控制器，轨迹偏差
-3. [TactX: Learning Shared Tactile Representations Across Diverse Sensors](/202607/05/2606.31236v1-tactx-learning-shared-tactile-representations-across-diverse-sensors)  
+   evidence：使用点监督和多级蒸馏的流视频时序动作定位
+3. [Wake up for Touch! Mask-isolated Tactile Alignment Learning in MLLMs](/202607/06/2607.00302v1-wake-up-for-touch-mask-isolated-tactile-alignment-learning-in-mllms)  
    标签：评分：8.0/10、query:ndai
-   evidence：从原始传感器数据学习共享触觉表示
-4. [CLIMB: Centroid-Based Hierarchical Memory for Online Continual Self-Supervised Learning](/202607/05/2606.31275v1-climb-centroid-based-hierarchical-memory-for-online-continual-self-supervised-learning)  
+   evidence：量化参数重要性并冻结关键子空间以保护预训练知识
+4. [MEPA: Multi-Scale Representation Alignment for Visual Autoregressive Modeling with Mixture of Experts](/202607/06/2607.00371v1-mepa-multi-scale-representation-alignment-for-visual-autoregressive-modeling-with-mixture-of-experts)  
    标签：评分：8.0/10、query:ndai
-   evidence：从连续无标签数据流中学习紧凑表示
-5. [Preserving Speech-to-Text LLM Capabilities in Speech-to-Speech Generation](/202607/05/2606.30944v1-preserving-speech-to-text-llm-capabilities-in-speech-to-speech-generation)  
+   evidence：基于专家混合的多尺度自回归生成表示对齐
+5. [Entropy-Regularized Probabilistic Gates for Sparse Model Discovery in Scarce-Data Federated Learning](/202607/06/2607.00275v1-entropy-regularized-probabilistic-gates-for-sparse-model-discovery-in-scarce-data-federated-learning)  
    标签：评分：7.0/10、query:ndai
-   evidence：将LLM输出转换为语音令牌序列
+   evidence：利用概率门学习稀疏模型用于稀缺数据联邦学习
 
