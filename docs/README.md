@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-06
-- 运行时间：2026-07-06 04:50:20 北京时间
+- 最新运行日期：2026-07-07
+- 运行时间：2026-07-07 04:57:08 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读两篇9分长文，聚焦时间序列预测与时空模型泛化，并速读多模态诊断、在线动作定位等前沿应用。  
-StateFlow以双状态循环建模突破长时预测瓶颈，Device Passport用设备指纹实现跨输入布局的预训练泛化。  
-建议关心时序预测的读者细读StateFlow，对自监督泛化感兴趣的务必查看Device Passport的轻量适配思路。
-- 详情：[/202607/06/README](/202607/06/README)
+今日精选：深入信息瓶颈驱动域泛化与循环网络算子几何，并速览语音非语言建模等前沿进展。  
+最值得关注的是文本锚定信息瓶颈如何突破分布外泛化上限，以及有限滞后算子几何为RNN动态分析提供的全新视角。  
+建议关注跨模态信息瓶颈在迁移任务中的落地方法，或尝试将循环表征几何工具引入序列模型诊断。
+- 详情：[/202607/07/README](/202607/07/README)
 
 ### 精读区论文标签
-1. [StateFlow: Dual-State Recurrent Modeling for Long-Horizon Time Series Forecasting](/202607/06/2607.00197v1-stateflow-dual-state-recurrent-modeling-for-long-horizon-time-series-forecasting)  
+1. [Domain Generalization via Text-Anchored Information Bottleneck](/202607/07/2607.01657v1-domain-generalization-via-text-anchored-information-bottleneck)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于长周期时间序列预测的双状态循环建模
-2. [Device Passport: Enabling Spatio-Temporal Pretrained Models to Generalize Across Input Layouts](/202607/06/2607.00249v1-device-passport-enabling-spatio-temporal-pretrained-models-to-generalize-across-input-layouts)  
+   evidence：使用文本锚定瓶颈的域泛化方法，适应新领域
+2. [Finite-Lag Operator Geometry of Recurrent Representations](/202607/07/2607.01746v1-finite-lag-operator-geometry-of-recurrent-representations)  
    标签：评分：9.0/10、query:ndai
-   evidence：生物信号模型的跨布局迁移学习
-3. [MindAU: EEG-Conditioned Facial Action Unit Editing via Dual-Stream Manifold Alignment](/202607/06/2607.00410v1-mindau-eeg-conditioned-facial-action-unit-editing-via-dual-stream-manifold-alignment)  
+   evidence：从顺序数据开发循环隐藏状态的算子几何
+3. [Efficient Temporal Point Processes via Monotone Alternating Splines](/202607/07/2607.01752v1-efficient-temporal-point-processes-via-monotone-alternating-splines)  
    标签：评分：9.0/10、query:ndai
-   evidence：EEG条件的面部动作单元编辑
-4. [Detecting the Undetectable: Enhancing Unsupervised time series Anomaly Detection via Active Learning](/202607/06/2607.00720v1-detecting-the-undetectable-enhancing-unsupervised-time-series-anomaly-detection-via-active-learning)  
+   evidence：对时序点过程建模以分析预测序列数据
+4. [Single-Channel EEG-Based Cognitive Load Assessment in Online Learning: A Hybrid Deep Learning Approach](/202607/07/2607.01795v1-single-channel-eeg-based-cognitive-load-assessment-in-online-learning-a-hybrid-deep-learning-approach)  
    标签：评分：9.0/10、query:ndai
-   evidence：时间序列异常检测结合主动学习
-5. [Task-Relevant Representation Decoupling for Visual Reinforcement Learning Generalization](/202607/06/2607.00796v1-task-relevant-representation-decoupling-for-visual-reinforcement-learning-generalization)  
+   evidence：使用混合深度学习进行基于脑电的认知负荷解码
+5. [SABER: A Semantic-Aligned Brain Network Analysis Framework via Multi-scale Hypergraphs](/202607/07/2607.01901v1-saber-a-semantic-aligned-brain-network-analysis-framework-via-multi-scale-hypergraphs)  
    标签：评分：9.0/10、query:ndai
-   evidence：自监督解耦任务相关表示以提升泛化
+   evidence：语义对齐的脑网络表示学习
 
 ### 速读区论文标签
-1. [Do Multimodal Large Language Models Need Reasoning to Classify Dementia from Speech?](/202607/06/2607.00260v2-do-multimodal-large-language-models-need-reasoning-to-classify-dementia-from-speech)  
+1. [Quantifying the Uncertainty of Blindly Estimated Room Embeddings Using a Dispersion-Calibrated Score](/202607/07/2607.01527v1-quantifying-the-uncertainty-of-blindly-estimated-room-embeddings-using-a-dispersion-calibrated-score)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用多模态大模型从语音中分类痴呆
-2. [OnPoint: Offline-to-Online Multi-Level Distillation for Point-Supervised Online Temporal Action Localization](/202607/06/2607.00289v1-onpoint-offline-to-online-multi-level-distillation-for-point-supervised-online-temporal-action-localization)  
+   evidence：从混响语音中无监督学习紧凑的房间嵌入
+2. [Evolutionary Feature Engineering for Structured Data](/202607/07/2607.01548v1-evolutionary-feature-engineering-for-structured-data)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用点监督和多级蒸馏的流视频时序动作定位
-3. [Wake up for Touch! Mask-isolated Tactile Alignment Learning in MLLMs](/202607/06/2607.00302v1-wake-up-for-touch-mask-isolated-tactile-alignment-learning-in-mllms)  
+   evidence：时间序列预测归一化
+3. [Beyond Words: Towards Effective Modeling of Non-Verbal Vocalizations in ASR](/202607/07/2607.01563v1-beyond-words-towards-effective-modeling-of-non-verbal-vocalizations-in-asr)  
    标签：评分：8.0/10、query:ndai
-   evidence：量化参数重要性并冻结关键子空间以保护预训练知识
-4. [MEPA: Multi-Scale Representation Alignment for Visual Autoregressive Modeling with Mixture of Experts](/202607/06/2607.00371v1-mepa-multi-scale-representation-alignment-for-visual-autoregressive-modeling-with-mixture-of-experts)  
+   evidence：使用课程学习和迁移学习将ASR适应稀有的非语言发声
+4. [Role-Aware Neural Convex Divergence Heads for Asymmetric Representation Learning](/202607/07/2607.01762v1-role-aware-neural-convex-divergence-heads-for-asymmetric-representation-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于专家混合的多尺度自回归生成表示对齐
-5. [Entropy-Regularized Probabilistic Gates for Sparse Model Discovery in Scarce-Data Federated Learning](/202607/06/2607.00275v1-entropy-regularized-probabilistic-gates-for-sparse-model-discovery-in-scarce-data-federated-learning)  
+   evidence：用于非对称表示学习的角色感知神经凸散度头
+5. [MMAO-Cls: Metabolic Multi-Agent Optimization for Joint Feature Selection and Classifier Tuning](/202607/07/2607.01539v1-mmao-cls-metabolic-multi-agent-optimization-for-joint-feature-selection-and-classifier-tuning)  
    标签：评分：7.0/10、query:ndai
-   evidence：利用概率门学习稀疏模型用于稀缺数据联邦学习
+   evidence：通过二元掩码进行特征选择，计算输入特征的重要性权重
 

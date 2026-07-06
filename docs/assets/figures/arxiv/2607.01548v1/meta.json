@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-004.webp",
+      "caption": "Figure 1: Given a dataset and optional context, EFE uses metadata, statistics, and past feedback to prompt an LLM to propose fit/transform programs. Candidates are evaluated against the identity baseline, and scores are fed back into an evolutionary loop.",
+      "page": 2,
+      "index": 4,
+      "width": 790,
+      "height": 318
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-008.webp",
+      "caption": "Figure 2: (a) Effect of the evolved transform on forecasting: Top: Chronos-2 on a steep exponential series under-extrapolates vs. ground truth; Middle: after the transform the series is near-stationary and forecasts better match the transformed truth; Bottom: inverse-transforming the forecast yields a much closer fit. (b) Aggregate forecast metrics on a synthetic exponential-growth benchmark (100 series, length 5000, 128-step horizon): NO FE uses raw inputs, EFE-Time forecasts in transformed space and inverts back.",
+      "page": 3,
+      "index": 8,
+      "width": 819,
+      "height": 367
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-001.webp",
+      "caption": "Figure 3: Cross-model transfer of EFE-Time. The programs were evolved against Chronos-2 only and reused without modification on TimesFM-2.5, Moirai-2-Small, and Reverso-Nano. (a) Average percent improvement across Covid Deaths, M4-yearly, and solar hourly. (b) Same setup averaged across all 10 GIFT-Eval datasets in Table 1. We report average scores across three replicates.",
+      "page": 6,
+      "index": 1,
+      "width": 811,
+      "height": 261
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-009.webp",
+      "caption": "Table 2: Comparison of feature engineering methods for single decision trees across tabular datasets over ROC-AUC. The reported results are 3 outer-fold averages from the TabArena benchmark.",
+      "page": 8,
+      "index": 9,
+      "width": 802,
+      "height": 295
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-012.webp",
+      "caption": "Figure 6: (a) Single decision tree over 3 folds × 5 seeds (15 runs per cell). (b) Test AUC vs. training-set size for TabPFN. EFE-Tab features deliver a larger lift in the low-data regime, with the gap shrinking as more training data becomes available. (c) Average ∆ AUC (EFE-Tab - baseline) over the held-out test and validation sets vs. the fraction of training data exposed to the evolution loop, averaged over TabPFN/LightGBM/decision-tree and 3 seeds on churn and in_vehicle_coupon_recommendation.",
+      "page": 9,
+      "index": 12,
+      "width": 825,
+      "height": 248
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-007.webp",
+      "caption": "Table 4: The TabArena datasets used in the EFE-Tab evaluation.",
+      "page": 14,
+      "index": 7,
+      "width": 830,
+      "height": 186
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-011.webp",
+      "caption": "Figure 7: Per-checkpoint validation and test MASE ratios for the covid_deaths and solar_H model-size scans. Faint traces are individual seeds; solid lines are per-size means; ×-marks denote the iteration at which each run’s optimizer-final program was first found. Values below the dashed line (ratio=1) improve over the Chronos-2 identity-transform baseline.",
+      "page": 17,
+      "index": 11,
+      "width": 813,
+      "height": 445
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-010.webp",
+      "caption": "Table 7: Performance comparison of feature engineering methods across tabular datasets over ROCAUC. The reported results are 3 outer-fold averages from the TabArena benchmark.",
+      "page": 19,
+      "index": 10,
+      "width": 694,
+      "height": 721
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-014.webp",
+      "caption": "Figure 8: The change of validation and test MASE during EFE-Time evolution for Covid-Deaths.",
+      "page": 20,
+      "index": 14,
+      "width": 817,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-015.webp",
+      "caption": "Figure 9: The change of validation and test MASE during EFE-Time evolution for Solar-hourly.",
+      "page": 20,
+      "index": 15,
+      "width": 817,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-005.webp",
+      "caption": "Figure 15: Evolution trees for the three covid_deaths runs (seeds 1, 2, 3 from left to right). All three seeds locate programs that cross the 10%-improvement line.",
+      "page": 29,
+      "index": 5,
+      "width": 816,
+      "height": 464
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-006.webp",
+      "caption": "Figure 16: Evolution trees for the three m4_yearly runs. The seed-to-seed score variability is visibly wider than on covid_deaths.",
+      "page": 29,
+      "index": 6,
+      "width": 817,
+      "height": 467
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-003.webp",
+      "caption": "Figure 17: Evolution trees for the three solar_H runs. The three panels are visually similar.",
+      "page": 30,
+      "index": 3,
+      "width": 812,
+      "height": 467
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-002.webp",
+      "caption": "Figure 18: Evolution trees for the three restaurant runs. The optimizer-selected scores sit only marginally above the identity baseline.",
+      "page": 30,
+      "index": 2,
+      "width": 817,
+      "height": 467
+    },
+    {
+      "url": "assets/figures/arxiv/2607.01548v1/fig-013.webp",
+      "caption": "Figure 19: Evolution trees for the three bitbrains_rnd/H runs. As on restaurant, the populations crowd a vertical band around the identity baseline.",
+      "page": 31,
+      "index": 13,
+      "width": 816,
+      "height": 467
+    }
+  ]
+}

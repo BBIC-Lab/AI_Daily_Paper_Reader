@@ -1,0 +1,420 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-06T20:54:05.753675+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 27,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 53,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 11,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 6,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 12
+  },
+  "deep_dive": [
+    {
+      "id": "2607.01657v1",
+      "source": "arxiv",
+      "title": "Domain Generalization via Text-Anchored Information Bottleneck",
+      "abstract": "Visual recognition models often fail when deployed in new environments. Domain Generalization (DG) addresses this by learning representations that remain invariant to environment-specific variations. Recent approaches increasingly rely on large vision-language models, assuming that preserving their expressive visual representations improves robustness. However, we show that such visual expressiveness can instead propagate spurious cues that tie representations to the training environments, hindering invariant learning. We therefore discard visual guidance and instead treat the language embedding space as the primary source of domain invariance, naturally acting as an information bottleneck that preserves core semantics while suppressing domain-specific variations. Extensive experiments across diverse backbones exhibit state-of-the-art performance and further analyze what makes guidance effective for robust generalization. These findings shift the focus of DG from improving representations to designing supervision that enforces invariance.",
+      "authors": [
+        "Eunyi Lyou",
+        "Yunjeong Choi",
+        "Junho Lee",
+        "Joonseok Lee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-02T03:31:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.01657v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "domain generalization method adapting models to new domains using text-anchored bottleneck",
+      "llm_evidence_cn": "使用文本锚定瓶颈的域泛化方法，适应新领域",
+      "llm_evidence": "使用文本锚定瓶颈的域泛化方法，适应新领域",
+      "canonical_evidence": "使用文本锚定瓶颈的域泛化方法，适应新领域",
+      "llm_tldr_en": "Discards visual guidance and uses language embeddings as information bottleneck for domain generalization.",
+      "llm_tldr_cn": "丢弃视觉引导，利用语言嵌入作为信息瓶颈实现域泛化。",
+      "llm_tldr": "丢弃视觉引导，利用语言嵌入作为信息瓶颈实现域泛化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01746v1",
+      "source": "arxiv",
+      "title": "Finite-Lag Operator Geometry of Recurrent Representations",
+      "abstract": "Recurrent representations are trajectories, but representation geometry is often measured from static snapshots. We develop finite-lag operator geometry for recurrent hidden states from observed source-successor pairs $(X_t,X_{t+Δ})$. The primitive is the conditional transport law $Q_Δ(dy\\mid x)$, estimated by a dense Gaussian source-smoothing operator. From this directed finite-lag law we derive a source-centered transport tensor $G_Δ$, which decomposes exactly into conditional spread and coherent displacement, and an antisymmetric coordinate circulation $W_Δ^ρ$, which summarizes directed lagged flow. We prove affine covariance with explicit metric dependence of scalar summaries, dense estimator stability on bounded trajectory clouds, and a finite-lag separation result showing that source-centered transport detects deterministic recurrent motion not recorded by infinitesimal carre-du-champ geometry. A linear-Gaussian closed form calibrates the quantities in terms of the update $A_Δ$, source covariance, and innovation covariance. Controlled experiments validate the decomposition, circulation, covariance, and stability predictions. In performance matched repeat-copy networks, the framework reveals architecture dependent differences in total transport scale and coherent displacement trace, while coherent displacement fraction is metric and resolution dependent.",
+      "authors": [
+        "Kanishka Reddy"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-02T06:00:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.01746v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "develops operator geometry for recurrent hidden states from sequential data",
+      "llm_evidence_cn": "从顺序数据开发循环隐藏状态的算子几何",
+      "llm_evidence": "从顺序数据开发循环隐藏状态的算子几何",
+      "canonical_evidence": "从顺序数据开发循环隐藏状态的算子几何",
+      "llm_tldr_en": "Finite-lag operator geometry to analyze trajectories of recurrent representations",
+      "llm_tldr_cn": "有限滞后算子几何分析循环表示的轨迹",
+      "llm_tldr": "有限滞后算子几何分析循环表示的轨迹",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01752v1",
+      "source": "arxiv",
+      "title": "Efficient Temporal Point Processes via Monotone Alternating Splines",
+      "abstract": "Temporal point processes (TPPs) have widespread applications across various domains. Compared to modeling the conditional intensity of a TPP, modeling its cumulative conditional intensity function (CCIF) improves computational efficiency and eliminates numerical approximation errors. However, current CCIF parameterizations uniformly rely on Monotone Neural Networks (MNNs), which we identify as suffering from three structural deadlocks--convexity restrictions, saturation limits, and violations of CCIF modeling requirements--that fundamentally restrict their representational capacity for complex temporal dynamics. To resolve these bottlenecks, this paper proposes a novel framework called Monotone Alternating Splines (MAS). By leveraging distinct interpolation and extrapolation components, MAS provides a flexible and efficient framework for modeling CCIFs. Theoretically, MAS's interpolation provides strong fitting accuracy, while its extrapolation supports robust generalization, reducing the irreducible approximation gaps of MNNs. Extensive experiments show that MAS achieves superior performance on both synthetic and real-world datasets.",
+      "authors": [
+        "Cheng Wan",
+        "Quyu Kong",
+        "Feng Zhou"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-02T06:10:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.01752v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "models temporal point processes as sequential data over time",
+      "llm_evidence_cn": "对时序点过程建模以分析预测序列数据",
+      "llm_evidence": "对时序点过程建模以分析预测序列数据",
+      "canonical_evidence": "对时序点过程建模以分析预测序列数据",
+      "llm_tldr_en": "Proposes monotone alternating splines for efficient temporal point process modeling with improved representation.",
+      "llm_tldr_cn": "提出单调交替样条，高效建模时序点过程，提升表征能力。",
+      "llm_tldr": "提出单调交替样条，高效建模时序点过程，提升表征能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01795v1",
+      "source": "arxiv",
+      "title": "Single-Channel EEG-Based Cognitive Load Assessment in Online Learning: A Hybrid Deep Learning Approach",
+      "abstract": "Monitoring cognitive load during online learning could help instructors identify content that learners find difficult, but remote settings remove the visual cues that support this judgement in a classroom. We study whether a single-channel, consumer-grade EEG device (the NeuroSky MindWave Mobile 2) can distinguish easy from difficult educational-video content, using the publicly available dataset of Wang et al. [24] (ten learners, one excluded for excessive noise, leaving nine). We implement a hybrid CNN+LSTM+Attention model that combines the raw waveform with band-power features. In a within-subject setting, the model reaches up to 78.5% accuracy, compared with 55% for conventional feature-based classifiers; regularization (dropout and L2) closes the large gap between training and validation accuracy that we observe without it, keeping validation accuracy stable at roughly 68-73%. We are deliberately cautious about these numbers: with only nine subjects, within-subject evaluation is optimistic, and we argue that subject-independent evaluation -- in which no learner appears in both training and test data -- should be the standard for this task. To that end we release a reproducible evaluation pipeline. We frame the work as a feasibility study rather than a deployable system, and pair it with an open, notebook-based tool that records EEG, runs inference, and visualizes estimated cognitive load as a heatmap over the video timeline to help educators locate potentially challenging segments.",
+      "authors": [
+        "Rowan Hussein",
+        "Mohamed Ouf"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-02T07:13:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.01795v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG-based cognitive load decoding using hybrid deep learning",
+      "llm_evidence_cn": "使用混合深度学习进行基于脑电的认知负荷解码",
+      "llm_evidence": "使用混合深度学习进行基于脑电的认知负荷解码",
+      "canonical_evidence": "使用混合深度学习进行基于脑电的认知负荷解码",
+      "llm_tldr_en": "Uses hybrid CNN+LSTM+Attention to decode cognitive load from single-channel EEG signals",
+      "llm_tldr_cn": "使用混合CNN+LSTM+注意力从单通道脑电信号解码认知负荷",
+      "llm_tldr": "使用混合CNN+LSTM+注意力从单通道脑电信号解码认知负荷",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01901v1",
+      "source": "arxiv",
+      "title": "SABER: A Semantic-Aligned Brain Network Analysis Framework via Multi-scale Hypergraphs",
+      "abstract": "Effective brain disease diagnosis requires the synergy of brain connectivity patterns and high-level semantic knowledge. Existing methods, however, largely treat semantics from large language models (LLMs) as auxiliary features or supervision, limiting their direct role in decision-making and constraining classification stability and robustness. To overcome this, we propose a semantic-aligned brain network framework that actively integrates LLM-derived semantics into the prediction process. Specifically, ROI-level semantics are first incorporated via global self-attention to enrich node representations and provide whole-brain context. Multi-scale hypergraphs are then constructed to explicitly model functional subnetworks and multi-ROI interactions, addressing the locality limitations of traditional GNNs and capturing high-order dependencies. Finally, a decision-level semantic alignment mechanism selectively injects patient-specific textual embeddings into graph representations, enabling semantics to directly guide predictions without perturbing the underlying network structure. Experiments on public brain network datasets ABIDE and ADHD-200 demonstrate state-of-the-art performance, enhanced stability, and improved interpretability, particularly in small-sample settings.",
+      "authors": [
+        "Yidan Xu",
+        "Xiangmin Han",
+        "Rundong Xue",
+        "Huihui Ye"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.MM"
+      ],
+      "published": "2026-07-02T08:58:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.01901v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "semantic-aligned brain network representation learning",
+      "llm_evidence_cn": "语义对齐的脑网络表示学习",
+      "llm_evidence": "语义对齐的脑网络表示学习",
+      "canonical_evidence": "语义对齐的脑网络表示学习",
+      "llm_tldr_en": "SABER integrates LLM semantics into brain network analysis for robust diagnosis",
+      "llm_tldr_cn": "SABER将LLM语义融入脑网络分析实现稳健诊断",
+      "llm_tldr": "SABER将LLM语义融入脑网络分析实现稳健诊断",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.01527v1",
+      "source": "arxiv",
+      "title": "Quantifying the Uncertainty of Blindly Estimated Room Embeddings Using a Dispersion-Calibrated Score",
+      "abstract": "Room embeddings derived from reverberant speech are often unreliable: speech content and recording degradation can alter the representation even when speaker, room, and source-receiver geometry remain unchanged, degrading downstream task performance. We propose a framework that learns room embeddings robust to speech-content variation and a representation-level uncertainty score from reverberant speech without downstream-task supervision. The embedding is anchored to a structured room impulse response (RIR) latent space and trained using a multi-view data structure with Kullback-Leibler (KL)-based alignment; a multi-positive contrastive term further refines robustness. A lightweight uncertainty head is calibrated using the dispersion of corruption-induced embeddings and optimized with a rank-based objective. Across waveform- and spectrogram-level corruptions, the score is consistent with representation dispersion and enables effective selective prediction while requiring only a single utterance at inference.",
+      "authors": [
+        "Yang Xiang",
+        "Philipp Götz",
+        "Emanuël A. P. Habets",
+        "Andreas Walther",
+        "Wenwu Wang",
+        "Philip J. B. Jackson"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.LG"
+      ],
+      "published": "2026-07-01T22:55:49+00:00",
+      "link": "https://arxiv.org/pdf/2607.01527v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns compact room embeddings from reverberant speech without supervision",
+      "llm_evidence_cn": "从混响语音中无监督学习紧凑的房间嵌入",
+      "llm_evidence": "从混响语音中无监督学习紧凑的房间嵌入",
+      "canonical_evidence": "从混响语音中无监督学习紧凑的房间嵌入",
+      "llm_tldr_en": "Learns robust room representations and uncertainty scores from speech, enabling downstream tasks.",
+      "llm_tldr_cn": "从语音中学习鲁棒的房间表示和不确定性分数，支持下游任务。",
+      "llm_tldr": "从语音中学习鲁棒的房间表示和不确定性分数，支持下游任务。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.01539v1",
+      "source": "arxiv",
+      "title": "MMAO-Cls: Metabolic Multi-Agent Optimization for Joint Feature Selection and Classifier Tuning",
+      "abstract": "This paper studies whether the Metabolic Multi-Agent Optimizer (MMAO) can act as a credible outer-loop optimizer for classification model selection. We propose MMAO-Cls, a mixed-space realization in which each agent jointly encodes a binary feature mask and classifier hyperparameters, while private energy, communal budget, role drift, and lifecycle turnover are mapped to the accuracy-complexity tradeoff of wrapper learning. The implementation is strengthened by deriving feature-budget adaptation from feature-information priors and by regularizing validation reward with both subset compactness and train-validation overfitting gap. We evaluate MMAO-Cls on seven standard tabular benchmarks with three seeds each and compare it against RandomSearch, GA-lite, PSO-lite, and an endogenous no-sharing ablation. On the aggregate validation objective, MMAO-Cls ranks second ($0.9433$) behind GA-lite ($0.9446$). On held-out test performance, it reaches mean score $0.8882$, improving over RandomSearch ($0.8808$) and GA-lite ($0.8857$), remaining close to PSO-lite ($0.8874$) and the no-sharing ablation ($0.8900$), while using the most compact mean held-out feature subset among all compared methods (feature ratio $0.4881$). Pairwise tests show that these margins are not yet statistically significant. The resulting claim is therefore conservative: MMAO-Cls supports classification applicability and compact mixed-space search more clearly than it isolates communal sharing as a decisive standalone advantage.",
+      "authors": [
+        "Jinliang Xu",
+        "Liping Ma"
+      ],
+      "primary_category": "cs.NE",
+      "categories": [
+        "cs.NE",
+        "cs.LG",
+        "cs.MA"
+      ],
+      "published": "2026-07-01T23:40:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.01539v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feature selection via binary mask, computes importance weights for input features",
+      "llm_evidence_cn": "通过二元掩码进行特征选择，计算输入特征的重要性权重",
+      "llm_evidence": "通过二元掩码进行特征选择，计算输入特征的重要性权重",
+      "canonical_evidence": "通过二元掩码进行特征选择，计算输入特征的重要性权重",
+      "llm_tldr_en": "Proposes MMAO-Cls for joint feature selection and classifier tuning using multi-agent optimization.",
+      "llm_tldr_cn": "提出MMAO-Cls，利用多智能体优化联合进行特征选择和分类器调优。",
+      "llm_tldr": "提出MMAO-Cls，利用多智能体优化联合进行特征选择和分类器调优。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.01548v1",
+      "source": "arxiv",
+      "title": "Evolutionary Feature Engineering for Structured Data",
+      "abstract": "Large language models are increasingly used as open-ended search operators in evolutionary optimization. We introduce Evolutionary Feature Engineering (EFE), a framework for using LLM-based evolution to discover preprocessing transformations for structured data. EFE represents transformations as Python programs with a standardized fit/transform interface, allowing them to be inserted directly into existing machine learning pipelines. During evolution, candidate programs are refined using dataset context, summary statistics, and downstream performance feedback on validation set. We instantiate EFE in two settings. For time-series forecasting, EFE-Time learns invertible, dataset-specific normalizations that improve off-the-shelf time-series foundation models. It reduces forecasting errors (MASE, WQL, MAE) 3% or more when averaged across datasets and improvements are as much as 19% on the COVID-Deaths dataset. Notably, these improvements occur with recent TSFMs such as Chronos-2. For tabular prediction, EFE-Tab evolves compact feature programs that add useful interpretable features and remove redundant ones, improving or matching existing LLM-based feature-engineering methods. We found EFE-Tab to be particularly effective on classical decision trees, where small sets of evolved features yield competitive accuracy while preserving interpretability. Overall, EFE demonstrates that LLM-based evolution can improve both accuracy and interpretability when automatically tackling structured data.",
+      "authors": [
+        "Ege Onur Taga",
+        "Yilin Zhuang",
+        "M. Emrullah Ildiz",
+        "Petros Mol",
+        "Abhimanyu Das",
+        "Karthik Duraisamy",
+        "Samet Oymak"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-02T00:11:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.01548v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "time series forecasting normalization",
+      "llm_evidence_cn": "时间序列预测归一化",
+      "llm_evidence": "时间序列预测归一化",
+      "canonical_evidence": "时间序列预测归一化",
+      "llm_tldr_en": "EFE learns dataset-specific normalizations for time-series forecasting via LLM-based evolution.",
+      "llm_tldr_cn": "EFE通过基于LLM的进化为时间序列预测学习数据集特定的归一化。",
+      "llm_tldr": "EFE通过基于LLM的进化为时间序列预测学习数据集特定的归一化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.01563v1",
+      "source": "arxiv",
+      "title": "Beyond Words: Towards Effective Modeling of Non-Verbal Vocalizations in ASR",
+      "abstract": "Modern automatic speech recognition (ASR) systems excel at transcribing lexical content but often omit nonverbal vocalizations (NVs), such as laughter, breaths, coughs, and cries, that carry conversational and affective information. Modeling NVs in ASR is challenging because NV annotations are sparse and highly long-tailed, with frequent categories such as breaths and laughter dominating rarer events such as cries and coughs. We study three data-centric strategies for improving low-resource NV recognition: (1) a two-stage curriculum that first maps all NV events to a generic token and then fine-tunes on target categories; (2) inter-token transfer from high-resource events, such as laughter and breath, to rare events, such as crying; and (3) voice-conversion augmentation with class balancing. Experiments show that shared acoustic structure across vocal events can be exploited to improve rare-category detection while preserving lexical ASR quality.",
+      "authors": [
+        "Gene Yang",
+        "Haibin Wu",
+        "Peng Su",
+        "Ruizhe Huang",
+        "Suwon Shon",
+        "Bach Do",
+        "Minxue Niu",
+        "Zhaoheng Ni",
+        "Shang-Wen Li",
+        "Florian Metze",
+        "Yossi Adi",
+        "Ming Sun",
+        "Yuzong Liu"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-07-02T00:43:14+00:00",
+      "link": "https://arxiv.org/pdf/2607.01563v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adapts ASR to rare non-verbal vocalizations using curriculum and transfer learning",
+      "llm_evidence_cn": "使用课程学习和迁移学习将ASR适应稀有的非语言发声",
+      "llm_evidence": "使用课程学习和迁移学习将ASR适应稀有的非语言发声",
+      "canonical_evidence": "使用课程学习和迁移学习将ASR适应稀有的非语言发声",
+      "llm_tldr_en": "Improves low-resource recognition of non-verbal vocalizations via data-centric adaptation strategies.",
+      "llm_tldr_cn": "通过以数据为中心的适应策略改进低资源非语言发声识别。",
+      "llm_tldr": "通过以数据为中心的适应策略改进低资源非语言发声识别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.01762v1",
+      "source": "arxiv",
+      "title": "Role-Aware Neural Convex Divergence Heads for Asymmetric Representation Learning",
+      "abstract": "Many representation learning problems involve directed relations, such as lexical entailment, sentence entailment, ontology hierarchy, and citation links. Standard Euclidean, cosine, and Mahalanobis heads are symmetric, while generic neural scorers can model directionality but provide limited geometric structure. This paper proposes a role-aware neural convex divergence head for asymmetric representation learning. The head applies source- and target-role projections before evaluating an input-convex neural Bregman divergence, yielding a nonnegative structured score in the role-projected space. We characterize its projected-space identity, source-role convexity, directional-gap decomposition, and Hessian-based local curvature. Experiments on lexical, sentence, ontology, and directed graph benchmarks compare symmetric distances, unstructured asymmetric scorers, order/hyperbolic baselines, plain ICNN-Bregman heads, and the proposed role-aware variant. Across ten random seeds on the main semantic and ontology benchmarks, role-aware projections consistently improve directional accuracy over plain ICNN-Bregman heads while preserving zero observed negative divergence rate. The results also identify a boundary case: on large fixed-feature citation prediction, specialized symmetric or hyperbolic baselines remain stronger in ranking accuracy. Overall, the proposed head is best understood as a structured and interpretable plug-in distance module for tasks where directional relations matter.",
+      "authors": [
+        "He Huang",
+        "Lu Shen",
+        "Yunfeng Huang",
+        "Li Qi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-07-02T06:24:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.01762v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "role-aware neural convex divergence head for asymmetric representation learning",
+      "llm_evidence_cn": "用于非对称表示学习的角色感知神经凸散度头",
+      "llm_evidence": "用于非对称表示学习的角色感知神经凸散度头",
+      "canonical_evidence": "用于非对称表示学习的角色感知神经凸散度头",
+      "llm_tldr_en": "Proposes a neural head for learning asymmetric representations with structured scores.",
+      "llm_tldr_cn": "提出一种用于学习非对称表示并具有结构化分数的神经头。",
+      "llm_tldr": "提出一种用于学习非对称表示并具有结构化分数的神经头。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
