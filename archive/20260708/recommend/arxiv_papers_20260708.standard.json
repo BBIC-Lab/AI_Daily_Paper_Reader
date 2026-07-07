@@ -1,0 +1,408 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-07T20:49:15.186292+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 47,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 103,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 12,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 7,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 13
+  },
+  "deep_dive": [
+    {
+      "id": "2607.02850v1",
+      "source": "arxiv",
+      "title": "Labeled-Data-Free Meta-Learning: Efficient Task Generation Using Pre-trained Models and Unlabeled Data",
+      "abstract": "Meta-learning without labeled data is crucial for real-world applications, where obtaining labeled datasets can be expensive or restricted due to privacy concerns. Data-Free Meta-Learning (DFML) addresses this challenge by leveraging pre-trained models without access to training data. However, existing DFML methods rely on model inversion to generate training data, a process that is generally difficult and computationally expensive due to the need to generate high-dimensional data matching the original distribution. To address this limitation, we propose a novel meta-learning setting that avoids model inversion by jointly leveraging pre-trained models and unlabeled data. Our method generates meta-training tasks by assigning soft labels from pre-trained models to unlabeled data. Since the quality of these tasks can vary, we introduce a task-weighting mechanism based on task confidence and class distribution balance to ensure effective meta-learning. Extensive experiments demonstrate that our approach substantially reduces computational cost and improves generalization, achieving up to 104-fold speedup and 8.4 percent to 36.4 percent improvements in few-shot classification accuracy compared to state-of-the-art DFML methods.",
+      "authors": [
+        "Lei Sun",
+        "Yusuke Tanaka",
+        "Tomoharu Iwata"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-03T01:02:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.02850v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "meta-learning with limited labeled data using pretrained models",
+      "llm_evidence_cn": "利用预训练模型进行有限标签数据的元学习",
+      "llm_evidence": "利用预训练模型进行有限标签数据的元学习",
+      "canonical_evidence": "利用预训练模型进行有限标签数据的元学习",
+      "llm_tldr_en": "Labeled-Data-Free Meta-Learning generates tasks from pretrained models and unlabeled data, avoiding expensive model inversion.",
+      "llm_tldr_cn": "无标签数据元学习利用预训练模型和未标注数据生成任务，避免昂贵的模型反演。",
+      "llm_tldr": "无标签数据元学习利用预训练模型和未标注数据生成任务，避免昂贵的模型反演。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03094v1",
+      "source": "arxiv",
+      "title": "Stacked LoRA for Subject-Adaptive EEG Foundation Models in Motor Imagery Decoding",
+      "abstract": "Electroencephalography (EEG) decoding for brain-computer interfaces (BCIs) faces a major challenge: substantial inter-subject variability limits effective cross-subject generalization. Consequently, practical systems still rely largely on subject-specific models trained from scratch and requiring individual recalibration. EEG foundation models have recently emerged as a promising alternative; however, even large pretrained models cannot simply be used as fixed feature extractors and still require additional adaptation before they can be reliably applied to downstream tasks. In this work, we address this challenge through targeted adaptation strategies. Building on recent EEG foundation models such as REVE, LaBraM, and LUNA, we examine the impact of different low-rank adaptation strategies on motor imagery classification. We propose a framework that structurally decouples subject-invariant knowledge from subject-specific neural signatures: the low-rank update at each adapted layer is split into a Global adapter, trained jointly across all subjects, and Subject-Specific adapters, each absorbing individual variability. To assess the contribution of each path, we compare three adaptation strategies: (i) subject-specific LoRA (ii) global LoRA and (iii) stacked LoRA, combining both Global and Subject Specific adapters. Experiments on BCI Competition IV-2a, PhysioNet Motor Imagery, and the clinical Zuo2025 benchmark show that Stacked LoRA effectively mitigates inter-subject variability, achieving the best accuracy in the large majority of backbone and dataset combinations. Our analysis further reveals that the optimal balance between the global and subject-specific paths depends on the target population: a shared adapter is sufficient for large, diverse cohorts, whereas subject-specific adaptation is decisive under the high inter-session variability of clinical recordings.",
+      "authors": [
+        "Aymen Sarhane",
+        "Fouad Lbakali",
+        "Mouad Souissi",
+        "Jonathan Lys",
+        "Giulia Lioi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-03T08:31:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.03094v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "subject-adaptive EEG decoding using pretrained foundation models and LoRA adaptation",
+      "llm_evidence_cn": "使用预训练EEG基础模型和LoRA进行主体自适应脑电解码",
+      "llm_evidence": "使用预训练EEG基础模型和LoRA进行主体自适应脑电解码",
+      "canonical_evidence": "使用预训练EEG基础模型和LoRA进行主体自适应脑电解码",
+      "llm_tldr_en": "This paper adapts EEG foundation models to new subjects via Stacked LoRA, improving motor imagery decoding with limited data.",
+      "llm_tldr_cn": "本文通过堆叠LoRA适应EEG基础模型于新主体，提升运动想象解码性能，适应数据有限的情况。",
+      "llm_tldr": "本文通过堆叠LoRA适应EEG基础模型于新主体，提升运动想象解码性能，适应数据有限的情况。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03165v1",
+      "source": "arxiv",
+      "title": "Rethinking Brain Decoding with CLIP: The Role of Adversarial Robustness",
+      "abstract": "Brain decoding aims to uncover neural mechanisms by inferring stimulus-related representations from brain signals. In fMRI studies, this is typically achieved by mapping fMRI responses to the latent representations of computational models. Recently, CLIP has become a popular choice for brain decoding due to its rich vision--language embedding space. However, aligning fMRI signals with CLIP representations remains challenging. As CLIP is not explicitly optimized for neural alignment, its representations may capture statistically predictive cues that are only partially reflected in brain activity, limiting decoding performance. In this paper, we investigate whether adversarially robust representations improve neural decoding with CLIP. Adversarial training suppresses non-robust features and promotes more stable, perceptually structured representations, which may better align with brain activity. We evaluate this by fixing the fMRI decoder and varying only the target representation (standard CLIP vs. robust variants) on fMRI-image retrieval and zero-shot classification tasks across NSD and GOD datasets. Empirical results show that this simple change consistently improves task performance and yields stronger alignment across multiple metrics. Attribution analysis further reveals consistently low agreement between standard CLIP and its robust variants, suggesting that adversarial robustness reorganizes feature importance in the visual representation. These findings suggest that the choice of target representation influences neural decoding performance and that adversarial robustness may serve as a useful criterion for brain decoding.",
+      "authors": [
+        "Byeongseo Bok",
+        "Futa Waseda",
+        "Jun Liu",
+        "Isao Echizen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-03T10:05:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.03165v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "investigates adversarially robust representations for brain decoding with CLIP",
+      "llm_evidence_cn": "研究对抗鲁棒表示用于CLIP脑解码",
+      "llm_evidence": "研究对抗鲁棒表示用于CLIP脑解码",
+      "canonical_evidence": "研究对抗鲁棒表示用于CLIP脑解码",
+      "llm_tldr_en": "Explores how adversarial robustness improves CLIP-based brain decoding from fMRI.",
+      "llm_tldr_cn": "探索对抗鲁棒性如何提升基于CLIP的fMRI脑解码。",
+      "llm_tldr": "探索对抗鲁棒性如何提升基于CLIP的fMRI脑解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03374v1",
+      "source": "arxiv",
+      "title": "An Asymptotic Analysis of the Shapley Value for Dataset Valuation",
+      "abstract": "We propose an asymptotic analysis of the Shapley value in a dataset valuation setting in which utilities are modeled as smooth functionals of empirical distributions via reproducing kernel Hilbert space (RKHS) mean embeddings. We prove that, despite its combinatorial definition, the Shapley value of a data source is asymptotically captured by a simple leading term. This term can be interpreted as the first-order contribution of a dataset relative to the surrounding data population. It also identifies the scale of the Shapley value as the number of data sources grows and provides a framework for analyzing existing Shapley value estimators. Moreover, for practitioners working with large numbers of datasets, the leading term becomes a tractable reference against which Shapley value approximations can be benchmarked.",
+      "authors": [
+        "Mélissa Tamine",
+        "Benjamin Heymann",
+        "Maxime Vono",
+        "Patrick Loiseau"
+      ],
+      "primary_category": "cs.GT",
+      "categories": [
+        "cs.GT"
+      ],
+      "published": "2026-07-03T14:28:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.03374v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "asymptotic analysis of Shapley value for feature importance in dataset valuation",
+      "llm_evidence_cn": "Shapley值在数据集估值中特征重要性的渐近分析",
+      "llm_evidence": "Shapley值在数据集估值中特征重要性的渐近分析",
+      "canonical_evidence": "Shapley值在数据集估值中特征重要性的渐近分析",
+      "llm_tldr_en": "Provides asymptotic analysis of Shapley value for data valuation, simplifying its computation for large datasets.",
+      "llm_tldr_cn": "提供数据估值的Shapley值渐近分析，简化大数据集计算。",
+      "llm_tldr": "提供数据估值的Shapley值渐近分析，简化大数据集计算。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03675v1",
+      "source": "arxiv",
+      "title": "Validation-Induced Shapley Shifts: How Validation Structure Distorts Data Valuation",
+      "abstract": "Shapley values are widely used to attribute value to training data based on their marginal contribution to performance on a validation set. Existing practice often assumes these values are stable once the training data and model are fixed. In this work, we uncover a systematic vulnerability: even modest changes to the validation set, such as introducing noises, cause directional shifts in Shapley distributions. As noises are added, Shapley values of training samples compress toward zero. We trace this to a noise-induced neighborhood reshuffling effect: perturbations alter the local rank order between validation and training samples, flattening the valuation landscape. Using the KNN-Shapley framework, we show through synthetic and real data that these shifts are consistent and reproducible. Our findings challenge the assumption of Shapley stability and reveal a new axis of fragility in data valuation. We propose normalization and boundary-aware validation strategies to mitigate these distortions and enable more robust, interpretable valuation in machine learning marketplaces.",
+      "authors": [
+        "Yinan Shen",
+        "Ziao Yang",
+        "Hongfu Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-04T03:07:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.03675v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses Shapley values to compute importance weights for training data",
+      "llm_evidence_cn": "使用Shapley值计算训练数据的重要性权重",
+      "llm_evidence": "使用Shapley值计算训练数据的重要性权重",
+      "canonical_evidence": "使用Shapley值计算训练数据的重要性权重",
+      "llm_tldr_en": "Reveals how validation set noise distorts Shapley-based data valuation and attribute importance.",
+      "llm_tldr_cn": "揭示验证集噪声如何扭曲基于Shapley的数据估值和重要性归因。",
+      "llm_tldr": "揭示验证集噪声如何扭曲基于Shapley的数据估值和重要性归因。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.02757v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning for Data-Efficient Code-Switched ASR",
+      "abstract": "Audio-language models can be prompted for code-switched speech, but their decoding is not optimized for code-switching and often fails at language boundaries. We propose a practical reinforcement learning with verifiable rewards recipe for data-efficient adaptation of audio-language models to code-switched ASR using group relative policy optimization, combining an error rate reward with a script fidelity reward that penalizes wrong writing systems and a two-pass draft-and-refinement procedure. Using Qwen2-Audio as a reproducible testbed across 10 language pairs, training on only TTS code-switched speech, we show that RLVR with 10% of the data matches LoRA supervised fine-tuning trained on the full dataset, with the largest gains on typologically distant pairs. The error rate reward eliminates translation errors while the script fidelity reward separately reduces script contamination without degradation. These gains transfer zero-shot to a human-recorded code-switching corpus.",
+      "authors": [
+        "Ziwei Ye",
+        "Peter Vickers"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.SD"
+      ],
+      "published": "2026-07-02T20:44:53+00:00",
+      "link": "https://arxiv.org/pdf/2607.02757v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RL-based data-efficient adaptation of ASR models to code-switched domains",
+      "llm_evidence_cn": "基于强化学习的数据高效ASR模型适配代码切换领域",
+      "llm_evidence": "基于强化学习的数据高效ASR模型适配代码切换领域",
+      "canonical_evidence": "基于强化学习的数据高效ASR模型适配代码切换领域",
+      "llm_tldr_en": "RLVR with group relative policy optimization achieves data-efficient code-switched ASR adaptation.",
+      "llm_tldr_cn": "使用组相对策略优化的RLVR实现了数据高效的代码切换ASR适配。",
+      "llm_tldr": "使用组相对策略优化的RLVR实现了数据高效的代码切换ASR适配。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.02781v1",
+      "source": "arxiv",
+      "title": "Safe Inference-Time Alignment via Lagrangian Reward Augmentation",
+      "abstract": "Inference-time alignment steers a frozen language model during decoding using auxiliary reward signals, avoiding the cost of repeated weight updates. However, existing inference-time alignment methods typically optimize a single scalar score, so explicit safety constraints must either be ignored or encoded through manually tuned penalties. We propose Lagrangian Reward Augmentation (LARA), a general inference-time alignment framework under safety constraints. Starting from a KL-regularized constrained objective with a reward model and a cost model, LARA dualizes the constraint and reduces the optimization problem to a one-dimensional convex problem over a nonnegative dual variable. Estimated on a small calibration set, this dual variable defines an augmented reward that can be used as a drop-in scoring signal within existing inference-time alignment methods. For sequence-level sampling methods, such as Best-of-N reranking, the calibrated dual variable corresponds to the solution of the expected-cost constrained problem. For token-level reward-guided decoding methods, the same construction yields a principled dual-calibrated heuristic rather than an exact constrained-policy guarantee. We evaluate LARA on both sequence-level and token-level inference-time alignment methods, and find that LARA improves the helpfulness-harmlessness tradeoff, with Best-of-N achieving the best performance among inference-time methods, approaching finetuning-based direct alignment baselines.",
+      "authors": [
+        "Yaswanth Chittepu",
+        "Ativ Joshi",
+        "Sohini Chintala",
+        "Scott Niekum"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-02T21:27:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.02781v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "method for converting model outputs into sequences during decoding with constraints",
+      "llm_evidence_cn": "在解码过程中将模型输出转换为序列的方法",
+      "llm_evidence": "在解码过程中将模型输出转换为序列的方法",
+      "canonical_evidence": "在解码过程中将模型输出转换为序列的方法",
+      "llm_tldr_en": "LARA uses Lagrangian dual variables to steer language model decoding under safety constraints.",
+      "llm_tldr_cn": "LARA使用拉格朗日对偶变量在安全约束下引导语言模型解码。",
+      "llm_tldr": "LARA使用拉格朗日对偶变量在安全约束下引导语言模型解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02912v1",
+      "source": "arxiv",
+      "title": "See the Emotion: A Facial Emoji Proxy Modeling for EEG Emotion Recognition",
+      "abstract": "Despite the high accuracy of EEG-based emotion recognition, existing models remain opaque \"black boxes\", lacking semantic grounding between abstract neural features and human-interpretable states. In this paper, we reframe EEG explainability as a cross-modal generation task, shifting the paradigm from feature attribution to behavioral visualization. We introduce Facial Emoji Proxy Modeling, a novel framework that translates high-dimensional EEG signals into identity-anonymized facial emojis. Guided by the neuroscientific inspiration of neural-facial association, this approach grounds neural representations in the manifold of observable facial dynamics. Technically, our framework integrates FMENet, a specialized backbone modeling expression-relevant spatial synergies, and the Facial Emoji Learning Branch (FELB), which treats emoji reconstruction as a structured semantic regularizer. Extensive experiments on EAV and MMER benchmarks demonstrate that our method achieves state-of-the-art accuracy among EEG-only models. Crucially, it generates semantically faithful facial animations that provide a transparent, privacy-preserving window into the brain's emotional evolution, effectively allowing users to \"see the emotion\" directly from neural signals. Code is available at https://github.com/xian-sh/SeeEmotion",
+      "authors": [
+        "Jingjing Hu",
+        "Guo Dan",
+        "Haofan Cheng",
+        "Ying Zeng",
+        "Zhan Si",
+        "Jinxing Zhou",
+        "Meng Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.HC",
+        "cs.MM"
+      ],
+      "published": "2026-07-03T03:18:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.02912v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "EEG to facial emoji decoding",
+      "llm_evidence_cn": "EEG到面部表情符号解码",
+      "llm_evidence": "EEG到面部表情符号解码",
+      "canonical_evidence": "EEG到面部表情符号解码",
+      "llm_tldr_en": "Facial Emoji Proxy Modeling for EEG emotion recognition",
+      "llm_tldr_cn": "面部表情符号代理建模用于EEG情绪识别",
+      "llm_tldr": "面部表情符号代理建模用于EEG情绪识别",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.03004v1",
+      "source": "arxiv",
+      "title": "REAL-OW: Rehearsal-free Open World Object Detection with Low-Rank Adaptation and Dual-Stage Objectness Modeling",
+      "abstract": "Open-World Object Detection (OWOD) requires detectors to identify previously unseen objects as unknown and incrementally incorporate them into the set of known categories, while preserving previously acquired knowledge. Existing frameworks rely heavily on exemplar replay to mitigate catastrophic forgetting, but in some real applications, storing raw data conflicts with data access restrictions and leads to data exposure risks, while incurring significant memory overhead. In this paper, we propose REAL-OW, a novel rehearsal-free framework that decouples incremental knowledge through a collaborative adapter architecture based on Low-Rank Adaptation (LoRA). Specifically, we deploy General Adapters (GAs) in the backbone to enable the significance-aware refinement of cross-task universal representations, while Specific Adapters (SAs) in the decoder provide orthogonal storage for task-specific expertise. To resolve representation drift in objectness modeling under rehearsal-free constraints, we introduce Dual-Stage Objectness Modeling (DSOM), which alternates between feature aggregation and boundary consolidation to stabilize objectness distributions while maintaining the separation between known and unknown categories. Furthermore, DSOM is supported by a Calibrated Gaussian Negative Log-Likelihood (CG-NLL) distance tailored for the dispersed feature distributions inherent in rehearsal-free settings. Extensive evaluations demonstrate that REAL-OW achieves state-of-the-art performance, surpassing existing exemplar replay methods in both detection precision and unknown discovery. Our approach establishes a new baseline for rehearsal-free OWOD.",
+      "authors": [
+        "Huazhong Zhang",
+        "Xiaowen Fu",
+        "Yang Zhang",
+        "Linlin Shen",
+        "Jinbao Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-03T06:38:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.03004v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses LoRA for adapting to new domains with limited labeled data",
+      "llm_evidence_cn": "利用LoRA在有限标注数据下适应新领域",
+      "llm_evidence": "利用LoRA在有限标注数据下适应新领域",
+      "canonical_evidence": "利用LoRA在有限标注数据下适应新领域",
+      "llm_tldr_en": "Rehearsal-free open world detection using LoRA adapters",
+      "llm_tldr_cn": "使用LoRA的无重放开放世界检测",
+      "llm_tldr": "使用LoRA的无重放开放世界检测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.03055v1",
+      "source": "arxiv",
+      "title": "SHiPPO: Recurrent Memory with Transported Polynomial Projections",
+      "abstract": "HiPPO gives recurrent states memory semantics as coefficients of online polynomial projections, but in fixed channel coordinates. Modern selective SSMs, by contrast, rely on token-dependent control and channel interaction. We introduce SHiPPO (Sylvester HiPPO), a transported projection-memory prior that lifts HiPPO coefficient memories into a moving channel frame. For any fixed or realized right-transport path, SHiPPO transports the approximation family and channel metric together; conditional on that path, the state is ordinary HiPPO in a tied moving frame and follows Sylvester coefficient dynamics, preserving the left online-memory operator while adding right-action transport. For selective-SSM execution, we derive a restricted group-local realization with controller-compatible right actions, exponential-adjusted updates, exact block-affine scan, and recurrent decoding. We also give a simultaneous-reducibility criterion identifying when right transports collapse to static mixing plus independent scalar or blockwise banks. Controlled diagnostics show that larger current-token write rank improves ordinary prediction error but cannot recover order-sensitive changes to already-written memory; transported-memory variants recover this signal, which disappears when the transport pathway is removed. A finite-field associative-recall diagnostic with interleaved bindings, operations, and queries provides complementary autoregressive evidence while leaving the preferred right-action realization open. Taken together, these results support SHiPPO as a mechanistically grounded transported-memory prior, with evidence focused on memory mechanisms rather than broad sequence-modeling dominance.",
+      "authors": [
+        "Tomoya Mizuguchi",
+        "Bum Jun Kim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-03T07:44:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.03055v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "recurrent memory for sequential data analysis",
+      "llm_evidence_cn": "用于序列数据分析的循环记忆",
+      "llm_evidence": "用于序列数据分析的循环记忆",
+      "canonical_evidence": "用于序列数据分析的循环记忆",
+      "llm_tldr_en": "Proposes SHiPPO, a recurrent memory with transported polynomial projections for improved sequence modeling.",
+      "llm_tldr_cn": "提出SHiPPO，一种具有传输多项式投影的循环记忆，用于改进序列建模。",
+      "llm_tldr": "提出SHiPPO，一种具有传输多项式投影的循环记忆，用于改进序列建模。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

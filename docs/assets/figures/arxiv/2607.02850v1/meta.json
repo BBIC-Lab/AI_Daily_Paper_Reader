@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.02850v1/fig-006.webp",
+      "caption": "Figure 1: Illustration of the proposed setting. During the meta-training phase, only pre-trained models and unlabeled data related to the target tasks are available, while the original training datasets of the pre-trained models remain inaccessible. In the meta-testing phase, the model is adapted to target tasks using a few labeled instances.",
+      "page": 3,
+      "index": 6,
+      "width": 590,
+      "height": 327
+    },
+    {
+      "url": "assets/figures/arxiv/2607.02850v1/fig-007.webp",
+      "caption": "Figure 2: Illustration of the proposed method. At the meta-training phase, we generate meta-training datasets by assigning soft labels to the unlabeled dataset using pre-trained models. Task weights are then computed based on these soft labels, and the model is trained by minimizing the weighted meta-training loss. At the meta-testing phase, the trained model predicts the label of an input instance using a few labeled data.",
+      "page": 4,
+      "index": 7,
+      "width": 979,
+      "height": 238
+    },
+    {
+      "url": "assets/figures/arxiv/2607.02850v1/fig-004.webp",
+      "caption": "Table 2: Average accuracies (%) on the Omniglot dataset. Results are averaged over five independent runs with different unlabeled datasets, with standard errors reported. Methods without unlabeled data report only average accuracies. Bold indicates the best and statistically comparable results according to the paired t-test (p = 0.05).",
+      "page": 7,
+      "index": 4,
+      "width": 756,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2607.02850v1/fig-003.webp",
+      "caption": "Table 3: Average accuracies (%) on the miniImageNet and tieredImageNet dataset. Results are averaged over five independent runs with different unlabeled datasets, with standard errors reported. Methods without unlabeled data report only average accuracies. Bold indicates the best and statistically comparable results according to the paired t-test (p = 0.05).",
+      "page": 7,
+      "index": 3,
+      "width": 794,
+      "height": 236
+    },
+    {
+      "url": "assets/figures/arxiv/2607.02850v1/fig-005.webp",
+      "caption": "Figure 3: Analysis of the balance factors α and β in the proposed task-weighting mechanism under the 1-shot setting. Meta-testing accuracies are reported by varying α with β = 1− α on (a) Omniglot 5-way, (b) Omniglot 20-way, (c) miniImageNet 5-way, and (d) tieredImageNet 5-way tasks. Bars indicate the standard error.",
+      "page": 10,
+      "index": 5,
+      "width": 636,
+      "height": 710
+    },
+    {
+      "url": "assets/figures/arxiv/2607.02850v1/fig-001.webp",
+      "caption": "Figure 4: Effect of the number of pre-trained models and the number of low-quality models under the miniImageNet 5-way 1-shot setting. (a) Meta-testing accuracies with different numbers of pre-trained models. (b) Meta-testing accuracies with different numbers of low-quality pre-trained models. Bars indicate the standard error.",
+      "page": 11,
+      "index": 1,
+      "width": 636,
+      "height": 347
+    },
+    {
+      "url": "assets/figures/arxiv/2607.02850v1/fig-002.webp",
+      "caption": "Figure 5: (a–c) Relationship between task weights (computed using Eq. (3)) and cross-entropy with ground-truth labels for meta-training tasks constructed by Eq. (1). Each point represents a single task. Pearson correlation coefficients (PCC) are also reported.",
+      "page": 11,
+      "index": 2,
+      "width": 979,
+      "height": 347
+    }
+  ]
+}

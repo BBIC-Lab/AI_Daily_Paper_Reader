@@ -1,48 +1,46 @@
 ## 最新日报
-- 最新运行日期：2026-07-07
-- 运行时间：2026-07-07 04:57:08 北京时间
+- 最新运行日期：2026-07-08
+- 运行时间：2026-07-08 04:52:10 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精选：深入信息瓶颈驱动域泛化与循环网络算子几何，并速览语音非语言建模等前沿进展。  
-最值得关注的是文本锚定信息瓶颈如何突破分布外泛化上限，以及有限滞后算子几何为RNN动态分析提供的全新视角。  
-建议关注跨模态信息瓶颈在迁移任务中的落地方法，或尝试将循环表征几何工具引入序列模型诊断。
-- 详情：[/202607/07/README](/202607/07/README)
+今日聚焦无监督元学习与脑机接口前沿，精读5篇、速读5篇。最值得关注的方向是利用预训练模型从无标签数据中生成学习任务，以及堆叠式LoRA实现运动想象脑电的个体自适应基础模型。建议读者进一步探索低秩适应与自监督技术，在跨被试生理信号解码等少样本场景中寻找实用突破口。
+- 详情：[/202607/08/README](/202607/08/README)
 
 ### 精读区论文标签
-1. [Domain Generalization via Text-Anchored Information Bottleneck](/202607/07/2607.01657v1-domain-generalization-via-text-anchored-information-bottleneck)  
+1. [Labeled-Data-Free Meta-Learning: Efficient Task Generation Using Pre-trained Models and Unlabeled Data](/202607/08/2607.02850v1-labeled-data-free-meta-learning-efficient-task-generation-using-pre-trained-models-and-unlabeled-data)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用文本锚定瓶颈的域泛化方法，适应新领域
-2. [Finite-Lag Operator Geometry of Recurrent Representations](/202607/07/2607.01746v1-finite-lag-operator-geometry-of-recurrent-representations)  
+   evidence：利用预训练模型进行有限标签数据的元学习
+2. [Stacked LoRA for Subject-Adaptive EEG Foundation Models in Motor Imagery Decoding](/202607/08/2607.03094v1-stacked-lora-for-subject-adaptive-eeg-foundation-models-in-motor-imagery-decoding)  
    标签：评分：9.0/10、query:ndai
-   evidence：从顺序数据开发循环隐藏状态的算子几何
-3. [Efficient Temporal Point Processes via Monotone Alternating Splines](/202607/07/2607.01752v1-efficient-temporal-point-processes-via-monotone-alternating-splines)  
+   evidence：使用预训练EEG基础模型和LoRA进行主体自适应脑电解码
+3. [Rethinking Brain Decoding with CLIP: The Role of Adversarial Robustness](/202607/08/2607.03165v1-rethinking-brain-decoding-with-clip-the-role-of-adversarial-robustness)  
    标签：评分：9.0/10、query:ndai
-   evidence：对时序点过程建模以分析预测序列数据
-4. [Single-Channel EEG-Based Cognitive Load Assessment in Online Learning: A Hybrid Deep Learning Approach](/202607/07/2607.01795v1-single-channel-eeg-based-cognitive-load-assessment-in-online-learning-a-hybrid-deep-learning-approach)  
+   evidence：研究对抗鲁棒表示用于CLIP脑解码
+4. [An Asymptotic Analysis of the Shapley Value for Dataset Valuation](/202607/08/2607.03374v1-an-asymptotic-analysis-of-the-shapley-value-for-dataset-valuation)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用混合深度学习进行基于脑电的认知负荷解码
-5. [SABER: A Semantic-Aligned Brain Network Analysis Framework via Multi-scale Hypergraphs](/202607/07/2607.01901v1-saber-a-semantic-aligned-brain-network-analysis-framework-via-multi-scale-hypergraphs)  
+   evidence：Shapley值在数据集估值中特征重要性的渐近分析
+5. [Validation-Induced Shapley Shifts: How Validation Structure Distorts Data Valuation](/202607/08/2607.03675v1-validation-induced-shapley-shifts-how-validation-structure-distorts-data-valuation)  
    标签：评分：9.0/10、query:ndai
-   evidence：语义对齐的脑网络表示学习
+   evidence：使用Shapley值计算训练数据的重要性权重
 
 ### 速读区论文标签
-1. [Quantifying the Uncertainty of Blindly Estimated Room Embeddings Using a Dispersion-Calibrated Score](/202607/07/2607.01527v1-quantifying-the-uncertainty-of-blindly-estimated-room-embeddings-using-a-dispersion-calibrated-score)  
+1. [Reinforcement Learning for Data-Efficient Code-Switched ASR](/202607/08/2607.02757v1-reinforcement-learning-for-data-efficient-code-switched-asr)  
    标签：评分：8.0/10、query:ndai
-   evidence：从混响语音中无监督学习紧凑的房间嵌入
-2. [Evolutionary Feature Engineering for Structured Data](/202607/07/2607.01548v1-evolutionary-feature-engineering-for-structured-data)  
+   evidence：基于强化学习的数据高效ASR模型适配代码切换领域
+2. [See the Emotion: A Facial Emoji Proxy Modeling for EEG Emotion Recognition](/202607/08/2607.02912v1-see-the-emotion-a-facial-emoji-proxy-modeling-for-eeg-emotion-recognition)  
    标签：评分：8.0/10、query:ndai
-   evidence：时间序列预测归一化
-3. [Beyond Words: Towards Effective Modeling of Non-Verbal Vocalizations in ASR](/202607/07/2607.01563v1-beyond-words-towards-effective-modeling-of-non-verbal-vocalizations-in-asr)  
+   evidence：EEG到面部表情符号解码
+3. [REAL-OW: Rehearsal-free Open World Object Detection with Low-Rank Adaptation and Dual-Stage Objectness Modeling](/202607/08/2607.03004v1-real-ow-rehearsal-free-open-world-object-detection-with-low-rank-adaptation-and-dual-stage-objectness-modeling)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用课程学习和迁移学习将ASR适应稀有的非语言发声
-4. [Role-Aware Neural Convex Divergence Heads for Asymmetric Representation Learning](/202607/07/2607.01762v1-role-aware-neural-convex-divergence-heads-for-asymmetric-representation-learning)  
+   evidence：利用LoRA在有限标注数据下适应新领域
+4. [SHiPPO: Recurrent Memory with Transported Polynomial Projections](/202607/08/2607.03055v1-shippo-recurrent-memory-with-transported-polynomial-projections)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于非对称表示学习的角色感知神经凸散度头
-5. [MMAO-Cls: Metabolic Multi-Agent Optimization for Joint Feature Selection and Classifier Tuning](/202607/07/2607.01539v1-mmao-cls-metabolic-multi-agent-optimization-for-joint-feature-selection-and-classifier-tuning)  
+   evidence：用于序列数据分析的循环记忆
+5. [Safe Inference-Time Alignment via Lagrangian Reward Augmentation](/202607/08/2607.02781v1-safe-inference-time-alignment-via-lagrangian-reward-augmentation)  
    标签：评分：7.0/10、query:ndai
-   evidence：通过二元掩码进行特征选择，计算输入特征的重要性权重
+   evidence：在解码过程中将模型输出转换为序列的方法
 

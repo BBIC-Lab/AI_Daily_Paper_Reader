@@ -1,0 +1,3629 @@
+Title: An Asymptotic Analysis of the Shapley Value for Dataset Valuation
+
+URL Source: https://arxiv.org/pdf/2607.03374v1
+
+Published Time: Tue, 07 Jul 2026 01:04:07 GMT
+
+Number of Pages: 37
+
+Markdown Content:
+# An Asymptotic Analysis of the Shapley Value for Dataset Valuation 
+
+Mélissa Tamine ∗
+
+Criteo AI lab, FairPlay joint team, France CREST, ENSAE, Institut Polytechnique de Paris 
+
+m.tamine@criteo.com 
+
+Benjamin Heymann 
+
+Criteo AI lab, FairPlay joint team, France 
+
+b.heymann@criteo.com 
+
+Maxime Vono 
+
+Criteo AI lab, FairPlay joint team, France 
+
+m.vono@criteo.com 
+
+Patrick Loiseau 
+
+Inria, FairPlay joint team, France 
+
+patrick.loiseau@inria.fr 
+
+## Abstract 
+
+We propose an asymptotic analysis of the Shapley value in a dataset valuation 
+
+setting in which utilities are modeled as smooth functionals of empirical distribu-tions via reproducing kernel Hilbert space (RKHS) mean embeddings. We prove that, despite its combinatorial definition, the Shapley value of a data source is asymptotically captured by a simple leading term. This term can be interpreted as the first-order contribution of a dataset relative to the surrounding data population. It also identifies the scale of the Shapley value as the number of data sources grows and provides a framework for analyzing existing Shapley value estimators. Moreover, for practitioners working with large numbers of datasets, the leading term becomes a tractable reference against which Shapley value approximations can be benchmarked. 
+
+## 1 Introduction 
+
+Achieving strong generalization in machine learning often requires more data than any single party can access on its own. In many applications, the relevant data are naturally distributed across several contributors, each holding only a partial and potentially complementary view of the learning problem at hand. In online advertising, for instance, different retailers may hold complementary information about users’ browsing and purchasing behavior. Taken separately, these datasets provide only a partial picture, but taken together, they may support significantly better models. Such collaborative settings raise a natural question: if several contributors jointly enable the success of a learning task, how should that value be attributed back to their respective datasets? This is the dataset valuation 
+
+problem [ 1 , 35 , 31 ]. It generalizes the more popular data valuation problem [ 30 , 14 ], with data valuation being the special case of dataset valuation in which each owner contributes exactly one data point. A natural way to formalize it is through cooperative game theory: each dataset owner is modeled as a player, each coalition of players is assigned a utility reflecting the performance achieved by pooling their data, and a valuation rule is then used to distribute this utility among contributors [9, 12 ]. Among the solution concepts considered for this purpose, the Shapley value [ 29 ] has become the most prominent in machine learning because it enjoys a strong axiomatic justification. A major challenge in using the Shapley value is its computational intractability. For a fixed game with I players, the Shapley value of one player averages its marginal contribution over all subsets of the other I − 1 players. Computing it exactly, therefore, requires evaluating exponentially 
+
+> ∗Corresponding author. Preprint.
+> arXiv:2607.03374v1 [cs.GT] 3 Jul 2026
+
+many coalitions. This has motivated a substantial literature on scalable approximations in the context of dataset valuation [ 21 , 37 , 3, 5, 38 , 32 , 34 ], including permutation-based Monte Carlo methods [22 , 9, 12 ], group-testing-based accelerations [ 12 ], and dataset-level proxies such as DU-Shapley [ 7]. These works address the problem of Shapley estimation for a fixed number of players. Our paper is orthogonal to this fixed-game perspective and, to our knowledge, provides the first asymptotic analysis of the Shapley value in a dataset valuation setting. The main result is a finite-I bound which, interpreted asymptotically, shows that the Shapley value is close to a simple leading term. This leading term depends on just a few interpretable quantities. So even though the Shapley formula is combinatorial, asymptotically, the value of a fixed dataset boils down to those interpretable quantities. This asymptotic characterization has two main outcomes. First, it identifies the scale of the Shapley value. Second, the leading term becomes an asymptotic reference: since the exact Shapley value is provably close to it in large -I regimes, any Shapley estimator can also be analyzed asymptotically by its distance to the same term, and at large scale, can even be benchmarked against it when the exact Shapley value computation becomes infeasible. Conducting this asymptotic analysis, however, requires specifying what it means for the number of players in a cooperative game to grow, since the Shapley value is defined only for a fixed finite set of players, and there is no canonical way to let the player count tend to infinity. We resolve this by fixing a single data owner i, keeping its dataset Di unchanged, and constructing larger games by adding surrounding data owners sampled independently from a common population. The Shapley value of owner i in the fixed game of I players is denoted ϕIi , and the asymptotic object we study in this paper is the sequence (ϕIi )I≥1.We also assume that the utility of a dataset depends smoothly on its empirical distribution. We represent empirical distributions through kernel mean embeddings in a reproducing kernel Hilbert space (RKHS). In this representation, large coalitions of surrounding owners concentrate around a deterministic population reference embedding. Adding the fixed dataset Di to a large coalition of datasets can then be viewed as a perturbation around this population reference. The smoothness of the utility allows us to analyze this perturbation by a first-order Taylor expansion, which reveals the leading term described above. The rest of the paper develops this analysis. We summarize our main contributions as follows. (a) We prove that the Shapley value ϕIi is O(1 /I )-close in L1 to an interpretable leading term 
+
+ΘIi (Theorem 3.2). This leading term depends, in particular, on a first-order signal that captures how player i’s dataset differs from the surrounding data population in directions relevant to the utility. As a consequence, under a non-degeneracy condition on this signal, we show that ϕIi has scale log I/I in probability. (b) Using the scale identified by the leading term, we derive a general absolute-to-relative error principle: any estimator whose absolute error is o(log I/I ) is asymptotically consistent in relative error. We apply this criterion to permutation-based Monte Carlo [ 22 ] and group-testing-based estimators [ 12 ], subject to suitable computational budgets. We also introduce a structural class of leading-order estimators, defined by their closeness to the leading term, and show that it includes DU-Shapley [7] and stratified Monte Carlo Shapley [22]. (c) We complement the theory with an experimental benchmarking based on the leading term. Specifically, in large-scale regimes, we use the leading term as a reference against which Shapley value approximations can be benchmarked. 
+
+Related works. The study of asymptotic properties of the Shapley value has a long tradition in cooperative game theory. Classical work on nonatomic games defines values on a continuum of infinitesimal players [ 2 ], while asymptotic-value theory studies limits of finite games induced by measure spaces of players [ 24 , 25 ]. Our setting is different: each data owner remains a finite, non-negligible player, and coalition utilities are induced by empirical data distributions rather than by an abstract measure-theoretic game. More recent data valuation works share our goal of looking beyond a single fixed game. However, they replace the finite - game Shapley value with a population quantity [8, 17 ], or treat it as random and study its sampling distribution for a fixed number of players [ 41 , 13 ]. In contrast, we keep the Shapley definition unchanged and analyze its behavior as the number of players increases. Specifically, our object of interest is the sequence (ϕIi )I≥1 of exact Shapley values of a fixed data owner. An extended discussion of related work is deferred to Appendix A. 2Notation. Throughout the paper, ∥ · ∥ denotes the norm of the ambient Hilbert space (or the Euclidean norm when applied to finite-dimensional vectors). For a sequence of random variables 
+
+(XI )I≥1 and a deterministic positive sequence (aI )I≥1, we write XI = OP(aI ) if XI /a I is bounded in probability, and XI = oP(aI ) if XI /a I
+
+> P
+
+−→ 0. Additional notations are along the main text and summarized in Table 1. 
+
+## 2 Problem Setup 
+
+We consider a collaborative machine learning setting in which several data owners, henceforth called 
+
+players , pool their datasets to solve a common learning task. 
+
+2.1 Dataset valuation as a cooperative game 
+
+Let Z be a measurable data space. In supervised learning, one may think of Z = X × Y , where X
+
+is the feature space and Y is the label space. However, in this paper, we keep the notation general because the analysis only uses the distributional content of the datasets. Let I be a finite set of players. Each player i ∈ I owns a finite multiset Di = {zi, 1, . . . , z i,n i } ∈ M(Z), with ni := |Di| ≥ 1, where M(Z) denotes the set of finite multisets over Z. For a set of players S, we write DS := U 
+
+> i∈S
+
+Di for the pooled dataset and nS := |DS | = P 
+
+> i∈S
+
+ni for its total number of datapoints. Here, U denotes multiset union. A dataset valuation problem is specified by a utility function v : M(Z) → R+, which assigns a score to any pooled dataset. For the finite set of players I, this induces the cooperative game 
+
+(I, u ), u(S) := v(DS ), S ⊆ I .
+
+Thus, the value of a coalition is the utility obtained by pooling the datasets of its members. 
+
+2.2 Shapley value 
+
+The Shapley value of player i ∈ I is the average marginal contribution of Di over all possible coalitions of other players. In the finite (I, u ) game, it is 
+
+ϕi(u) = 1
+
+|I| 
+
+X
+
+> S⊆I\{ i}
+
+|I| − 1
+
+|S|
+
+−1 h
+
+v(DS
+
+] Di) − v(DS )
+
+i
+
+. (1) This is the finite-game object whose asymptotic behavior we study. 
+
+2.3 From a single game to a sequence of games 
+
+As explained in Section 1, an asymptotic analysis of the Shapley value requires specifying how games with different numbers of players are related. To this end, we fix a data owner, denoted by i. Its dataset Di is kept fixed throughout the analysis; in particular, neither Di nor ni := |Di| depends on the number of players in the game. The remaining players represent the surrounding population of data sources. For each I ≥ 2, we consider an I-player game consisting of the fixed owner i and I − 1 surrounding owners. We index the surrounding owners by [I − 1] := {1, . . . , I − 1}, and denote their datasets by 
+
+D1, . . . , D I−1. Thus, the player set in this game is II := {i} ∪ [I − 1] where the symbol i is kept distinct from the surrounding-player labels. For each I, the game is (II , u I ), with uI (S) := v(DS )
+
+for all S ⊆ I I .
+
+We denote by ϕIi the Shapley value of the fixed player i in this I-player game. Grouping coalitions by their cardinality in Eq. (1) gives the following formulation of ϕIi
+
+ϕIi = 1
+
+I
+
+> I−1
+
+X
+
+> k=0
+
+ESk
+
+h
+
+v(DSk
+
+] Di) − v(DSk )
+
+i
+
+, (2) where Sk is sampled uniformly among all subsets of [I] \ { i} of size k. The asymptotic object we study in this paper is the sequence (ϕIi )I≥1.32.4 Smooth utilities of empirical embeddings 
+
+We now specify the class of utilities v used in the asymptotic analysis. To analyze how utility changes when the fixed dataset Di is added to a large coalition, we choose a representation in which datasets can be compared via their empirical distributions, and in which small changes in these distributions lead to controlled changes in utility. We use kernel mean embeddings for this purpose. They map the empirical distribution of a dataset to an element of a reproducing kernel Hilbert space (RKHS), so that adding a dataset corresponds to perturbing an empirical mean in that space. This gives a convenient setting for applying Taylor expansions to the utility. Let (H, ⟨· , ·⟩ ) be a RKHS on Z, with feature map φ : Z → H . For a nonempty finite multiset 
+
+D = {z1, . . . , z n}, let bPD := 1
+
+> n
+
+Pnr=1 δzr ] be its empirical distribution. We define its empirical mean embedding by μ( bPD ) := 1
+
+> n
+
+Pnr=1 φ(zr ). For the empty dataset, we use the convention 
+
+μ( bP∅) = 0 .
+
+For the asymptotic analysis, we impose two regularity properties. Assumption 2.1 ensures empirical embeddings of finite datasets cannot have an arbitrarily large norm. Assumption 2.2 ensures that when a dataset is added to a large coalition, the resulting change in utility can be controlled by a first-order Taylor expansion. 
+
+Assumption 2.1 (Bounded feature map) . There exists κ < ∞ such that ∥φ(z)∥ ≤ κ, ∀z ∈ Z .
+
+Assumption 2.2 (Smooth embedding utility) . There exists a Fréchet differentiable functional F :
+
+H → R such that v(D) = F
+
+
+
+μ( bPD )
+
+
+
+for every finite multiset D. Moreover, there exist positive constants G, M < ∞ such that, for all x, y ∈ H , ∥∇ F (x)∥ ≤ G, and ∥∇ F (x) − ∇ F (y)∥ ≤ 
+
+M ∥x − y∥.
+
+2.5 Population model for surrounding players 
+
+We now specify how the surrounding players other than i are generated. This is the part of the setup that gives meaning to the growing-player regime: as I increases, new players are added by sampling new datasets from the same population of data sources. 
+
+Assumption 2.3 (Population of surrounding players) . The surrounding players are independent draws from a common population of data sources. Formally, for each surrounding player j, let Dj
+
+be a random finite multiset with distribution P on M(Z), and let Nj := |Dj | be its random dataset size. We assume that there exists nmax < ∞ such that 1 ≤ Nj ≤ nmax almost surely. We denote the average dataset size in the surrounding population by ¯n := E[Nj ] ∈ [1 , n max ]. After sampling, we denote by Dj the realized dataset and by nj := |Dj | its realized size. Assumption 2.3 is stated at the level of whole datasets. It does not require all players to have the same datapoint distribution. Rather, it says that each surrounding player is an independent draw from the same population of data sources. Thus, the model is exchangeable at the player level, while still allowing heterogeneity across players. 
+
+Example 2.1 (Latent-type population) . A special case of Assumption 2.3 is a hierarchical population model in which data owners belong to different latent subpopulations. Let T denote the set of possible subpopulation types and let Π be a distribution on T . For each j̸ = i, draw a latent type τj ∼ Π. Conditional on τj , draw a dataset size nj ∈ { 1, . . . , n max }, possibly from a type dependent distribution, and then draw zj, 1, . . . , z j,n j
+
+> i.i.d.
+
+∼ Pτj , where Pτ is a distribution on Z. This construction satisfies Assumption 2.3: the datasets Dj are independent and identically distributed, while the latent types allow different players to represent different parts of the population. We now identify the embedding around which large coalitions of surrounding players concentrate. For a surrounding player j̸ = i, define Xj := P 
+
+> z∈Dj
+
+φ(z) ∈ H . This is the total contribution of player j’s dataset in the RKHS feature space. By Assumptions 2.1 and 2.3, ∥Xj ∥ ≤ nmax κ, so E[Xj ]
+
+is well-defined. For a nonempty coalition S ⊆ [I] \ { i}, the empirical embedding of its pooled dataset is μ( bPDS ) = 
+
+> 1
+> nS
+
+P 
+
+> j∈S
+
+Xj , where nS = P 
+
+> j∈S
+
+nj . The numerator is the sum of the RKHS embedding of all datapoints pooled by the players in S, while the denominator is the total number of datapoints contributed by those players. By the law of large numbers, when S contains many surrounding 4players, 1
+
+> |S|
+
+P 
+
+> j∈S
+
+Xj is close to E[Xj ] and 1 
+
+> |S|
+
+nS is close to ¯n. Hence, the empirical embedding of a large surrounding coalition is close to μ⋆ := E[Xj ]¯n = 1¯n E
+
+hP 
+
+> z∈Dj
+
+φ(z)
+
+i
+
+.
+
+The embedding μ⋆ is the typical datapoint-level embedding of the surrounding population. Equiv-alently, it is the embedding approached by the pooled empirical distribution of a large coalition of independently sampled surrounding players. The next section uses the concentration of μ( bPDS )
+
+around μ⋆ to identify the leading term governing the asymptotic behavior of ϕIi .
+
+## 3 Asymptotic Characterization of the Shapley Value 
+
+We now characterize the Shapley value of the fixed player i as the number of surrounding players grows. The setup of Section 2 identifies the key intuition of the analysis: the empirical embedding of a large coalition of surrounding players concentrates around the reference embedding μ⋆. This concentration allows us to approximate the marginal contribution of Di by a first-order expansion around μ⋆. When averaged through the Shapley formula, this first-order approximation yields an explicit leading term, denoted by ΘIi , which governs the large-I behavior of ϕIi . The purpose of this section is to explain how this concentration turns the Shapley formula into this interpretable leading term asymptotically. Recall from (2) that the Shapley value is an average over coalitions of players. To understand ϕIi , it is therefore enough to understand the marginal contribution of fixed player i to a typical coalition 
+
+S of surrounding players. Let ∆i(S) := v(DS
+
+U Di) − v(DS ) be this marginal contribution. For a nonempty coalition S ⊆ [I] \ { i}, write μS := μ( bPDS ), and μi := μ( bPDi ). Since Di is fixed throughout the asymptotic regime, both ni and μi are deterministic. The first observation is geometric. Adding Di to DS changes the coalition embedding by μS∪{ i} −
+
+μS = ni  
+
+> nS+ni
+
+(μi − μS ). This identity is proved in Lemma C.1 of Appendix C. It shows that adding 
+
+Di perturbs the current coalition embedding in the direction μi − μS , and the magnitude of the perturbation is the relative size of Di inside the enlarged coalition. Since the utility has the form v(D) = F (μ( bPD )) , the marginal contribution is the change of F under this perturbation. Lemma C.3 in Appendix C gives the corresponding first-order expansion: 
+
+∆i(S) = ni
+
+nS + ni
+
+⟨∇ F (μS ), μ i − μS ⟩ + RS , (3) where the Taylor remainder RS is controlled uniformly. Thus, at the level of a single coalition, the marginal contribution is governed by the local sensitivity of the utility at μS and by the direction in which adding Di moves the empirical embedding. The asymptotic simplification comes from the population model. If |S| = k is large, then S is representative of the surrounding population: Lemma C.4 in Appendix C shows that E∥μS − μ⋆∥ =
+
+O(k−1/2). At the same time, the total number of datapoints in S is close to its typical value k¯n.Therefore, the population-level first-order approximation of ∆i(S) is obtained from (3) by replacing 
+
+μS with μ⋆ and nS with k¯n, i.e, ∆i(S) = ni 
+
+> k¯n
+
+⟨∇ F (μ⋆), μ i − μ⋆⟩ + ϵS where ϵS collects the error made by this population-level replacement together with the Taylor remainder RS .This motivates the definition of the first-order signal. 
+
+Definition 3.1 (First-order signal) . The first-order signal of the fixed player i is ci := 
+
+⟨∇ F (μ⋆), μ i − μ⋆⟩.The scalar ci measures the part of the difference between Di and the surrounding population that matters to the utility at first order. The vector μi − μ⋆ describes how the empirical distribution of 
+
+Di differs from the population reference. The gradient ∇F (μ⋆) describes how the utility changes locally around that reference. Their inner product keeps exactly the component of the distributional difference that changes the utility to first order. For a coalition of size k, the resulting population-level marginal contribution is therefore ni 
+
+> k¯n
+
+ci.The factor ni/(k¯n) is the relative size of the fixed dataset compared with a typical coalition of 
+
+k surrounding players. Now, the Shapley value averages marginal contributions uniformly over coalition sizes k = 0 , . . . , I − 1. Therefore, averaging the population-level first-order contribution 5over k = 1 , . . . , I − 1 gives the leading term 
+
+ΘIi := 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+ni
+
+k¯n ci = nici
+
+¯nHI−1
+
+I , HI−1 := 
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k .
+
+The empty-coalition contribution does not appear in ΘIi , since it is weighted by 1/I in the Shapley formula, and is absorbed into the final O(1 /I ) error given in Theorem 3.2. The leading term separates three effects: 
+
+ΘIi = ni
+
+|{z} 
+
+> dataset size
+
+× ci
+
+|{z} 
+
+> first-order signal
+
+× HI−1
+
+I ¯n| {z } 
+
+> Shapley averaging over sizes
+
+.
+
+Thus, the asymptotic value of Di is driven by how much data the fixed player contributes, how this data differs from the surrounding population in a direction that affects the utility, and how the Shapley formula averages marginal effects over coalition sizes. Theorem 3.2 states that this leading term captures the exact Shapley value asymptotically. 
+
+Theorem 3.2 (Leading-term approximation) . Suppose Assumptions 2.1, 2.2, and 2.3 hold. Then, for the fixed player i, E  ϕIi − ΘIi
+
+ = O  1
+
+> I
+
+ , where the expectation is over the surrounding players 
+
+(Dj )j̸ =i.
+
+The proof is given in Appendix D.1. Hence, although ϕIi is defined through exponentially many coalitions, its asymptotic behavior is governed by the explicit quantity ΘIi . This approximation also identifies the order of magnitude of ϕIi when the first-order signal is nonzero. Indeed, by Lemma C.9 in Appendix C, HI−1 = log I + O(1) , and therefore ΘIi = nici  
+
+> ¯n
+> log II
+
++ O  1
+
+> I
+
+. If ci̸ = 0 , the leading term is of order log I/I . Moreover, Theorem 3.2 shows that ϕIi − ΘIi = OL1
+
+  1
+
+> I
+
+ , which is negligible compared with log I/I . Thus, the exact Shapley value inherits the same asymptotic scale. 
+
+Corollary 3.3 (Asymptotic scale of the Shapley value) . Under the assumptions of Theorem 3.2, if 
+
+ci̸ = 0 , then |ϕIi | = Θ P
+
+ log II
+
+
+
+.
+
+The proof is given in Appendix D.2. The result shows that, under the non-degeneracy condition 
+
+ci̸ = 0 , the exact Shapley value vanishes at order log I/I . This order of magnitude determines how approximation errors should be compared to ϕIi . In particular, an absolute error that tends to zero is not sufficient: since ϕIi itself goes to zero, such an error may still be large relative to the value being estimated. The meaningful requirement is that the absolute error be o(log I/I ), i.e., smaller than the order of magnitude of ϕIi . This yields the following absolute-to-relative error criterion. 
+
+Corollary 3.4 (Absolute error implies relative error) . Assume the conditions of Theorem 3.2 and suppose ci̸ = 0 . Let bϕIi be any estimator of ϕIi such that bϕIi − ϕIi = oP
+
+ log II
+
+
+
+. Then bϕIi
+
+> ϕIi
+
+− 1 P
+
+−→ 0.
+
+The proof is given in Appendix D.3. Corollary 3.4 connects the asymptotic characterization of the exact Shapley value to the asymptotic study of estimators. In fact, any approximation can now be evaluated through relative error. The next section applies this criterion to several Shapley value estimators. 
+
+## 4 Implications for Shapley Estimators 
+
+Section 3 establishes two conclusions about the Shapley value of the fixed player i. First, the exact Shapley value is close to the leading term (Theorem 3.2). Second, when ci̸ = 0 , its order of magnitude is log I/I . The key point for approximation is that errors must be compared to this log I/I scale. An estimator is relatively consistent as soon as its absolute error is oP(log I/I ), by Corollary 3.4. This section applies this principle to two types of estimators. 
+
+Budget-based Shapley estimators. We first consider estimators that depend on a computational budget. The role of our asymptotic analysis is to translate this budget into a relative-error guarantee. By Corollary 3.4, it is enough to choose the budget so that the absolute estimation error is oP(log I/I ).6The first estimation is the permutation Monte Carlo Shapley [ 12 , 9], denoted by bϕIi, MC , which averages mI independent random marginal contributions of player i. Its formal definition is recalled in Appendix B. The second is the group-testing Shapley estimator of [ 12 ], denoted by bϕIi, GT , which estimates the Shapley value from TI coalition queries. Its definition is also given in Appendix B. 
+
+Proposition 4.1 ( bϕIi, MC and bϕIi, GT have converging relative error under suited budgets) . Let bφIi, MC be the permutation Monte Carlo Shapley estimator [ 22 ] based on mI independent random permutations. Let bφIi, GT be the group-testing Shapley estimator of [ 12 ]. Under the assumptions of Theorem 3.2 and with ci̸ = 0 :1. If mI ≫ I2  
+
+> log 2I
+
+, then bϕIi, MC 
+
+> ϕIi
+
+− 1 P
+
+−−→ 0.2. If there exist sequences εI = o(log I/I ) and δI → 0 such that the group-testing budget 
+
+TI is large enough for the estimator to be an (εI , δ I )-approximation of the Shapley vector 
+
+(ϕIj )Ij=1 in ℓ2-norm., then bϕIi, GT 
+
+> ϕIi
+
+− 1 P
+
+−−→ 0.
+
+The proof is given in Appendix D.4. 
+
+Leading-order Shapley estimators. We then consider estimators that directly follow the structure of the leading term ΘIi = 1
+
+> I
+
+PI−1 
+
+> k=1
+> ni
+> k¯n
+
+ci. This term averages a per - size contribution ni 
+
+> k¯n
+
+ci over all coalition sizes k. An estimator that, for each k, approximates this per -size contribution well enough so that the average error is O(1 /I ) will also be O(1 /I )-close to ϕIi (by Theorem 3.2) and hence relatively consistent. The following definition formalizes this. 
+
+Definition 4.2 (Leading - order estimator) . An estimator bϕIi is called a leading - order estimator if it can be written as bϕIi = 1
+
+> I
+
+PI−1 
+
+> k=1
+> ni
+> k¯n
+
+b∆(i) 
+
+> k,I
+
++ b∆(i)0,I  
+
+> I
+
+, where: (C1) E| b∆(i)0,I | ≤ C0 for some constant C0 independent of I;(C2) 
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k E b∆(i) 
+
+> k,I
+
+− ci ≤ C∆ for some constant C∆ independent of I.Condition (C1) controls the empty-coalition term, whose Shapley weight is 1/I . Condition (C2) controls the cumulative error made when replacing the first-order signal ci by the estimator-specific quantities b∆(i) 
+
+> k,I
+
+. The factor 1/k is the same harmonic weight that appears in the leading term, so the condition matches the structure of ΘIi .
+
+Theorem 4.3 (Relative consistency of leading - order estimators) . Under Assumptions 2.3–2.2 and with ci̸ = 0 , every leading-order estimator satisfies bϕIi
+
+> ϕIi
+
+− 1 P
+
+−−→ 0.
+
+The proof is given in Appendix D.5. We now instantiate the leading-order definition with two estimators. The first is DU-Shapley [7], denoted by bϕIi, DU . The second is the stratified Monte Carlo Shapley estimator [ 22 ], denoted by bϕIi, strat . Formal definitions of these estimators are given in Appendix B. The reason these estimators fit the previous definition is that their cardinality-wise terms are close, in aggregate, to the same first-order signal that defines ΘIi . This is made precise in Lemma D.6 for DU-Shapley and in Lemma D.7 for stratified Monte Carlo. 
+
+Proposition 4.4 (DU -Shapley and stratified Monte Carlo are leading-order estimators) . Let bϕIi, DU 
+
+denote the DU - Shapley estimator [ 7]. Let bϕIi, strat denote the stratified Monte Carlo Shapley estimator [ 22 ]. Then, under the assumptions of Theorem 3.2, both bϕIi, DU and bϕIi, strat are leading -order estimators. Consequently, bϕIi, DU 
+
+> ϕIi
+
+− 1 P
+
+−−→ 0, and bϕIi, strat 
+
+> ϕIi
+
+− 1 P
+
+−−→ 0.
+
+The proof is given in Appendix D.6. 75 Benchmarking Shapley Estimators using the Leading Term 
+
+The goal of this section is to illustrate how the leading term can be used as a practical large-scale benchmark for Shapley value approximations. Exact Shapley computation requires averaging over 
+
+2I−1 coalitions for a single player and is therefore unavailable in the large-I regimes where the asymptotic theory is most relevant. In contrast, the leading term can be computed directly whenever the population quantities ¯n, μ⋆, and ci are known. More generally, under the population model, these quantities are estimable from the surrounding data owners through empirical averages, leading to a plug-in estimate of the leading term. A full analysis of the additional error induced by this plug-in estimation is left for future work. In this section, we focus on a controlled synthetic benchmark in which the population quantities are known exactly. This allows us to isolate the behavior of Shapley value approximations relative to the leading term, without confounding it with the statistical error of estimating the benchmark itself. 
+
+Setting. We instantiate the theoretical setup in a finite-dimensional RKHS H = Rd with d = 30 .Datapoints are represented directly by bounded feature vectors. To obtain a simple and exactly reproducible population model, we use the finite-support construction given in Example 2.1. There are T = 4 latent player types, with type probabilities π = (0 .15 , 0.35 , 0.30 , 0.20) . Each type 
+
+t ∈ { 1, . . . , T } is associated with a finite dictionary of At = 12 prototype datapoints at, 1, . . . , a t,A t ∈
+
+Rd, where ∥at,ℓ ∥2 = 0 .9. These prototype datapoints are generated once at the beginning of the experiment and kept fixed throughout. Specifically, for each t and each ℓ ∈ { 1, . . . , A t}, we first draw gt,ℓ ∼ N (0 , I d), independently across t and ℓ, and then set at,ℓ = 0 .9 gt,ℓ  
+
+> ∥gt,ℓ ∥2
+
+. Thus, all prototype datapoints lie on the Euclidean sphere of radius 0.9, which ensures the bounded-feature condition required by the theory. Conditional on type t, datapoints are sampled uniformly from the corresponding prototypes. For every player j̸ = i, we generate its dataset as follows. First, we sample a type τj ∼
+
+Categorical( π). Then, we sample a dataset size independently of the type, nj ∼ Unif {1, . . . , n max },
+
+with nmax = 50 . Finally, we sample datapoints zj, 1, . . . , z j,n j i.i.d. from the uniform distribution over the prototypes of type τj . This gives a player dataset Dj = {zj, 1, . . . , z j,n j }. Since the dataset size is independent of the type, the average player size is known exactly: ¯n = 1+ nmax  
+
+> 2
+
+= 25 .Let μt = 1
+
+> At
+
+PAt 
+
+> ℓ=1
+
+at,ℓ be the mean embedding of type t. Because the population distribution is known exactly, the size-weighted population embedding is also known exactly: μ⋆ = PTt=1 πtμt.This makes the leading term ΘIi an oracle reference in this controlled benchmark. 
+
+Fixed player. The theory studies the Shapley value of a fixed player i as the number of surrounding players grows. We follow this convention and fix player i once at the beginning of the experiment. To make the first-order signal visible, we choose the fixed player’s type as the type whose mean embedding is farthest from the population embedding: τi ∈ arg max t∈{ 1,...,T } ∥μt − μ⋆∥. We set its dataset size to ni = nmax = 50 and sample its datapoints uniformly from the prototype datapoints of type τi. Once sampled, Di is kept fixed throughout all experiments. Its empirical embedding is 
+
+μi = 1
+
+> ni
+
+Pni 
+
+> r=1
+
+φ(zi,r ).
+
+Utility. For a finite multiset D, let μ( bPD ) = 1
+
+> |D|
+
+P 
+
+> z∈D
+
+φ(z) denote its empirical mean embedding, with the convention μ( bP∅) = 0 . We define the utility as a smooth functional of this empirical embedding: v(D) = F  μ( bPD ) with F (·) = tanh  β⟨w, ·⟩ , and β = 1 .5. The direction w is chosen to align with the fixed player’s deviation from the population: w = μi−μ⋆ 
+
+> ∥μi−μ⋆∥
+
+. This choice ensures that the fixed player has a non-negligible first-order signal ci = ⟨∇ F (μ⋆), μ i − μ⋆⟩ , which is the regime in which relative-error convergence is meaningful. The function F is smooth, bounded, and has a bounded derivative and Lipschitz gradient on Rd, matching the regularity assumptions used in the theoretical analysis. 
+
+Expanding the player population. A key aspect of the experiment is the way in which we vary the number of players I. The theory studies the value of a fixed player i as more independent surrounding players are added. To match this regime, we do not draw a new unrelated collection of players for each value of I. Instead, we first generate a large collection of players D2, . . . , D Imax . Then, for any 8I ≤ Imax , we define the corresponding game by keeping the fixed player i and using the first I − 1
+
+players from this collection: {i, 2, . . . , I }. Thus, increasing I amounts to adding new players to an existing population. 
+
+Estimators. We benchmark three estimators against the leading term: bϕi, MC I with budget 
+
+mI ∝ I2/ log I, bϕi, DU I , and bϕi, strat I . We do not include bϕi, GT I in this benchmark because Proposition 4.1 invokes the group-testing guarantee through a prescribed (ε, δ )-accuracy for the full Shapley vector, rather than through a simple fixed-player budget scaling. We therefore focus the empirical comparison on estimators whose computational budgets are directly interpretable in the leading-term regime. 
+
+Evaluation metric. For each estimator bϕIi , we report its relative error with respect to the lead-ing term: RelErr( bϕIi , ΘIi ) = bϕIi
+
+> ΘIi
+
+− 1 . We repeat the full experiment R = 30 times indepen-dently. In each repetition, we first draw one large population of players up to Imax = 3500 .We then evaluate all estimators on the same increasing sequence of player populations, with 
+
+I ∈ {50 , 75 , 100 , 150 , 225 , 325 , 475 , 700 , 1000 , 1300 , 1600 , 1900 , 2100 , 2500 , 3000 , 3500 }. For each value of I, we plot the empirical mean relative error across repetitions. Shaded regions correspond to one standard error of the mean. Because the theory predicts an O(1 /I ) absolute error to a quantity of scale log( I)/I , the corresponding relative error is expected to decrease at the rate 
+
+1/ log I. We therefore include a rescaled 1/ log I reference curve as a visual guide. The resulting benchmark is shown in Figure 1. All experiments were run on CPU only and completed in less than a minute.      
+
+> (a) bϕIi, MC (b) bϕIi, DU (c) bϕIi, strat
+
+Figure 1: Relative error of each estimator averaged over 30 independent repetitions with standard errors. The dashed curve is a reference curve included as a visual guide to assess the relative error decay. 
+
+Discussion. All three estimators become closer to the leading term as the number of players increases. This supports the use of ΘIi as a large-scale reference for Shapley value approximations in this controlled setting. For bϕIi, DU and bϕIi, strat , the observed behavior is consistent with the theory: these estimators are leading-order estimators, their relative error is therefore expected to decrease at the scale 1/ log I. The curve of bϕIi, MC decreases faster than the displayed 1/ log I reference. This is not a contradiction: the reference is based on a conservative worst-case variance bound for permutation Monte Carlo. In this synthetic model, the variance of a random marginal contribution decreases with I, because most predecessor coalitions in a random permutation are large, and the marginal contribution of the fixed player becomes smaller for large coalitions. Therefore, the effective Monte Carlo error is smaller than the worst-case bound, which explains the faster empirical decay. 
+
+## 6 Conclusion 
+
+This paper develops an asymptotic analysis of the Shapley value for dataset valuation. We study the value of a single fixed data owner as the number of surrounding data sources grows, and show that under a smooth embedding utility model, the exact Shapley value is governed by an explicit and interpretable leading term ΘIi . This result makes the asymptotic behavior of the Shapley value interpretable and clarifies what it means to approximate Shapley values in this regime. 
+
+Limitations. The scope of these results is tied to the assumptions of the analysis. We assume independent surrounding data sources and utilities that are smooth functionals of empirical RKHS 9mean embeddings. These assumptions facilitate the analysis, but they do not cover all the dataset valuation settings encountered in practice, especially machine learning utilities defined by complex training procedures. We view this work as opening the way to a broader asymptotic theory of Shapley-based dataset valuation, with extensions to richer utilities as natural directions for future work. 
+
+## Acknowledgments and Disclosure of Funding 
+
+This work was partially supported by the French National Research Agency (ANR) through grants ANR-20-CE23-0007 and ANR-23-CE23-0002 and through the PEPR IA FOUNDRY project (ANR-23-PEIA-0003). 
+
+## References 
+
+[1] Anish Agarwal, Munther Dahleh, and Tuhin Sarkar. A marketplace for data: An algorithmic solution. In Proceedings of the 2019 ACM Conference on Economics and Computation , pages 701–726, 2019. [2] Robert J. Aumann and Lloyd S. Shapley. Values of Non-Atomic Games . Princeton University Press, Princeton, NJ, 1974. [3] Huaiguang Cai. Chg shapley: Efficient data valuation and selection towards trustworthy machine learning. arXiv preprint arXiv:2406.11730 , 2024. [4] Javier Castro, Daniel Gómez, and Juan Tejada. Polynomial calculation of the shapley value based on sampling. In Computers & Operations Research , volume 36, pages 1726–1730. Elsevier, 2009. [5] Hongliang Chi, Qiong Wu, Zhengyi Zhou, and Yao Ma. Shapley-guided utility learning for effective graph inference data valuation. arXiv preprint arXiv:2503.18195 , 2025. [6] Hannah Diehl and Ashia C. Wilson. Semivalue-based data valuation is arbitrary and gameable. 
+
+arXiv preprint arXiv:2506.12619 , 2025. [7] Felipe Garrido-Lucero, Benjamin Heymann, Maxime Vono, Patrick Loiseau, and Vianney Perchet. Du-shapley: A shapley value proxy for efficient dataset valuation. Advances in Neural Information Processing Systems , 37:1973–2000, 2024. [8] Amirata Ghorbani, Michael P. Kim, and James Zou. Distributional shapley: A distributional approach to data valuation. In Proceedings of the 37th International Conference on Machine Learning (ICML) , pages 3424–3435, 2020. [9] Amirata Ghorbani and James Zou. Data shapley: Equitable valuation of data for machine learning. In International conference on machine learning , pages 2242–2251. PMLR, 2019. [10] Andrew Ilyas, Sung Min Park, Logan Engstrom, Guillaume Leclerc, and Aleksander Madry. Datamodels: Predicting predictions from training data. arXiv preprint arXiv:2202.00622 , 2022. [11] Ruoxi Jia, David Dao, Boxin Wang, Frances Ann Hubis, Nezihe Merve Gurel, Bo Li, Ce Zhang, Costas J Spanos, and Dawn Song. Efficient task-specific data valuation for nearest neighbor algorithms. arXiv preprint arXiv:1908.08619 , 2019. [12] Ruoxi Jia, David Dao, Boxin Wang, Frances Ann Hubis, Nick Hynes, Nezihe Merve Gürel, Bo Li, Ce Zhang, Dawn Song, and Costas J Spanos. Towards efficient data valuation based on the shapley value. In The 22nd international conference on artificial intelligence and statistics ,pages 1167–1176. PMLR, 2019. [13] Zhuofan Jia and Jian Pei. Shapley value on uncertain data. arXiv preprint arXiv:2601.14543 ,2026. [14] Kevin Jiang, Weixin Liang, James Y Zou, and Yongchan Kwon. Opendataval: a unified benchmark for data valuation. Advances in Neural Information Processing Systems , 36:28624– 28647, 2023. 10 [15] Hoang Anh Just, Feiyang Kang, Tianhao Wang, Yi Zeng, Myeongseob Ko, Ming Jin, and Ruoxi Jia. Lava: Data valuation without pre-specified learning algorithms. In International Conference on Learning Representations , 2023. [16] Pang Wei Koh and Percy Liang. Understanding black-box predictions via influence functions. In Proceedings of the 34th International Conference on Machine Learning , pages 1885–1894. PMLR, 2017. [17] Yongchan Kwon, Manuel A Rivas, and James Zou. Efficient computation and analysis of distributional shapley values. In International Conference on Artificial Intelligence and Statistics ,pages 793–801. PMLR, 2021. [18] Yongchan Kwon and James Zou. Beta shapley: a unified and noise-reduced data valuation framework for machine learning. arXiv preprint arXiv:2110.14049 , 2021. [19] Yongchan Kwon and James Zou. Data-oob: Out-of-bag estimate as a simple and efficient data value. In Proceedings of the 40th International Conference on Machine Learning . PMLR, 2023. [20] Jinkun Lin, Anqi Zhang, Mathias Lécuyer, Jinyang Li, Aurojit Panda, and Siddhartha Sen. Measuring the effect of training data on deep learning predictions via randomized experiments. In Proceedings of the 39th International Conference on Machine Learning , pages 13468–13504. PMLR, 2022. [21] Zelei Liu, Yuanyuan Chen, Han Yu, Yang Liu, and Lizhen Cui. Gtg-shapley: Efficient and accu-rate participant contribution evaluation in federated learning. ACM Transactions on intelligent Systems and Technology (TIST) , 13(4):1–21, 2022. [22] Sasan Maleki, Long Tran-Thanh, Greg Hines, Talal Rahwan, and Alex Rogers. Bounding the es-timation error of sampling-based shapley value approximation. arXiv preprint arXiv:1306.4265 ,2013. [23] Rory Mitchell, Joshua Cooper, Eibe Frank, and Geoffrey Holmes. Sampling permutations for shapley value estimation. Journal of Machine Learning Research , 23(43):1–46, 2022. [24] Abraham Neyman. Singular games have asymptotic values. Mathematics of Operations Research , 6(2):205–212, 1981. [25] Abraham Neyman. Weighted majority games have asymptotic value. Mathematics of Operations Research , 13(4):556–580, 1988. [26] Mansheej Paul, Surya Ganguli, and Gintare Karolina Dziugaite. Deep learning on a data diet: Finding important examples early in training. In Advances in Neural Information Processing Systems , volume 34, pages 20596–20607, 2021. [27] Garima Pruthi, Frederick Liu, Satyen Kale, and Mukund Sundararajan. Estimating training data influence by tracing gradient descent. In Advances in Neural Information Processing Systems ,volume 33, pages 19920–19930, 2020. [28] Markus Schneider. Probability inequalities for kernel embeddings in sampling without re-placement. In Proceedings of the 19th International Conference on Artificial Intelligence and Statistics , volume 51, pages 66–74, Cadiz, Spain, 09–11 May 2016. [29] Lloyd S. Shapley. A value for n-person games. In Harold W. Kuhn and Albert W. Tucker, editors, Contributions to the Theory of Games , volume 2, pages 307–317. Princeton University Press, 1953. [30] Rachael Hwee Ling Sim, Xinyi Xu, and Bryan Kian Hsiang Low. Data valuation in machine learning: "ingredients", strategies, and open challenges. In Lud De Raedt, editor, Proceedings of the Thirty-First International Joint Conference on Artificial Intelligence, IJCAI-22 , pages 5607–5614. International Joint Conferences on Artificial Intelligence Organization, 7 2022. Survey Track. [31] Rachael Hwee Ling Sim, Yehong Zhang, Mun Choon Chan, and Bryan Kian Hsiang Low. Collaborative machine learning with incentive-aware model rewards. In International conference on machine learning , pages 8927–8936. PMLR, 2020. 11 [32] Haifeng Sun, Yu Xiong, Runze Wu, Xinyu Cai, Changjie Fan, Lan Zhang, and Xiang-Yang Li. Fast-datashapley: Neural modeling for training data valuation. In Proceedings of the Nineteenth ACM International Conference on Web Search and Data Mining , pages 607–617, 2026. [33] Mélissa Tamine, Benjamin Heymann, Maxime Vono, and Patrick Loiseau. On the impact of the utility in semivalue-based data valuation. In International Conference on Learning Representations , 2026. [34] Mélissa Tamine, Otmane Sakhi, and Benjamin Heymann. Data valuation for llm fine-tuning: Efficient shapley value approximation via language model arithmetic. arXiv preprint arXiv:2512.15765 , 2025. [35] Sebastian Shenghong Tay, Xinyi Xu, Chuan Sheng Foo, and Bryan Kian Hsiang Low. Incen-tivizing collaboration in machine learning via synthetic data rewards. In Proceedings of the AAAI Conference on Artificial Intelligence , volume 36, pages 9448–9456, 2022. [36] Jiachen T Wang and Ruoxi Jia. Data banzhaf: A robust data valuation framework for machine learning. In International conference on artificial intelligence and statistics , pages 6388–6421. PMLR, 2023. [37] Jiachen T Wang, Prateek Mittal, and Ruoxi Jia. Efficient data shapley for weighted nearest neighbor algorithms. In International Conference on Artificial Intelligence and Statistics , pages 2557–2565. PMLR, 2024. [38] Jiachen T Wang, Prateek Mittal, Dawn Song, and Ruoxi Jia. Data shapley in one training run. 
+
+arXiv preprint arXiv:2406.11011 , 2024. [39] Mengmeng Wu, Zhihong Liu, Xiang Li, Ruoxi Jia, and Xiangyu Chang. Uncertainty quantifica-tion of data shapley via statistical inference. arXiv preprint arXiv:2407.19373 , 2024. [40] Zhaoxuan Wu, Yao Shu, and Bryan Kian Hsiang Low. Davinz: Data valuation using deep neural networks at initialization. In Proceedings of the 39th International Conference on Machine Learning , pages 24150–24176. PMLR, 2022. [41] Zhaoxuan Wu, Yao Shu, and Bryan Kian Hsiang Low. Data shapley as an infinite-order u-statistic: Statistical inference for data valuation. arXiv preprint , 2024. To appear, adjust if published. [42] Xinyi Xu, Zhaoxuan Wu, Chuan Sheng Foo, and Bryan Kian Hsiang Low. Validation free and replication robust volume-based data valuation. In Advances in Neural Information Processing Systems , volume 34, pages 10837–10848, 2021. [43] Chih-Kuan Yeh, Joon Kim, Ian En-Hsu Yen, and Pradeep K. Ravikumar. Representer point selection for explaining deep neural networks. In Advances in Neural Information Processing Systems , volume 31, 2018. 12 Outline. The appendices are organized as follows. – Appendix A provides an extended discussion of related work, including Shapley-based data valuation, efficient Shapley estimation, and alternative valuation methods. – Appendix B recalls the definitions of the estimators used in Section 4. – Appendix C collects the technical lemmas used in the proofs. – Appendix D contains the proofs of the main theoretical results stated in Sections 3 and 4. 
+
+Notation. We summarize the main notation used throughout the paper in Table 1. Table 1: Notation for the asymptotic analysis of the Shapley value. Notation Type Description 
+
+Z measurable space Data domain 
+
+M(Z) set Set of finite multisets over Z
+
+j index Player / dataset owner index 
+
+i index Fixed player whose value is studied 
+
+I N Total number of players in the game 
+
+[I] set Player set {1, . . . , I }
+
+Dj M(Z) Dataset owned by player jnj N Size of dataset Dj
+
+DS M(Z) Pooled dataset of coalition SnS N Total number of datapoints in DS , nS = P 
+
+> j∈S
+
+nj
+
+¯n R+ Mean dataset size of a surrounding player, ¯n = E[nj ]
+
+v M(Z) → R Utility of a pooled dataset 
+
+uI 2[I] → R Cooperative game utility, uI (S) = v(DS )
+
+ϕIi R Shapley value of player i in the game with I players 
+
+Sk random subset Uniform subset of [I] \ { i} of cardinality k
+
+H Hilbert space RKHS associated with the kernel 
+
+φ Z → H Feature map 
+
+κ R+ Uniform bound on feature embeddings, ∥φ(z)∥ ≤ κF H → R Smooth functional defining the utility 
+
+G R+ Uniform bound on ∥∇ F ∥
+
+M R+ Lipschitz constant of ∇Fμ( bPD ) H Empirical mean embedding of a finite dataset Dμj H Empirical embedding of player j, μj = μ( bPDj )
+
+μi H Empirical embedding of the fixed player iXj H Feature sum of player j, Xj = P 
+
+> z∈Dj
+
+φ(z)
+
+μS H Empirical embedding of coalition S, μS = μ( bPDS )
+
+μ⋆ H Population reference embedding, μ⋆ = E[Xj ]/¯ng⋆ H Population gradient, g⋆ = ∇F (μ⋆)
+
+ci R First-order signal, ci = ⟨g⋆, μ i − μ⋆⟩
+
+∆i(S) R Marginal contribution v(DS
+
+U Di) − v(DS )
+
+RS R Taylor remainder in the marginal contribution expansion 
+
+εS R Residual after subtracting the population first-order term 
+
+HI−1 R+ Harmonic number, HI−1 = PI−1 
+
+> k=1
+
+1/k 
+
+ΘIi R Leading term, ΘIi = nici
+
+> ¯nHI−1
+> I
+
+13 A Extended Related Work 
+
+A.1 Shapley-based data(set) valuation 
+
+The use of the Shapley value [ 29 ] for data valuation was introduced to assign a contribution score to individual training examples in supervised learning [ 9, 12 ]. It has been widely studied as a data valuation method because it uniquely satisfies four key axioms: 1. Null player. If a player has zero marginal contribution to every coalition, i.e., u(S ∪ { i}) = 
+
+u(S)∀S ⊆ I \ { i}, then its value is zero: ϕi(u) = 0 .2. Symmetry. If two players have identical marginal contributions to every coalition, i.e., 
+
+u(S ∪ { i}) = u(S ∪ { j})∀S ⊆ I \ { i, j }, then they receive the same value: ϕi(u) = ϕj (u).3. Efficiency. The total value is distributed among all players: P 
+
+> i∈I
+
+ϕi(u) = u(I) − u(∅).4. Additivity. For any two games u and w on the same player set, ϕi(u + w) = ϕi(u) + 
+
+ϕi(w), ∀i ∈ I .In the game-theoretic formulation of data valuation, each data point is treated as a player in a cooperative game, and the utility of a coalition is typically defined as the performance of a model trained on the corresponding subset. This point-level setting has motivated a large literature on data valuation for noisy-label detection, data selection, data debugging, and data markets [ 30 , 14 ], using the Shapley value as the underlying value notion. Dataset valuation extends this perspective from individual datapoints to data owners: each player contributes a finite dataset, and the goal is to value the incremental gain obtained by pooling this dataset with those of other owners [ 1, 31 , 35 , 7]. The present paper is in this dataset-level setting. Several works have proposed alternative Shapley-type or semivalue-based notions for machine learning. Beta-Shapley relaxes the efficiency axiom and uses a family of cardinality weights to reduce variance and improve robustness in data valuation tasks [ 18 ]. Data Banzhaf uses the Banzhaf value and shows improved robustness to stochastic perturbations in model performance scores [ 36 ]. More broadly, semivalue-based frameworks study valuation rules that preserve linearity, symmetry, and the dummy-player property while varying the coalition-size weighting scheme [ 18 , 20 , 36 ]. These works study alternative valuation rules or alternative finite-game weightings. In contrast, we keep the Shapley value itself fixed and study how the exact Shapley value of a given data owner evolves as the number of surrounding owners increases. A recent line of work orthogonal to our paper also studies the robustness and sensitivity of semivalue-based data values, including Shapley values, to modeling choices [33, 6]. A related line of work treats the Shapley value as a statistical object. Distributional Shapley replaces the fixed finite dataset with a population-level quantity and studies the expected contribution of samples drawn from an underlying distribution [ 8, 17 ]. More recent work studies uncertainty quantification for Data Shapley by relating it to infinite-order U-statistics and deriving confidence intervals for valuation under changes in the data distribution [ 39 ]. These works are close in spirit because they go beyond a single deterministic finite dataset. However, their object differs from ours: they either define a new population-level valuation or study the sampling distribution of a valuation estimator. Our object is the sequence of exact finite-game Shapley values (ϕIi )I≥1 obtained by fixing one data owner and adding surrounding owners sampled from a population. Finally, classical cooperative game theory has studied values in nonatomic and large games [ 2, 24 , 25 ]. These works provide the mathematical foundations for value concepts beyond finite games, but their setting is different from dataset valuation: players are infinitesimal or embedded in a measure-theoretic game, whereas we keep the valued data owner finite and non-negligible. The main difficulty in our setting is therefore not only to define a limiting game, but to understand how the empirical distribution of large data coalitions affects the finite-game Shapley value. 
+
+A.2 Efficient estimation of the Shapley value 
+
+The exact Shapley value is computationally intractable in general because it averages marginal contributions over all coalitions. A large literature therefore focuses on estimating the Shapley value for a fixed finite game. Permutation Monte Carlo estimators approximate the Shapley value by 14 averaging marginal contributions along random permutations [ 4 , 22 , 9 , 12 ]. Variance-reduction and sampling-allocation strategies have also been studied to improve the efficiency of permutation-based estimation [ 22 , 23 ]. Group-testing-based estimators provide another approach by querying randomly sampled coalitions and recovering the Shapley vector through pairwise difference estimates [12]. Other works exploit structure in particular learning problems. For nearest-neighbor classifiers, exact or nearly exact Shapley values can be computed much more efficiently than by generic coalition enumeration [ 11 , 37 ]. More recent methods avoid repeated model retraining by using approximations along a single training trajectory or by learning surrogate models for data values [ 38 , 32 , 34 ]. DU-Shapley is particularly related to our work because it is a dataset-level proxy designed to exploit the structure of dataset valuation rather than treating the utility as an arbitrary cooperative game [7]. It also considers a regime with many data owners, but its goal is to propose and justify a proxy estimator. Instead of starting from an estimator and proving a finite-game error bound, we first characterize the asymptotic scale and leading-order structure of the exact Shapley value itself. This then provides a principled way to analyze estimators in the growing-player regime: estimators targeting the exact Shapley value must have an absolute error of o(log I/I ), while leading-order estimators can be studied by their distance to the leading term ΘIi .
+
+A.3 Alternative valuation methods 
+
+Beyond Shapley-based methods, several approaches assign value to data by approximating influence on training dynamics or model predictions. Influence functions approximate the effect of upweighting or removing a training point through derivatives of the learned parameters [ 16 ]. TracIn and related methods track the effect of training examples along optimization trajectories by accumulating gradient-based quantities during training [ 27 , 26 ]. Representer-point methods decompose predictions through training examples in the learned representation space [ 43 ]. Data models instead learn a predictive model of how training subsets affect model outputs, providing a different way to model data influence through subset-response behavior [10]. There are also valuation methods designed to reduce or remove the dependence on repeated model training. Robust volume assigns values using geometric diversity criteria and is designed to be validation-free and replication-robust [ 42 ]. Data-OOB uses out-of-bag estimates from random forests as an efficient proxy for data value [ 19 ]. LAVA formulates data valuation using distances between training and validation distributions and does not require specifying the downstream learning algorithm in advance [ 15 ]. Other training-free or initialization-based approaches use neural tangent kernel or generalization-bound arguments to estimate the value of data before full training [40]. These methods address important practical limitations of Shapley-based valuation, especially compu-tational cost and dependence on model retraining. However, they generally define different valuation rules or proxies. Our goal is different: we study the Shapley value itself in a dataset valuation game and characterize its asymptotic behavior. The leading term obtained in our analysis can therefore be used both as an interpretability tool for the Shapley value and as a reference for evaluating Shapley approximations in regimes where exact computation is infeasible. 15 B Missing definitions 
+
+This appendix collects the estimator definitions used in Section 4. We state them separately from the main text to keep the presentation focused on the asymptotic consequences of Theorem 3.2. Throughout this appendix, I ≥ 2 is fixed, the player of interest is i ∈ [I], and 
+
+∆i(S) := v(DS
+
+] Di) − v(DS ), S ⊆ [I] \ { i},
+
+denotes the marginal contribution of player i to a coalition S.
+
+B.1 Permutation Monte Carlo Shapley 
+
+The permutation representation of the Shapley value writes 
+
+ϕIi = Eπ [∆ i(P πi )] ,
+
+where π is a uniformly random permutation of [I], and P πi ⊆ [I] \ { i} is the set of players appearing before i in the order π. The permutation Monte Carlo Shapley estimator approximates this expectation by averaging over independent random permutations. Let π1, . . . , π mI be independent uniformly random permutations of [I]. For each b ∈ { 1, . . . , m I },let P πb 
+
+> i
+
+be the set of predecessors of i in πb. The permutation Monte Carlo estimator [22, 12, 9] is 
+
+bϕIi, MC := 1
+
+mImIX
+
+> b=1
+
+∆i(P πb 
+
+> i
+
+) = 1
+
+mImIX
+
+> b=1
+
+h
+
+v(DP πbi
+
+] Di) − v(DP πbi
+
+)
+
+i
+
+.
+
+Conditionally on the realized I-player game, this estimator is unbiased for ϕIi .
+
+B.2 Group-testing Shapley 
+
+We recall the group-testing estimator of [ 12 ]. Since adding a constant to the utility does not change marginal contributions or Shapley values, define the normalized game 
+
+UI (S) := v(DS ) − v(∅), S ⊆ [I].
+
+Thus UI (∅) = 0 , as in the standard group-testing formulation. Let 
+
+ZI := 2 
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k ,
+
+and define a probability distribution on coalition sizes {1, . . . , I − 1} by 
+
+qI (k) := 1
+
+ZI
+
+ 1
+
+k + 1
+
+I − k
+
+
+
+.
+
+For each query t ∈ { 1, . . . , T I }, draw Kt ∼ qI , then draw a coalition At ⊆ [I] uniformly among subsets of cardinality Kt, and evaluate UI (At). For each player j ∈ [I], define 
+
+βt,j := 1{j ∈ At}.
+
+For each pair p, q ∈ [I], estimate the Shapley difference ϕIp − ϕIq by 
+
+b∆p,q := ZI
+
+TITIX
+
+> t=1
+
+UI (At) ( βt,p − βt,q ) .
+
+The estimated Shapley vector 
+
+bsI = ( bsI
+
+> 1
+
+, . . . , bsII )
+
+is then obtained by solving the feasibility problem 
+
+> I
+
+X
+
+> j=1
+
+bsIj = UI ([ I]) ,
+
+together with the pairwise constraints 
+
+(bsIp − bsIq ) − b∆p,q ≤ εI
+
+2√I , ∀p, q ∈ [I].
+
+The group-testing Shapley estimate of the fixed player i is 
+
+bϕIi, GT := bsIi .
+
+16 B.3 DU-Shapley 
+
+DU-Shapley [ 7 ] replaces coalitions of k players by pseudo-coalitions containing approximately the same number of datapoints as a typical coalition of k surrounding players. Let 
+
+DI 
+
+> −i
+
+:= D[I]\{ i}
+
+be the pooled multiset of all datapoints from players other than i, and let 
+
+bnI 
+
+> −i
+
+:= 1
+
+I − 1
+
+X
+
+> j∈[I]\{ i}
+
+nj
+
+be the empirical average dataset size among the surrounding players. For each k ∈ { 0, . . . , I − 1},define the target pseudo-coalition size 
+
+mk,I := kbnI
+
+> −i
+
+ .
+
+Let eDk,I be a multiset of mk,I datapoints sampled uniformly without replacement from DI
+
+> −i
+
+. Define 
+
+e∆k,I := v( eDk,I 
+
+] Di) − v( eDk,I ).
+
+The DU-Shapley estimator is 
+
+bϕIi, DU := 1
+
+I
+
+> I−1
+
+X
+
+> k=0
+
+e∆k,I .
+
+This estimator preserves the Shapley averaging over coalition sizes but replaces player-level coalitions with data point-level pseudo-coalitions sampled from the surrounding population. 
+
+B.4 Stratified Monte Carlo Shapley 
+
+The stratified Monte Carlo Shapley estimator [ 22 ] samples coalitions separately at each cardinality. For every k ∈ { 0, . . . , I − 1}, let mk,I ≥ 1 be the number of samples allocated to stratum k. For each b ∈ { 1, . . . , m k,I }, draw 
+
+Sk,b ⊆ [I] \ { i}
+
+uniformly among subsets of cardinality k. The stratified estimator is 
+
+bϕIi, strat := 1
+
+I
+
+> I−1
+
+X
+
+> k=0
+
+1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+∆i(Sk,b ).
+
+Equivalently, 
+
+bϕIi, strat = 1
+
+I
+
+> I−1
+
+X
+
+> k=0
+
+1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+h
+
+v(DSk,b 
+
+] Di) − v(DSk,b )
+
+i
+
+.
+
+Conditionally on the realized I-player game, this estimator is unbiased for ϕIi , because each stratum estimates the corresponding cardinality-wise expectation in the Shapley formula. 17 C Technical lemmas 
+
+Lemma C.1 (Embedding update when adding a player) . Let S be a coalition that does not contain i,with pooled data point count nS . Let 
+
+μS := μ( bPDS ) and μS∪{ i} := μ( bPDS∪{ i} ).
+
+Then 
+
+μS∪{ i} = μS + αS (μi − μS ), αS := ni
+
+nS + ni
+
+. (4) (5) 
+
+Proof. By definition, 
+
+μS = 1
+
+nS
+
+X
+
+> j∈Snj
+
+X
+
+> r=1
+
+ϕ(zj,r ), μS∪{ i} = 1
+
+nS + ni
+
+X
+
+> j∈Snj
+
+X
+
+> r=1
+
+ϕ(zj,r ) + 
+
+> ni
+
+X
+
+> r=1
+
+ϕ(zi,r )
+
+ .
+
+Rewrite the numerator using nS μS and niμi:
+
+μS∪{ i} = 1
+
+nS + ni
+
+ nS μS + niμi
+
+ = nS
+
+nS + ni
+
+μS + ni
+
+nS + ni
+
+μi.
+
+Subtract and add μS :
+
+μS∪{ i} − μS =
+
+ nS
+
+nS + ni
+
+− 1
+
+
+
+μS + ni
+
+nS + ni
+
+μi = − ni
+
+nS + ni
+
+μS + ni
+
+nS + ni
+
+μi = αS (μi − μS ).
+
+This is exactly (5). 
+
+Lemma C.2 (First-order Taylor remainder bound in a Hilbert space with Lipschitz gradient) . Under Theorem 2.2, for all x, h ∈ H ,
+
+F (x + h) − F (x) − ⟨∇ F (x), h ⟩ ≤ M
+
+2 ∥h∥2.
+
+Proof. Define ψ(t) := F (x + th ) for t ∈ [0 , 1] . By Fréchet differentiability, ψ is differentiable with 
+
+ψ′(t) = ⟨∇ F (x + th ), h ⟩ .
+
+By the fundamental theorem of calculus, 
+
+F (x + h) − F (x) − ⟨∇ F (x), h ⟩ =
+
+Z 10
+
+ ψ′(t) − ψ′(0)  dt =
+
+Z 10
+
+⟨∇ F (x + th ) − ∇ F (x), h ⟩ dt. 
+
+Take absolute values and apply Cauchy-Schwarz: 
+
+F (x + h) − F (x) − ⟨∇ F (x), h ⟩ ≤
+
+Z 10
+
+∥∇ F (x + th ) − ∇ F (x)∥ ∥ h∥ dt. 
+
+Using the M -Lipschitz property of ∇F ,
+
+∥∇ F (x + th ) − ∇ F (x)∥ ≤ M ∥th ∥ = M t ∥h∥.
+
+Therefore 
+
+F (x + h) − F (x) − ⟨∇ F (x), h ⟩ ≤
+
+Z 10
+
+M t ∥h∥2 dt = M
+
+2 ∥h∥2.
+
+For a set S of size k, define μS = μ( bPDS ) as above. 18 Lemma C.3 (First-order expansion of a marginal contribution) . Under Assumptions 2.1 and 2.2, for any nonempty coalition S ⊆ [I] \ { i},
+
+∆i(S) = αS ⟨∇ F (μS ), μ i − μS ⟩ + RS , αS := ni
+
+nS + ni
+
+,
+
+where 
+
+|RS | ≤ 2M κ 2α2 
+
+> S
+
+.
+
+Proof. By Lemma C.1, 
+
+μS∪{ i} = μS + αS (μi − μS ).
+
+Since v(D) = F (μ( bPD )) ,
+
+∆i(S) = F (μS + αS (μi − μS )) − F (μS ).
+
+Apply Lemma C.2 with 
+
+x = μS , h = αS (μi − μS ).
+
+This gives the stated expansion with 
+
+|RS | ≤ M
+
+2 α2 
+
+> S
+
+∥μi − μS ∥2.
+
+Because ∥μi∥ ≤ κ and ∥μS ∥ ≤ κ,
+
+∥μi − μS ∥ ≤ 2κ. 
+
+Hence 
+
+|RS | ≤ 2M κ 2α2 
+
+> S
+
+.
+
+Lemma C.4 (Concentration of coalition embeddings) . Under Assumptions 2.3 and 2.1, for any fixed 
+
+k ≥ 1 and any subset S ⊆ N \ { i} of size k generated from the surrounding-player population, 
+
+E∥μS − μ⋆∥ ≤ 2nmax κ
+
+√k .
+
+Proof. Let S be a coalition of k surrounding players. Define 
+
+Yj := Xj − nj μ⋆.
+
+Then 
+
+μS − μ⋆ = 1
+
+nS
+
+X
+
+> j∈S
+
+Yj .
+
+Since nj ≥ 1, we have nS ≥ k, and therefore 
+
+∥μS − μ⋆∥ ≤ 1
+
+k
+
+X
+
+> j∈S
+
+Yj .
+
+Taking expectations and applying Cauchy–Schwarz, 
+
+E∥μS − μ⋆∥ ≤ 1
+
+k
+
+E X
+
+> j∈S
+
+Yj
+
+> 2
+
+
+
+> 1/2
+
+.
+
+By definition, 
+
+μ⋆ = E[Xj ]¯n , ¯n = E[nj ],
+
+19 so 
+
+E[Yj ] = E[Xj ] − E[nj ]μ⋆ = 0 .
+
+The variables Yj are i.i.d. and centered. Hence the cross terms vanish and 
+
+E X
+
+> j∈S
+
+Yj
+
+> 2
+
+= k E∥Yj ∥2.
+
+Moreover, 
+
+∥Xj ∥ ≤ nmax κ and ∥μ⋆∥ ≤ E∥Xj ∥
+
+¯n ≤ E[nj ]κ
+
+¯n = κ. 
+
+Therefore, 
+
+∥Yj ∥ ≤ ∥ Xj ∥ + nj ∥μ⋆∥ ≤ 2nmax κ. 
+
+Combining the previous displays gives 
+
+E∥μS − μ⋆∥ ≤ 1
+
+k
+
+pk(2 nmax κ)2 = 2nmax κ
+
+√k .
+
+Lemma C.5 (First-order approximation of the Shapley marginal contribution and its error bound) .
+
+Under Assumptions 2.1 and 2.2, for any coalition S not containing i,
+
+|∆i(S) − αS ci| ≤ αS (G + 2 M κ )∥μS − μ⋆∥ + 2 M κ 2 α2 
+
+> S
+
+. (6) 
+
+where ∆i(S) := v(DS
+
+U Di) − v(DS ).Proof. Let α := αS and x := μS . By Theorem C.2 with h = α(μi − x),
+
+F (x + α(μi − x)) − F (x) = α ⟨∇ F (x), μ i − x⟩ + R with |R| ≤ M
+
+2 α2∥μi − x∥2.
+
+Since ∥μi∥ ≤ κ and ∥x∥ = ∥μ( bPDS )∥ ≤ κ,
+
+∥μi − x∥ ≤ ∥ μi∥ + ∥x∥ ≤ 2κ, 
+
+hence |R| ≤ M 
+
+> 2
+
+α2(2 κ)2 = 2 M κ 2α2.Now compare α ⟨∇ F (x), μ i − x⟩ with αc i = α ⟨g⋆, μ i − μ⋆⟩. First, rewrite: 
+
+α ⟨∇ F (x), μ i − x⟩ − α ⟨g⋆, μ i − μ⋆⟩ = α ⟨∇ F (x) − g⋆, μ i − x⟩ − α ⟨g⋆, x − μ⋆⟩ .
+
+Bound the two terms: 
+
+α ⟨∇ F (x) − g⋆, μ i − x⟩ ≤ α∥∇ F (x) − g⋆∥ ∥ μi − x∥ ≤ α · M ∥x − μ⋆∥ · 2κ = 2 M κ α ∥x − μ⋆∥,
+
+where we used the Lipschitz continuity of ∇F . Also 
+
+α ⟨g⋆, x − μ⋆⟩ ≤ α∥g⋆∥ ∥ x − μ⋆∥ ≤ αG ∥x − μ⋆∥.
+
+Combine with the bound on R to get (6). 
+
+Lemma C.6 (A deterministic bound on αS ). For any coalition S of size k ≥ 1, the coefficient 
+
+αS = ni  
+
+> nS+ni
+
+satisfies 
+
+αS ≤ min 
+
+n
+
+1, ni
+
+k
+
+o
+
+and α2 
+
+> S
+
+≤ min 
+
+
+
+1, n2
+
+> i
+
+k2
+
+
+
+.
+
+Proof. Since each player contributes at least one datapoint, any coalition of size k has total nS ≥ k
+
+datapoints. Consequently, 
+
+αS = ni
+
+nS + ni
+
+≤ ni
+
+k + ni
+
+≤ ni
+
+k ,
+
+where the last inequality uses k + ni ≥ k. Moreover, from the definition αS = ni/(nS + ni), we have αS ≤ 1 because nS + ni ≥ ni. Combining these two bounds yields αS ≤ min {1, n i/k }. For the squared term, squaring the bound gives α2 
+
+> S
+
+≤ min {1, n 2 
+
+> i
+
+/k 2}.20 Lemma C.7 (Corresponds to Eq.(2) in [ 28 ] : without-replacement RKHS embedding concentration) .
+
+Let z1, . . . , z N be a finite population and let PN := 1
+
+> N
+
+PNj=1 δzj be its empirical measure. Let 
+
+Pn be the empirical measure of a subset of size n sampled uniformly without replacement from 
+
+{z1, . . . , z N }. Assume ∥ϕ(z)∥ ≤ d for all population points. Then for all ε > 0,
+
+P
+
+
+
+∥μ(Pn) − μ(PN )∥ ≥ ε
+
+
+
+≤ 2 exp 
+
+
+
+− nε 2
+
+8d2
+
+
+
+. (7) 
+
+Corollary C.8 (Expected deviation of without - replacement subsampling) . Under the assumptions of Lemma C.7, 
+
+E∥μ(Pn) − μ(PN )∥ ≤ d
+
+r 8πn .
+
+Proof. Let X := ∥μ(Pn) − μ(PN )∥ ≥ 0. Use the identity E[X] = R ∞ 
+
+> 0
+
+P(X ≥ t) dt and apply (7): 
+
+E[X] ≤
+
+Z ∞
+
+> 0
+
+2 exp 
+
+
+
+− nt 2
+
+8d2
+
+
+
+dt. 
+
+Let a := n 
+
+> 8d2
+
+> 0. Then 
+
+Z ∞
+
+> 0
+
+2e−at 2
+
+dt = 2 · 12
+
+r πa =
+
+r πa = d
+
+r 8πn .
+
+Lemma C.9 (Harmonic asymptotics) . Let 
+
+Hn := 
+
+> n
+
+X
+
+> k=1
+
+1
+
+k .
+
+Then 
+
+Hn = log n + O(1) .
+
+Consequently, 
+
+HI−1
+
+log I −→ 1.
+
+Proof. For every n ≥ 1, the standard integral comparison gives 
+
+Z n+1 1
+
+1
+
+x dx ≤ Hn ≤ 1 + 
+
+Z n
+
+> 1
+
+1
+
+x dx. 
+
+Hence 
+
+log( n + 1) ≤ Hn ≤ 1 + log n. 
+
+This implies Hn = log n + O(1) . Taking n = I − 1, we get 
+
+HI−1 = log( I − 1) + O(1) = log I + O(1) ,
+
+and therefore 
+
+HI−1
+
+log I = 1 + O
+
+ 1log I
+
+
+
+−→ 1.
+
+Lemma C.10 (Lower bound on the leading term) . For every integer I ≥ 2,
+
+HI−1 := 
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k ≥ log I. 
+
+Consequently, if 
+
+ΘIi = nici
+
+¯nHI−1
+
+I ,
+
+then 
+
+|ΘIi | ≥ ni|ci|
+
+¯n
+
+log II .
+
+21 Proof. For every integer n ≥ 1, since x 7 → 1/x is non-increasing on [1 , ∞),
+
+Z n+1 1
+
+1
+
+x dx ≤
+
+> n
+
+X
+
+> k=1
+
+1
+
+k .
+
+Taking n = I − 1, we obtain 
+
+log I =
+
+Z I
+
+> 1
+
+1
+
+x dx ≤
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k = HI−1.
+
+The bound on |ΘIi | follows immediately from the definition of ΘIi .22 D Additional Proofs 
+
+This appendix contains the missing proofs for the results stated in the main paper. It is organized as follows. – Appendix D.1 introduces the proof of Theorem 3.2. – Appendix D.2 introduces the proof of Corollary 3.3. – Appendix D.3 introduces the proof of Corollary 3.4. – Appendix D.4 introduces the proof of Proposition 4.1. – Appendix D.5 introduces the proof of Theorem 4.3. – Appendix D.6 introduces the proof of Proposition 4.4. 23 D.1 Proof of Theorem 3.2 Theorem D.1 (Restate of Theorem 3.2) . Suppose Assumptions 2.3–2.2 hold. Then, for the fixed player i,
+
+E  ϕIi − ΘIi
+
+ = O
+
+ 1
+
+I
+
+
+
+,
+
+where the expectation is over the surrounding players (Dj )j̸ =i.Proof. Recall the definition of the Shapley value from Equation (2): 
+
+ϕIi = 1
+
+I
+
+> I−1
+
+X
+
+> k=0
+
+ESk [∆ i(Sk)] ,
+
+where ∆i(Sk) denotes the marginal contribution v(DSk
+
+U Di) − v(DSk ) and Sk is uniformly dis-tributed over subsets of [I] \ { i} of size k. The term k = 0 corresponds to the empty coalition. By the convention stated in Section 2, ∆i(∅) = v(Di) − v(0) . Since ∥μi∥ ≤ κ and F is G-Lipschitz (from ∥∇ F ∥ ≤ G), we have 
+
+|∆i(∅)| = |F (μi) − F (0) | ≤ G∥μi − 0∥ ≤ Gκ. 
+
+Thus |∆i(∅)| is bounded by a constant independent of I, and its contribution to E|ϕIi −ΘIi | is O(1 /I )
+
+after multiplication by 1/I . We therefore focus on k ≥ 1 and write 
+
+ϕIi − ΘIi = 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+ESk [∆ i(Sk)] − ΘIi + C0
+
+I ,
+
+where C0 absorbs the k = 0 term. 
+
+1. Decomposing the error. For each coalition Sk, we have: 
+
+∆i(Sk) = αSk ci +  ∆i(Sk) − αSk ci
+
+.
+
+Taking expectation over Sk and averaging over k, we obtain 
+
+ϕIi − ΘIi = 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+ESk
+
+∆i(Sk) − αSk ci
+
+| {z }
+
+> =: AI
+
++ 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+ESk [αSk ]ci − ΘIi
+
+!| {z }
+
+> =: mI
+
++ C0
+
+I ,
+
+By the triangle inequality, 
+
+E|ϕIi − ΘIi | ≤ E|AI | + E|mI | + C0
+
+I .
+
+We now bound E|AI | and E|mI | separately. 
+
+2. Upper bound on E|AI | We have 
+
+E|AI | = E
+
+"
+
+1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+ESk [∆ i(Sk) − αSk ci]
+
+#
+
+≤ 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+E ESk
+
+|∆i(Sk) − αSk ci| (by Jensen and triangle inequality) 
+
+≤ 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+E (G + 2 M κ )ESk [αSk |μSk − μ⋆|] + 2 M κ 2ESk [α2 
+
+> Sk
+
+] (by Lemma C.5) Now, by the law of total expectation, E[ESk [αSk ∥μSk − μ⋆∥]] = E[αSk ∥μSk − μ⋆∥], where the outer expectation is over the random players (which determine the distribution of Sk). The same holds for 
+
+α2 
+
+> Sk
+
+. Hence, 
+
+E|AI | ≤ 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+h
+
+(G + 2 M κ )EαSk ∥μSk − μ⋆∥ + 2 M κ 2E[α2 
+
+> Sk
+
+]
+
+i
+
+.
+
+24 2.1 Bound on E[αSk ∥μSk −μ⋆∥]. By Lemma C.6, αSk ≤ min {1, n i/k }. By Lemma C.4, E∥μSk −
+
+μ⋆∥ ≤ 2nmax κ/ √k. Hence, 
+
+EαSk ∥μSk − μ⋆∥ ≤ min 
+
+n
+
+1, ni
+
+k
+
+o
+
+· 2nmax κ
+
+√k .
+
+Summing over k,
+
+> I−1
+
+X
+
+> k=1
+
+EαSk ∥μSk − μ⋆∥ ≤ 2nmax κ
+
+
+
+> ⌊ni⌋
+
+X
+
+> k=1
+
+1
+
+√k +
+
+> I−1
+
+X
+
+> k=⌊ni⌋+1
+
+ni
+
+k3/2
+
+ .
+
+The first sum is bounded by 2√ni (since Pni 
+
+> k=1
+
+k−1/2 ≤ 2√ni). The second sum is bounded by 
+
+ni
+
+R ∞ 
+
+> ni
+
+x−3/2dx = 2 √ni. Thus the total sum is at most 8nmax κ√ni, a finite constant independent of 
+
+I.
+
+2.2 Bound on E[α2 
+
+> Sk
+
+]. Again by Lemma C.6, E[α2 
+
+> Sk
+
+] ≤ min {1, n 2 
+
+> i
+
+/k 2}. Summing over k,
+
+> I−1
+
+X
+
+> k=1
+
+E[α2 
+
+> Sk
+
+] ≤
+
+> ⌊ni⌋
+
+X
+
+> k=1
+
+1 + 
+
+> ∞
+
+X
+
+> k=⌊ni⌋+1
+
+n2
+
+> i
+
+k2 ≤ ni + n2
+
+> i
+
+Z ∞
+
+> ni
+
+x−2dx = ni + ni = 2 ni.
+
+Hence, this sum is also bounded by a constant independent of I.Putting these bounds together, we have shown that there exists a constant CA such that 
+
+> I−1
+
+X
+
+> k=1
+
+h
+
+(G + 2 M κ )EαSk ∥μSk − μ⋆∥ + 2 M κ 2E[α2 
+
+> Sk
+
+]
+
+i
+
+≤ CA.
+
+Consequently, E|AI | ≤ CA/I .
+
+3. Upper bound on E|mI |. Recall that mI = 1
+
+> I
+
+PI−1 
+
+> k=1
+
+E[αSk ]ci − ΘIi and ΘIi = nici 
+
+> ¯nHI−1
+> I
+
+. Thus, 
+
+|mI | ≤ | ci| · 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+E[αSk ] − ni
+
+¯nHI−1
+
+I .
+
+From Assumptions 2.1 and 2.2, we have |ci| ≤ ∥ g⋆∥∥ μi − μ⋆∥ ≤ G · 2κ. It therefore suffices to bound the term in absolute value. 
+
+3.1. Removing the +ni in the denominator. Since αSk = ni/(NSk + ni), define 
+
+Ak := ni
+
+NSk + ni
+
+− ni
+
+NSk
+
+.
+
+For every realization of Sk, using NSk ≥ k, we have 
+
+|Ak| = n2
+
+> i
+
+NSk (NSk + ni) ≤ n2
+
+> i
+
+k2 .
+
+Therefore, 
+
+E[αSk ] − niE
+
+ 1
+
+NSk
+
+
+
+= |E[Ak]|≤ E[|Ak|]
+
+≤ n2
+
+> i
+
+k2 .
+
+25 3.2. Comparing E[1 /N Sk ] to 1/(k¯n). Using the identity |1/x − 1/y | = |x − y|/(xy ),
+
+1
+
+NSk
+
+− 1
+
+k¯n = |NSk − k¯n|
+
+NSk k¯n ≤ |NSk − k¯n|
+
+k2 ¯n ,
+
+since NSk ≥ k. Taking expectations and applying Cauchy-Schwarz, 
+
+E 1
+
+NSk
+
+− 1
+
+k¯n ≤ E|NSk − k¯n|
+
+k2 ¯n ≤
+
+pVar( NSk )
+
+k2 ¯n .
+
+Now NSk = P 
+
+> j∈Sk
+
+nj , where the nj are i.i.d. with Var( nj ) ≤ n2max (since 1 ≤ nj ≤ nmax ). Hence Var( NSk ) = kVar( nj ) ≤ kn 2max , so 
+
+E 1
+
+NSk
+
+− 1
+
+k¯n ≤ nmax 
+
+√kk2 ¯n = nmax 
+
+¯n
+
+1
+
+k3/2 .
+
+Multiplying by ni and combining with Step 3.1, we obtain 
+
+E[αSk ] − ni
+
+k¯n ≤ n2
+
+> i
+
+k2 + ninmax 
+
+¯n
+
+1
+
+k3/2 .
+
+3.3. Summation over k. The right-hand side is summable over k:
+
+> ∞
+
+X
+
+> k=1
+
+ n2
+
+> i
+
+k2 + ninmax 
+
+¯n
+
+1
+
+k3/2
+
+
+
+= n2
+
+> i
+> ∞
+
+X
+
+> k=1
+
+1
+
+k2 + ninmax 
+
+¯n
+
+> ∞
+
+X
+
+> k=1
+
+1
+
+k3/2 < ∞.
+
+Denote this finite sum by CB . Then 
+
+> I−1
+
+X
+
+> k=1
+
+E[αSk ] − ni
+
+k¯n ≤ CB .
+
+3.4. Final bound for E|mI |. We now have 
+
+1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+E[αSk ] − ni
+
+¯nHI−1
+
+I ≤ 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+E[αSk ] − ni
+
+k¯n ≤ CB
+
+I .
+
+Multiplying by |ci| ≤ 2Gκ gives E|mI | ≤ 2GκC B 
+
+> I
+
+=: C′ 
+
+> B
+> I
+
+.
+
+4. Conclusion. Combining the bounds for E|AI |, E|mI |, and the k = 0 term, we obtain 
+
+E|ϕIi − ΘIi | ≤ CA + C′ 
+
+> B
+
++ C0
+
+I = Cϕ
+
+I .
+
+This completes the proof. 26 D.2 Proof of Corollary 3.3 Corollary D.2 (Restate of Corollary 3.3) . Under the assumptions of Theorem 3.2, if ci̸ = 0 , then 
+
+|ϕIi | = Θ P
+
+ log II
+
+
+
+.
+
+Proof. Let 
+
+aI := log II .
+
+By the definition of the leading term, 
+
+ΘIi = nici
+
+¯nHI−1
+
+I .
+
+Therefore, 
+
+ΘIi
+
+aI
+
+= nici
+
+¯nHI−1
+
+log I .
+
+Since by Lemma C.9, HI−1/ log I → 1, we have 
+
+ΘIi
+
+aI
+
+−→ nici
+
+¯n .
+
+Moreover, Theorem 3.2 gives 
+
+E  ϕIi − ΘIi
+
+ = O
+
+ 1
+
+I
+
+
+
+.
+
+Hence, 
+
+E
+
+ ϕIi
+
+aI
+
+− ΘIi
+
+aI
+
+
+
+= 1
+
+aI
+
+E  ϕIi − ΘIi
+
+
+
+= I
+
+log I O
+
+ 1
+
+I
+
+
+
+= O
+
+ 1log I
+
+
+
+−→ 0.
+
+Combining the last two displays yields 
+
+I
+
+log I ϕIi = ϕIi
+
+aIL1
+
+−−→ nici
+
+¯n .
+
+If ci̸ = 0 , the limit is nonzero. Therefore, 
+
+|ϕIi | = Θ P(aI ) = Θ P
+
+ log II
+
+
+
+.
+
+27 D.3 Proof of Corollary 3.4 Corollary D.3 (Restate of Corollary 3.4) . Assume the conditions of Theorem 3.2 and suppose ci̸ = 0 .Let bϕIi be any estimator of ϕIi such that bϕIi − ϕIi = oP
+
+ log II
+
+
+
+. Then, bϕIi
+
+> ϕIi
+
+− 1 P
+
+−−→ 0.Proof. Let 
+
+aI := log II .
+
+By Corollary 3.3, 
+
+ϕIi
+
+aI
+
+> P
+
+−−→ nici
+
+¯n .
+
+Since ci̸ = 0 , the limit is nonzero. Moreover, by assumption, 
+
+bϕIi − ϕIi
+
+aI
+
+> P
+
+−−→ 0.
+
+Therefore, 
+
+bϕIi
+
+ϕIi
+
+− 1 =
+
+( bϕIi − ϕIi )/a I
+
+ϕIi /a I
+
+> P
+
+−−→ 0,
+
+by Slutsky’s theorem. 28 D.4 Proof of Proposition 4.1 Proposition D.4 (Restate of Proposition 4.1) . Let bφIi, MC be the permutation Monte Carlo Shapley estimator [ 22 ] based on mI independent random permutations. Let bφIi, GT be the group-testing Shapley estimator of [12]. Under the assumptions of Theorem 3.2 and with ci̸ = 0 :1. If mI ≫ I2  
+
+> log 2I
+
+, then 
+
+bϕIi, MC 
+
+ϕIi
+
+− 1 P
+
+−−→ 0.
+
+2. If there exist sequences εI = o(log I/I ) and δI → 0 such that the group-testing budget 
+
+TI is large enough for the estimator to be an (εI , δ I )-approximation of the Shapley vector 
+
+(ϕIj )Ij=1 in ℓ2-norm., then 
+
+bϕIi, GT 
+
+ϕIi
+
+− 1 P
+
+−−→ 0.
+
+Proof. We prove that both estimators have absolute error oP(log I/I ). The relative-error convergence then follows directly from Corollary 3.4. Throughout the proof, write 
+
+aI := log II .
+
+We first record a uniform boundedness fact. By Assumption 2.2, ∥∇ F (x)∥ ≤ G, hence F is G-Lipschitz. Moreover, by Assumption 2.1, every nonempty empirical embedding has norm at most κ,and by convention μ( bP∅) = 0 . Therefore, for any two coalitions S, T ,
+
+|v(DS ) − v(DT )| = F (μ( bPDS )) − F (μ( bPDT )) ≤ 2Gκ. 
+
+Thus all marginal contributions are uniformly bounded: 
+
+v(DS
+
+] Di) − v(DS ) ≤ 2Gκ. (D.9) Set 
+
+r := 2 Gκ. 
+
+Permutation Monte Carlo Shapley. Let π1, . . . , π mI be independent uniformly random permuta-tions of [I]. For a permutation π, let P πi be the set of predecessors of i in π. The permutation Monte Carlo Shapley estimator is 
+
+bφIi, MC := 1
+
+mImIX
+
+> b=1
+
+h
+
+v(DP πbi
+
+] Di) − v(DP πbi
+
+)
+
+i
+
+.
+
+Conditionally on the realized I-player game, the summands are independent and have mean φIi , by the permutation representation of the Shapley value. Moreover, by (D.9) , their absolute value is bounded by r, so their variance is at most r2. Hence, conditionally on the realized game, 
+
+Var   bφIi, MC (Dj )j̸ =i
+
+ ≤ r2
+
+mI
+
+.
+
+By Chebyshev’s inequality, for any η > 0,
+
+P   bφIi, MC − φIi > ηa I (Dj )j̸ =i
+
+ ≤ r2
+
+mI η2a2
+
+> I
+
+.
+
+29 Taking expectation over the surrounding players gives the same unconditional bound: 
+
+P   bφIi, MC − φIi > ηa I
+
+ ≤ r2
+
+mI η2a2
+
+> I
+
+.
+
+If mI a2 
+
+> I
+
+→ ∞ , then the right-hand side converges to zero for every η > 0. Therefore, 
+
+bφIi, MC − φIi = oP(aI ) = oP
+
+ log II
+
+
+
+.
+
+By Corollary 3.4, 
+
+bφIi, MC 
+
+φIi
+
+− 1 P
+
+−→ 0.
+
+Group-testing Shapley. We now consider the group-testing estimator of [ 12 ], whose definition is recalled in Appendix B, applied to the I-player dataset valuation game. To match the standard convention U (∅) = 0 , define the normalized game 
+
+UI (S) := v(DS ) − v(∅), S ⊆ [I].
+
+This normalization does not change any marginal contribution, hence it does not change the Shapley values. Moreover, by the Lipschitz bound above, the range of UI is at most r = 2 Gκ .The group-testing estimator proceeds as follows. Let 
+
+ZI := 2 
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k ,
+
+and define, for k = 1 , . . . , I − 1,
+
+qI (k) := 1
+
+ZI
+
+ 1
+
+k + 1
+
+I − k
+
+
+
+.
+
+For each test t = 1 , . . . , T I , draw Kt ∼ qI , then draw a subset At ⊆ [I] uniformly among subsets of cardinality Kt, and evaluate UI (At). Let 
+
+βt,j := 1{j ∈ At}.
+
+For each pair p, q ∈ [I], estimate the Shapley difference φIp − φIq by 
+
+b∆p,q := ZI
+
+TITIX
+
+> t=1
+
+UI (At)( βt,p − βt,q ).
+
+The estimated Shapley vector bsI = ( bsI
+
+> 1
+
+, . . . , bsII ) is then obtained by solving the feasibility problem 
+
+> I
+
+X
+
+> j=1
+
+bsIj = UI ([ I]) , (bsIp − bsIq ) − b∆p,q ≤ εI
+
+2√I , ∀p, q ∈ [I].
+
+The group-testing estimate of the fixed player is 
+
+bφIi, GT := bsIi .
+
+We now apply the guarantee of [12]. Define 
+
+qtot ,I := I − 2
+
+I qI (1) + 
+
+> I−1
+
+X
+
+> k=2
+
+qI (k)
+
+
+
+1 + 2k(k − I)
+
+I(I − 1) 
+
+
+
+,
+
+and 
+
+h(u) := (1 + u) log(1 + u) − u. 
+
+30 Theorem 3 of [12], applied with N = I, states that if 
+
+TI ≥
+
+8 log 
+
+ I(I−1) 2δI
+
+
+
+(1 − q2tot ,I )h
+
+ εI  
+
+> ZIr√I(1 −q2tot ,I )
+
+ , (D.10) then, conditionally on the realized game, 
+
+P   bsI − φI 
+
+> 2
+
+≤ εI (Dj )j̸ =i
+
+ ≥ 1 − δI ,
+
+where 
+
+φI := ( φI
+
+> 1
+
+, . . . , φ II ).
+
+The bound is uniform over games whose utility range is at most r, so taking expectation over the surrounding players yields 
+
+P   bsI − φI 
+
+> 2
+
+> ε I
+
+ ≤ δI .
+
+In particular, 
+
+bφIi, GT − φIi ≤ bsI − φI 
+
+> 2
+
+.
+
+Therefore, for any η > 0,
+
+P   bφIi, GT − φIi > ηa I
+
+ ≤ P   bsI − φI 
+
+> 2
+
+> ηa I
+
+ .
+
+Since εI = o(aI ), for all sufficiently large I, εI ≤ ηa I . Hence, for all sufficiently large I,
+
+P   bφIi, GT − φIi > ηa I
+
+ ≤ δI .
+
+Because δI → 0, we obtain 
+
+bφIi, GT − φIi = oP(aI ) = oP
+
+ log II
+
+
+
+.
+
+By Corollary 3.4, 
+
+bφIi, GT 
+
+φIi
+
+− 1 P
+
+−→ 0.
+
+This completes the proof. 31 D.5 Proof of Theorem 4.3 Theorem D.5 (Restate of Theorem 4.3) . Under Assumptions 2.3–2.2 and with ci̸ = 0 , every leading-order estimator satisfies 
+
+bϕIi
+
+ϕIi
+
+− 1 P
+
+−−→ 0.
+
+Proof. From the representation of bϕIi , we have 
+
+bϕIi − ΘIi = 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+ni
+
+k ¯μ
+
+  b∆(i) 
+
+> k,I
+
+− ci
+
+ +
+
+b∆(i)0,I 
+
+I .
+
+Taking absolute values, expectations, and using the triangle inequality, we get 
+
+E| bϕIi − ΘIi | ≤ ni
+
+¯μI 
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k E| b∆(i) 
+
+> k,I
+
+− ci| + E| b∆(i)0,I |
+
+I ≤ ni
+
+¯μI C∆ + C0
+
+I = CI .
+
+32 D.6 Proof of Proposition 4.4 
+
+We first state two lemmas before proving Proposition 4.4. 
+
+Lemma D.6 (DU-Shapley summability bound) . Let bϕIi, DU denote the DU-Shapley estimator defined by 
+
+bϕIi, DU := 1
+
+I
+
+> I−1
+
+X
+
+> k=0
+
+e∆k,I , e∆k,I := v( eDk,I ⊎ Di) − v( eDk,I ).
+
+where, eDk,I is a multiset of mk,I := 
+
+j
+
+k 1
+
+> I−1
+
+P 
+
+> j∈[I]\{ i}
+
+nj
+
+k
+
+datapoints sampled uniformly without replacement from the pooled multiset D[I]\{ i}. Under the assumptions of Theorem 3.2, there exists a constant C∆,DU < ∞, independent of I, such that 
+
+> I−1
+
+X
+
+> k=1
+
+E
+
+h e∆k,I − ni
+
+k¯n ci
+
+i
+
+≤ C∆,DU . (8) 
+
+Proof. For k ≥ 1, let 
+
+eμk,I := μ( bP eDk,I ), eαk,I := ni
+
+mk,I + ni
+
+, mk,I := ⌊kbnI
+
+> −i
+
+⌋.
+
+Since bnI 
+
+> −i
+
+≥ 1, we have mk,I ≥ k. Hence 
+
+eαk,I ≤ min 
+
+n
+
+1, ni
+
+k
+
+o
+
+, eα2 
+
+> k,I
+
+≤ min 
+
+
+
+1, n2
+
+> i
+
+k2
+
+
+
+.
+
+We decompose 
+
+e∆k,I − ni
+
+k¯n ci =
+
+ e∆k,I − eαk,I ci
+
+
+
++
+
+eαk,I − ni
+
+k¯n
+
+
+
+ci.
+
+Therefore, 
+
+E
+
+h e∆k,I − ni
+
+k¯n ci
+
+i
+
+≤ E
+
+h e∆k,I − eαk,I ci
+
+i
+
++ |ci|E
+
+heαk,I − ni
+
+k¯n
+
+i
+
+.
+
+For the first term, applying the same first-order marginal bound as Lemma C.5, with (μS , α S )
+
+replaced by (eμk,I , eαk,I ), gives 
+
+e∆k,I − eαk,I ci ≤ eαk,I (G + 2 M κ )∥eμk,I − μ⋆∥ + 2 M κ 2 eα2 
+
+> k,I
+
+.
+
+Moreover, by the triangle inequality, 
+
+∥eμk,I − μ⋆∥ ≤ ∥ eμk,I − μI
+
+> −i
+
+∥ + ∥μI 
+
+> −i
+
+− μ⋆∥,
+
+where μI 
+
+> −i
+
+:= μ( bPDI 
+
+> −i
+
+). By the without-replacement concentration corollary and mk,I ≥ k,
+
+E∥eμk,I − μI
+
+> −i
+
+∥ ≤ κ
+
+r 8πk .
+
+By Lemma C.4 applied to the coalition [I] \ { i},
+
+E∥μI 
+
+> −i
+
+− μ⋆∥ ≤ 2nmax κ
+
+√I − 1 .
+
+Thus, for constants C1, C 2 < ∞,
+
+E∥eμk,I − μ⋆∥ ≤ C1
+
+√k + C2
+
+√I − 1 .
+
+Consequently, 
+
+E
+
+h e∆k,I − eαk,I ci
+
+i
+
+≤ C min 
+
+n
+
+1, ni
+
+k
+
+o  1
+
+√k + 1
+
+√I − 1
+
+
+
++ C min 
+
+
+
+1, n2
+
+> i
+
+k2
+
+
+
+.
+
+33 Summing over k yields 
+
+> I−1
+
+X
+
+> k=1
+
+E
+
+h e∆k,I − eαk,I ci
+
+i
+
+≤ eCA,
+
+because the sums 
+
+X
+
+> k≥1
+
+min 
+
+n
+
+1, ni
+
+k
+
+o
+
+k−1/2, X
+
+> k≥1
+
+min 
+
+
+
+1, n2
+
+> i
+
+k2
+
+
+
+are finite, and 
+
+1
+
+√I − 1
+
+> I−1
+
+X
+
+> k=1
+
+min 
+
+n
+
+1, ni
+
+k
+
+o
+
+≤ C 1 + log I
+
+√I − 1 ≤ C. 
+
+For the second term, since 
+
+eαk,I − ni
+
+k¯n ≤ ni
+
+mk,I + ni
+
+− ni
+
+kbnI 
+
+> −i
+
++ ni
+
++ ni
+
+kbnI 
+
+> −i
+
++ ni
+
+− ni
+
+k¯n + ni
+
++ ni
+
+k¯n + ni
+
+− ni
+
+k¯n ,
+
+using |mk,I − kbnI
+
+> −i
+
+| ≤ 1, mk,I ≥ k, and bnI 
+
+> −i
+
+≥ 1, we get 
+
+E
+
+heαk,I − ni
+
+k¯n
+
+i
+
+≤ Ck2 + Ck√I − 1 .
+
+Indeed, 
+
+E|bnI 
+
+> −i
+
+− ¯n| ≤ 
+
+q
+
+Var( bnI
+
+> −i
+
+) ≤ nmax 
+
+√I − 1 .
+
+Hence 
+
+> I−1
+
+X
+
+> k=1
+
+E
+
+heαk,I − ni
+
+k¯n
+
+i
+
+≤ eCB
+
+for a constant eCB < ∞ independent of I. Since 
+
+|ci| = |⟨∇ F (μ⋆), μ i − μ⋆⟩| ≤ 2Gκ, 
+
+we obtain 
+
+> I−1
+
+X
+
+> k=1
+
+E
+
+h e∆k,I − ni
+
+k¯n ci
+
+i
+
+≤ eCA + 2 Gκ eCB =: C∆,DU .
+
+This proves (8). 
+
+Lemma D.7 (Stratified Monte Carlo summability bound) . Let bϕIi, strat be the stratified Monte Carlo Shapley estimator defined by 
+
+bϕIi, strat := 1
+
+I
+
+> I−1
+
+X
+
+> k=0
+
+1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+∆i(Sk,b ),
+
+where mk,I ≥ 1 and Sk,b is sampled uniformly among subsets of [I] \ { i} of size k. Under the assumptions of Theorem 3.2, there exists a constant C∆,strat < ∞, independent of I, such that 
+
+> I−1
+
+X
+
+> k=1
+
+E
+
+"
+
+1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+∆i(Sk,b ) − ni
+
+k¯n ci
+
+#
+
+≤ C∆,strat . (9) 34 Proof. By Jensen’s inequality, 
+
+E
+
+"
+
+1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+∆i(Sk,b ) − ni
+
+k¯n ci
+
+#
+
+≤ 1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+E
+
+h
+
+∆i(Sk,b ) − ni
+
+k¯n ci
+
+i
+
+= ESk
+
+h
+
+∆i(Sk) − ni
+
+k¯n ci
+
+i
+
+.
+
+Let 
+
+αSk := ni
+
+NSk + ni
+
+.
+
+Then 
+
+∆i(Sk) − ni
+
+k¯n ci =  ∆i(Sk) − αSk ci
+
+ +
+
+
+
+αSk − ni
+
+k¯n
+
+
+
+ci.
+
+By Lemma C.5, 
+
+|∆i(Sk) − αSk ci| ≤ αSk (G + 2 M κ )∥μSk − μ⋆∥ + 2 M κ 2α2 
+
+> Sk
+
+.
+
+Using Lemmas C.6 and C.4, the same summability argument as in the proof of Theorem 3.2 gives 
+
+> I−1
+
+X
+
+> k=1
+
+ESk [|∆i(Sk) − αSk ci|] ≤ CA.
+
+Moreover, 
+
+ESk
+
+h
+
+αSk − ni
+
+k¯n
+
+i
+
+≤ n2
+
+> i
+
+k2 + ninmax 
+
+¯n k 3/2 .
+
+Indeed, this follows by writing 
+
+αSk − ni
+
+k¯n ≤ ni
+
+NSk + ni
+
+− ni
+
+NSk
+
++ ni
+
+NSk
+
+− ni
+
+k¯n ,
+
+using NSk ≥ k, and applying 
+
+ESk |NSk − k¯n| ≤ pVar( NSk ) ≤ nmax 
+
+√k. 
+
+Therefore, 
+
+> I−1
+
+X
+
+> k=1
+
+ESk
+
+h
+
+αSk − ni
+
+k¯n
+
+i
+
+≤ CB
+
+for a constant CB < ∞ independent of I. Since |ci| ≤ 2Gκ , we obtain 
+
+> I−1
+
+X
+
+> k=1
+
+E
+
+"
+
+1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+∆i(Sk,b ) − ni
+
+k¯n ci
+
+#
+
+≤ CA + 2 GκC B =: C∆,strat .
+
+This proves (9). 
+
+Proposition D.8 (Restate of Proposition 4.4) . Let bϕIi, DU denote the DU - Shapley estimator [ 7]. Let 
+
+bϕIi, strat denote the stratified Monte Carlo Shapley estimator [ 22 ]. Then, under the assumptions of Theorem 3.2, both bϕIi, DU and bϕIi, strat are leading-order estimators. Consequently, 
+
+bϕIi, DU 
+
+ϕIi
+
+− 1 P
+
+−−→ 0,
+
+bϕIi, strat 
+
+ϕIi
+
+− 1 P
+
+−−→ 0.
+
+35 Proof. We prove the statement for both estimators at once. Let E ∈ { DU , strat }. For each estimator, write 
+
+bϕIi,E = 1
+
+I
+
+> I−1
+
+X
+
+> k=0
+
+ΓEk,I ,
+
+where 
+
+ΓDU  
+
+> k,I
+
+:= e∆k,I = v( eDk,I ⊎ Di) − v( eDk,I ),
+
+and 
+
+Γstrat  
+
+> k,I
+
+:= 1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+∆i(Sk,b ).
+
+For k = 0 , both estimators use the empty-coalition marginal contribution, 
+
+ΓE 
+
+> 0,I
+
+= v(Di) − v(∅) = F (μi) − F (0) .
+
+For k ≥ 1, define 
+
+b∆(i,E ) 
+
+> k,I
+
+:= k¯nni
+
+ΓEk,I , b∆(i,E )0,I := Γ E 
+
+> 0,I
+
+.
+
+Then 
+
+bϕIi,E = 1
+
+I
+
+> I−1
+
+X
+
+> k=1
+
+ni
+
+k¯n b∆(i,E ) 
+
+> k,I
+
++
+
+b∆(i,E )0,I 
+
+I .
+
+Thus, both estimators have the structural form required in Definition 4.2. It remains to verify whether conditions (C1) and (C2) hold. 
+
+Condition (C1). Since F is G-Lipschitz and ∥μi∥ ≤ κ,
+
+b∆(i,E )0,I = |F (μi) − F (0) | ≤ Gκ. 
+
+Therefore, 
+
+E
+
+h b∆(i,E )0,I 
+
+i
+
+≤ Gκ, 
+
+uniformly in I, for both E = DU and E = strat .
+
+Condition (C2). Let 
+
+βk := ni
+
+k¯n .
+
+For k ≥ 1,
+
+b∆(i,E ) 
+
+> k,I
+
+− ci = k¯nni
+
+ ΓEk,I − βkci
+
+ .
+
+Hence 
+
+1
+
+k E
+
+h b∆(i,E ) 
+
+> k,I
+
+− ci
+
+i
+
+= ¯nni
+
+E  ΓEk,I − βkci
+
+ .
+
+Summing over k, we obtain 
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k E
+
+h b∆(i,E ) 
+
+> k,I
+
+− ci
+
+i
+
+= ¯nniI−1X
+
+> k=1
+
+E
+
+h
+
+ΓEk,I − ni
+
+k¯n ci
+
+i
+
+.
+
+We now use the summability estimates proved in Lemmas D.6 and D.7. More precisely, Lemma D.6 establishes that there exists a constant C∆,DU < ∞, independent of I, such that 
+
+> I−1
+
+X
+
+> k=1
+
+E
+
+h e∆k,I − ni
+
+k¯n ci
+
+i
+
+≤ C∆,DU .
+
+36 Likewise, Lemma D.7 establishes that there exists a constant C∆,strat < ∞, independent of I, such that 
+
+> I−1
+
+X
+
+> k=1
+
+E
+
+"
+
+1
+
+mk,I mk,I 
+
+X
+
+> b=1
+
+∆i(Sk,b ) − ni
+
+k¯n ci
+
+#
+
+≤ C∆,strat .
+
+Therefore, for E ∈ { DU , strat },
+
+> I−1
+
+X
+
+> k=1
+
+1
+
+k E
+
+h b∆(i,E ) 
+
+> k,I
+
+− ci
+
+i
+
+≤ ¯nni
+
+C∆,E ,
+
+where C∆,E denotes the corresponding constant. This verifies condition (C2) for both estimators. Thus both bϕIi, DU and bϕIi, strat are leading-order estimators. Finally, by Theorem 4.3, every leading-order estimator is relatively consistent whenever ci̸ = 0 .Hence 
+
+bϕIi, DU 
+
+ϕIi
+
+− 1 P
+
+−→ 0,
+
+bϕIi, strat 
+
+ϕIi
+
+− 1 P
+
+−→ 0.
+
+37

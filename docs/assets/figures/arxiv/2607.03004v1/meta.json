@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-003.webp",
+      "caption": "Fig. 1: Training process and architecture overview of our rehearsal-free framework. We remove the exemplar replay mechanism from the typical training process in (a), achieving a more secure and streamlined rehearsal-free architecture design as shown in (b). To resist catastrophic forgetting without data replay, we employ a collaborative adapter architecture to separately capture general and task-specific features. Our Dual-Stage Objectness Modeling alternates between learning and consolidation phases, preventing representation drift that typically occurs in traditional probabilistic objectness modeling under rehearsal-free constraints.",
+      "page": 2,
+      "index": 3,
+      "width": 716,
+      "height": 404
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-001.webp",
+      "caption": "Fig. 2: Pipeline of our REAL-OW. Our architecture consists of three core components: (1) General Adapters in the backbone, which employ the LAGS to enable a significance-aware refinement of cross-task universal representations; (2) Specific Adapters in the decoder layers, which are added incrementally to store task-unique features in non-overlapping subspaces; and (3) Dual-Stage Objectness Modeling (DSOM). The DSOM module alternates between a learning phase for feature aggregation and a consolidation phase for boundary refinement. This synergistic design enables the model to accumulate knowledge and discover novel objects without relying on historical samples.",
+      "page": 6,
+      "index": 1,
+      "width": 714,
+      "height": 367
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-010.webp",
+      "caption": "Table 1: Quantitative comparison for OWOD on M-OWODB (top) and SOWODB (bottom). Notably, our REAL-OW is the only rehearsal-free approach among all compared methods, yet it outperforms all other high-parameter CNN-based and D-DETR-based models that utilize exemplar replay. Best results are in bold.",
+      "page": 9,
+      "index": 10,
+      "width": 721,
+      "height": 381
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-002.webp",
+      "caption": "Fig. 4: Qualitative results comparison between CAT, OWOBJ and our REAL-OW. Object detections with Red-known Yellow-unknown are displayed. Our method discovers more novel objects, such as the curtain in column 1 and the ladder in column 3. It also demonstrates more precise localization for multiple small objects, such as the cup cluster in column 3. In contrast, CAT misidentifies the tvmonitor in column 2, and OWOBJ mistakes a known pottedplant for an unknown object in column 1. These results show that our model provides better discovery and discrimination capabilities.",
+      "page": 11,
+      "index": 2,
+      "width": 638,
+      "height": 410
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-009.webp",
+      "caption": "Table 4: Results of different rank settings on Task 3. We evaluate U-Recall and mAP across various rank combinations for GAs and SAs. The corresponding number of trainable parameters is also reported.",
+      "page": 12,
+      "index": 9,
+      "width": 708,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-006.webp",
+      "caption": "Table 6: Ablation study of the Dual-Stage Objectness Modeling. We report the results on Task 1 and Task 2. D-DETR upper limit denotes training with groundtruth unknown labels. D-DETR-ER uses standard exemplar replay, while D-DETR-RF employs our proposed GA and SA adapters for a rehearsal-free setting. Both baselines lack pseudo-labeling for unknown objects. We evaluate the impact of the CG-NLL distance, and the two training phases.",
+      "page": 13,
+      "index": 6,
+      "width": 700,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-004.webp",
+      "caption": "Fig. 6: Comparison between (a) CG-NLL distance and (b) standard Mahalanobis distance on negative energy distributions after Task 1. CG-NLL distance effectively creates a clearer discriminative margin between known and unknown classes compared to the Mahalanobis distance.",
+      "page": 14,
+      "index": 4,
+      "width": 712,
+      "height": 230
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-008.webp",
+      "caption": "Table 7: State-of-the-art comparison for incremental object detection (iOD) on PASCAL VOC. We experiment on 3 different settings. The comparison is shown",
+      "page": 17,
+      "index": 8,
+      "width": 725,
+      "height": 546
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-005.webp",
+      "caption": "Table 8: Comparison with state-of-the-art methods on M-OWODB dataset. Three metrics are reported: U-Recall measures the model’s ability to retrieve unknown objects; WI (Wilderness Index) quantifies the degree of known classes being misclassified as unknown; A-OSE (Absolute Open-Set Error) counts the absolute number of unknown objects falsely identified as known classes.",
+      "page": 18,
+      "index": 5,
+      "width": 727,
+      "height": 224
+    },
+    {
+      "url": "assets/figures/arxiv/2607.03004v1/fig-007.webp",
+      "caption": "Fig. 8: Qualitative results comparison between CAT, OWOBJ and our REAL-OW. Object detections with Red-known Yellow-unknown are displayed. Columns 1-2 demonstrate the resistance to catastrophic forgetting, where REAL-OW consistently identifies objects like the bottle and bird from Task 1 to Task 4. Columns 3-4 illustrate the process of learning unknown categories. REAL-OW labels the keyboard, mouse, and book as unknown in Task 1 and successfully learns them in Task 4, whereas competing methods suffer from missed detections or forget previously identified objects.",
+      "page": 19,
+      "index": 7,
+      "width": 714,
+      "height": 313
+    }
+  ]
+}
