@@ -1,0 +1,418 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-08T20:27:24.760097+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 48,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 98,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 18,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 13,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 19
+  },
+  "deep_dive": [
+    {
+      "id": "2607.03810v1",
+      "source": "arxiv",
+      "title": "TestMate: Test-Time Domain Adaptation Aided by Lightweight Vision Foundation Model",
+      "abstract": "Test-Time Domain Adaptation (TTDA) aims to adapt Deep Neural Networks to distribution shifts using only streaming, unlabeled test data in real time. Current methods for semantic segmentation tasks suffer from critical limitations. Entropy minimization techniques require costly backpropagation, risking catastrophic forgetting and producing noisy segmentation boundaries. Memory-bank methods, while backpropagation-free, exhibit slow adaptation, requiring numerous samples to converge and struggle to handle continuous domain shifts. We introduce TestMate, a novel, real-time, and backpropagation-free TTDA framework that overcomes these issues. TestMate leverages generalization capability of a lightweight Visual Foundation Model to guide the adaptation. We use a zero-shot instance segmentation YOLOv8-seg based model to generate unlabeled mask proposals for objects and their parts at multiple scales in real time. These proposals are fused with the primary model via a heuristic, size-ordered competitive scheme, where small, high-confidence regions dominate and refine predictions in surrounding larger, less certain areas. This paremeter-free mechanism enables immediate adaptation from the first frame, inherently avoids catastrophic forgetting and effectively preserves fine object details and boundaries, even for small objects. TestMate can be used as a standalone, efficient refinement module or seamlessly integrated into existing TTDA methods to significantly boost their performance. We demonstrate state-of-the-art results across two benchmark datasets, proving TestMate's effectiveness in three distinct adaptation tasks: TTDA, Source-Free Domain Adaptation (SFDA), and online-TTDA. Code is available.",
+      "authors": [
+        "Dimitrios Fotiou",
+        "Vasileios Mygdalis",
+        "Ioannis Pitas"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-04T10:32:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.03810v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "test-time domain adaptation for segmentation using foundation model, directly addresses adaptation with limited labels",
+      "llm_evidence_cn": "利用基础模型进行测试时域适应，直接解决有限标签情况下的适应问题",
+      "llm_evidence": "利用基础模型进行测试时域适应，直接解决有限标签情况下的适应问题",
+      "canonical_evidence": "利用基础模型进行测试时域适应，直接解决有限标签情况下的适应问题",
+      "llm_tldr_en": "Proposes TestMate, a backprop-free TTDA framework using lightweight vision foundation model for real-time adaptation.",
+      "llm_tldr_cn": "提出TestMate，一个基于轻量视觉基础模型的无反向传播实时测试时域适应框架。",
+      "llm_tldr": "提出TestMate，一个基于轻量视觉基础模型的无反向传播实时测试时域适应框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03839v1",
+      "source": "arxiv",
+      "title": "Adversarial LassoNet: Robust Feature Selection via Stability-Driven Sparse Learning",
+      "abstract": "Sparse feature selection is critical for high-dimensional machine learning, yet traditional $\\ell_1$-regularized methods are often brittle under observational noise and spurious correlations, leading to unstable feature supports and degraded generalization. Although adversarial training has been widely used to improve model robustness, its interaction with hierarchical sparse feature selection remains underexplored. In this work, we propose Adversarial LassoNet (AdLNet), a stability-driven sparse feature selection framework that integrates input-space adversarial perturbations with the hierarchical sparsity mechanism of LassoNet. We derive a tractable first-order adversarial approximation under local smoothness assumptions and provide an NTK-inspired spectral analysis to characterize how perturbation-driven training can reduce gradient concentration. Experiments on high-dimensional SERS data, six public benchmark datasets, and ColoredMNIST show that AdLNet maintains competitive sparse-selection performance while improving out-of-distribution robustness by 4.4\\% and feature support reproducibility by 6.3\\% under nearly matched support sparsity on ColoredMNIST. On the high-dimensional lung cancer screening dataset, AdLNet achieves a 5.3\\% test accuracy gain and a 6.0\\% AUC improvement over vanilla LassoNet. Code and dataset are available at https://github.com/719573/Adversarial-LassoNet.",
+      "authors": [
+        "Zhen Huang",
+        "Peicheng Xu",
+        "Junbiao Pang",
+        "Yulong Zheng"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-04T12:01:53+00:00",
+      "link": "https://arxiv.org/pdf/2607.03839v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "robust feature selection with importance weights",
+      "llm_evidence_cn": "鲁棒特征选择计算重要性权重",
+      "llm_evidence": "鲁棒特征选择计算重要性权重",
+      "canonical_evidence": "鲁棒特征选择计算重要性权重",
+      "llm_tldr_en": "Adversarial LassoNet integrates adversarial training with hierarchical sparse feature selection.",
+      "llm_tldr_cn": "Adversarial LassoNet结合对抗训练与层次稀疏特征选择。",
+      "llm_tldr": "Adversarial LassoNet结合对抗训练与层次稀疏特征选择。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03844v1",
+      "source": "arxiv",
+      "title": "EEG-Based Imagined Speech Decoding Using a Hybrid CNN-SNN Architecture",
+      "abstract": "Imagined speech decoding using EEG signals has emerged as a promising frontier in brain-computer interface (BCI) research, particularly to restore communication for individuals with severe speech impairments. However, decoding imagined speech remains a complex task due to the non-stationary, low-amplitude, and highly variable nature of EEG signals. Existing methods often rely on classical machine learning or deep learning models that fail to exploit spike-based temporal dynamics or event-driven firing mechanisms of biological neurons, which are naturally modeled by spiking neural networks (SNNs). In this study, we propose a hybrid decoding pipeline that extracts temporal representations using convolutional neural networks (CNNs) followed by biologically inspired temporal classification via SNNs. To our knowledge, this is the first study to integrate SNNs into EEG-based imagined speech decoding. Experimental results show that the proposed CNN-SNN architecture achieves an accuracy of 80.13% on the 2020 BCI Competition III benchmark, surpassing existing methods reported in the literature (up to 70.19%) under comparable evaluation settings. These findings demonstrate the effectiveness of spike-based temporal decoding for imagined speech, highlighting the promise of biologically grounded pipelines for next generation neuromorphic BCI applications.",
+      "authors": [
+        "Fatima Shalhoub",
+        "Mariam Al Mawla",
+        "Kabalan Chaccour",
+        "Iván López-Espejo",
+        "Hoda Fares"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.HC"
+      ],
+      "published": "2026-07-04T12:23:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.03844v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG imagined speech decoding",
+      "llm_evidence_cn": "脑电想象语音解码",
+      "llm_evidence": "脑电想象语音解码",
+      "canonical_evidence": "脑电想象语音解码",
+      "llm_tldr_en": "Hybrid CNN-SNN architecture for decoding imagined speech from EEG signals.",
+      "llm_tldr_cn": "混合CNN-SNN结构从脑电信号解码想象语音。",
+      "llm_tldr": "混合CNN-SNN结构从脑电信号解码想象语音。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03918v1",
+      "source": "arxiv",
+      "title": "Beyond Item Order: Temporal Gap Tokenization for Generative Recommendation with Semantic IDs",
+      "abstract": "Semantic-ID-based generative recommendation has recently emerged as a scalable paradigm for sequential recommendation, where each item is represented by a compact sequence of discrete codes and next-item prediction is formulated as code generation. Existing methods, however, typically construct user histories as sequences of static item identifiers, leaving the elapsed time between consecutive interactions outside the generative input. This temporal blindness is problematic because inter-interaction gaps provide useful cues about interest continuity and preference drift. In this paper, we propose ChronoSID, a lightweight temporal augmentation framework for semantic-ID-based generative recommendation. ChronoSID injects temporal signals into the standard three-stage semantic-ID pipeline from two complementary perspectives. First, we introduce Time-Aware Field-Aware Masked Auto-Encoding (TA-FAMAE), which regularizes item representation learning with an auxiliary time-gap prediction objective. Second, we discretize historical interaction intervals into fixed log-scale gap tokens and interleave them with semantic ID tuples as the encoder input of the sequence-to sequence generator. This design preserves the compact SID generation paradigm while enabling the model to capture time-aware transition patterns. Experiments on Amazon review benchmarks show that ChronoSID consistently improves over ReSID and other competitive generative recommendation baselines. Ablation studies further verify the contribution of both temporal components, and diagnostic analyses show clearer gains under long-gap scenarios where user interests are more likely to drift.",
+      "authors": [
+        "Chengkai Huang",
+        "Tianqi Gao",
+        "Hongtao Huang",
+        "Quan Z. Sheng",
+        "Lina Yao"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-04T15:22:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.03918v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "temporal gap tokenization for sequential recommendation",
+      "llm_evidence_cn": "时间间隔标记化用于序列推荐",
+      "llm_evidence": "时间间隔标记化用于序列推荐",
+      "canonical_evidence": "时间间隔标记化用于序列推荐",
+      "llm_tldr_en": "Injects temporal gaps into generative recommendation",
+      "llm_tldr_cn": "将时间间隔注入生成式推荐",
+      "llm_tldr": "将时间间隔注入生成式推荐",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03925v1",
+      "source": "arxiv",
+      "title": "NeuroOnline: Bridging Pretraining and Online Adaptation for EEG Foundation Models",
+      "abstract": "EEG foundation models have shown strong potential in learning generalized representations across subjects and tasks. However, most existing approaches follow a pretraining-static deployment paradigm, which suffers from two key limitations: (1) misalignment between pretraining objectives and downstream tasks, and (2) limited adaptability to distribution shifts in online settings. We propose Online Neural Adaptation (NeuroOnline), a unified framework that enables continuous adaptation in online scenarios. NeuroOnline integrates two complementary mechanisms: (1) multi-view consistency learning, which enforces cross-view alignment to promote consistent and task-relevant representations, and (2) context-aware representation modulation, which leverages a learnable context prompt with cross-attention to dynamically adapt representations to evolving data distributions. Together, these mechanisms unify representation alignment and dynamic adaptation. Experiments on multiple EEG benchmarks show that NeuroOnline consistently outperforms strong baselines in online settings, achieving better performance under distribution shifts. Ablation and sensitivity studies further validate the necessity of each component and the effectiveness of the overall design.",
+      "authors": [
+        "Weibin Li",
+        "Wendu Li",
+        "Yushan You",
+        "Chen Wei",
+        "Quanying Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-04T15:37:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.03925v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "online adaptation for EEG foundation models",
+      "llm_evidence_cn": "脑电基础模型的在线适应",
+      "llm_evidence": "脑电基础模型的在线适应",
+      "canonical_evidence": "脑电基础模型的在线适应",
+      "llm_tldr_en": "NeuroOnline enables continuous adaptation of EEG models to new domains",
+      "llm_tldr_cn": "NeuroOnline实现脑电模型对新领域的持续适应",
+      "llm_tldr": "NeuroOnline实现脑电模型对新领域的持续适应",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.03600v1",
+      "source": "arxiv",
+      "title": "A Step Towards Robust Unsupervised Domain Adaptation via Fine-Tuning and Reinforcement Learning",
+      "abstract": "Adversarial robustness in Unsupervised Domain Adaptation (UDA) remains a significant challenge due to noisy pseudo labels and inherent distributional shifts between the clean source and adversarially perturbed target domains. Existing approaches often fail to achieve an optimal trade-off between robustness and accuracy, as pseudo-labels generated by domain-adapted models tend to introduce classification errors under adversarial attacks. In this work, we propose \\textbf{SFT+RL}, a two-stage robust UDA framework that integrates Supervised Fine Tuning (SFT) and Reinforcement Learning (RL) on top of CLIP's pre-trained visual encoder. In the SFT stage, we adversarially fine-tune a linear classifier using PGD-based perturbations over the labelled source domain while partially unfreezing CLIP's projection layer. It allows adaptation to adversarial noise while preserving CLIP's rich semantic priors. We introduce a confidence-guided pseudo-labeling strategy in the RL stage to annotate unlabeled target samples progressively. Pseudo labels are filtered using a decaying confidence threshold to balance quality and coverage, and the model is trained on a composite dataset formed by combining clean source samples with high-confidence target samples. Adversarial training is applied to mixed batches of clean and adversarial examples to enhance cross-domain robustness. Comprehensive evaluations on three benchmark datasets OfficeHome~\\cite{tomm-ude}, PACS~\\cite{pacs}, and VisDA~\\cite{visda} demonstrate the effectiveness of our approach. Notably, \\textbf{SFT+RL} achieves average improvements of \\textbf{10.2\\%} in clean accuracy and \\textbf{15.8\\%} in adversarial robustness across all three datasets, outperforming existing state-of-the-art methods.",
+      "authors": [
+        "Sushant Dagaji Desale",
+        "Rahul Mishra",
+        "Ashutosh Kumar Sinha"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-03T20:56:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.03600v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unsupervised domain adaptation with fine-tuning and RL on CLIP",
+      "llm_evidence_cn": "使用CLIP微调和强化学习的无监督域适应",
+      "llm_evidence": "使用CLIP微调和强化学习的无监督域适应",
+      "canonical_evidence": "使用CLIP微调和强化学习的无监督域适应",
+      "llm_tldr_en": "SFT+RL combines fine-tuning and reinforcement learning for robust unsupervised domain adaptation.",
+      "llm_tldr_cn": "SFT+RL结合微调和强化学习实现鲁棒的无监督域适应。",
+      "llm_tldr": "SFT+RL结合微调和强化学习实现鲁棒的无监督域适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.03595v1",
+      "source": "arxiv",
+      "title": "Token-Based Affordance Grounding with Large Vision-Language Models",
+      "abstract": "Affordance grounding aims to localize image regions that support a specific action, serving as a core capability for physical intelligence and embodied perception. Previous studies have primarily relied on weakly supervised learning with action labels from exocentric images. However, these methods often struggle with visually ambiguous exocentric images containing co-occurring actions; moreover, they fail to distinguish semantically similar actions because existing methods typically rely on brief action phrases that lack rich semantic details for action-specific localization. Although large vision-language models (LVLMs) encode rich action semantics and their action-conditioned textual outputs implicitly contain spatial cues, they do not directly provide action-specific spatial localization. To address these problems, we propose TokAG, a zero-shot affordance grounding framework that exploits the token-level semantic-spatial signals in LVLMs to localize action-relevant regions without external supervision. We observe that attention maps associated with different LVLM output tokens vary significantly, with many attending to irrelevant regions such as the background. Thus, we introduce a spatial-aware token-selection mechanism to systematically evaluate each output token and select the one whose attention maps exhibit dominant activation over the target object, instead of relying on arbitrary attention maps. By extracting these object-focused attention maps, we transform the LVLM's implicit semantic signals into zero-shot affordance heatmaps. Our zero-shot framework consistently outperforms prior weakly supervised approaches across multiple benchmarks, improving NSS by 10.7% on the unseen split of AGD20K and by 29.7% on HICO-IIF. The code and models will be made publicly available.",
+      "authors": [
+        "Seung Il Lee",
+        "Qinqian Lei",
+        "Daguang Xu",
+        "Dong Yang",
+        "Robby T. Tan",
+        "Yixin Chen",
+        "Bo Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-07-03T20:34:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.03595v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "leverages large vision-language models for affordance grounding",
+      "llm_evidence_cn": "利用大型视觉语言模型进行可供性接地",
+      "llm_evidence": "利用大型视觉语言模型进行可供性接地",
+      "canonical_evidence": "利用大型视觉语言模型进行可供性接地",
+      "llm_tldr_en": "Token-based affordance grounding using pretrained LVLMs",
+      "llm_tldr_cn": "基于token的可供性接地，使用预训练LVLM",
+      "llm_tldr": "基于token的可供性接地，使用预训练LVLM",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.03692v2",
+      "source": "arxiv",
+      "title": "PIEFS: Physics-Informed Eigenfunction Features with Learnable Scaling",
+      "abstract": "Spectral methods are widely used to construct representations from the geometry of data, but they often rely on a fixed kernel, graph Laplacian, or manually selected feature scaling. We propose Physics-Informed Eigenfunction Features with Learnable Scaling (PIEFS), a supervised neural representation-learning framework with a spectral inductive bias, based on a modified Dirichlet energy. In PIEFS, scalar coordinate maps are trained under empirical Gram orthogonality, a supervised linear readout, and a Dirichlet penalty in which the input gradient is transformed by a learnable metric $A(x)=Λ(x)U(x)$. The diagonal factor $Λ(x)$ controls anisotropic scaling, while the orthogonal factor $U(x)$ is parameterized by a structured product of Givens rotations. This construction yields task-adaptive Dirichlet-regularized coordinates rather than eigenfunctions of a fixed supervision-independent operator. Experiments on synthetic, tabular, and image-based benchmarks study the effect of identity, diagonal, and rotation-scaling metrics, and compare the resulting coordinates with classical baselines and NeuralEF. The results support PIEFS as a compact supervised spectral representation method and identify optimization stability, validation on explicit operator eigenproblems, and richer metric parameterizations as the main directions for future work.",
+      "authors": [
+        "Varvara Nazarenko",
+        "Timur Lidzhiev",
+        "Alexander Tarakanov"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "math.NA",
+        "math.ST"
+      ],
+      "published": "2026-07-04T03:55:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.03692v2",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Supervised neural representation learning with spectral inductive bias",
+      "llm_evidence_cn": "具有谱归纳偏置的监督神经表示学习",
+      "llm_evidence": "具有谱归纳偏置的监督神经表示学习",
+      "canonical_evidence": "具有谱归纳偏置的监督神经表示学习",
+      "llm_tldr_en": "Learns compact data representations via physics-informed eigenfunctions with learnable scaling",
+      "llm_tldr_cn": "通过物理信息特征函数和可学习缩放学习紧凑数据表示",
+      "llm_tldr": "通过物理信息特征函数和可学习缩放学习紧凑数据表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.03723v1",
+      "source": "arxiv",
+      "title": "OmniTacTune: Policy-Agnostic Real-World RL for Tactile Residual Adaptation of Visual Policies",
+      "abstract": "Visual policies learned from human videos, teleoperation, and robot demonstrations offer scalable motion priors, but often fail in contact-rich manipulation, where success significantly depends on local force and contact geometry. Tactile sensing provides these complementary signals, yet tactile data remain costly to collect and hard to generalize across sensors, robots, and tasks. We introduce OmniTacTune, a policy-agnostic real-world RL pipeline that adapts tactile feedback to pretrained visual policies through residual correction. OmniTacTune uses a two-stage design: it first bootstraps tactile-aware learning from autonomous base-policy rollouts, then learns a lightweight tactile residual policy through online interaction. Extensive experiments show that OmniTacTune generalizes across diverse contact-rich tasks, visual base policies, and tactile representations. Across four real-world contact-rich tasks, it improves visual base policies from 5-40% success to 85-100% within 40-80 minutes, demonstrating an efficient path for adapting tactile feedback to scalable visual robot policies. Project page: https://colinyu1.github.io/omnitactune-site/",
+      "authors": [
+        "Kelin Yu",
+        "Haode Zhang",
+        "Harish Ravichandar",
+        "Yunhai Han",
+        "Ruohan Gao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-04T06:11:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.03723v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "tactile residual adaptation of visual policies",
+      "llm_evidence_cn": "触觉残差适应视觉策略",
+      "llm_evidence": "触觉残差适应视觉策略",
+      "canonical_evidence": "触觉残差适应视觉策略",
+      "llm_tldr_en": "Adapts visual policies to tactile domains with residual RL using limited data.",
+      "llm_tldr_cn": "使用残差强化学习将视觉策略适应到触觉领域，数据有限。",
+      "llm_tldr": "使用残差强化学习将视觉策略适应到触觉领域，数据有限。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.03806v1",
+      "source": "arxiv",
+      "title": "Probing Low-Level Acoustic Attribute Encoding in CLAP Audio Embeddings",
+      "abstract": "Audio foundation models are widely adopted as general-purpose feature extractors, yet the internal structure of their learned representations remains insufficiently understood. In this work, we analyze CLAP audio embeddings through a probing framework, studying the encoding of three fundamental perceptual dimensions: reverberation (RT60), loudness (LUFS), and spectral content, measured via spectral centroid (SC) and relative pitch (RP). Probes of increasing complexity are trained to predict each attribute from frozen embeddings across five datasets spanning noise, speech, monophonic musical notes, and music mixtures. Our primary finding is that all of these attributes are reliably recoverable from the CLAP embedding space across the examined datasets. Within this global picture, two encoding regimes emerge: RT60, LUFS, and RP are approximately linearly encoded, while SC requires non-linear probes. Both regimes generalize across eight additional audio foundation models, with the notable exception that amplitude-invariant architectures discard loudness entirely by construction. The identified linear feature directions are geometrically consistent across datasets for RT60 and LUFS, while highly domain-specific for RP. Finally, we provide a qualitative demonstration of cross-modal consistency, showing that text embeddings of acoustic descriptors align geometrically with the identified RT60 feature direction.",
+      "authors": [
+        "Héctor Martel",
+        "Joe Hennessy-Priest",
+        "Taemin Cho"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.AI",
+        "eess.SP"
+      ],
+      "published": "2026-07-04T10:27:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.03806v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "probing learned representations from audio foundation models",
+      "llm_evidence_cn": "探针分析音频基础模型学到的表示",
+      "llm_evidence": "探针分析音频基础模型学到的表示",
+      "canonical_evidence": "探针分析音频基础模型学到的表示",
+      "llm_tldr_en": "Shows that low-level acoustic attributes are recoverable from CLAP embeddings via probing.",
+      "llm_tldr_cn": "通过探针证明低级声学属性可从CLAP嵌入中恢复。",
+      "llm_tldr": "通过探针证明低级声学属性可从CLAP嵌入中恢复。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
