@@ -1,0 +1,332 @@
+Title: KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning
+
+URL Source: https://arxiv.org/pdf/2607.04820v1
+
+Published Time: Tue, 07 Jul 2026 03:08:25 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning 
+
+Sofia Gilardini 1 Chenfei Ma 2 Kianoush Nazarpour 2
+
+## Abstract 
+
+Decoding hand kinematics from surface elec-tromyography (EMG) is a core challenge in wear-able biosignal processing, underpinning applica-tions across consumer and commercial human– machine interfaces, virtual and augmented real-ity, and clinical settings such as prosthetic con-trol and motor rehabilitation. Most representation learning approaches for EMG focus on discrete gesture classification, and few focus on continu-ous regression. We present KinEMbed , a cross-modal contrastive learning framework for hand kinematics regression that jointly trains dual en-coders – one for windowed EMG features and one for kinematic (joint angle) targets. The resulting EMG embeddings are shaped by the geometric structure of the kinematic space without requiring kinematic signals at inference time. Evaluating on the NinaPro DB8 dataset that includes both able-bodied subjects and subjects with limb dif-ference ( N =11 ), KinEMbed attains the highest mean R2 among PCA, PLS, autoencoder and con-trastive (CEBRA) baselines on held-out sessions, with the clearest gains on the most challenging thumb degrees of actuation. We position this work as a first step toward contrastive representation learning for regression of hand kinematics from structured wearable biosignals. 
+
+## 1. Introduction 
+
+Decoding continuous hand joint kinematics from surface electromyography (EMG) is a longstanding challenge with direct implications across a range of wearable human– machine interfaces – from consumer input devices and vir-
+
+> 1
+
+Department of Statistics, University of Oxford, Oxford, United Kingdom 2School of Informatics, University of Edinburgh, Ed-inburgh, United Kingdom. Correspondence to: Sofia Gilardini 
+
+<sofia.gilardini@stats.ox.ac.uk >.
+
+Proceedings of the Workshop on Structured Data for Health at the 43 rd International Conference on Machine Learning , Seoul, South Korea. Copyright 2026 by the author(s). 
+
+tual and augmented reality to clinical applications such as prosthetic control and motor rehabilitation. The clinical set-ting is especially demanding: despite decades of progress in myoelectric prosthetics, upper-limb prosthesis abandonment rates have remained at approximately 44% over the past two decades, with inadequate device control cited as a primary driver of rejection (Biddiss & Chau, 2007; Salminger et al., 2022). A key bottleneck is the gap between the discrete, sequential control strategies deployed in commercial de-vices (Jiang et al., 2012) and the continuous, simultaneous, proportional control required for natural hand use. The dominant paradigm remains discrete gesture classifi-cation (Farina et al., 2014; Phinyomark & Scheme, 2018; Raghu et al., 2025; Yang et al., 2025), in which EMG win-dows are assigned to one of a finite set of predefined postures – an approach that cannot represent the continuous, graded nature of hand movement, limiting user utility. Contrastive representation learning is a powerful framework for learning transferable, structured embeddings within and across modalities (Chen et al., 2020; Radford et al., 2021; van den Oord et al., 2018). CEBRA (Schneider et al., 2023) uses auxiliary variables to guide contrastive sampling for single-encoder neural embeddings. CPEP (Cui et al., 2025) and EMBridge (Cui et al., 2026) use cross-modal contrastive pre-training for discrete gesture classification from EMG. No prior work has applied cross-modal contrastive align-ment to continuous kinematic regression from EMG. We present KinEMbed , the first cross-modal contrastive framework for continuous EMG-to-kinematics regression. KinEMbed jointly trains dual encoders – one for windowed EMG features and one for kinematic targets – to align the two modalities on a shared unit hypersphere via a cross-modal InfoNCE loss (van den Oord et al., 2018). The resulting EMG embedding is shaped by the geometric structure of the kinematic space, providing an inductive bias for downstream regression, without requiring kinematic signals at inference time. We evaluate on the NinaPro DB8 dataset (Atzori et al., 2014) of N =11 subjects, including two limb-difference subjects under a strict cross-session protocol in which the test session is independently recorded and never used during model selection. Our main contributions are: 1       
+
+> arXiv:2607.04820v1 [cs.LG] 6 Jul 2026 KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning
+> Figure 1. KinEMbed architecture and training phases. In Phase I, two MLP encoders ( femg ,fkin ) project EMG features xand kinematic angles yonto a shared 16-dimensional unit hypersphere trained via a contrastive objective with ℓ2-normalisation. In Phase II, the frozen EMG embedding is then passed to a TCN decoder ( g) trained via an MSE objective for continuous DoA regression. Full details in Section 3.
+
+1. We introduce KinEMbed, the first cross-modal contrastive learning framework for continuous hand kinematics regres-sion from EMG, embedding EMG and joint angle vectors as paired modalities in a shared embedding space. 
+
+2. We evaluate KinEMbed on a cohort of able-bodied and limb-difference subjects and benchmark it against five representation-learning baselines (PCA, PLS, AE-Recon, AE-Super, CEBRA) spanning the supervised/unsupervised and linear/nonlinear axes, plus ARIMA as a temporal base-line. 
+
+## 2. Related Work 
+
+Continuous joint angle regression from EMG. While discrete gesture classification has dominated the EMG de-coding literature, a substantial body of work has pursued continuous joint angle regression for proportional prosthetic control. Classical approaches apply linear regression, ker-nel ridge regression, Gaussian process regression, or sup-port vector regression to hand-crafted time-domain and frequency-domain feature windows (Hahne et al., 2014; Muceli & Farina, 2011; Xiloyannis et al., 2017). Krasoulis et al. (2019) evaluated regression-based decoding of finger kinematics on the NinaPro DB8 dataset – the same dataset used in this work – and demonstrated accurate per-subject prediction of five degrees of actuation using EMG features and a regularized Wiener filter. More recent deep learning approaches apply CNNs, LSTMs, and temporal convolu-tional networks (TCNs) directly to raw or lightly processed EMG signals (Zanghieri et al., 2019). 
+
+Contrastive and self-supervised learning for biosignals. 
+
+SimCLR (Chen et al., 2020) and InfoNCE (van den Oord et al., 2018) established that contrastive objectives learn representations that transfer well across tasks, with the SimCLR projection head - discarded at inference - de-coupling the contrastive geometry from the downstream task. VICReg (Bardes et al., 2022) extends this to non-contrastive variance-invariance-covariance objectives. CE-BRA (Schneider et al., 2023) brings contrastive learning to neural recordings, typically raw and high-dimensional rather than hand-crafted features. It can be used either 
+
+self-supervised (discovery-driven, label-free), sampling pos-itive pairs by temporal proximity, or supervised (hypothesis-driven), using an auxiliary variable such as behaviour as a sampling oracle to define positives; both yield consistent, decodable latent spaces. Closely related work, CPEP (Cui et al., 2025) and EM-Bridge (Cui et al., 2026), use cross-modal contrastive pre-training for discrete gesture classification , aligning EMG with pose representations, including from large-scale datasets such as emg2pose (Salter et al., 2024) and kinemat-ics data. In contrast, KinEMbed targets continuous joint angle regression , operating directly on fine-grained kine-matics in low-data per-subject clinical settings (including limb difference), rather than predicting gesture labels. 
+
+## 3. Method 
+
+Problem Formulation. Given a window of C=16 surface EMG channels, we extract a feature vector x ∈ R256 (de-tailed below) and wish to predict five continuous degrees of actuation (DoA): thumb rotation, thumb flexion, index flexion, middle flexion, and ring/little flexion, collectively 
+
+y ∈ R5. Degrees of actuation are aligned with those of the IH2 Azzurra robotic hand (Krasoulis et al., 2019; Pren-silia, 2023), and are extracted from a hand motion capture glove using a transformation matrix, as described in Ap-pendix A.1. 
+
+EMG Feature Extraction EMG signals are windowed at 128 ms (256 samples at 2000 Hz) with a 52 ms stride. Per channel, we compute time-domain features (RMS, Wave-form Length, Log Variance, Zero Crossings, Slope Sign Changes, MAV, Willison Amplitude, Hjorth Mobility and Complexity), spectral features (Mean Power Frequency, Me-dian Frequency), and STFT magnitude across five bands. Concatenating over 16 channels yields a 256-dimensional feature vector. This feature group was selected over three alternative variants by measuring baseline regression perfor-2KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning 
+
+mance on average across all methods under cross-validated session splits. All features are standardised using per-training-set z-score normalisation. 
+
+3.1. KinEMbed Architecture Dual encoders. We train two separate MLPs jointly as shown in Figure 1. The EMG encoder femg has hidden dimensions [256 , 128] with batch normalisation, ReLU acti-vations, and dropout ( p=0 .1). The kinematic encoder fkin 
+
+has hidden dimensions [64 , 32] with the same activations. Both encoders project to an E-dimensional space ( E=16 )followed by ℓ2-normalisation onto a unit hypersphere: 
+
+hemg = ℓ2(femg (x)) , hemg ∈ R16 , (1) 
+
+zkin = ℓ2(fkin (y)) , zkin ∈ R16 . (2) 
+
+Projection head. Following SimCLR (Chen et al., 2020), a two-layer nonlinear projection head gproj : R16 → R16 
+
+(hidden width 32, batch normalisation and ReLU) is ap-pended to the EMG trunk during contrastive training. The EMG embedding seen by the contrastive loss is therefore the ℓ2-normalised projection-head output 
+
+zemg = ℓ2(gproj (hemg )) ∈ R16 , (3) whereas the kinematic branch has no projection head, so 
+
+zkin enters the loss directly. At inference the projection head is discarded and the downstream decoder consumes the encoder representation hemg . This decouples the geometry directly optimised by the contrastive loss (over zemg ) from the geometry seen by the decoder (over hemg ). 
+
+Contrastive objective. Given a batch of N synchronised (EMG, kinematic) pairs, we use a cross-modal InfoNCE loss: 
+
+Lcontr = − 12N
+
+> N
+
+X
+
+> i=1
+
+"
+
+log ezemg   
+
+> i·zkin
+> i/τ
+
+P 
+
+> j
+
+ezemg    
+
+> i·zkin
+> j/τ
+
++ log ezkin   
+
+> i·zemg
+> i/τ
+
+P 
+
+> j
+
+ezkin   
+
+> i·zemg
+> j/τ
+
+#
+
+,
+
+(4) where τ =0 .2 is the temperature and positive pairs are tem-porally aligned (EMG window i, DoA measurement i). We also evaluated a Soft InfoNCE variant that replaces the one-hot contrastive target with a Gaussian-kernel soft target over DoA distances (addressing the false-negative problem for regression), and VICReg (Bardes et al., 2022). The standard InfoNCE loss was selected via grid search, although perfor-mance differences were limited (Section 4; per-loss results in Appendix B). 
+
+Downstream TCN decoder. After contrastive pre-training, the EMG encoder is frozen and a Temporal Convo-
+
+Table 1. Overall mean R2 (across 5 DoA) on held-out session d3 .Values: mean ± std across subjects ( R2). Best per column in bold .                                             
+
+> Method All ( n=11) AB ( n=9) limb difference ( n=2) ARIMA -0.072 0.056 -0.075 0.056 -0.062 0.074 PCA 0.717 0.113 0.748 0.077 0.560 0.170 PLS 0.722 0.118 0.753 0.079 0.566 0.201 AE-Recon 0.704 0.111 0.733 0.081 0.558 0.159 AE-Super 0.703 0.132 0.743 0.076 0.523 0.221 CEBRA 0.713 0.115 0.745 0.078 0.570 0.181
+> KinEMbed 0.732 0.129 0.769 0.090 0.568 0.191
+
+lutional Network (TCN) (Bai et al., 2018) decoder is trained to map sequences of EMG embeddings to 5-dimensional DoA predictions. The TCN ( g) uses dilated causal convo-lutions (64 channels, kernel size 3, dilations [1 , 2, 4] ) with weight normalisation and residual connections. The decoder is trained for 100 epochs with Adam (Kingma & Ba, 2015) (η=10 −3, MSE loss). In order to maximise like-for-like comparison, all representation-learning baselines share this decoder. An MLP, GRU, and TCN were evaluated as po-tential decoders. TCN was chosen as the best performing on average across all methods, based on the R2 across a subsection of tested subjects via 2-fold CV. Full training details are available in Appendix B. 
+
+## 4. Experiments 
+
+Dataset and Evaluation Protocol. We evaluate on the NinaPro DB8 dataset (Atzori et al., 2014), which comprises synchronised EMG and instrumented glove recordings from 12 subjects performing continuous hand grasps and a wide range of finger movements. Subject 4 was excluded due to low-fidelity data, yielding N =11 participants: 9 able-bodied (AB) and 2 LD subjects. Although the LD cohort is small, we deliberately retain it, as evaluating on limb-difference data is essential for advancing continuous, propor-tional control for prosthetic applications, a central long-term goal of this work. Each subject completed three sessions ( d1 , d2 , d3 ). Ses-sions d1 and d2 are used for training; d3 is the strictly held-out test set, never touched during model selection. We use 2-fold session CV during hyperparameter tuning. We report the mean coefficient of determination ( R2) across the 5 DoA channels on the held-out session d3 . Each subject’s 
+
+R2 is averaged over three seeds, and Table 1 reports the mean ± standard deviation across subjects. 
+
+Baseline selection. We initially evaluated seven candi-date DR methods in preliminary experiments: PCA, UMAP, PLS, a reconstruction autoencoder (AE-Recon), a super-vised autoencoder (AE-Super), a contrastive autoencoder, a conditional VAE (CVAE) and CEBRA. The five baselines retained for the final comparison – PCA, PLS, AE-Recon, AE-Super and CEBRA – were selected by ranking all can-3KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning     
+
+> Figure 2. Per-DoA R2for able-bodied subjects. KinEMbed shows the most pronounced gains on thumb rotation and thumb flexion, the most challenging and variable degrees of actuation. ARIMA is omitted due to poor performance (negative R2).
+
+didates on mean R2 under 2-fold session CV and keeping the top performers. The set spans the key methodological axes: unsupervised linear (PCA), supervised linear (PLS), unsupervised nonlinear (AE-Recon), and supervised non-linear (AE-Super). To the best of our knowledge, this is also the first instance of CEBRA applied to EMG decoding. 
+
+We also included a non–representation-learning baseline, Autoregressive Integrated Moving Average (ARIMA), to benchmark against a classical statistical time-series model. 
+
+Baseline configurations. Because the aim of this work is to introduce KinEMbed rather than to produce an ex-haustive benchmark, baseline architectures follow standard designs with minimal tuning. AE-Recon uses a symmet-ric MLP encoder-decoder ( 256 → 128 → 64 → d)trained with MSE reconstruction loss (600 epochs, Adam, 
+
+η=10 −4). AE-Super shares the same encoder but adds an auxiliary DoA regression head from the bottleneck; the re-construction/regression loss weighting α is selected from 
+
+{0.1, 0.5, 1.0} via 2-fold session CV. PCA and PLS are fit on the training split using standard sklearn implemen-tations. CEBRA was tuned as described in Appendix B.3. To ensure a fair comparison, each baseline’s embedding dimension is independently optimised via grid search over 
+
+d ∈ { 2, 3, 4, 8, 16 , 32 } using 2-fold session CV. The canon-ical dimension is the mode of per-subject best values (PCA: 32, PLS: 32, AE-Recon: 32, AE-Super: 16, CEBRA: 8). 
+
+4.1. Results 
+
+Table 1 reports overall mean R2 across the 5 DoA for all sub-jects. KinEMbed achieves the highest mean R2 overall, with a mean of 0.732 (all subjects), 0.769 (AB), and 0.568 (LD). Figure 4 illustrates the R2 distribution across AB subjects. Within the top-performing methods, KinEMbed shows a tighter inter-quartile distribution. ARIMA, which exploits only the temporal autocorrelation of the DoA signal without any EMG input, achieves negative R2 across all groups, confirming that EMG data carries essential non-redundant kinematic information. On the LD cohort, KinEMbed and CEBRA attain comparable performance, mean R2 (0.568 vs.    
+
+> Figure 3. Example 120-second continuous prediction trace for subject 10 (able-bodied). All five DoA are decoded simultaneously from EMG using the frozen femg encoder.
+
+0.570, respectively). With only two LD subjects and high inter-subject variance, no firm conclusions on performance can be drawn. Table 2 breaks results down by DoA for AB subjects. KinEMbed achieves the best mean R2 and leads on four of five DoA. The largest gains are on thumb flexion (+2.3 pp over the next-best method, CEBRA) and thumb rotation 
+
+(+1.4 pp), which are the most variable and clinically relevant degrees. The ring/little finger DoA is already well-predicted by all methods and differences are negligible, as shown in Figure 2. 
+
+## 5. Discussion and Conclusion 
+
+We present KinEMbed as an initial demonstration that cross-modal contrastive alignment is a viable and competitive paradigm for continuous decoding of hand kinematics from EMG, rather than as an exhaustively optimised system. Throughout this work, we prioritised controlled, like-for-like comparison over absolute performance: every represen-tation method is given the same hand-crafted feature input and the same downstream decoder. The decoder exemplifies this trade-off – we adopt a TCN because it was the best per-4KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning                                                         
+
+> Figure 4. Distribution of mean R2across able-bodied subjects (n=9 ) on held-out session d3. KinEMbed achieves the highest median and mean R2.
+> Table 2. Per-DoA R2on held-out session d3, able-bodied subjects (n=9 ). Best per column in bold . DoA names abbreviated: Th.R = thumb rotation, Th.F = thumb flexion, Idx = index, Mid = middle, Rng = ring/little.
+> Method Th.R Th.F Idx Mid Rng Mean ARIMA −0.045 −0.025 −0.009 −0.008 −0.286 −0.075
+> PCA 0.660 0.611 0.790 0.828 0.853 0.748
+> PLS 0.680 0.596 0.787 0.834 0.867 0.753
+> AE-Recon 0.655 0.591 0.772 0.815 0.834 0.733
+> AE-Super 0.647 0.570 0.805 0.834 0.857 0.743
+> CEBRA 0.672 0.621 0.787 0.826 0.818 0.745
+> KinEMbed 0.694 0.644 0.812 0.845 0.850 0.769
+
+former on average across all methods , a choice that limits confounders but is, by design, not tailored to any individual method, KinEMbed included. Such conservative choices make the reported advantage more naturally read as a lower bound than a ceiling: a feature pipeline, encoder, or decoder optimised specifically for each KinEMbed could plausibly widen the margin. A more exhaustive exploration of these components is a clear and promising next step. While the cohort is limited in size, the evaluation is delib-erately stringent: every method is assessed under a strict cross-session protocol, training and testing on independently recorded sessions. This is the appropriate standard for both commercial and clinically motivated applications due to distribution shift caused by a variety of factors including fa-tigue, sensor placement, and changes in the signal-to-noise ratio. This protocol is considerably more demanding than the within-session splits commonly seen in the literature. 
+
+Limitations. This work introduces KinEMbed and presents an initial evaluation against relevant baselines; how-ever several limitations temper its conclusions. (i) Improve-ments over the strongest baselines are small in absolute terms and, with only N =11 subjects, the study is under-powered to establish statistical significance; we therefore treat the method rankings as suggestive and defer signif-icance testing on larger cohorts to future work. (ii) The limb-difference cohort comprises only two subjects, too few to draw firm conclusions for prosthetic applications. (iii) 
+
+We do not characterise when the false-negative problem matters: the Soft InfoNCE variant designed to address it did not outperform the standard InfoNCE in our limited grid search, leaving open whether the effect is genuinely mild or simply undetected at this scale. 
+
+Future directions. The most natural next step is stronger evaluation across larger and more diverse cohorts – in par-ticular more participants with limb difference. Together with paired significance tests and bootstrap confidence in-tervals, this would allow for more conclusive analysis on the performance of this methodology. A complementary direction is mechanistic analysis of the learned representa-tion and a more systematic study of the contrastive objective –including the conditions under which the Soft-InfoNCE variant meaningfully mitigates the false-negative problem – which would resolve the question left open above. Several methodological extensions also follow naturally. Similarly, 
+
+temporal contrastive objectives (e.g., CPC-style) could ex-ploit the sequential structure of EMG more explicitly. 
+
+Cross-subject and cross-session adaptation , via contrastive pre-training on pooled data followed by subject-specific fine-tuning, offers a direct path to clinical deployment with reduced per-user calibration. The dual-encoder design is also well suited to foundation-model pre-training , in which a kinematic encoder pre-trained on large motion-capture corpora supplies a rich target embedding space without requiring synchronised EMG. We hope KinEMbed serves as a useful baseline for EMG regression tasks and a conceptual stepping stone for representation learning on structured wearable biosignals. 
+
+## Acknowledgments 
+
+S.G. thanks Dr Sadra Sadeh for his early mentorship on a closely related project, which sparked her interest in this area of research. 
+
+## Impact Statement 
+
+This paper presents work whose goal it is to advance the field of Machine Learning. There are many potential societal consequences of our work, none of which we feel must be specifically highlighted here. 
+
+## References 
+
+Akiba, T., Sano, S., Yanase, T., Ohta, T., and Koyama, M. Optuna: A next-generation hyperparameter optimization 5KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning 
+
+framework. In Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining , pp. 2623–2631, 2019. Atzori, M., Gijsberts, A., Heynen, S., Hager, A.-G. M., Deriaz, O., van der Smagt, P., Castellini, C., Caputo, B., and M ¨uller, H. Building the ninapro database: A resource for the biorobotics community. In 2012 4th IEEE RAS & EMBS International Conference on Biomedical Robotics and Biomechatronics (BioRob) , pp. 1258–1265, 2012. doi: 10.1109/BioRob.2012.6290287. Atzori, M., Gijsberts, A., Castellini, C., Caputo, B., Hager, A.-G. M., Elsig, S., Giatsidis, G., Bassetto, F., and M ¨uller, H. Electromyography data for non-invasive naturally-controlled robotic hand prostheses. Scientific data , 1(1): 140053, 2014. Bai, S., Kolter, J. Z., and Koltun, V. An empirical evalua-tion of generic convolutional and recurrent networks for sequence modeling. arXiv preprint arXiv:1803.01271 ,2018. Bardes, A., Ponce, J., and LeCun, Y. VICReg: Variance-invariance-covariance regularization for self-supervised learning. In International Conference on Learning Rep-resentations , 2022. Biddiss, E. A. and Chau, T. T. Upper limb prosthesis use and abandonment: a survey of the last 25 years. Prosthetics and orthotics international , 31(3):236–257, 2007. Cabibihan, J.-J., Alkhatib, F., Mudassir, M., Lambert, L. A., Al-Kwifi, O. S., Diab, K., and Mahdi, E. Suitability of the openly accessible 3d printed prosthetic hands for war-wounded children. Frontiers in Robotics and AI , 7: 594196, 2021. Chen, T., Kornblith, S., Norouzi, M., and Hinton, G. Asimple framework for contrastive learning of visual rep-resentations. In Proceedings of the 37th International Conference on Machine Learning , ICML 2020, pp. 1597– 1607, 2020. Cui, W., Sandino, C., Pouransari, H., Liu, R., Minxha, J., Zippi, E., Verma, A., Sedlackova, A., Azemi, E., and Mahasseni, B. Cpep: Contrastive pose-emg pre-training enhances gesture generalization on emg signals. arXiv preprint arXiv:2509.04699 , 2025. Cui, W., Sandino, C. M., Pouransari, H., Liu, R., Minxha, J., Zippi, E. L., Azemi, E., and Mahasseni, B. Embridge: En-hancing gesture generalization from emg signals through cross-modal representation learning. In The Fourteenth International Conference on Learning Representations ,2026. Farina, D., Jiang, N., Rehbaum, H., Holobar, A., Graimann, B., Dietl, H., and Aszmann, O. C. The extraction of neural information from the surface EMG for the control of upper-limb prostheses. IEEE Transactions on Neural Systems and Rehabilitation Engineering , 22(4):797–809, 2014. Hahne, J. M., Biessmann, F., Jiang, N., Rehbaum, H., Farina, D., Meinecke, F. C., M ¨uller, K.-R., and Parra, L. C. Linear and nonlinear regression techniques for simultaneous and proportional myoelectric control. IEEE Transactions on Neural Systems and Rehabilitation Engineering , 22(2): 269–279, 2014. Hannan, E. J. and Quinn, B. G. The determination of the order of an autoregression. Journal of the Royal Statisti-cal Society: Series B (Methodological) , 41(2):190–195, 1979. He, K., Chen, X., Xie, S., Li, Y., Doll ´ar, P., and Girshick, R. Masked autoencoders are scalable vision learners. In 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pp. 16000–16009, 2022. Hyndman, R. J. and Khandakar, Y. Automatic time se-ries forecasting: the forecast package for r. Journal of statistical software , 27:1–22, 2008. Jiang, N., Dosen, S., Muller, K.-R., and Farina, D. My-oelectric control of artificial limbs—is there a need to change focus?[in the spotlight]. IEEE Signal Processing Magazine , 29(5):152–150, 2012. Kingma, D. P. and Ba, J. Adam: A method for stochastic optimization. In International Conference on Learning Representations , 2015. Krasoulis, A., Kyranou, I., Erwin Veltink, M., Nazarpour, K., and Vijayakumar, S. Improved prosthetic hand control with concurrent use of myoelectric and inertial measure-ments. In Journal of NeuroEngineering and Rehabilita-tion , volume 14, pp. 71, 2017. Krasoulis, A., Vijayakumar, S., and Nazarpour, K. Effect of user practice on prosthetic finger control with an intuitive myoelectric decoder. Frontiers in neuroscience , 13:891, 2019. Loshchilov, I. and Hutter, F. Decoupled weight decay reg-ularization. In International Conference on Learning Representations , 2019. Muceli, S. and Farina, D. Simultaneous and proportional estimation of hand kinematics from emg during mirrored movements at multiple degrees-of-freedom. IEEE trans-actions on neural systems and rehabilitation engineering ,20(3):371–378, 2011. 6KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning 
+
+Phinyomark, A. and Scheme, E. A feature extraction issue for myoelectric control based on wearable EMG sensors. 
+
+Sensors , 18(5):1615, 2018. Prensilia. IH2 Azzurra Robotic Hand. https: //www.prensilia.com/ih2-azzurra-hand/ ,2023. Accessed: 2023-03-23. Radford, A., Kim, J. W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark, J., Krueger, G., and Sutskever, I. Learning transferable visual models from natural language supervision. In 
+
+Proceedings of the 38th International Conference on Ma-chine Learning , pp. 8748–8763, 2021. Raghu, S. T. P., MacIsaac, D. T., and Scheme, E. J. Self-supervised learning via vicreg enables training of emg pattern recognition using continuous data with unclear labels. Computers in Biology and Medicine , 185:109479, 2025. Salminger, S., Stino, H., Pichler, L. H., Gstoettner, C., Sturma, A., Mayer, J. A., Szivak, M., and Aszmann, O. C. Current rates of prosthetic usage in upper-limb amputees– have innovations had an impact on device acceptance? 
+
+Disability and rehabilitation , 44(14):3708–3713, 2022. Salter, S., Warren, R., Schlager, C., Spurr, A., Han, S., Bhasin, R., Cai, Y., Walkington, P., Bolarinwa, A., Wang, R., et al. emg2pose: A large and diverse benchmark for surface electromyographic hand pose estimation. Ad-vances in Neural Information Processing Systems , 37: 55703–55728, 2024. Schneider, S., Lee, J. H., and Mathis, M. W. Learnable latent embeddings for joint behavioural and neural analysis. 
+
+Nature , 617(7960):360–368, 2023. Smith, T. G. et al. pmdarima: Arima estimators for Python, 2017–. URL http://www.alkaline-ml.com/ pmdarima . [Online; accessed April 5th 2026]. Steffen, J., Maycock, J., and Ritter, H. Robust dataglove mapping for recording human hand postures. In Interna-tional Conference on Intelligent Robotics and Applica-tions , pp. 34–45. Springer, 2011. van den Oord, A., Li, Y., and Vinyals, O. Representa-tion learning with contrastive predictive coding. arXiv preprint arXiv:1807.03748 , 2018. Wang, Y. and Neff, M. Data-driven glove calibration for hand motion capture. In Proceedings of the 12th ACM SIGGRAPH/Eurographics Symposium on Computer Ani-mation , pp. 15–24, 2013. Xiloyannis, M., Gavriel, C., Thomik, A. A., and Faisal, A. A. Gaussian process autoregression for simultaneous propor-tional multi-modal prosthetic control with natural hand kinematics. IEEE Transactions on Neural Systems and Rehabilitation Engineering , 25(10):1785–1801, 2017. Yang, J., Cha, D., Lee, D.-G., and Ahn, S. Stcnet: Spatio-temporal cross network with subject-aware contrastive learning for hand gesture recognition in surface emg. 
+
+Computers in Biology and Medicine , 185:109525, 2025. Zanghieri, M., Benatti, S., Burrello, A., Kartsch, V., Conti, F., and Benini, L. Robust real-time embedded emg recognition framework using temporal convolutional net-works on a multicore iot processor. IEEE transactions on biomedical circuits and systems , 14(2):244–256, 2019. 7KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning 
+
+## A. Dataset 
+
+We evaluate KinEMbed and baselines on the NinaPro DB8 dataset. The EMG data in DB8 was recorded using 16 active double-differential wireless sensors from a Delsys Trigno IM Wireless EMG system (Atzori et al., 2012) as shown in Figure 5. Muscle activity was recorded from the participants’ right forearm (i.e., the remnant limb for subjects with limb difference). Motion capture data was recorded with a Cyberglove II - a motion capture glove that contains 18 joint-angle measurement sensors, distributed as shown in Figure 6b.      
+
+> Figure 5. The positioning of the 16 electrodes in the NinaPro dataset. Image reproduced from (Krasoulis et al., 2017).
+> (a) (b) Figure 6. A visualisation of the movements of the hand and wrist (a). Image reproduced from (Cabibihan et al., 2021). The po-sitioning of the joint state sensors (b). Image reproduced from (Krasoulis et al., 2017).
+
+A.1. Cyberglove Data 
+
+Although the Cyberglove II has 18 joint measurement sen-sors, the objective of this research is the control of an exter-nal device such as a dexterous robotic hand, or a simulated hand. Hence, a mapping strategy is employed to translate the 18 channels of joint angle data to DoA of a robotic hand. The mapping of Cyberglove joint states to hand position reconstruction has been explored for visualisation (Wang & Neff, 2013) and robot manipulation (Steffen et al., 2011) and has further been refined for the actuation of a robotic hand for prostheses using a linear mapping from the 18 joint states to the 5 DoA of the IH2 Azzurra robotic hand (Kra-soulis et al., 2019; Prensilia, 2023). In this transformation, the 18 calibrated measurements of the dataglove ( x ∈ R18 )are mapped to the DoA of the robotic hand ( y ∈ R5) via the transformation matrix in Eq.(6). The DoA correspond to the movement of the five fingers: y1 , thumb rotation; 
+
+y2, thumb flexion; y3, index flexion; y4, middle flexion; 
+
+y5, ring/little finger flexion. The ring and little finger are controlled together due to a mechanical coupling in the Az-zurra robotic hand (Krasoulis et al., 2019). Using this model allows for a more explainable decoding performance and renders the model more directly transferable for the control of an external device. 
+
+y = Ax (5) 
+
+AT =
+
+
+
+0.639 0 0 0 00.383 0 0 0 00 1 0 0 0
+
+−0.639 0 0 0 00 0 0.4 0 00 0 0.6 0 00 0 0 0.4 00 0 0 0.6 00 0 0 0 00 0 0 0 0.1667 0 0 0 0 0.3333 0 0 0 0 00 0 0 0 0.1667 0 0 0 0 0.3333 0 0 0 0 00 0 0 0 0
+
+−0.19 0 0 0 00 0 0 0 0
+
+
+
+(6) 
+
+## B. Training and Hyperparameter Optimisation Details 
+
+B.1. KinEMbed 
+
+Contrastive pre-training uses AdamW (Loshchilov & Hut-ter, 2019) with weight decay 10 −4, learning rate 3×10 −3,cosine annealing ( Tmax =200 ), batch size 256, and gradient clipping (norm 1.0). Training runs for up to 200 epochs with early stopping (patience 20) on a fixed 10% validation split. Hyperparameters were selected via a principled 4-stage se-quential grid search, designed to explore each axis of varia-tion independently while fixing decisions from prior stages. This staged strategy reduces the effective search space from a prohibitive full factorial (tens of thousands of combina-tions) to targeted combinations evaluated on 5 representative subjects (1, 3, 6, 8, 11; all able-bodied except subject 11) 8KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning 
+
+via 2-fold session CV, using mean CV R2 as the selection criterion. 
+
+Stage 1 : loss ∈ { InfoNCE, Soft-InfoNCE, VICReg }, tem-perature τ ∈ { 0.05 , 0.07 , 0.1, 0.2, 0.5}, embedding dim 
+
+d ∈ { 4, 8, 16 , 32 , 64 }. Winner : InfoNCE, τ =0 .2, d=16 .The full per-loss comparison (best configuration per loss; mean 2-fold CV R2 across the five tuning subjects) is given in Table 3. Standard InfoNCE marginally outperformed the Soft-InfoNCE variant, with VICReg lowest. Although the Soft-InfoNCE target was motivated by the false-negative problem for continuous regression (Appendix E), it did not improve over standard InfoNCE in this setting, suggesting the false-negative effect is empirically mild in our batch-local, per-subject regime; a larger-scale study of this variant is warranted.   
+
+> Table 3. Stage 1 loss comparison: best configuration per loss (mean 2-fold CV R2, 5 tuning subjects).
+
+Loss CV R2
+
+InfoNCE (selected) 0.634 
+
+Soft-InfoNCE 0.629 VICReg 0.608 
+
+Stage 2 : architecture variant ∈ { standard, projection head, residual, asymmetric, momentum EMA }. Winner : projec-tion head. Table 4 reports the architecture-variant comparison. The projection head gave only a marginal improvement over the plain (standard) encoder, indicating that most of KinEM-bed’s benefit derives from the cross-modal contrastive ob-jective rather than the projection-head decoupling itself; the momentum-EMA variant was markedly unstable.  
+
+> Table 4. Stage 2 architecture-variant comparison (mean 2-fold CV
+> R2, 5 tuning subjects).
+
+Architecture variant CV R2
+
+Projection head (selected) 0.636 
+
+Standard 0.634 Asymmetric 0.629 Residual 0.615 Momentum EMA 0.396 
+
+Stage 3: EMG hidden dims ∈{[128 , 64] , [256 , 128] , [512 , 256 , 128] , [512 , 256 , 128 , 64] },kinematic hidden dims ∈ {[32] , [64 , 32] , [128 , 64] }.
+
+Winner : EMG [256 , 128] , kin [64 , 32] .
+
+Stage 4 : learning rate ∈ { 10 −4, 5×10 −4, 10 −3, 3×10 −3},batch size ∈ { 128 , 256 , 512 }, dropout ∈ { 0.0, 0.1, 0.2}.
+
+Winner : η=3 ×10 −3, batch 256, dropout 0.1. 
+
+B.2. ARIMA 
+
+As a time-series baseline, we evaluated an autoregressive integrated moving average (ARIMA) model applied inde-pendently to each degree of actuation (DoA). Unlike the EMG-feature-based methods, ARIMA operates solely on the DoA time series, exploiting temporal autocorrelation in the kinematic signal rather than instantaneous EMG obser-vations. Model orders (p, d, q ) were selected per-DoA and per-subject using the auto arima procedure from the 
+
+pmdarima library (Smith et al., 2017–), with the Bayesian Information Criterion (BIC) as the selection objective. BIC was preferred over AIC as its stronger complexity penalty yields parsimonious models that generalise well from lim-ited data. A stepwise search (Hyndman & Khandakar, 2008) was used in place of an exhaustive grid to reduce computa-tion. Seasonal components were not modelled, as the DoA signal has no fixed periodic structure. Order selection was performed on the final 20% of the sec-ond training session (dataset 2), a single contiguous record-ing that is temporally adjacent to the held-out test session (dataset 3). This segment provides a representative char-acterisation of the signal’s local autocorrelation structure; BIC-based order selection is known to stabilise with a few hundred observations (Hannan & Quinn, 1979). Evaluation followed the same protocol as all other methods: models were applied to dataset 3. 
+
+B.3. CEBRA 
+
+CEBRA hyperparameters were tuned via Optuna Tree-structured Parzen Estimator (TPE) search (Akiba et al., 2019), run independently for each subject using 2-fold session cross-validation with mean R2 as the objec-tive. Up to 50 trials per subject were evaluated over a categorical search space spanning training iterations ∈{1000 , 3000 , 5000 , 10000 }, batch size ∈ { 256 , 512 , 1024 },learning rate ∈ {10 −4, 5×10 −4, 10 −3}, temperature ∈{0.5, 1.0, 2.0}, and time offset ∈ {5, 10 , 20 } windows. Canonical hyperparameters were set to the mode across subjects, yielding: batch size 512, learning rate 10 −3, 1000 iterations, temperature 2.0, time offset 10, and embedding dimension 8 (selected in a separate dimensionality study); these values were fixed for all final evaluations. 9KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning 
+
+## C. Additional Results 
+
+Table 5. Per-DoA R2 on the held-out test set, LD subjects only (n=2). Values: mean ± std.                                                                                                                                     
+
+> Method Thumb rotation Thumb flexion Index flexion Middle flexion Ring/little flexion Mean ARIMA −0.003 ±0.003 −0.002 ±0.003 −0.028 ±0.014 −0.019 ±0.021 −0.255 ±0.342 −0.062 ±0.074
+> PCA 0.618 ±0.114 0.436 ±0.023 0.598 ±0.162 0.549 ±0.299 0.599 ±0.249 0.560 ±0.170
+> PLS 0.659 ±0.129 0.491 ±0.030 0.554 ±0.248 0.517 ±0.344 0.607 ±0.255 0.566 ±0.201
+> AE-Recon 0.602 ±0.143 0.401 ±0.006 0.593 ±0.186 0.569 ±0.253 0.625 ±0.207 0.558 ±0.159
+> AE-Super 0.588 ±0.170 0.326 ±0.130 0.538 ±0.256 0.545 ±0.312 0.619 ±0.236 0.523 ±0.221
+> CEBRA 0.621 ±0.227 0.360 ±0.120 0.620 ±0.185 0.617 ±0.184 0.630 ±0.188 0.570 ±0.181
+> KinEMbed 0.649 ±0.164 0.416 ±0.106 0.585 ±0.178 0.576 ±0.286 0.615 ±0.221 0.568 ±0.191
+
+## D. Relationship to CEBRA 
+
+CEBRA (Schneider et al., 2023) is a contrastive represen-tation learning framework designed to produce structured latent embeddings of neural or physiological recordings by leveraging a continuous auxiliary behavioural variable (or operating in a self-supervised fashion using temporal proximity). It has shown strong performance for neural data, and is thus a relevant baseline for our work. Although KinEMbed shares the broad goal of learning an auxiliary-modality-structured embedding of a primary physiological signal, the two methods differ in architecture, supervisory mechanism, and the geometric properties of the resulting embedding space. 
+
+Architecture. CEBRA employs a single-encoder design: only the primary signal is passed through a parametric net-work, a temporal convolutional network (TCN) with learn-able temperature (Schneider et al., 2023). Kinematics serve as a sampling oracle that defines which pairs of EMG win-dows should be close in the embedding space. KinEM-bed instead uses a dual-encoder design: an MLP encoder processes EMG windows and a separate, shallower MLP encoder processes the corresponding DoA vectors. Both encoders are trained jointly, and their outputs are aligned in a shared embedding space. 
+
+Positive pair construction. CEBRA constructs positive pairs via a global kinematic nearest-neighbour lookup: for each anchor EMG window, it searches the entire dataset for the recording whose simultaneous kinematics most closely matches a sampled kinematic target state (Schneider et al., 2023). KinEMbed uses a simpler synchronous scheme: the EMG window at time t is paired directly with the simulta-neously recorded DoA vector yt, with all other pairs in the mini-batch serving as negatives. 
+
+## E. Relationship to CPEP 
+
+A concurrent line of work, CPEP (Cui et al., 2025), applies cross-modal contrastive learning between surface EMG and hand pose in a broadly similar spirit to KinEMbed. Both methods train a dual-encoder architecture using synchro-nised EMG–kinematic pairs and discard the kinematic en-coder at inference. Despite this surface similarity, the two methods differ fundamentally in task formulation, architec-tural design, loss construction, and intended clinical context. We detail these differences below. 
+
+Task formulation. The most consequential difference is the prediction target. KinEMbed is designed for continuous regression : the decoder produces real-valued estimates of five joint angles simultaneously, evaluated by coefficient of determination ( R2) on a held-out recording session. CPEP targets discrete gesture classification . This distinction is not superficial. Continuous kinematic regression enables direct, proportional control , which is essential for clinical settings as well as fluid interaction in virtual and augmented reality; discrete gesture recognition is a coarse proxy. Every subsequent design choice in each method follows from this task difference. 
+
+The false-negative problem in regression. Because KinEMbed targets a continuous output space, the standard InfoNCE objective introduces a structural problem that does not arise in classification: two windows recorded at differ-ent times but with nearly identical joint angles are treated as hard negatives and actively pushed apart in the embed-ding space, despite representing the same kinematic state. Although not used for final evaluation, we propose to ad-dress this with a Soft-InfoNCE variant that replaces one-hot positive targets with a Gaussian kernel over pairwise DoA distances, weighting each negative by its kinematic prox-imity to the anchor and using the median pairwise distance as a parameter-free bandwidth. Future work should explore the value of this loss further. CPEP does not address this problem, nor does it need to: in a discrete classification set-ting, two windows from different gesture classes are genuine negatives by construction. 
+
+Architecture and feature representation. KinEMbed uses lightweight MLP encoders operating on 256-dimensional EMG feature vectors (time-domain and spec-tral statistics per channel), producing 16-dimensional em-beddings. A SimCLR-style projection head is appended during contrastive training and discarded at inference, de-coupling the contrastive geometry from the downstream regression space. The downstream decoder is a Temporal Convolutional Network (TCN) trained on frozen embed-dings to regress the five joint angles. CPEP uses Trans-former encoders (four layers, d=256 ) operating on raw 2-second EMG waveforms pre-trained via Masked Autoen-coder (MAE) (He et al., 2022), producing 256-dimensional embeddings. The downstream task being classification, no regression decoder is trained. 
+
+Dataset scale and subject population. KinEMbed is eval-uated on NinaPro DB8 (Atzori et al., 2014), comprising 11 10 KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning 
+
+subjects (9 able-bodied, 2 with limb difference) across three recording sessions each. The inclusion of limb-different participants introduces substantial variability in neuromus-cular structure and EMG signal characteristics, providing a challenging testbed for representation robustness under distribution shift. CPEP is evaluated on the emg2pose dataset (Salter et al., 2024), comprising 193 participants and approximately 370 hours of recording, and focuses en-tirely on able-bodied users. The scale difference reflects different scientific goals : CPEP demonstrates large-scale pre-training and zero-shot transfer across users and unseen gestures; KinEMbed demonstrates strong potential for con-trastive kinematic alignment in the low-data, per-subject regime characteristic of EMG-based control. 
+
+Evaluation protocol. KinEMbed uses a strict cross-session evaluation protocol: models are trained on sessions 1 and 2 and evaluated on the independently recorded session 3, with no overlap. This directly tests the robustness of the embedding to electrode shift and inter-session variability – the primary failure mode for clinical EMG decoders. CPEP evaluates cross-user generalisation and zero-shot transfer to held-out gesture classes, which is the relevant generalisation axis for a large-scale consumer application. 
+
+Summary. KinEMbed and CPEP share the cross-modal contrastive pre-training paradigm but diverge in every dimension that matters for their respective applications. KinEMbed is a continuous regression framework , operating in the low-data regime with limb difference subjects and evaluated by joint angle prediction accuracy. CPEP is a dis-crete classification method for large-scale consumer gesture recognition, operating with orders of magnitude more data and evaluated by gesture identification accuracy. The sur-face resemblance in training objective reflects the generality of the cross-modal contrastive framework; the differences in task, loss, architecture, data, and evaluation reflect the distinct requirements of the two applications. 11

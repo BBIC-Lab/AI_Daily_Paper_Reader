@@ -1,0 +1,415 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-09T21:41:13.900542+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 65,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 100,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 16,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 11,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 17
+  },
+  "deep_dive": [
+    {
+      "id": "2607.04044v1",
+      "source": "arxiv",
+      "title": "SiamJEPA: On the Role of Siamese Student Encoders in JEPA",
+      "abstract": "Recently, Joint Embedding Predictive Architectures (JEPAs) have attracted significant attention in the computer vision and machine learning communities as a promising framework for self-supervised representation learning. Unlike masked autoencoders that reconstruct pixels, JEPA models learn representations by predicting latent embeddings of masked regions. Existing JEPA-based methods, such as I-JEPA and V-JEPA, typically employ a single encoder in the student network. In contrast, using Siamese encoders for student network is more naturally aligned with brain-inspired representation learning frameworks, yet their role in JEPA models remains largely unexplored. In this paper, we investigate the effect of Siamese student encoders in JEPA-based representation learning. To this end, we propose SiamJEPA, masked Siamese student encoders equipped with an exponential moving average (EMA) teacher network. SiamJEPA can also be viewed as a JEPA formulation of the brain-inspired representation learning model PhiNet. Through extensive experiments on ImageNet linear probing, we demonstrate that Siamese encoders act as an effective regularizer for the JEPA objective, improving representation separability and accelerating learning during the early stages of training. Furthermore, SiamJEPA consistently outperforms comparable single-encoder JEPA variants under limited training budgets and achieves higher linear probing accuracy than Masked Autoencoders (MAE) which requires longer training. Our findings reveal that Siamese student encoders are not merely an architectural choice but constitute an important inductive bias for predictive representation learning. These results provide new insights into the design of JEPA-based models and suggest that incorporating Siamese student architectures offers a simple yet effective approach for improving self-supervised representation learning.",
+      "authors": [
+        "Makoto Yamada"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "stat.ML"
+      ],
+      "published": "2026-07-04T22:09:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.04044v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "investigates Siamese student encoders for self-supervised representation learning",
+      "llm_evidence_cn": "研究孪生学生编码器用于自监督表示学习",
+      "llm_evidence": "研究孪生学生编码器用于自监督表示学习",
+      "canonical_evidence": "研究孪生学生编码器用于自监督表示学习",
+      "llm_tldr_en": "SiamJEPA explores the role of Siamese encoders in JEPA for brain-inspired representation learning",
+      "llm_tldr_cn": "SiamJEPA探索孪生编码器在JEPA中用于启发大脑的表示学习",
+      "llm_tldr": "SiamJEPA探索孪生编码器在JEPA中用于启发大脑的表示学习",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.04063v1",
+      "source": "arxiv",
+      "title": "Learning Biophysical Models of Large-Scale Multineuronal Data to Enable Precise Neurostimulation",
+      "abstract": "Multi-compartment Hodgkin-Huxley (HH) models provide a principled framework for predicting neural dynamics and responses to electrical stimulation. However, fitting HH biophysical parameters typically requires intracellular recordings, which are invasive and low-throughput, limiting the ability to capture the geometry and cell-specific properties of many neurons in a given neural circuit. Multi-electrode arrays (MEAs) offer a scalable alternative - high-density extracellular measurements from full neural populations, but HH model complexity has so far precluded reliable biophysical inference from extracellular data alone. Here, we introduce a framework to rapidly infer HH parameters from designed features of extracellular MEA measurements by leveraging differentiable biophysical simulation and simulation-based inference, unlocking a wide range of downstream applications. In this work, we focus on a central goal of translational neuroengineering: predicting neural spiking responses to candidate neurostimulation patterns that would take hours to measure clinically. To validate our approach, we collected hundreds of hours of stimulation and recording data from isolated macaque retina with a 30 um-pitch 512-electrode array. Our framework predicted previously unseen multi-electrode stimulation responses with 90.6% accuracy using HH models fit from only a few minutes of recording, replacing hours of stimulus testing.",
+      "authors": [
+        "Amrith Lotlikar",
+        "Ian Christopher Tanoh",
+        "Praful Vasireddy",
+        "Andrew Lanpouthakoun",
+        "Ramandeep Vilkhu",
+        "Michael Sommeling",
+        "A. J. Phillips",
+        "Alexander Sher",
+        "Alan Litke",
+        "Scott W. Linderman",
+        "E. J. Chichilnisky",
+        "Subhasish Mitra"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC"
+      ],
+      "published": "2026-07-05T00:26:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.04063v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "fits biophysical models to multineuronal data for predicting neural dynamics",
+      "llm_evidence_cn": "拟合多神经元数据以预测神经动力学的生物物理模型",
+      "llm_evidence": "拟合多神经元数据以预测神经动力学的生物物理模型",
+      "canonical_evidence": "拟合多神经元数据以预测神经动力学的生物物理模型",
+      "llm_tldr_en": "Infers Hodgkin-Huxley parameters from extracellular MEA data to predict neural dynamics and enable neurostimulation.",
+      "llm_tldr_cn": "从胞外MEA数据推断Hodgkin-Huxley参数以预测神经动力学并实现精准神经刺激。",
+      "llm_tldr": "从胞外MEA数据推断Hodgkin-Huxley参数以预测神经动力学并实现精准神经刺激。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.04139v1",
+      "source": "arxiv",
+      "title": "Masked Generative-Contrastive Representation Learning for Cross-Dataset EEG-Based Emotion Recognition",
+      "abstract": "Self-supervised learning (SSL) shows strong potential for cross-dataset transfer by improving feature representation and generalization. However, its application to EEG-based emotion recognition remains largely unexplored. Existing SSL methods struggle to capture the intricate spatiotemporal dependencies of EEG signals under varying channel configurations, extract fine-grained representations resilient to noise, and derive global features that generalize well across subjects. To address these challenges, we propose Masked Generative-Contrastive Representation Learning (MGCRL), a novel SSL framework specifically designed for EEG-based emotion recognition. Built upon a region-aware spatiotemporal encoder, MGCRL integrates generative and contrastive learning to achieve both fine-grained and global discriminative representations for cross-dataset generalization. MGCRL introduces three key designs: 1) a spatiotemporal encoder that incorporates region-based graph convolution to capture localized spatial and functional relationships, enhancing region-specific feature learning and mitigating the impact of varying EEG channel configurations across datasets; 2) a generative learning mechanism based on the joint embedding predictive architecture (JEPA) that utilizes masked features to capture noise robustness fine-grained representations, improving the model's capability to characterize subtle emotional states; and 3) a contrastive learning strategy that leverages masked and original features to learn temporally stable and cross-subject-invariant representations across the same stimuli, boosting emotion discrimination and cross-subject generalization. Under these designs, MGCRL exhibits remarkable ability to learn universal representation. Extensive experiments involving pretraining on the large FACED dataset and fine-tuning on multiple SEED-series datasets demonstrate the effectiveness of MGCRL.",
+      "authors": [
+        "Huqin Weng",
+        "Jiayang Huang",
+        "Yimin Wen",
+        "Jie Du",
+        "Chi-Man Vong",
+        "Chuangquan Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-05T06:44:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.04139v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised representation learning for EEG neural signals",
+      "llm_evidence_cn": "对EEG神经信号进行自监督表征学习",
+      "llm_evidence": "对EEG神经信号进行自监督表征学习",
+      "canonical_evidence": "对EEG神经信号进行自监督表征学习",
+      "llm_tldr_en": "MGCRL learns robust EEG representations via masked generative-contrastive learning for emotion recognition",
+      "llm_tldr_cn": "MGCRL 通过掩码生成对比学习为情绪识别学习鲁棒EEG表征",
+      "llm_tldr": "MGCRL 通过掩码生成对比学习为情绪识别学习鲁棒EEG表征",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.04820v1",
+      "source": "arxiv",
+      "title": "KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning",
+      "abstract": "Decoding hand kinematics from surface electromyography (EMG) is a core challenge in wearable biosignal processing with clinical relevance for prosthetic control and motor rehabilitation. Most representation learning approaches for EMG focus on discrete gesture classification, and few focus on continuous regression. We present KinEMbed, a cross-modal contrastive learning framework for hand kinematics regression that jointly trains dual encoders -- one for windowed EMG features and one for kinematic (joint angle) targets. The resulting embeddings inherit the geometric structure of the kinematic space without requiring kinematic signals at inference time. Evaluating on the NinaPro DB8 dataset that includes both able-bodied users and subjects with limb difference (N=11), KinEMbed outperforms PCA, PLS, autoencoder and contrastive (CEBRA) baselines on held-out sessions, with largest gains on the most challenging thumb degrees of articulation. We position this work as a first step toward contrastive representation learning for regression of hand kinematics from structured wearable biosignals.",
+      "authors": [
+        "Sofia Gilardini",
+        "Chenfei Ma",
+        "Kianoush Nazarpour"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-06T08:52:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.04820v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes kinematics from EMG neural signals to hand movements",
+      "llm_evidence_cn": "从EMG神经信号解码手部运动学",
+      "llm_evidence": "从EMG神经信号解码手部运动学",
+      "canonical_evidence": "从EMG神经信号解码手部运动学",
+      "llm_tldr_en": "Cross-modal contrastive learning framework for continuous hand kinematics decoding from EMG.",
+      "llm_tldr_cn": "跨模态对比学习框架，从EMG连续解码手部运动学。",
+      "llm_tldr": "跨模态对比学习框架，从EMG连续解码手部运动学。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.05165v1",
+      "source": "arxiv",
+      "title": "Physiological Noise Augmentation Improves Non-Invasive Brain-to-Speech",
+      "abstract": "Non-invasive brain-to-speech decoding aims to restore communication to patients suffering from neurodegenerative disease, without the risks of neurosurgery. Existing MEG- and EEG-based methods, while scalable, continue to suffer from high word error rates driven by relatively low signal-to-noise ratios compared to invasive recordings. We propose physiological noise augmentation (PNA), a data augmentation method that explicitly trains decoders to become invariant to task-agnostic artifacts (e.g. ocular and cardiac activity). PNA draws inspiration from automatic speech recognition systems, where environmental noise (e.g. dogs barking, city traffic) is added to clean speech to improve robustness. Analogously, we decompose brain recordings into clean data and noise artifacts using independent component analysis (ICA), before scaling and remixing to generate biophysically realistic, label-preserving training examples. We show that PNA approximates anisotropic regularization, penalizing decoder sensitivity along artifact-dominated directions. On MegNIST, a 12k-trial imagined-digit MEG dataset, PNA with 10-trial averaging improves EEGNet decoding accuracy by 4.7 percentage points (absolute) over training on real data alone. Our results suggest that artifact-aware augmentation and trial averaging are complementary tools for improving robustness in non-invasive speech BCIs.",
+      "authors": [
+        "Benjamin Ballyk",
+        "Teyun Kwon",
+        "Miran Özdogan",
+        "Oiwi Parker Jones"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-06T14:47:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.05165v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes brain signals into speech using physiological noise augmentation",
+      "llm_evidence_cn": "使用生理噪声增强将脑信号解码为语音",
+      "llm_evidence": "使用生理噪声增强将脑信号解码为语音",
+      "canonical_evidence": "使用生理噪声增强将脑信号解码为语音",
+      "llm_tldr_en": "PNA improves non-invasive brain-to-speech decoding by training decoders invariant to physiological artifacts.",
+      "llm_tldr_cn": "PNA通过训练解码器对生理伪影不变来改进非侵入式脑到语音解码。",
+      "llm_tldr": "PNA通过训练解码器对生理伪影不变来改进非侵入式脑到语音解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.04046v1",
+      "source": "arxiv",
+      "title": "Likelihood Geometry of Moving Average and Autoregressive Processes",
+      "abstract": "We study the problem of maximum likelihood estimation for moving average (MA) time series models from the perspective of algebraic statistics, with a focus on the structure and number of solutions of their likelihood equations. Of particular interest is to classify the critical points that lead to non-invertible models. We consider the composite likelihood as an alternative estimation method and analyze its critical points. We extend our algebraic analysis to autoregressive processes (AR). We provide algebraic closed form formulas for the parameters when possible. We also explore in simulations how methods from numerical algebraic geometry perform against traditional optimization for these models.",
+      "authors": [
+        "Carlos Améndola",
+        "Gabriel Riffo"
+      ],
+      "primary_category": "math.ST",
+      "categories": [
+        "math.ST",
+        "cs.SC",
+        "math.AG"
+      ],
+      "published": "2026-07-04T22:18:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.04046v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Algebraic analysis of MA and AR time series models",
+      "llm_evidence_cn": "MA和AR时间序列模型的代数分析",
+      "llm_evidence": "MA和AR时间序列模型的代数分析",
+      "canonical_evidence": "MA和AR时间序列模型的代数分析",
+      "llm_tldr_en": "Provides algebraic closed-form formulas for parameters in MA and AR processes",
+      "llm_tldr_cn": "为MA和AR过程参数提供代数闭式公式",
+      "llm_tldr": "为MA和AR过程参数提供代数闭式公式",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.04140v1",
+      "source": "arxiv",
+      "title": "DELTA-TTS: Adapting Autoregressive Model into Diffusion Language Model for Text-to-Speech",
+      "abstract": "Autoregressive (AR) text-to-speech (TTS) models generate discrete speech tokens sequentially, which makes inference slow and can degrade robustness by propagating local errors and hallucinations. This limitation stems from their left-to-right AR commitment: each token must be determined before future speech-token context is available. However, such ordering is not an inherent requirement for TTS, as the full input text is available before synthesis. In this paper, we introduce DELTA-TTS, a lightweight LoRA-based adaptation framework that converts a pretrained AR TTS model into a discrete diffusion language model (dLLM) for confidence-ordered speech-token decoding. To better capture the local structure of speech, DELTA-TTS incorporates a convolution module that injects local acoustic context, together with a $1/t$-weighted training objective and a time-shifted inference schedule that defer low-confidence positions to later steps. Trained on only $585$ hours of LibriTTS, DELTA-TTS achieves a $\\textbf{1.75}\\%$ WER on Seed-TTS test-en, outperforming its AR backbone while generating tokens $\\textbf{3.3}\\times$ faster. Further analysis shows that DELTA-TTS produces sharper text--speech alignment, increases overall decoding confidence, and mitigates hallucinations observed in AR generation.",
+      "authors": [
+        "Junwon Moon",
+        "Seungbeom Kim",
+        "Yejin Lee",
+        "Hoseong Ahn",
+        "Sewoong Park",
+        "Heeseung Kim",
+        "Kyuhong Shim"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.CL"
+      ],
+      "published": "2026-07-05T06:45:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.04140v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "converts AR TTS outputs to diffusion-based sequences",
+      "llm_evidence_cn": "将自回归TTS输出转换为基于扩散的序列",
+      "llm_evidence": "将自回归TTS输出转换为基于扩散的序列",
+      "canonical_evidence": "将自回归TTS输出转换为基于扩散的序列",
+      "llm_tldr_en": "LoRA-based adaptation converting AR TTS model into diffusion language model for better sequence decoding.",
+      "llm_tldr_cn": "基于LoRA的适配将自回归TTS模型转换为扩散语言模型，改进序列解码。",
+      "llm_tldr": "基于LoRA的适配将自回归TTS模型转换为扩散语言模型，改进序列解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04153v1",
+      "source": "arxiv",
+      "title": "Mask-based Predictive Representations for Reinforcement Learning",
+      "abstract": "Vision-based deep reinforcement learning involves dealing with high-dimensional inputs of image information. It is crucial to abstract effective states from high-dimensional image inputs and limited samples for sample-efficient reinforcement learning. To address this challenge, inspired by fields such as natural language processing and computer vision, we propose a self-supervised task based on mask prediction as an auxiliary task for reinforcement learning. This non-reconstruction method uses the sequence information collected by the agent from the environment and the context information in the sequence to predict the masked information, thereby strengthening the agent's understanding of the task and learning effective representations. Combined with transformers, we find that the model reconstructs the masked input sequence in the latent space. By feeding the compressed representations learned by this method into reinforcement learning models, we observe an improvement in the sample efficiency of reinforcement learning. Moreover, the model outperforms state-of-the-art sample-efficient reinforcement learning methods on multiple continuous and discrete control benchmarks.",
+      "authors": [
+        "Kai Zhao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-05T07:42:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.04153v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "mask-based self-supervised representation learning from sequences",
+      "llm_evidence_cn": "基于掩码的自监督序列表示学习",
+      "llm_evidence": "基于掩码的自监督序列表示学习",
+      "canonical_evidence": "基于掩码的自监督序列表示学习",
+      "llm_tldr_en": "Uses mask prediction to learn effective representations from sequential data for RL.",
+      "llm_tldr_cn": "使用掩码预测从序列数据中学习有效表示以用于强化学习。",
+      "llm_tldr": "使用掩码预测从序列数据中学习有效表示以用于强化学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.04245v1",
+      "source": "arxiv",
+      "title": "Signal or Noise? Understanding Generative Models for Real-World Sensor Time Series",
+      "abstract": "Generative models have changed how machine learning represents complex data distributions, especially in language and vision, yet many real-world systems are observed instead as continuous, high-dimensional, and noisy sensor time series. Existing generative modeling of sensor data, however, remains fragmented across modalities, datasets, and task formulations, limiting a systematic understanding of when, how, and why generative models succeed or fail in real-world settings. To address this gap, we introduce SensorGen, a large-scale study of sensor-signal generation spanning 14 settings across 4 domains, 7 datasets, and 12 signal modalities. Leveraging SensorGen, we systematically evaluate generative models from five major families and uncover three key findings: (1) flow-matching models provide strong overall performance across most settings; (2) signal properties matter, with demographic covariates improving longitudinal generation and time-frequency modeling improving high-frequency signal generation; and (3) generated signals have practical utility beyond visual realism, with scaling improving generation quality and synthetic data improving downstream performance. Together, SensorGen establishes a broader understanding of design choices, evaluation protocols, and failure modes in real-world sensor data generation.",
+      "authors": [
+        "Zitao Shuai",
+        "Zongzhe Xu",
+        "Yuntian Wu",
+        "Sirui Li",
+        "Tianhong Li",
+        "Yuzhe Yang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-05T11:45:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.04245v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Studies generative models for sequential sensor time series data analysis",
+      "llm_evidence_cn": "研究用于传感器时序数据生成的生成模型",
+      "llm_evidence": "研究用于传感器时序数据生成的生成模型",
+      "canonical_evidence": "研究用于传感器时序数据生成的生成模型",
+      "llm_tldr_en": "Large-scale study of generative models for real-world sensor time series data.",
+      "llm_tldr_cn": "大规模研究真实世界传感器时序数据的生成模型。",
+      "llm_tldr": "大规模研究真实世界传感器时序数据的生成模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.04306v1",
+      "source": "arxiv",
+      "title": "SAD-LoRA: Spectral Alignment for Low-Rank Knowledge Distillation",
+      "abstract": "Distilling a fine-tuned teacher into a LoRA-adapted student is a standard recipe for parameter-efficient compression, but output-level KD does not explicitly control which rank-$r$ weight subspace the adapter occupies. We propose \\textbf{SAD-LoRA} (\\textbf{S}pectral \\textbf{A}lignment \\textbf{D}istillation), which selects this subspace from the data-weighted student-space reference update $\\DWT\\Sigx^{1/2}$ and maintains it during training via a differentiable principal-angle loss on $\\colspan(B)$. We show that the data-weighted distillation error decomposes exactly into subspace misalignment, within-subspace coefficient mismatch, and irreducible rank residual; standard KD can affect the first term only indirectly through output gradients. On controlled synthetic problems with a flat teacher spectrum, SAD-LoRA reduces the subspace-misalignment term from $51\\%$ to nearly zero and lifts final subspace alignment from $0.49$ to $1.00$. On RoBERTa-large to RoBERTa-base distillation across six GLUE tasks, SAD-LoRA improves rank efficiency: at $r{=}4$, it matches or beats the strongest included spectral baseline on five of six tasks, and at $r{=}8$ it gives the best result on SST-2 and CoLA. Ablations identify subspace alignment as the load-bearing component, while coefficient matching is auxiliary.",
+      "authors": [
+        "Omer Tariq",
+        "Syed Muhammad Raza",
+        "Jeongbae Son"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-07-05T13:44:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.04306v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Spectral alignment distillation for LoRA adapters improves knowledge transfer from pretrained models",
+      "llm_evidence_cn": "谱对齐蒸馏提升预训练模型知识迁移",
+      "llm_evidence": "谱对齐蒸馏提升预训练模型知识迁移",
+      "canonical_evidence": "谱对齐蒸馏提升预训练模型知识迁移",
+      "llm_tldr_en": "SAD-LoRA aligns weight subspaces for better knowledge distillation of fine-tuned teachers",
+      "llm_tldr_cn": "SAD-LoRA对齐权重子空间以更好蒸馏微调教师",
+      "llm_tldr": "SAD-LoRA对齐权重子空间以更好蒸馏微调教师",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
