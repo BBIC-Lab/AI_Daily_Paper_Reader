@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.05238v1/fig-002.webp",
+      "caption": "Figure 2: Two-step successor beliefs at high-branching cells. Rows: three cells whose two-step successor law has three or four valid modes. Columns: empirical ground truth (green), the dense single predictor (red), and MoP-JEPA (blue). Each panel is the local 2-D latent plane spanned by the true successor embeddings; floor axes give the latent coordinates, and the vertical coordinate is unit-normalized predictive density. Green pins mark true successor latents. Percentages in the left column are empirical two-step branch frequencies; percentages in the right column are router weights πk for active heads. The dense predictor collapses to one peak, while MoP-JEPA re-opens the multimodal fan-out with one predicted peak per branch.",
+      "page": 3,
+      "index": 2,
+      "width": 483,
+      "height": 461
+    },
+    {
+      "url": "assets/figures/arxiv/2607.05238v1/fig-004.webp",
+      "caption": "Table 1: The paper’s evidence chain: stochastic targets create conditional-mean collapse; hard-assigned heads specialize to modes; mode enumeration restores a transition graph that can be audited by planning.",
+      "page": 5,
+      "index": 4,
+      "width": 481,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2607.05238v1/fig-003.webp",
+      "caption": "Figure 4: Evidence chain before benchmark scores. Left: beyond 2-D mazes, MoP improves the appropriate domain metric (coverage for pixel/SVHN, inverse ADE for ETH/UCY); in DINO-WM, the winning head is hundreds of times closer than the mean head, showing specialization in the official world-model code. Middle: as the true number of modes grows in a controlled conformer branch sweep, dense coverage degrades fast, MDN partially covers, and hard-assigned MoP remains highest. Right: on real two-step maze branchings, dense recovers no successor modes while MoP recovers most 3/4-way successors; this is the empirical specialization predicted by Prop. 3.",
+      "page": 5,
+      "index": 3,
+      "width": 1010,
+      "height": 290
+    },
+    {
+      "url": "assets/figures/arxiv/2607.05238v1/fig-001.webp",
+      "caption": "Table 4: Within the JEPA world-model family — same encoder, data, and planner, only the predictor changes — ours wins verified planning on all three mazes (2–5×; 5 seeds.) Left block (realroute): a plan counts only if the model’s blindly-proposed transition graph contains a route of real transitions, so coverage cannot be freeloaded. Dense/gated-MoE/VarJEPA are mode-collapsed (Props. 1–2); MDN covers but routes through non-existent edges (precision 0.14–0.21 vs. ours 0.42–0.56; large-stitch adjudicated at matched K=16/60k steps). Right block: real-environment execution success (official info[’success’], our replanning executor); MDN’s higher medium-stitch number is the executor’s online repair compensating its low-precision graph, which is precisely why model fidelity is judged by realroute. External context: on large-stitch our execution (33) sits second among the seven published OGBench offline-GCRL baselines (Park et al. 2025) (QRL 84; then ours, GCIQL 31, HIQL 13, GCIVL 12, GCBC 7, CRL 0) — notable for a generic world model plus search rather than a policy trained end-to-end for the benchmark.",
+      "page": 7,
+      "index": 1,
+      "width": 760,
+      "height": 181
+    }
+  ]
+}

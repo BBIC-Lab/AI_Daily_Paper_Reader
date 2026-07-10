@@ -1,0 +1,412 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-10T21:02:32.026692+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 53,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 102,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 17,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 12,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 18
+  },
+  "deep_dive": [
+    {
+      "id": "2607.05171v1",
+      "source": "arxiv",
+      "title": "RABBiT: Rapidly adaptive BOLD foundation model via brain-tuning for accurate zero-shot and few-shot prediction of speech-elicited responses in the brain",
+      "abstract": "Language understanding in the brain is context-dependent, varying across experimental stimuli and individuals, which makes it difficult to build computational models that generalize across both. This calls for a foundation model of language-evoked brain activity that can capture shared structure while adapting efficiently to new participants and inputs. We introduce RABBiT (Rapidly Adaptive BOLD foundation model via BraIn-Tuning), a compact audio-to-fMRI encoder designed for accurate zero- and few-shot prediction. A comprehensive evaluation on 324 participants across multiple unseen fMRI datasets shows that RABBiT enables accurate zero-shot prediction of fMRI responses to natural speech across auditory and language-selective regions, surpassing the SOTA foundation model for fMRI and predictions based on group averages. With as little as 10 minutes of participant-specific data, RABBiT further improves performance via parameter-efficient tuning, substantially outperforming per-participant linear models. RABBiT's performance is driven by two key innovations: (1) learned region-specific attention, and (2) a decomposition of brain responses into shared and subject-specific components, combined with a brain-tuned speech backbone. In addition to supporting strong predictive accuracy, the structured, region-specific representations that RABBiT learns enable interpretability. By eliminating the need for extensive per-participant data and model fitting, RABBiT enables scalable population-level analyses of language in the human brain. We make the code available at https://github.com/bridge-ai-neuro/rabbit.",
+      "authors": [
+        "Omer Moussa",
+        "Mariya Toneva"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-06T14:54:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.05171v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Decodes neural signals (fMRI) into language representations",
+      "llm_evidence_cn": "将神经信号（fMRI）解码为语言表示",
+      "llm_evidence": "将神经信号（fMRI）解码为语言表示",
+      "canonical_evidence": "将神经信号（fMRI）解码为语言表示",
+      "llm_tldr_en": "Foundation model for zero-shot fMRI prediction of speech",
+      "llm_tldr_cn": "用于零样本语音fMRI预测的基础模型",
+      "llm_tldr": "用于零样本语音fMRI预测的基础模型",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.05238v1",
+      "source": "arxiv",
+      "title": "MoP-JEPA: Hard-Assigned Predictor Mixtures for Stochastic JEPA World Models",
+      "abstract": "JEPA world models predict the next latent state with a single deterministic predictor trained by latent regression. We show that this fails structurally when the environment is stochastic: at a branching transition, the regression-optimal predictor outputs the conditional mean of the successor embeddings, a point between the true next states that corresponds to no state at all. We prove this collapse for deterministic and gated mixture-of-experts predictors, and prove that MoP-JEPA's hard-assigned predictors converge instead to a quantizer of the transition distribution: one head per successor mode, enumerable in a single forward pass, which is the interface a planner consumes. On official OGBench offline data with leak-free evaluation, planning over single-predictor rollouts performs poorly ($0.02$--$0.09$ success) while planning over our predicted modes reaches up to $0.85$, ahead of deterministic, gated-MoE, and variational predictors on every task. Because multi-prediction evaluation invites coverage freeloading, a verification protocol is part of the method: an input-agnostic codebook control, a shuffled-context test, router-gated readouts, transition-precision guards, and a verified-route criterion in which the model proposes its transition graph blind and ground truth is used only to check the result. Under this criterion our method outperforms the strongest soft alternative on all three mazes ($2$--$5\\times$), and the protocol identifies the remaining gap in that baseline's raw scores as routes through predicted transitions that do not exist. The same model executes in the real environment, placing second of seven against the published OGBench baselines on the hardest maze. Multimodal dynamics decide whether a JEPA world model can plan at all; a mixture of predictors with hard assignment is a minimal and verifiable fix.",
+      "authors": [
+        "Zhi Song",
+        "Ximing Xing",
+        "Zhenchao Tang",
+        "hanbo Huang",
+        "Tianxu Lv",
+        "minghao Yang",
+        "Zhongzheng Niu",
+        "He Bing",
+        "Lusheng Wang",
+        "Jianhua Yao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-06T15:47:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.05238v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "next latent state prediction in stochastic environments",
+      "llm_evidence_cn": "随机环境中下一潜状态预测",
+      "llm_evidence": "随机环境中下一潜状态预测",
+      "canonical_evidence": "随机环境中下一潜状态预测",
+      "llm_tldr_en": "MoP-JEPA uses hard-assigned predictor mixtures to predict next latent states in stochastic worlds.",
+      "llm_tldr_cn": "MoP-JEPA使用硬分配预测器混合在随机世界中预测下一潜状态。",
+      "llm_tldr": "MoP-JEPA使用硬分配预测器混合在随机世界中预测下一潜状态。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.05590v1",
+      "source": "arxiv",
+      "title": "DBNN: Neural Spike Classification Using a Deep Binarized Neural Network",
+      "abstract": "Implantable brain-computer interfaces require on-node spike sorting to reduce telemetry bandwidth and power while maintaining reliable neural decoding. This paper presents a hardware-oriented deep binarized neural network (DBNN) spike-sorting system with two binarized hidden layers with 256 neurons and a fixed-point output layer to enable multiplier-free inference dominated by sign-controlled accumulation and bit-wise logic. The proposed classifier operates on compact 16-sample spike waveforms to reduce the implementation cost (16-256-256-3) and achieves a median classification accuracy of 98.7% on both synthetic and in-vivo datasets. An FPGA prototype on a Cyclone V device operates at 50 MHz and requires 528 cycles per spike, corresponding to a 0.01 ms compute latency, while consuming 828 ALMs and 1023 registers with zero DSP blocks. For ASIC feasibility, the DBNN is implemented using FreePDK45-based flow; synthesis in Synopsys Design Compiler indicates an estimated silicon area of 0.014 mm2 and an operating power of 122 nW at 20 kHz under a 1.1 V supply. These results demonstrate that the proposed DBNN spike sorter offers a favorable trade-off between accuracy and implementation cost, supporting low-power, implantable neural interfaces. Overall, the proposed DBNN spike sorter achieves high accuracy (98.7%) with extremely low hardware cost (0.014 mm2, 122 nW at 20 kHz) and multiplier-free operation, making it suitable for low-power, implantable neural interfaces. This paper introduces the first DBNN designed for real-time neural spike sorting, striking an excellent balance between input data size and network complexity.",
+      "authors": [
+        "Binyi Ren",
+        "Luca M. Meyer",
+        "Majid Zamani"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.LG"
+      ],
+      "published": "2026-07-06T19:41:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.05590v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "neural spike classification for brain-computer interfaces",
+      "llm_evidence_cn": "用于脑机接口的神经尖峰分类",
+      "llm_evidence": "用于脑机接口的神经尖峰分类",
+      "canonical_evidence": "用于脑机接口的神经尖峰分类",
+      "llm_tldr_en": "Presents a deep binarized neural network for efficient spike sorting in BCIs.",
+      "llm_tldr_cn": "提出深度二值化神经网络用于脑机接口中的高效尖峰分类。",
+      "llm_tldr": "提出深度二值化神经网络用于脑机接口中的高效尖峰分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.05864v1",
+      "source": "arxiv",
+      "title": "MSCENet: A Multi-Scale Correlation Enhanced Network for Anomaly Detection",
+      "abstract": "In the field of multivariate time series anomaly detection, against the backdrop of increasing data complexity and complex dependencies across multiple temporal scales, traditional methods often struggle to simultaneously capture temporal dynamic features and intricate inter-series correlations. To address this, we propose an innovative framework, MSCENet, which leverages advanced spatio-temporal learning and multi-scale learning techniques to enhance detection accuracy. MSCENet includes a fine-grained temporal convolution module that captures complex temporal dependencies through dilated convolutions, enabling the detection of both short- and long-term patterns. Additionally, the framework models inter-series relationships as a graph structure, using Mixhop graph convolutions to adaptively capture spatial dependencies across varying time scales. To support robust anomaly detection, the multi-scale gated convolution module in MSCENet integrates spatial and temporal attributes through gated mechanisms, facilitating the detection of subtle variations across multiple scales. Experimental evaluations on real-world datasets: SMD, PSM, and SWaT. It provides an adaptable and high-performance solution for anomaly detection in complex time series data environments.",
+      "authors": [
+        "Long Zhao",
+        "Shixun Ji",
+        "Zhipeng Wang",
+        "Bin Cheng",
+        "Bin He"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-07T05:42:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.05864v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-scale temporal convolution for time series anomaly detection",
+      "llm_evidence_cn": "多尺度时序卷积用于时间序列异常检测",
+      "llm_evidence": "多尺度时序卷积用于时间序列异常检测",
+      "canonical_evidence": "多尺度时序卷积用于时间序列异常检测",
+      "llm_tldr_en": "Proposes MSCENet for multivariate time series anomaly detection using multi-scale learning.",
+      "llm_tldr_cn": "提出MSCENet，利用多尺度学习进行多变量时间序列异常检测。",
+      "llm_tldr": "提出MSCENet，利用多尺度学习进行多变量时间序列异常检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.06284v1",
+      "source": "arxiv",
+      "title": "Quantifying Entrainment Evidence: A Comparison of Frequentist and Bayesian Approaches for Information Processing Pathway Maps",
+      "abstract": "Information Processing Pathway Maps (IPPMs) offer a scalable framework for formalizing the complex sequence of mathematical transformations applied to sensory stimuli. These maps chart the latency and cortical expression of computational steps, relying on statistical inference to link model outputs with observed neural activity. Traditionally, this mapping has relied on frequentist hypothesis testing. However, determining which of several competing computational models best explains neural data is a problem of model adjudication, arguably better suited to probabilistic inference. Here, we present a direct comparison between the established frequentist approach and a novel Bayesian framework for mapping cortical entrainment. While the Bayesian formulation retains the core strength of IPPMs -- generating explicit predictions of time-varying neural signals -- it fundamentally alters the selection criterion, shifting from rejecting a null hypothesis to quantifying the relative evidence for competing computational hypotheses. We evaluate the performance and interpretability of both approaches using an auditory neuroimaging dataset to reconstruct a known loudness-processing pathway. We discuss the implications of this shift for systems neuroscience, specifically regarding the handling of collinear models and the robust accumulation of evidence.",
+      "authors": [
+        "Kaibo Zhang",
+        "Ji Wu",
+        "Chao Zhang",
+        "Andrew Thwaites"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "stat.AP"
+      ],
+      "published": "2026-07-07T13:50:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.06284v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Models sequence of transformations linking stimuli to neural activity",
+      "llm_evidence_cn": "建模将刺激与神经活动联系起来的变换序列",
+      "llm_evidence": "建模将刺激与神经活动联系起来的变换序列",
+      "canonical_evidence": "建模将刺激与神经活动联系起来的变换序列",
+      "llm_tldr_en": "Bayesian and frequentist comparison for neural information processing pathway maps",
+      "llm_tldr_cn": "神经信息处理通路图的贝叶斯与频率派比较",
+      "llm_tldr": "神经信息处理通路图的贝叶斯与频率派比较",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.04525v1",
+      "source": "arxiv",
+      "title": "Language Models Represent and Transform Concepts with Shared Geometry",
+      "abstract": "How concepts are represented in neural networks is a fundamental question in machine learning. The dominant view treats concept representations as stationary geometric objects. Yet concepts appear in context, and context transforms them. Drawing from neural population geometry, we formalize concept representations as point-cloud manifolds and contextual transformations as vector fields, and instantiate this framework in large language models. Across six model families of varying scales, we find that context moves each concept differently. The variance in these displacements is semantically organized, correlating with lexical concreteness and density. Importantly, both the concepts being transformed and this variance structure are shared across models: displacement structure transported from one model predicts held-out displacements in others significantly above chance. Together, these findings show that models share a common geometry not only in how concepts are represented, but more importantly in how context transforms them, a structure with richer organization than prior work has recognized.",
+      "authors": [
+        "Zhimin Hu",
+        "Lanhao Niu",
+        "Sashank Varma"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-05T22:16:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.04525v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "concept representations as manifolds and contextual transformations",
+      "llm_evidence_cn": "概念表示为流形及上下文变换",
+      "llm_evidence": "概念表示为流形及上下文变换",
+      "canonical_evidence": "概念表示为流形及上下文变换",
+      "llm_tldr_en": "Language Models Represent and Transform Concepts studies shared geometric representations in LLMs",
+      "llm_tldr_cn": "语言模型表示和变换概念研究LLM中共享的几何表示",
+      "llm_tldr": "语言模型表示和变换概念研究LLM中共享的几何表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.04548v1",
+      "source": "arxiv",
+      "title": "Explainable Novel Category Discovery in Semantic Concept Space",
+      "abstract": "Novel category discovery aims to identify unseen classes from unlabeled data by transferring knowledge from labeled categories, but most existing methods perform discovery in opaque latent feature spaces. As a result, they may separate novel categories accurately while providing little insight into what semantic evidence defines each discovered group. We propose xNCD, an explainable novel category discovery framework that performs both representation-based discovery and pseudo-label assignment directly in a structured semantic concept space. Instead of clustering arbitrary deep features, xNCD learns a label-free concept representation by aligning visual features with vision-language similarity priors from pretrained multimodal models, and then applies a unified labeled-and-unlabeled self-labeling objective over concept-space logits. This design makes each discovered category explainable by construction through stable concept signatures and instance-level concept evidence. Theoretically, we show that routing discovery through a semantic concept bottleneck induces a strict restriction of the feature-space hypothesis class, excluding a large family of unconstrained decision rules and biasing induced partitions toward semantically interpretable concept coordinates. Experiments on CIFAR-10, CIFAR-100, and CUB-200 demonstrate that xNCD preserves strong discovery performance while providing intrinsic explanations. Under task-agnostic evaluation, xNCD achieves 92.63% overall accuracy on CIFAR-10, close to UNO's 93.4%, and improves CIFAR-100 overall accuracy from 73.2% to 76.45%, while being the only compared method that provides human-readable cluster- and instance-level explanations.",
+      "authors": [
+        "Ifrat Ikhtear Uddin",
+        "Yang Zhou",
+        "KC Santosh",
+        "Longwei Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-05T23:36:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.04548v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "aligns visual features with pretrained vision-language priors for novel category discovery",
+      "llm_evidence_cn": "将视觉特征与预训练视觉-语言先验对齐以发现新类别",
+      "llm_evidence": "将视觉特征与预训练视觉-语言先验对齐以发现新类别",
+      "canonical_evidence": "将视觉特征与预训练视觉-语言先验对齐以发现新类别",
+      "llm_tldr_en": "Presents xNCD for explainable novel category discovery by aligning visual features with pretrained vision-language priors.",
+      "llm_tldr_cn": "提出xNCD，通过视觉特征与预训练视觉-语言先验对齐，实现可解释的新类别发现。",
+      "llm_tldr": "提出xNCD，通过视觉特征与预训练视觉-语言先验对齐，实现可解释的新类别发现。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04709v1",
+      "source": "arxiv",
+      "title": "Hierarchical Scaffolding Enables Human-Like Cognitive Selectivity under Data Scarcity",
+      "abstract": "Modern machine learning systems demand extensive datasets for visual recognition. Conversely, humans learn with high efficiency despite severe data limitations, often by acquiring broad categorical structures before refining finer distinctions. Inspired by this contrast, we introduce SCALA (Scaffolded Cognitive Architecture for Learning under limited dAta), a hierarchical learning framework grounded in cognitive psychology that guides models from coarse conceptual structures to fine-grained recognition. Our model exhibits human-like cognitive selectivity by effectively prioritizing task-relevant features while suppressing background distractors, a mechanism that induces a fundamental shift in representation learning. This shift is characterized by accelerated cluster formation, reduced intra-class dispersion, and enhanced semantic separability. Empirically, SCALA achieves significant accuracy improvements under severe data scarcity. Furthermore, this hierarchical scaffolding promotes robust generalization to unseen classes and accelerates the acquisition of novel categories. Collectively, our results establish SCALA as a powerful framework for achieving human-level sample efficiency and resilient category generalization in data-constrained environments.",
+      "authors": [
+        "Juhyoung Park",
+        "Jaehyuk Bae",
+        "Hyeonbo Yang",
+        "Se-Bum Paik"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-07-06T06:24:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.04709v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "hierarchical scaffolding learns compact representations from raw data under scarcity",
+      "llm_evidence_cn": "层次脚手架在数据稀缺下从原始数据学习紧凑表示",
+      "llm_evidence": "层次脚手架在数据稀缺下从原始数据学习紧凑表示",
+      "canonical_evidence": "层次脚手架在数据稀缺下从原始数据学习紧凑表示",
+      "llm_tldr_en": "Proposes SCALA, a hierarchical framework that learns coarse-to-fine representations with human-like feature selectivity under data scarcity.",
+      "llm_tldr_cn": "提出SCALA层次框架，在数据稀缺下学习从粗到精表示，具备类人特征选择性。",
+      "llm_tldr": "提出SCALA层次框架，在数据稀缺下学习从粗到精表示，具备类人特征选择性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.04733v1",
+      "source": "arxiv",
+      "title": "LP-SFT: Local-Preserving Supervised Fine-Tuning via Multimodal Entropy Structure",
+      "abstract": "Supervised fine-tuning (SFT) is the standard approach for adapting pretrained language models to downstream domains, yet it often improves target-domain behavior at the cost of degrading pre-existing capabilities. Standard cross-entropy fine-tuning promotes only the observed label token and leaves unconstrained how probability mass is redistributed over other plausible alternatives, potentially distorting the rich local preference structure learned during pretraining. We first analyze next-token predictions using Shannon and Renyi entropies, revealing that pretrained models exhibit a regular multimodal entropy structure. These entropy peaks correspond to varying numbers of plausible alternatives, indicating that the base model intrinsically encodes rich distributional knowledge beyond the single supervised token. Motivated by this observation, we propose LP-SFT, a Local-Preserving Supervised Fine-Tuning objective designed to explicitly protect this inherent entropy structure. At each step, LP-SFT constructs an adaptive support of alternative tokens and applies a locally normalized preservation loss to maintain the base model's relative structure among them, while standard cross-entropy independently optimizes the supervised token. Across mixed-domain and single-domain fine-tuning experiments, LP-SFT improves overall performance over vanilla SFT and recent SFT-enhancement baselines, achieving the best balance between pass@1 accuracy and pass@k performance. These results suggest that local preservation helps mitigate capability degradation without collapsing sampling-accessible diversity.",
+      "authors": [
+        "Yueyang Wang",
+        "Baolong Bi",
+        "Shuo Lu",
+        "Jingyuan Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-06T07:14:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.04733v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "local-preserving fine-tuning adapts pretrained models to downstream tasks",
+      "llm_evidence_cn": "局部保持微调将预训练模型适配到下游任务",
+      "llm_evidence": "局部保持微调将预训练模型适配到下游任务",
+      "canonical_evidence": "局部保持微调将预训练模型适配到下游任务",
+      "llm_tldr_en": "LP-SFT adapts pretrained models to downstream tasks while preserving local preference structure.",
+      "llm_tldr_cn": "LP-SFT在保留局部偏好结构的同时将预训练模型适配到下游任务。",
+      "llm_tldr": "LP-SFT在保留局部偏好结构的同时将预训练模型适配到下游任务。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.04809v1",
+      "source": "arxiv",
+      "title": "Context-Constrained Transfer Learning for Tabular Foundation Models via Data Distillation",
+      "abstract": "Tabular Foundation Models (TFMs) have demonstrated strong empirical performance as black-box inference engines through in-context learning. However, their use in transfer learning is limited by two obstacles: strict context-size constraints and sensitivity to distribution shifts between source and target tasks. Directly pooling heterogeneous source data can therefore lead to negative transfer. To address these challenges, we propose Context-Constrained Transfer Learning via ANchoring and DIstillation (TL-ANDI), a posterior-aware distillation framework for TFMs. TL-ANDI constructs a compact source context by solving a budget-constrained optimal transport problem whose cost jointly measures target covariate coverage and posterior compatibility. The selected anchor samples are then equipped with locally distilled labels and combined with a residual calibration step using target data.",
+      "authors": [
+        "Yijun Lin",
+        "Sai Li"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-07-06T08:46:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.04809v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "context-constrained transfer learning via data distillation",
+      "llm_evidence_cn": "通过数据蒸馏实现上下文约束的迁移学习",
+      "llm_evidence": "通过数据蒸馏实现上下文约束的迁移学习",
+      "canonical_evidence": "通过数据蒸馏实现上下文约束的迁移学习",
+      "llm_tldr_en": "TL-ANDI uses optimal transport distillation to overcome negative transfer in tabular foundation models.",
+      "llm_tldr_cn": "TL-ANDI使用最优传输蒸馏克服表格基础模型中的负迁移。",
+      "llm_tldr": "TL-ANDI使用最优传输蒸馏克服表格基础模型中的负迁移。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

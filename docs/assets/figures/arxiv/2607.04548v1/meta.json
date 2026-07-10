@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.04548v1/fig-002.webp",
+      "caption": "Figure 1: An input image x is processed by a pretrained encoder Eθ to produce features z ∈ Rdz . The concept projection layer Wc maps these features to interpretable concept activations ĉ ∈ RK , where each dimension corresponds to a human-understandable attribute. Two classification heads operate on concept activations: a labeled head h for known categories and an unlabeled head g for novel categories discovery. Logits are concatenated and passed through a unified softmax over all Cl + Cu categories.",
+      "page": 3,
+      "index": 2,
+      "width": 706,
+      "height": 190
+    },
+    {
+      "url": "assets/figures/arxiv/2607.04548v1/fig-003.webp",
+      "caption": "Figure 2: Overview of the xNCD framework. Stage 1: Encoder pretraining on labeled data with cross-entropy loss. Stage 2: Concept projection Wc is trained on all images by aligning concept activations with CLIP image-text similarities no concept annotations required. Stage 3: Novel categories are discovered by clustering in concept space, yielding interpretable clusters characterized by human-readable concept profiles (e.g., “four-legged, furry, wide mouth” for a dog cluster).",
+      "page": 3,
+      "index": 3,
+      "width": 664,
+      "height": 427
+    },
+    {
+      "url": "assets/figures/arxiv/2607.04548v1/fig-001.webp",
+      "caption": "Figure 3: t-SNE visualization of concept space on CIFAR-10. Clear separation between all 10 categories (5 labeled, 5 novel) demonstrates that concept space preserves discriminative structure. Semantically similar categories (e.g., dog/cat, ship/airplane) cluster near each other.",
+      "page": 7,
+      "index": 1,
+      "width": 498,
+      "height": 398
+    },
+    {
+      "url": "assets/figures/arxiv/2607.04548v1/fig-004.webp",
+      "caption": "Table 2: Comparison with state-of-the-art methods on CIFAR-10 and CIFAR-100 using task-agnostic evaluation. We report accuracy on labeled categories (Lab), clustering accuracy on novel categories (Unlab), and overall accuracy (All). xNCD is the only method providing human-interpretable explanations for discovered clusters.",
+      "page": 8,
+      "index": 4,
+      "width": 664,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2607.04548v1/fig-006.webp",
+      "caption": "Figure 4: Concept activation profiles for discovered novel categories on CIFAR-10. The dog cluster (left) activates living thing, four-legged mammal, wide mouth while deactivating ocean, wings, correctly distinguishing terrestrial mammals from vehicles and birds. The frog cluster (right) activates vertebrate, pond while deactivating boat-related concepts.",
+      "page": 9,
+      "index": 6,
+      "width": 818,
+      "height": 218
+    },
+    {
+      "url": "assets/figures/arxiv/2607.04548v1/fig-007.webp",
+      "caption": "Figure 5: Instance-level concept attribution for a CUB-200 bird image. Activated concepts (blue) such as yellow bill and yellow eyeball provide positive evidence, while suppressed concepts (red) such as green forehead and pale gray color indicate absent attributes. Such explanations enable domain experts to validate discovered categories by understanding not just what the model predicts but why.",
+      "page": 9,
+      "index": 7,
+      "width": 644,
+      "height": 223
+    },
+    {
+      "url": "assets/figures/arxiv/2607.04548v1/fig-005.webp",
+      "caption": "Figure 6: Additional cluster-level concept profiles for discovered novel categories",
+      "page": 19,
+      "index": 5,
+      "width": 818,
+      "height": 652
+    },
+    {
+      "url": "assets/figures/arxiv/2607.04548v1/fig-008.webp",
+      "caption": "Figure 7: Additional instance-level concept explanations for samples from CUB-200, CIFAR-10, and CIFAR-100.",
+      "page": 20,
+      "index": 8,
+      "width": 752,
+      "height": 1106
+    }
+  ]
+}

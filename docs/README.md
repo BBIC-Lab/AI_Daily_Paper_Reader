@@ -1,46 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-10
-- 运行时间：2026-07-10 05:44:41 北京时间
+- 最新运行日期：2026-07-11
+- 运行时间：2026-07-11 05:05:56 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-探索AI与科学建模的边界：今日聚焦联合嵌入预测架构与神经数据生物物理建模。 SiamJEPA揭示孪生学生编码器如何提升表征学习效率，而Learning Biophysical Models则让精准神经调控成为可能。 下一步可关注生成模型在真实传感器时序中的噪声角色，这对工业落地至关重要。
-- 详情：[/202607/10/README](/202607/10/README)
+今日精读脑科学基础模型RABBiT与随机世界模型MoP-JEPA，速读覆盖概念几何、认知选择性与多模态微调。  
+最值得关注：用脑调谐实现零样本解码言语响应，以及将混合预测器引入世界模型强化随机性学习。  
+建议读者从“概念共享几何”切入，理解大模型如何对齐人类认知结构。
+- 详情：[/202607/11/README](/202607/11/README)
 
 ### 精读区论文标签
-1. [SiamJEPA: On the Role of Siamese Student Encoders in JEPA](/202607/10/2607.04044v1-siamjepa-on-the-role-of-siamese-student-encoders-in-jepa)  
+1. [RABBiT: Rapidly adaptive BOLD foundation model via brain-tuning for accurate zero-shot and few-shot prediction of speech-elicited responses in the brain](/202607/11/2607.05171v1-rabbit-rapidly-adaptive-bold-foundation-model-via-brain-tuning-for-accurate-zero-shot-and-few-shot-prediction-of-speech-elicited-responses-in-the-brain)  
    标签：评分：9.0/10、query:ndai
-   evidence：研究孪生学生编码器用于自监督表示学习
-2. [Learning Biophysical Models of Large-Scale Multineuronal Data to Enable Precise Neurostimulation](/202607/10/2607.04063v1-learning-biophysical-models-of-large-scale-multineuronal-data-to-enable-precise-neurostimulation)  
+   evidence：将神经信号（fMRI）解码为语言表示
+2. [MoP-JEPA: Hard-Assigned Predictor Mixtures for Stochastic JEPA World Models](/202607/11/2607.05238v1-mop-jepa-hard-assigned-predictor-mixtures-for-stochastic-jepa-world-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：拟合多神经元数据以预测神经动力学的生物物理模型
-3. [Masked Generative-Contrastive Representation Learning for Cross-Dataset EEG-Based Emotion Recognition](/202607/10/2607.04139v1-masked-generative-contrastive-representation-learning-for-cross-dataset-eeg-based-emotion-recognition)  
+   evidence：随机环境中下一潜状态预测
+3. [DBNN: Neural Spike Classification Using a Deep Binarized Neural Network](/202607/11/2607.05590v1-dbnn-neural-spike-classification-using-a-deep-binarized-neural-network)  
    标签：评分：9.0/10、query:ndai
-   evidence：对EEG神经信号进行自监督表征学习
-4. [KinEMbed: Decoding Kinematics from Electromyography via Cross-Modal Contrastive Learning](/202607/10/2607.04820v1-kinembed-decoding-kinematics-from-electromyography-via-cross-modal-contrastive-learning)  
+   evidence：用于脑机接口的神经尖峰分类
+4. [MSCENet: A Multi-Scale Correlation Enhanced Network for Anomaly Detection](/202607/11/2607.05864v1-mscenet-a-multi-scale-correlation-enhanced-network-for-anomaly-detection)  
    标签：评分：9.0/10、query:ndai
-   evidence：从EMG神经信号解码手部运动学
-5. [Physiological Noise Augmentation Improves Non-Invasive Brain-to-Speech](/202607/10/2607.05165v1-physiological-noise-augmentation-improves-non-invasive-brain-to-speech)  
+   evidence：多尺度时序卷积用于时间序列异常检测
+5. [Quantifying Entrainment Evidence: A Comparison of Frequentist and Bayesian Approaches for Information Processing Pathway Maps](/202607/11/2607.06284v1-quantifying-entrainment-evidence-a-comparison-of-frequentist-and-bayesian-approaches-for-information-processing-pathway-maps)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用生理噪声增强将脑信号解码为语音
+   evidence：建模将刺激与神经活动联系起来的变换序列
 
 ### 速读区论文标签
-1. [Likelihood Geometry of Moving Average and Autoregressive Processes](/202607/10/2607.04046v1-likelihood-geometry-of-moving-average-and-autoregressive-processes)  
+1. [Language Models Represent and Transform Concepts with Shared Geometry](/202607/11/2607.04525v1-language-models-represent-and-transform-concepts-with-shared-geometry)  
    标签：评分：8.0/10、query:ndai
-   evidence：MA和AR时间序列模型的代数分析
-2. [Mask-based Predictive Representations for Reinforcement Learning](/202607/10/2607.04153v1-mask-based-predictive-representations-for-reinforcement-learning)  
+   evidence：概念表示为流形及上下文变换
+2. [Hierarchical Scaffolding Enables Human-Like Cognitive Selectivity under Data Scarcity](/202607/11/2607.04709v1-hierarchical-scaffolding-enables-human-like-cognitive-selectivity-under-data-scarcity)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于掩码的自监督序列表示学习
-3. [Signal or Noise? Understanding Generative Models for Real-World Sensor Time Series](/202607/10/2607.04245v1-signal-or-noise-understanding-generative-models-for-real-world-sensor-time-series)  
+   evidence：层次脚手架在数据稀缺下从原始数据学习紧凑表示
+3. [LP-SFT: Local-Preserving Supervised Fine-Tuning via Multimodal Entropy Structure](/202607/11/2607.04733v1-lp-sft-local-preserving-supervised-fine-tuning-via-multimodal-entropy-structure)  
    标签：评分：8.0/10、query:ndai
-   evidence：研究用于传感器时序数据生成的生成模型
-4. [SAD-LoRA: Spectral Alignment for Low-Rank Knowledge Distillation](/202607/10/2607.04306v1-sad-lora-spectral-alignment-for-low-rank-knowledge-distillation)  
+   evidence：局部保持微调将预训练模型适配到下游任务
+4. [Context-Constrained Transfer Learning for Tabular Foundation Models via Data Distillation](/202607/11/2607.04809v1-context-constrained-transfer-learning-for-tabular-foundation-models-via-data-distillation)  
    标签：评分：8.0/10、query:ndai
-   evidence：谱对齐蒸馏提升预训练模型知识迁移
-5. [DELTA-TTS: Adapting Autoregressive Model into Diffusion Language Model for Text-to-Speech](/202607/10/2607.04140v1-delta-tts-adapting-autoregressive-model-into-diffusion-language-model-for-text-to-speech)  
+   evidence：通过数据蒸馏实现上下文约束的迁移学习
+5. [Explainable Novel Category Discovery in Semantic Concept Space](/202607/11/2607.04548v1-explainable-novel-category-discovery-in-semantic-concept-space)  
    标签：评分：7.0/10、query:ndai
-   evidence：将自回归TTS输出转换为基于扩散的序列
+   evidence：将视觉特征与预训练视觉-语言先验对齐以发现新类别
 
