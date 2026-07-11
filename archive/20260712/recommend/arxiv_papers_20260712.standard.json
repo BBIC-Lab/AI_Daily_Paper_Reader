@@ -1,0 +1,413 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-11T20:14:08.101280+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 45,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 92,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 14,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 9,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 15
+  },
+  "deep_dive": [
+    {
+      "id": "2607.05850v1",
+      "source": "arxiv",
+      "title": "Breaking Spurious Correlations via Generative Randomization and Cross-Variant Self-Supervised Learning",
+      "abstract": "Deep neural networks trained with Empirical Risk Minimization (ERM) often fail under distribution shifts because they exploit spurious correlations between object labels and background context. Recent generative approaches address this issue by creating counterfactual images with altered contexts, but typically use these samples as standard data augmentation, leaving the model free to retain background-sensitive representations. We propose a two-stage framework that uses generative intervention to explicitly learn background-invariant visual representations. First, we isolate the foreground object using zero-shot segmentation and generate context-shifted variants with a structure-preserving diffusion model, preserving object identity while varying the surrounding environment. We then introduce Cross-Variant Self-Supervised Learning, where variants of the same object under different backgrounds form positive pairs in a contrastive objective. This encourages the encoder to align object-centric representations while suppressing background-specific cues. Then, we fine-tune the pretrained encoder using an ERM warm-up followed by GroupDRO with layer-wise learning rates. Experiments on distribution-shift benchmarks demonstrate best worst-group performance, achieving 92.5% on Waterbirds, 81.7% on MetaShift, and 87.4% on NICO++. Code: https://github.com/surajyadav-research/GRSSL",
+      "authors": [
+        "Suraj Yadav",
+        "Anjaneya Sharma",
+        "Siddharth Yadav"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T05:13:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.05850v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learning background-invariant visual representations via generative counterfactuals",
+      "llm_evidence_cn": "通过生成式反事实学习背景不变的视觉表示",
+      "llm_evidence": "通过生成式反事实学习背景不变的视觉表示",
+      "canonical_evidence": "通过生成式反事实学习背景不变的视觉表示",
+      "llm_tldr_en": "Proposes a two-stage framework using generative randomization to learn background-invariant representations, breaking spurious correlations for robust generalization.",
+      "llm_tldr_cn": "提出两阶段框架，通过生成式随机化学习背景不变的表示，打破虚假相关性以增强泛化。",
+      "llm_tldr": "提出两阶段框架，通过生成式随机化学习背景不变的表示，打破虚假相关性以增强泛化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.06297v1",
+      "source": "arxiv",
+      "title": "DS-MTNet:Structured Multi-Task EEG Decoding for Human-Machine Collaboration",
+      "abstract": "Current human-machine collaboration (HMC) systems rely on environment-facing sensors to observe visible actions and scene states, but the internal perceptual, intention-related, and state-related processes of operators remain insufficiently integrated into machine perception. Electroencephalography (EEG) provides a non-invasive, time-resolved modality to capture neural activity associated with these processes and can serve as an additional sensing channel in HMC. However, HMC-relevant EEG evidence is often mixed in continuous recordings. Existing EEG decoding methods usually target task-specific classification or aggregate prediction, so multiple HMC-relevant readouts are rarely organized in a unified EEG representation. To address this gap, this paper proposed the Decomposed-Source Multi-Task Network (DS-MTNet), a structured multi-task EEG decoding framework. DS-MTNet integrated three streams, namely EEG waveforms, task-routed source embeddings, and temporal-spectral power features, into reusable slots and used dual gating mechanisms to route task-specific components. The model was tested on a sustained-attention driving EEG dataset with three representative readouts: lane-departure-related epochs for environmental-event processing, steering-response stage for response preparation, and reaction-time-defined alertness state for internal state. DS-MTNet achieved the best mean performance among traditional, single-task deep, and multi-task EEG baselines, with the most robust gains observed for steering-response stage decoding. Ablation and interpretability analyses suggested that DS-MTNet jointly decoded multiple readouts and organized event-related, response-related, and state-related EEG evidence in a unified source-slot representation. These findings provide a computational step toward incorporating operator-related neural evidence into machine perception in HMC.",
+      "authors": [
+        "Xinjia Yu",
+        "Yang Zhou",
+        "Jing Yang",
+        "Tielin Shi",
+        "Tao Cheng"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC"
+      ],
+      "published": "2026-07-07T14:03:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.06297v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG decoding for human-machine collaboration",
+      "llm_evidence_cn": "脑电信号解码用于人机协作",
+      "llm_evidence": "脑电信号解码用于人机协作",
+      "canonical_evidence": "脑电信号解码用于人机协作",
+      "llm_tldr_en": "Proposes DS-MTNet for multi-task EEG decoding in HMC.",
+      "llm_tldr_cn": "提出DS-MTNet用于人机协作中的多任务脑电解码。",
+      "llm_tldr": "提出DS-MTNet用于人机协作中的多任务脑电解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.06607v1",
+      "source": "arxiv",
+      "title": "NEST: Tackling Dataset-Level Distribution Shifts via Regime-Oriented Mixture-of-Experts",
+      "abstract": "Accurate long-term forecasting in complex systems is frequently compromised by dataset-level distribution shifts, where diverse underlying behavioral modes and evolving system states drive the dynamic multivariate time-series. While existing methods predominantly focus on local temporal shifts, they fail to explicitly model the global structural challenge where datasets are composites of distinct operational regimes. In this paper, we propose NEST, a specialized framework designed to model and recompose these evolving structures through a two-phase dense MoE architecture. NEST first facilitates structural specialization by partitioning the dataset into distinct operational regimes through unsupervised clustering in a principled moment-entropy space. We introduce a regime-oriented router mechanism that generates initial expert weights based on temporal content, subsequently refined through geometric modulation to regime centroids. Crucially, rather than acting as monolithic predictors, individual experts function as specialized kernels that capture regime-specific dynamics by evolving unique variate-attention patterns. Extensive evaluations on diverse benchmarks, including heterogeneous network traffic and physical phenomena, demonstrate that NEST consistently achieves state-of-the-art performance. Our code and datasets are available at https://github.com/Aaralshin/NEST",
+      "authors": [
+        "Lanhao Li",
+        "Bingshu Xie",
+        "Lijun Sun",
+        "Xin Xue",
+        "Haoyi Zhou",
+        "Jianxin Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-07T05:36:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.06607v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "regime-oriented MoE for long-term forecasting under distribution shifts",
+      "llm_evidence_cn": "面向状态的混合专家模型用于分布偏移下的长期预测",
+      "llm_evidence": "面向状态的混合专家模型用于分布偏移下的长期预测",
+      "canonical_evidence": "面向状态的混合专家模型用于分布偏移下的长期预测",
+      "llm_tldr_en": "NEST uses a regime-oriented mixture-of-experts to model dataset-level distribution shifts for accurate long-term time-series forecasting.",
+      "llm_tldr_cn": "NEST利用面向状态的混合专家模型建模数据集级分布偏移，实现准确长期时间序列预测。",
+      "llm_tldr": "NEST利用面向状态的混合专家模型建模数据集级分布偏移，实现准确长期时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.07008v1",
+      "source": "arxiv",
+      "title": "Tensorized algorithms and scalable filtering methods for hidden Markov and factorial hidden Markov models",
+      "abstract": "A common method for the representation and analysis of time-series data is the hidden Markov model (HMM), where each observation is associated with a hidden state that evolves over time. However, many real-world systems are influenced by multiple independent factors, which are more naturally represented by factorial hidden Markov models (fHMM), where several hidden Markov chains jointly generate the observed data. Although an fHMM provides a richer and more realistic representation of many real-world systems, it can be reformulated as an equivalent HMM, but with a significantly larger state-space, leading to a severe increase in computational cost. In particular, the forward filtering algorithm, which is central to evaluation, decoding, and estimation tasks, becomes prohibitively expensive even for small systems. This work focuses on developing scalable methods for time-series analysis using tensor algebra to exploit the multidimensional structure of fHMM directly, without constructing intermediate HMM representations. Our novel filtering approach significantly improves computational performance and enables the efficient analysis of large systems and datasets, extending the scope of fHMM and providing a practical framework for data intensive applications.",
+      "authors": [
+        "Roxana Barrios",
+        "Ioannis Sgouralis"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-07-08T05:06:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.07008v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "tensorized algorithms for hidden Markov models for sequential data",
+      "llm_evidence_cn": "张量化算法用于隐马尔可夫模型处理时序数据",
+      "llm_evidence": "张量化算法用于隐马尔可夫模型处理时序数据",
+      "canonical_evidence": "张量化算法用于隐马尔可夫模型处理时序数据",
+      "llm_tldr_en": "Scalable filtering for hidden Markov and factorial HMMs",
+      "llm_tldr_cn": "可扩展的隐马尔可夫模型滤波算法",
+      "llm_tldr": "可扩展的隐马尔可夫模型滤波算法",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.07027v1",
+      "source": "arxiv",
+      "title": "Latent graph encoding of multimodal neuroimaging features with generative AI architectures",
+      "abstract": "While generative models enable encoding of complex neuroimaging data for feature generation and reconstruction, developing optimal architectural frameworks with appropriate encoding and latent space processes is crucial for studying structural and functional properties of the brain. We design a multimodal generative framework for structural and functional magnetic resonance imaging (MRI) features through systematic evaluation of encoding strategies, latent multimodal fusion, and generative model selection. Using structural gray matter volume (GMV) and static functional network connectivity (sFNC) features from a large neuroimaging dataset, we analyze generative frameworks involving variational autoencoders (VAEs), transformers, generative adversarial networks (GANs), and diffusion models. Architectures that employ modality-aware graph encoding of functional connectivity into a lower-dimensional latent space outperform vectorized encoders or direct data space approaches. The proposed multimodal graph VAE (gMMVAE) surpasses alternative generative variants across multiple metrics for generation fidelity, reconstruction quality, efficiency, and latent space discriminability, highlighting its potential for robust multimodal neuroimaging analysis.",
+      "authors": [
+        "Ishaan Batta",
+        "Meenu Ajith",
+        "Vince Calhoun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-07-08T05:50:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.07027v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "representation learning for neuroimaging data",
+      "llm_evidence_cn": "神经影像数据的表征学习",
+      "llm_evidence": "神经影像数据的表征学习",
+      "canonical_evidence": "神经影像数据的表征学习",
+      "llm_tldr_en": "Multimodal generative framework for learning latent representations of brain MRI features.",
+      "llm_tldr_cn": "多模态生成框架，学习大脑MRI特征的潜在表征。",
+      "llm_tldr": "多模态生成框架，学习大脑MRI特征的潜在表征。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.05653v1",
+      "source": "arxiv",
+      "title": "Orthogonal Dendritic Intrinsic Networks: An Architecture for Significance-Ordered, Orthogonal Latent Spaces",
+      "abstract": "Principal Component Analysis or PCA-like properties (orthogonality, variance ranking) are seldom realized in deep autoencoder architectures. In this work, we present ODIN (Orthogonal Dendritic Intrinsic Network), a novel autoencoder architecture that recovers PCA-like latent structure in a fully non-linear regime. By incorporating a set of geometric constraints directly into the training objective, ODIN encourages latent dimensions to be mutually orthogonal and ordered by explained variance, mirroring the interpretable decomposition of PCA while retaining the expressive power of deep networks. We provide theoretical grounding for these constraints and demonstrate their compatibility with standard encoder-decoder frameworks. We also establish empirical results for both synthetic and real world datasets, establishing a principled path toward interpretable, structured feature learning and dimensionality reduction.",
+      "authors": [
+        "Jeanie Schreiber",
+        "Tyrus Berry",
+        "Zeeshan Ahmed"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "math.OC"
+      ],
+      "published": "2026-07-06T21:51:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.05653v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "autoencoder learning orthogonal latent representations",
+      "llm_evidence_cn": "自编码器学习正交潜在表示",
+      "llm_evidence": "自编码器学习正交潜在表示",
+      "canonical_evidence": "自编码器学习正交潜在表示",
+      "llm_tldr_en": "Autoencoder with orthogonal and ordered latent spaces like PCA",
+      "llm_tldr_cn": "具有类似PCA正交有序潜在空间的自编码器",
+      "llm_tldr": "具有类似PCA正交有序潜在空间的自编码器",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.05716v2",
+      "source": "arxiv",
+      "title": "Scene Graph Thinking: Reinforcing Structured Visual Reasoning for Multimodal Large Language Models",
+      "abstract": "Multimodal Large Language Models (MLLMs) have demonstrated strong perception and reasoning capabilities. However, most existing models focus on isolated objects and neglect structured relationships for efficient target navigation, limiting their performance on visually intensive tasks. To address this challenge, we introduce Scene Graph Thinking (SaGe), a novel paradigm that enables fine-grained and structured visual reasoning through explicit scene-graph representations. Specifically, we first introduce an automated data engine that converts flat image-text corpora into structured scene graphs, where hierarchical entities constitute the nodes and diverse visual relations define the edges. Building upon this, we construct 120K high-quality training data by sampling reasoning traces from scene graphs. Then, two-stage graph-aligned post-training paradigms are introduced, where supervised fine-tuning internalizes MLLMs with structured reasoning, and subsequent reinforcement fine-tuning proposes node-as-proxy graph rewards to consolidate efficient graph exploration. With curated data and graph-aligned training, our approach achieves significant improvements across eight multimodal benchmarks, demonstrating strong effectiveness on fine-grained perception and reasoning tasks. Code is available at https://github.com/zwyang6/SaGe.",
+      "authors": [
+        "Zhiwei Yang",
+        "Yuanchen Wu",
+        "Nan Zhang",
+        "Yucong Meng",
+        "Ke Yan",
+        "Shouhong Ding"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T01:00:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.05716v2",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "converts image-text into scene graphs for structured visual reasoning",
+      "llm_evidence_cn": "将图像文本转换为场景图进行结构化视觉推理",
+      "llm_evidence": "将图像文本转换为场景图进行结构化视觉推理",
+      "canonical_evidence": "将图像文本转换为场景图进行结构化视觉推理",
+      "llm_tldr_en": "Introduces Scene Graph Thinking for structured visual reasoning with MLLMs.",
+      "llm_tldr_cn": "引入场景图思维用于多模态大模型的结构化视觉推理。",
+      "llm_tldr": "引入场景图思维用于多模态大模型的结构化视觉推理。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05937v1",
+      "source": "arxiv",
+      "title": "Is Domain Adaptation Always Helpful? A Frozen-Backbone Study of Cross-Domain Sentiment Transfer",
+      "abstract": "Sentiment analysis with frozen pre-trained language model (PLM) backbones has become a common paradigm, yet the practical benefit of explicit domain adaptation remains unclear, particularly when backbones encode varying degrees of target-domain knowledge. We present a preliminary case study evaluating a controlled family of frozen embedding backbones (Qwen3-Embedding 0.6B, 4B, 8B), alongside RoBERTa-base and FinBERT. We train a lightweight MLP adapter on consumer reviews using Domain-Adversarial Neural Networks (DANN), Maximum Mean Discrepancy (MMD), and Supervised Contrastive Learning (SCL), and evaluate transfer to movie reviews (SST-2) and a heavily restricted subset of financial news (Financial PhraseBank). Within this constrained sample, we observe two distinct transfer patterns. On SST-2, domain adaptation provides negligible gain regardless of scale. On the financial subset, explicit domain adaptation appears to recover substantial performance for small general-purpose backbones. Notably, we find that adversarial alignment (DANN) is associated with degraded performance for domain-specialized backbones like FinBERT, consistent with erosion of pre-existing domain-specific structure, whereas supervised contrastive loss appears to preserve it. These preliminary findings suggest that the efficacy of explicit domain adaptation is highly contingent on whether the frozen backbone already possesses target-domain coverage.",
+      "authors": [
+        "Phat Tran",
+        "Artin Lahni",
+        "Pranav Kulkarni",
+        "Yaolun Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-07T07:40:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.05937v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "domain adaptation with frozen backbones and adapters",
+      "llm_evidence_cn": "使用冻结骨干和适配器的领域自适应",
+      "llm_evidence": "使用冻结骨干和适配器的领域自适应",
+      "canonical_evidence": "使用冻结骨干和适配器的领域自适应",
+      "llm_tldr_en": "Evaluates domain adaptation methods for sentiment transfer using frozen PLMs and adapters",
+      "llm_tldr_cn": "评估了使用冻结PLM和适配器进行情感迁移的领域自适应方法",
+      "llm_tldr": "评估了使用冻结PLM和适配器进行情感迁移的领域自适应方法",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.06079v1",
+      "source": "arxiv",
+      "title": "Scalable Perturbation Learning for Online Self-Supervised Echo State Networks",
+      "abstract": "Intelligent systems should not only solve tasks but also adapt under real-world constraints. Autonomous adaptation via self-supervised learning, sequential adaptation via online learning, and memory-efficient implementation via perturbation-based learning are important requirements for such systems. However, these requirements are generally in tension for high-dimensional systems, because perturbation-based learning suffers from variance that grows with the dimension of the perturbed variables.   In this study, we focus on echo state networks (ESNs), where this tension naturally arises in large reservoirs. We propose a perturbation-based learning rule for online self-supervised learning in ESNs. The proposed rule is derived from an orthogonal decomposition of the self-supervised learning cost, which separates an input-dependent component from a redundant component determined by the fixed ESN parameters. By perturbing only the input-dependent component, the effective perturbation dimension is reduced from the reservoir dimension to the input dimension.   Thus, the proposed method preserves self-supervised adaptation, online learning, and scalar-feedback perturbation learning, while avoiding reservoir-size-dependent variance growth. This suggests a design principle for scalable and hardware-compatible learning: online learning should be restricted to the dynamically necessary low-dimensional component of the objective.",
+      "authors": [
+        "Taiki Yamada",
+        "Kantaro Fujiwara"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.NE"
+      ],
+      "published": "2026-07-07T09:47:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.06079v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Echo state networks for online self-supervised sequence learning",
+      "llm_evidence_cn": "回声状态网络用于在线自监督序列学习",
+      "llm_evidence": "回声状态网络用于在线自监督序列学习",
+      "canonical_evidence": "回声状态网络用于在线自监督序列学习",
+      "llm_tldr_en": "Proposes perturbation-based online self-supervised learning for ESNs, enabling sequential adaptation.",
+      "llm_tldr_cn": "提出基于扰动的在线自监督学习用于ESN，实现序列自适应。",
+      "llm_tldr": "提出基于扰动的在线自监督学习用于ESN，实现序列自适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.06323v1",
+      "source": "arxiv",
+      "title": "LAMP: Latent Motion Prior-Guided Real-World Learning for Dexterous Hand Manipulation",
+      "abstract": "Real-world learning for dexterous hands remains brittle because high-dimensional hand actions amplify imitation errors and make reinforcement-learning exploration prone to contact-breaking motion. While combining imitation learning (IL) with online reinforcement learning (RL) can reduce manual supervision, unconstrained exploration in raw hand-action spaces is sample-inefficient and risky for physical hardware. We introduce a latent motion prior module (\\prior{}) that maps recent hand-action histories to a compact, history-conditioned latent prior and decodes continuous latent commands into executable high-dimensional hand targets. Built on this prior, \\method{} is a three-stage real-world dexterous learning framework: it pretrains \\prior{} from demonstrations, trains a visuomotor policy that predicts native arm commands and latent hand-action offsets, and improves the policy with online residual RL in the same latent hand-action space. This shared, decodable interface lets residual exploration make local corrections near demonstrated, contact-consistent hand motions rather than perturbing every finger joint independently. We evaluate \\method{} on four real-robot dexterous manipulation tasks against raw, linear, and discrete hand-action interfaces. Starting from small task-specific demonstration sets, \\method{} achieves a 56.25\\% average IL success rate and raises it to 98.75\\% after online RL, reaching 100\\% final success on three tasks and 95\\% on the remaining task.",
+      "authors": [
+        "Xinye Yang",
+        "Zhiyuan Ma",
+        "Hongze Yu",
+        "Yuanpei Chen",
+        "Yaodong Yang",
+        "Xiaojie Chai",
+        "Xinlei Chen",
+        "Chao Yu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-07T14:22:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.06323v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "decodes latent commands into executable hand-action sequences",
+      "llm_evidence_cn": "将潜在命令解码为可执行的手部动作序列",
+      "llm_evidence": "将潜在命令解码为可执行的手部动作序列",
+      "canonical_evidence": "将潜在命令解码为可执行的手部动作序列",
+      "llm_tldr_en": "LAMP learns a latent motion prior to map hand-action histories to compact latents and decode them into sequences for dexterous manipulation.",
+      "llm_tldr_cn": "LAMP学习潜在运动先验，将手部动作历史映射为紧凑潜在变量并解码为灵巧操作序列。",
+      "llm_tldr": "LAMP学习潜在运动先验，将手部动作历史映射为紧凑潜在变量并解码为灵巧操作序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

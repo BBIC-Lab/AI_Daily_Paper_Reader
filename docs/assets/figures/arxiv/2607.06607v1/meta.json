@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.06607v1/fig-006.webp",
+      "caption": "Figure 1: Conceptual illustration of dataset-level distribution shift. Using network traffic as an example, the IP flow volume fluctuates over time according to different underlying behavioral modes.",
+      "page": 1,
+      "index": 6,
+      "width": 475,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06607v1/fig-003.webp",
+      "caption": "Figure 2: Overview of the proposed NEST framework and its key components. (a) The NEST Pipeline: Shows the complete twophase pipeline. Phase 1 performs regime discovery and expert training. Phase 2 freezes the experts and trains the regime-oriented router to adaptively combine their outputs for the final prediction. (b) Temporal Windowing: Illustrates the process of creating data slices of length SL from the raw time series. (c) Regime Discovery: A conceptual visualization of the regime discovery process, where data slices are clustered in a feature space defined by their statistical and complexity features. (d) Regime Expert: Each regime expert consists of a variate-attention mechanism to model inter-variate relations. (e) Geometric Contextual Modulation: Modulates expert weights based on the feature-space distance of an input sample to the pre-computed regime centroids after the initialization of the weights.",
+      "page": 4,
+      "index": 3,
+      "width": 1002,
+      "height": 385
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06607v1/fig-004.webp",
+      "caption": "Table 1: Long term forecasting results of time series models on nine different datasets. The history sequence length is 512. Corresponding prediction lengths include {96, 192, 336, 720}. A lower MSE or MAE indicates a better prediction. Averaged results of four prediction lengths are reported here. 1st Count represents the number of wins achieved by a model under all prediction lengths and datasets. The best result is bolded and the second best is underlined.",
+      "page": 6,
+      "index": 4,
+      "width": 998,
+      "height": 400
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06607v1/fig-005.webp",
+      "caption": "Table 2: Ablation study on NEST components across main experiment datasets. The history sequence length is 512. Corresponding prediction lengths include {96, 192, 336, 720}. A lower MSE or MAE indicates a better prediction. Averaged results of four prediction lengths are reported here. The best result is bolded and the second best is underlined.",
+      "page": 6,
+      "index": 5,
+      "width": 1054,
+      "height": 190
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06607v1/fig-002.webp",
+      "caption": "Figure 3: Hyperparameter sensitivity analysis of NEST. Parameter sensitivity analysis of NEST across multiple CESNET subsets. The plots illustrate the impact of hidden dimension size (dmodel), the number of attention heads (nheads), and the number of discovered regimes (M ) on forecasting performance (MSE).",
+      "page": 7,
+      "index": 2,
+      "width": 511,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06607v1/fig-001.webp",
+      "caption": "Figure 4: CKA similarity heatmap of specialized experts’ QK matrix. Low pairwise similarity scores indicate lower similarity between the experts. Results are sampled from the Weather test set.",
+      "page": 7,
+      "index": 1,
+      "width": 396,
+      "height": 394
+    }
+  ]
+}
