@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-002.webp",
+      "caption": "Fig. 1: Attention Mass in Softmax vs. Entmax Distributions. Left: attention distribution for the query patch (green ×) under q-k attention. Entmax denoises the distribution, concentrating mass on the most relevant tokens –the horse’s body vs. the rider– while suppressing irrelevant background. Right: Sparsification helps in proportion to how much the baseline attention spreads off the target class. Where the mass is already very concentrated, entmax does not benefit. The x-axis shows the fraction of a foreground patch’s attention that lands on non-class (irrelevant) patches, measured against the downsampled Pascal VOC ground truth and the y-axis is the α-entmax (α=1.2) minus softmax (α=1.0) segmentation gain. α-entmax benefits when attention is spread across non-class tokens.",
+      "page": 2,
+      "index": 2,
+      "width": 627,
+      "height": 273
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-009.webp",
+      "caption": "Table 1: The denoising gain generalizes across datasets and model scales with attention distributions with a single entmax layer L1 for softmax (α=1.0, sm) vs. entmax (α=1.2, ent) at resolution 448. The self-correlations gain monotonically on both CLIP backbones, with entmax multiplying the score several-fold on datasets where vanilla dense collapses (e.g. ADE). The value correlation (vvv) gains only on the highly diffuse ViT-L/14.",
+      "page": 9,
+      "index": 9,
+      "width": 442,
+      "height": 347
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-003.webp",
+      "caption": "Table 2: The denoising gains transfer to fine-grained region–text retrieval on FG-OVD. We compare the gains over softmax for entmax α=1.2 applied at the last layer. We report the hard/medium/easy splits, the trivial shuffle, and their mean mHME over hard/medium/easy at resolution 224. Entmax denoising gives large, consistent gains on qqv, qq+kk, qq+kk+vv: +5–7 mHME on both backbones.",
+      "page": 10,
+      "index": 3,
+      "width": 728,
+      "height": 309
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-006.webp",
+      "caption": "Table 6: The denoising gain grows with input resolution on dense segmentation. We evaluate CLIP ViT-L/14 with resolutions {224, 336, 448}using softmax α=1.0 vs. entmax α=1.2 at the last layer. All distributions gain with entmax and the gain ∆ grows with resolution—including vvv (+4.9→+6.4 on VOC). Because L/14’s attention is diffuse throughout, there is always noise for entmax to remove.",
+      "page": 13,
+      "index": 6,
+      "width": 536,
+      "height": 361
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-005.webp",
+      "caption": "Fig. 3: Per-patch attention diagnostics. CLIP ViT-B/16, last block. For a central query patch shown as (green ×), we visualise the attention induced by each distribution— the standard qk and the self-correlated qq, kk, vv—under softmax (top row of each panel) and entmax (α=1.2, bottom row). Titles report the effective number of attended keys. The qk attention is globally diffuse throughout the image, whereas the self-correlated attentions—especially vv—are far more locally coherent, concentrating on the object that contains the query. Entmax sharpens every distribution, narrowing the attention onto the coherent region and sharply reducing the effective key count.",
+      "page": 14,
+      "index": 5,
+      "width": 400,
+      "height": 353
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-004.webp",
+      "caption": "Fig. 4: Qualitative Visualization of Segmentation Maps and Heatmaps. The first two rows show visualizations for CLIP ViT-B/16 and the bottom two rows for ViT-L/14, at resolution 448. The rows ordered by either the original/ground-truth, followed by softmax qkv, α-entmax=1.2 qkv, softmax vvv, and α-entmax=1.2 vvv.",
+      "page": 14,
+      "index": 4,
+      "width": 725,
+      "height": 319
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-008.webp",
+      "caption": "Table 7: Resolution scaling transfers to dense segmentation. Evaluates ViTB/16 for different resolutions with short-side {224, 336, 448} using softmax α=1.0 vs. entmax α=1.2 at the last layer and provide MaskCLIP-style value-only for reference. For the query and key-based distribution (qqv, kkv, and qkv on VOC) the entmax denoising gain ∆ is positive and grows—or holds—as the patch grid gets denser. The effect is strongest on VOC.",
+      "page": 17,
+      "index": 8,
+      "width": 537,
+      "height": 379
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-007.webp",
+      "caption": "Fig. 5: Entmax sparsity vs. depth on Pascal VOC on ViT-L/14 We evaluate the effectiveness of a sparse qkv attention distribution, across different depths and entropy regularization. Each cell reports dense-segmentation mIoU when entmax (column: sparsity α) is applied to the last d transformer blocks (row).",
+      "page": 19,
+      "index": 7,
+      "width": 688,
+      "height": 433
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-010.webp",
+      "caption": "Fig. 6: Additional per-patch attention diagnostics. Show here for CLIP ViT-B/16, last block.",
+      "page": 20,
+      "index": 10,
+      "width": 725,
+      "height": 926
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07135v1/fig-001.webp",
+      "caption": "Fig. 7: Additional per-patch attention diagnostics. Show here for CLIP ViT-B/16, last block.",
+      "page": 21,
+      "index": 1,
+      "width": 725,
+      "height": 842
+    }
+  ]
+}

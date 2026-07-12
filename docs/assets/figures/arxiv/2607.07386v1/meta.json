@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-001.webp",
+      "caption": "Figure 1 State size vs FLOPs per token",
+      "page": 1,
+      "index": 1,
+      "width": 397,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-006.webp",
+      "caption": "Figure 2 SDM layer. Gray: operations present in GDN. Purple: operations modified in SDM. Dashed borders indicate sparse operations (W or R out of N slots).",
+      "page": 3,
+      "index": 6,
+      "width": 875,
+      "height": 489
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-002.webp",
+      "caption": "Table 1 Scaling ladder configurations. Params include embedding weights but excludes SDM memory state. The State columns correspond to the total state size across all global layers, with St:Param reporting this size as a fraction of the non-embedding parameters.",
+      "page": 6,
+      "index": 2,
+      "width": 944,
+      "height": 331
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-003.webp",
+      "caption": "Figure 3 Scaling laws: loss vs FLOPs. Average of last 10 log entries vs total compute. SDM consistently outperforms GDN across all scales. As predicted by the scaling law, SDM outperforms full attention at 8B scale.",
+      "page": 7,
+      "index": 3,
+      "width": 676,
+      "height": 464
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-007.webp",
+      "caption": "Table 2 Performance of different global layer choices at 1.4B (L08) and 8B (L13) scale. All models use SWA as the local layer. Delta column shows delta in performance between SDM and the isoFLOP GDN. Top: Validation NLL, reasoning and common-knowledge tasks. Bottom: exact-match accuracy averaged across lengths 4k–131k on all 13 RULER long-context tasks.",
+      "page": 8,
+      "index": 7,
+      "width": 972,
+      "height": 843
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-014.webp",
+      "caption": "Table 3 SDM ablations. Top: learned initial state ablation (L08, 1.4B). Making the memory M0 a learnable parameter improves code-data NLL, accuracy (%), and RULER recall (%). Bottom: memory size ablation (L06). SDM degrades gracefully when memory is reduced; even at 27 MB it outperforms GDN on RULER.",
+      "page": 9,
+      "index": 14,
+      "width": 588,
+      "height": 205
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-012.webp",
+      "caption": "Figure 4 Perplexity by token position on code data",
+      "page": 9,
+      "index": 12,
+      "width": 384,
+      "height": 381
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-013.webp",
+      "caption": "Figure 5 Learned initial state ablation on code data (1M token documents, 1.4B model size, posttrained). PPL by token position. Learning M0 benefits SDM but not GDN.",
+      "page": 9,
+      "index": 13,
+      "width": 381,
+      "height": 377
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-004.webp",
+      "caption": "Figure 6 Coverage of the top-m selected memory keys. In each panel, the solid line is the layer-averaged mean cumulative mass curve across all tokens; the shaded band shows the corresponding [p10, p90] range. Panel (a) shows write keys and panel (b) shows read keys. Write keys exhibit less uniform distribution than read.",
+      "page": 10,
+      "index": 4,
+      "width": 976,
+      "height": 269
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-005.webp",
+      "caption": "Figure 7 Per-token effective-key utilization: analysis of eff_keys/k. For each ablation, each violin is built from all pooled token-level values for each run; the overlaid markers indicate the mean and median. Panel (a) shows write keys and panel (b) shows read keys. Read keys have a more uniform distribution than write keys, while the write key distribution varies more with the assigned read and write key budget, indicating that SDM memory access adapts to the given key constraints.",
+      "page": 10,
+      "index": 5,
+      "width": 976,
+      "height": 264
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-015.webp",
+      "caption": "Figure 8 SDM memory utilization during training (1.4B, L08). Statistics are accumulated over 10 training steps (∼21M tokens) per data point and averaged across 5 SDM layers. Top: forget and input gate statistics (min/mean/max). Bottom left: normalized entropy of slot access distributions. Bottom right: percentage of unique memory slots accessed.",
+      "page": 16,
+      "index": 15,
+      "width": 966,
+      "height": 634
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-010.webp",
+      "caption": "Figure 9 RULER per-task accuracy (%) by sequence length at 1.4B scale. Solid lines: after 128k post-training. Dashed lines: pre-trained only. SDM maintains strong recall on NIAH single-needle tasks across all lengths, while Full Attention degrades rapidly beyond its training length. GDN struggles on multi-step retrieval (single_2, single_3, multiquery). For some reason on the variable tracking task, GDN performs better and better on longer sequence lengths. We believe this to be due to the design on the vt task which clusters distractor variables early in the sequence, unintentionally making their influence weaker and weaker the longer the sequence is.",
+      "page": 17,
+      "index": 10,
+      "width": 975,
+      "height": 466
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-011.webp",
+      "caption": "Figure 10 RULER per-task accuracy (%) by sequence length at 8B scale. Solid lines: after 128k posttraining. Dashed lines: pre-trained only. At 8B, post-training dramatically improves FullAttn (green) which achieves near-perfect recall on single-needle tasks. SDM maintains strong recall and outperforms FullAttn on single_3 and vt tasks. The multikey_2 task remains challenging for all fixed-state models.",
+      "page": 17,
+      "index": 11,
+      "width": 975,
+      "height": 467
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-008.webp",
+      "caption": "Table 4 Comparison across varying reads (R) and writes (W). Deltas are computed w.r.t. W64_R64. Lower is better for DCLM NLL; higher is better for Avg. RULER and Avg. Reasoning. Bold indicates the best value in each non-delta metric column. RULER is averaged across 6 sub-tasks for computational reasons (niah_single 1/2/3, multikey 2, multiquery, vt).",
+      "page": 19,
+      "index": 8,
+      "width": 756,
+      "height": 184
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07386v1/fig-009.webp",
+      "caption": "Figure 11 Training loss scaling law for four architectures at levels 1–8.",
+      "page": 19,
+      "index": 9,
+      "width": 676,
+      "height": 464
+    }
+  ]
+}

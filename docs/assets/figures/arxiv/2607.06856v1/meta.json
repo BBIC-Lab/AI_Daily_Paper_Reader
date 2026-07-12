@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-007.webp",
+      "caption": "Figure 1: Video generative model repurposed as video encoder.",
+      "page": 4,
+      "index": 7,
+      "width": 790,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-008.webp",
+      "caption": "Figure 2: PCA visualisation of activations extracted from Veo3 at different depths and noise levels. For each (depth, noise level) pair, we compute PCA over all spatial tokens aggregated across the dataset. The top three principal components are mapped to RGB channels. Noise level t = 60% (in green) has maximal alignment with language (curves inpainted at the top from Fig. 3 left) and other visual encoders; see text for details.",
+      "page": 5,
+      "index": 8,
+      "width": 806,
+      "height": 365
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-009.webp",
+      "caption": "Figure 3: Mutual-kNN zero-shot video-text alignment for Veo3 (left) and Wan 2.2 (right) against Gemma-2-9b-it, compared to the best alignment obtained with V-WALT [Vélez et al., 2025] for reference. Note that as video generation models become more capable, their internal representations align more strongly with the underlying text captions (not provided to the models). See main text for a detailed discussion.",
+      "page": 5,
+      "index": 9,
+      "width": 821,
+      "height": 231
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-001.webp",
+      "caption": "Figure 4: Alignment between diffusion and discriminative representations using mutual k-NN metric. Remarkably, the intermediate activations of a strong model like Veo3 align not only with underlying semantics (captions) but also with the features of strong image and video models, suggesting their broad applicability.",
+      "page": 6,
+      "index": 1,
+      "width": 822,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-002.webp",
+      "caption": "Figure 5: Linear (left) and attention (right) probing of Veo3 activations with SSv2 video classification. Observe that both the linear and attention probes peak at around 70-80% of the model depth and 30-60% noise level, indicating the optimal spot for extracting representations.",
+      "page": 6,
+      "index": 2,
+      "width": 659,
+      "height": 250
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-006.webp",
+      "caption": "Table 1: Comparison with state-of-the-art on SSv2 video classification. These methods share the same evaluation protocol: frozen representations are fed into a trained one-block attention read-out.",
+      "page": 8,
+      "index": 6,
+      "width": 740,
+      "height": 180
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-005.webp",
+      "caption": "Figure 6: Performance on geometry tasks tasks across blocks and noise levels confirm the sweet spot (depth 75-80%, noise 30-60%) identified using alignment and classification probes. Left: Depth estimation AbsRel (↓) on ScanNet. Right: Camera pose estimation EPE on ScanNet. The dashed lines mark strong baselines: 4DS [Carreira et al., 2025] and DINOv2 respectively.",
+      "page": 8,
+      "index": 5,
+      "width": 752,
+      "height": 258
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-003.webp",
+      "caption": "Figure 8: Qualitative video reconstruction results on two example videos from the SomethingSomething V2 validation set. In each subfigure, we show the ground-truth on the top row, and the reconstructions from the linear and single-layer attention head, respectively, on the bottom row. Even with these very simple readout heads, the reconstructions convey well the main elements in the scene.",
+      "page": 18,
+      "index": 3,
+      "width": 826,
+      "height": 441
+    },
+    {
+      "url": "assets/figures/arxiv/2607.06856v1/fig-004.webp",
+      "caption": "Figure 9: Evaluating RGB readout heads attached at varying network depths and noise levels. Left: linear probe. Right: attention probe.",
+      "page": 18,
+      "index": 4,
+      "width": 818,
+      "height": 240
+    }
+  ]
+}
