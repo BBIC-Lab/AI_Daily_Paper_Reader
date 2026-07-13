@@ -1,0 +1,102 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-009.webp",
+      "caption": "Figure 1: Cross-Layer Error Residuals (CLER). A lower routing-capable recurrent-memory layer computes a DeltaNetstyle write residual. If softmax-attention layers intervene, the residual is carried forward as a side-channel. The next routing-capable layer scales the routed residual and injects it into its value target before computing its own write residual.",
+      "page": 8,
+      "index": 9,
+      "width": 833,
+      "height": 429
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-010.webp",
+      "caption": "Figure 2: Cross-Layer Value Routing (CLVR). Each routing-capable layer projects its internal write value into the shared residual stream through a zero-initialized projection Pl; the routed contribution starts at zero and is added in a depth-aligned space, where it is read by all later layers and the output head.",
+      "page": 8,
+      "index": 10,
+      "width": 770,
+      "height": 420
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-004.webp",
+      "caption": "Table 1: Core configuration information for the main experiments. Values are reported from the local launchers and run records when available; entries marked as not fully recorded are not inferred.",
+      "page": 10,
+      "index": 4,
+      "width": 952,
+      "height": 649
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-001.webp",
+      "caption": "Figure 3: Validation-loss scaling for the 350M-parameter runs trained to 15B tokens. Lower is better. In this sweep, Kimi Delta Attention with Muon in a hybrid stack reaches the lowest final loss, while DeltaNet and Gated DeltaNet remain competitive with simpler recurrent-memory updates.",
+      "page": 11,
+      "index": 1,
+      "width": 979,
+      "height": 488
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-011.webp",
+      "caption": "Table 2: 350M-parameter, 15B-token architecture comparison. Saturation loss is measured before the final WSD decay, final loss at the final recorded checkpoint, and relative speed is normalized training throughput against the fastest entry in this sweep, pure Gated DeltaNet with AdamW. Lower losses are better; higher relative speed is faster. Values are directly comparable within this sweep, but each row is a single run rather than a repeated-seed estimate.",
+      "page": 12,
+      "index": 11,
+      "width": 971,
+      "height": 563
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-007.webp",
+      "caption": "Figure 4: Learning-rate ablation for 350M-parameter hybrid models trained for 2000 steps, approximately 1.05B tokens. The preferred learning rate varies by optimizer and mixer, making learning-rate tuning necessary before drawing architectural conclusions.",
+      "page": 13,
+      "index": 7,
+      "width": 979,
+      "height": 429
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-008.webp",
+      "caption": "Figure 5: Learning-rate ablation iso plots for 350M-parameter hybrid models trained for 2000 steps. The iso plots show the final loss interpolation line for different learning rates. The loss increasing on the left and right ends for all attention/optimizer combination implies the covered range is sufficient, reaching from a too-low learning rate over the optimum up to a too-high learning rate. The optimum lies between 3×10−4 and 10−3 depending on attention/optimizer.",
+      "page": 13,
+      "index": 8,
+      "width": 590,
+      "height": 367
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-006.webp",
+      "caption": "Table 3: Larger DeltaNet-only runs at 1.3B-parameter/40B-token and 3B-parameter/60B-token scale. Lower final loss is better. These rows illustrate larger-scale DeltaNet sensitivity to learning rate and stack pattern, but they are not a full architecture sweep across all mechanisms.",
+      "page": 14,
+      "index": 6,
+      "width": 506,
+      "height": 243
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-005.webp",
+      "caption": "Figure 6: Iteration-time scaling from 4k to 32k tokens. Softmax attention time grows much faster with sequence length (+192%) than Gated DeltaNet hybrid (+65%) and pure stacks (+8%). Note that hybrid iteration time increase is very close to 1/3 of softmax, matching the fact that hybrid has 1/3 softmax layers. Error bars (step-to-step variance) are very low.",
+      "page": 14,
+      "index": 5,
+      "width": 815,
+      "height": 438
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-002.webp",
+      "caption": "Table 4: Downstream checks on HellaSwag, PIQA, and WinoGrande using the local lm-eval-harness API path. Accuracy is exact-match multiple-choice accuracy; normalized accuracy is the harness’s length-normalized likelihood accuracy where produced.",
+      "page": 15,
+      "index": 2,
+      "width": 973,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-003.webp",
+      "caption": "Table 6: Matched CLER comparisons at 350M parameters and approximately 1B training tokens. ∆ is computed relative to the corresponding non-CLER baseline under the same optimizer; negative values indicate lower final validation loss. The small Muon CLER-DeltaNet gain is below 10−3 and is not interpreted as a robust improvement.",
+      "page": 15,
+      "index": 3,
+      "width": 610,
+      "height": 241
+    },
+    {
+      "url": "assets/figures/arxiv/2607.07953v1/fig-012.webp",
+      "caption": "Table 8: Supplementary 350M baseline runs trained for approximately 1B tokens. These shorter-budget runs provide context before the 15B-token sweep but are not used to determine the main validation-loss/throughput frontier.",
+      "page": 20,
+      "index": 12,
+      "width": 973,
+      "height": 217
+    }
+  ]
+}

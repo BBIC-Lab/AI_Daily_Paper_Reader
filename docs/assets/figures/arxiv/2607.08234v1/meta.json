@@ -1,0 +1,142 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-001.webp",
+      "caption": "Figure 1: RhyMix architecture.",
+      "page": 11,
+      "index": 1,
+      "width": 956,
+      "height": 528
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-013.webp",
+      "caption": "Figure 2: Architecture of MSTCN-CA with two TMS blocks, each using four parallel depthwise dilated convolutions (d=1,2,4,8) and channel attention.",
+      "page": 12,
+      "index": 13,
+      "width": 912,
+      "height": 281
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-009.webp",
+      "caption": "Table 1: Taxonomy of model architectures by Channel-Interaction strategy. Different state-of-the-art models align with the established Channel Interaction (CI, CD, CP) strategies. RhyMix is positioned as a hybrid design (CI+CD) via parallel Cyclic and MSTCN-CA Paths with adaptive gating to capture multi-scale dynamics. (Asym.: Asymmetry, Lag.: Lagginess, Pol.: Polarity, Gw.: group-wise, Dyn.: Dynamism, Ms.: Multi-scale).",
+      "page": 18,
+      "index": 9,
+      "width": 836,
+      "height": 1175
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-017.webp",
+      "caption": "Table 2: Comparison of architectural characteristics. Evaluation of RhyMix against CI, CD, and CP channel interaction strategies.",
+      "page": 20,
+      "index": 17,
+      "width": 940,
+      "height": 306
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-016.webp",
+      "caption": "Table 3: Benchmark Datasets for Long-Term Forecasting.",
+      "page": 20,
+      "index": 16,
+      "width": 984,
+      "height": 267
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-010.webp",
+      "caption": "Table 4: Multivariate long-term forecasting results. Input look-back window L = 96. Prediction horizons H ∈ {96, 192, 336, 720}. Avg is averaged from all four prediction lengths. Red: 1st rank, Blue: 2nd rank. We evaluate each model five times and report the mean (standard deviation); results marked with underline are not significantly worse than the first rank (Wilcoxon signed-rank test with Holm–Bonferroni correction, α = 0.05). Example: 0.010(0.001) means 0.010 ± 0.001. TimeM.: TimeMixer++, Impr.: Improvement %.",
+      "page": 23,
+      "index": 10,
+      "width": 1007,
+      "height": 1267
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-002.webp",
+      "caption": "Table 5: Long-term forecasting evaluation results on PEMS datasets. Prediction horizons H ∈ {12, 24, 48, 96}. Red/Blue: First/Second ranks. We evaluate each model five times and report the mean (standard deviation); results marked with underline are not significantly worse than the first rank (Wilcoxon signed-rank test with Holm–Bonferroni correction, α = 0.05). Example: 0.010(0.001) means 0.010 ± 0.001. Tra.: Transformer, BiL.: BiLSTM, iTrans.: iTransformer, M.TCN: ModernTCN, Impr.: Improvement %.",
+      "page": 25,
+      "index": 2,
+      "width": 1015,
+      "height": 677
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-003.webp",
+      "caption": "Figure 5: Visualization of Weather dataset predictions by different models under the input-96-predict-336 setting.",
+      "page": 25,
+      "index": 3,
+      "width": 919,
+      "height": 330
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-004.webp",
+      "caption": "Figure 6: Visualization of ECL dataset predictions by different models under the input-96-predict-336 setting.",
+      "page": 26,
+      "index": 4,
+      "width": 919,
+      "height": 326
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-005.webp",
+      "caption": "Figure 7: Impact of input length L on MSE across ETTh1, ETTh2, ETTm1, and Weather dataset.",
+      "page": 26,
+      "index": 5,
+      "width": 905,
+      "height": 309
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-014.webp",
+      "caption": "Figure 8: Wave representations at key stages of RhyMix (On ETTh1 dataset, C = 7)",
+      "page": 27,
+      "index": 14,
+      "width": 968,
+      "height": 700
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-011.webp",
+      "caption": "Figure 9: Channel mixer: input-to-output wave visualization (On ETTh1 dataset, C = 7).",
+      "page": 28,
+      "index": 11,
+      "width": 968,
+      "height": 474
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-007.webp",
+      "caption": "Figure 10: Reshaping a 1D time series (L=96) into a 2D image with period P=12. Col-Patterns (horizontal) reveal seasonality; Row-Patterns (vertical) reveal trend on the ETTh1 dataset.",
+      "page": 29,
+      "index": 7,
+      "width": 949,
+      "height": 320
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-006.webp",
+      "caption": "Figure 11: RhyMix: Vertical Row Patterns (Trend) and Horizontal Col Patterns (Seasonality) on the ETTh1 dataset at three scales (L=192, 96, 48) using periods P=12, 24, 48, 168.",
+      "page": 30,
+      "index": 6,
+      "width": 964,
+      "height": 664
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-015.webp",
+      "caption": "Table 6: Ablation study on ETTh1, ETTh2, ETTm1, Weather, and ECL datasets (H ∈ {96, 192, 336, 720}). Red/Blue: First/Second ranks. w/o A. Gates: Adaptive Gates",
+      "page": 31,
+      "index": 15,
+      "width": 984,
+      "height": 421
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-012.webp",
+      "caption": "Table 7: Ablation study on PEMS datasets across prediction horizons H ∈ {12, 24, 48, 96}. Red indicates first rank performance, Blue indicates the second rank. w/o A. Gates: Adaptive Gates",
+      "page": 32,
+      "index": 12,
+      "width": 1015,
+      "height": 421
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08234v1/fig-008.webp",
+      "caption": "Table 8: Complexity and performance comparison between RhyMix and recent SOTA models. ↑ indicates the competitor model has more parameters than RhyMix.",
+      "page": 34,
+      "index": 8,
+      "width": 818,
+      "height": 286
+    }
+  ]
+}

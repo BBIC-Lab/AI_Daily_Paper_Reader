@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-13
-- 运行时间：2026-07-13 03:49:49 北京时间
+- 最新运行日期：2026-07-14
+- 运行时间：2026-07-14 04:24:13 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读两篇9.0分前沿：扩散模型统一视频生成与理解，以及基于物体中心神经场的组合动作生成；速读三篇8.0分实用研究，覆盖时序蒸馏、梯度对齐等方向。  
-最值得关注的是视频扩散模型打通生成与理解的统一范式，以及从演示中学习组合式动作的强泛化能力。  
-建议普通读者跟随视频多模态融合趋势，并可尝试将知识蒸馏技巧引入自己的时序分类项目。
-- 详情：[/202607/13/README](/202607/13/README)
+今日聚焦持续学习与时间序列表征，精读两篇顶会综述及前沿模型，速读涵盖序数回归、机器人技能挖掘与因果异常检测。  
+值得重点跟踪：CV领域持续测试时自适应（TTA）的方法体系与未来趋势，以及用于长期时序预测的自适应多节律网络RhyMix。  
+建议关注TTA综述中关于持续遗忘、动态评估等挑战的破解思路，并结合自身业务探索时序模型的轻量化自适应设计。
+- 详情：[/202607/14/README](/202607/14/README)
 
 ### 精读区论文标签
-1. [Gen4U: Unifying Video Generation and Understanding via Diffusion](/202607/13/2607.06856v1-gen4u-unifying-video-generation-and-understanding-via-diffusion)  
+1. [Continual Test-Time Adaptation in Computer Vision: Methods, Benchmarks, and Future Directions](/202607/14/2607.08164v1-continual-test-time-adaptation-in-computer-vision-methods-benchmarks-and-future-directions)  
    标签：评分：9.0/10、query:ndai
-   evidence：从视频扩散模型学习结构化潜在表示
-2. [Compositional Motion Generation from Demonstration with Object-Centric Neural Fields](/202607/13/2607.07129v1-compositional-motion-generation-from-demonstration-with-object-centric-neural-fields)  
+   evidence：无需标签适应新域
+2. [RhyMix: A Lightweight Adaptive Multi-Rhythm Network for Long-Term Time Series Forecasting](/202607/14/2607.08234v1-rhymix-a-lightweight-adaptive-multi-rhythm-network-for-long-term-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：时序混合专家模型用于组合运动序列生成
-3. [Sparse Attention for Dense Open-Vocabulary Prediction in CLIP](/202607/13/2607.07135v1-sparse-attention-for-dense-open-vocabulary-prediction-in-clip)  
+   evidence：分析和预测时序数据的方法
+3. [CASL-VAE: Learning Structured Latent Variables from Unpaired Data for Semi-supervised Clustering and Paired Sample Generation](/202607/14/2607.08254v1-casl-vae-learning-structured-latent-variables-from-unpaired-data-for-semi-supervised-clustering-and-paired-sample-generation)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过entmax的稀疏注意力进行特征重要性加权
-4. [Dynamic neural manifolds for flexible closed-loop control on neuromorphic hardware](/202607/13/2607.07373v1-dynamic-neural-manifolds-for-flexible-closed-loop-control-on-neuromorphic-hardware)  
+   evidence：从非配对数据学习结构化潜在表示
+4. [Calibrated Persistent-Laplacian CUSUM for Online Change-Point Detection](/202607/14/2607.08635v1-calibrated-persistent-laplacian-cusum-for-online-change-point-detection)  
    标签：评分：9.0/10、query:ndai
-   evidence：用动态流形建模序列神经活动用于闭环控制
-5. [Sparse Delta Memory: Scaling the State of Linear RNNs through Sparsity](/202607/13/2607.07386v1-sparse-delta-memory-scaling-the-state-of-linear-rnns-through-sparsity)  
+   evidence：时间序列在线变点检测
+5. [How are linear representations learned? Exact solutions to the dynamics of abstraction](/202607/14/2607.08843v1-how-are-linear-representations-learned-exact-solutions-to-the-dynamics-of-abstraction)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过稀疏记忆扩展线性RNN状态提升序列召回
+   evidence：研究神经网络中线性表示形成的动力学
 
 ### 速读区论文标签
-1. [Trees from Marginals: Autoregressive drafting with factorized priors](/202607/13/2607.06763v1-trees-from-marginals-autoregressive-drafting-with-factorized-priors)  
+1. [Contrastive Order Learning: A General Framework for Ordinal Regression](/202607/14/2607.08109v1-contrastive-order-learning-a-general-framework-for-ordinal-regression)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用因子化先验的自回归草稿构建序列生成的建议树
-2. [Enhancing deep learning models for time series classification via knowledge distillation](/202607/13/2607.06796v1-enhancing-deep-learning-models-for-time-series-classification-via-knowledge-distillation)  
+   evidence：对比顺序学习用于紧凑序数表示
+2. [SkillPlug: Unsupervised Skill Mining for Few-Shot Adaptation in Robotic Manipulation](/202607/14/2607.08354v1-skillplug-unsupervised-skill-mining-for-few-shot-adaptation-in-robotic-manipulation)  
    标签：评分：8.0/10、query:ndai
-   evidence：时间序列分类的知识蒸馏
-3. [Gradient-Based Speech-to-Text Alignment for Any ASR Model: From CTC to Speech LLMs](/202607/13/2607.06831v1-gradient-based-speech-to-text-alignment-for-any-asr-model-from-ctc-to-speech-llms)  
+   evidence：无监督技能挖掘用于少样本适应
+3. [CAAD: Causality-Aware Multivariate Time Series Anomaly Detection via Multi-Scale Alignment and Structural Causal Consistency](/202607/14/2607.08555v1-caad-causality-aware-multivariate-time-series-anomaly-detection-via-multi-scale-alignment-and-structural-causal-consistency)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于梯度的显著性用于特征重要性
-4. [Retrieving and Refining Winning Noise Tickets for Diffusion-Based Motion Generation](/202607/13/2607.06843v1-retrieving-and-refining-winning-noise-tickets-for-diffusion-based-motion-generation)  
+   evidence：基于因果关系的多变量时间序列异常检测
+4. [Why Do You Say It Like That? A Phoneme-Level Framework for Explainable Speech Deepfake Detection](/202607/14/2607.08586v1-why-do-you-say-it-like-that-a-phoneme-level-framework-for-explainable-speech-deepfake-detection)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过选择初始噪声改进运动生成中的时间一致性
-5. [UBG-Net: An Uncertainty-aware Bayesian Gating Network for Robust Audio-Visual Speech Recognition](/202607/13/2607.06892v1-ubg-net-an-uncertainty-aware-bayesian-gating-network-for-robust-audio-visual-speech-recognition)  
+   evidence：计算音素级显著性作为重要性权重
+5. [Linear Attention Architectures: Mechanisms, Trade-offs, and Cross-Layer Routing](/202607/14/2607.07953v1-linear-attention-architectures-mechanisms-trade-offs-and-cross-layer-routing)  
    标签：评分：7.0/10、query:ndai
-   evidence：融合预训练特征以实现鲁棒的序列视听语音识别
+   evidence：线性注意力架构的序列建模对比研究
 

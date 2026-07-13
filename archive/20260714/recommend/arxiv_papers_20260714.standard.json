@@ -1,0 +1,410 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-13T20:20:14.381514+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 25,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 53,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 9,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 4,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2607.08164v1",
+      "source": "arxiv",
+      "title": "Continual Test-Time Adaptation in Computer Vision: Methods, Benchmarks, and Future Directions",
+      "abstract": "Deep neural nets achieve remarkable performance when training and test data share the same distribution, but this assumption frequently breaks in real-world deployment, where data undergoes continual distributional shifts. Continual Test-Time Adaptation (CTTA) addresses this challenge by adapting pretrained models to non-stationary target distributions on-the-fly, without access to source data or labeled targets, while mitigating two critical failure modes: catastrophic forgetting of source knowledge and error accumulation from noisy pseudo-labels over extended time horizons. In this comprehensive survey, we formally define the CTTA problem, analyze the diverse continual domain shift patterns that characterize different evaluation protocols, and propose a hierarchical taxonomy that categorizes existing methods into three families: optimization-based strategies (entropy minimization, pseudo-labeling, parameter restoration), parameter-efficient methods (normalization layer adaptation, adaptive parameter selection), and architecture-based approaches (teacher-student frameworks, adapters, visual prompting, masked modeling). We systematically review representative methods within each category and present comparative benchmarks and experimental results across standard evaluation settings. Finally, we discuss limitations of current approaches and highlight emerging research directions, including adaptation of foundation models and black-box systems, providing a roadmap for future research in robust continual test-time adaptation. We encourage visiting our repository at [https://github.com/sarthaxxxxx/Awesome-Continual-Test-Time-Adaptation](https://github.com/sarthaxxxxx/Awesome-Continual-Test-Time-Adaptation)",
+      "authors": [
+        "Sarthak Kumar Maharana",
+        "Shambhavi Mishra",
+        "Yunbei Zhang",
+        "Shuaicheng Niu",
+        "Taki Hasan Rafi",
+        "Jihun Hamm",
+        "Marco Pedersoli",
+        "Jose Dolz",
+        "Yunhui Guo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-09T07:02:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.08164v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adapts pretrained models to new domains without labels",
+      "llm_evidence_cn": "无需标签适应新域",
+      "llm_evidence": "无需标签适应新域",
+      "canonical_evidence": "无需标签适应新域",
+      "llm_tldr_en": "Surveys continual test-time adaptation methods for handling distribution shifts.",
+      "llm_tldr_cn": "综述持续测试时适应方法处理分布变化。",
+      "llm_tldr": "综述持续测试时适应方法处理分布变化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.08234v1",
+      "source": "arxiv",
+      "title": "RhyMix: A Lightweight Adaptive Multi-Rhythm Network for Long-Term Time Series Forecasting",
+      "abstract": "Real-world time series exhibit complex dynamics characterized by multiple simultaneous temporal patterns: short-term fluctuations, periodic seasonal cycles, long-term trends, and irregular abrupt changes. However, many existing forecasting architectures rely on single-path temporal modeling--transformers capture long-range dependencies but smooth local variations, convolutions capture local patterns but have limited receptive fields, and linear models are efficient but cannot capture nonlinear dynamics. To address this, we introduce RhyMix (RHYthm MIXture), a hybrid neural architecture designed around a parallel dual-path modeling paradigm with adaptive gating mechanisms. RhyMix integrates two complementary encoding branches: (i) a Cyclic Path that incorporates explicit seasonal inductive bias through learnable cyclic embeddings, capturing predictable rhythmic patterns; and (ii) a lightweight Multi-Scale Temporal Convolutional Network with Channel Attention Path that employs multi-scale depthwise dilated convolutions to capture temporal dependencies across different receptive fields. A key innovation is the use of adaptive gating at multiple levels: a path gate dynamically combines four specialized forecasting heads (Direct, Trend-Seasonal Decomposition, Local Convolution, and Periodic Fusion) per sample and channel, while a hybrid gate adaptively balances the Cyclic and MSTCN-CA Paths based on input characteristics. This design ensures the model adapts to specific temporal patterns while maintaining linear complexity in sequence length, channels, and prediction horizon. Across extensive benchmarks on 12 real-world datasets for long-term forecasting, RhyMix achieves state-of-the-art performance on 10 of 12 datasets. The model remains lightweight (~40K params) with linear complexity and low-latency inference (<5ms),suitable for resource-constrained edge devices and real-time deployment.",
+      "authors": [
+        "Sumit Satishrao Shevtekar",
+        "Chandresh Kumar Maurya"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-09T08:29:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.08234v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "methods for analyzing and predicting sequential data over time",
+      "llm_evidence_cn": "分析和预测时序数据的方法",
+      "llm_evidence": "分析和预测时序数据的方法",
+      "canonical_evidence": "分析和预测时序数据的方法",
+      "llm_tldr_en": "RhyMix hybrid architecture for long-term time series forecasting",
+      "llm_tldr_cn": "RhyMix混合架构用于长期时间序列预测",
+      "llm_tldr": "RhyMix混合架构用于长期时间序列预测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.08254v1",
+      "source": "arxiv",
+      "title": "CASL-VAE: Learning Structured Latent Variables from Unpaired Data for Semi-supervised Clustering and Paired Sample Generation",
+      "abstract": "Quantifying variability in a target population relative to a reference population is central to many scientific and clinical problems (e.g., diseased vs. healthy). Yet, without paired data and in the presence of heterogeneous target variation, existing methods struggle to separate multiple modes of target-specific variation. We propose \\textit{CASL-VAE}, a deep contrastive latent variable model that learns structured latent generative factors from unpaired data. CASL-VAE factorizes variation into continuous common latent factors shared across populations and hierarchical salient latent factors that model target-specific heterogeneity as discrete subtypes and continuous within-subtype variation. Using variational inference, we show how approximate joint likelihood optimization over reference and target domains can be performed using unpaired data, providing a principled basis for paired-sample generation and cross-domain analysis. We validate CASL-VAE on semi-synthetic neuroimaging data, demonstrating improved subtype recovery and paired-sample generation compared to baseline clustering and generative models. We also validate its ability to reveal biologically plausible heterogeneity in Alzheimer's disease.",
+      "authors": [
+        "Sai Spandana Chintapalli",
+        "Pratik Chaudhari",
+        "Christos Davatzikos"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-09T08:58:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.08254v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learns structured latent representations from unpaired data",
+      "llm_evidence_cn": "从非配对数据学习结构化潜在表示",
+      "llm_evidence": "从非配对数据学习结构化潜在表示",
+      "canonical_evidence": "从非配对数据学习结构化潜在表示",
+      "llm_tldr_en": "Proposes CASL-VAE for learning structured latent factors from unpaired data.",
+      "llm_tldr_cn": "提出CASL-VAE从非配对数据学习结构化潜在因子。",
+      "llm_tldr": "提出CASL-VAE从非配对数据学习结构化潜在因子。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.08635v1",
+      "source": "arxiv",
+      "title": "Calibrated Persistent-Laplacian CUSUM for Online Change-Point Detection",
+      "abstract": "We propose the Persistent Laplacian Cumulative Sum (PL-CUSUM), an online change-point detection method for high-dimensional nonlinear time series. The method converts sliding windows into point clouds and uses persistent Laplacian spectra to construct the monitoring score for the Page cumulative sum (Page-CUSUM) recursion. Compared with detectors based only on persistent-homology summaries, PL-CUSUM further uses spectral information to capture within-scale connectivity and geometric structure beyond homology counts. Theoretically, we analyze two key performance criteria: false-alarm control and detection delay. We derive false-alarm-delay bounds for the oracle detector and show that the plug-in whitened score still controls false alarms over a finite monitoring horizon. Methodologically, we provide a Phase I/Phase II procedure that performs parameter selection and control-limit calibration before online recursion. Experiments on simulated systems and real monitoring data show that PL-CUSUM provides stable false-alarm control and competitive detection performance.",
+      "authors": [
+        "Shiheng Nie",
+        "Yunguang Yue"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-07-09T16:07:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.08635v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "online change-point detection for time series",
+      "llm_evidence_cn": "时间序列在线变点检测",
+      "llm_evidence": "时间序列在线变点检测",
+      "canonical_evidence": "时间序列在线变点检测",
+      "llm_tldr_en": "Proposes PL-CUSUM for online change-point detection in nonlinear time series",
+      "llm_tldr_cn": "提出PL-CUSUM用于非线性时间序列在线变点检测",
+      "llm_tldr": "提出PL-CUSUM用于非线性时间序列在线变点检测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.08843v1",
+      "source": "arxiv",
+      "title": "How are linear representations learned? Exact solutions to the dynamics of abstraction",
+      "abstract": "In artificial and biological neural networks, concepts are often encoded as consistent linear directions in representation space. In deep learning, this idea is known as the linear representation hypothesis and underpins many interpretability and control methods based on linear probes, from concept detection to activation steering. Yet while prior work has studied whether such directions should exist $\\textit{after}$ training, the dynamics of how they emerge $\\textit{during}$ training remain poorly understood. Here, we develop a framework to study the alignment of concept directions during training - a process we call \"abstraction\". In a minimal linear network setting, we obtain exact solutions for the full trajectory of abstraction. These solutions reveal key analytic principles governing abstraction: (i) data and target geometry jointly determine abstraction at the end-of-learning, (ii) abstraction improves with network depth, and (iii) initialization scale controls the maximum abstraction reached during training. Extending our theory to nonlinear networks, we analyze how the choice of nonlinearity affects abstraction dynamics: erf networks approximate the linear theory, while abstraction in ReLU networks depends less on target geometry and more on input geometry. Across both, we prove a striking attenuation law: both nonlinearities weaken abstraction in activations relative to preactivations. We find evidence for this law in open models (DINOv3, Gemma 4) and apply our theory to improve linear probe generalization in LLMs. Together, our results provide a dynamical theory of abstraction with implications for interpretability and control.",
+      "authors": [
+        "William W. Yang",
+        "Andrew M. Saxe",
+        "Peter E. Latham"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-09T18:04:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.08843v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Studies dynamics of linear representation formation in neural networks",
+      "llm_evidence_cn": "研究神经网络中线性表示形成的动力学",
+      "llm_evidence": "研究神经网络中线性表示形成的动力学",
+      "canonical_evidence": "研究神经网络中线性表示形成的动力学",
+      "llm_tldr_en": "Exact solutions show how linear representations emerge during training",
+      "llm_tldr_cn": "精确解展示训练过程中线性表示如何出现",
+      "llm_tldr": "精确解展示训练过程中线性表示如何出现",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.08109v1",
+      "source": "arxiv",
+      "title": "Contrastive Order Learning: A General Framework for Ordinal Regression",
+      "abstract": "We propose contrastive order learning (ConOrd), a contrastive learning framework for ordinal regression that integrates the strengths of contrastive learning and order learning. While contrastive learning effectively leverages all samples in a batch, it typically ignores the inherent ordering among rank labels. Conversely, order learning explicitly models label ordinality but often relies on local, margin-based comparisons, limiting its ability to capture global ordinal structure. ConOrd addresses these limitations by introducing a contrastive order loss with soft affinity and disparity weights based on rank differences, enabling fine-grained modeling of ordinal relationships across all sample pairs within a batch. Extensive experiments on a range of ordinal regression tasks, including facial age estimation, blind image quality assessment, and blind video quality assessment, demonstrate that ConOrd consistently achieves state-of-the-art performance and generalizes well across diverse ordinal regression scenarios. The source code is available at https://github.com/cwlee00/ConOrd.",
+      "authors": [
+        "Chaewon Lee",
+        "BeomJun Shim",
+        "Kwang Pyo Choi",
+        "Chang-Su Kim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-09T04:48:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.08109v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "contrastive order learning for compact ordinal representations",
+      "llm_evidence_cn": "对比顺序学习用于紧凑序数表示",
+      "llm_evidence": "对比顺序学习用于紧凑序数表示",
+      "canonical_evidence": "对比顺序学习用于紧凑序数表示",
+      "llm_tldr_en": "Proposes contrastive order loss to learn ordinal-aware compact representations from raw data.",
+      "llm_tldr_cn": "提出对比顺序损失从原始数据中学习序数感知的紧凑表示。",
+      "llm_tldr": "提出对比顺序损失从原始数据中学习序数感知的紧凑表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.07953v1",
+      "source": "arxiv",
+      "title": "Linear Attention Architectures: Mechanisms, Trade-offs, and Cross-Layer Routing",
+      "abstract": "Self-attention lets each token retrieve information from the full context, but its quadratic cost in sequence length limits training and inference at long context. This paper presents a comparative study of softmax attention and four recent recurrent linear-attention architectures: DeltaNet, Gated DeltaNet, Kimi Delta Attention, and Gated DeltaNet-2. We express these mechanisms in a common recurrent-memory notation, making explicit how they differ in expressivity, memory decay, erase and write control, training throughput, and implementation complexity. Our experiments center on 350M-parameter models trained for 15B tokens, and include optimizer and learning-rate comparisons, hybrid-versus-pure stack comparisons, sequence-length runtime measurements, larger DeltaNet runs at 1.3B and 3B parameters, and a small set of downstream evaluations. The reported speed results measure training throughput and iteration time; we do not provide an empirical inference-speed benchmark. Within the reported 350M-parameter, 15B-token sweep, Kimi Delta Attention with Muon reaches the lowest final validation loss, a pure Gated DeltaNet stack trained with AdamW has the highest normalized training throughput, hybrid stacks generally improve loss at a throughput cost, and Muon consistently lowers final validation loss relative to AdamW in the matched architecture settings we evaluate. We introduce and evaluate lightweight cross-layer routing mechanisms for DeltaNet-style memories. The most natural DeltaNet-inspired formulation, forwarding a lower layer's delta-rule write error into the next layer's value target, does not improve over matched baselines. Routing into the aligned hidden stream and forwarding the write value instead yields a modest improvement in the matched runs we report: Cross-Layer Value Routing (CLVR) lowers final validation loss for both DeltaNet and Gated DeltaNet.",
+      "authors": [
+        "Tommaso Cerruti",
+        "Tim Rieder",
+        "George Rowlands",
+        "Lingfeng Jin",
+        "Imanol Schlag"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-08T22:14:14+00:00",
+      "link": "https://arxiv.org/pdf/2607.07953v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "comparative study of linear attention architectures for sequence modeling",
+      "llm_evidence_cn": "线性注意力架构的序列建模对比研究",
+      "llm_evidence": "线性注意力架构的序列建模对比研究",
+      "canonical_evidence": "线性注意力架构的序列建模对比研究",
+      "llm_tldr_en": "Analyzes trade-offs of softmax and recurrent linear attention for long sequences.",
+      "llm_tldr_cn": "分析了softmax和循环线性注意力在长序列中的权衡。",
+      "llm_tldr": "分析了softmax和循环线性注意力在长序列中的权衡。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.08354v1",
+      "source": "arxiv",
+      "title": "SkillPlug: Unsupervised Skill Mining for Few-Shot Adaptation in Robotic Manipulation",
+      "abstract": "Learning transferable visuomotor imitation policies that generalize across diverse manipulation tasks and adapt rapidly to new tasks from only a handful of demonstrations remains challenging. Most modern policies are trained end-to-end to map observations directly to low-level actions, offering little explicit structure for reusing and recombining behaviors across tasks and making transfer data-inefficient under limited supervision. We propose SkillPlug, a plug-in framework that augments an existing visuomotor policy with a skill-conditioning module and mines a shared, transferable skill library from raw multi-task demonstrations. SkillPlug learns skills via self-supervised objectives that promote compact, reusable, and non-redundant behavior-level primitives, forming a task-shared prior for compositional control. After skill mining, we keep the learned skills fixed and specialize to unseen tasks by fine-tuning only lightweight router and action head, enabling efficient adaptation without full end-to-end retraining. We evaluate SkillPlug on two simulation benchmarks and on a real robot, and observe that the mined transferable skills consistently improve both multi-task performance and few-shot adaptation. Overall, SkillPlug offers a scalable way to mine reusable skills that improve data-efficient generalization in robotic manipulation.",
+      "authors": [
+        "Zi-han Ding",
+        "Ziwei Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-09T11:02:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.08354v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Unsupervised skill mining for few-shot adaptation",
+      "llm_evidence_cn": "无监督技能挖掘用于少样本适应",
+      "llm_evidence": "无监督技能挖掘用于少样本适应",
+      "canonical_evidence": "无监督技能挖掘用于少样本适应",
+      "llm_tldr_en": "Mines transferable skills from raw demonstrations for few-shot adaptation in manipulation.",
+      "llm_tldr_cn": "从原始演示中挖掘可迁移技能用于操作任务的少样本适应。",
+      "llm_tldr": "从原始演示中挖掘可迁移技能用于操作任务的少样本适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.08555v1",
+      "source": "arxiv",
+      "title": "CAAD: Causality-Aware Multivariate Time Series Anomaly Detection via Multi-Scale Alignment and Structural Causal Consistency",
+      "abstract": "The operational integrity of complex industrial systems relies on precise anomaly detection and diagnosis. The vast majority of existing methods narrowly focus on capturing temporal similarities of representations, often overlooking the disruption of internal causal relationships, which characterizes system failures and latent anomalies. In this paper, we propose a novel framework (CAAD) that reframes anomaly detection as the continuous verification of Granger causality consistency through exogenous variables.   Specifically, the CAAD framework models exogenous time-series variables as residuals, identifying anomalies as significant deviations caused by external interventions. The proposed framework leverages multi-scale alignment to internalize system dynamics and utilizes a gradient-based matrix to monitor internal causal relationship breakdowns. By quantifying causal deviations of both dynamic evolution and relational topology, the CAAD is able to capture subtle causal shifts to achieve precise anomaly detection. Extensive experiments on real-world industrial datasets demonstrate that the CAAD achieves high-precision anomaly detection, outperforming most state-of-the-art baselines.",
+      "authors": [
+        "Xin Wang",
+        "Yunshi Wen",
+        "Yanan He",
+        "Haotian Xu",
+        "Youlan Zhao",
+        "Michel Ferreira Cardia Haddad",
+        "Tengfei Ma"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-09T14:46:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.08555v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "causality-aware multivariate time series anomaly detection",
+      "llm_evidence_cn": "基于因果关系的多变量时间序列异常检测",
+      "llm_evidence": "基于因果关系的多变量时间序列异常检测",
+      "canonical_evidence": "基于因果关系的多变量时间序列异常检测",
+      "llm_tldr_en": "Detects anomalies by verifying Granger causality consistency in time series.",
+      "llm_tldr_cn": "通过验证时间序列中的格兰杰因果一致性检测异常。",
+      "llm_tldr": "通过验证时间序列中的格兰杰因果一致性检测异常。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.08586v1",
+      "source": "arxiv",
+      "title": "Why Do You Say It Like That? A Phoneme-Level Framework for Explainable Speech Deepfake Detection",
+      "abstract": "As the accuracy of speech deepfake detection improves with the use of self-supervised representations such as wav2vec 2.0 and HuBERT, understanding why the speech is classified as bona fide or deepfake remains an open challenge. In pursuit of more trustworthy and interpretable artificial intelligence, we introduce a phoneme-level analysis framework that connects model predictions to measurable phonetic units. Our post-hoc explainability method is generally applicable to a variety of speech deepfake detection systems based on convolutional neural networks since it leverages Gradient-weighted Class Activation Mapping in conjunction with speech recognition to generate saliency maps aligned with phonemes and pauses. This pipeline reveals statistically significant attack- and speaker-dependent phonetic cues associated with spoofed speech in terms that humans can understand. Experiments using ASVspoof 5 show comparable detection performance to similar architectures while providing linguistic interpretations across speakers and spoofing conditions.",
+      "authors": [
+        "Anna Taylor",
+        "Michele Panariello",
+        "Massimiliano Todisco",
+        "Chiara Galdi",
+        "Nicholas Evans",
+        "Driss Matrouf"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD"
+      ],
+      "published": "2026-07-09T15:23:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.08586v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "computes phoneme-level saliency as importance weights",
+      "llm_evidence_cn": "计算音素级显著性作为重要性权重",
+      "llm_evidence": "计算音素级显著性作为重要性权重",
+      "canonical_evidence": "计算音素级显著性作为重要性权重",
+      "llm_tldr_en": "Proposes phoneme-level explainability framework computing importance weights for deepfake detection.",
+      "llm_tldr_cn": "提出音素级可解释性框架，为深度伪造检测计算重要性权重。",
+      "llm_tldr": "提出音素级可解释性框架，为深度伪造检测计算重要性权重。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
