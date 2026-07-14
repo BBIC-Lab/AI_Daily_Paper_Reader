@@ -1,0 +1,418 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-14T21:25:16.974931+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 55,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 97,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 18,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 13,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 19
+  },
+  "deep_dive": [
+    {
+      "id": "2607.08940v1",
+      "source": "arxiv",
+      "title": "TSRouter: Dynamic Modality-Model Selection for Time Series Reasoning",
+      "abstract": "Time series reasoning is essential for real-world problem-solving. While both Large Language Models (LLMs) and Vision-Language Models (VLMs) can reason about time-series data, their capabilities are complementary: LLMs process time series as text sequences and thus preserve exact numerical understanding, but struggle with global patterns, whereas VLMs efficiently capture these patterns by visualizing time series but may lose fine-grained details. Moreover, models vary significantly in task-specific expertise and inference costs. Dynamically selecting the most suitable modality and model for each query is therefore crucial, yet challenging because it requires modeling the complex interactions among tasks, queries, modalities, and models, which carry rich contextual signals. To this end, we introduce TSRouter, a graph-based dynamic routing framework. TSRouter constructs a heterogeneous graph of task, query, modality, and model nodes to contextualize the interactions among query characteristics, modality attributes, and model capabilities. TSRouter formulates routing as a candidate scoring problem, where each modality-model pair is evaluated based on user-defined performance-cost preferences to select the optimal candidate. Comprehensive evaluations on 4 distinct time series reasoning tasks reveal that TSRouter substantially outperforms diverse baselines with 16\\% to 46\\% relative improvements. Furthermore, TSRouter demonstrates robust zero-shot plug-and-play generalization to unseen models and novel tasks and preserves high performance while reducing computational overhead through cost-aware optimization. Our code is available at https://github.com/tianyi-lab/TSRouter.",
+      "authors": [
+        "Fangxu Yu",
+        "Tao Feng",
+        "Dehai Min",
+        "Lu Cheng",
+        "Ge Liu",
+        "Tianyi Zhou"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-09T21:09:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.08940v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "dynamic model selection for time series reasoning",
+      "llm_evidence_cn": "时间序列推理的动态模型选择",
+      "llm_evidence": "时间序列推理的动态模型选择",
+      "canonical_evidence": "时间序列推理的动态模型选择",
+      "llm_tldr_en": "Proposes dynamic modality-model selection for effective time series reasoning.",
+      "llm_tldr_cn": "提出动态模态模型选择以实现有效时间序列推理。",
+      "llm_tldr": "提出动态模态模型选择以实现有效时间序列推理。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.09543v1",
+      "source": "arxiv",
+      "title": "CoCoT-EEG: Contrastive-Pretrained Multiscale Convolutional Transformer for EEG Decoding",
+      "abstract": "Self-supervised pretrained foundation models (FM) have shown early promise for non-invasive electroencephalogram (EEG) decoding applications. Many recent large-scale models converged on the approach of tokenizing raw EEG followed by masked reconstruction pretraining. However, this recipe has been shown to be suboptimal for data, like EEG, with high noise amplitude and information confined to limited dimensions such as narrow frequency bands. Building on this insight, we develop a novel contrastive-pretrained EEG model with multiscale temporal convolution input layers and Transformer encoder blocks (CoCoT). CoCoT matches or beats state-of-the-art reconstruction-pretrained EEG models on extensive benchmark decoding tasks with heterogeneous electrode configurations. Furthermore, CoCoT trained from scratch outperforms previous single-task decoding models and even rivals pretrained models, showcasing the architecture's flexibility and data efficiency. Through systematic ablations, including model architecture and pretraining objective, we demonstrate the viability of contrastive learning for building EEG FMs while suggesting key architectural design considerations, prompting further investigations in alternative large-scale pretraining strategies.",
+      "authors": [
+        "Gabriel Mahuas",
+        "Victoria Shevchenko",
+        "Ugo Tanielian",
+        "Yassir Bendou",
+        "Richard Gao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "q-bio.NC"
+      ],
+      "published": "2026-07-10T15:48:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.09543v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "contrastive-pretrained model for EEG decoding",
+      "llm_evidence_cn": "对比预训练模型用于EEG解码",
+      "llm_evidence": "对比预训练模型用于EEG解码",
+      "canonical_evidence": "对比预训练模型用于EEG解码",
+      "llm_tldr_en": "CoCoT uses multiscale convolution and contrastive pretraining for EEG decoding",
+      "llm_tldr_cn": "CoCoT使用多尺度卷积和对比预训练进行EEG解码",
+      "llm_tldr": "CoCoT使用多尺度卷积和对比预训练进行EEG解码",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.09889v1",
+      "source": "arxiv",
+      "title": "Remembering Distinct Items, Not Tokens: A Learnable Dirichlet-Process Cache Between State-Space Models and Attention",
+      "abstract": "Fixed-state sequence models compress an unbounded past into a bounded state, which caps their associative recall at roughly the state dimension; attention escapes the cap by keeping a key-value entry for every token, at quadratic compute and a cache that grows with the sequence. We study the middle ground: a sparse cache that allocates a slot only when an input is novel, so its size tracks the number of distinct items rather than the number of tokens. The allocation rule is the DP-means clustering rule, the small-variance limit of a Dirichlet-process mixture, used not as latent-variable inference but as the key-value memory operator for a deep recurrent backbone. We develop it in two forms, a static cache with a fixed concentration and a surprise-adaptive variant whose concentration follows the recent novelty rate. On a controlled associative-recall benchmark with redundancy we show that the cache matches full-attention recall while storing only the distinct items, that it dominates a fixed-budget eviction cache on the recall-versus-size frontier, and that on a state-space backbone it answers both a recall query and a long-range aggregate at the lowest memory of any model tested. The allocation is learnable end to end: a two-parameter novelty-threshold gate trained on the task loss alone recovers the rule exactly, whereas an over-parameterized gate fails, so the operative ingredient is the inductive bias rather than capacity. The evidence is a family of controlled mechanism studies at modest scale, with the distinct-items property confirmed on four real streams (recommendation, systems logs, clinical events, and insurance claims); a real-backbone, real-corpus language validation is pursued in a companion study.",
+      "authors": [
+        "Siddharth Pal",
+        "Viktoria Rojkova"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL",
+        "cs.NE"
+      ],
+      "published": "2026-07-10T18:28:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.09889v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "novel sparse cache for sequence models using DP-means",
+      "llm_evidence_cn": "基于DP-means的序列模型稀疏缓存方法",
+      "llm_evidence": "基于DP-means的序列模型稀疏缓存方法",
+      "canonical_evidence": "基于DP-means的序列模型稀疏缓存方法",
+      "llm_tldr_en": "Introduces a learnable cache between state-space models and attention for efficient sequence recall",
+      "llm_tldr_cn": "提出状态空间模型与注意力之间的可学习缓存，实现高效序列召回",
+      "llm_tldr": "提出状态空间模型与注意力之间的可学习缓存，实现高效序列召回",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.09910v1",
+      "source": "arxiv",
+      "title": "Auditing Machine-Learning Models and Their Training Data with Explainability and First-Principles Verification: Application to Spin Hall Conductivity",
+      "abstract": "Machine-learning models for materials properties rest on two assumptions that standard validation never tests: that a model's features reflect the physics of the property rather than accidents of the training distribution, and that the training labels are themselves correct. We introduce a model-agnostic audit protocol for both, combining SHAP attribution, counterfactual partial dependence analysis, and Rashomon-style cross-model verification, with every finding adjudicated by targeted density functional theory (DFT). Demonstrated on intrinsic spin Hall conductivity using a composition-only Random Forest, the model needs no relaxed crystal structure, reaching accuracy competitive with structure-aware graph networks while remaining applicable to the far larger space of compositions for which no structure has been computed. The model audit reveals that the average p-valence descriptor becomes statistically entangled with Pt content - a property of the learned representation rather than the physics; DFT confirms the consequence, a Pt-free compound (HgOsPb$_2$) whose true SHC is nearly four times the prediction. The data audit exposes a thirtyfold error in the HfC training label, inherited undetectably by every black-box model trained on the same data. The protocol audits a model and its training data for the cost of a few DFT calculations, wherever one element dominates the high-property regime.",
+      "authors": [
+        "Mohammed Mahshook",
+        "Rudra Banerjee"
+      ],
+      "primary_category": "cond-mat.mtrl-sci",
+      "categories": [
+        "cond-mat.mtrl-sci"
+      ],
+      "published": "2026-07-10T19:02:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.09910v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses SHAP attribution to measure feature importance",
+      "llm_evidence_cn": "使用SHAP归因计算特征重要性",
+      "llm_evidence": "使用SHAP归因计算特征重要性",
+      "canonical_evidence": "使用SHAP归因计算特征重要性",
+      "llm_tldr_en": "A model-agnostic audit protocol combining SHAP and DFT verification for materials properties.",
+      "llm_tldr_cn": "一个结合SHAP和DFT验证的材料属性模型审计协议。",
+      "llm_tldr": "一个结合SHAP和DFT验证的材料属性模型审计协议。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.09955v1",
+      "source": "arxiv",
+      "title": "A Foundation Model for Multimodal Event Sequences in Financial Applications",
+      "abstract": "Predictive modeling is a core component of modern financial services, where a wide range of tasks are traditionally addressed using separate models trained on manually engineered tabular features. This task-specific approach limits reuse and makes it difficult to fully exploit heterogeneous data sources such as transaction histories and digital interaction signals. In this paper, we present an approach based on pretraining a foundation transformer model on multimodal sequences of user events. Events from multiple data sources are unified into a single chronological sequence, enabling early fusion of heterogeneous modalities and learning of general-purpose representations via a next-event prediction objective. These representations are combined with existing engineered user features, on top of which lightweight neural models are trained for multiple downstream tasks. The proposed system outperforms traditional task-specific models while reducing development overhead. The approach was deployed in production at one of the biggest banks in Eastern Europe, resulting in measurable improvements in business metrics.",
+      "authors": [
+        "Nikita Rusakov",
+        "Vladislav Meshkov",
+        "Konstantin Zorin",
+        "Gleb Zaripov",
+        "Alexander Uglov",
+        "Alexey Vasilev",
+        "Anton Klenitskiy"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-10T20:19:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.09955v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "pretrains transformer on multimodal event sequences for prediction",
+      "llm_evidence_cn": "在多元事件序列上预训练transformer进行预测",
+      "llm_evidence": "在多元事件序列上预训练transformer进行预测",
+      "canonical_evidence": "在多元事件序列上预训练transformer进行预测",
+      "llm_tldr_en": "A foundation transformer model pretrained on multimodal event sequences for financial predictive modeling.",
+      "llm_tldr_cn": "一个基于多元事件序列预训练的金融基础transformer模型。",
+      "llm_tldr": "一个基于多元事件序列预训练的金融基础transformer模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.08974v1",
+      "source": "arxiv",
+      "title": "CLAP: Direct VLM-to-VLA Adaptation via Language-Action Grounding",
+      "abstract": "Vision-language-action models (VLAs) inherit semantic capabilities from pretrained VLMs, yet large-scale post-training on robot data and architectural modifications can reshape the backbone so extensively that it becomes difficult to isolate what the VLM contributes to control. Directly converting pretrained VLMs into VLAs with minimal architectural change offers a more transparent path to understanding how VLM capabilities transfer across model scales. The core obstacle is output-distribution mismatch: predicting actions as bare numeric token sequences moves generation away from the VLM's pretrained language distribution, degrading the capabilities we seek to preserve. To address this, we propose CLAP (Causal Language-Action Prediction), which prepends each numeric action sequence with a natural-language action description, causally conditioning precise action-token prediction on a language-action plan without modifying the backbone architecture. With single-epoch fine-tuning alone, 2B CLAP achieves 90.8% on LIBERO (+14.9 pt over VLA-0) and improves robustness on LIBERO-PRO under language, object, and spatial perturbations. We will release CLAP at 0.8B, 2B, and 4B as an open-weight, multi-scale compact VLA family from a single VLM lineage, enabling controlled analysis of VLM-to-VLA capability transfer.",
+      "authors": [
+        "Yuri Ishitoya",
+        "Jeremy Siburian",
+        "Masashi Hamaya",
+        "Kuniaki Saito",
+        "Cristian C. Beltran-Hernandez",
+        "Mai Nishimura"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-09T22:34:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.08974v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Leveraging pretrained VLM for action prediction",
+      "llm_evidence_cn": "利用预训练VLM进行动作预测",
+      "llm_evidence": "利用预训练VLM进行动作预测",
+      "canonical_evidence": "利用预训练VLM进行动作预测",
+      "llm_tldr_en": "Proposes CLAP to adapt VLMs to VLAs by prepending language tokens, preserving pretrained capabilities.",
+      "llm_tldr_cn": "提出CLAP方法通过添加语言token将VLM适配为VLA，保持预训练能力。",
+      "llm_tldr": "提出CLAP方法通过添加语言token将VLM适配为VLA，保持预训练能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.08991v1",
+      "source": "arxiv",
+      "title": "Sensitivity-Aware Thresholding and Token Routing for Activation Sparsification in Large Language Models",
+      "abstract": "Efficient inference in Large Language Models (LLMs) requires deciding where computation can be reduced while preserving model quality. We study this problem through multilayer perceptron (MLP) activation sparsification and token-level conditional routing. We first propose Sensitivity-Aware Thresholding for Sparsity (SATS), a threshold calibration method to choose layerwise gate thresholds using a local MLP output sensitivity proxy rather than calibrating thresholds directly from activation percentiles. While SATS retains the existing mechanism of sparsifying MLP activations by thresholding gate activations, it replaces percentile-based calibration with a sensitivity-aware selection rule. We then introduce a lightweight token routing framework that dynamically selects between a base path and a modified path on a per-token basis, rather than applying the modified computation uniformly to all tokens. We evaluate both methods on multiple recent open-weight LLMs. Our results show that SATS improves over the threshold-based sparsification baseline at matched actual sparsity and that token routing yields a more favorable quality-throughput trade-off than static activation modification baselines. Overall, our results suggest that improved threshold calibration and token routing can improve the quality-throughput trade-off in LLMs.",
+      "authors": [
+        "Bishmoy Paul",
+        "Youngmin Yi",
+        "Hoeseok Yang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-09T23:40:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.08991v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "sensitivity-aware thresholding computes importance proxy for activation sparsification",
+      "llm_evidence_cn": "基于敏感度的阈值校准计算激活稀疏化的重要性代理",
+      "llm_evidence": "基于敏感度的阈值校准计算激活稀疏化的重要性代理",
+      "canonical_evidence": "基于敏感度的阈值校准计算激活稀疏化的重要性代理",
+      "llm_tldr_en": "Proposes SATS for activation sparsification in LLMs using sensitivity-based gate threshold calibration.",
+      "llm_tldr_cn": "提出了SATS方法，利用基于敏感度的门限校准实现大语言模型激活稀疏化。",
+      "llm_tldr": "提出了SATS方法，利用基于敏感度的门限校准实现大语言模型激活稀疏化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.08978v1",
+      "source": "arxiv",
+      "title": "Federated Low-Rank Koopman Learning for Multivariate Time-Series Anomaly Detection in IoT Systems",
+      "abstract": "Distributed IoT systems generate multivariate time-series streams for monitoring physical assets, servers, and embedded sensing platforms. Detecting abnormal temporal behavior is critical for fault diagnosis, predictive maintenance, and security. However, practical IoT anomaly detection is hindered by decentralized and non-IID data, limited bandwidth, and the constrained computation and memory of edge devices. This paper proposes FedKAD, a resource-efficient federated Koopman anomaly detection framework for distributed IoT multivariate time series. Unlike deep-learning-based anomaly detectors that require training and communicating large neural models, FedKAD learns normal temporal dynamics through lightweight sliding-window Koopman representations. Federated training is formulated as a low-rank consensus problem, where raw sensor streams and local reduced dynamics remain on device while only compact subspace variables are exchanged with the server. To optimize the shared representation under orthonormality constraints, we develop a federated Stiefel-ADMM algorithm and provide convergence and stationarity analysis under partial client participation. During inference, each client detects anomalies locally by measuring the prediction residual between observed future trajectories and the learned Koopman dynamics. Experiments on four widely used multivariate time-series anomaly detection benchmarks show that FedKAD maintains or improves detection performance compared with federated deep-learning baselines. More importantly for IoT deployment, FedKAD provides up to $2.1\\times10^3$ faster training, $80\\times$ lower communication, and $79\\times$ lower inference latency than neural baselines, confirming its suitability for resource-constrained edge devices.",
+      "authors": [
+        "Tung-Anh Nguyen",
+        "Van-Phuc Bui",
+        "Anh Tuyen Le",
+        "Kim Hue Ta",
+        "Minh Thuy Le",
+        "J. Andrew Zhang",
+        "Xiaojing Huang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "eess.SP"
+      ],
+      "published": "2026-07-09T22:48:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.08978v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Koopman learning for multivariate time-series anomaly detection in IoT",
+      "llm_evidence_cn": "Koopman学习用于物联网多元时间序列异常检测",
+      "llm_evidence": "Koopman学习用于物联网多元时间序列异常检测",
+      "canonical_evidence": "Koopman学习用于物联网多元时间序列异常检测",
+      "llm_tldr_en": "FedKAD uses federated Koopman learning for efficient multivariate time-series anomaly detection.",
+      "llm_tldr_cn": "FedKAD使用联邦Koopman学习进行高效的多元时间序列异常检测。",
+      "llm_tldr": "FedKAD使用联邦Koopman学习进行高效的多元时间序列异常检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.09067v1",
+      "source": "arxiv",
+      "title": "Probing Diffusion Denoising Dynamics for Contrastive Representation Learning",
+      "abstract": "Text-to-image diffusion models exhibit unprecedented generative capability and contain rich intermediate representations that can be useful for discriminative vision tasks. Motivated by this observation, we study a focused question: how can the denoising dynamics of a pretrained diffusion model be adapted to support discriminative representation learning while preserving its generative behavior under parameter-efficient updates? We present D$^3$CL as an investigation of this question. Our key observation is that noisy latents at different diffusion timesteps can be interpreted as stochastic views of the same underlying image, enabling a contrastive objective to be coupled with the standard denoising reconstruction loss. This formulation provides a simple way to probe the interaction between generative denoising and discriminative representation learning without training from scratch. To keep the adaptation lightweight, we apply LoRA updates to a pretrained Stable Diffusion backbone while freezing the original model parameters. D$^3$CL provides strong empirical evidence that reconstruction and noise-level contrastive objectives can be complementary: on ImageNet-1K, it obtains 80.1% linear-probing accuracy and an FID of 5.56 for $256 \\times 256$ unconditional generation. Additional ablations on the design space suggest that the usefulness of diffusion features depends on where and how denoising states are sampled. These results establish D$^3$CL as a parameter-efficient adaptation framework for pretrained diffusion models, showing that noise-level contrastive learning can structure denoising representations for discriminative tasks while maintaining generative performance.",
+      "authors": [
+        "Yasong Dai",
+        "Zeeshan Hayder",
+        "David Ahmedt-Aristizabal",
+        "Hongdong Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-10T03:23:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.09067v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adapts diffusion model for contrastive representation learning",
+      "llm_evidence_cn": "改编扩散模型进行对比表示学习",
+      "llm_evidence": "改编扩散模型进行对比表示学习",
+      "canonical_evidence": "改编扩散模型进行对比表示学习",
+      "llm_tldr_en": "Uses diffusion denoising dynamics to learn discriminative representations from images.",
+      "llm_tldr_cn": "利用扩散去噪动力学从图像中学习判别性表示。",
+      "llm_tldr": "利用扩散去噪动力学从图像中学习判别性表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.09076v1",
+      "source": "arxiv",
+      "title": "Neuro-Agentic Control: A Deep Learning-based LLM-Powered Agentic AI Framework for Controlling Security Controls",
+      "abstract": "Cyberattacks on operational technology are increasingly causing costly downtime and physical damage, exposing the limitations of traditional rule-based monitoring in industrial IoT environments. While Large Language Models (LLMs) have strong semantic reasoning abilities to assist in decision support, their hallucinatory nature presents unacceptable safety liabilities for closed-loop control. This paper introduces a neuro-agentic control framework, a novel architecture that couples an LLM-based planner (i.e., such as Gemini 2.5 Flash-Lite) with a pre-trained Time-Series Foundation Model (TimesFM), to achieve physics-grounded autonomous defense. The paper introduces a ``Counterfactual Physics Injection'' mechanism that simulates the impact of LLM-proposed interventions within the numerical latent space of the foundation model before actuation, while allowing the system to reject hallucinatory or unsafe actions. Evaluated on an industrial dataset (e.g., the Secure Water Treatment (SWaT)) in the context of stochastic attack scenarios, the framework exhibited better performance compared to LSTM and TCN baselines. The Neuro-Agentic Loop prevented five breaches (33.3%) below the threshold versus LSTM (26.7%) and TCN (13.3%), with zero physically invalid (hallucinated) actions executed. These results demonstrate the efficacy of using foundation models as deterministic ``Sentinels'' to safeguard agentic AI in critical infrastructure.",
+      "authors": [
+        "Saroj Gopali",
+        "Bipin Chhetri",
+        "Deepika Giri",
+        "Sima Siami-Namini",
+        "Akbar Siami Namin"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-10T03:43:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.09076v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses TimesFM for time-series prediction in control",
+      "llm_evidence_cn": "使用TimesFM进行时间序列预测控制",
+      "llm_evidence": "使用TimesFM进行时间序列预测控制",
+      "canonical_evidence": "使用TimesFM进行时间序列预测控制",
+      "llm_tldr_en": "Neuro-agentic control combines LLM planner with time-series foundation model for adaptive defense.",
+      "llm_tldr_cn": "神经代理控制结合LLM规划器和时序基础模型实现自适应防御。",
+      "llm_tldr": "神经代理控制结合LLM规划器和时序基础模型实现自适应防御。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

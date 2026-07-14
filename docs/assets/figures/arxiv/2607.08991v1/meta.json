@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-004.webp",
+      "caption": "Figure 1: (a) Layerwise distortion under different gate thresholding for llama 3.2 1B. For representative MLP layers, we sweep candidate gate thresholds and measure the layer sparsity and local MLP output distortion on the calibration split. Similar sparsity levels can induce different local distortions across layers (b) Average local distortion vs downstream average accuracy for a SATS budget sweep on llama 3.2 1B. Each point corresponds to a shared layerwise budget b (with its realized sparsity level annotated with the points)",
+      "page": 3,
+      "index": 4,
+      "width": 952,
+      "height": 361
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-009.webp",
+      "caption": "Figure 2: Overview of the proposed token routing method. For each token, di is computed on a calibration corpus, and its average value is stored in a lookup table. During inference, the router uses this lookup table to pass the token to either the base path or the sparse path, depending on τ . The base path and the sparse path use the same model weights, and only the MLP layer activation is adjusted.",
+      "page": 5,
+      "index": 9,
+      "width": 914,
+      "height": 313
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-002.webp",
+      "caption": "Table 1: Downstream task performance of base models, CATS-based models with 30% and 50% targeted sparsity, and SATS-based models that match their respective realized sparsities. The SATS-based models (with matched realized sparsity comparable CATS) perform better in terms of average accuracy, which highlights the effectiveness of the calibration method.",
+      "page": 7,
+      "index": 2,
+      "width": 875,
+      "height": 367
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-006.webp",
+      "caption": "Table 2: Perplexity scores of the base models (lower is better), CATS at 30% and 50% target sparsity, and SATS (with matched realized sparsity comparable to CATS). At a higher sparsity level, SATS-based calibration outperforms CATS-based methods.",
+      "page": 8,
+      "index": 6,
+      "width": 812,
+      "height": 230
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-005.webp",
+      "caption": "Table 3: Downstream task performance of base models, fine-tuned CATS-based models with 50% targeted sparsity, and fine-tuned SATS-based models that match its realized sparsities.",
+      "page": 8,
+      "index": 5,
+      "width": 875,
+      "height": 259
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-007.webp",
+      "caption": "Table 4: Perplexity scores of the base models (lower is better), fine-tuned CATS at 50% target sparsity, and fine-tuned SATS (with matched realized sparsity comparable to CATS).",
+      "page": 9,
+      "index": 7,
+      "width": 670,
+      "height": 196
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-008.webp",
+      "caption": "Table 5: Comparison of performance with full precision and half-precision on llama 3.1 8B",
+      "page": 9,
+      "index": 8,
+      "width": 600,
+      "height": 227
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-003.webp",
+      "caption": "Table 6: Downstream task accuracy and language modeling performance of base model, token routed SATS, and static SATS (both use the SATS matched to CATS 50% target sparsity). The target route percentage is measured from a calibration dataset. The results indicate that the token routing offers higher accuracy while offering faster throughput over the baseline dense model.",
+      "page": 10,
+      "index": 3,
+      "width": 696,
+      "height": 369
+    },
+    {
+      "url": "assets/figures/arxiv/2607.08991v1/fig-001.webp",
+      "caption": "Table 7: Downstream task accuracy and language modeling performance of base model, token routed SATS fine-tuned and static SATS fine-tuned (both use the SATS matched to CATS 50% target sparsity). The target route percentage is measured from a calibration dataset. The results indicate that the token routing offers higher accuracy while offering faster throughput over the baseline dense model.",
+      "page": 11,
+      "index": 1,
+      "width": 696,
+      "height": 369
+    }
+  ]
+}

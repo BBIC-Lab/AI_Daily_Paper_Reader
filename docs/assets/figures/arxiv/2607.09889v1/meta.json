@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-001.webp",
+      "caption": "Figure 1: Mechanism comparison (K=64 distinct in L=256 tokens). Left: recall — the DP cache and attention solve the task, the fixed-state SSM and recency eviction fall short. Right: stored slots (log scale, the cost) — the DP cache uses one slot per distinct item where attention and the kNN cache store every token.",
+      "page": 6,
+      "index": 1,
+      "width": 883,
+      "height": 346
+    },
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-003.webp",
+      "caption": "Figure 2: Recall versus cache size against the deployed fixed-budget baselines. The heavy-hitter (H2O-style) cache, which evicts by accumulated attention mass, is far stronger than recency or the sink-plus-window (StreamingLLM-style) cache on this redundant stream — it reaches 0.92 at the distinct-items budget — but the Dirichlet-process allocate-on-novelty frontier dominates all three, reaching perfect recall at that budget.",
+      "page": 7,
+      "index": 3,
+      "width": 633,
+      "height": 425
+    },
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-007.webp",
+      "caption": "Figure 3: Real recall task (MovieLens genre recall), matched budget. The heavy-hitter (H2O), sink-plus-window (StreamingLLM), recency, and SnapKV caches trail well below the Dirichletprocess cache, which reaches near-perfect recall at the distinct-items budget by covering the rare tail the attention-based policies discard.",
+      "page": 8,
+      "index": 7,
+      "width": 596,
+      "height": 400
+    },
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-009.webp",
+      "caption": "Figure 4: State-space backbone with the sparse cache. Left: the hybrid matches attention on both the recall head and the long-range integration head, where the SSM alone fails recall. Right: read-cost — the hybrid uses the fewest slots (the distinct-items count).",
+      "page": 9,
+      "index": 9,
+      "width": 883,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-004.webp",
+      "caption": "Figure 5: Threshold sensitivity on the real streams. Left: recall is flat at the ceiling across τ ∈ [0.5, 0.8] on all three domains. Right: allocated slots stay pinned at the distinct count over the same range; below the plateau the cache merges distinct entities, above it the cache stores benign duplicates.",
+      "page": 10,
+      "index": 4,
+      "width": 883,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-002.webp",
+      "caption": "Figure 6: Online allocate-on-novelty versus offline k-means (clustered attention). The offline method must fix the centroid count M and, even at M = K, recovers the clusters only imperfectly; the online DP cache reaches perfect recall at the distinct-items budget by sweeping its threshold alone, in a single pass and without knowing K.",
+      "page": 11,
+      "index": 2,
+      "width": 596,
+      "height": 392
+    },
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-008.webp",
+      "caption": "Figure 7: Cost versus stream length N at a fixed number of distinct items. Left: the DP read stays flat (O(K)) while attention’s read grows (O(N)). Right: the slot count stays bounded near K while the DP build cost grows linearly (O(N |slots|)) — the trade is a heavier one-time build for cheap reads and bounded memory.",
+      "page": 12,
+      "index": 8,
+      "width": 883,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-006.webp",
+      "caption": "Figure 8: Adaptive concentration on non-stationary demand. Left: the budget (slots per phase) swings with the alternating easy/hard working set, tracking demand while staying bounded, where the fixed-τ cache grows without limit and a fixed budget is flat. Right: at equal average cost the adaptive cache recalls more than a matched fixed budget.",
+      "page": 13,
+      "index": 6,
+      "width": 883,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2607.09889v1/fig-005.webp",
+      "caption": "Figure 9: The surprise-adaptive concentration on two real streams. Top (MovieLens): the perwindow demand is nearly stationary, and the adaptive budget and a matched fixed budget tie. Bottom (BGL alerts): the demand is bursty; the adaptive budget tracks the storms (left) and, at equal average slots, out-recalls the matched fixed budget and approaches the worst-caseprovisioned one (right).",
+      "page": 14,
+      "index": 5,
+      "width": 883,
+      "height": 646
+    }
+  ]
+}
