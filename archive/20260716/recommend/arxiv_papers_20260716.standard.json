@@ -1,0 +1,415 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-15T20:49:27.011489+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 47,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 73,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 19,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 14,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 20
+  },
+  "deep_dive": [
+    {
+      "id": "2607.10092v1",
+      "source": "arxiv",
+      "title": "Efficiently Adapting Spoken Language Models for the Singaporean Context",
+      "abstract": "Spoken language models (SLMs) unify speech perception and reasoning, but adapting them to sensitive domains is underexplored, especially when the original training data is inaccessible and the use case demands multilingual, spoken-query interaction. We adapt an open-source SLM to the Singaporean Home Team context across five speech tasks in Singapore's four official languages, combining LoRA fine-tuning, a surrogate text-QA dataset that guards against catastrophic forgetting, and a multi-task objective that adapts the CoBa reweighting scheme to speech. We also build HTD-multilingual-QA, a 504,853 sample multilingual QA dataset in text and spoken form. The resulting HT-Moonstone (5B) matches or outperforms SLMs up to 7x its size on most tasks, attains the best accent and gender recognition among all models evaluated, and loses under 2\\% of its original speech QA ability.",
+      "authors": [
+        "Ng Jia Sheng Jason"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-11T03:11:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.10092v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adapts spoken language model with LoRA and multi-task objective limited labeled data",
+      "llm_evidence_cn": "使用LoRA和多任务目标在有限标注数据下适配口语模型",
+      "llm_evidence": "使用LoRA和多任务目标在有限标注数据下适配口语模型",
+      "canonical_evidence": "使用LoRA和多任务目标在有限标注数据下适配口语模型",
+      "llm_tldr_en": "Efficiently adapts SLM to new domain using LoRA and surrogate data",
+      "llm_tldr_cn": "使用LoRA和代理数据高效适配口语模型到新领域",
+      "llm_tldr": "使用LoRA和代理数据高效适配口语模型到新领域",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10244v1",
+      "source": "arxiv",
+      "title": "DSSMs: State Space Models with Explicit Memory via Delay Differential Equations",
+      "abstract": "State Space Models (SSMs) have emerged as a powerful paradigm for efficient long-sequence modeling, offering parallel training and fast linear-time recurrent inference. However, like other recurrent architectures, SSMs must compress an unbounded history into a fixed-size state, which limits context retention and makes precise retrieval over long-range context inherently difficult. To overcome this limitation, we propose Delay State Space Models (DSSMs), a delay differential equation (DDE)-inspired extension of diagonal SSMs that augments discrete SSM recurrences with explicit delayed-state feedback. Making explicit delayed feedback practical requires new stability parameterization, history management, and FFT-training tools. We address these challenges with a practical discretization and parameterization grounded in a simple delay-independent stability condition. To bypass direct time-domain kernel construction, we derive the DSSM transfer function and compute kernels in the frequency domain, using a kernel contour shift to suppress aliasing and recover accurate FFT training. Empirically, DSSMs substantially improve targeted delayed-retrieval tasks while outperforming S4D on most standard sequence metrics and remaining close on the others.",
+      "authors": [
+        "Yixiao Qian",
+        "Song Chen",
+        "Jiaxu Liu",
+        "Shengze Cai",
+        "Chao Xu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-11T10:19:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.10244v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "delay state space model with explicit delayed-state feedback for long sequence modeling",
+      "llm_evidence_cn": "具有显式延迟状态反馈的延迟状态空间模型用于长序列建模",
+      "llm_evidence": "具有显式延迟状态反馈的延迟状态空间模型用于长序列建模",
+      "canonical_evidence": "具有显式延迟状态反馈的延迟状态空间模型用于长序列建模",
+      "llm_tldr_en": "Delay state space models enhance long-sequence modeling by incorporating explicit delayed-state feedback.",
+      "llm_tldr_cn": "延迟状态空间模型通过引入显式延迟状态反馈增强长序列建模。",
+      "llm_tldr": "延迟状态空间模型通过引入显式延迟状态反馈增强长序列建模。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10430v1",
+      "source": "arxiv",
+      "title": "Emergent Generalization by Representation Learning in Artificial Neural Networks",
+      "abstract": "Dimensionality reduction has proven powerful for identifying neural manifolds, which are low-dimensional structures underlying high-dimensional neural activity. These low-dimensional representations have improved the interpretability of population-level coding. Yet whether such low-dimensional representations are biologically relevant and confer functional advantages in learning systems, or merely reflect neuron-level activity, remains contested in neuroscience. We show that an explicit information bottleneck forcing a recurrent neural network to learn a low-dimensional representation is necessary for rotational and out-of-distribution generalisation in a time-series prediction task. Using information-theoretic measures of causal emergence, we characterise the dynamics of this representation across the memorisation-to-generalisation transition, finding a non-monotonic trajectory which shows an initial decrease, a minimum, and a subsequent rise to a maximum, even as prediction loss falls monotonically. This trajectory scales with task complexity, and the magnitude of emergent structure reliably predicts generalisation performance. Analysis of CA1 hippocampal activity in mice learning an alternating maze task reveals analogous non-monotonic emergence dynamics that track behavioural performance. Together, these findings indicate that the ability of neural networks to learn compact, distributed and emergent representations confers a functional advantage for generalisation, supporting a causal role for learned representations in cognition.",
+      "authors": [
+        "Hardik Rajpal",
+        "Dan Goodman"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "cs.IT",
+        "cs.LG",
+        "cs.NE",
+        "nlin.CD"
+      ],
+      "published": "2026-07-11T18:25:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.10430v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "information bottleneck learns low-dimensional neural representations for generalization",
+      "llm_evidence_cn": "信息瓶颈学习低维神经表示以促进泛化",
+      "llm_evidence": "信息瓶颈学习低维神经表示以促进泛化",
+      "canonical_evidence": "信息瓶颈学习低维神经表示以促进泛化",
+      "llm_tldr_en": "Shows low-dimensional representation via information bottleneck aids generalization in RNNs",
+      "llm_tldr_cn": "通过信息瓶颈的低维表示有助于RNN的泛化",
+      "llm_tldr": "通过信息瓶颈的低维表示有助于RNN的泛化",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10439v1",
+      "source": "arxiv",
+      "title": "Learning the Brain's Dynamics as a Port-Hamiltonian System",
+      "abstract": "We model human motor cortex during a wrist-extension BCI task as a port-Hamiltonian system (pHS): a conservative interconnection (gyroscopic coupling between neural phasors) plus a dissipative port (power-law energy decay driven by a GNN surrogate). A metriplectic integrator evolves the phasor state; a Fluctuation--Dissipation-consistent noise channel produces stochastic trajectories at body temperature. Training on \\FitTrainN\\ real EEG cycles (PhysioNet EEGMMIDB, 3 held-out subjects) reaches a test MSE of \\FitTestMSE\\ and passes three scale-free criticality rungs: near-critical branching ratio ($σ\\approx1$), $1/f$ power-law spectrum, and long-range DFA correlations. The model generates closed-loop neuromodulation signals that restore phase-locking in silico when applied to de-synchronised inputs, suggesting a path toward structure-preserving BCI decoders.",
+      "authors": [
+        "Dibakar Sigdel"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "cs.AI"
+      ],
+      "published": "2026-07-11T18:44:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.10439v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "models brain dynamics as port-Hamiltonian system for BCI neuromodulation",
+      "llm_evidence_cn": "将大脑动力学建模为端口-哈密顿系统用于BCI神经调控",
+      "llm_evidence": "将大脑动力学建模为端口-哈密顿系统用于BCI神经调控",
+      "canonical_evidence": "将大脑动力学建模为端口-哈密顿系统用于BCI神经调控",
+      "llm_tldr_en": "Port-Hamiltonian model of motor cortex dynamics enables closed-loop neuromodulation in BCI tasks.",
+      "llm_tldr_cn": "运动皮层动力学的端口-哈密顿模型实现BCI任务的闭环神经调控。",
+      "llm_tldr": "运动皮层动力学的端口-哈密顿模型实现BCI任务的闭环神经调控。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10541v2",
+      "source": "arxiv",
+      "title": "RecRec: Recursive Refinement for Sequential Recommendation",
+      "abstract": "Sequential recommender systems typically infer user preferences through single-pass encoding of interaction histories without iterative refinement, relying on increasingly deep architectures to capture complex patterns. In this work, we revisit sequential recommendation from a recursive inference perspective: can user preferences be modeled as a persistent latent state that is recursively refined? We propose RecRec (Recursive Recommendation), a lightweight model that maintains a compact latent state and updates it through a shared recursive module conditioned on interaction evidence. Unlike prior recursive models, RecRec introduces an evidence-anchored correction mechanism that stabilizes refinement by grounding each update in the original interaction context, preventing semantic drift during deep recursive reasoning. Experiments on three benchmark datasets under standard evaluation protocols show that RecRec matches or outperforms state-of-the-art sequential, graph-based, and reasoning-enhanced recommenders while using only 3.9M to 14M parameters. Ablation studies demonstrate that both recursive refinement and the evidence-anchored correction gate contribute significantly to performance, highlighting the effectiveness of recursive latent inference as a scalable alternative to deeper or language-based architectures. Code is available at https://anonymous.4open.science/r/RecRec-6B67/README.md.",
+      "authors": [
+        "Pervez Shaik",
+        "Prosenjit Biswas",
+        "Abhinav Thorat",
+        "Ravi Kolla",
+        "Niranjan Pedanekar"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.LG"
+      ],
+      "published": "2026-07-12T02:53:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.10541v2",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Sequential recommendation with recursive refinement of latent state",
+      "llm_evidence_cn": "通过递归潜在状态细化进行序列推荐",
+      "llm_evidence": "通过递归潜在状态细化进行序列推荐",
+      "canonical_evidence": "通过递归潜在状态细化进行序列推荐",
+      "llm_tldr_en": "Proposes RecRec for sequential recommendation via recursive latent state refinement.",
+      "llm_tldr_cn": "提出RecRec，通过递归潜在状态细化进行序列推荐。",
+      "llm_tldr": "提出RecRec，通过递归潜在状态细化进行序列推荐。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.10003v1",
+      "source": "arxiv",
+      "title": "ARIMA: Reconstruction-Grounded Predictive Representation Learning for Symbolic Music",
+      "abstract": "Self-supervised learning for symbolic music has advanced largely through token-level pretraining, but such representations remain tied to tokenizer-specific sequences and often provide time-span-level embeddings only indirectly. In this paper, we propose ARIMA, a reconstruction-grounded latent predictive framework for symbolic music that learns compact window-based representations directly from data. ARIMA encodes each fixed-duration window into a continuous latent representation, trains a causal predictor with contrastive next-latent prediction, and grounds the encoder through structured reconstruction of music elements. This design preserves local musical details while modeling temporal progression across windows. We evaluate ARIMA on downstream tasks spanning various levels of music understanding. Results show that ARIMA is particularly efficient and effective on tasks involving harmonic, timing, and cross-performance retrieval, while remaining competitive with much larger baselines on other tasks. Ablations further show that next-latent prediction is essential for temporally integrated representations, and that structured reconstruction stabilizes latent learning without requiring explicit variance regularization. The code is at https://github.com/AndyWeasley2004/symbolic_music_wm.",
+      "authors": [
+        "Mingyang Yao",
+        "Zhaoxiang Feng"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-07-10T22:02:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.10003v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Learns compact window-based representations directly from raw symbolic music data",
+      "llm_evidence_cn": "直接从原始音乐数据中学习紧凑的窗口表示",
+      "llm_evidence": "直接从原始音乐数据中学习紧凑的窗口表示",
+      "canonical_evidence": "直接从原始音乐数据中学习紧凑的窗口表示",
+      "llm_tldr_en": "ARIMA learns compact window-based representations from raw music data via reconstruction-grounded predictive learning.",
+      "llm_tldr_cn": "ARIMA通过重建引导的预测学习，从原始音乐数据中学习紧凑的窗口表示。",
+      "llm_tldr": "ARIMA通过重建引导的预测学习，从原始音乐数据中学习紧凑的窗口表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.10128v1",
+      "source": "arxiv",
+      "title": "Energy-guided Recursive Model",
+      "abstract": "Recursive reasoning models address structured problems by repeatedly updating latent states of small neural networks. However, their test-time scaling lacks a principled inference mechanism: increasing depth or stochastic breadth generates more trajectories without a clear criterion for selection, and existing methods predominantly rely on additional q-heads or heuristic voting. Here, we develop the Energy-guided Recursive Model (ERM), which introduces an intrinsic selection principle based on explicit Hopfield energies. ERM leverages Hopfield-type memories of valid local or global structures to define the selector over candidate trajectories. The resulting energy seamlessly integrates with energy-based techniques such as parallel tempering to enhance sampling efficiency and ranking. With $D=64$ recurrent steps and $K=128$ candidates, ERM reaches optimal solutions on Sudoku ($98.97\\%$), Pencil Puzzle Bench (PPBench, $88.04\\%$) and Maze ($99.30\\%$), improving upon recent Probabilistic Tiny Recursive Model and Equilibrium Reasoners. These results suggest that incorporating explicit energy functions into recursive reasoning offers a principled path toward more effective inference.",
+      "authors": [
+        "Yifei Zhao",
+        "Ying Tang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-07-11T05:39:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.10128v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "energy-guided recursive model for trajectory selection from latent states",
+      "llm_evidence_cn": "能量引导的递归模型从隐状态中选择轨迹",
+      "llm_evidence": "能量引导的递归模型从隐状态中选择轨迹",
+      "canonical_evidence": "能量引导的递归模型从隐状态中选择轨迹",
+      "llm_tldr_en": "Introduces ERM with Hopfield energies to select candidate trajectories in recursive reasoning models.",
+      "llm_tldr_cn": "引入具有Hopfield能量的ERM在递归推理模型中选择候选轨迹。",
+      "llm_tldr": "引入具有Hopfield能量的ERM在递归推理模型中选择候选轨迹。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.10016v1",
+      "source": "arxiv",
+      "title": "Tokenizing Numerical and Embedding Features for LLM RecSys",
+      "abstract": "Large language models (LLMs) are increasingly used as backbone architectures for recommender systems because of their strong sequence modeling and representation learning capabilities. However, most LLM-based recommenders operate primarily on discrete textual tokens, whereas practical recommendation pipelines also rely on continuous numerical features and dense embedding features produced by upstream feature engineering or pretrained encoders. This mismatch limits the ability of LLM-based models to exploit fine-grained non-textual signals. We propose a soft-token fusion framework that maps numerical and embedding features into the LLM embedding space, allowing heterogeneous recommendation signals to be consumed through the standard token interface. We instantiate the framework in a shared-parameter LLM-based two-tower retrieval model and introduce an interaction-based fusion module that refines embedding and numerical soft tokens before they are inserted into the final LLM input. Experiments on three Amazon recommendation benchmarks show that soft-token fusion improves retrieval performance over LLM-based baselines, and that interaction-based fusion is more effective than direct concatenation of heterogeneous soft tokens.",
+      "authors": [
+        "Zhe Xu",
+        "Ankit Peshin",
+        "Chiyu Zhang",
+        "Feng Qi",
+        "Johnson Lui",
+        "Anil Ramakrishna",
+        "Justin Johnson",
+        "Carl Hu",
+        "Kaushik Rangadurai",
+        "Luke Simon"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.LG"
+      ],
+      "published": "2026-07-10T22:36:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.10016v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "maps numerical and embedding features into LLM token space for representation learning",
+      "llm_evidence_cn": "将数值和嵌入特征映射到LLM令牌空间进行表示学习",
+      "llm_evidence": "将数值和嵌入特征映射到LLM令牌空间进行表示学习",
+      "canonical_evidence": "将数值和嵌入特征映射到LLM令牌空间进行表示学习",
+      "llm_tldr_en": "Proposes soft-token fusion to integrate numerical and embedding features into LLM-based recommenders.",
+      "llm_tldr_cn": "提出软令牌融合方法，将数值和嵌入特征集成到基于LLM的推荐系统中。",
+      "llm_tldr": "提出软令牌融合方法，将数值和嵌入特征集成到基于LLM的推荐系统中。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.10026v1",
+      "source": "arxiv",
+      "title": "Robustly Invertible Nonlinear Dynamics and the BiLipREN: From Inversion-Based Control to Generative Trajectory Modelling",
+      "abstract": "This paper proposes a new notion of robust invertibility for nonlinear dynamical systems, and introduces constructive parameterizations of recurrent neural network which are robustly invertible by design. We define robust invertibility as the existence of a causal inverse system such that both the forward and inverse systems are contracting and have bounded incremental input-output gains (the system is bi-Lipschitz), implying that both forward prediction and input reconstruction are robust to signal perturbations and initial-state mismatch. We construct robustly invertible recurrent models via series composition of static orthogonal layers and dynamic layers satisfying a strong input-output monotonicity property, and provide a differentiable neural network parameterizations in the form of the bi-Lipschitz recurrent equilibrium network (BiLipREN). Additionally, composition with dynamic orthogonal layers yields a nonlinear minimum-phase/all-pass (a.k.a. inner--outer) factorization. We illustrate the utility of the framework through a series of application examples in data-driven internal model control, dynamic surrogate loss learning, and signal-space normalizing flows, illustrating its utility for robust control, trajectory optimization, and generative modeling of complex trajectory distributions.",
+      "authors": [
+        "Yurui Zhang",
+        "Ruigang Wang",
+        "Ian R. Manchester"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "math.OC"
+      ],
+      "published": "2026-07-10T23:11:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.10026v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Robustly invertible recurrent networks for trajectory prediction and generation",
+      "llm_evidence_cn": "鲁棒可逆递归网络用于轨迹预测与生成",
+      "llm_evidence": "鲁棒可逆递归网络用于轨迹预测与生成",
+      "canonical_evidence": "鲁棒可逆递归网络用于轨迹预测与生成",
+      "llm_tldr_en": "Introduces robustly invertible RNNs for forward prediction and input reconstruction in dynamical systems.",
+      "llm_tldr_cn": "提出鲁棒可逆递归网络用于动态系统前向预测与输入重构。",
+      "llm_tldr": "提出鲁棒可逆递归网络用于动态系统前向预测与输入重构。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.10087v1",
+      "source": "arxiv",
+      "title": "CVKD-UDA: Cross-View Knowledge Distillation for 3D Unsupervised Domain Adaptive Segmentation",
+      "abstract": "3D unsupervised domain adaptive (UDA) segmentation mitigates the high cost of manual annotations of the new domain data. Self-training has emerged as the dominant approach in this area, where its success heavily depends on a well-initialized warm-up model to generate reliable pseudo labels. However, existing methods often depend on source supervision or output-level adversarial alignment to obtain the warm-up model, which suffer from limited generalization and training instability due to the large domain gap between domains. Constructing domain-similar representations is an effective way to bridge this gap. In this work, we propose CVKD-UDA, which revisits voxel size as a core design factor to construct domain-similar representations and leverages cross-view complementary cues to balance transferability and discriminability of the warm-up model. First, we generate two complementary views by varying voxel sizes and introduce a cross-view knowledge distillation (CVKD) to enhance generalization and target perception of the model. Second, to balance transferability and discriminability, we design a lightweight Decouple-Adapter and an auxiliary imitation classifier to decouple cross-view knowledge transfer. Extensive experiments on two benchmarks demonstrate that CVKD-UDA effectively improves the performance of self-training methods and provides a new perspective for 3D UDA segmentation. Our code will be available at GitHub.",
+      "authors": [
+        "Zhimin Yuan",
+        "Ming Cheng",
+        "Shangshu Yu",
+        "Wen Li",
+        "Dunqiang Liu",
+        "Xin Huang",
+        "Cheng Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-11T02:55:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.10087v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Cross-view knowledge distillation for unsupervised domain adaptation",
+      "llm_evidence_cn": "跨视角知识蒸馏用于无监督域适应",
+      "llm_evidence": "跨视角知识蒸馏用于无监督域适应",
+      "canonical_evidence": "跨视角知识蒸馏用于无监督域适应",
+      "llm_tldr_en": "Proposes cross-view knowledge distillation to improve unsupervised domain adaptation for 3D segmentation.",
+      "llm_tldr_cn": "提出跨视角知识蒸馏以改进3D分割的无监督域适应。",
+      "llm_tldr": "提出跨视角知识蒸馏以改进3D分割的无监督域适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

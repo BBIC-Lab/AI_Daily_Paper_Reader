@@ -1,0 +1,320 @@
+Title: ARIMA: Reconstruction-Grounded Predictive Representation Learning for Symbolic Music
+
+URL Source: https://arxiv.org/pdf/2607.10003v1
+
+Published Time: Tue, 14 Jul 2026 00:24:30 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# ARIMA: RECONSTRUCTION-GROUNDED PREDICTIVE REPRESENTATION LEARNING FOR SYMBOLIC MUSIC 
+
+## Mingyang Yao Zhaoxiang Feng 
+
+## University of California, San Diego  
+
+> {m5yao, zhf004}@ucsd.edu
+
+ABSTRACT 
+
+Self-supervised learning for symbolic music has advanced largely through token-level pretraining, but such represen-tations remain tied to tokenizer-specific sequences and of-ten provide time-span-level embeddings only indirectly. In this paper, we propose ARIMA, a reconstruction-grounded latent predictive framework for symbolic music that learns compact window-based representations directly from data. ARIMA encodes each fixed-duration window into a con-tinuous latent representation, trains a causal predictor with contrastive next-latent prediction, and grounds the encoder through structured reconstruction of music elements. This design preserves local musical details while modeling tem-poral progression across windows. We evaluate ARIMA on downstream tasks spanning various levels of music un-derstanding. Results show that ARIMA is particularly ef-ficient and effective on tasks involving harmonic, timing, and cross-performance retrieval, while remaining compet-itive with much larger baselines on other tasks. Ablations further show that next-latent prediction is essential for tem-porally integrated representations, and that structured re-construction stabilizes latent learning without requiring ex-plicit variance regularization. The code is here 1
+
+1. INTRODUCTION 
+
+Self-supervised learning (SSL) has become an important approach for learning transferable representations from un-labeled symbolic music. Recent works such as MidiBERT-Piano [1], MusicBERT [2], PianoBART [3], and Aria [4] adapt masked language modeling or autoregressive ob-jectives to MIDI tokenizations [5], including REMI [6], CP [7], OctupleMIDI [2] and other variants. In parallel, contrastive models such as CLaMP [8] learn joint repre-sentations between symbolic music and natural language, enabling semantic retrieval and zero-shot music classifica-tion. These studies demonstrate the value of large-scale SSL for music understanding and generation. Despite this progress, most existing symbolic SSL re-main closely tied to token-level or cross-modal alignment objectives. Token-based models learn from tokenizer-specific event sequences. While this is effective for genera-tion and note-level classification, time-span-level represen-tations are usually obtained only indirectly through pool-ing or task-specific adaptation. Moreover, the token counts  
+
+> 1https://github.com/AndyWeasley2004/symbolic_music_wm
+
+corresponding to the same temporal span can vary substan-tially with note density, time resolution, and tokenizer de-sign, making musical timings less explicit. Cross-modal models such as CLaMP provide higher-level semantic su-pervision, but their objective primarily captures language-associated musical semantics rather than the temporal evo-lution of music. This leaves a gap for self-supervised ob-jectives that learn compact time-span-level representations while directly modeling progression across time. A related direction has been explored through joint-embedding predictive architectures (JEPA) [9–11] under the world model domain. Instead of predicting the next frame as raw images or discrete tokens, JEPA-style models learn by predicting the next state latent from context and actions. Specifically, an encoder maps each input image to an embedding, while a predictor models causal depen-dencies among embeddings in latent space. This provides a natural analogy for symbolic music: local windows can be encoded as musical states, and self-supervised predic-tion across windows can encourage the model to learn how these states progress over time. However, symbolic music also differs from vision and video in an important aspect. Low-level information such as pitch, onset patterns, sustain behavior, and velocity often carries direct analytical meaning in symbolic mu-sic. A purely non-reconstructive latent prediction objec-tive may therefore learn high-level temporal abstractions while imposing limited pressure to preserve these musi-cally important details in each window. This motivates a reconstruction-grounded predictive framework: the model should be able to compress, retaining enough details, and predict, keeping aware of what could come next. Therefore, we propose ARIMA, an Autoregressive 
+
+Representation learning framework for Symbol ic Music 
+
+Analysis. It 1) encodes each fixed-duration window of music into a continuous latent using a window encoder su-pervised by pianoroll, chroma, and velocity reconstruction, and 2) models temporal progression with a causal predictor trained by contrastive next-latent prediction [12], combin-ing local elements with longer context modeling. Our contributions are summarized as follows: • We propose ARIMA, the first window-level symbolic music representation learning framework. • ARIMA reaches the best results on approximately half of the evaluated tasks and remains competitive on the arXiv:2607.10003v1 [cs.SD] 10 Jul 2026 others, despite being substantially smaller than the com-parable baselines. • We analyze how ARIMA learns different features and the impact of variance regularization on latents. 
+
+2. RELATED WORK 
+
+Our work intersects with SSL for symbolic music and joint-embedding predictive frameworks. We therefore re-view each area. 
+
+2.1 Self-supervised learning for symbolic music. 
+
+Masked language modeling (MLM) is the dominant pre-training paradigm for symbolic music. MidiBERT-Piano [1] adapts BERT-style pretraining and explores the effects of CP [7] and REMI [6] tokenizations on model performance. Later, MusicBERT [2] introduces OctupleMIDI tokenization for bar-level and multi-track modeling. Diverging from encoder-only models, Piano-BART [3] applies BART-style denoising autoencoding to symbolic music. Recently, M2BERT [13] goes beyond standard NLP objectives and proposes music-specific pi-anoroll and chroma reconstructions from masked regions, which shows the potential in learning objectives follow-ing the inductive bias of music. In addition to the MLM family, Aria [4] scales autoregressive pretraining and contrastive learning to a 631M-parameter model trained on ∼60,000 hours of transcribed piano MIDI. These ap-proaches all operate over tokens, whereas our framework operates at the window level. 
+
+2.2 Joint-embedding predictive architectures. 
+
+Latent-space sequence modeling has been substantially ex-plored through JEPA, which learns by predicting represen-tations rather than raw observations. I-JEPA [9] predicts masked image-block embeddings from visible context, and V-JEPA [10] extends this formulation to spatio-temporal prediction in video. More recently, LeWorldModel [11] frames JEPA as an end-to-end latent world model, us-ing next-embedding prediction to learn the causal effect of actions applied on the current state embedding. Relat-edly, Contrastive Predictive Coding (CPC) [12] provides a contrastive learning paradigm for supervising future latent states with an InfoNCE objective instead of objectives that direct matches the prediction to the targets. We follow this latent predictive design but adapt it to symbolic piano performance. Unlike general JEPA-style world models, ARIMA additionally grounds the en-coder with structured symbolic reconstruction, placing it between contrastive predictive learning, JEPA-style latent prediction, and analysis-oriented symbolic music represen-tation learning. 
+
+3. METHOD 
+
+Figure 1 illustrates the preprocessing pipeline, model back-bone, and main objectives in different modules. We in-troduce the input representation, model components, and training objectives in the specification below. 
+
+3.1 Input Representation 
+
+3.1.1 Window partitioning and note encoding. 
+
+Given a piece of symbolic music, we partition it into a se-quence of T windows {W1, . . . , W T } of length ∆ seconds, where each window Wt contains at most K notes. Then, each note is encoded as a tuple 
+
+n =  p, v, o, δ, ι, ϕ prev , ϕ next 
+
+, (1) where p ∈ { 0, . . . , 127 } is MIDI pitch, v ∈ { 0, . . . , 127 }
+
+is velocity, o and δ are onset time and duration in millisec-onds relatjive to the window start, ι is the inter-onset in-terval (IOI), and ϕprev , ϕ next ∈ { 0, 1} indicate whether the note is tied from the previous window or into the next. Notes crossing a boundary appear in both adjacent win-dows with truncated durations. Specifically, ϕnext = 1 in the first window, and ϕprev = 1 with o = 0 in the second, so no musical event is lost at the partition. 
+
+3.1.2 Note embeddings. 
+
+Each note n is mapped to an embedding by summing learned categorical embeddings for the discrete fields 
+
+(p, v, ϕ prev , ϕ next ) and sinusoidal encodings [14] of the con-tinuous timing fields (o, δ, ι ). For window t, we denote the resulting sequence of note embeddings as Wt. Although the input uses the exact categorical velocity value, the ve-locity reconstruction target is rescaled to [0 , 1] , optimizing as an ordered intensity value. 
+
+3.2 Model 
+
+ARIMA learns two window-level representations: a con-tent latent zt ∈ Rd produced by an encoder, and a temporal hidden state ht ∈ Rd produced by a causal predictor. 
+
+3.2.1 Window encoder. 
+
+The encoder fθ : W → Rd is a encoder that operates independently on the embedded notes in each window with a learnable aggregation token. Its final aggregation state is the content latent: 
+
+zt = fθ (Wt). (2) 
+
+3.2.2 Causal predictor. 
+
+The predictor gψ : RT ×d → RT ×d is a causal decoder that maps the sequence of content latents to temporal hidden states, 
+
+(h1, . . . , h T ) = gψ (z1, . . . , z T ), (3) where each ht depends only on z1: t. A linear head πϕ then produces the next-latent prediction ˆzt+1 = πϕ(ht) ∈ Rd.Tokenizer             
+
+> ... ... ...
+> Content Encoder
+> (online) ...
+> Onset Roll Sustain Roll Chroma Roll Velocity Map
+> 88 pitches
+> notes + [AGG]
+> d_model
+> Latent Predictor
+> (Hidden)
+> (Prediction)
+> Linear Projection
+> Positives
+> N
+> Negatives
+> Contrastive Objective
+> In-batch negatives
+> A. Tokenization by Window B. Window Encoding C. Pianoroll Reconstruction D. Contrastive Next Latent Prediction
+> ...
+> Target Encoder
+> (stop-grad)
+> EMA
+
+Figure 1 . The architecture and training dynamics of ARIMA, from the tokenization, window encoding (left), to structured pianoroll reconstruction and contrastive next latent prediction (right) 
+
+3.2.3 EMA target encoder. 
+
+Following [15], a stop-gradient copy fθ′ of the online win-dow encoder is maintained by an exponential moving av-erage (EMA), 
+
+θ′ ← τ θ ′ + (1 − τ ) θ, (4) with momentum τ ∈ [0 , 1) . This target encoder produces the stable contrastive target z′ 
+
+> t
+
+= fθ′ (Wt).
+
+3.2.4 Reconstruction heads. 
+
+Four lightweight MLPs map the content latent zt to struc-tured musical targets: don , d sus : Rd → [0 , 1] L×88 produce the onset O and sustain S rolls, dchr : Rd → [0 , 1] L×12 pro-duces the chromaroll C, and dvel : Rd → RL×88 produces the velocity map V , where L is the number of temporal bins per window. 
+
+3.3 Training Objectives 
+
+The training loss combines contrastive next-latent predic-tion, binary reconstruction, and velocity regression: 
+
+L = λpred Lpred + λrecon Lrecon + λvel Lvel . (5) 
+
+3.3.1 Next-latent prediction. 
+
+Let ˜zt+1 = ˆ zt+1 /∥ˆzt+1 ∥2 and ˜z′ 
+
+> t+1
+
+= z′
+
+> t+1
+
+/∥z′
+
+> t+1
+
+∥2 de-note the ℓ2-normalized prediction and target. The predictor is trained with an InfoNCE loss [12] at each position t,
+
+L(t) 
+
+> pred
+
+= − log exp  ˜z⊤ 
+
+> t+1
+
+˜z′
+
+> t+1
+
+/τ P 
+
+> ¯z∈N t∪{ ˜z′
+> t+1 }
+
+exp  ˜z⊤ 
+
+> t+1
+
+¯z/τ  , (6) with temperature τ > 0. The negative set Nt consists of all other normalized target latents in the batch. Pitch-transposed copies of the same window are excluded from 
+
+Nt, while same-piece, different-window views are treated as hard negatives and doubled their weights. This encour-ages transposition invariance in z while avoiding piece-level fingerprinting. 
+
+3.3.2 Pianoroll and chroma reconstruction. 
+
+Given ground-truth onset pianoroll Ot, sustain pianoroll 
+
+St, and chromaroll Ct, the reconstruction loss aggregates three terms, 
+
+Lrecon = OWBCE ( ˆO, O ) + BCE ρ( ˆS, S ) + BCE ρ( ˆC, C ),
+
+(7) where BCE ρ is binary cross-entropy with positive-class weight ρ ≥ 1. The onset-weighted variant OWBCE adapts the soft-onset idea common in piano transcription [16], which smooths continuous onset times over neighboring bins to absorb the quantization jitter from mapping real-valued onsets onto a fixed grid; unlike prior work that softens the target , we keep O binary and upweight the 
+
+loss near each onset. Concretely, we convolve O along the time axis with a discrete sine window k of full width 
+
+2w+1 (peak 1 at the center, zero at both edges) to obtain 
+
+˜O = min( k ∗ O, 1) ∈ [0 , 1] L×88 , and weight each cell by 
+
+W [l, i ] = 1 + α ˜O[l, i ], (8) so a bin at an onset contributes up to (1 + α)× the loss of a bin far from any onset, which is a soft temporal margin without altering the target. 
+
+3.3.3 Velocity regression. 
+
+We use standard MSE to supervise velocity reconstruction: 
+
+Lvel = 1
+
+|Ωt|
+
+X
+
+> (l,k )∈Ωt
+
+  ˆVt[l, k ] − Vt[l, k ]2, (9) and the loss is restricted to onset positions Ωt = {(l, k ) : 
+
+Ot[l, k ] = 1 }.
+
+3.3.4 Augmentation. 
+
+Each window receives pitch transposition within ±3 semi-tones and velocity jitter within ±5 units. Transposed views participate in Nt as hard negatives, except for augmented copies of the same window as described above. 4. EXPERIMENTS 4.1 Data and Model Setting 
+
+The window encoder is a 4-layer Transformer encoder, and the predictor is a 6-layer causal Transformer decoder with learned relative position bias. Both use d = 512 , 8 heads, and an FFN dimension of 2048. Training is regularized with dropout and stochastic depth [17] probability of 0.1. Each window spans ∆ = 2s with at most K = 100 
+
+notes and L = 32 temporal bins for reconstruction, and the predictor uses T = 60 windows of context, corre-sponding to 120s effective duration. The EMA momen-tum of the target encoder is τ = 0 .996 . In total, ARIMA has ∼38M trainable parameters. The training data con-sists of ∼15,000 piano performances from ATEPP [18], POP1K7 [7], POP909 [19], and EMOPIA [20]. 
+
+4.2 Training Configuration 
+
+The model is trained end-to-end using AdamW [21] with 
+
+β = (0 .9, 0.95) and weight decay 0.05 . The learning rate is linearly warmed up for 2,000 steps to a peak of 2×10 −4,then linearly decayed to 25% of the peak over 42,000 steps. We use mixed-precision BF16 training and set the maxi-mum gradient norm to 1.0.For reconstruction, we set the OWBCE kernel half-width to 3 with α = 12 , the BCE ρ positive weight to 
+
+ρ = 3 .0, λrecon = 1 .0, and λvel = 5 .0. For contrastive latent prediction, we use InfoNCE temperature τI = 0 .07 
+
+and warm up the contrastive term weight from 0 to λpred =0.25 over the first 8,000 steps, allowing the encoder to es-tablish a stable reconstruction-anchored latent space before the predictor begins shaping it. 
+
+4.3 Downstream Tasks 
+
+We evaluate on 9 tasks spanning six datasets. The first 6 are basic understanding tasks: composer classification under two label sets (top 21- and 16-composer on ATEPP [18] and the 8 pianists of Pianist8 [22]), performer identifi-cation with top 32- and 16-performer on ATEPP, four-quadrant emotion classification on EMOPIA [20], key esti-mation on human-annotated POP909 [19, 23], and ordinal Henle-scale difficulty estimation on CIPI [24]. The remaining 3 are ASAP-based tasks [25] target-ing performance structure: piece-level Inter-Onset Inter-val (IOI) regression , performer verification , and cross-performance retrieval . The IOI task predicts the per-piece mean of log(IOI perf /IOI score ) across annotated beats, i.e., the log tempo ratio relative to the reference score. Performer verification asks whether two performances by the same performer are closer in cosine space than two performances by different performers, with positive (same-performer / different-score) and negative (different-performer) pairs sampled at a 1:5 ratio. Finally, cross-performance retrieval queries whether each performance’s nearest cosine neighbor is a different rendition of the same score, reported as R@1. For all classification tasks, we perform mean pooling on models producing representation sequences, such as MLM-based models and ARIMA, and use the produced embedding directly for models providing global represen-tation, including public Aria embedding and our replica. Using these embeddings, we train a two-layer MLP with 256 hidden units under 5-fold cross-validation, and report the macro F1 score. On CIPI, we applied an ordinal re-gression probe with its pre-defined data splits and reported as Spearman correlation ρ, which measures if the model orders pieces by difficulty in the same order as the ground-truth ranking. For probing tasks mentioned above, we eval-uate on both the content latent z, and the predictor latent 
+
+h, and verification and retrieval are computed directly from cosine similarities without a learned probe. 
+
+4.4 Baselines and Ablations 
+
+4.4.1 Baselines. 
+
+We compare against four pretrained models and one repli-cated model. For pretrained models with open-source weights, we use MidiBERT-Piano [1], PianoBART [3], 
+
+M2BERT [13], and Aria variants ( Aria-base and Aria-embedding ) [4]. To isolate paradigm from scale, we addi-tionally train one Aria replica at the ∼100M size with the same corpus used by ARIMA and the same upstream archi-tecture, optimization, and augmentation policy. To reduce the size, the model is set to 8 layers with dmodel = 768 .We interpret comparisons against the public Aria mod-els as foundation-scale references rather than controlled comparisons, since they differ substantially from all other models in parameter count and training data size. The 100M replica provides a more controlled comparison of the paradigm under a closer model scale. All baselines take performance MIDI as input and produce a mean-pooled representation across the full piece. 
+
+4.4.2 Ablation variants. 
+
+We conduct an ablation study on four variants: (1) adding VICReg [26], which is effective for preventing representa-tion collapse [27]; (2) removing latent prediction and us-ing the encoder only; (3) using a combined pianoroll as the reconstruction target instead of disentangled onset and sustain rolls; and (4) the full ARIMA model. 
+
+5. RESULTS 5.1 Main Results 
+
+5.1.1 Comparable-scale baselines. 
+
+Table 1 summarizes performance across all tasks. Among comparable-scale models, ARIMA is consistently compet-itive despite having the smallest parameter count. The pre-dictor representation h obtains the best results on com-poser classification, inter-onset interval regression, and performer verification, and ranks second on Pianist8, 32-class performer identification, difficulty estimation, and cross-performance retrieval. The encoder representation z
+
+is strongest on key estimation and cross-performance re-trieval, suggesting that the reconstruction-grounded win-dow latent preserves pitch-class and content-similarity in-Content Probing Temporal Similarity Composer Performer Model # Params 21-cls 16-cls Pianist8 32-cls 16-cls Emotion Key Difficulty IOI Verification Retrieval                                                                                                                       
+
+> (F1)(F1)(F1)(F1)(F1)(F1)(F1)(ρ)(R2)(AUC) (R@1 )MidiBERT-Piano 110M 82.1 86.5 68.0 25.4 36.6 68.8 77.5 .674 .674 .466 93.8 PianoBART Encoder 102M 84.8 89.0 77.6 46.0 59.6 71.7 76.7 .772 .605 .676 92.8 M2BERT 61M 90.4 92.3 74.0 39.7 51.7 70.8 81.7 .722 .795 .641 98.7 Aria-base-100M 103M 89.5 92.0 84.1 55.2 71.9 74.5 77.7 .697 .749 .695 98.3 Aria-embedding-100M 89M 77.7 83.7 71.0 30.1 40.2 68.0 46.8 .660 .593 .698 90.8 ARIMA ( z, ours) 38M 86.5 90.6 75.7 38.4 50.7 68.8 82.7 .726 .738 .768 99.0
+> ARIMA ( h, ours) 38M 92.1 94.9 79.0 47.2 59.3 74.0 81.0 .734 .804 .774 98.6 Aria-base (reference) 659M 43.8 49.6 44.2 17.9 26.2 48.9 36.9 .591 .173 .442 73.2 Aria-embedding (reference) 632M 95.2 96.0 90.8 65.5 78.0 80.6 9.9 .608 .672 .905 86.7
+
+Table 1 . Downstream evaluation results. Bold / underline: best / second-best among comparable-scale models ( ≤ 110 M); the public Aria models are foundation-scale references, excluded from the ranking. formation particularly well. The z and h from our ARIMA collectively achieved state-of-the-art on 5 out of 9. The main weakness of ARIMA lies in dynamic understanding, which makes its pianist 8, performer and emotion classi-fication score the second compared with the token-level autoregressive model. Notably, the two strongest mod-els on key estimation, ARIMA-z and M2BERT, both use chroma reconstruction during pretraining, which provides direct supervision on harmony content. Similarly, IOI re-gression benefits from explicit IOI features in the input en-coding, though it’s not supervised in reconstruction. This also flags the crucial role of inductive-bias alignment. 
+
+5.1.2 Complementarity of z and h.
+
+The two ARIMA representations exhibit complementary behavior. Since zt is computed from a single window, it is well-suited to tasks that depend on local content, such as key estimation and cross-performance retrieval. In con-trast, ht aggregates causal history through the predictor, making it more effective for global tasks, including style-, performer-, emotion-, and IOI -related probes that bene-fit from longer-range context. This separation supports the intended design: z captures local musical content, while h
+
+captures temporally integrated structure. 
+
+5.1.3 Foundation-scale references. 
+
+The public Aria-embedding model remains the strongest on most tasks, which is expected given its substantially larger scale and training corpus. However, its perfor-mance is not uniformly dominant: it is much weaker on key and difficulty estimation, IOI regression, and cross-performance retrieval. This pattern aligns with the design of its contrastive finetuning, where two independently aug-mented random slices from the same MIDI file are treated as positives. Because the augmentations include transpo-sition, tempo scaling, and velocity perturbation, the objec-tive encourages invariance to factors needed for absolute pitch-center estimation, local timing-ratio prediction, and score-level identity across performances [4]. The retrieval gap is especially interpretable because Aria’s positive pairs come from the same file, whereas retrieval tasks require different performances of the same score to be close. In contrast, ARIMA preserves local chroma, pianoroll, velocity, and temporal progression through reconstruc-tion and next-latent prediction, which better matches the mixture of local and global analysis tasks. Within the controlled 100M-scale replicas, the base variant is also markedly stronger than the embedding variant across most probes, further suggesting that contrastive piece-level em-bedding geometry can discard details useful for fine-grained symbolic analysis, and this issue will become seri-ous without abundant training data. Overall, the results indicate that a compact window-level model can match or exceed larger token-level baselines on several symbolic MIR tasks, especially those involving harmonic content, temporal behavior, and similarity-based retrieval. 
+
+5.2 Ablation Study 
+
+5.2.1 Prediction and representation quality. 
+
+Table 2 reports the ablation results. Contrastive next-latent prediction is the most important ablated component. Re-moving it not only eliminates the predictor latent h, but also substantially weakens the content latent z across clas-sification and temporal tasks. Although there is a marginal improvement on content-focused tasks like key and re-trieval, other style probing tasks downgrade substantially. This indicates that the predictive objective is critical for helping the window encoder organize local windows into temporally integrated representations. 
+
+5.2.2 Variance regularization. 
+
+Adding VICReg [26] produces only marginal downstream changes. It slightly improves a few metrics but does not consistently improve either z or h. Since the non-regularized model does not collapse and remains competi-tive, we omit VICReg from the final configuration. 
+
+5.2.3 Onset–sustain disentanglement. 
+
+Merging onset and sustain reconstruction leads to mixed results. The merged variant improves several similar-ity and temporal metrics, whereas the disentangled final model is stronger on Pianist8, performer identification, and Content Probing Temporal Similarity Composer Performer Variant Rep. 21-cls 16-cls Pianist8 32-cls 16-cls Emotion Key Difficulty IOI Verification Retrieval                                                                                                       
+
+> (F1)(F1)(F1)(F1)(F1)(F1)(F1)(ρ)(R2)(AUC) (R@1 )ARIMA (final) z86.5 90.6 75.7 38.4 50.7 68.8 82.7 .726 .738 .768 99.0
+> h92.1 94.9 79.0 47.2 59.3 74.0 81.0 .734 .804 .774 98.6
+> +VICReg z87.0 89.5 74.5 35.9 47.0 68.1 82.0 .736 .731 .798 99.1
+> h91.7 95.2 78.6 46.2 59.3 72.0 81.9 .739 .797 .772 98.7
+> −Prediction z81.4 86.0 69.0 27.8 39.7 66.0 83.4 .719 .639 .792 98.7
+> h———————————
+> −Onset/Sustain z87.0 90.5 74.6 35.4 48.2 68.7 83.7 .740 .741 .807 99.5
+> h92.4 95.2 78.4 44.8 57.0 73.0 81.9 .745 .818 .810 99.7
+
+Table 2 . Ablation study on ARIMA variants. Performance of all tasks is reported. The no-prediction variant has no h result because the predictor is inactive. Bold / underline: best / second-best per column across all rows. Variance    
+
+> Dimension
+> ARIMA/Emopia ARIMA/ASAP +VICReg/Emopia +VICReg/ASAP
+
+Figure 2 . Descending sorted per-dimension variance of content latent z and predictor latent h after piece-level mean pooling on EMOPIA and ASAP. emotion classification. We retain separate onset and sus-tain heads because they provide a more explicit attack-versus-hold decomposition and improve internal tempo-ral interpretability. Thus, onset–sustain disentanglement is best interpreted as a structurally motivated and inductive-bias-aligned design rather than a uniformly superior choice on every downstream metric. 
+
+5.3 Discussion 
+
+5.3.1 Latent Geometry and VICReg 
+
+Although VICReg has little effect on downstream accu-racy, it changes the geometry of the encoder latent space. As shown in Figure 2, VICReg substantially increases the per-dimension variance of z, making the encoder repre-sentation more isotropic. However, this geometric change does not translate into consistently improved downstream performance. Meanwhile, the predictor representation h is even less affected, which suggests the causal predictor and the normalization before the contrastive objective largely determine the geometry of h, while VICReg mainly re-shapes the marginal statistics of z. These observations indicate that structured reconstruction of music elements already provides sufficient anti-collapse pressure, and ex-plicit variance regularization is not necessary. 
+
+5.3.2 Relation to JEPA-style latent prediction. 
+
+A natural alternative is to train ARIMA as a more di-rect JEPA-style model, where the predictor regresses fu-ture latents without reconstruction. In preliminary exper-iments, however, variants using normalized ℓ1 latent re-gression or non-reconstructive next-latent prediction did not yield stable checkpoints, either diverging early or col-lapsing rapidly to near-trivial prediction losses. We do not report these as formal ablations, since they were not stable enough for evaluation. Nevertheless, they motivate a key design distinction between ARIMA and pure JEPA-style objectives. First, in action planning via vision, the cur-rent state and action produce a deterministic next state, but “next-window" of music can have multiple choices, which is likely the trigger causing the direct regression on tar-get to fail. Secondly, dense pixel-level redundancy and masking strategies on visions can provide strong learning signals even without reconstructing at the pixel level, but in symbolic music, the input is sparse, event-based, with important low-level information such as pitch, onset, dura-tions, and velocity. Therefore, structured reconstruction on music elements acts as a grounding mechanism, preventing the latent space from becoming arbitrary while still allow-ing the predictor to learn progression abstraction. 
+
+6. CONCLUSION 
+
+In this paper, we propose ARIMA, a reconstruction-grounded latent predictive framework for symbolic music representation learning. ARIMA encodes fixed-duration music windows into compact continuous latents, grounds these latents through structured reconstruction, and models temporal progression with contrastive next-latent predic-tion. Experiments across nine downstream tasks show that ARIMA learns effective representations for harmonic, tim-ing, and cross-performance analysis while remaining sub-stantially smaller than several comparable baselines. Ab-lations show that next-latent prediction is important for or-ganizing window representations across time, while struc-tured reconstruction provides sufficient anti-collapse pres-sure without explicit variance regularization. Future work includes scaling ARIMA to larger and more diverse sym-bolic corpora, extending the framework to a structure-aware hierarchical SSL framework, and apply to music generation and editing. All codes and model weights will be released after upon acceptance. 7. ACKNOWLEDGEMENT 
+
+Generative AI tools assisted with manuscript revision and proofreading. All scientific decisions, experimental de-signs, figure drawing, results analysis and discussion were completely made by humans. 
+
+8. REFERENCES 
+
+[1] Y.-H. Chou, I.-C. Chen, J. Ching, C.-J. Chang, and Y.-H. Yang, “MidiBERT-Piano: Large-scale pre-training for symbolic music classification tasks,” Journal of Creative Music Systems , vol. 8, no. 1, 2024. [2] M. Zeng, X. Tan, R. Wang, Z. Ju, T. Qin, and T.-Y. Liu, “MusicBERT: Symbolic music understanding with large-scale pre-training,” in Findings of the Asso-ciation for Computational Linguistics: ACL-IJCNLP 2021 , 2021, pp. 791–800. [3] X. Liang, Z. Zhao, W. Zeng, Y. He, F. He, Y. Wang, and C. Gao, “PianoBART: Symbolic piano music genera-tion and understanding with large-scale pre-training,” in Proc. of the IEEE Int. Conf. on Multimedia and Expo (ICME) , 2024. [4] L. Bradshaw, H. Fan, A. Spangher, S. Biderman, and S. Colton, “Scaling self-supervised representation learning for symbolic piano performance,” in Proc. of the 26th Int. Society for Music Information Retrieval Conf. , 2025. [5] D.-V.-T. Le, L. Bigo, D. Herremans, and M. Keller, “Natural language processing methods for symbolic music generation and information retrieval: A survey,” 
+
+ACM Computing Surveys , vol. 57, no. 7, pp. 1–40, 2025. [6] Y.-S. Huang and Y.-H. Yang, “Pop music transformer: Beat-based modeling and generation of expressive pop piano compositions,” in Proc. of the 28th ACM Int. Conf. on Multimedia , 2020, pp. 1180–1188. [7] W.-Y. Hsiao, J.-Y. Liu, Y.-C. Yeh, and Y.-H. Yang, “Compound word transformer: Learning to compose full-song music over dynamic directed hypergraphs,” in Proc. of the AAAI Conf. on Artificial Intelligence ,vol. 35, no. 1, 2021, pp. 178–186. [8] S. Wu, D. Yu, X. Tan, and M. Sun, “Clamp: Contrastive language-music pre-training for cross-modal symbolic music information retrieval,” in 
+
+Proceedings of the 24th International Society for Music Information Retrieval Conference, ISMIR 2023 ,2023, pp. 157–165. [Online]. Available: https: //doi.org/10.5281/zenodo.10265247 [9] M. Assran, Q. Duval, I. Misra, P. Bojanowski, P. Vincent, M. Rabbat, Y. LeCun, and N. Ballas, “Self-supervised learning from images with a joint-embedding predictive architecture,” in Proc. of the IEEE/CVF Conf. on Computer Vision and Pattern Recognition (CVPR) , 2023, pp. 15 619–15 629. [10] A. Bardes, Q. Garrido, J. Ponce, X. Chen, M. Rabbat, Y. LeCun, M. Assran, and N. Ballas, “Revisiting fea-ture prediction for learning visual representations from video,” arXiv preprint arXiv:2404.08471 , 2024. [11] L. Maes, Q. L. Lidec, D. Scieur, Y. LeCun, and R. Balestriero, “Leworldmodel: Stable end-to-end joint-embedding predictive architecture from pixels,” 
+
+arXiv preprint arXiv:2603.19312 , 2026. [12] A. van den Oord, Y. Li, and O. Vinyals, “Representa-tion learning with contrastive predictive coding,” arXiv preprint arXiv:1807.03748 , 2018. [13] J. Wang and L. Su, “Improving BERT for symbolic music understanding using token denoising and pi-anoroll prediction,” in Proceedings of the 26th Inter-national Society for Music Information Retrieval Con-ference, ISMIR 2025 , J. Nam, D. Jeong, K. Choi, L. Su, M. Fuentes, T. Nakano, X. Hu, and H. H. Dong, Eds., 2025, pp. 442–450. [14] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, “Attention is all you need,” in Advances in Neural Information Processing Systems (NeurIPS) , vol. 30, 2017. [15] J.-B. Grill, F. Strub, F. Altché, C. Tallec, P. H. Richemond, E. Buchatskaya, C. Doersch, B. A. Pires, Z. D. Guo, M. G. Azar, B. Piot, K. Kavukcuoglu, R. Munos, and M. Valko, “Bootstrap your own la-tent – a new approach to self-supervised learning,” in 
+
+Advances in Neural Information Processing Systems (NeurIPS) , vol. 33, 2020, pp. 21 271–21 284. [16] Q. Kong, B. Li, X. Song, Y. Wan, and Y. Wang, “High-resolution piano transcription with pedals by regress-ing onset and offset times,” IEEE/ACM Transactions on Audio, Speech, and Language Processing , vol. 29, pp. 3707–3717, 2021. [17] G. Huang, Y. Sun, Z. Liu, D. Sedra, and K. Q. Wein-berger, “Deep networks with stochastic depth,” in Proc. of the European Conf. on Computer Vision (ECCV) ,2016, pp. 646–661. [18] H. Zhang, J. Tang, S. R. M. Rafee, S. Dixon, and G. Fazekas, “ATEPP: A dataset of automatically tran-scribed expressive piano performance,” in Proc. of the 23rd Int. Society for Music Information Retrieval Conf. , 2022. [19] Z. Wang, K. Chen, J. Jiang, Y. Zhang, M. Xu, S. Dai, and G. Xia, “POP909: A pop-song dataset for music arrangement generation,” in Proc. of the 21st Int. Soci-ety for Music Information Retrieval Conf. , 2020. [20] H.-T. Hung, J. Ching, S. Doh, N. Kim, J. Nam, and Y.-H. Yang, “EMOPIA: A multi-modal pop piano dataset for emotion recognition and emotion-based music gen-eration,” in Proc. of the 22nd Int. Society for Music In-formation Retrieval Conf. , 2021, pp. 318–325. [21] I. Loshchilov and F. Hutter, “Decoupled weight decay regularization,” in Proc. of the Int. Conf. on Learning Representations (ICLR) , 2019. [22] Y.-H. Chou, I.-C. Chen, C.-J. Chang, J. Ching, and Y.-H. Yang, “Pianist8 dataset,” Zenodo, 2021. [23] M. Yao, K. Chen, S. Dubnov, and T. Berg-Kirkpatrick, “Bachi: Boundary-aware symbolic chord recognition through masked iterative decoding on pop and classi-cal music,” in ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Process-ing (ICASSP) . IEEE, 2026, pp. 15 257–15 261. [24] P. Ramoneda, D. Jeong, V. Eremenko, N. C. Tamer, M. Miron, and X. Serra, “Combining piano perfor-mance dimensions for score difficulty classification,” 
+
+Expert Systems with Applications , vol. 238, p. 121776, 2024. [25] F. Foscarin, A. McLeod, P. Rigaux, F. Jacquemard, and M. Sakai, “ASAP: A dataset of aligned scores and performances for piano transcription,” in Proc. of the 21st Int. Society for Music Information Retrieval Conf. ,2020, pp. 534–541. [26] A. Bardes, J. Ponce, and Y. LeCun, “VICReg: Variance-invariance-covariance regularization for self-supervised learning,” in Proc. of the Int. Conf. on Learning Representations (ICLR) , 2022. [27] V. Sobal, W. Zhang, K. Cho, R. Balestriero, T. G. Rud-ner, and Y. LeCun, “Learning from reward-free offline data: A case for planning with latent dynamics mod-els,” arXiv preprint arXiv:2502.14819 , 2025.

@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.10128v1/fig-002.webp",
+      "caption": "Figure 1: Energy-guided Recursive Model for Latent Iterative Reasoning. (a) A classic TRMstyle recursive reasoner, such as PTRM [22] and EqR [21], uses depth D and breadth K to generate candidate trajectories, then selects by q-head or majority voting. (b) ERM replaces this selector by constructing a Hopfield-network-based energy over task-structured memories and chooses the lowest-energy candidate. (c) The energy provides final ranking and supports parallel tempering (PT), linking the selection with energy-guided sampling. The bottom shows the performance of various models on the three representative reasoning tasks, where ERM reaches the oracle as the best possible accuracy if any generated candidate is correct.",
+      "page": 2,
+      "index": 2,
+      "width": 829,
+      "height": 496
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10128v1/fig-001.webp",
+      "caption": "Figure 2: Maze Selector Dynamics over Recurrent Depth. The solid curve in each panel shows the mean selected energy, and the dashed gray curve uses the right axis to show exact accuracy as recurrent depth increases from D = 1 to D = 64 with K = 128 Maze rollouts. Confidence uses negative mean valid-token maximum log-probability, while q-head and confidence quickly become saturated selector scores. ERM uses the global BFS shortest-path memory from Equation 7; its energy changes monotonically without sudden jumps, behaving as a true compatibility energy over Maze candidates.",
+      "page": 6,
+      "index": 1,
+      "width": 826,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10128v1/fig-003.webp",
+      "caption": "Table 2: Parallel Tempering with Different Energies. Original is the accuracy of the same selector on the shared EqR candidate pool, selected accuracy is the final answer chosen after PT sampling, and oracle accuracy is pass@K within the PT-generated candidates.",
+      "page": 7,
+      "index": 3,
+      "width": 590,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10128v1/fig-004.webp",
+      "caption": "Figure 3: Parallel Tempering Compared with Original Selection. Hollow bars show the original shared-pool selector accuracy, and solid bars show the parallel-tempering (PT)-selected exact accuracy for the same energy on a full 0–100% vertical scale. PT reuses each scalar energy for sampling and final scoring, adding only lightweight energy evaluations and swap decisions. Across Sudoku, PPBench, and Maze, PT matches or improves the corresponding original selector, and ERM remains the strongest selected result because its structured energy stays aligned with the candidate oracle.",
+      "page": 7,
+      "index": 4,
+      "width": 829,
+      "height": 344
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10128v1/fig-006.webp",
+      "caption": "Table 3: Notation Used in the Main Text. The table is breakable so every symbol remains visible in the appendix rather than being hidden inside an oversized float.",
+      "page": 12,
+      "index": 6,
+      "width": 814,
+      "height": 1047
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10128v1/fig-005.webp",
+      "caption": "Figure 4: Training with an Energy Transformer Architecture. This appendix experiment uses the EqR+ET Sudoku checkpoint with D = 64, K = 16, and PT temperatures from 0.001 to 1.0. ET energy and confidence both improve over the one-rollout baseline, serving as motivation for the main inference-time ERM design, whereas PT-confidence falls slightly below direct confidence selection.",
+      "page": 13,
+      "index": 5,
+      "width": 598,
+      "height": 350
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-003.webp",
+      "caption": "Figure 1: Overview of the discrete DSSM update. The state combines the input term, the main-branch term from ht−1, and the delayed-branch term from the buffered delayed state h̃t−τ . The formal discrete recurrence is developed in Sec. 3.2.",
+      "page": 2,
+      "index": 3,
+      "width": 569,
+      "height": 229
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-009.webp",
+      "caption": "Table 1: Mechanistic evidence on synthetic DS4D checkpoints. (a) Mean channel delay, mean absolute delay shift |∆τ |, and mean absolute delayed-branch change |∆µ̄| from initialization to the best-validation checkpoint. (b) Validation accuracy under targeted ablations on all six synthetic tasks; τmin collapses the learned delay to one step, and |µ̄| = 0 removes the delayed branch.",
+      "page": 8,
+      "index": 9,
+      "width": 754,
+      "height": 196
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-010.webp",
+      "caption": "Figure 2: Validation trajectories on the six synthetic benchmarks using the best learning rate selected for each baseline. Curves show the median validation accuracy across three seeds, and shaded bands indicate interquartile ranges.",
+      "page": 8,
+      "index": 10,
+      "width": 811,
+      "height": 437
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-013.webp",
+      "caption": "Table 2: General sequence modeling results for DS4D and S4D. Arrows indicate whether higher or lower is better; BIDMC reports RMSE. S4D results are literature-reported from Gu et al. [2022] except sMNIST.",
+      "page": 9,
+      "index": 13,
+      "width": 822,
+      "height": 190
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-014.webp",
+      "caption": "Figure 3: Efficiency of DS4D versus S4D under matched-parameter and matched-hidden-size settings. We report training throughput, decoding throughput, training memory, and decoding memory across sequence lengths. FFT training remains close to S4D, decoding throughput stays nearly lengthindependent, and decoding memory grows with the retained history horizon because DS4D caches past hidden states for explicit delayed-state access. S4D uses the complete official implementation, with the official CUDA Vandermonde backend for full-sequence training and the official recurrent step path for streaming decode.",
+      "page": 9,
+      "index": 14,
+      "width": 817,
+      "height": 191
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-008.webp",
+      "caption": "Figure 4: Qualitative effect of delayed-phase initialization under two simple backgrounds. (a) Background + persistent signal: initialization near θ ≈ 0 causes the delayed branch to reinforce temporally aligned signal components, so the persistent event is progressively amplified after t0 + τ , whereas initialization near θ ≈ π suppresses signal components that remain similar across the delay horizon and therefore emphasizes temporal change. (b) Background + narrow spike: at t0 + τ , the delayed branch re-injects the localized event with a phase determined by θ, producing a constructive delayed echo near θ ≈ 0 and a sign-inverted delayed echo near θ ≈ π. Together, the two panels illustrate the broader bias that θ ≈ 0 favors delayed aggregation of compatible signal components, while θ ≈ π favors sensitivity to mismatch and temporal change.",
+      "page": 13,
+      "index": 8,
+      "width": 798,
+      "height": 377
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-012.webp",
+      "caption": "Table 3: Fixed-delay synthetic task setups and training budgets.",
+      "page": 17,
+      "index": 12,
+      "width": 706,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-005.webp",
+      "caption": "Table 4: Variable-delay synthetic task setups and training budgets. Padding lags are sampled uniformly for each sequence.",
+      "page": 18,
+      "index": 5,
+      "width": 794,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-006.webp",
+      "caption": "Table 5: Core baseline settings and total parameter counts across the three synthetic benchmarks. All Delay Copy backbones use 2 layers and full context length 1088; all Delay Sum and Delay Weighted Sum backbones use 3 layers, with context/history length 1088 in the fixed-delay setting and 576 in the variable-delay setting. Hidden sizes are shared across fixed and variable settings except the GPT-2 recipe, whose learned absolute positional embeddings make its parameter count depend on the context length. Family-specific hidden-size/intermediate-size relations follow their default settings whenever possible: LSTM and S4-style DSSM blocks use intermediate size equal to the hidden size, Mamba uses intermediate size 2H with convolution kernel 3, the GPT-2 recipe uses feed-forward size 4H , and the Llama recipe uses a SwiGLU-style feed-forward size with a small task-specific adjustment to preserve an even per-head dimension for RoPE while keeping parameter counts aligned. Within the S4D family, Delay Copy uses state size 64, while Delay Sum and Delay Weighted Sum use state size 128. DS4D uses a smaller matched-parameter hidden size than S4D because of its additional delay parameters, while Mamba keeps its default architecture and tunes state size only to best match the total parameter budget.",
+      "page": 18,
+      "index": 6,
+      "width": 814,
+      "height": 593
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-011.webp",
+      "caption": "Table 6: Best validation accuracy on synthetic tasks. Values are reported in [0, 1] as mean ± std over three seeds, where each baseline selects its best base learning rate. Best results are bolded, and second-best results are underlined.",
+      "page": 19,
+      "index": 11,
+      "width": 818,
+      "height": 202
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-001.webp",
+      "caption": "Table 8: Delay S4D hyperparameters for the general sequence modeling benchmarks. All runs use the S4D-Inv backbone initialization. Here H denotes the hidden size and N denotes the per-channel state size.",
+      "page": 21,
+      "index": 1,
+      "width": 822,
+      "height": 339
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-002.webp",
+      "caption": "Table 10: Primary external assets used in this work.",
+      "page": 21,
+      "index": 2,
+      "width": 822,
+      "height": 231
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-004.webp",
+      "caption": "Figure 5: First-layer impulse-response heatmaps for the six synthetic DS4D checkpoints. Rows are channels sorted by learned delay; y-tick labels report the corresponding learned delay values after sorting. The white dashed line marks the padding lag Llag. Colors show independently normalized log10 impulse-response magnitude. The diagonal bands indicate a distributed family of delay-sensitive channels spanning the available history range.",
+      "page": 22,
+      "index": 4,
+      "width": 815,
+      "height": 444
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10244v1/fig-007.webp",
+      "caption": "Figure 6: First-layer impulse-response heatmaps for the corresponding S4D checkpoints on the six synthetic tasks, using the best-validation checkpoint available for each task. Rows are channels sorted by peak-response time; y-tick labels report the corresponding peak-response times after sorting. The white dashed line marks the padding lag Llag or the center of the variable-delay interval. Colors show independently normalized log10 impulse-response magnitude. The predominantly horizontal organization reflects a spread of implicit timescales rather than explicit delay-aligned reinjection.",
+      "page": 23,
+      "index": 7,
+      "width": 815,
+      "height": 443
+    }
+  ]
+}
