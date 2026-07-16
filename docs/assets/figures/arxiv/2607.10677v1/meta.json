@@ -1,0 +1,94 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-008.webp",
+      "caption": "Figure 1: Layerwise diagnostics of effective walks and transports. Shaded regions indicate the initial and final layers, which are often dominated by embedding and output-projection effects; the discussion focuses on the stable middle-layer regime. (a, b) Geometric Drift: Both models exhibit stabilization patterns. GPT-2 Small shows higher variance, whereas Llama-3-8B reaches a lower-drift middle-layer regime (dℓ→ℓ+1",
+      "page": 12,
+      "index": 8,
+      "width": 897,
+      "height": 286
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-006.webp",
+      "caption": "Figure 2: Visualization of Learned Operators (GPT-2 Small). (a) Effective walk weights (Aeff): With the attention sink removed, middle layers exhibit a coherent structure, consistent with a stable local-to-global topology. (b) Transport Gram structure (Gij): The Gram matrix is strongly diagonal-dominant. The suppression of off-diagonal elements is consistent with approximate scaled-isometry under the proposed diagnostic, while not ruling out non-isometric deformation in general.",
+      "page": 13,
+      "index": 6,
+      "width": 897,
+      "height": 299
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-005.webp",
+      "caption": "Table 1: Quantitative analysis of Transport Orthogonality (δorth) across model families. We report deviations from scaled isometry across the initial, middle, and final layers. Lower values indicate closer agreement with this diagnostic, not necessarily better downstream task performance.",
+      "page": 14,
+      "index": 5,
+      "width": 450,
+      "height": 457
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-002.webp",
+      "caption": "Figure 3: Sensitivity to context length (GPT-2 Small). We vary the input context length from 16 to 1,024 tokens. Longer contexts increase early-layer drift and mildly affect orthogonality, while deeper layers recover a similar low-drift and low-deviation profile in this tested range.",
+      "page": 15,
+      "index": 2,
+      "width": 626,
+      "height": 197
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-007.webp",
+      "caption": "Figure 4: GPT-2 Series Evolution. Comparison of geometric stability (Left) and transport orthogonality (Right) across four model sizes. The larger variants in this controlled family show smoother curves and lower orthogonality deviation.",
+      "page": 19,
+      "index": 7,
+      "width": 897,
+      "height": 712
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-010.webp",
+      "caption": "Figure 5: Qwen Series Evolution. Both Qwen2.5 and Qwen3 show low middle-layer drift under the geometric diagnostic.",
+      "page": 20,
+      "index": 10,
+      "width": 897,
+      "height": 712
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-011.webp",
+      "caption": "Figure 6: Llama Series Evolution. Llama models show low drift and low transport deviation under the proposed diagnostics.",
+      "page": 20,
+      "index": 11,
+      "width": 897,
+      "height": 347
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-003.webp",
+      "caption": "Table 2: Quantitative analysis of Transport Gram MatrixGij . We report the mean magnitude of diagonal vs. off-diagonal elements. The “Middle” regime (layers from 20% to 80% depth) highlights strong diagonal dominance (approx. 15x–20x ratio), consistent with approximate scaled-isometry under this diagnostic.",
+      "page": 21,
+      "index": 3,
+      "width": 867,
+      "height": 372
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-004.webp",
+      "caption": "Figure 8: Impact of Sequence Length. Comparing drift and orthogonality across model families for context lengths L = 16 to L = 256. Across the tested architectures, deeper layers often recover lower drift despite increased initial drift for longer sequences.",
+      "page": 22,
+      "index": 4,
+      "width": 897,
+      "height": 903
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-009.webp",
+      "caption": "Figure 9: Connection-energy diagnostics for GPT-2 Small and BERT-base-uncased. The panels report normalized off-diagonal energy, raw off-diagonal energy, and off-diagonal attention mass across layers.",
+      "page": 24,
+      "index": 9,
+      "width": 893,
+      "height": 234
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10677v1/fig-001.webp",
+      "caption": "Figure 10: Extended context-length diagnostic for GPT-2 Small, probing context lengths up to 1,024 tokens. Longer contexts mildly increase early-layer drift and orthogonality deviation; the deeper-layer stable regime remains visible in the tested range.",
+      "page": 25,
+      "index": 1,
+      "width": 892,
+      "height": 281
+    }
+  ]
+}

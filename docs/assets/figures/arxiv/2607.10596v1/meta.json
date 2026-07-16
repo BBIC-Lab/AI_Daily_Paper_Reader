@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.10596v1/fig-002.webp",
+      "caption": "Fig. 1. Inference process of the ECHO band-splitting backbone. The input spectrogram is divided into frequency sub-bands, which are encoded by a shared band encoder to produce localized sub-band representations. The final utterance-level representation is obtained by concatenating all sub-band representations.",
+      "page": 3,
+      "index": 2,
+      "width": 931,
+      "height": 190
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10596v1/fig-003.webp",
+      "caption": "Fig. 2. Intra-band self-distillation for a single sub-band. Bk denotes the k-th sub-band, and ck denotes the sub-band representation.",
+      "page": 3,
+      "index": 3,
+      "width": 499,
+      "height": 327
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10596v1/fig-006.webp",
+      "caption": "Fig. 3. Inter-band self-distillation over the sequence of sub-band representations. ck denotes the k-th sub-band representation, and s denotes the summary token.",
+      "page": 4,
+      "index": 6,
+      "width": 490,
+      "height": 343
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10596v1/fig-007.webp",
+      "caption": "Fig. 4. Structured inter-band learning with multiple summary tokens. sk denotes the summary token.",
+      "page": 5,
+      "index": 7,
+      "width": 596,
+      "height": 305
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10596v1/fig-008.webp",
+      "caption": "Fig. 5. Band-level, student-side view of the proposed training pipeline. Starting from an input spectrogram, the student branch forms two parallel pathways: intra-band learning with random sub-band sampling, and inter-band learning with stratified frequency sampling over low-, medium-, and highfrequency regions. The sampled sub-bands are processed by the intra-band encoder, and the two branches are jointly optimized under a unified objective. Teacher supervision is omitted for clarity.",
+      "page": 5,
+      "index": 8,
+      "width": 520,
+      "height": 296
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10596v1/fig-001.webp",
+      "caption": "Fig. 6. Embedding-based anomaly scoring protocol. Normal training samples are first encoded into reference embeddings to construct a reference bank. For each test sample, a frozen encoder extracts a query embedding, which is compared with the reference bank using nearest-neighbor cosine similarity. The anomaly score is computed as 1− s, where s denotes the maximum cosine similarity to the reference bank.",
+      "page": 6,
+      "index": 1,
+      "width": 914,
+      "height": 473
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10596v1/fig-004.webp",
+      "caption": "TABLE III MAIN ASD RESULTS (%) UNDER THE EMBEDDING-BASED EVALUATION PROTOCOL ON DCASE 2020–2025. FOR DCASE 2020, THE YEARLY SCORE IS THE ARITHMETIC MEAN OF THE DEVELOPMENT AND EVALUATION RESULTS. FOR DCASE 2021–2025, THE YEARLY SCORE IS THE HARMONIC MEAN. “DEV” AND “EVAL” DENOTE DEVELOPMENT AND EVALUATION SCORES UNDER THE YEAR-SPECIFIC PROTOCOLS IN SECTION III-B. “OVERALL” DENOTES THE ARITHMETIC MEAN OVER THE SIX YEARLY SCORES. BEST AND SECOND-BEST RESULTS ARE MARKED IN BOLD AND UNDERLINE, RESPECTIVELY.",
+      "page": 8,
+      "index": 4,
+      "width": 1072,
+      "height": 343
+    },
+    {
+      "url": "assets/figures/arxiv/2607.10596v1/fig-005.webp",
+      "caption": "TABLE IV MAIN ASD RESULTS (%) UNDER THE ADAPTATION-BASED EVALUATION PROTOCOL ON DCASE 2020–2025. FOR DCASE 2020, THE YEARLY SCORE IS THE ARITHMETIC MEAN OF THE DEVELOPMENT AND EVALUATION RESULTS. FOR DCASE 2021–2025, THE YEARLY SCORE IS THE HARMONIC MEAN. “DEV” AND “EVAL” DENOTE DEVELOPMENT AND EVALUATION SCORES UNDER THE YEAR-SPECIFIC PROTOCOLS IN SECTION III-B. “OVERALL” DENOTES THE ARITHMETIC MEAN OVER THE SIX YEARLY SCORES. BEST AND SECOND-BEST RESULTS ARE MARKED IN BOLD AND UNDERLINE, RESPECTIVELY.",
+      "page": 8,
+      "index": 5,
+      "width": 1072,
+      "height": 343
+    }
+  ]
+}

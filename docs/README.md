@@ -1,48 +1,46 @@
 ## 最新日报
-- 最新运行日期：2026-07-16
-- 运行时间：2026-07-16 04:53:14 北京时间
+- 最新运行日期：2026-07-17
+- 运行时间：2026-07-17 04:35:07 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读两篇高分论文，探索新加坡口语模型适配与借助延迟微分方程构建显式记忆的状态空间模型。  
-最值得关注的是新加坡语境下的高效语音模型微调，以及DSSMs通过微分方程实现记忆强化的新路径。  
-建议对地域化语音技术与新型记忆网络感兴趣的读者，速读这两篇原文并对比速读列表中音乐表征与可逆动力学的应用思路。
-- 详情：[/202607/16/README](/202607/16/README)
+从多尺度时序建模到跨人脑解码，今天重点打磨了两个9分硬核方法。最优传输注意力让多元时序预测更准，几何感知的对齐则大幅提升跨被试解码速度。想快速落地，不妨先看Token精简的谱热流技术和AI导师评估的蒸馏方案。
+- 详情：[/202607/17/README](/202607/17/README)
 
 ### 精读区论文标签
-1. [Efficiently Adapting Spoken Language Models for the Singaporean Context](/202607/16/2607.10092v1-efficiently-adapting-spoken-language-models-for-the-singaporean-context)  
+1. [Multi-Scale Convolution with Optimal Transport Attention Effect on Multivariate Time Series](/202607/17/2607.10740v1-multi-scale-convolution-with-optimal-transport-attention-effect-on-multivariate-time-series)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用LoRA和多任务目标在有限标注数据下适配口语模型
-2. [DSSMs: State Space Models with Explicit Memory via Delay Differential Equations](/202607/16/2607.10244v1-dssms-state-space-models-with-explicit-memory-via-delay-differential-equations)  
+   evidence：多尺度卷积用于多元时间序列
+2. [Fast Whole-Brain, Geometry-Aware Functional Alignment for Cross-Subject Decoding](/202607/17/2607.10931v1-fast-whole-brain-geometry-aware-functional-alignment-for-cross-subject-decoding)  
    标签：评分：9.0/10、query:ndai
-   evidence：具有显式延迟状态反馈的延迟状态空间模型用于长序列建模
-3. [Emergent Generalization by Representation Learning in Artificial Neural Networks](/202607/16/2607.10430v1-emergent-generalization-by-representation-learning-in-artificial-neural-networks)  
+   evidence：跨被试大脑解码的功能对齐方法
+3. [Continuous Query for Top-$K$ Maximal Sum Intervals over Streaming Data](/202607/17/2607.11035v1-continuous-query-for-top-k-maximal-sum-intervals-over-streaming-data)  
    标签：评分：9.0/10、query:ndai
-   evidence：信息瓶颈学习低维神经表示以促进泛化
-4. [Learning the Brain's Dynamics as a Port-Hamiltonian System](/202607/16/2607.10439v1-learning-the-brains-dynamics-as-a-port-hamiltonian-system)  
+   evidence：流数据上的top-k最大和区间连续查询
+4. [Event-based Neural Decoding for Neuroprosthetic Motor Control](/202607/17/2607.11445v1-event-based-neural-decoding-for-neuroprosthetic-motor-control)  
    标签：评分：9.0/10、query:ndai
-   evidence：将大脑动力学建模为端口-哈密顿系统用于BCI神经调控
-5. [RecRec: Recursive Refinement for Sequential Recommendation](/202607/16/2607.10541v2-recrec-recursive-refinement-for-sequential-recommendation)  
+   evidence：解码神经信号（脉冲）为运动控制动作，用于神经假体
+5. [Learning Residual Kinematic Corrections for Continuous Neural Decoding via Reinforcement Learning](/202607/17/2607.11530v1-learning-residual-kinematic-corrections-for-continuous-neural-decoding-via-reinforcement-learning)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过递归潜在状态细化进行序列推荐
+   evidence：使用RL校正从EEG运动想象解码连续3D运动学
 
 ### 速读区论文标签
-1. [ARIMA: Reconstruction-Grounded Predictive Representation Learning for Symbolic Music](/202607/16/2607.10003v1-arima-reconstruction-grounded-predictive-representation-learning-for-symbolic-music)  
+1. [Spectral Heat Flow for Conservative Token Condensation in Vision-Language Models](/202607/17/2607.10640v1-spectral-heat-flow-for-conservative-token-condensation-in-vision-language-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：直接从原始音乐数据中学习紧凑的窗口表示
-2. [Tokenizing Numerical and Embedding Features for LLM RecSys](/202607/16/2607.10016v1-tokenizing-numerical-and-embedding-features-for-llm-recsys)  
+   evidence：通过谱热流计算稳定重要性场用于令牌浓缩
+2. [Knowledge Distillation for Automated AI Tutor Evaluation](/202607/17/2607.10647v1-knowledge-distillation-for-automated-ai-tutor-evaluation)  
    标签：评分：8.0/10、query:ndai
-   evidence：将数值和嵌入特征映射到LLM令牌空间进行表示学习
-3. [Robustly Invertible Nonlinear Dynamics and the BiLipREN: From Inversion-Based Control to Generative Trajectory Modelling](/202607/16/2607.10026v1-robustly-invertible-nonlinear-dynamics-and-the-bilipren-from-inversion-based-control-to-generative-trajectory-modelling)  
+   evidence：从前沿大模型进行知识蒸馏，用于教育评估中有限标注数据
+3. [From Self-Attention to Connection Laplacian: A Unified Operator View of Transformers](/202607/17/2607.10677v1-from-self-attention-to-connection-laplacian-a-unified-operator-view-of-transformers)  
    标签：评分：8.0/10、query:ndai
-   evidence：鲁棒可逆递归网络用于轨迹预测与生成
-4. [CVKD-UDA: Cross-View Knowledge Distillation for 3D Unsupervised Domain Adaptive Segmentation](/202607/16/2607.10087v1-cvkd-uda-cross-view-knowledge-distillation-for-3d-unsupervised-domain-adaptive-segmentation)  
+   evidence：Transformer序列模型的统一算子视角
+4. [Stream-aware Side Adaptation for Large Pre-trained Multimodal Embedding Models in Sequential Recommendation](/202607/17/2607.10909v1-stream-aware-side-adaptation-for-large-pre-trained-multimodal-embedding-models-in-sequential-recommendation)  
    标签：评分：8.0/10、query:ndai
-   evidence：跨视角知识蒸馏用于无监督域适应
-5. [Energy-guided Recursive Model](/202607/16/2607.10128v1-energy-guided-recursive-model)  
+   evidence：流感知侧适配用于序列推荐
+5. [ECHOv2: Two-Level Band-Splitting Representation Learning for Anomalous Sound Detection](/202607/17/2607.10596v1-echov2-two-level-band-splitting-representation-learning-for-anomalous-sound-detection)  
    标签：评分：7.0/10、query:ndai
-   evidence：能量引导的递归模型从隐状态中选择轨迹
+   evidence：从原始音频学习局部频带内表示以进行异常检测
 

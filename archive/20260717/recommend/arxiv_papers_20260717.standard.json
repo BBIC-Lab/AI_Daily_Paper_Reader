@@ -1,0 +1,420 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-16T20:31:31.828333+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 48,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 84,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 20,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 15,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 21
+  },
+  "deep_dive": [
+    {
+      "id": "2607.10740v1",
+      "source": "arxiv",
+      "title": "Multi-Scale Convolution with Optimal Transport Attention Effect on Multivariate Time Series",
+      "abstract": "The analysis of Multivariate Time Series (MTS) plays an important role in a lot of real-world practical applications, but it still remains some challenging problem about capturing multi-granularity structural patterns and suppressing noise appropriately. Multi-Scale Convolution with Optimal Transport Attention (MSC-OT) is proposed in this paper. MSC-OT is a useful architecture to optimize the attention mechanism. It combines multi-scale convolution with Sinkhorn optimal transport method based on inverted embedding. The inverted embedding approach embeds each variable as a token and allows the model to capture cross-variate relationships better. MSC-OT consists of two part: (1) Multi-Scale Convolution Enhancement, that applies multi-scale convolutions to attention score matrices based on inverted embedding, capturing local structural patterns in the variate-interaction space induced by compressed temporal representations; (2) Sinkhorn Optimal Transport Regularization, that formulates attention computation as an optimal transport problem and employs iterative matrix scaling to ensure balanced information flow across variates. Adaptive Fusion Strategy utilizes softmax-normalized learnable weights to dynamically combine base attention, convolution-enhanced, and OT-regularized scores. Experiments on widely-used datasets, including ETT, Electricity, Traffic, Solar-Energy, and Exchange-Rate, show that MSC-OT achieves well performance in both short-term and long-term forecasting tasks. Ablation experiments further validate the effectiveness of each proposed component and their synergistic contributions to improving prediction accuracy for multivariate time series forecasting.",
+      "authors": [
+        "HaoChong Fu",
+        "Jian Xu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-12T12:47:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.10740v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-scale convolution for multivariate time series",
+      "llm_evidence_cn": "多尺度卷积用于多元时间序列",
+      "llm_evidence": "多尺度卷积用于多元时间序列",
+      "canonical_evidence": "多尺度卷积用于多元时间序列",
+      "llm_tldr_en": "Multi-scale convolution with optimal transport attention for multivariate time series analysis and prediction",
+      "llm_tldr_cn": "多尺度卷积与最优传输注意力用于多元时间序列分析与预测",
+      "llm_tldr": "多尺度卷积与最优传输注意力用于多元时间序列分析与预测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10931v1",
+      "source": "arxiv",
+      "title": "Fast Whole-Brain, Geometry-Aware Functional Alignment for Cross-Subject Decoding",
+      "abstract": "Decoding brain activity is useful for characterizing brain processes and understanding the functional architecture underlying cognition. However, the inter-individual variability in brain response patterns limits the development of decoders that generalize across individuals. A solution to this challenge is functional alignment: aligning functional data across individuals before training population-level decoders. The core issue is to strike the balance between aligning functional features and preserving the anatomical structure, while maintaining computational efficiency. We introduce a new functional alignment method for fMRI, SpectralOT, that embeds cortical geometry into Laplace-Beltrami eigenmodes along functional data to regularize the alignment.",
+      "authors": [
+        "Pierre-Louis Barbarant",
+        "Florent Meyniel",
+        "Bertrand Thirion"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-07-12T21:37:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.10931v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "functional alignment method for cross-subject brain decoding",
+      "llm_evidence_cn": "跨被试大脑解码的功能对齐方法",
+      "llm_evidence": "跨被试大脑解码的功能对齐方法",
+      "canonical_evidence": "跨被试大脑解码的功能对齐方法",
+      "llm_tldr_en": "SpectralOT enables fast geometry-aware functional alignment for cross-subject fMRI decoding.",
+      "llm_tldr_cn": "SpectralOT实现快速几何感知功能对齐，用于跨被试fMRI解码。",
+      "llm_tldr": "SpectralOT实现快速几何感知功能对齐，用于跨被试fMRI解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.11035v1",
+      "source": "arxiv",
+      "title": "Continuous Query for Top-$K$ Maximal Sum Intervals over Streaming Data",
+      "abstract": "The continuous identification of top-$k$ maximal sum intervals using a sliding window over a data stream is a critical operation for applications in IoT and beyond. A maximal sum interval is a non-overlapping, contiguous subsequence with the maximal sum in a sequence of signed values. Existing algorithms are ill-suited for streaming contexts: they either exhaustively enumerate all intervals even for small $k$ values, or depend on indexes that require frequent and costly restructuring. We propose a novel partition-based strategy. Our core insight is a partitioning scheme that guarantees that any maximal sum interval is fully contained within a single partition, enabling independent and parallel processing. This design provides two key advantages: it enables safe pruning of partitions that cannot contribute to top-$k$ results, drastically narrowing the search space, and it enables efficient, incremental maintenance of the maximal sum intervals in each partition. We develop algorithms for partition construction, incremental partition updates, and partition-based top-$k$ maximal sum interval search. Extensive experiments on real and synthetic datasets demonstrate that our approach significantly improves efficiency.",
+      "authors": [
+        "Zhongshuai Zhang",
+        "Xiaochun Yang",
+        "Baihua Zheng",
+        "Rui Zhu",
+        "Haomin Li",
+        "Bin Wang"
+      ],
+      "primary_category": "cs.DB",
+      "categories": [
+        "cs.DB"
+      ],
+      "published": "2026-07-13T03:00:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.11035v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "continuous query for top-k maximal sum intervals over streaming data",
+      "llm_evidence_cn": "流数据上的top-k最大和区间连续查询",
+      "llm_evidence": "流数据上的top-k最大和区间连续查询",
+      "canonical_evidence": "流数据上的top-k最大和区间连续查询",
+      "llm_tldr_en": "Efficiently identifies top-k maximal sum intervals in sliding windows",
+      "llm_tldr_cn": "在滑动窗口中高效识别top-k最大和区间",
+      "llm_tldr": "在滑动窗口中高效识别top-k最大和区间",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.11445v1",
+      "source": "arxiv",
+      "title": "Event-based Neural Decoding for Neuroprosthetic Motor Control",
+      "abstract": "A substantial number of patients experience diminished mobility due to disabilities, diseases, or accidents. Although modern prostheses, powered by deep neural networks, hold the promise of significantly enhancing the quality of life for these individuals, their widespread adoption is hindered by significant latency, energy consumption, and spatial requirements. Wired connections to external high-performance processors restrict patient mobility, while wireless connections limit the volume of information that can be transmitted to these processors. Spiking neural networks offer the potential for compressed communication and low-power inference, yet they often lag behind state-of-the-art deep learning models in various applications. In this study, we propose a high-performance neural decoding method that effectively balances task performance and efficiency. An eventbased gated recurrent unit generates a sparse communication pattern with graded spikes, surpassing classical spiking neural networks in terms of task performance. Utilising an efficient training method and sparse inference, our model presents new opportunities for on-device neural decoding.",
+      "authors": [
+        "Khaleelulla Khan Nazeer",
+        "Sirine Arfa",
+        "Matthias Jobst",
+        "Richard George",
+        "Christian Mayr"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.NE"
+      ],
+      "published": "2026-07-13T11:54:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.11445v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Decodes neural signals (spiking) into motor control actions for neuroprosthetics",
+      "llm_evidence_cn": "解码神经信号（脉冲）为运动控制动作，用于神经假体",
+      "llm_evidence": "解码神经信号（脉冲）为运动控制动作，用于神经假体",
+      "canonical_evidence": "解码神经信号（脉冲）为运动控制动作，用于神经假体",
+      "llm_tldr_en": "Proposes hybrid event-based neural decoding using spiking neural networks for low-latency neuroprosthetic motor control.",
+      "llm_tldr_cn": "提出基于事件的混合神经解码方法，利用脉冲神经网络实现低延迟的神经假体运动控制。",
+      "llm_tldr": "提出基于事件的混合神经解码方法，利用脉冲神经网络实现低延迟的神经假体运动控制。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.11530v1",
+      "source": "arxiv",
+      "title": "Learning Residual Kinematic Corrections for Continuous Neural Decoding via Reinforcement Learning",
+      "abstract": "Decoding continuous three-dimensional (3D) motor imagery (MI) using non-invasive electroencephalography (EEG)-based brain--computer interfaces (BCIs) remains challenging due to signal variability and residual decoding errors. Deep learning architectures such as convolutional neural network--long short-term memory (CNN--LSTM) models can capture spatial and temporal dynamics for continuous kinematic decoding; however, systematic residual errors persist in predicted trajectories. We propose a two-stage decoding framework that applies reinforcement learning (RL) to perform residual kinematic correction on the outputs of a CNN--LSTM decoder (CNN--LSTM--RL). The RL agent is trained offline without direct EEG input and instead operates on predicted kinematic trajectories to optimize movement accuracy relative to target trajectories. Decoding performance was quantified using Pearson correlation coefficients ($r$) and Root Mean Square Errors (RMSE) along the $x, y$, and $z$ axes. Compared to CNN--LSTM applied alone, CNN--LSTM--RL improved the mean correlation from $0.5076$ to $0.7181$ ($p = 0.0005$) in 2D and from $0.6420$ to $0.7780$ ($p = 0.0059$) in VR, with relative gains of $41.5\\%$ and $21.2\\%$, respectively. Correspondingly, RMSE was reduced from $0.0890$ to $0.0532$ (2D, $p < 0.0001$) and from $0.0714$ to $0.0441$ (VR, $p < 0.0001$), representing relative reductions of $40.2\\%$ and $38.2\\%$. These findings demonstrate that this scalable framework enhances 3D BCI MI decoding by correcting kinematic errors via offline residual RL without extra neural data, advancing neurorehabilitation, prosthetics, and virtual interaction.",
+      "authors": [
+        "Jiamian Li",
+        "Niall McShane",
+        "Attila Korik",
+        "Naomi du Bois",
+        "Karl McCreadie",
+        "Leen Jabban",
+        "Benjamin Metcalfe",
+        "Özgür Şimşek",
+        "Damien Coyle"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-13T13:15:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.11530v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes EEG motor imagery into continuous 3D kinematics using RL correction",
+      "llm_evidence_cn": "使用RL校正从EEG运动想象解码连续3D运动学",
+      "llm_evidence": "使用RL校正从EEG运动想象解码连续3D运动学",
+      "canonical_evidence": "使用RL校正从EEG运动想象解码连续3D运动学",
+      "llm_tldr_en": "Two-stage neural decoding framework with RL-based residual kinematic correction for EEG BCI",
+      "llm_tldr_cn": "基于RL残差运动学校正的两阶段神经解码框架用于EEG BCI",
+      "llm_tldr": "基于RL残差运动学校正的两阶段神经解码框架用于EEG BCI",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.10640v1",
+      "source": "arxiv",
+      "title": "Spectral Heat Flow for Conservative Token Condensation in Vision-Language Models",
+      "abstract": "Vision-Language Models (VLMs) are costly at inference time because they must process long sequences of visual tokens. Existing token pruning methods often degrade under high compression by blindly discarding information, breaking spatial structure or collapsing diversity. We propose SpecFlow, a training-free framework that shifts the paradigm from destructive pruning to conservative condensation, strictly enforcing spatial coverage and statistical conservation to ensure stability. Treating visual tokens as nodes in a $k$NN graph, SpecFlow (i) computes a stable importance field via spectral heat flow to preserve structural coherence, (ii) allocates budgets via adaptive spatial partitioning to guarantee coverage, and (iii) aggregates discarded information into coreset sinks to maintain statistical conservation. The method is plug-and-play, requires no fine-tuning, and is compatible with FlashAttention. Experiments confirm that our SpecFlow outperforms SOTA methods across tasks, VLM architectures, and pruning ratios. Notably, LLaVA-1.5 with SpecFlow retains 95.6\\% of original performance despite pruning 88.9\\% of visual tokens, offering an exceptional efficiency-accuracy balance. Code is available at https://github.com/Lzy-dot/SpecFlow",
+      "authors": [
+        "Zhaoyang Li",
+        "Yanjun Li",
+        "Wangkai Li",
+        "Yujia Chen",
+        "Tianzhu Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-12T08:12:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.10640v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "computes stable importance field via spectral heat flow for token condensation",
+      "llm_evidence_cn": "通过谱热流计算稳定重要性场用于令牌浓缩",
+      "llm_evidence": "通过谱热流计算稳定重要性场用于令牌浓缩",
+      "canonical_evidence": "通过谱热流计算稳定重要性场用于令牌浓缩",
+      "llm_tldr_en": "Proposes a training-free framework that computes importance weights for visual tokens using spectral heat flow for conservative condensation.",
+      "llm_tldr_cn": "提出无需训练的框架，利用谱热流计算视觉令牌的重要性权重以实现保守浓缩。",
+      "llm_tldr": "提出无需训练的框架，利用谱热流计算视觉令牌的重要性权重以实现保守浓缩。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.10596v1",
+      "source": "arxiv",
+      "title": "ECHOv2: Two-Level Band-Splitting Representation Learning for Anomalous Sound Detection",
+      "abstract": "Machine anomalous sound detection (ASD) requires robust audio representations capable of capturing subtle deviations in machine sounds under limited supervision. Existing pre-trained audio backbones do not fully capture frequency-specific characteristics of machine sounds. To address this, we propose ECHOv2, a band-splitting model that learns localized intra-band representations to capture fine-grained spectral patterns while also incorporating a two-level self-distillation strategy with explicit inter-band supervision to model cross-frequency dependencies. The inter-band branch performs global context alignment and masked sub-band reconstruction, and multiple summary tokens are introduced for structured aggregation with controllable frequency granularity, enabling region-aware interaction across sub-bands during training. This design allows ECHOv2 to robustly handle diverse machine types and noisy operating conditions while maintaining stable representation quality. To enable fair and consistent evaluation of pre-trained audio backbones, we establish a unified ASD benchmark over DCASE 2020-2025 with two complementary protocols: embedding-based evaluation for frozen representation discriminability and adaptation-based evaluation for downstream transferability. Ablation studies confirm the effectiveness of intra-band learning, inter-band supervision, and structured aggregation granularity for robust ASD representation learning. These findings demonstrate that structured cross-band modeling provides a powerful and adaptable framework for ASD representation learning and can serve as a strong foundation for future research. The model and benchmark are fully open-sourced at https://github.com/yucongzh/ECHOv2 and https://github.com/yucongzh/ASD_Benchmark to promote reproducible research.",
+      "authors": [
+        "Yucong Zhang",
+        "Juan Liu",
+        "Ming Li"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-07-12T06:26:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.10596v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learns localized intra-band representations from raw audio for anomaly detection",
+      "llm_evidence_cn": "从原始音频学习局部频带内表示以进行异常检测",
+      "llm_evidence": "从原始音频学习局部频带内表示以进行异常检测",
+      "canonical_evidence": "从原始音频学习局部频带内表示以进行异常检测",
+      "llm_tldr_en": "Proposes a band-splitting representation learning model with self-distillation for anomalous sound detection.",
+      "llm_tldr_cn": "提出了一种带自蒸馏的频带分割表示学习模型，用于异常声音检测。",
+      "llm_tldr": "提出了一种带自蒸馏的频带分割表示学习模型，用于异常声音检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.10647v1",
+      "source": "arxiv",
+      "title": "Knowledge Distillation for Automated AI Tutor Evaluation",
+      "abstract": "The rapid integration of Large Language Models (LLMs) into K-12 and higher education has outpaced the development of reliable methods for evaluating their pedagogical quality. As the research community starts to explore the space of automating evaluation of AI tutors, we introduce FATE (FLC AI Tutor Evaluator), a specialized 8B-parameter language model designed to evaluate AI tutors. Aligned with the four core evaluation tracks from the BEA 2025 Shared Task, our model assesses pedagogical ability across Mistake Identification, Mistake Location, Guidance, and Actionability. Because pedagogical evaluation is a specialized task with limited labeled data, we leverage knowledge distillation from a frontier LLM to generate additional supervision, yielding absolute performance gains up to 22.63 percentage points. Finally, we demonstrate FATE's utility as an automated evaluator by benchmarking instructional responses generated by popular commercial models, including ChatGPT, Claude, Gemini, and DeepSeek. On average, we have found that Gemini 2.5 Flash perfomed best (82.88%), then ChatGPT 5.5 Instant (80.75%), followed by DeepSeek V4 Flash (80.13%) and Claude Sonnet 4.6 (74.00%).",
+      "authors": [
+        "Tahmid Al Hannan",
+        "Diego Garcia",
+        "Alex Njoroge",
+        "Suha Al Juboori",
+        "Tarek Sakakini"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-12T08:28:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.10647v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "knowledge distillation from frontier LLM for limited labeled data in pedagogical evaluation",
+      "llm_evidence_cn": "从前沿大模型进行知识蒸馏，用于教育评估中有限标注数据",
+      "llm_evidence": "从前沿大模型进行知识蒸馏，用于教育评估中有限标注数据",
+      "canonical_evidence": "从前沿大模型进行知识蒸馏，用于教育评估中有限标注数据",
+      "llm_tldr_en": "FATE distills knowledge from a frontier LLM to evaluate AI tutors effectively with limited labeled data.",
+      "llm_tldr_cn": "FATE从前沿大模型蒸馏知识，在有限标注数据下有效评估AI导师。",
+      "llm_tldr": "FATE从前沿大模型蒸馏知识，在有限标注数据下有效评估AI导师。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.10677v1",
+      "source": "arxiv",
+      "title": "From Self-Attention to Connection Laplacian: A Unified Operator View of Transformers",
+      "abstract": "Self-attention is a ubiquitous primitive in modern sequence models, yet its operator-level geometry is only partially understood. We view a token sequence as a vector field over the token-position graph and identify attention as a connection walk: messages are aggregated by a nonnegative walk matrix while being transported along each edge by a learned linear map. Within this framework, we prove that single-head attention (SHA) is exactly a connection propagation step with constant transport, and that multi-head attention (MHA) is exactly a single edge-dependent connection walk whose effective transport is an attention-gated mixture of headwise transports. We further clarify the conditions under which the corresponding generator reduces to a random-walk connection Laplacian, highlighting the roles of stochasticity, reversibility, and metric-compatible transports. Empirically, we find that trained Transformers across scales (from 124M to 8B) and structures (encoder/decoder) exhibit geometric structure consistent with our theory: effective attention graphs converge to stable geometric operators in deeper layers, learned transports self-organize into approximate scaled isometries, and both phenomena strengthen consistently with scale. Overall, the paper provides a precise connection-walk formalism that links self-attention to classical geometric operators, along with a set of operator-level tools for analyzing transformer models from a geometric perspective.",
+      "authors": [
+        "Binbin Lin",
+        "Wei Chen",
+        "Yalun Li",
+        "Wenxiao Wang",
+        "Jieping Ye",
+        "Xiaofei He"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-12T09:44:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.10677v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unified operator view of transformer sequence models",
+      "llm_evidence_cn": "Transformer序列模型的统一算子视角",
+      "llm_evidence": "Transformer序列模型的统一算子视角",
+      "canonical_evidence": "Transformer序列模型的统一算子视角",
+      "llm_tldr_en": "Provides theoretical understanding of self-attention in sequence models.",
+      "llm_tldr_cn": "提供了序列模型中自注意力的理论理解。",
+      "llm_tldr": "提供了序列模型中自注意力的理论理解。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.10909v1",
+      "source": "arxiv",
+      "title": "Stream-aware Side Adaptation for Large Pre-trained Multimodal Embedding Models in Sequential Recommendation",
+      "abstract": "Recently, large pretrained multimodal embedding models such as Qwen3-VL Embedding have shown strong promise for sequential recommendation, as they provide reusable semantic item representations across modalities and domains. However, directly using these embeddings often leads to suboptimal performance because of domain misalignment. Efficient side adaptation is therefore an attractive solution. Although adapting all backbone layers should help, existing side adapters often degrade with depth, prompting layer dropping despite the loss of useful hidden states. This is due to two major challenges: (1) the lack of modeling in selecting fused representations during residual addition, and (2) the insufficient preservation of earlier representations during progressive sigmoid fusion. This paper therefore asks a practical question: How can we design a side adaptation approach that effectively unlocks the potential of large pre-trained multimodal embedding models?   To address this question, we propose Stresa, a stream-aware side-adaptation framework for frozen large pre-trained multimodal embedding models in sequential recommendation. Stresa introduces Stream-aware Hidden-Adapter Fusion (SHAF) to preserve historical side memory during fusion and Residual Stream Adapter (ReSA) to produce selective residual updates across layers. Empirically, Stresa consistently outperforms standard side adapters and state-of-the-art baselines on public datasets across multiple backbone embedding models. These results highlight the promise of adapting large embedding models for sequential recommendation. Our code is publicly available at https://github.com/GAIR-Lab/Stresa.",
+      "authors": [
+        "Junchen Fu",
+        "Kaiwen Zheng",
+        "Ioannis Arapakis",
+        "Wenhao Deng",
+        "Xin Xin",
+        "Joemon M. Jose",
+        "Xuri Ge"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-12T20:28:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.10909v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "stream-aware side adaptation for sequential recommendation",
+      "llm_evidence_cn": "流感知侧适配用于序列推荐",
+      "llm_evidence": "流感知侧适配用于序列推荐",
+      "canonical_evidence": "流感知侧适配用于序列推荐",
+      "llm_tldr_en": "Adapts pretrained multimodal embeddings to sequential recommendation via side networks",
+      "llm_tldr_cn": "通过侧网络将预训练多模态嵌入适配至序列推荐",
+      "llm_tldr": "通过侧网络将预训练多模态嵌入适配至序列推荐",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
