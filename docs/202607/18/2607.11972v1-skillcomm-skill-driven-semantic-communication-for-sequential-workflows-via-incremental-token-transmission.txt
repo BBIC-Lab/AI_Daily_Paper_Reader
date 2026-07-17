@@ -1,0 +1,531 @@
+Title: SkillComm: Skill-Driven Semantic Communication for Sequential Workflows via Incremental Token Transmission
+
+URL Source: https://arxiv.org/pdf/2607.11972v1
+
+Published Time: Wed, 15 Jul 2026 11:57:38 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+> 1
+
+# SkillComm: Skill-Driven Semantic Communication via Workflow-Aware Token Prioritization 
+
+Ziyang Meng, Student Member, IEEE and Lu Lu, Member, IEEE 
+
+Abstract —As wireless visual intelligence evolves from isolated task inference to ordered skill workflows, the core commu-nication bottleneck shifts from transmitting a single semantic representation to coordinating reusable skill states under chan-nel constraints. Existing DeepJSCC and prompt-guided visual transmitters usually treat each task as an independent full-token transmission, with limited reuse of execution memory across semantic workflows. This is inefficient for workflows such as Detect →Segment →Keypoint , where later stages mainly require state-relevant semantic updates rather than repeated full-grid transmission. This letter proposes SkillComm, a skill-driven semantic communication (SemCom) framework that uti-lizes reusable skill states as communication context to jointly guide workflow-aware token prioritization and memory-assisted token-grid reassembly. A shared Skill-Book first synchronizes the transmitter and receiver by mapping a high-level visual intent into an executable skill sequence. Conditioned on this synchronized workflow, workflow-aware adaptive token selection exploits cross-step execution memory to prioritize state-active tokens before joint source-channel coding (JSCC) transmission. Finally, the receiver reconstructs a task-ready token grid by merging the decoded active tokens with its local historical mem-ory. Evaluations on the MS COCO 2017 validation dataset across the Detect →Segment →Keypoint workflow show that workflow-aware token prioritization enables SkillComm to achieve a 51.2% token transmission cost reduction, while retaining 99.4% upper-bound-normalized average precision in the high SNR regime. These results provide quantitative evidence that reusable skill states can drive workflow-aware token prioritization, enabling selective semantic innovation delivery for future agentic and embodied visual intelligence. 
+
+I. I NTRODUCTION 
+
+As wireless visual intelligence evolves from isolated task inference to ordered skill workflows, semantic communi-cation (SemCom) must move beyond transmitting compact representations toward coordinating reusable skill states under channel constraints. Existing SemCom aims to transmit task-relevant information rather than reconstructing every source symbol [1]–[3]. Deep joint source-channel coding (Deep-JSCC) maps visual sources directly into channel symbols and achieves graceful degradation over noisy channels [4], while recent task-adaptive SemCom introduces prompts, conditional rate-distortion objectives, or tokenized representations to guide semantic coding [5]–[7]. Although these methods advance semantic feature coding, prompt conditioning, and tokenized transmission, they mainly optimize each transmission instance independently and do not explicitly exploit reusable execution states across ordered visual workflows. 
+
+The authors are with the Technology and Engineering Center for Space Utilization, Chinese Academy of Sciences, Beijing, 100094, China (e-mails: 
+
+{mengziyang24, lulu }@csu.ac.cn). 
+
+A high-level visual intent may unfold as an ordered work-flow or modular visual program [8], e.g., detecting a person, segmenting the detected instance, and estimating its key-points [9]. In such workflows, later stages inherit execution states such as bounding boxes, masks, or intermediate token memory, and therefore require mainly state-relevant semantic updates rather than another full-token transmission [10]. Re-peatedly sending the full token grid wastes wireless resources on redundant background and already available context, while compressing a compound instruction into a single prompt may cause task interference and attention drift. Therefore, the key gap is a workflow-level SemCom mechanism that uses skill states to decide which tokens should be transmitted, which context can be reused, and how task-ready representations should be reassembled at the receiver. To address this challenge, this letter proposes SkillComm ,a skill-driven SemCom framework for workflow-aware token prioritization. To the best of our knowledge, this is the first work that introduces skill-driven workflow control into visual SemCom. As summarized in Tab. I, SkillComm organically couples skill-based workflow control with workflow-aware token prioritization, memory-assisted reassembly, and visual JSCC. SkillComm decomposes a high-level visual intent into an executable skill workflow synchronized by a shared Skill-Book . Unlike prompt-conditioned SemCom that mainly treats task descriptions as conditioning signals, SkillComm uses reusable skill states as communication context to prioritize state-active tokens before JSCC transmission and to restore task-ready token grids through memory-assisted reassembly. By advancing visual SemCom from prompt-conditioned full-token delivery to workflow-aware semantic information delivery, SkillComm makes the following contributions.  
+
+> •
+
+Skill-Driven SemCom Architecture. We propose Skill-Comm, a visual SemCom framework for sequential work-flows. A shared Skill-Compiler and Skill-Book decompose intents into executable skills, enabling coordinated work-flow execution across the wireless link.  
+
+> •
+
+Workflow-Aware Token Prioritization. A memory-driven selection mechanism exploits cross-step states to transmit only active semantic innovations. The receiver then reconstructs task-ready token grids by merging de-coded features with cached context.  
+
+> •
+
+Experimental Validation. On the MS COCO 2017 workflow, SkillComm achieves a 51.2% token trans-mission cost reduction and retains 99.4% upper-bound-normalized AP at 15 dB Rayleigh fading. arXiv:2607.11972v1 [cs.NI] 13 Jul 2026 2
+
+TABLE I: Comparison with representative approaches. 
+
+Method Year Workflow Compiler Multi-Task Control Token Prioritization Visual JSCC 
+
+DeepJSCC [4] 2019 × — × ✓
+
+TokenCom [5] 2025 × — × ×
+
+SkillCom a [11] 2026 △ — × ×
+
+TASC-f [6] 2026 × Prompt × ✓
+
+PGMT-SC [7] 2026 △ Prompt × ✓
+
+SkillComm Ours ✓ Skill ✓ ✓  
+
+> △denotes partial support. aSkillCom studies text-only LLM-based SemCom, whereas SkillComm targets visual workflow-level SemCom with token prioritization.
+
+II. S YSTEM MODEL AND PROBLEM FORMULATION 
+
+Fig. 1 presents the proposed SkillComm architecture. We consider a wireless visual semantic communication system where a transmitter observes an image I ∈ RH×W ×3 and has a high-level instruction q ∈ Q , e.g., “Capture the person’s body mechanics.” The receiver is expected to execute an ordered visual skill workflow, such as Detect →Segment →Keypoint ,under wireless channel constraints. 
+
+A. Workflow Decomposition using Skill Compiler 
+
+SkillComm assumes that the transmitter and receiver share a synchronized compact Skill-Book ,
+
+B = {σ1, σ 2, . . . , σ M }, (1) where each reusable visual skill is represented as 
+
+σm = ( pm, em, H m). (2) Here, pm is the textual skill description, em ∈ Rde is the compact skill embedding, and Hm(·) denotes the associated task head, e.g., object detection, instance segmentation, or keypoint estimation. The Skill-Book can be pre-loaded from a library or optimized offline before transmission. In this work, 
+
+em is instantiated as a single feature vector, while it can be extended to multiple embedding tokens for more complex composite skills. Given a high-level instruction q, the skill compiler maps it to an ordered workflow: 
+
+W(q) = Cskill (q, B) = [ k1, k 2, . . . , k T ] , (3) where kt ∈ { 1, . . . , M } denotes the skill index executed at stage t. We define et ≜ ekt and Ht ≜ Hkt as the scheduled skill embedding and task head. Since both B and W(q) are synchronized, the receiver activates the same skill at each stage without repeatedly receiving natural-language prompts. 
+
+B. Token Selection Criteria and JSCC Encoding 
+
+At the t-th skill stage, the transmitter extracts a skill-conditioned token canvas: 
+
+Xt = Eϕ(I, et) = [ xt, 1, . . . , xt,N ] ∈ RN ×d, (4) where N and d denote the spatial token count and token dimension. To avoid repeated full-token transmission, Skill-Comm selects a state-active token subset I+ 
+
+> t
+
+⊆ { 1, . . . , N }
+
+according to 
+
+I+ 
+
+> t
+
+= Γ θ (Xt, MTx 
+
+> t−1
+
+, et, γ t), (5) High -Level Intent q                            
+
+> “Capture the person's body mechanics
+> ”
+> Step 1
+> k1
+> Step 2
+> k2
+> Step T
+> kT
+> (e.g., Detect →Segment →Keypoint)
+> Shared Skill -Book
+> Transmitter
+> Skill -Guided
+> Backbone Encoder
+> (e.g Swin / ViT)
+> Token Selection
+> Γθ()
+> JSCC
+> Encoder
+> Receiver
+> Token Reassembly
+> Task Heads
+> Task 1 Task 2 Task 3
+> ...
+> Wireless Channel
+> JSCC
+> Decoder
+> TX Memory Rx Memory
+> ... Xt
+> ITX 1t−MRX
+> 1t−M
+> Shared Skill Compiler skill () Shared Skill Compiler skill () () ( ) q
+> Sequential Workflow
+> (e.g., Mask R -CNN /
+> Keypoint R -CNN) ˆtXˆtoˆtX+tX+ts+ty+12{}),,..., (,,MmmmmpH ==e ，
+
+Fig. 1: System model of SkillComm. A high-level instruction is decomposed into a synchronized sequential workflow via skill compiler. Reusable skill states guide workflow-aware token prioritization for JSCC transmission, while memory-assisted reassembly reconstructs task-ready token grids at the receiver. where MTx  
+
+> t−1
+
+∈ RN ×d is the transmitter-side execution mem-ory and γt is the normalized channel SNR. For the initial stage, 
+
+I+1 = {1, . . . , N } is used to initialize the workflow memory. The selected tokens are gathered as X+ 
+
+> t
+
+= Gather( Xt, I+ 
+
+> t
+
+)
+
+and mapped to channel symbols by a JSCC encoder: 
+
+s+ 
+
+> t
+
+= Φ enc (X+ 
+
+> t
+
+). (6) The skill embedding et conditions the backbone feature extrac-tion, while JSCC operates only on the selected active tokens. The spatial indices are encoded as bidx  
+
+> t
+
+= IndexEnc( I+ 
+
+> t
+
+) and transmitted through a reliable control channel. The wireless channel is modeled as 
+
+y+ 
+
+> t
+
+= hts+ 
+
+> t
+
++ nt, (7) where ht is the complex channel coefficient and nt ∼CN (0 , γ 2 
+
+> t
+
+I) represents additive white Gaussian noise. The transmitter then updates its local memory as MTx  
+
+> t
+
+= Xt.
+
+C. JSCC Decoding and Token Reassembly Objective 
+
+Upon receiving the wireless signals, the receiver decodes the spatial indices ˆI+ 
+
+> t
+
+= IndexDec( bidx  
+
+> t
+
+) and applies the JSCC decoder to recover the high-priority active tokens: 
+
+ˆX+ 
+
+> t
+
+= Φ dec (y+ 
+
+> t
+
+). (8) A full token canvas ˆXt ∈ RN ×d is then reconstructed by a reassembly operator R(·), which scatters the decoded active tokens back to their original grid coordinates and replenishes the unselected slots utilizing the synchronized historical re-ceiver memory MRx 
+
+> t−1
+
+:
+
+ˆXt = R( ˆX+ 
+
+> t
+
+, ˆI+ 
+
+> t
+
+, MRx 
+
+> t−1
+
+). (9) Due to the stochastic nature of the noisy wireless channel, 
+
+MTx 
+
+> t−1
+
+̸ = MRx  
+
+> t−1
+
+generally holds true. Therefore, SkillComm operates robustly without requiring strictly identical memory 3Current tokens                           
+
+> Xt
+> Skill embedding
+> et
+> Score MLP
+> at, i
+> Cosine skill relevance TX memory
+> Token -level
+> feature
+> interaction
+> Cosine skill difference
+> Top -K selection
+> Rate MLP
+> Gather
+> Wireless Channel
+> Decoded selected tokens
+> RX memory
+> Scatter & Reassembly
+> Backbone
+> Decoder
+> Task
+> Heads ()
+> TX 1, ,1cos ,ttii−−xm()
+> ,cos ,tt i eWxert
+> +
+> t
+> +
+> X
+> ,( ) ,Rx 1,
+> ,,,,
+> ttitt i tti
+> ii
+> 
+> +++−
+> =  
+> xxm
+> 
+> 
+> t
+> +
+> X...
+> RX Memory Update
+> TX Memory Update Transmitter Token Selection
+> Receiver Token Reassembly TX 1t−MRX
+> 1t−M
+
+Fig. 2: Skill-driven token prioritization and memory-assisted reassembly in SkillComm. states or receiver feedback. Because ˆXt strictly preserves the original grid shape, the activated task head directly executes inference: 
+
+ˆot = Ht( ˆXt). (10) Finally, the receiver updates its memory as MRx  
+
+> t
+
+= ˆXt.Let ot be the ground-truth target for the t-th skill and 
+
+dt(·, ·) be the task distortion metric. SkillComm aims to minimize the cumulative workflow distortion subject to a total communication cost constraint: 
+
+min Θ E
+
+hPTt=1 αtdt(ot, ˆot) + λR total 
+
+i
+
+, (11) where Θ encompasses the parameters of the shared feature backbone, JSCC codecs, task heads, and gating modules; 
+
+αt balances task priorities, and λ dictates the accuracy-rate tradeoff. Here, Rtotal represents the cumulative transmission rate across the entire sequence of skills. III. S KILL -D RIVEN SEMANTIC COMMUNICATION 
+
+This section realizes the token selection policy Γθ (·) and the reassembly operator R(·) introduced in Sec. II. As shown in Fig. 2, SkillComm implements workflow-aware token pri-oritization through memory-aware token scoring, adaptive Top-K JSCC transmission, and memory-assisted token-grid reassembly, enabling state-active semantic innovations to be delivered across sequential skill stages. 
+
+A. Token Scoring at Transmitter 
+
+To facilitate cross-task information reuse without redundant transmission, both the transmitter and receiver cache their respective historical states. The transmitter memory is defined as MTx  
+
+> t−1
+
+= [ mTx 
+
+> t−1,1
+
+, . . . , mTx  
+
+> t−1,N
+
+], where each memory to-ken mTx  
+
+> t−1,i
+
+is initialized as the corresponding feature xt−1,i 
+
+generated at the previous stage t − 1. Similarly, the receiver maintains a local memory MRx 
+
+> t−1
+
+, where each token mRx 
+
+> t−1,i
+
+stores the previously reconstructed feature ˆxt−1,i .A cosine-similarity heuristic can determine whether a cur-rent token resembles the historical memory, but fails to dif-ferentiate between task-irrelevant background and task-critical novel features. To resolve this, SkillComm introduces a delta-aware token gate. For the i-th token, a lightweight Multi-Layer Perceptron (MLP) first evaluates a routing logit: 
+
+at,i = gθ
+
+ xt,i , mTx 
+
+> t−1,i
+
+, et, |xt,i − mTx 
+
+> t−1,i
+
+|, xt,i ⊙ mTx 
+
+> t−1,i
+
+ (12) where ⊙ denotes element-wise multiplication. The definitive routing score synergizes this logit with explicit current-skill relevance and temporal difference priors: 
+
+st,i = at,i + α cos( xt,i , W eet) + β 1 − cos( xt,i , mTx 
+
+> t−1,i
+
+) , (13) where We is a learnable linear projection that maps the skill embedding to the token feature dimension. A rate MLP 
+
+rω receives average-pooled current, memory, and absolute-difference features, together with et and normalized SNR γt,and predicts 
+
+ρt = ρmin + ( ρmax − ρmin ) sigmoid  rω (Xt, MTx 
+
+> t−1
+
+, et, γ t) , (14) where ρt is the retained-token fraction and (ρmin , ρ max ) = (0 .2, 0.8) . The transmitted token count and indices are 
+
+Kt = round( ρtN ), I+ 
+
+> t
+
+= TopK( {st,i }Ni=1 , K t). (15) Because hard Top-K is non-differentiable, training uses the straight-through mask emt = STTopK( st, K t) ∈ [0 , 1] N . Its forward value is the binary Top-K mask, while its backward derivative is provided by a soft sigmoid relaxation. Training then minimizes 
+
+L = PTt=1 Lt + λ PTt=2   
+
+> ∥emt∥1
+> N
+
+, (16) where Lt is the downstream loss for skill t and λ controls the accuracy–rate tradeoff. Thus, inference still transmits exactly 
+
+Kt tokens; emt exists only to train the hard Top-K token selector. 
+
+B. Memory-Assisted Token Reassembly at Receiver 
+
+Following token gathering and JSCC transmission of the active subset X+ 
+
+> t
+
+, the receiver performs cross-step feature reassembly. Because the receiver lacks access to the un-transmitted portions of the transmitter’s current state, it cannot execute dynamic fusion mechanisms based on Xt. Instead, the receiver gracefully overwrites the selected positions with the newly arrived tokens and directly inherits the unselected positions from its local historical memory: 
+
+ˆxt,i =
+
+(ˆx+
+
+> t,π t(i)
+
+, i ∈ ˆI+ 
+
+> t
+
+,
+
+mRx 
+
+> t−1,i
+
+, i / ∈ ˆI+ 
+
+> t
+
+, (17) where πt(i) is an order-preserving mapping from the original global index i to its compact position in the transmitted se-quence X+ 
+
+> t
+
+. This pure memory-overwrite mechanism ensures robust feature restoration without introducing supplementary communication overhead. For a workflow spanning T stages, a prompt-guided full-token benchmark requires the transmission of T N tokens. In contrast, SkillComm incurs full communication cost only at the initial stage, yielding a drastically reduced cumulative workflow token utilization of: 
+
+Rtotal = N +
+
+> T
+
+X
+
+> t=2
+
+Kt. (18) 4
+
+Concurrently, the index transmission overhead is bounded by Bidx ,t = ⌈log 2
+
+  NKt
+
+⌉. This analytical formulation explic-itly guarantees that by dynamically modulating Kt via the rate controller, SkillComm effectively eliminates the repeated transmission of redundant semantic tokens. IV. E XPERIMENTAL RESULTS 
+
+This section evaluates SkillComm on a representative com-pound intent, “Capture the person’s body mechanics,” instanti-ated as Detect → Segment → Keypoint : localizing the person, delineating the body, and estimating the joints. This workflow is used as a representative benchmark to validate sequential skill execution, while the proposed mechanism is not tied to this specific task chain. We report stage-specific intent conditioning, workflow-level token efficiency, and atomic-task AP box , AP mask , and AP kp .
+
+A. Experimental Setup 
+
+Experiments are conducted on 100 person-containing im-ages randomly sampled from the MS COCO 2017 validation set [12]. A prompt-conditioned Swin Transformer processes 
+
+448 × 448 images and produces a 14 × 14 × 256 token canvas, yielding N = 196 spatial tokens per stage. Pre-trained Mask R-CNN and Keypoint R-CNN heads consume the re-assembled canvas for detection, segmentation, and keypoint estimation. Therefore, a conventional full-token execution of the Detect → Segment → Keypoint workflow requires transmitting 3N = 588 tokens. During training, the delta-aware ranking gate is optimized for 10,000 iterations. The SNR-aware rate controller is trained for 5,000 iterations with the backbone and task heads frozen, followed by 500 Rayleigh-calibration iterations. The training SNR is continuously sampled from [0 , 15] dB. For evaluation, Rayleigh fading is applied at {0, 3, 6, 9, 12 , 15 } dB with shared channel realizations across methods. We compare SkillComm with the following references and ablation variants:  
+
+> •
+
+NC-UB: The no-channel upper bound, where the full workflow is executed locally without wireless degrada-tion.  
+
+> •
+
+TASC-f [6]: A task-adaptive SemCom reference based on prompt/conditional transmission, included only for appli-cable comparisons since it does not provide automatic workflow compilation or workflow-level token reuse.  
+
+> •
+
+PGMT-SC [7]: A single-task prompt-guided SemCom reference. For a compound intent, it executes one favor-able atomic task and is therefore excluded from per-task AP curves.  
+
+> •
+
+SkillComm-Full: The sequential baseline, where task prompts are manually supplied step by step and all 
+
+N = 196 tokens are transmitted at each stage.  
+
+> •
+
+SkillComm-Fixed: An ablation that retains automatic workflow compilation and execution memory, but uses deterministic cosine Top-K selection with a fixed 50% 
+
+downstream token ratio.  
+
+> •
+
+SkillComm-Adaptive: The complete method with auto-matic skill compilation, cross-step memory, learned delta-aware token gating, and adaptive SNR-aware rate control. TABLE II: Stage-conditioning alignment and workflow-level token efficiency.                                  
+
+> Method Effective Skill Sequence SCA Tokens †Saving NC-UB D→S→K (channel-free reference) 1––TASC-f †[6] D→D→D33.3% 588.0 0.0% PGMT-SC †[7] M→M→M66.3% 588.0 0.0% SkillComm-Full D→S→K100.0% 588.0 0.0% SkillComm-Fixed D→S→K100.0% 392.0 33.3%
+> SkillComm-Adaptive D→S→K100.0% 287.1 51.2%
+> D, S, and K denote detection, segmentation, and keypoint prompts; M denotes the fixed MOP weights (0 .30 ,0.30 ,0.40) .
+> †TASC-f and PGMT-SC are evaluation-unrolled over three task heads only to assess stage-conditioning mismatch under the same workflow, without native workflow execu-tion.
+
+B. Stage-Conditioning Alignment and Token Utilization 
+
+This sub-section evaluates the overall intention compiler performance as well as token savings. Since TASC-f re-quires explicit task feedback, we instantiate its no-feedback adaptation by selecting one known atomic prompt through frozen multilingual MiniLM similarity [13]. The intent has similarities [0 .447 , 0.319 , 0.357] to detection, segmentation, and keypoint prompts, respectively, and therefore selects detec-tion for the entire request. Following the mixture-of-prompts (MOP) protocol of PGMT-SC, its unseen-intent embedding is 0.30 edet + 0 .30 eseg + 0 .40 ekp . SkillComm first compiles the intent and then switches to the corresponding atomic embedding at each workflow stage. For the compound intent, let wt denote the effective routing weights over the atomic prompts at stage t, and let w⋆t denote the target one-hot routing vector of the required skill. We mea-sure stage-conditioning alignment (SCA) using a normalized Brier-style score [14]: 
+
+SCA = 1 − 12T
+
+PTt=1 ∥wt − w⋆t ∥22 . (19) For the target D →S→K workflow, the desired routing vectors are w⋆ 
+
+> 1
+
+= (1 , 0, 0) , w⋆ 
+
+> 2
+
+= (0 , 1, 0) , and w⋆ 
+
+> 3
+
+= (0 , 0, 1) .Both wt and w⋆t lie on the probability simplex, whose maximum squared Euclidean distance is two, e.g., ∥(1 , 0, 0) −
+
+(0 , 1, 0) ∥22 = 2. Hence, the factor 2T normalizes SCA to 
+
+[0 , 1] : a score of one means that every stage receives its correct atomic condition, while a mismatch decreases the score according to its full routing-vector distance. This score is evaluated in the discrete skill-routing space rather than by cosine similarity between prompt embeddings. A hard-selected prompt has one-hot routing weights, whereas PGMT-SC uses its normalized MOP coefficients directly. Tab. II separates stage-wise intent resolution from trans-mission cost for the same compound intent. TASC-f repeats 
+
+wt = (1 , 0, 0) at all stages; its three squared errors are 
+
+0, 2, and 2, giving 1 − 4/6 = 33 .3% SCA. PGMT-SC repeats wt = (0 .30 , 0.30 , 0.40) ; its stage-wise errors are 0.74 ,
+
+0.74 , and 0.54 , giving 1 − 2.02 /6 = 66 .3% . This higher value reflects partial soft alignment, but not stage-specific decomposition. SkillComm compiles the intent into the correct one-hot sequence, incurs zero routing error, and obtains 100% SCA. Based on this workflow, its learned gate uses 287.1 rather than 588 tokens, leading to a token saving of 51.2%. 50 3 6 9 12 15 
+
+> SNR (dB)
+> 0.46 0.47 0.48 0.49 0.5 0.51 0.52
+> AP box
+> NC-UB TASC-f [6] PGMT-SC [7] SkillComm-Full SkillComm-Fixed SkillComm-Adaptive
+
+(a) Stage 1: Object Detection 0 3 6 9 12 15  
+
+> SNR (dB)
+> 0.15 0.2 0.25 0.3 0.35 0.4 0.45
+> AP mask
+> NC-UB TASC-f [6] PGMT-SC [7] SkillComm-Full SkillComm-Fixed SkillComm-Adaptive
+
+(b) Stage 2: Instance Segmentation 0 3 6 9 12 15  
+
+> SNR (dB)
+> 0.3 0.35 0.4 0.45 0.5 0.55 0.6
+> AP kp
+> NC-UB TASC-f [6] PGMT-SC [7] SkillComm-Full SkillComm-Fixed SkillComm-Adaptive
+
+(c) Stage 3: Keypoint Detection 
+
+Fig. 3: Per-task COCO Average Precision (AP) over Rayleigh fading channels for the Detect →Segment →Keypoint workflow. 
+
+C. Per-Task AP Evaluation over Rayleigh Fading 
+
+Fig. 3 reports the per-task AP of the three workflow stages under Rayleigh fading channels. In the first stage, all SkillComm variants transmit the full token grid and therefore achieve nearly identical detection performance. TASC-f also performs well at this stage because it interprets the compound intent as a detection prompt, whereas PGMT-SC suffers from mixed multi-task conditioning. In the segmentation and key-point stages, however, TASC-f continues to use the detection condition and degrades significantly, while SkillComm main-tains stage-specific execution through the skill compiler. Among the SkillComm variants, SkillComm-Full provides the upper performance reference by transmitting all tokens, whereas SkillComm-Fixed and SkillComm-Adaptive reduce token usage through selective transmission. SkillComm-Fixed is more robust at low SNR due to its conservative token ratio, while SkillComm-Adaptive surpasses it at high SNR by selecting higher-value tokens according to channel and memory-aware token priorities. Overall, SkillComm-Adaptive achieves 94.3% average AP retention relative to NC-UB across 0–15 dB and all three tasks, and reaches 99.4% retention at 15 dB, demonstrating that workflow-aware token prioritiza-tion preserves task-critical semantics with substantially lower communication cost. V. C ONCLUSIONS 
+
+This letter proposed SkillComm, a skill-driven SemCom framework that uses reusable skill states to guide workflow-aware token prioritization and memory-assisted token-grid reassembly. Instead of treating each task as an isolated full-token transmission problem, SkillComm synchronizes ordered skill execution through a shared Skill-Book , exploits execution memory to prioritize state-active tokens for JSCC transmis-sion, and restores task-ready token grids at the receiver. Exper-iments on the MS COCO 2017 Detect →Segment →Keypoint 
+
+workflow show that SkillComm reduces token transmission cost by 51.2%, while retaining 99.4% upper-bound-normalized AP in the high-SNR 15-dB Rayleigh fading regime. These re-sults validate a general principle for workflow-level SemCom: reusable skill states can guide wireless systems to transmit semantic innovations rather than repeated full representations. Future work will develop feedback-loop skills that adapt the next skill, token budget, and refinement transmission using receiver-side confidence, channel state information, and memory-reassembly errors. REFERENCES [1] H. Xie, Z. Qin, G. Y. Li, and B.-H. Juang, “Deep learning enabled semantic communication systems,” IEEE Trans. Signal Process. , vol. 69, pp. 2663–2675, 2021. [2] G. Zhang, Q. Hu, Z. Qin, Y. Cai, G. Yu, and X. Tao, “A unified multi-task semantic communication system for multimodal data,” IEEE Trans. Commun. , vol. 72, no. 7, pp. 4101–4116, 2024. [3] Z. Qin et al. , “AI empowered wireless communications: From bits to semantics,” Proc. IEEE , Jul. 2024. [4] E. Bourtsoulatze, D. B. Kurka, and D. G¨ und¨ uz, “Deep joint source-channel coding for wireless image transmission,” IEEE Trans. on Cogn. Commun. Netw. , vol. 5, no. 3, pp. 567–579, 2019. [5] L. Qiao, M. B. Mashhadi, Z. Gao, R. Tafazolli, M. Bennis, and D. Niyato, “Token communications: A large model-driven framework for cross-modal context-aware semantic communications,” IEEE Wireless Commun. , vol. 32, no. 5, pp. 80–88, 2025. [6] J. He, Y. Deng, S. Wu, B. Cao, S. Meng, W. Zhang, and Q. Zhang, “Task-adaptive semantic communication with feedback: A conditional rate-distortion approach,” IEEE Trans. on Cogn. Commun. Netw. , vol. 12, pp. 7157–7171, 2026. [7] H. Zhang, Z. Cao, L. Liang, H. Ye, S. Jin, and G. Y. Li, “Prompt-guided multi-task semantic communication for image transmission,” 
+
+IEEE Commun. Lett. , vol. 30, pp. 1111–1115, 2026. [8] T. Gupta and A. Kembhavi, “Visual programming: Compositional visual reasoning without training,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , Jun. 2023, pp. 14 953–14 962. [9] K. He, G. Gkioxari, P. Doll´ ar, and R. Girshick, “Mask R-CNN,” in 
+
+Proceedings of the IEEE International Conference on Computer Vision (ICCV) , Oct. 2017, pp. 2961–2969. [10] W. Li, R. Zhang, R. Shao, Z. Fang, K. Zhou, Z. Tian, and L. Nie, “SemanticVLA: Semantic-aligned sparsification and enhancement for efficient robotic manipulation,” in Proceedings of the AAAI Conference on Artificial Intelligence , 2026. [11] J. Fu, M. Xiao, and M. Skoglund, “SkillCom: Decomposing LLM-based semantic communication into task and channel aware skills,” arXiv preprint arXiv:2605.02333 , 2026. [12] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan, P. Doll´ ar, and C. L. Zitnick, “Microsoft COCO: Common objects in context,” in European Conference on Computer Vision . Springer, 2014, pp. 740–755. [13] W. Wang, F. Wei, L. Dong, H. Bao, M. Yang, and M. Zhou, “MiniLM: Deep self-attention distillation for task-agnostic compression of pre-trained transformers,” in Advances in Neural Information Processing Systems (NeurIPS) , vol. 33, 2020, pp. 5776–5788. [14] C. Guo, G. Pleiss, Y. Sun, and K. Q. Weinberger, “On calibration of modern neural networks,” in International Conference on Machine Learning (ICML) , 2017, pp. 1321–1330.

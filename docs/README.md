@@ -1,46 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-17
-- 运行时间：2026-07-17 04:35:07 北京时间
+- 最新运行日期：2026-07-18
+- 运行时间：2026-07-18 03:57:13 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-从多尺度时序建模到跨人脑解码，今天重点打磨了两个9分硬核方法。最优传输注意力让多元时序预测更准，几何感知的对齐则大幅提升跨被试解码速度。想快速落地，不妨先看Token精简的谱热流技术和AI导师评估的蒸馏方案。
-- 详情：[/202607/17/README](/202607/17/README)
+今日从脑机接口的语义解码出发，精读了两篇满分工作，分别用交互式多特征融合推动非侵入式语义重建，并让 Llama 3.2 在 fMRI 语言解码中挑战新基准。
+最值得关注的方向是“非侵入式脑信号如何通过多模态特征融合，实现更准确、更丰富的语义理解”，以及大型语言模型直接参与神经解码带来的能力跃迁。
+下一步不妨把速读里的统一扩散框架和自适应特征门控，与脑信号的语义对齐结合起来，尝试构建更连续的思维解读通路。
+- 详情：[/202607/18/README](/202607/18/README)
 
 ### 精读区论文标签
-1. [Multi-Scale Convolution with Optimal Transport Attention Effect on Multivariate Time Series](/202607/17/2607.10740v1-multi-scale-convolution-with-optimal-transport-attention-effect-on-multivariate-time-series)  
+1. [Beyond Parallel Tracking: Interactive Multi-Feature Fusion Drives Semantic Reconstruction from Non-invasive Brain Recordings](/202607/18/2607.12071v1-beyond-parallel-tracking-interactive-multi-feature-fusion-drives-semantic-reconstruction-from-non-invasive-brain-recordings)  
+   标签：评分：10.0/10、query:ndai
+   evidence：从非侵入性脑记录重建语义
+2. [The Capacity of Thought: Benchmarking Llama 3.2 in Semantic fMRI Neural Language Decoding and Improving the Huth Encoding-Model Baseline](/202607/18/2607.12079v1-the-capacity-of-thought-benchmarking-llama-32-in-semantic-fmri-neural-language-decoding-and-improving-the-huth-encoding-model-baseline)  
+   标签：评分：10.0/10、query:ndai
+   evidence：使用预训练LLM将fMRI信号解码为语言
+3. [Machines that Predict Trajectories from Templates](/202607/18/2607.11551v1-machines-that-predict-trajectories-from-templates)  
    标签：评分：9.0/10、query:ndai
-   evidence：多尺度卷积用于多元时间序列
-2. [Fast Whole-Brain, Geometry-Aware Functional Alignment for Cross-Subject Decoding](/202607/17/2607.10931v1-fast-whole-brain-geometry-aware-functional-alignment-for-cross-subject-decoding)  
+   evidence：从模板预测轨迹
+4. [DiffEEG: A Self-Supervised Denoising Diffusion Model for Learning EEG Generic Representations](/202607/18/2607.11578v1-diffeeg-a-self-supervised-denoising-diffusion-model-for-learning-eeg-generic-representations)  
    标签：评分：9.0/10、query:ndai
-   evidence：跨被试大脑解码的功能对齐方法
-3. [Continuous Query for Top-$K$ Maximal Sum Intervals over Streaming Data](/202607/17/2607.11035v1-continuous-query-for-top-k-maximal-sum-intervals-over-streaming-data)  
+   evidence：用于EEG通用表征的自监督扩散模型
+5. [Sparse Inter-Layer Dependencies of Transformer FFN Neurons](/202607/18/2607.11990v1-sparse-inter-layer-dependencies-of-transformer-ffn-neurons)  
    标签：评分：9.0/10、query:ndai
-   evidence：流数据上的top-k最大和区间连续查询
-4. [Event-based Neural Decoding for Neuroprosthetic Motor Control](/202607/17/2607.11445v1-event-based-neural-decoding-for-neuroprosthetic-motor-control)  
-   标签：评分：9.0/10、query:ndai
-   evidence：解码神经信号（脉冲）为运动控制动作，用于神经假体
-5. [Learning Residual Kinematic Corrections for Continuous Neural Decoding via Reinforcement Learning](/202607/17/2607.11530v1-learning-residual-kinematic-corrections-for-continuous-neural-decoding-via-reinforcement-learning)  
-   标签：评分：9.0/10、query:ndai
-   evidence：使用RL校正从EEG运动想象解码连续3D运动学
+   evidence：估计上游神经元重要性权重的归因方法
 
 ### 速读区论文标签
-1. [Spectral Heat Flow for Conservative Token Condensation in Vision-Language Models](/202607/17/2607.10640v1-spectral-heat-flow-for-conservative-token-condensation-in-vision-language-models)  
+1. [Sticky Jump Diffusions: A Unifying View of Masked, Continuous, and Hybrid Diffusion](/202607/18/2607.10951v1-sticky-jump-diffusions-a-unifying-view-of-masked-continuous-and-hybrid-diffusion)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过谱热流计算稳定重要性场用于令牌浓缩
-2. [Knowledge Distillation for Automated AI Tutor Evaluation](/202607/17/2607.10647v1-knowledge-distillation-for-automated-ai-tutor-evaluation)  
+   evidence：粘性跳跃扩散用于序列令牌动态
+2. [Difference-Driven Gating: Adaptive Feature Fusion for U-Net Decoder](/202607/18/2607.11096v1-difference-driven-gating-adaptive-feature-fusion-for-u-net-decoder)  
    标签：评分：8.0/10、query:ndai
-   evidence：从前沿大模型进行知识蒸馏，用于教育评估中有限标注数据
-3. [From Self-Attention to Connection Laplacian: A Unified Operator View of Transformers](/202607/17/2607.10677v1-from-self-attention-to-connection-laplacian-a-unified-operator-view-of-transformers)  
+   evidence：基于差异的门控从特征差异计算注意力权重
+3. [SkillComm: Skill-Driven Semantic Communication for Sequential Workflows via Incremental Token Transmission](/202607/18/2607.11972v1-skillcomm-skill-driven-semantic-communication-for-sequential-workflows-via-incremental-token-transmission)  
    标签：评分：8.0/10、query:ndai
-   evidence：Transformer序列模型的统一算子视角
-4. [Stream-aware Side Adaptation for Large Pre-trained Multimodal Embedding Models in Sequential Recommendation](/202607/17/2607.10909v1-stream-aware-side-adaptation-for-large-pre-trained-multimodal-embedding-models-in-sequential-recommendation)  
+   evidence：顺序工作流的增量令牌传输
+4. [Continual Learning with Elastic Regularization and Synthetic Replay for Federated MLLM Fine-Tuning](/202607/18/2607.12112v1-continual-learning-with-elastic-regularization-and-synthetic-replay-for-federated-mllm-fine-tuning)  
    标签：评分：8.0/10、query:ndai
-   evidence：流感知侧适配用于序列推荐
-5. [ECHOv2: Two-Level Band-Splitting Representation Learning for Anomalous Sound Detection](/202607/17/2607.10596v1-echov2-two-level-band-splitting-representation-learning-for-anomalous-sound-detection)  
+   evidence：联邦微调中的持续学习框架，适应新领域
+5. [MED-DSLC: Multi-Expert-Domain Classification via Domain Supervision and Logit Calibration](/202607/18/2607.10985v1-med-dslc-multi-expert-domain-classification-via-domain-supervision-and-logit-calibration)  
    标签：评分：7.0/10、query:ndai
-   evidence：从原始音频学习局部频带内表示以进行异常检测
+   evidence：通过合并多个LoRA专家和logit校准进行域适应
 

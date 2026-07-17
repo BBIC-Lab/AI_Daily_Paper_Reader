@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.11990v1/fig-001.webp",
+      "caption": "Figure 1. Layer-wise fidelity of FFN neuron pre-activations when all upstream components (neurons and attention dimensions) outside the selected sparse subset are mean-ablated, as a function of the sparsity level (the fraction of retained upstream components). Values show the average Pearson correlation between actual and patched pre-activations.",
+      "page": 6,
+      "index": 1,
+      "width": 1002,
+      "height": 477
+    },
+    {
+      "url": "assets/figures/arxiv/2607.11990v1/fig-002.webp",
+      "caption": "Figure 2. Layer-wise fidelity of FFN neuron pre-activations under the same intervention as in Figure 1. Values show the AUROC for predicting meaningfully active neurons from patched pre-activations.",
+      "page": 6,
+      "index": 2,
+      "width": 1002,
+      "height": 478
+    },
+    {
+      "url": "assets/figures/arxiv/2607.11990v1/fig-004.webp",
+      "caption": "Figure 3. Layer-wise origin of selected upstream components (neurons and attention dimensions; y-axis) for each target layer (x-axis), computed at a sparsity level of 15%. Values indicate the fraction of each source layer’s components that are retained in the selected subsets, averaged over the target layer’s neurons.",
+      "page": 8,
+      "index": 4,
+      "width": 1004,
+      "height": 223
+    },
+    {
+      "url": "assets/figures/arxiv/2607.11990v1/fig-005.webp",
+      "caption": "Figure 4. Perplexity delta on the MiniPile test subset when the neuron-specific masks are applied simultaneously in all layers, plotted against the sparsity level. Each panel corresponds to one model; curves compare our relevance scoring, an activation-variance-only ranking corresponding to a network pruning approach, and a random selection baseline.",
+      "page": 9,
+      "index": 5,
+      "width": 1004,
+      "height": 493
+    },
+    {
+      "url": "assets/figures/arxiv/2607.11990v1/fig-003.webp",
+      "caption": "Figure 5. Ablation results for the middle layer of each model, showing the AUROC for predicting meaningfully active FFN neurons from patched pre-activations. We compare the full relevance score against rankings based on weight alignment only (dot products), activation variance only, and random selection, as well as two runs of the full score in which upstream activations below the 85th and 95th percentile of each layer’s activation distribution are ablated.",
+      "page": 10,
+      "index": 3,
+      "width": 1002,
+      "height": 493
+    }
+  ]
+}
