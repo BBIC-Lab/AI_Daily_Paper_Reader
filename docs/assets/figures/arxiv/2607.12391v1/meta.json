@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.12391v1/fig-004.webp",
+      "caption": "Figure 2: ReDiTT models long horizon asynchronous time series forecasting as conditional generation guided by retrieved references. During training, we encode each event sequence xtrain into latent tokens ztrain and build a latent reference bank B. For each sample, we retrieve the top-k nearest neighbors R by latent similarity, aggregate them, and condition a DiT via cross-attention. We then train with the diffusion objective on the future latent segment to denoise and reconstruct clean latents given the prefix and retrieved context. During inference, we encode the observed prefix xtest = (t1, e1), . . . , (ti, ei), apply the same retrieval and aggregation, run the reverse diffusion process to sample future latents, and decode them into event times and types (t̂i+1, êi+1), · · · , (t̂i+m, êi+m).",
+      "page": 5,
+      "index": 4,
+      "width": 968,
+      "height": 473
+    },
+    {
+      "url": "assets/figures/arxiv/2607.12391v1/fig-001.webp",
+      "caption": "Table 2: Analysis of different conditioning architecture of DiT for five datasets with a fixed k = 1. For unconditional training, we refer to ADiff4TPP.",
+      "page": 10,
+      "index": 1,
+      "width": 494,
+      "height": 292
+    },
+    {
+      "url": "assets/figures/arxiv/2607.12391v1/fig-002.webp",
+      "caption": "Table 6: ReDiTT Hyperparameters of reported results in Table 1. For the next-event prediction task, inference time is reported using an auto-regressive methodology.",
+      "page": 19,
+      "index": 2,
+      "width": 980,
+      "height": 460
+    },
+    {
+      "url": "assets/figures/arxiv/2607.12391v1/fig-003.webp",
+      "caption": "Table 12: Next-event prediction and long-horizon prediction results for ReDiTT, retrieval-only and diffusion-only baselines on seven benchmark datasets. RMSE is computed on the predicted inter-event time, while Accuracy (↑) is computed on the predicted event type. Long-horizon forecasting performance is measured by OTD (↓) at horizons m = 5, 10, 20, 30. We use ADiff4TPP as the unconditional diffusion-only baseline. The best results are highlighted in bold, and the second best results are underlined.",
+      "page": 24,
+      "index": 3,
+      "width": 980,
+      "height": 196
+    }
+  ]
+}

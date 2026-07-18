@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.12945v1/fig-001.webp",
+      "caption": "Figure 1: Training pipeline of RecRec. Stage 1: the backbone and Context Compressor are jointly trained, with 𝑅 learnable queries distilling the hidden states H into latent interests M0 that produce the next-item prediction. Stage 2: the backbone and Context Compressor are frozen; only the Recursive Reasoner is trained. The figure shows the first deep supervision round, where S starts from S0 andM starts fromM0. Within the round, the Reasoner executes 𝑇 reasoning steps. Each step updates S (middle, purple) via 𝑛 inner passes attending to H and the current M, then commits an update to M (bottom, orange) through a GRU gate. Stage 2 repeats this round 𝐾 times; subsequent rounds inherit detached S andM from the previous round.",
+      "page": 2,
+      "index": 1,
+      "width": 1010,
+      "height": 342
+    },
+    {
+      "url": "assets/figures/arxiv/2607.12945v1/fig-006.webp",
+      "caption": "Figure 2: Recursive Reasoner architecture and inference behavior. The block is applied to both states in alternation, not in parallel. In the S update phase, S attends to H and the current M; in the M update phase, M attends to the refined S and is committed through a GRU gate to produce the refined latent interests. Each reasoning step first performs 𝑛 inner S updates, then one M update, and the outer loop runs 𝑁 reasoning steps (𝑁 = 𝐾 ×𝑇 at training; freely adjustable at inference). The asterisk on the first LayerNorm denotes the separate Q / external-KV normalization detailed in §3.3.",
+      "page": 4,
+      "index": 6,
+      "width": 376,
+      "height": 444
+    },
+    {
+      "url": "assets/figures/arxiv/2607.12945v1/fig-002.webp",
+      "caption": "Table 3: Overall performance comparison. Best results are in bold, second best are underlined. “N@K” and “R@K” denote “NDCG@K” and “Recall@K”, respectively. ∗ denotes statistically significant improvement over the best baseline (paired 𝑡-test, 𝑝 < 0.05). †marks reasoning-enhanced methods. S = SASRec backbone, B = BERT4Rec backbone.",
+      "page": 7,
+      "index": 2,
+      "width": 1056,
+      "height": 463
+    },
+    {
+      "url": "assets/figures/arxiv/2607.12945v1/fig-005.webp",
+      "caption": "Figure 3: NDCG@20 as the inference-time 𝑁 is swept from 0 to 16 on each dataset. Squares mark 𝑁 = 𝐾 ×𝑇 = 9 used at training and stars mark the best 𝑁 in the sweep. Both backbones start from the Stage-1 baseline at 𝑁 = 0 (no reasoning) and are free to use more reasoning steps at inference than they were trained with.",
+      "page": 8,
+      "index": 5,
+      "width": 1040,
+      "height": 239
+    },
+    {
+      "url": "assets/figures/arxiv/2607.12945v1/fig-003.webp",
+      "caption": "Figure 4: Ablation study of RecRec components on NDCG@20 and Recall@20 for S-Shop and Steam (SASRec backbone). Full is the complete RecRec; w/o Reasoner skips Stage-2; Frozen S (𝑛=0) fixes the intermediate reasoning state; w/o GRU gate replaces the gated M update with overwriting; w/o IDR disables the diversity regularizer.",
+      "page": 8,
+      "index": 3,
+      "width": 494,
+      "height": 372
+    },
+    {
+      "url": "assets/figures/arxiv/2607.12945v1/fig-004.webp",
+      "caption": "Figure 5: IDR mechanism: inter-interest cosine similarity of the final M versus NDCG@20 improvement over the SASRec backbone, on each dataset’s test set. Filled circles are with IDR; hollow circles are without IDR; arrows show the effect of removing IDR. Without IDR, datasets enter the collapse zone (cosine > 0.8) and lose most of the IDR-induced gain.",
+      "page": 8,
+      "index": 4,
+      "width": 493,
+      "height": 257
+    }
+  ]
+}

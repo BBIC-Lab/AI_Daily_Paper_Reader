@@ -1,0 +1,4170 @@
+Title: Nonparametric Multi Change Point Detection for Markov Chains via Adaptive Clustering
+
+URL Source: https://arxiv.org/pdf/2607.12369v1
+
+Published Time: Wed, 15 Jul 2026 12:00:50 GMT
+
+Number of Pages: 25
+
+Markdown Content:
+# Nonparametric Multi Change Point Detection for Markov Chains via Adaptive Clustering 
+
+Imon Banerjee Jiaqi Lei Sanjay Mehrotra 
+
+Northwestern University Northwestern University Northwestern University 
+
+## Abstract 
+
+Offline change point detection tries to detect 
+
+time points of distribution change in a given data sequence; and is now routinely used in signal processing, speech processing, clima-tology etc. Despite this broad applicability across economics, computer science, and plan-etary sciences, rigorous, nonparametric tech-niques for change point detection with non-independent and identically distributed (i.i.d.) datasets has remained elusive. This paper es-tablishes such guarantees by proposing a non-parametric clustering algorithm which can ac-curately obtain the change points from a given Markovian dataset of length n. It does so by bridging together two different components of mathematical statistics; Rademacher complex-ities of Markov chains, and adaptive clustering via penalisation. Our first result uses recent ad-vances in Rademacher complexities of regen-erating Markov chains to derive a Dvoretzky Kiefer Wolfowitz (DKW) type inequality for the empirical distribution of the Markov chain. We then use this to show that an adaptive clus-tering algorithm recovers the correct change points for a Markovian sequence. We establish the tightness of our rates by showing that they essentially coincide with the best known rates for i.i.d. data. We end the paper by discussing the computational considerations of the prob-lem. 
+
+## 1 INTRODUCTION 
+
+Change point analysis—due first to the seminal work of Page (Page, 1954, 1955)—is a well-established area of study that focuses on identifying points within a data se-quence where significant structural changes occur. Yet traditional methods suffer from in two key aspects: (i) the theoretical properties for such methods are most studied when the number of changes are known (and typically a single change), and (ii) the relevant method enjoy the strongest guarantees in the i.i.d. setting, with some oracle based online techniques (Bansal and Papantoni-Kazakos, 1986; Lai, 1998; Banerjee and Veeravalli, 2012) used in the dependent-offline context through restarts; whereas most industrial applications (like process engineering, climate dynamics etc.) have dependent (and particularly, Markovian) data streams. This paper addresses both of these shortcomings; we show that without prior knowl-edge about the number of change points, minimising the penalised inter-cluster variance leads to detecting the correct number of change points for Markovian data-sets. To set the stage, we introduce some notation. Let 
+
+X1, . . . , X n be samples from a real valued Markov chain on [0 , 1] . Let τ1 < τ 2 < · · · < τ Kn ∈ { 1, . . . , n } be the true set of change points, with F1, . . . , F Kn+1 be-ing the corresponding stationary distributions. For any given L and any sequence of estimated change points 
+
+τ ′ 
+
+> 1
+
+< τ ′ 
+
+> 2
+
+< · · · < τ ′
+
+> L
+
+, the empirical counterparts of Fi is given by ˆF τi 
+
+> τi−1
+
+(u) := Pτi 
+
+> j=τi−1
+
+1[Xj ≤ u]/(τi − τi−1).Note that, Kn is allowed to increase with n. The risk function we consider is total clustering variance (defined formally in §3) 
+
+Z LX
+
+> i=1
+
+(τi − τi−1) ˆF τi 
+
+> τi−1
+
+(u)
+
+
+
+1 − ˆF τi 
+
+> τi−1
+
+(u)
+
+
+
+d ˆF n 
+
+> 0
+
+(u). (1.1) 
+
+To motivate this risk function, consider its population analogue. As n → ∞ , let τi/n ≈ θi denote the true (scaled) change points, and let ˆθi be their estimates. Sup-pose each observation Xj is independently assigned to cluster i, that is, drawn from Fi(u) over the interval 
+
+(ˆθi−1, ˆθi]. Let Xi = # {Xj : j ∈ (ˆθi−1, ˆθi]}. Observe that Xi counts the number of samples in cluster i and is distributed as 
+
+Xi ∼ Binomial( n(ˆθi − ˆθi−1), F i(u)) ,
+
+Then, 
+
+Var( Xi) = n(ˆθi − ˆθi−1)Fi(u)(1 − Fi(u)) .arXiv:2607.12369v1 [stat.ME] 14 Jul 2026 Multi Change Point Detection for Markov Chains 
+
+Summing across clusters yields 
+
+X
+
+> i
+
+Var( Xi) = X
+
+> i
+
+n(ˆθi − ˆθi−1)Fi(u)(1 − Fi(u)) ,
+
+which is precisely the population counterpart of eq. (1.1). We can understand why the cluster variance is a good metric by looking at the population counterpart. As-sume that there is only a single change point τ1 such that 
+
+τ1/n ≈ θ. Now suppose the candidate for the estimated change point is τ ′ 
+
+> 1
+
+such that τ ′
+
+> 1
+
+/n ≈ ˆθ, with the popula-tion counterpart of the estimate of F1 being F1,ˆθ and F2
+
+being F2,ˆθ as below:                             
+
+> F1,ˆθ= min ( ˆθ, θ )F1(u) + max ( ˆθ−θ, 0) F2(u)min ( θ0, θ ) + max ( ˆθ−θ, 0) and
+> F2,ˆθ= max ( θ−ˆθ, 0) F1(u) + min (1 −ˆθ, 1−θ)F2(u)max ( θ−ˆθ, 0) + min (1 −ˆθ, 1−θ).
+
+It can then be verified that for each u, the clustering variance               
+
+> ˆθF 1,ˆθ(u)
+> 
+> 1−F1,ˆθ(u)
+> 
+> + (1 −ˆθ)F2,ˆθ(u)
+> 
+> 1−F2,ˆθ(u)
+> 
+
+decreases as ˆθ → θ from both sides. The pathway towards proving the consistency of the pre-vious mechanism hinges on two main results: (i) A Dvoretzky Kiefer Wolfowitz inequality for regenerating Markov chains (Theorem 1), and (ii) the monotonicity of the risk function with respect to spurious detection (Lemma 4). The proof of the former was by using re-cent advances in computing the Rademacher complexi-ties of regenerating Markov chains, whereas the second is a consequence of a careful analysis of the risk func-tion (as defined below in eq. (3.2)). We discuss ways to further improve our results, which leads to an open ques-tion in the Poissonian concentration of Markov chains (further details in §4.1). As mentioned above, change point detection has typi-cally been seen through the lenses of hypothesis test-ing, based on Kolmogorov-Smirnoff (KS), Cramér-von Mises, or Anderson-Darling tests. But in the multi-change point detection, this reveals additional patholo-gies. A crucial assumption in existing literature attempt-ing to use KS (Padilla et al., 2021) as a baseline for change point detection is access to multiple data streams. In fact, a close inspection of Theorem 3.1 (and in partic-ular equation 3.2) Padilla et al. (2021) reveals a condition on a tuning parameter, which, in absence of multiple data streams, becomes vacuous, by having a lower bound that is increasing and an upper bound that is an universal con-stant. Finally, we extensively discuss the computational con-siderations of our method; providing two distinct mixed-integer binary formulations which all recover the correct number of solutions, as opposed to the standing baseline in the field—PELT(Killick et al., 2012)—which consis-tently overestimates the correct number of change points. We now move on to briefly mention our key contributions in this paper. • DKW inequality for regerating Markov chains. 
+
+We establish a Hoeffding-style tail inequality for the suprema of the empirical distribution (Dvoretzky Kiefer Wolfowitz inequality) in Theorem 1. Corol-lary 1 establishes that this inequality is essentially sharp; and devolves to the regular DKW inequal-ity for empirical processes for i.i.d. data (up to log 
+
+terms). Along the way we also discuss the question of a Bennett-style inequality, which to the best of our knowledge was first identified in 2000 (Samson, 2000) but has remained open since, and its implica-tions in this paper (see §4.1 for more details). • Consistent multi-change point detection for Markovian data. Exploiting Theorem 1, we estab-lish the first offline change point detection mecha-nism for regenerating Markov chains. Our rates are tight, in the sense that when the data is i.i.d., they match the known rates in literature (more details in §4.2). • Computational considerations. We illustrate the effectiveness of the proposed method by comparing it with a common baseline: the Pruned Exact Lin-ear Time (PELT) method (Killick et al., 2012). Us-ing simulated nonstationary Markov chain data, we evaluate runtime and detection accuracy of different methods.(see §5.1). 
+
+The rest of the paper is organised as follows: §2 outlines a comprehensive discussion of relevant research work. We formally introduce the model and relevant notations in §3. §4 hold our key theorems and the sketches of their proofs, while the full proofs have been deferred to ap-pendix due to lack of space. The computational consid-erations are housed in §5, and finally, in §6, we discuss the broader impacts and the future outlooks of our work. 
+
+## 2 BACKGROUND AND RELATED RESEARCH 
+
+Broadly speaking, change point detection methods can be categorised as online (detecting changes in real-time) or offline (segmenting retrospectively once all data are observed), the latter of which is the focus of this paper. Online methods prioritize early detection, while offline methods typically aim to identify multiple changes si-multaneously. Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+The earliest contribution on change point detection in the Gaussian setting are due to Page (1954, 1955). Since then, change point methodology has been applied in speech processing (Desobry et al., 2005; Harchaoui et al., 2009), finance (Bai and Perron, 1998; Frick et al., 2014), bioinformatics (Hocking et al., 2013; Maidstone et al., 2017), climatology (Maidstone, 2016; Verbesselt et al., 2010), and network traffic analysis (Lévy-Leduc and Roueff, 2009; Lung-Yut-Fong et al., 2012), among oth-ers. We point the reader to standard references like the monographs Basseville and Nikiforov (1993); Brodsky and Darkhovsky (1993); Csörgö and Horváth (1997); Chen and Gupta (2011) and the surveys Truong et al. (2020); Lavielle and Teyssière (2007); Jandhyala et al. (2013); Haynes et al. (2017) for more details on the the-ory and methods of change point analysis. Reliable detection of multiple changes is a compara-tively recent development. A key contribution is Zou et al. (2014) (see also Fryzlewicz (2014)), who pro-posed a nonparametric maximum likelihood method with BIC-based model selection, establishing consistency and optimal rates. More recently, Padilla et al. (2021); Madrid Padilla et al. (2022) analyzed univariate and mul-tivariate data using the Kolmogorov-Smirnov (KS) dis-tance, showing that wild binary segmentation achieves nearly minimax rate-optimality in multi-stream settings. However, possibly due to the absence of suitable mathe-matical tools (Bertail and Portier, 2019), the problem of offline nonparametric multiple change point detection for Markov chains remains open, with limited progress un-der parametric settings such as time-series models (Fry-zlewicz, 2017). We get the following open question. 
+
+Open Question. Is it possible to design a nonparamet-ric change point detection method for Markov chains on general state spaces with mild assumptions, and achiev-ing optimal convergence? 
+
+Remark 1. The choice of a nonparametric approach in this paper is motivated primarily due to the fact that apart from a few developments in time-series and queue-ing contexts, parametric models for Markov chains re-main largely undeveloped. 
+
+## 3 PROBLEM STATEMENT 
+
+In order to formalize our results, we introduce some no-tations. A σ-algebra E := σ(E) of a set E is said to be countably generated if there exists a countable set C such that E ⊆ σ(C). Then, we call (E, E) to be a countably generated state space. Our choice of 
+
+(E, E) = ([0 , 1] , B[0 ,1] ), with B[0 ,1] denoting the Borel 
+
+σ-algebra. In particular, ([0 , 1] , B[0 ,1] ) is countably gen-erated. We define the Orlicz norm of a random variable 
+
+X as ∥X∥ψ1 = argmin {λ > 0 : E e(X/λ ) ≤ 1}.
+
+Data generating process. Let us assume that we have data that is a sample from Markov chains, defined on a continuous state space [0 , 1] , that change at Kn (un-known) time points. The transition densities and invari-ant distributions of these Markov chains are denoted as 
+
+s1, s2, . . . , sKn+1 ; F1, F 2, . . . , F Kn+1 , respectively. We have X11 , . . . , X 1 
+
+> n1
+
+samples from the first transition den-sity, X21 , . . . , X 2 
+
+> n2
+
+samples from the second transition density, and so on. In the offline change point detec-tion problem, we do not have access to n1, n2, etc. and observe our data as a single sample X1, . . . , X n with 
+
+n = n1 + n2 + . . . , and 
+
+X1 = X11 , X 2 = X12 , . . . , X n1 = X1 
+
+> n1
+
+,Xn1+1 = X21 , . . . , X n1+n2 = X2 
+
+> n2
+
+, . . . . (3.1) With τ1 = n1, τ 2 = n1 + n2, . . . as the reparametriza-tions of the true (but unknown) change points, our prob-lem then is to estimate the τi’s from a single data-stream 
+
+X1, . . . , X n. We recall from the introduction that τ1 <τ2 < · · · < τ Kn is the ordered set of true change points, and remind the readers that Kn is allowed to increase with n. The empirical counterparts of Fi is given by 
+
+ˆF τi 
+
+> τi−1
+
+(u) := Pτi 
+
+> j=τi−1
+
+1[Xj ≤ u]/(τi − τi−1) and let 
+
+ˆFn(u) := Pni=1 1[Xi ≤ u]/n the empirical distribution of the whole sample. Let L be an integer estimating the number of change points with the candidate change points being τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+.For any u ∈ [0 , 1] and τ ′ 
+
+> i
+
+< τ ′ 
+
+> j
+
+, we define ˆF τ ′ 
+
+> j
+> τ′
+> i
+
+:= 
+
+Pτ ′ 
+
+> j
+> p=τ′
+> i
+
+1[Xp ≤ u]/(τ ′ 
+
+> j
+
+− τ ′ 
+
+> i
+
+) as the empirical distribu-tion between τ ′ 
+
+> i
+
+and τ ′ 
+
+> j
+
+. By X(1) , . . . , X (n), we denote the order statistics of X1, . . . , X n.Our choice of loss metric is the nonparametric clustering variance defined as: 
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+)=
+
+> L−1
+
+X
+
+> i=0
+
+(τ ′ 
+
+> i+1
+
+− τ ′ 
+
+> i
+
+)
+
+Z X(n)
+
+> X(1)
+
+ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+(u)(1 − ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+(u)) d ˆFn(u)
+
+(3.2) 
+
+When τ ′
+
+> 1
+
+, . . . , τ ′ 
+
+> L
+
+is not ordered, then 
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) := Rn
+
+
+
+τ ′
+
+> (1)
+
+, . . . , τ ′
+
+> (L)
+
+
+
+(3.3) where τ ′ 
+
+> (1)
+
+< τ ′ 
+
+> (2)
+
+< · · · < τ ′ 
+
+> (L)
+
+is the order statistics for 
+
+τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+.Our objective is the risk penalised by the Bayesian infor-mation criterion 
+
+BIC L := min   
+
+> τ′
+> 1<··· <τ ′
+> L
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) + Lζ n, (BIC) Multi Change Point Detection for Markov Chains 
+
+where ζn is a suitably increasing sequence given explic-itly in Theorem 2. Our choice of estimators will be 
+
+ˆKN := argmin L BIC L and 
+
+Gn(L) := (ˆ τ1, . . . ˆτL) = argmin τ ′  
+
+> 1<··· <τ ′
+> L
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+),
+
+with Gn( ˆKn) being the final estimated change points. 
+
+Remark 2. Observe that solving eq. (BIC) by enumera-tion is NP-hard. In §5, we provide a mixed integer pro-gram to minimise this objective. 
+
+Theorem 2, proves that optimising the previous objective function achieves the optimal rate of detecting change points. Before proceeding we briefly justify our choice of inte-grating measure d ˆFn(u) in eq. (3.2). Prior work (Zhang, 2002, 2006) highlights the empirical benefit of using weighted measures. In nonparametric change-point anal-ysis, d ˆFn(u) is effective when adjacent distributions dif-fer near their medians. However, as noted by Zou et al. (2014) in the i.i.d. setting, it can underperform when dif-ferences lie in the tails, since little information is cap-tured in the integral. In such cases, using 
+
+d ˆFn(u)ˆFn(u)(1 − ˆFn(u)) 
+
+offers greater detection power. This improvement, how-ever, relies on a Poissonian concentration inequality for i.i.d. processes (Wellner, 1978), with no clear analogue in the Markovian case. Deriving a Markovian counter-part to Lemma 1 of Wellner (1978) appears infeasible without new tools, so we instead adopt the unweighted integrating measure which is amenable to the DKW in-equality. We emphasize that such weighting only im-proves empirical power: Theorem 2 already guarantees the asymptotically optimal rate. We now turn to the for-mal statements of our main results. 
+
+## 4 THEORETICAL RESULTS 
+
+As stated in the introduction, our first objective will be to provide a DKW inequality for the empirical suprema of a regenerating Markov chains. To that end, we provide a brief introduction to regenerating Markov chains. 
+
+4.1 DKW Inequality for Regenerating Markov chains 
+
+We give the following definition of atomic ψ-irreducible Markov chain (we refer the readers to (Meyn and Tweedie, 2012, page 89) for the formal definition of ψ-irreducibility). 
+
+Definition 1 (Regenerative/Atomic chain) . A ψ-irreducible, aperiodic Markov chain X with a transition probability distribution P (·, ·) is regenerative (or 
+
+atomic ) if there exists a measurable set A (the atom )with Ψ( A) > 0 (for some measure Ψ) such that 
+
+P (x, ·) = P (y, ·), ∀ x, y ∈ A. 
+
+Remark 3. The set A is called the Ψ-atom. In chains with finitely many states any single state may serve as an atom. 
+
+Intuitively, ψ-irredicibility extends the classical notion of irreducibility for finite state Markov chains to infinite state spaces, whereas Ψ-atoms are sets from which the transitions behave homogeneously. That is, the probabil-ity of transition to any set is equal for any two starting points inside an atom. For finite state Markov chains, the atoms are the individual states (i.e. singletons). In-formally, a regenerating Markov chain is a ψ-irreducible Markov chain which has at least one Ψ-atom that is re-peatedly visited (with the inter-arrival times termed as the regeneration time). Conditions on the moment gener-ating function of the regeneration time characterises the ergodic properties of the Markov chain as can be seen in Assumption 1 below. We now formalise the previous intuition. Extend the sample space by introducing a sequence (Ym)m∈N of independent Bernoulli random variables with success probability δ. Our construction relies on a mixture rep-resentation of the transition kernel on a set S:
+
+P (x, S ) = δ Ψ( S) + (1 − δ) P (x, S ) − δ Ψ( S)1 − δ ,
+
+where the first term is independent of the starting point. The validity of this construction is ensured by the exis-tence of the atom and we refer to (Meyn and Tweedie, 2012, Chapter 4) for more details. This independence is key since it guarantees regeneration when that com-ponent is selected. In other words, each time the chain visits S, we randomly reassign the transition probability 
+
+P as follows: • If Xm ∈ S and Ym = 1 (which occurs with proba-bility δ ∈ (0 , 1) ), then the next state Xm+1 is gen-erated according to the measure Ψ.• If Xm ∈ S and Ym = 0 (with probability 1 − δ), then Xm+1 is drawn from the probability measure 
+
+(1 − δ)−1
+
+P (Xm, ·) − δ Ψ( ·)
+
+
+
+.
+
+The resulting bivariate process 
+
+Zm = ( Xm, Y m),Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+known as the split chain , takes values in E × { 0, 1} and is itself atomic, with the atom defined as 
+
+A = S × { 1}.
+
+We then define the regeneration times recursively by set-ting 
+
+ρA(1) = inf {m ≥ 1 : Zm ∈ A},
+
+and for j ≥ 2,
+
+ρA(j) = inf {m > ρ A(j − 1) : Zm ∈ A}.
+
+It is well known that the split chain Z inherits aperi-odicity and ψ-irreducibility from the original chain X.Furthermore, by the recurrence property, the regenera-tion times have finite expectation; that is, one has (Azaïs et al., 2016, Lemma A1) 
+
+sup 
+
+> z∈A
+
+Ez [ρA(j)] < ∞ and Eν [ρA(j)] < ∞
+
+for any initial measure ν on A and any integer j.Regeneration theory (Meyn and Tweedie, 2012) shows that, given the sequence (ρA(j)) j≥1, the sample path can be divided into blocks (or cycles) defined by 
+
+Bj = ( XρA(j)+1 , . . . , X ρA(j+1) ), j ≥ 2,
+
+corresponding to successive visits to the regeneration set 
+
+A. The strong Markov property then ensures that both the regeneration times and the blocks {Bj }j≥1 form in-dependent and identically distributed (i.i.d.) sequences (Meyn and Tweedie, 2012, Chapter 13). Moreover, with 
+
+EA to be the expectation when the Markov chain is ini-tialised from the atom A, the lengths of these blocks are i.i.d. with mean EA[ρA(2)] . Furthermore, B1 is indepen-dent of B2, B 3, . . . .
+
+Assumption 1. There exists a constant λ > 0 for which 
+
+EA[exp( λρ A(2))] < ∞. (4.1) 
+
+Moreover, for this choice of λ, we assume that 
+
+κλ := 2 EA[exp( λρ A(2))] 
+
+λ > 12 . (4.2) Assumption 1 ensures that the regeneration time has an exponential moment, a property equivalent to geometric ergodicity, the uniform Doeblin condition, or the Foster-Lyapunov drift criterion (see Theorem 16.0.2 in Meyn and Tweedie (2012)). Under this assumption, classical convergence results such as the LIL and CLT remain valid (Chapter 17). Next, we define 
+
+ρo := min {∥ ρA(1) ∥ψ1 , ∥ρA(2) ∥ψ1 }. (4.3) Observe that under Assumption 1, the sets         
+
+> {λ > 0 : E
+> h
+> e(ρA(1) /λ )i
+> ≤1}and {λ > 0 : E
+> h
+> e(ρA(2) /λ )i
+> ≤1}
+
+are non-empty. It follows that ρo < ∞.We now proceed to formally state the main result of this section. Let S ⊂ R and define FS := {1[· < t ], t ∈S} be the set of all half-interval functions on S. The following theorem is proved in §A.7. 
+
+Theorem 1. Let Y1, . . . , Y n be a sequence of random variables from a Markov chain satisfying Assumption 1 with stationary distribution π. Let Y be a random vari-able with distribution π. Define 
+
+Z := sup  
+
+> f∈F [0 ,1]
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+f (Yi) − Eπ [f (Y )] .
+
+Then, for all t > 0
+
+P(Z > t ) ≤ κ(ρ, λ ) exp 
+
+
+
+− κ(ρ, λ )nt 2
+
+log n
+
+
+
+(4.4) 
+
+where, constant κ(ρ, λ ) depend only on EA[ρ2
+
+> A
+
+(2)] ,
+
+Ev [ρA(2)] , ρo, and λ (as defined in Eq. (4.1) , (4.2) , and 
+
+(4.3) ). 
+
+Remark 4. The extra log n term appears commonly when transitioning from i.i.d random variables to Markov chains (Samson, 2000). Observing that the re-generation time ρ of any i.i.d. process is (deterministi-cally) 1, the following corollary shows that our previous result is tight up to log terms. 
+
+Corollary 1. Let Y1, . . . , Y n be a sequence of i.i.d. ran-dom variables from distribution π. Let Y be a random variable with distribution π. Then, with Z defined as in Theorem 1, and an universal constant C;
+
+P(Z > t ) ≤ C exp 
+
+
+
+− Cnt 2
+
+log n
+
+
+
+(4.5) 
+
+On Poissonian Tail Concentration: Observe that Theorem 1 provides a Höeffding (sub-Gaussian) concen-tration inequality (ignoring constants) 
+
+P(Zn > t ) ≲ e−nt 2/ log n
+
+for the suprema of the empirical distribution, which is sharp when t is large. However, for small values of t,a sharper bound can be obtained from so called Bennett (Poissonian) concentration inequalities 
+
+P(Zn > t ) ≲ e−nt log(1+ t).
+
+Owing to the fact that such inequalities for the empirical suprema of i.i.d. processes were known due to Michael Multi Change Point Detection for Markov Chains 
+
+Talagrand, (Talagrand, 1996), our initial objective in this paper was to derive a Bennett inequality for regenerating Markov chains and then use it to derive the consistency of the weighted risk function described in §3. How-ever, upon further investigation, multiple papers (Sam-son, 2000; Adamczak, 2008) point out that such a re-sult requires novel approaches towards empirical process theory, which makes it beyond the scope of the current work. The particular pathology is the unavailability of the Hoffmann-Jørgensen inequality (more specifically, a counterpart to Theorem 6.21 in Ledoux and Talagrand) for the Bennett-Orlicz norm (Wellner, 2017). However, we point out that availability of any such result will be immediately applicable; and proving the consistency of the weighted risk function would be a straightforward ex-tension of the proof in §A.1. 
+
+Remark 5. The previous challenge is not purely theo-retical, since it clearly leads to a pathway of improving the risk function for change point detection of Markov chains. 
+
+4.2 Change Point Detection 
+
+Now we proceed to state the main result of this section. To that end, we make some assumptions, beginning with the regeneration times of the underlying Markov chains. Recall from eq. (3.1) that Xij was used to denote the j-th sample of the i-th Markov chain, with Kn + 1 many Markov chains being available in total. 
+
+Assumption 2. All of the Markov chains Xij satisfy As-sumption 1 with constants κi for i ∈ { 1, . . . , K n + 1 }
+
+Remark 6. Observe it is not sufficient to simply impose Assumption 1 the Markov chain X1, . . . , X n, since one of Xij ’s may be transient while the whole chain stays re-generating. 
+
+We next make the following standard assumption (see Zou et al. (2014, A1-A3)) of sufficient gap between any two consecutive changes: 
+
+Assumption 3. Let βn := min 1≤k≤Kn+1 (τk − τk−1).We assume that 
+
+βnn→∞ 
+
+−−−−→ ∞ and ˆFn(u) n→∞ 
+
+−−−−→ F (u)
+
+almost everywhere uniformly in u, for some distribution 
+
+F in the convex hull generated by {F1, . . . , F Kn+1 }.
+
+Finally, for all r ∈ { 1, . . . , K n + 1 } define ηr (u) := (Fr−1(u) − Fr (u)) 2. Our next assumption is on the min-imum amount of change between any two Fi’s. It can be thought of as the minimum signal strength indicating change. 
+
+Assumption 4. Fk are continuous and distinct for all k
+
+and define 
+
+ηmin := min 
+
+> 1≤r≤Kn+1
+
+Z 10
+
+ηr (u)dF (u).
+
+Note that, ηmin > 0.
+
+Remark 7. We assume that we know the true value of 
+
+ηmin . In practice, we can replace it by a large enough constant. By a careful inspection of the proof of Theorem 2 (and in particular eq. (A.14) ) one can see that any con-stant larger than ηmin is actually sufficient for detecting the correct number of change points. 
+
+To formalise our main result we introduce some notation. Let L > 0 be an integer and define τ ′
+
+> 1
+
+, . . . , τ ′ 
+
+> Kn
+
+be a sequence of time points. We define the set CKn (δn) as the set of all (τ ′
+
+> 1
+
+, . . . , τ ′ 
+
+> Kn
+
+) which are at most δn away from the true change point τ1, . . . , τ Kn . Formally, 
+
+CKn (δn) := {(τ ′
+
+> 1
+
+, . . . , τ ′ 
+
+> Kn
+
+) : 1 < τ ′ 
+
+> 1
+
+< · · · < τ ′ 
+
+> Kn
+
+≤ n, 
+
+|τ ′ 
+
+> s
+
+− τs| ≤ δn ∀ 1 ≤ s ≤ Kn}
+
+for some positive sequence δn. Next, for a fixed L, define 
+
+Gn(L) as the set of time points which minimizes BIC L.Formally, 
+
+Gn(L) =(ˆ τ1, . . . , ˆτL) := argmin τ ′  
+
+> 1<··· <τ ′
+> L
+
+BIC L
+
+= − argmax τ ′  
+
+> 1<··· <τ ′
+> L
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) + Lζ n.
+
+Then, we have the following theorem, proved in §A.1. 
+
+Theorem 2. Under Assumptions 1, 3, and 4, and if 
+
+K3
+
+> n
+
+(log Kn)2(log δn)2/δ n = O(1) and δn/β n → 0,then with any sequence ζN → ∞ , we have 
+
+P (Gn(Kn) ∈ C Kn (δn)) n→∞ 
+
+−−−−→ 1.
+
+Furthermore, let Kn ≤ ¯K for some known ¯K. Then, with ζn = κn ¯K3(log ¯K)2(log βn)2/β n,
+
+ˆKn := arg min  
+
+> L
+
+Gn(L)
+
+satisfies P
+
+ ˆKn = Kn
+
+
+
+→ 1, where κn is a constant that depends only on κi, i ∈ { 1, . . . , K n + 1 } .
+
+Theorem 2 provides the asymptotic consistency of ˆKn,which is the estimated number of change points. It im-plies that the localization accuracy δn may be taken as any sequence satisfying 
+
+K3
+
+> n
+
+(log Kn)2(log δn)2/δ n = O(1) , δn/β n → 0.
+
+In particular, if Kn = O(1) , then δn = O(1) is ad-missible, yielding constant-error localization—the best achievable rate in nonparametric change-point detection. When Kn grows, the attainable δn remains of order βnImon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+up to polylogarithmic factors, matching known optimal rates in the i.i.d. literature (Zou et al., 2014). Now consider the independent case. Here the regener-ation time is 1, with the atom equal to the entire state space. Hence any i.i.d. sequence satisfies Assumption 2 with deterministic regeneration time 1 (ρA(j) = 1 for all 
+
+j). In particular, κn in the Theorem 2 becomes an uni-versal constant, and we recover the following corollary. 
+
+Corollary 2. Let Xi be independent. Then, under As-sumptions 1, 3, and 4 if K3
+
+> n
+
+(log Kn)2(log δn)2/δ n =
+
+O(1) and δn/β n → 0, then with any sequence ζN → ∞ ,we have 
+
+P (Gn(Kn) ∈ C Kn (δn)) n→∞ 
+
+−−−−→ 1.
+
+Furthermore, let Kn ≤ ¯K for some known ¯K. Then, with ζn = ¯K3(log ¯K)2(log βn)2/β n,
+
+ˆKn := argmin L Gn(L)
+
+satisfies P
+
+ ˆKn = Kn
+
+
+
+→ 1.
+
+Before presenting a sketch of the proof of the theorem, we discuss some aspects of the previous result. 
+
+Tightness: A direct comparison of Corollary 2 with Zou et al. (2014, Theorem 1) reveals that the rate of βn
+
+do not suffer when we move from i.i.d. to Markovian data, but rather adjusts for the Markovianity in the ob-vious way, through a constant which depends upon the regeneration time, and is an universal constant for i.i.d. data. 
+
+Choice of penalty: We further remark that βn is typ-ically unavailable to the practitioner, and setting the penalty ζn = (log n)2+ c for a small constant c ≥ 0
+
+seems to work well in practice (Zou et al., 2014). We use c = 0 in §5. We now provide a sketch of proof of Theorem 2. 
+
+Sketch of Proof of Theorem 2 To guide the readers through the broad steps of the proof, we provide a sketch of the proof. For the full details, see §A.1. 1. Use Theorem 1 to develop a deviation bound for the clustering variance risk (Lemma 3). 2. Use Lemma 3 to bound the rate of growth of the risk 
+
+Rn of detecting superfluous change points (Lem-mas 4 and 5). 3. Use Lemma 3 to bound the rate of growth of the clustering variance of detecting superfluous change points (Lemma 6) 4. Use Lemmas 4, 5, and 6 to bound the probability of detecting less than the correct number of change points (Lemma 7). 5. Using contradiction, bound the probability of de-tecting more than the correct number of change points (Lemma 8). Theorem 2 follows by combin-ing Lemmas 7 and 8. 
+
+## 5 COMPUTATION 
+
+We recast the risk in (3.2) as a nonlinear binary opti-mization problem. Let zi,l ∈ { 0, 1} indicate whether time point i is assigned to segment l ∈ { 1, . . . , L + 1 }.The segmentation constraints enforce single assignment, contiguity, and a minimum segment length. The re-sulting formulation both encodes (3.2) exactly (for fixed 
+
+L) and readily accommodates additional structural con-straints that are awkward for classical dynamic program-ming. We therefore write the following proposition, whose proof can be found in §A.10. 
+
+Proposition 1. Let ai,u := 1[Xi ≤ X(u)] and 
+
+Zi,l := 
+
+n
+
+zi,l ∈ { 0, 1}
+
+> L+1
+
+X
+
+> l=1
+
+zi,l = 1 ,
+
+> n
+
+X
+
+> i=1
+
+zi,l ≥ 3,zi,l ≤ X
+
+> l′≥l
+
+zi+1 ,l ′
+
+o
+
+.
+
+Consider 
+
+min 
+
+> L+1
+
+X
+
+> l=1
+> n
+
+X
+
+> u=1
+
+ nX
+
+> i=1
+
+ai,u zi,l 
+
+  
+
+1 −
+
+Pni=1 ai,u zi,l 
+
+Pni=1 zi,l 
+
+
+
+s.t. zi,l ∈ Z i,l ∀i, l. 
+
+(5.1) 
+
+Then z⋆ is a solution of (5.1) if and only if the induced change points τ ′ 
+
+> l
+
+− τ ′ 
+
+> l−1
+
+= Pni=1 z⋆i,l solve (3.2) ; more-over, the objective values of (5.1) and (3.2) coincide. 
+
+To reduce runtime, we use the following bilinear refor-mulation, formalized in Proposition 2, which preserves optimality (see §A.11 for the proof) while avoiding divi-sion inside the objective, and can be solved with off-the-shelf solvers like Gurobi. A detailed empirical compari-son of runtimes is provided in §5.1. Multi Change Point Detection for Markov Chains 
+
+Proposition 2. Consider the bilinear reformulation: 
+
+min 
+
+> L+1
+
+X
+
+> l=1
+> n
+
+X
+
+> u=1
+
+su,l 
+
+s.t. 
+
+> n
+
+X
+
+> i=1
+
+klzi,l = 1 ∀l, fu,l =
+
+> n
+
+X
+
+> i=1
+
+ai,u klzi,l , and du,l + fu,l = 1 ∀u, l, su,l =
+
+> n
+
+X
+
+> i=1
+
+ai,u du,l zi,l ∀u, ∀l; zi,l ∈ Z i,l ∀i, ∀l, kl, f u,l , d u,l , s u,l ≥ 0 ∀u, ∀l, 
+
+(5.2) 
+
+then z∗ is a solution of (5.1) if and only if 
+
+(z∗, k ∗, f ∗, d ∗, s ∗) is a solution of (5.2) and the objec-tives are the same. 
+
+5.1 Simulation 
+
+We compare (5.1), its bilinear reformulation (5.2), and PELT on a nonstationary Markov chain. We generate 
+
+n = 250 time points partitioned into 4 segments of lengths 0.1n, 0.2n, 0.3n, 0.4n (with the corresponding time points τi being 25,75,150 respectively). On seg-ment l, arrivals and departures follow the arrival rate λl
+
+and departure rate μl are drawn from uniform distribu-tions: 
+
+λl ∼ Uniform (0 , α λ), μl ∼ Uniform (0 , α μ),
+
+where αλ, α μ > 0 are scaling factors controlling vari-ability. At each time point i, let l(i) denote the segment containing point i. The system evolves according to 
+
+Ai ∼ Poisson (λl(i)), Di ∼ Binomial (Ni−1, μ l(i)),
+
+The population is updated recursively by adding ar-rivals and subtracting departures. Be specific, Ni =max {0, N i−1 + Ai − Di}. All PELT results are ob-tained using the changepoint.np package, which imple-ments the nonparametric PELT method of Zou et al. (2014). Experiments were run using the default MBIC penalty, which provided the strongest empirical perfor-mance. Note that PELT guarantees pruning efficiency (Killick et al. (2012), Thm. 3.1) but not correctness; in contrast, our MIP formulations exactly minimize the clustering-variance risk. Figure 1 shows that our method recovers the true change points exactly, ˆτ = [25 , 75 , 150] , while PELT over-segments ( ˆτ = [25 , 37 , 46 , 72 , 151 , 161 , 176 , 204] ). Across n, (5.2) matches the accuracy of (5.1) at substan-tially lower cost, whereas PELT is fastest but consistently overestimates L (Table 1). 
+
+Figure 1: Illustration of the simulated nonstationary Markov chain data. Blue dots represent the population size at each time point. Red lines (our proposed method) mark ˆτ = [25 , 75 , 150] , which match the true change points. Green lines (the PELT method) mark ˆτ =[25 , 37 , 46 , 72 , 151 , 161 , 176 , 204] , which overestimate the to-tal number of change points. 
+
+We now compare runtime and accuracy. Across all 
+
+n, both (5.1) and (5.2) exactly recover the true change points, with the bilinear reformulation achieving a sub-stantial speedup over (5.1). PELT is the fastest but con-sistently over-segments. Thus, (5.2) offers the best trade-off, retaining accuracy while reducing runtime, whereas PELT sacrifices reliability for speed (Table 1). Table 1: Runtime and change points of the optimization frameworks and the PELT method with different numbers of time points n. (5.1)-Time (seconds) is the runtime for (5.1), which is slowest, while (5.2)-Time (seconds) is the runtime for (5.2), which is much faster; both recover the true change points. PELT-Time (seconds) is the runtime and PELT-L is the number of change points estimated by the PELT method. The PELT method is the fastest but consistently estimates more than the correct number of change points. n (5.1)-Time (5.2)-Time PELT-Time PELT-L 50 5.49 0.69 0.03 7100 9.98 1.42 0.07 8250 30.42 9.43 0.35 9400 180.38 28.71 1.14 22 500 302.76 92.59 1.53 26 
+
+## 6 CONCLUSION 
+
+Clustering for Markov chains has some recent devel-opments (Lee et al., 2025), and we present a nonpara-metric framework for multiple change-point detection in Markov chains that couples a DKW-type inequality for regenerating chains with an adaptive clustering criterion. The theory yields consistent estimation of both the num-ber and locations of changes with rates that match the i.i.d. benchmark up to logarithmic factors, indicating that dependence need not fundamentally hinder detectability. On the computational side, we provide exact optimiza-tion formulations that achieve high accuracy; the bilin-Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+ear model (5.2) offers a practical speed–accuracy trade-off and outperforms a PELT baseline that tends to over-segment in our experiments. Two directions appear especially promising. First, Ben-nett–type (Poissonian) concentration for Markov chains would directly enable weighted risks with greater power in tail-difference regimes (see §4.1). Second, enriching the optimization with robustness and domain constraints (e.g., minimum dwell times, forbidden transitions, or outlier resistance) would broaden applicability without sacrificing exactness. 
+
+Limitations and future outlook. Online methods such as CUSUM require knowledge of the pre- and post-change distributions and use their KL-divergence to set thresholds. Offline method addresses the complementary regime where these distributions are unknown, trading immediate detection for identifiability. As we note ear-lier, online methods with unknown pre- and post-change distributions being an evolving field. We also remark that the multivariate extension remains open, since meaningful generalizations likely require kernel-based empirical processes or alternative notions of dependence, as the univariate DKW framework does not transfer directly. Developing such tools is an inter-esting direction, and we plan to investigate it in a future work. 
+
+Acknowledgements 
+
+The first author acknowledges the IEMS Alumni Fel-lowship at Northwestern University for financial sup-port during the conduct of this research. The second and last authors acknowledge support from NIAID grant R01AI168144. The authors also thank the four anony-mous reviewers for their useful comments and sugges-tions, which significantly improved the readability of the paper. 
+
+Bibliography 
+
+Adamczak, R. (2008). A tail inequality for suprema of unbounded empirical processes with applications to Markov chains. Electronic Journal of Probability ,13(none):1000–1034. Publisher: Institute of Mathe-matical Statistics and Bernoulli Society. Azaïs, R., Delyon, B., and Portier, F. (2016). Integral estimation based on markovian design. arXiv:1609.01165. Bai, J. and Perron, P. (1998). Estimating and testing lin-ear models with multiple structural changes. Econo-metrica , 66(1):47–78. Banerjee, T. and Veeravalli, V. V. (2012). Data-efficient quickest change detection with on–off observation control. Sequential Analysis , 31(1):40–77. Bansal, R. and Papantoni-Kazakos, P. (1986). An algo-rithm for detecting a change in a stochastic process. 
+
+IEEE Transactions on information Theory , 32(2):227– 235. Basseville, M. and Nikiforov, I. (1993). Detection of abrupt changes: theory and application , volume 104. Prentice Hall Englewood Cliffs. Bertail, P. and Portier, F. (2019). Rademacher complexity for Markov chains: Applications to kernel smoothing and Metropolis–Hastings. Bernoulli , 25(4B):3912– 3938. Borrero, J. S., Gillen, C., and Prokopyev, O. A. (2016). A simple technique to improve linearized reformulations of fractional (hyperbolic) 0–1 programming problems. 
+
+Operations Research Letters , 44(4):479–486. Brodsky, B. E. and Darkhovsky, B. S. (1993). Nonpara-metric methods in change point problems . Springer Netherlands. Chen, J. and Gupta, A. K. (2011). Parametric statistical change point analysis: With applications to genetics, medicine, and finance . Springer Science & Business Media. Csörgö, M. and Horváth, L. (1997). Limit theorems in change-point analysis . Chichester, New York. Desobry, F., Davy, M., and Doncarli, C. (2005). An on-line kernel change detection algorithm. IEEE Trans-actions on Signal Processing , 53(8):2961–2974. Frick, K., Munk, A., and Sieling, H. (2014). Multi-scale change point inference. Journal of the Royal Statistical Society. Series B: Statistical Methodology ,76(3):495–580. Fryzlewicz, P. (2014). Wild binary segmentation for multiple change-point detection. Annals of Statistics ,42(6):2243–2281. Multi Change Point Detection for Markov Chains 
+
+Fryzlewicz, P. (2017). breakfast: multiple change-point detection and segmentation. Harchaoui, Z., Vallet, F., Lung-Yut-Fong, A., and Cappé, O. (2009). A regularized kernel-based approach to un-supervised audio segmentation. In Proceedings of the IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) , pages 1665–1668, Taipei, Taiwan. Haynes, K., Eckley, I. A., and Fearnhead, P. (2017). Computationally efficient changepoint detection for a range of penalties. Journal of Computational and Graphical Statistics , 26(1):134–143. Hocking, T., Schleiermacher, G., Janoueix-Lerosey, I., Boeva, V., Cappo, J., Delattre, O., Bach, F., and Vert, J.-P. (2013). Learning smoothing models of copy num-ber profiles using breakpoint annotations. BMC Bioin-formatics , 14(1):164. Jandhyala, V., Fotopoulos, S., Macneill, I., and Liu, P. (2013). Inference for single and multiple change-points in time series. Journal of Time Series Analysis ,34(4):423–446. Killick, R., Fearnhead, P., and Eckley, I. A. (2012). Op-timal detection of changepoints with a linear compu-tational cost. Journal of the American Statistical As-sociation , 107(500):1590–1598. Lai, T. L. (1998). Information bounds and quick detection of parameter changes in stochastic sys-tems. IEEE Transactions on Information theory ,44(7):2917–2929. Lavielle, M. and Teyssière, G. (2007). Adaptive detec-tion of multiple change-points in asset price volatil-ity. In Long-Memory in Economics , pages 129–156. Springer Verlag, Berlin, Germany. Ledoux, M. and Talagrand, M. (1991). Probability in Banach Spaces . Springer, Berlin, Heidelberg. Lee, J., Jedra, Y., Proutière, A., and Yun, S.-Y. (2025). Near-optimal clustering in mixture of markov chains. 
+
+arXiv preprint arXiv:2506.01324 .Lévy-Leduc, C. and Roueff, F. (2009). Detection and localization of change-points in high-dimensional net-work traffic data. The Annals of Applied Statistics ,3(2):637–662. Lung-Yut-Fong, A., Lévy-Leduc, C., and Cappé, O. (2012). Distributed detection/localization of change-points in high-dimensional network traffic data. Statis-tics and Computing , 22(2):485–496. Madrid Padilla, O. H., Yu, Y., Wang, D., and Rinaldo, A. (2022). Optimal Nonparametric Multivariate Change Point Detection and Localization. IEEE Transactions on Information Theory , 68(3):1922–1944. Maidstone, R. (2016). Efficient analysis of complex changepoint problems . Lancaster University (United Kingdom). Maidstone, R., Hocking, T., Rigaill, G., and Fearnhead, P. (2017). On optimal multiple changepoint algorithms for large data. Statistics and Computing , 27(2):519– 533. Meyn, S. P. and Tweedie, R. L. (2012). Markov chains and stochastic stability . Springer Science & Business Media. Padilla, O. H. M., Yu, Y., Wang, D., and Rinaldo, A. (2021). Optimal nonparametric change point anal-ysis. Electronic Journal of Statistics , 15(1):1154– 1201. Publisher: Institute of Mathematical Statistics and Bernoulli Society. Page, E. S. (1954). Continuous inspection schemes. 
+
+Biometrika , 41:100–105. Page, E. S. (1955). A test for a change in a parameter occurring at an unknown point. Biometrika , 42:523– 527. Samson, P.-M. (2000). Concentration of measure in-equalities for Markov chains and $\Phi$-mixing pro-cesses. The Annals of Probability , 28(1):416–461. Publisher: Institute of Mathematical Statistics. Sen, B. (2018). A Gentle Introduction to Empirical Process Theory and Applications. Lecture Notes, Columbia University , 11. Talagrand, M. (1996). New concentration inequali-ties in product spaces. Inventiones Mathematicae ,126(3):505–563. Truong, C., Oudre, L., and Vayatis, N. (2020). Selective review of offline change point detection methods. Sig-nal Processing , 167:107299. arXiv:1801.00718 [cs]. Van der Vaart, A. W. (2000). Asymptotic statistics , vol-ume 3. Cambridge university press. Verbesselt, J., Hyndman, R., Newnham, G., and Cul-venor, D. (2010). Detecting trend and seasonal changes in satellite images time series. Remote Sens-ing of Environment , (114):106–115. Wellner, J. A. (1978). Limit theorems for the ratio of the empirical distribution function to the true distribu-tion function. Zeitschrift für Wahrscheinlichkeitstheo-rie und Verwandte Gebiete , 45(1):73–88. Wellner, J. A. (2017). The Bennett-Orlicz Norm. 
+
+Sankhya A , 79(2):355–383. Zhang, J. (2002). Powerful Goodness-of-Fit Tests Based on the Likelihood Ratio. Journal of the Royal Sta-tistical Society. Series B (Statistical Methodology) ,64(2):281–294. Publisher: [Royal Statistical Society, Wiley]. Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+Zhang, J. (2006). Powerful Two-Sample Tests Based on the Likelihood Ratio. Technometrics ,48(1):95–103. Publisher: ASA Website _eprint: https://doi.org/10.1198/004017005000000328. Zou, C., Yin, G., Feng, L., and Wang, Z. (2014). Non-parametric maximum likelihood approach to multi-ple change-point problems. The Annals of Statistics ,42(3):970–1002. Supplementary Materials for “Nonparametric Multi Change Point Detection for Markov Chains via Adaptive Clustering” 
+
+## A Proofs 
+
+A.1 Proof of Theorem 2 
+
+This section is dedicated to the proof of Theorem 2. As detailed in the sketch of the proof, Theorem 2 will follow as a consequence of a series of 6 lemmas (Lemma 3-8). In this section, we only prove Lemmas 7 and 8, while the proofs of Lemmas 3-5 are not directly related and thus deferred till later in this section. Before presenting our results, we introduce the O(·, ·, ·) notation for convenience. 
+
+Definition 2. A sequence of random variables Zn is said to be Op(an, b n, κ †
+
+> n
+
+) if 
+
+lim  
+
+> n→∞
+
+bnP(|Zn| > κ †
+
+> n
+
+an) ≤ ε (A.1) 
+
+where an, b n are sequence of positive real numbers, and κ† 
+
+> n
+
+> 0 is assumed to be independent of n.
+
+We now state Lemmas 3-6 starting with Lemma 3 provides a deviation bound for the empirical distribution in a neighborhood of the change point. It is proved in §A.4. 
+
+Lemma 3. Let l < k be two time points and let nkl := l − k, and 
+
+ξm(k, l ) := nkl 
+
+Z X(n)
+
+> X(1)
+
+ ˆF lk(u) − Fm(u)
+
+2
+
+d ˆFn(u), (A.2) 
+
+and assume that the conditions in Assumptions 3, and 1 hold. Then, with δn as specified in the hypothesis of Theorem 2, κ⋆, κ are as in the statement of Theorem 1, κ† 
+
+> n
+
+be a large enough positive constant such that 
+
+κi(ρ, λ ) exp( −κi(ρ, λ )κ† 
+
+> n
+
+log x) < ε/x , for all i ∈ 1, . . . , K n + 1 , and ε is as in eq. (A.1) , we have 
+
+sup 
+
+> τm−1≤k<l ≤τm
+
+ξm(k, l ) = Op(un, K n, κ †
+
+> n
+
+), where un := 8log( Knδ2
+
+> n
+
+) log δn. (A.3) Before stating the next result, we introduce Sn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) as the sum of the between time points (τ1, . . . , τ L). For-mally, 
+
+Sn(τ ′
+
+> 1
+
+, τ ′
+
+> 2
+
+, . . . , τ ′
+
+> L
+
+) := ( τ ′ 
+
+> i+1
+
+− τ ′ 
+
+> i
+
+)
+
+> L−1
+
+X
+
+> i=1
+
+Z X(n)
+
+> X(1)
+
+ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+(u)
+
+
+
+1 − ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+(u)
+
+
+
+d ˆFn(u) (A.4) Next, we require another Lemma which establishes the monotonicity property of the risk and is proved in §A.5. 
+
+Lemma 4. Under Assumptions 3 and 1, and for any integer s ∈ { 1, . . . , K n} and for all L ≥ 1, such that τs < τ ′ 
+
+> 1
+
+<τ ′ 
+
+> 2
+
+< · · · < τ ′ 
+
+> L
+
+< τ s+1 , we have 
+
+0 ≥ Rn(τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ s+1 ) − Rn(τs, τ s+1 ) = Op(u(L) 
+
+> n
+
+, K n, κ †
+
+> n
+
+)
+
+where u(L) 
+
+> n
+
+= 8 κ†
+
+> n
+
+Llog( LK nδ2
+
+> n
+
+) log δn, and κ† 
+
+> n
+
+is as in Lemma 3. 
+
+The following lemma (proved in §A.6) is a generalisation of the previous lemma. 
+
+Lemma 5. Under Assumptions 3 and 1, let ˜τ1 < · · · < ˜τs be a collection of s time points and let τ ′ 
+
+> 1
+
+< · · · < τ ′ 
+
+> p
+
+be a collection of p time points. Then, 
+
+Rn(˜ τ1, . . . , ˜τs) ≥ Rn(˜ τ1, . . . , ˜τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> p
+
+)
+
+where the risk for an unordered sequence of time points τ1, . . . , τ s, τ ′
+
+> 1
+
+, . . . , τ ′ 
+
+> p
+
+is defined as in eq. (3.3) .Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+Since 
+
+Sn(τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ s+1 ) − Sn(τs, τ s+1 ) = Rn(τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ s+1 ) − Rn(τs, τ s+1 )
+
+the following Lemma can be proved as a corollary to Lemma 4. 
+
+Lemma 6. Under Assumptions 3 and 1, and for any integer s ∈ { 1, . . . , K n} and for all L ≥ 1, such that τs < τ ′ 
+
+> 1
+
+<τ ′ 
+
+> 2
+
+< · · · < τ ′ 
+
+> L
+
+< τ s+1 , we have 
+
+0 ≥ Sn(τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ s+1 ) − Sn(τs, τ s+1 ) = Op(u(L) 
+
+> n
+
+, K n, κ †
+
+> n
+
+)
+
+where u(L) 
+
+> n
+
+= 8 κ†
+
+> n
+
+Llog( LK nδ2
+
+> n
+
+) log δn, and κ† 
+
+> n
+
+is as in Lemma 3. 
+
+We move on to stating our next result which proves that under Assumptions 3, 4, and 1, we detect at least the correct number of change points. 
+
+Lemma 7. Under Assumptions 3, 4, and 1, and the hypothesis of Theorem 2, we have P( ˆKn ≥ Kn) → 1.
+
+A.2 Proof of Lemma 7 
+
+Proof. The proof of this lemma is divided into two steps. We will first prove a deviation bound of BIC Kn from BIC L.Then the rest of the proof follows using an union bound on the events of incurring an error for every 1 < L < K n.We begin with the first step. 
+
+Step I: We will first prove the following statement via induction: For any L < K n
+
+BIC L − BIC Kn ≥ 3( Kn − L)ηmin − (Kn − L)( Kn + 5) Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) − (Kn − L)ζn. (A.5) For r = 1 , . . . , K n let Br (L, δ n) be the set of all estimated change points for which at least one τr is δn away from every estimate. Formally, we define 
+
+Br (L, δ n) := {(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) : τ ′ 
+
+> 1
+
+< · · · < τ ′ 
+
+> L
+
+and |τ ′ 
+
+> s
+
+− τr | > δ n∀ 1 ≤ s ≤ L} . (A.6) For L = Kn − 1, by pigeon-hole principle, there exists at least one τr such that |τ ′ 
+
+> i
+
+− τr | is large for all i. Therefore, the estimated change points (ˆ τ1, . . . , ˆτL) ∈ B r (L, δ n) for some r.Let (τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) be any element of Br (L, δ n). Let τKn+1 = n and for i = 0, . . . , r − 1, r + 2 , . . . , K n let 
+
+{τ ′
+
+> i, 1
+
+, . . . , τ ′ 
+
+> i, max
+
+} be the largest ordered subset of {τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+} with all values between τi and τi+1 . If the set 
+
+{τ ′
+
+> i, 1
+
+, . . . , τ ′ 
+
+> i, max
+
+} is empty, we trivially define τ ′ 
+
+> i, 1
+
+as τi+1 and τ ′ 
+
+> i, max
+
+as τi−1. We define 
+
+Ti := Sn(τi, τ ′
+
+> i, 1
+
+, . . . , τ ′ 
+
+> i, max
+
+, τ i+1 )
+
+Tr := Sn(τr−1, τ r−δn )
+
+Tr+1 := Sn(τr+δn , τ r+1 )
+
+and TKn+2 as defined below in eq. (A.8). Now, using Lemma 5, we have 
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) ≥ Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ 1, . . . , τ r−1, τ r−δn , τ r+δn , τ r+1 , . . . , τ Kn )= T0 + T1 + · · · + TKn+2 
+
+(A.7) with the last equality following from the definition of Ti’s. It follows using Lemma 6 that for all i = 0 , . . . , r − 1, r +2, . . . , K n
+
+Sn(τi, τ i+1 ) ≥ Ti ≥ Sn(τi, τ i+1 ) + Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+).
+
+It follows by trivially subtracting Op terms that, 
+
+Tr ≥ Sn(τr−1, τ r−δn ) + Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+)
+
+Tr+1 ≥ Sn(τr+δn , τ r+1 ) + Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+).Multi Change Point Detection for Markov Chains 
+
+Finally, we are left with TKn+2 which is 
+
+TKn+2 = Sn(τr − δn, τ r + δn) + Sn(τr + δn, τ r+1 )= Sn(τr − δn, τ r ) + Sn(τr , τ r + δn) + ∆ S , (A.8) where (with Fr−1,1/2 as defined in eq. (A.9)) 
+
+Fr−1,1/2(u) = Fr−1(u) + Fr (u)2 . (A.9) 
+
+∆S := Sn(τr − δn, τ r + δn) − Sn(τr − δn, τ r ) − Sn(τr , τ r + δn)= 2 δn
+
+Z X(n)
+
+> X(1)
+
+ˆF τr +δn  
+
+> τr−δn
+
+(u)
+
+
+
+1 − ˆF τr +δn  
+
+> τr−δn
+
+(u)
+
+
+
+d ˆFn(u)
+
+− δn
+
+Z X(n)
+
+> X(1)
+
+ˆF τr  
+
+> τr−δn
+
+(u)
+
+
+
+1 − ˆF τr  
+
+> τr−δn
+
+(u)
+
+
+
+d ˆFn(u)
+
+− δn
+
+Z X(n)
+
+> X(1)
+
+ˆF τr +δn 
+
+> τr
+
+(u)
+
+
+
+1 − ˆF τr +δn 
+
+> τr
+
+(u)
+
+
+
+d ˆFn(u) (A.10) 
+
+= −
+
+Z X(n)
+
+> X(1)
+
+h
+
+2δn( ˆF τr +δn  
+
+> τr−δn
+
+(u)) 2 − δn( ˆF τr  
+
+> τr−δn
+
+(u)) 2 − δn( ˆF τr +δn 
+
+> τr
+
+(u)) 2 i
+
+d ˆFn(u)= −
+
+Z X(n)
+
+> X(1)
+
+h
+
+2δn( ˆF τr +δn  
+
+> τr−δn
+
+(u)) 2 − δn( ˆF τr  
+
+> τr−δn
+
+(u)) 2 − δn( ˆF τr +δn 
+
+> τr
+
+(u)) 2 + H − H 
+
+i
+
+d ˆFn(u) (A.11) where (with the dependence on u implicit for convenience) 
+
+H = −4δn ˆF τr +δn  
+
+> τr−δn
+
+Fr−1,1/2 + 2 δn(Fr−1,1/2)2
+
++ 2 δn ˆF τr  
+
+> τr−δn
+
+Fr−1 − δn(Fr−1)2
+
++ 2 δn ˆF τr +δn 
+
+> τr
+
+Fr − δn(Fr )2
+
+= δn
+
+ ˆF τr  
+
+> τr−δn
+
+− ˆF τr +δn
+
+> τr
+
+
+
+(Fr−1 − Fr )
+
+> n→∞
+
+−−−−→ δn (Fr−1 − Fr )2 + o(δn) (A.12) uniformly in u.Now using Lemma A.4, the right hand side of eq. (A.11) becomes 
+
+−
+
+Z X(n)
+
+> X(1)
+
+h
+
+2δn( ˆF τr +δn  
+
+> τr−δn
+
+(u)−Fr−1,1/2(u)) 2 −δn( ˆF τr  
+
+> τr−δn
+
+(u)−Fr−1(u)) 2 −δn( ˆF τr +δn 
+
+> τr
+
+(u)−Fr (u)) 2 −H 
+
+i
+
+d ˆFn(u)= 3 Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) −
+
+Z X(n)
+
+> X(1)
+
+Hd ˆFn(u).
+
+Observe that d ˆFn(u) = 0 for all u / ∈ [X(1) , X (n)] which, using implies Assumption 3, and eq. (A.12) 
+
+Z X(n)
+
+> X(1)
+
+Hd ˆFn =
+
+Z 10
+
+Hd ˆFnn→∞ 
+
+−−−−→ δn
+
+Z 10
+
+(Fr−1(u) − Fr (u)) 2 dF (u) + op(δn)= δn
+
+Z
+
+ηr (u)dF (u) + op(δn).Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+Now it follows by substituting the previous bounds in eq. (A.7) that, 
+
+min     
+
+> (τ′
+> 1,...,τ ′
+> L)∈Br(L,δ n)
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+)
+
+≥ min     
+
+> (τ′
+> 1,...,τ ′
+> L)∈Br(L,δ n)
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ 1, . . . , τ r−1, τ r−δn , τ r+δn , τ r+1 , . . . , τ Kn )
+
+≥ Rn(τ1, . . . , τ Kn ) + ( Kn + 5) Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) − δn
+
+Z
+
+ηr (u)dF (u) + op(δn).
+
+Let BIC Kn = −Rn(τ1, . . . , τ Kn )+ Knζn and recall from eq. (BIC) the definition of BIC L. Following the calculations above, we get 
+
+BIC L − BIC Kn ≤ − δn
+
+Z
+
+ηr (u)dF (u) − (Kn + 5) Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) − ζn
+
+≤ − δnηmin − (Kn + 5) Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) − ζn (A.13) where the second inequality follows from the definition of ηmin in Assumption 4. This proves our induction hypothesis for L = Kn − 1.Now let the hypothesis of the induction (eq. (A.5)) hold true for L = Kn − r. Reparametrizing Kn − r as K′
+
+> n
+
+, we now show for L = K′ 
+
+> n
+
+− 1. It is easy to see invoking eq. (A.13) that, 
+
+BIC L − BIC K′ 
+
+> n
+
+≤ − δnηmin − (Kn + 5) Op(u(K′ 
+
+> n)
+> n
+
+, K ′
+
+> n
+
+, κ †
+
+> n
+
+) − ζn
+
+≤ − δnηmin − (Kn + 5) Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) − ζn
+
+where inequality follows since for K′ 
+
+> n
+
+< K n, |O p(u(K′ 
+
+> n)
+> n
+
+, K ′
+
+> n
+
+, κ †
+
+> n
+
+)| ≤ |O p(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+)|. Therefore using induc-tion, 
+
+BIC L+1 − BIC Kn = BIC L+1 − BIC L + BIC L − BIC Kn
+
+≤ − δn(Kn − r + 1) ηmin − Kn(Kn + 5) Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) − (Kn − r + 1) ζn
+
+which is what we required. 
+
+Step II: It now follows that, for any n,
+
+P( ˆKn < K n) = P
+
+> Kn−1
+
+[
+
+> L=1
+
+{BIC L > BIC Kn }
+
+!
+
+≤
+
+> Kn−1
+
+X
+
+> L=1
+
+P (BIC L > BIC Kn )
+
+≤
+
+> Kn−1
+
+X
+
+> L=1
+
+P
+
+
+
+Kn(Kn + 5) Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) < −δnηmin − (Kn − L)ζn
+
+
+
+=
+
+> Kn−1
+
+X
+
+> L=1
+
+P
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) < − δn
+
+5K2
+
+> n
+
+ηmin − (Kn − L) ζn
+
+5K2
+
+> n
+
+
+
+=
+
+> Kn−1
+
+X
+
+> L=1
+
+P Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) < − u(Kn) 
+
+> n
+
+δn log Kn
+
+40 κ†
+
+> n
+
+K3
+
+> n
+
+(log δn)2(log Kn)2 ηmin − (Kn − L) ζn
+
+5K2
+
+> n
+
+!
+
+where the last inequality follows by substituting the terms from eq. (A.13). Recall that under the hypothesis of the theorem, 
+
+K3 
+
+> n
+
+log( δn)2(log Kn)2/δ n = O(1) , so that δn/K 3
+
+> n
+
+(log δn)2(log Kn)2 = Ω(1) .Multi Change Point Detection for Markov Chains 
+
+Therefore, for some large n, we have 
+
+δn log Kn
+
+40 κ†
+
+> n
+
+K3 
+
+> n
+
+log( δn)2(log Kn)2 ηmin > 1
+
+This implies 
+
+> Kn−1
+
+X
+
+> L=1
+
+P Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) < − u(Kn) 
+
+> n
+
+δn log Kn
+
+5K3 
+
+> n
+
+log( δn)2(log Kn)2 ηmin − (Kn − L) ζn
+
+5K2
+
+> n
+
+!
+
+≤
+
+> Kn−1
+
+X
+
+> L=1
+
+P
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) < −u(Kn) 
+
+> n
+
+− (Kn − L) ζn
+
+5K2
+
+> n
+
+
+
+(A.14) 
+
+≤
+
+> Kn−1
+
+X
+
+> L=1
+
+P
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) < −u(Kn)
+
+> n
+
+
+
+= KnP
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) < −u(Kn)
+
+> n
+
+
+
+< ε. 
+
+This completes the proof. The next lemma establishes that no more than the correct number of change points is detected. 
+
+Lemma 8. Under Assumptions 3, 4, and 1, and the hypothesis of Theorem 2, P
+
+ ˆKn > K n
+
+
+
+→ 0.
+
+A.3 Proof of Lemma 8 
+
+Proof. To avoid trivialities, assume that Kn > 0 and consider two cases: 
+
+Case I ((ˆ τ1, . . . , ˆτL) ∈ SKn 
+
+> r=1
+
+Br (L, δ n)) : When (ˆ τ1, . . . , ˆτL) ∈ B r (L, δ n), for some r ∈ { 1, . . . , K n} (with Br (L, δ n)
+
+defined as in eq. (A.6)), it follows similarly to the proof of Lemma 7 that 
+
+P
+
+> Kn−1
+
+[
+
+> L=1
+
+{BIC L > BIC Kn }
+
+!
+
+≤ KnP
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) > u (L)
+
+> n
+
+
+
+< ε. 
+
+Case II ((ˆ τ1, . . . , ˆτL) ∈ C (L, δ n)) : To formalize the second case, we introduce the following notation 
+
+C(L, δ n) := {(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) : 1 < τ ′ 
+
+> 1
+
+< · · · < τ ′ 
+
+> L
+
+≤ n, and ∃ i such that |τ ′ 
+
+> i
+
+− τs| ≤ δn ∀ 1 ≤ s ≤ L}
+
+We will show that 
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) ≥ Rn(τ1, . . . , τ Kn ) + 4 LOp(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+). (A.15) Following eq. (A.7), 
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) ≥ Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ 1, . . . , τ r−1, τ r , τ r+1 , . . . , τ Kn )= T0 + T1 + · · · + TKn
+
+≥
+
+> Kn
+
+X
+
+> i=0
+
+Sn(τi, τ i+1 ) + KnOp(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+)= Rn(τ1, . . . , τ n) + KnOp(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+).Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+Therefore, 
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) ≥ Rn(τ1, . . . , τ Kn ) + KnOp(un, K n, κ †
+
+> n
+
+).
+
+As before, let BIC Kn = BIC ⋆ = −Rn(τ1, . . . , τ Kn ) + Knζn. Then, for any given L,
+
+BIC L − BIC Kn ≤ − KnOp(un, K n, κ †
+
+> n
+
+) − (Kn − L)ζn
+
+Therefore, 
+
+P
+
+ ˆKn > K n
+
+
+
+= P
+
+
+
+> ¯K
+
+[
+
+> L=Kn+1
+
+{BIC L > BIC Kn }
+
+
+
+=
+
+> ¯K
+
+X
+
+> L=Kn+1
+
+P (BIC L > BIC Kn )
+
+≤
+
+> ¯K
+
+X
+
+> L=Kn+1
+
+P
+
+
+
+4KnOp(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) > (L − Kn)ζn
+
+
+
+≤
+
+> ¯K
+
+X
+
+> L=Kn+1
+
+P
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) >
+
+ LKn
+
+− 1
+
+ ζn
+
+4
+
+
+
+≤ ¯KP
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) >
+
+ 1
+
+Kn
+
+ ζn
+
+4
+
+
+
+> (i)
+
+≤ ¯KP
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) > u (Kn)
+
+> n
+
+
+
+= ¯KKn
+
+KnP
+
+
+
+Op(u(Kn) 
+
+> n
+
+, K n, κ †
+
+> n
+
+) > u (Kn)
+
+> n
+
+
+
+> (i)
+
+< ¯KKn
+
+ε
+
+where (i) follows from eq. (A.1). Recall that ¯K is bounded and we have assumed Kn to be positive. Since ε is arbitrary, the proof follows. 
+
+Proof of Theorem 2. Now we can finally prove our main theorem. It follows by combining Lemma 7 and 8 that 
+
+P
+
+ ˆKn = Kn
+
+
+
+→ 1.
+
+A.4 Proof of Lemma 3 
+
+Proof. We first show that under the hypothesis of the Lemma 3, 
+
+lim  
+
+> n→∞
+
+KnP sup 
+
+> τm−1≤k<l ≤τm−1+δn
+
+ξm(k, l ) ≥ un
+
+!
+
+< ε. (A.16) As before, let nkl = l − k, ∥ ˆF lk − F ∥10 := sup u∈[0 ,1] | ˆF lk(u) − F (u)| and En to be the following event 
+
+En := [
+
+> k,l
+
+√nkl ∥ ˆF lk − F ∥10 >
+
+q
+
+κ†
+
+> n
+
+log( Knδ2
+
+> n
+
+) max {log 2 , log nkl }
+
+
+
+.Multi Change Point Detection for Markov Chains 
+
+Then using union bound, 
+
+P (En) ≤ X
+
+> k,l
+
+P
+
+√nkl ∥ ˆF lk − F ∥10 >
+
+q
+
+κ†
+
+> n
+
+log( Knδ2
+
+> n
+
+) max {log 2 , log nkl }
+
+
+
+> (i)
+
+≤ X
+
+> k,l
+
+κ⋆(ρ, λ ) exp 
+
+
+
+−κ(ρ, λ )κ†
+
+> n
+
+nkl 
+
+log nkl 
+
+log( Knδ2
+
+> n
+
+) max {log 2 , log nkl }
+
+nkl 
+
+
+
+> (ii )
+
+≤ δ2
+
+> n
+
+κ⋆(ρ, λ ) exp 
+
+
+
+−κ(ρ, λ )κ†
+
+> n
+
+log( Knδ2
+
+> n
+
+) log nkl 
+
+log nkl 
+
+
+
+> (iii )
+
+≤ δ2
+
+> n
+
+κ⋆(ρ, λ ) exp  −κ(ρ, λ )κ†
+
+> n
+
+log( Knδ2
+
+> n
+
+)
+
+> (iv )
+
+≤ εδ 2
+
+> n
+
+Knδ2
+
+> n
+
+= εKn
+
+(A.17) 
+
+(i) follows from Theorem 1; (ii ) follows because to avoid trivialities we can assume nkl ≥ 2 and because |{ τm−1 ≤
+
+k, l ≤ τm−1 + δn}| ≤ δ2
+
+> n
+
+; (iii ) follows simplifying the fraction; (iv ) follows from the definition of κ† 
+
+> n
+
+in the statement of Lemma 3. Now, observe that for any m, k and l,
+
+ξm(k, l ) = nkl 
+
+Z X(n)
+
+> X(1)
+
+ˆF lk(u) − F (u) 2
+
+d ˆFn(u) ≤ nkl (∥ ˆF lk − F ∥10)2.
+
+Since log δn ≥ log nkl , En ⊆ { sup τm−1≤k<l ≤τm−1+δn ξm(k, l ) ≥ un} and it follows from eq. (A.17), that 
+
+KnP sup 
+
+> τm−1≤k<l ≤τm−1+δn
+
+ξm(k, l ) ≥ un
+
+!
+
+≤ ε. 
+
+The conclusion of the lemma now follows. This completes the proof. 
+
+A.5 Proof of Lemma 4 
+
+Proof. For convenience of notation, let n⋆ 
+
+> 1
+
+= τ ′ 
+
+> 1
+
+−τs, and so on until we have n⋆L = τ ′ 
+
+> L
+
+−τ ′
+
+> L−1
+
+, and n⋆L+1 = τs+1 −τ ′
+
+> L
+
+.Let n⋆ = P 
+
+> i
+
+n⋆i . Then, overloading the notation of τs as τ ′ 
+
+> 0
+
+and τs+1 as τ ′
+
+> L+1
+
+, we observe that 
+
+Rn(τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ s+1 ) − Rn(τs, τ s+1 )=
+
+Z X(n)
+
+> X(1)
+
+"L+1 X
+
+> i=1
+
+n⋆i ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+(u)
+
+
+
+1 − ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+(u)
+
+
+
+− n⋆ ˆF τs+1  
+
+> τs
+
+(u)
+
+
+
+1 − ˆF τs+1  
+
+> τs
+
+(u)
+
+#
+
+d ˆFn(u)
+
+Looking at the integrand (and dropping u for convenience) we get 
+
+> L+1
+
+X
+
+> i=1
+
+n⋆i ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+
+
+1 − ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+
+
+− n⋆ ˆF τs+1 
+
+> τs
+
+
+
+1 − ˆF τs+1 
+
+> τs
+
+ (i)
+
+= −
+
+> L+1
+
+X
+
+> i=1
+
+n⋆i ( ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+)2 + n⋆( ˆF τs+1  
+
+> τs
+
+)2 (A.18) 
+
+> (ii )
+
+≤ 0,
+
+where (i) follows since PL+1  
+
+> i=1
+
+n⋆i ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+= n⋆F τs+1  
+
+> τs
+
+and (ii ) follows since −x2 is a concave function. We turn to proving the order term. Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+We have already pointed out the fact that PL+1  
+
+> i=1
+
+n⋆i ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+= n⋆F τs+1  
+
+> τs
+
+and recall that PL+1  
+
+> i=1
+
+n⋆i = n⋆ by definition. Now consider the right hand side of eq. (A.18) and add and subtract n⋆(Fs)2 − 2n⋆ ˆF τs+1  
+
+> τs
+
+Fs to get, 
+
+−
+
+> L+1
+
+X
+
+> i=1
+
+n⋆i ( ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+)2 + n⋆( ˆF τs+1  
+
+> τs
+
+)2 = −
+
+> L+1
+
+X
+
+> i=1
+
+n⋆i
+
+h
+
+( ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+)2 + ( Fs)2 − 2n⋆ ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+Fs
+
+i
+
++ n⋆ h
+
+( ˆF τs+1  
+
+> τs
+
+)2 + ( Fs)2 − 2 ˆF τs+1  
+
+> τs
+
+Fs
+
+i
+
+= −
+
+> L+1
+
+X
+
+> i=1
+
+n⋆i ( ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+− Fs)2 + n⋆( ˆF τs+1  
+
+> τs
+
+− Fs)2
+
+| {z }
+
+> ≥0
+
+≥ − 
+
+> L+1
+
+X
+
+> i=1
+
+n⋆i ( ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+− Fs)2.
+
+Therefore, 
+
+Rn(τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ s+1 ) − Rn(τs, τ s+1 ) ≥
+
+Z X(n)
+
+> X(i)
+
+−
+
+> L+1
+
+X
+
+> i=1
+
+n⋆i ( ˆF τ ′ 
+
+> i+1
+> τ′
+> i
+
+(u) − Fs(u)) 2d ˆFn(u)
+
+≥ − 
+
+> L+1
+
+X
+
+> i=1
+
+ξs(τ ′ 
+
+> i
+
+, τ ′
+
+> i+1
+
+).
+
+For any collection of positive random variables Z1, . . . , Z L+3 , recall the probabilistic bound 
+
+P
+
+> L+1
+
+X
+
+> i=1
+
+Zi > a 
+
+!
+
+≤
+
+> L+1
+
+X
+
+> i=1
+
+P
+
+
+
+Zi > aL + 1 
+
+
+
+. (A.19) Therefore, using Lemma 3 
+
+lim  
+
+> n→∞
+
+KnP  |Rn(τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+, τ s+1 ) − Rn(τs, τ s+1 )| > 8κ†
+
+> n
+
+Llog( LK nδ2
+
+> n
+
+) log δn
+
+
+
+≤ lim  
+
+> n→∞
+
+KnP
+
+> L+1
+
+X
+
+> i=1
+
+ξs(τ ′ 
+
+> i
+
+, τ ′
+
+> i+1
+
+) > 8κ†
+
+> n
+
+Llog( KnLδ 2
+
+> n
+
+) log δn
+
+!
+
+≤ lim  
+
+> n→∞
+
+KnP
+
+> L+1
+
+X
+
+> i=1
+
+ξs(τ ′ 
+
+> i
+
+, τ ′
+
+> i+1
+
+) > 4κ†
+
+> n
+
+(L + 1)log( LK nδ2
+
+> n
+
+) log δn
+
+!
+
+≤ L−1
+
+> L+1
+
+X
+
+> i=1
+
+lim  
+
+> n→∞
+
+LK nP  ξs(τ ′ 
+
+> i
+
+, τ ′
+
+> i+1
+
+) > 4κ†
+
+> n
+
+log( LK nδ2
+
+> n
+
+) log δn
+
+
+
+< L −1(L + 1) ε . 
+
+Since n > δ n, the statement of Lemma 4 is now established. 
+
+A.6 Proof of Lemma 5 
+
+Proof. Fix one “coarse” interval J = (˜ τj , ˜τj+1 ) induced by {˜τ1, . . . , ˜τs}. The extra points {τ ′
+
+> 1
+
+, . . . , τ ′
+
+> p
+
+} partition J
+
+into subintervals J1, . . . , J mj with counts n⋆j,k (so that Pmj 
+
+> k=1
+
+n⋆j,k = n⋆J ) and pj,k (u) := ˆFJk (u) ∈ [0 , 1] . Set weights 
+
+wj,k := n⋆j,k /n ⋆J and the weighted average ¯pj (u) := Pmj 
+
+> k=1
+
+wj,k pj,k (u) = ˆFJ (u).Let f (x) = x(1 − x) = x − x2, a concave function on [0 , 1] . Then, pointwise in u,
+
+> mj
+
+X
+
+> k=1
+
+n⋆j,k f  pj,k (u) − n⋆J f  ¯pj (u) = − n⋆J
+
+> mj
+
+X
+
+> k=1
+
+wj,k pj,k (u)2 −
+
+ mj
+
+X
+
+> k=1
+
+wj,k pj,k (u)
+
+2
+
+!
+
+= − n⋆J Var wj
+
+ pj,k (u) ≤ 0.Multi Change Point Detection for Markov Chains 
+
+Equivalently, mj
+
+X
+
+> k=1
+
+n⋆j,k ˆFJk (u) 1 − ˆFJk (u) ≤ n⋆J ˆFJ (u) 1 − ˆFJ (u).
+
+Summing this inequality over all coarse intervals J ∈ J ({˜τ1, . . . , ˜τs}) and integrating with respect to d ˆFn(u) yields 
+
+Rn(˜ τ1, . . . , ˜τs, τ ′
+
+> 1
+
+, . . . , τ ′
+
+> p
+
+) ≤ Rn(˜ τ1, . . . , ˜τs).
+
+Equality holds iff Var wj (pj,k (u)) = 0 for all j and a.e. u, i.e., when each coarse interval has identical within-subinterval cdfs. 
+
+A.7 Proof of Theorem 1 
+
+Now we proceed to proving Theorem 1. Since there is always a rational number between any two real numbers, it holds almost everywhere that 
+
+sup  
+
+> f∈F [0 ,1]
+> n
+
+X
+
+> i=1
+
+(f (Yi) − Eπ [f (Y )]) ≤ sup   
+
+> f∈F [0 ,1]
+> TQ
+> n
+
+X
+
+> i=1
+
+(f (Yi) − Eπ [f (Y )]) + 2 
+
+Therefore, 
+
+P(nZ > nt + κR(F[0 ,1] T Q))) ≤ P
+
+ sup   
+
+> f∈F [0 ,1]
+> TQ
+> n
+
+X
+
+> i=1
+
+(f (Yi) − Eπ [f (Y )]) > nt + κR(F[0 ,1] T Q)) − 2
+
+| {z }
+
+> =: T
+
+
+
+t ≥ 3/n by hypothesis. Therefore nt − 2 ≥ 1. We now state the following Lemma which is proved in §A.8. 
+
+Lemma 9. Let Y1, . . . , Y n be a sequence of random variables from a Markov chain with stationary distribution π,and let Y be a random variable with distribution π. Define 
+
+Z′ := sup    
+
+> f∈F [0 ,1] TQ
+> n
+
+X
+
+> i=1
+
+(f (Yi) − Eπ [f (Y )]) .
+
+Then, for some universal constant κ > 4e, any κρ > pEA[ρ2
+
+> A
+
+(2)] , κλ = 2 EA[exp( ρA(2) λ)] /λ , and ρo as defined in §4.1, 
+
+P (Z′ > t + κR(F[0 ,1] T Q) ≤ exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ t2
+
+nEA[ρ2
+
+> A
+
+(2)] , tρ3 
+
+> o
+
+log n
+
+ 
+
+and 
+
+R(F[0 ,1] T Q)) = 2( EA[ρA(2)] + Eν [ρA(2)]) + κ
+
+κρ log κρ
+
+pEA[ρ2
+
+> A
+
+(2)] 
+
+!
+
++
+
+vuutnEA[ρ2
+
+> A
+
+(2)] log κρ
+
+pEA[ρ2
+
+> A
+
+(2)] 
+
+!
+
++ n exp ( −κρλ/ 2) κλ.
+
+□
+
+It now follows using Lemma 9 that the right hand side of the previous equation is bounded above by 
+
+exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ (nt − 2) 2
+
+nEA[ρ2
+
+> A
+
+(2)] , (nt − 2) 
+
+ρ3 
+
+> o
+
+log n
+
+ 
+
+By setting κρ = (2 /λ ) log( n/ 2κλ) and observing that under Assumption 1 (EM), 1/(2 κλ) < 1 we get 
+
+R(F[0 ,1] T Q)) ≤ 2( EA[ρA(2)] + Eν [ρA(2)]) + κ
+
+2 log( n)
+
+λ log 2 log( n)/λ 
+
+pEA[ρ2
+
+> A
+
+(2)] 
+
+!
+
++
+
+vuutnEA[ρ2
+
+> A
+
+(2)] log 2 log( n)/λ 
+
+pEA[ρ2
+
+> A
+
+(2)] 
+
+!Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+Observe that pEA[ρ2
+
+> A
+
+(2)] ≥ 1. Now, with a constant κ(τ, λ ) depending on λ and EA[ρ2
+
+> A
+
+(2)] , and Ev [ρA(2)] we have with some standard manipulations 
+
+R(F[0 ,1] T Q)) ≤ κ(ρ, λ )pn log n
+
+Then we have 
+
+P(nZ > nt + κ(ρ, λ )pn log n)) ≤ exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ (nt − 2) 2
+
+nEA[ρ2
+
+> A
+
+(2)] , (nt − 2) 
+
+ρ3 
+
+> o
+
+log n
+
+ 
+
+.
+
+Now dividing both sides of T by n and trivially upper bounding 2 by 2κ, we have for some universal constant κ > 0,and for all t > 3/n 
+
+P
+
+
+
+Z > t + κ(ρ, λ )pn log n/n 
+
+
+
+≤ exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ (nt − 2) 2
+
+nEA[ρ2
+
+> A
+
+(2)] , (nt − 2) 
+
+ρ3 
+
+> o
+
+log n
+
+ 
+
+(A.20) where, for some constant κ(τ, λ ) depending only on EA[ρ2
+
+> A
+
+(2)] , Ev [ρA(2)] , λ. Next, observe that 
+
+P (Z > t ) = P (Z − EZ > t − EZ)
+
+Since EZ < κ (ρ, λ )√n log n/n = O(plog n/n ), there exists a constant κ′(ρ, λ ) > 3/n such that 
+
+t − EZ > t − κ′(ρ, λ ).
+
+Then, 
+
+P(Z > t ) ≤ exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ (n(t − κ′(ρ, λ )) − 2) 2
+
+nEA[ρ2
+
+> A
+
+(2)] , (n(t − κ′(ρ, λ )) − 2) 
+
+ρ3 
+
+> o
+
+log n
+
+ 
+
+.
+
+We now make 2 cases. 
+
+Case I: When t > 2κ′(ρ, λ ), we also have t − κ′(ρ, λ ) − 2/n > t/ 2, and hence 
+
+P(Z > t ) ≤ exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ (nt/ 2) 2
+
+nEA[ρ2
+
+> A
+
+(2)] , nt/ 2
+
+ρ3 
+
+> o
+
+log n
+
+ 
+
+.
+
+Case II: When 0 < t ≤ 2κ′(ρ, λ ), there exists a large enough constant κ⋆(ρ, λ ) such that 
+
+P(Z > t ) ≤ κ⋆(ρ, λ ) exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ (nt/ 2) 2
+
+nEA[ρ2
+
+> A
+
+(2)] , nt/ 2
+
+ρ3 
+
+> o
+
+log n
+
+ 
+
+.
+
+It therefore follows that, for some large enough constant κ(ρ, λ ) and for all t > 0
+
+P(Z > t ) ≤ κ⋆(ρ, λ ) exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ (nt/ 2) 2
+
+nEA[ρ2
+
+> A
+
+(2)] , nt/ 2
+
+ρ3 
+
+> o
+
+log n
+
+ 
+
+.
+
+Consequently, 
+
+P(Z > t ) ≤ κ⋆(ρ, λ ) exp 
+
+
+
+− EA[ρA(2)] 
+
+κ min 
+
+ (nt/ 2) 2
+
+nEA[ρ2
+
+> A
+
+(2)] , nt/ 2
+
+ρ3 
+
+> o
+
+log n
+
+ 
+
+≤ κ⋆(ρ, λ ) exp 
+
+
+
+− EA[ρA(2)] 
+
+κn min {t, t 2}
+
+4 log n min 
+
+ 1
+
+EA[ρ2
+
+> A
+
+(2)] , 1
+
+ρ3
+
+> o
+
+ 
+
+.
+
+Let 
+
+κ(ρ, λ ) := EA[ρA(2)] 4κ min 
+
+ 1
+
+EA[ρ2
+
+> A
+
+(2)] , 1
+
+ρ3
+
+> o
+
+
+
+.
+
+It now follows that, for all t > 0
+
+P(Z > t ) ≤ κ⋆(ρ, λ ) exp 
+
+
+
+− κ(ρ, λ )n min {t, t 2}
+
+log n
+
+
+
+.Multi Change Point Detection for Markov Chains 
+
+A.8 Proof of Lemma 9 
+
+Observe from part (ii) of Theorem 4 Bertail and Portier (2019) that under Assumption 1, the Rademacher complexity 
+
+R(F[0 ,1] T Q)) (as defined in definition 7 Bertail and Portier (2019)) for any class of VC functions with constant envelope U and characteristic (κ1, v ) can be upper bounded as 
+
+R(F[0 ,1] T Q)) ≤ κ
+
+"
+
+vκ ρU log κ1κρUσ′ +
+
+r
+
+vnσ ′ log κ1κρUσ′
+
+#
+
++ nU exp( −κρλ/ 2) κλ, (A.21) where (σ′)2 is any number such that 
+
+sup    
+
+> f∈F [0 ,1] TQ
+
+EA
+
+
+
+> ρA(2)
+
+X
+
+> i=1
+
+f (Yi)
+
+
+
+> 2
+
+ ≤ (σ′)2
+
+and κρ is any number such that 0 < σ ′ < κ ρU . To continue with the proof, we first write the following lemma. Its proof is provided in §A.9 for completeness. 
+
+Lemma 10. F[0 ,1] T Q is VC with constant envelope 1 and admissible charactaristic (κ, 2) for some universal constant 
+
+κ > 4e.
+
+Recall from Lemma 10 that the class of all half intervals on rationals F[0 ,1] T Q are VC with a constant envelope U and characteristic (κ, 2) for some universal constant κ. Substituting this in eq. (A.21), we get 
+
+R(F[0 ,1] T Q)) ≤ κ
+
+
+
+2κρ log κρ
+
+σ′ +
+
+r
+
+2nσ ′ log κρ
+
+σ′
+
+
+
++ n exp( −κρλ/ 2) κλ.
+
+Next, we observe that f (·) are indicators of half-intervals. Hence f (·) ≤ 1 and 
+
+
+
+> ρA(2)
+
+X
+
+> i=1
+
+f (Yi)
+
+
+
+> 2
+
+≤ ρ2
+
+> A
+
+(2) .
+
+Therefore, choosing (σ′)2 = EA[ρ2
+
+> A
+
+(2)] suffices and we get 
+
+R(F[0 ,1] T Q)) ≤ κ
+
+"
+
+2κρ log κρ
+
+pEA[ρ2
+
+> A
+
+(2)] +
+
+s
+
+2n
+
+q
+
+EA[ρ2
+
+> A
+
+(2)] log κρ
+
+pEA[ρ2
+
+> A
+
+(2)] 
+
+#
+
++ n exp( −κρλ/ 2) κλ.
+
+Finally, substituting this into Theorem 5 Bertail and Portier (2019) and trivially substituting log( xκ ) ≤ κ log( x) for all large enough constant κ, we arrive at the required bound 
+
+R(F[0 ,1] T Q)) = 2( EA[ρA(2)] + Eν [ρA(2)]) + κ
+
+κρ log κρ
+
+pEA[ρ2
+
+> A
+
+(2)] 
+
+!
+
++
+
+vuutnEA[ρ2
+
+> A
+
+(2)] log κρ
+
+pEA[ρ2
+
+> A
+
+(2)] 
+
+!
+
++ n exp ( −κρλ/ 2) κλ.
+
+Now, using the exponential tail bound for the suprema of additive functions of regenerative Markov chains (Theorem 6 in Bertail and Portier (2019), or Theorem 7 in Adamczak (2008)), we arrive at the conclusion. 
+
+A.9 Proof of Lemma 10 
+
+To prove this lemma, we introduce the notion of VC classes which are commonly used in nonparametric statistics (Sen, 2018). The function H is an envelope for the function class F with metric d if |f (x)| ≤ H(x) for all x ∈ E and f ∈ F .For a metric space (F, d ), the covering number N (ε, F, d ) is the minimal number of balls of size ε needed to cover 
+
+F. The metric that we use here is the L2(Q)-norm denoted by ∥.∥L2(Q) and given by ∥f ∥L2(Q) =  R f 2dQ 1/2.Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+Definition 3. A countable class F of measurable functions on E → R is said to be of VC-type (or Vapnik-Chervonenkis type) for an envelope H and admissible characteristic (κ, v ) (positive constants) such that κ ≥ (3 √e)v
+
+and v ≥ 1, if for all probability measure Q on (E, E) with 0 < ∥H∥L2(Q) < ∞ and every 0 < ε < 1,
+
+N  ε∥H∥L2(Q), F, ∥.∥L2(Q)
+
+ ≤ κε −v .
+
+Proof. We provide a proof for completeness. We begin this proof with some requisite definitions. Given a class of indicator functions I defined on χ, and a set {x1, . . . , x n} ∈ χn, we first define 
+
+I({x1, . . . , x n}) := {(f (x1), . . . , f (xn)) ∈ { 0, 1}n : f ∈ I} 
+
+The growth function of the F is then defined as 
+
+∆n(I) = max  
+
+> {x1,...,x n}∈ χn
+
+|I ({x1, . . . , x n})|
+
+The VC-dimension of I is then defined as 
+
+V C (I) := argmax n {n : ∆ n(I) = 2 n}
+
+We will now show that V C (F[0 ,1] T Q) = 1 . Let {x1, . . . , x n} be any ordered sample. That is, x1 < x 2 <, . . . , < x n.For any t ∈ [0 , 1] T Q, observe that (1[x1 < t ], 1[x2 < t ], . . . , 1[xn < t ]) has the form (1 , 1, 1, . . . , 1, 0, 0 . . . , 0) . In particular, the values of F[0 ,1] T Q({x1, . . . , x n}) has to be within the following set 
+
+(0 , 0, 0, . . . , 0) ,
+
+(1 , 0, 0, . . . , 0) ,
+
+(1 , 1, 0, . . . , 0) ,
+
+...
+
+(1 , 1, 1, . . . , 1) 
+
+Therefore ∆n(F[0 ,1] T Q) = n + 1 . This implies that 
+
+V C (F[0 ,1] T Q) = argmax n{∆n(F[0 ,1] T Q) = 2 n}
+
+= argmax n{n + 1 = 2 n}
+
+= 1 .
+
+Now, using standard results of covering number bounds, (Theorem 7.8 of Sen (2018), see also Theorem 2.6.4 Van der Vaart (2000)) we have the following result. For some universal constant κ > 0
+
+N  ε∥H∥L2(Q), F[0 ,1] T Q, ∥.∥L2(Q)
+
+ ≤ κ × V C (F[0 ,1] T Q)(4 e)V C (F[0 ,1] T Q)
+
+ 1
+
+ε
+
+2V C (F[0 ,1] T Q)(i)
+
+≤ κ′
+
+ε2 .
+
+where (i) follows by substituting V C (F[0 ,1] T Q). This completes the proof. 
+
+A.10 Proof of Proposition 1 
+
+We first explain the logical construction leading to the optimization model (5.1). We use the index i = 1 , . . . , n to represent the time points and l = 1 , . . . , L + 1 to represent the segment of the time points (i.e. l represents the segment of time points between τl−1 and τl). Instead of determining the positions of change points directly, we introduce binary decision variables to represent whether the time point i belongs to the segment l:
+
+zi,l ∈ { 0, 1} l = 1 , . . . , L + 1 , i = 1 , . . . , n. Multi Change Point Detection for Markov Chains 
+
+Based on the property that a time point can be assigned to only one segment, we have the constraints: 
+
+> L+1
+
+X
+
+> l=1
+
+zi,l = 1 i = 1 , . . . , n. (A.22) Since the length of a segment is assumed to be at least 3, we have the constraints: 
+
+> n
+
+X
+
+> i=1
+
+zi,l ≥ 3 l = 1 , . . . , L + 1 . (A.23) Also note that if the time point i is assigned to the segment l, then the time point i + 1 must either remain in the segment l or a later segment l′ > l . This is represented by the constraints: 
+
+zi,l ≤ X
+
+> l′≥l
+
+zi+1 ,l ′ l = 1 , . . . , L + 1 , i = 1 , . . . , n − 1. (A.24) 
+
+Proof. Assume z∗ 
+
+> i,l
+
+is an optimal solution of (5.1). We now use z∗ 
+
+> i,l
+
+to represent each part of (3.2) as follows:  
+
+> τ′
+> l
+
+X 
+
+> p=τ′
+> l−1
+
+1[Xp ≤ u] := 
+
+> n
+
+X
+
+> i=1
+
+au,i z∗
+
+> i,l
+
+τ ′ 
+
+> l
+
+− τ ′ 
+
+> l−1
+
+:= 
+
+> n
+
+X
+
+> i=1
+
+z∗
+
+> i,l
+
+ˆF τ ′ 
+
+> l
+> τ′
+> l−1
+
+:= 
+
+Pni=1 au,i z∗
+
+> i,l
+
+Pni=1 z∗
+
+> i,l
+
+.
+
+Then we have: 
+
+Rn(τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) := 
+
+> L+1
+
+X
+
+> l=1
+> n
+
+X
+
+> u=1
+> n
+
+X
+
+> i=1
+
+ai,u z∗
+
+> i,l
+
+!
+
+1 −
+
+Pni=1 ai,u z∗
+
+> i,l
+
+Pni=1 z∗
+
+> i,l
+
+!
+
+,
+
+where (τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) are the estimated change points. Therefore, we conclude that τ ′ is a solution of (3.2) if z∗ is a solution of (5.1) and the objective value of (5.1) is the same as (3.2). Similarly, if (τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) are the estimated change points, we can use τ ′ 
+
+> l
+
+− τ ′ 
+
+> l−1
+
+= Pni=1 z∗ 
+
+> i,l
+
+to represent the length of the segments for each l. The segmentation implies three properties: 1) each time point can be assigned to one segment; 2) the length of a segment ( τ ′ 
+
+> l
+
+− τ ′
+
+> l−1
+
+) is at least 3 ; and 3) if a time point belongs to a given segment, the next time point cannot be assigned to an early segment. Then if (τ ′
+
+> 1
+
+, . . . , τ ′
+
+> L
+
+) are the estimated change points, z∗ should satisfy the constraints (A.22), (A.23) and (A.24), which means that z∗ is a solution of (5.1), and (3.2) has the same value as the objective function of (5.1). 
+
+A.11 Proof of Proposition 2 
+
+Proof. Suppose z∗ solves (5.1). Following Equation R1 in Borrero et al. (2016), we linearize the fractional terms by defining 
+
+k∗ 
+
+> l
+
+= 1
+
+Pni=1 z∗
+
+> i,l
+
+, so that 
+
+> n
+
+X
+
+> i=1
+
+k∗ 
+
+> l
+
+z∗ 
+
+> i,l
+
+= 1 .
+
+Then 
+
+f ∗ 
+
+> u,l
+
+=
+
+Pni=1 ai,u z∗
+
+> i,l
+
+Pni=1 z∗
+
+> i,l
+
+=
+
+> n
+
+X
+
+> i=1
+
+ai,u k∗ 
+
+> l
+
+z∗
+
+> i,l
+
+,d∗ 
+
+> u,l
+
+= 1 − f ∗
+
+> u,l
+
+,
+
+(A.25) Imon Banerjee, Jiaqi Lei, Sanjay Mehrotra 
+
+and hence 
+
+s∗ 
+
+> u,l
+
+=
+
+> n
+
+X
+
+> i=1
+
+ai,u z∗
+
+> i,l
+
+!
+
+1 −
+
+Pni=1 ai,u z∗
+
+> i,l
+
+Pni=1 z∗
+
+> i,l
+
+!
+
+=
+
+> n
+
+X
+
+> i=1
+
+ai,u z∗
+
+> i,l
+
+d∗
+
+> u,l
+
+.
+
+Thus (z∗, k ∗, f ∗, d ∗, s ∗) is feasible for (5.2) with the same objective value. Conversely, if (z∗, k ∗, f ∗, d ∗, s ∗) is feasible for (5.2), then z∗ ∈ Z and satisfies all constraints of (5.1). Moreover, 
+
+> L+1
+
+X
+
+> l=1
+> n
+
+X
+
+> u=1
+
+s∗ 
+
+> u,l
+
+=
+
+> L+1
+
+X
+
+> l=1
+> n
+
+X
+
+> u=1
+> n
+
+X
+
+> i=1
+
+ai,u z∗
+
+> i,l
+
+!
+
+1 −
+
+Pni=1 ai,u z∗
+
+> i,l
+
+Pni=1 z∗
+
+> i,l
+
+!
+
+,
+
+which coincides with the objective of (5.1). Therefore, z∗ solves (5.1) if and only if (z∗, k ∗, f ∗, d ∗, s ∗) solves (5.2), with equal objective values. This completes the proof.

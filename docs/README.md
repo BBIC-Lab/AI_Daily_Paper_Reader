@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-18
-- 运行时间：2026-07-18 03:57:13 北京时间
+- 最新运行日期：2026-07-19
+- 运行时间：2026-07-19 04:41:01 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日从脑机接口的语义解码出发，精读了两篇满分工作，分别用交互式多特征融合推动非侵入式语义重建，并让 Llama 3.2 在 fMRI 语言解码中挑战新基准。
-最值得关注的方向是“非侵入式脑信号如何通过多模态特征融合，实现更准确、更丰富的语义理解”，以及大型语言模型直接参与神经解码带来的能力跃迁。
-下一步不妨把速读里的统一扩散框架和自适应特征门控，与脑信号的语义对齐结合起来，尝试构建更连续的思维解读通路。
-- 详情：[/202607/18/README](/202607/18/README)
+今日精选10篇前沿研究，聚焦因果推理、脑机接口与模型解释性。  
+最值得关注：双重随机重分配如何校正特征重要性偏差，以及自适应降维优化脑电癫痫检测。  
+下步可探索将随机重分配校准法引入你的模型解释流程，或关注脑信号解码中的感知语义对齐。
+- 详情：[/202607/19/README](/202607/19/README)
 
 ### 精读区论文标签
-1. [Beyond Parallel Tracking: Interactive Multi-Feature Fusion Drives Semantic Reconstruction from Non-invasive Brain Recordings](/202607/18/2607.12071v1-beyond-parallel-tracking-interactive-multi-feature-fusion-drives-semantic-reconstruction-from-non-invasive-brain-recordings)  
+1. [Bias Correction for Relative Importance Measures via Doubly Stochastic Reallocation](/202607/19/2607.13850v1-bias-correction-for-relative-importance-measures-via-doubly-stochastic-reallocation)  
    标签：评分：10.0/10、query:ndai
-   evidence：从非侵入性脑记录重建语义
-2. [The Capacity of Thought: Benchmarking Llama 3.2 in Semantic fMRI Neural Language Decoding and Improving the Huth Encoding-Model Baseline](/202607/18/2607.12079v1-the-capacity-of-thought-benchmarking-llama-32-in-semantic-fmri-neural-language-decoding-and-improving-the-huth-encoding-model-baseline)  
-   标签：评分：10.0/10、query:ndai
-   evidence：使用预训练LLM将fMRI信号解码为语言
-3. [Machines that Predict Trajectories from Templates](/202607/18/2607.11551v1-machines-that-predict-trajectories-from-templates)  
+   evidence：提出相对重要性度量的偏差校正，计算特征重要性权重
+2. [Comparison of Dimension Reduction Methods for EEG Seizure Detection Using Autonomous AI-Driven Optimization](/202607/19/2607.12546v2-comparison-of-dimension-reduction-methods-for-eeg-seizure-detection-using-autonomous-ai-driven-optimization)  
    标签：评分：9.0/10、query:ndai
-   evidence：从模板预测轨迹
-4. [DiffEEG: A Self-Supervised Denoising Diffusion Model for Learning EEG Generic Representations](/202607/18/2607.11578v1-diffeeg-a-self-supervised-denoising-diffusion-model-for-learning-eeg-generic-representations)  
+   evidence：脑电图降维以获得紧凑表示
+3. [Optimal photostimulation selection for iterative activity maps](/202607/19/2607.12930v1-optimal-photostimulation-selection-for-iterative-activity-maps)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于EEG通用表征的自监督扩散模型
-5. [Sparse Inter-Layer Dependencies of Transformer FFN Neurons](/202607/18/2607.11990v1-sparse-inter-layer-dependencies-of-transformer-ffn-neurons)  
+   evidence：用于选择光刺激以绘制神经回路的贝叶斯框架
+4. [RecRec: Latent Interests Recursive Reasoning for Sequential Recommendation](/202607/19/2607.12945v1-recrec-latent-interests-recursive-reasoning-for-sequential-recommendation)  
    标签：评分：9.0/10、query:ndai
-   evidence：估计上游神经元重要性权重的归因方法
+   evidence：提出递归推理框架用于序列推荐，随时间预测用户行为
+5. [Classifying daily activities needs posture, reconstructing them needs motion](/202607/19/2607.13216v1-classifying-daily-activities-needs-posture-reconstructing-them-needs-motion)  
+   标签：评分：9.0/10、query:ndai
+   evidence：比较自编码器等表示用于动作分类
 
 ### 速读区论文标签
-1. [Sticky Jump Diffusions: A Unifying View of Masked, Continuous, and Hybrid Diffusion](/202607/18/2607.10951v1-sticky-jump-diffusions-a-unifying-view-of-masked-continuous-and-hybrid-diffusion)  
+1. [Lost in Visual Translation: A VLM-Assisted Perceptual-Semantic Coherence Framework for EEG-to-Image Reconstruction](/202607/19/2607.12364v1-lost-in-visual-translation-a-vlm-assisted-perceptual-semantic-coherence-framework-for-eeg-to-image-reconstruction)  
    标签：评分：8.0/10、query:ndai
-   evidence：粘性跳跃扩散用于序列令牌动态
-2. [Difference-Driven Gating: Adaptive Feature Fusion for U-Net Decoder](/202607/18/2607.11096v1-difference-driven-gating-adaptive-feature-fusion-for-u-net-decoder)  
+   evidence：使用VLM评估EEG到图像重建，用于神经解码
+2. [Nonparametric Multi Change Point Detection for Markov Chains via Adaptive Clustering](/202607/19/2607.12369v1-nonparametric-multi-change-point-detection-for-markov-chains-via-adaptive-clustering)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于差异的门控从特征差异计算注意力权重
-3. [SkillComm: Skill-Driven Semantic Communication for Sequential Workflows via Incremental Token Transmission](/202607/18/2607.11972v1-skillcomm-skill-driven-semantic-communication-for-sequential-workflows-via-incremental-token-transmission)  
+   evidence：序列马尔可夫数据中的非参数变点检测
+3. [Differentiable Clone-Structured Causal Graphs for End-to-End Cognitive Map Learning from Image Sequences](/202607/19/2607.12382v1-differentiable-clone-structured-causal-graphs-for-end-to-end-cognitive-map-learning-from-image-sequences)  
    标签：评分：8.0/10、query:ndai
-   evidence：顺序工作流的增量令牌传输
-4. [Continual Learning with Elastic Regularization and Synthetic Replay for Federated MLLM Fine-Tuning](/202607/18/2607.12112v1-continual-learning-with-elastic-regularization-and-synthetic-replay-for-federated-mllm-fine-tuning)  
+   evidence：从图像序列端到端学习因果图
+4. [ReDiTT: Retrieval Augmented Conditional Diffusion Transformers for Asynchronous Time Series](/202607/19/2607.12391v1-reditt-retrieval-augmented-conditional-diffusion-transformers-for-asynchronous-time-series)  
    标签：评分：8.0/10、query:ndai
-   evidence：联邦微调中的持续学习框架，适应新领域
-5. [MED-DSLC: Multi-Expert-Domain Classification via Domain Supervision and Logit Calibration](/202607/18/2607.10985v1-med-dslc-multi-expert-domain-classification-via-domain-supervision-and-logit-calibration)  
+   evidence：用于异步时间序列预测的扩散模型
+5. [Comparing Semantic Navigation in Humans and Large Language Models using Natural Language Processing](/202607/19/2607.12195v1-comparing-semantic-navigation-in-humans-and-large-language-models-using-natural-language-processing)  
    标签：评分：7.0/10、query:ndai
-   evidence：通过合并多个LoRA专家和logit校准进行域适应
+   evidence：基于轨迹的言语流畅性顺序语义步长分析
 

@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-007.webp",
+      "caption": "Figure 1: Overview of the movement analysis framework. The pipeline consists of three stages. Data processing converts raw video recordings into segmented joint-position trajectories via pose estimation (MMPose, 16 joints) and manual motion segmentation. Feature extraction fits three parallel models to all segments and produces a fixed-length feature vector set for each method. Downstream evaluation assesses the resulting features through movement classification across 16 daily activities, feature space analysis (dimensionality reduction, posture-dynamics decomposition, joint selection), and motion reconstruction from both category-averaged and per-segment features.",
+      "page": 3,
+      "index": 7,
+      "width": 979,
+      "height": 514
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-009.webp",
+      "caption": "Figure 2: Data processing pipeline. Right: raw video frames from the MoVi dataset (dataset is publicly available under a research license; all participants provided written informed consent for their data, including video footage, to be used by other researchers [1]) illustrated for crawling and walking are passed through MMPose to extract 3D joint positions, then animated using the PyMotion library [39] for visual inspection. Each continuous recording is visually segmented by annotating the start and end frames of one complete movement cycle per activity. Left: the 16-joint skeleton model following the Human3.6M convention. Bottom-left: example joint-position time series for the left ankle during crawling and walking, with colored segments marking individual movement cycles identified through visual inspection. As shown here, different segments have different durations.",
+      "page": 4,
+      "index": 9,
+      "width": 979,
+      "height": 801
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-001.webp",
+      "caption": "Figure 3: Joint hyperparameter selection for the TMP model. Heatmaps of (A) the Laplace approximation to the log marginal likelihood (LAP) and (B) the variance accounted for (VAF), evaluated over a grid of time-grid resolution T ∈ {10, 15, 20, 25, 30, 35, 40} and number of primitives K ∈ {2, 5, 8, 11, 14, 17, 20}. For every (T,K) cell, an independent TMP model was trained from scratch under the procedure described in the text (PCA initialization, 100 ADAM steps followed by 30 L-BFGS steps). The red square marks the LAP-maximizing configuration (K = 5, T = 35), which we adopted for all subsequent analyses. VAF saturates well before this optimum, indicating that further increases in K or T improve raw fit only marginally and are penalized by the marginal likelihood. White squares indicate infinite LAP values.",
+      "page": 6,
+      "index": 1,
+      "width": 979,
+      "height": 457
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-002.webp",
+      "caption": "Figure 4: Representative keleton poses for each of the 16 daily activity categories. Each panel shows a single frame extracted from one movement segment, rendered using the 16-joint positions estimated by MMPose following the Human3.6M skeleton convention. The poses illustrate the diversity of body configurations across the selected motion categories, ranging from upright standing activities (walking, hand waving) to ground-level postures (crawling, cross-legged sitting). Note that many activities are visually distinguishable from their static body configuration alone, even without temporal information.",
+      "page": 11,
+      "index": 2,
+      "width": 979,
+      "height": 1213
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-011.webp",
+      "caption": "Figure 5: Cross-validated classification performance and confusion matrix across three movement analysis strategies. (A–D) Five-fold stratified cross-validation using Random Forest (200 estimators) on 16 motion categories. Violin plots show the distribution of scores across folds; diamond markers indicate the mean. (A) Accuracy. (B) Precision (macro-averaged). (C) Recall (macro-averaged). (D) F1-score (macro-averaged). (E–G) Row-normalized confusion matrices for each strategy: (E) Legendre polynomial coefficients (degree 0, 48 features), (F) TMP weights (5 primitives, 240 features), (G) autoencoder latent embeddings (32 features). Legendre and TMP achieve comparable classification accuracy, both substantially outperforming the autoencoder.",
+      "page": 12,
+      "index": 11,
+      "width": 979,
+      "height": 538
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-006.webp",
+      "caption": "Figure 6: Performance of Legendre coefficients classification for different scenarios. (A) Legendre polynomial degree selection. Classification accuracy (train, test, and 5-fold cross-validated mean ± std) as a function of the maximum polynomial degree M . The optimal degree is M = 0 (dashed line), which achieves the highest test and cross-validated accuracy with the smallest train-test gap. Higher degrees add parameters without improving generalization. (B) Posture removal experiment. Red: Legendre classification on original data (posture + dynamics) across polynomial degrees 0–9. Blue: classification after subtracting the temporal mean from each individual segment, retaining only the dynamic component. Although dynamics-only accuracy remains well above chance (0.45 at degree 0 versus a chance level of 1/16=0.06), it falls behind the posture-only and original features, indicating that while inter-segment dynamics carry some discriminative information, removing category-averaged posture(temporal mean) severely degrades classification. Horizontal reference lines show cross-validated accuracy for TMP weights (green dashed, 97.1%) and posture-only features (orange dotted, 95.9%). Removing posture causes a substantial drop in accuracy that higher-order dynamics cannot fully recover, confirming that static body configuration is the dominant discriminative feature.",
+      "page": 14,
+      "index": 6,
+      "width": 548,
+      "height": 567
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-003.webp",
+      "caption": "Figure 7: Intrinsic dimensionality of the three feature spaces under unsupervised and supervised reduction. (A) cumulative variance explained under PCA as a function of the number of principal components. Legendre and autoencoder features concentrate their variance in 6 and 4 components (90% threshold), respectively, while TMP features require 69 components. (B) cumulative variance explained under LDA. The number of discriminant components for 90% between-class variance drops to 5 for Legendre, 5 for the autoencoder, and 7 for TMPs. The ten-fold reduction for TMPs (69 to 7) indicates that most of the variance in the TMP feature space is within-class variation irrelevant to activity discrimination.",
+      "page": 15,
+      "index": 3,
+      "width": 979,
+      "height": 384
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-013.webp",
+      "caption": "Figure 8: Visualization of feature spaces under three dimensionality reduction methods. Each column corresponds to one feature extraction strategy (left: Legendre polynomial coefficients, center: TMP weights, right: autoencoder latent embeddings). (A) projection onto the first two principal components. (B) t-SNE embeddings (perplexity = min(30, n − 1)). (C) projection onto the first two linear discriminant components. The Legendre feature space exhibits the cleanest category separation across all three visualization methods. Colors denote motion categories.",
+      "page": 16,
+      "index": 13,
+      "width": 979,
+      "height": 833
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-008.webp",
+      "caption": "Figure 9: L1-regularized feature selection. (A) Upper panel: classification accuracy (train and test) as a function of the regularization parameter C for L1-penalized LinearSVC applied to TMP weights; lower panel: number of non-zero features retained at each C value. The dashed line marks the optimal C = 0.5. (B) Feature importance ranking: horizontal bars show the mean absolute L1 coefficient for each of the 20 top-ranked features, with coordinates of nine joints (wrists, elbows, neck, ankles, knees) dominating the ranking. (C) Row-normalized classification confusion matrix using only the first movement primitive weights of the top 9 joints, demonstrating that this compact subset preserves high classification accuracy. (D) Row-normalized confusion matrix after excluding all movement primitive weights of the top 9 joints, showing a substantial drop in performance across nearly all categories. The contrast between (C) and (D) confirms that the identified joints carry discriminative information that is both sufficient and not recoverable from the remaining skeleton.",
+      "page": 18,
+      "index": 8,
+      "width": 979,
+      "height": 833
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-010.webp",
+      "caption": "Figure 10: Deviation of TMP weights from the global mean for top-ranked discriminative channels. For each of the seven channels identified by L1 selection (Neck_z, LWrist_z, RWrist_z, LAnkle_z, RAnkle_z, RElbow_y, LElbow_y), bars show the deviation of each motion category’s mean first movement primitive weight from the global mean across all categories (± standard deviation across segments). Positive deviations indicate that the weight for a given activity exceeds the cross-category average; negative deviations indicate it falls below. Each channel shows large deviations for a distinct subset of activities while remaining near zero for others, demonstrating that the nine selected joints contribute complementary discriminative information. Upper-limb channels (wrists, elbows) deviate most for arm-positioning activities, while lower-limb channels (ankles) deviate most for locomotor activities. Narrow error bars indicate high within-category consistency across participants.",
+      "page": 19,
+      "index": 10,
+      "width": 979,
+      "height": 494
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-012.webp",
+      "caption": "Figure 11: Per-segment reconstructed versus original joint trajectories for walking. Each panel shows one Cartesian coordinate (x, y, z; rows) for one joint (RKnee, LWrist, RAnkle) over the duration of a single walking segment, reconstructed from that segment’s own learned features. Black: original trajectory. Blue: TMP reconstruction, producing smooth curves that capture the temporal dynamics. Green: Legendre degree-zero reconstruction, producing a constant value at the temporal mean of the channel. Orange: autoencoder reconstruction, also producing a flat output near the channel mean. TMP is the only strategy that preserves temporal structure at the individual-segment level.",
+      "page": 20,
+      "index": 12,
+      "width": 976,
+      "height": 654
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-004.webp",
+      "caption": "Figure 12: Per-segment reconstructed versus original joint trajectories for jumping jacks. Same format as Fig 11. The large-amplitude oscillations characteristic of jumping jacks are captured by TMP reconstructions (blue) but are entirely absent from Legendre (green) and autoencoder (orange) reconstructions.",
+      "page": 21,
+      "index": 4,
+      "width": 976,
+      "height": 654
+    },
+    {
+      "url": "assets/figures/arxiv/2607.13216v1/fig-005.webp",
+      "caption": "Figure 13: Per-segment reconstruction metrics across 16 activity categories. Each segment is reconstructed from its own learned features. (A) Variance accounted for (VAF). TMP reconstructions (blue) achieve positive VAF across all categories (0.15–0.95). Legendre degree-zero reconstructions (green) yield VAF ≈ 0 across all categories (bars on the axis), as the degree-zero reconstruction equals the temporal mean by construction. Autoencoder reconstructions (orange) yield catastrophically negative VAF (off-scale values indicated by orange triangles with numerical labels). (B) Mean per-joint position error (MPJPE). TMP achieves the lowest error across all categories. (C) Velocity-RMSE. The three strategies are more comparable on this metric, with the largest differences for high-dynamic activities. Bars show the mean across segments; error bars denote ±1 standard deviation.",
+      "page": 22,
+      "index": 5,
+      "width": 727,
+      "height": 1104
+    }
+  ]
+}

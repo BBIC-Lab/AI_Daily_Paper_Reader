@@ -1,0 +1,418 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-18T20:37:40.899548+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 44,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 79,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 16,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 11,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 17
+  },
+  "deep_dive": [
+    {
+      "id": "2607.13850v1",
+      "source": "arxiv",
+      "title": "Bias Correction for Relative Importance Measures via Doubly Stochastic Reallocation",
+      "abstract": "Relative importance (RI) analysis quantifies each predictor's contribution to the explained variance of a linear model. General Dominance (GD), a widely used benchmark, requires evaluating $2^p-1$ sub-models and becomes computationally intensive as the number of predictors $p$ grows. Orthogonalization-Reallocation Measures (ORMs), including Relative Weights (RW) and the Green--Carroll--DeSarbo measure (GCD), provide efficient alternatives by assigning importance to orthogonalized predictors and reallocating it to the original predictors. Each, however, has a structural limitation: RW exhibits a leveling problem that compresses differences among predictor importance values, whereas GCD exhibits an a priori bias that systematically favors certain predictors before a response is observed. We show that this bias is governed by the row-sums of the reallocation matrix. A closed-form analysis under compound symmetry relates the reallocations underlying GCD and RW to a GD-based benchmark, showing that homogeneous multicollinearity alone does not induce an a priori bias and formalizing RW's leveling problem as excess shrinkage relative to the benchmark. We correct GCD's bias by mapping its reallocation matrix to a doubly stochastic matrix using the Method of Alternating Projections (MAP) and the Sinkhorn--Knopp (SK) algorithm, yielding GCD-MAP and GCD-SK. Comprehensive simulations show that GCD-SK removes the structural row-sum bias, substantially improves upon GCD, and often outperforms RW when the first principal component is dominant. We conclude with empirical guidelines for selecting among the measures.",
+      "authors": [
+        "Tien-En Chang",
+        "Argon Chen"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-07-15T13:58:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.13850v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "proposes bias correction for relative importance measures that compute feature importance weights",
+      "llm_evidence_cn": "提出相对重要性度量的偏差校正，计算特征重要性权重",
+      "llm_evidence": "提出相对重要性度量的偏差校正，计算特征重要性权重",
+      "canonical_evidence": "提出相对重要性度量的偏差校正，计算特征重要性权重",
+      "llm_tldr_en": "Corrects biases in relative importance measures for linear model feature weighting.",
+      "llm_tldr_cn": "纠正线性模型特征加权的相对重要性度量中的偏差。",
+      "llm_tldr": "纠正线性模型特征加权的相对重要性度量中的偏差。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.12546v2",
+      "source": "arxiv",
+      "title": "Comparison of Dimension Reduction Methods for EEG Seizure Detection Using Autonomous AI-Driven Optimization",
+      "abstract": "Automated epileptic seizure detection from multichannel electroencephalography (EEG) benefits from dimension reduction to obtain compact, discriminative representations. We compare four signal-space dimension reduction methods, Principal Component Analysis (PCA), Dynamical Component Analysis (DyCA), Dynamic Mode Decomposition (DMD), and Average Volatility Dimensioning (AVD), for deep learning-based seizure detection on the Temple University Hospital Seizure Corpus (TUSZ v2.0.3). To enable a comparison of optimal combinations of representation and classifier, an autonomous AI-driven research framework independently optimizes architecture and hyperparameters for each representation. Measured by test ROC-AUC, the variance-based methods AVD (88.28%) and PCA (85.98%) paired with their respective optimal classifiers outperform the dynamics-based methods DMD (74.56%) and DyCA (74.85%) by over 10%, with AVD also showing the smallest validation-to-test gap. The best-performing classifier architecture differs across representations, indicating that representation and classifier should be optimized jointly. Our results highlight the importance of the input representation for EEG seizure detection and indicate the viability of autonomous AI-driven experimentation in biomedical signal processing.",
+      "authors": [
+        "Annika Stiehl",
+        "Vishal Kagade",
+        "Nicolas Weeger",
+        "Nicole Ille",
+        "Stefan Geißelsöder",
+        "Christian Uhl"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-14T09:15:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.12546v2",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "dimension reduction for EEG to obtain compact representations",
+      "llm_evidence_cn": "脑电图降维以获得紧凑表示",
+      "llm_evidence": "脑电图降维以获得紧凑表示",
+      "canonical_evidence": "脑电图降维以获得紧凑表示",
+      "llm_tldr_en": "Compares PCA, DyCA, DMD, and AVD for EEG seizure detection representation learning.",
+      "llm_tldr_cn": "比较PCA、DyCA、DMD和AVD用于脑电图癫痫检测表示学习。",
+      "llm_tldr": "比较PCA、DyCA、DMD和AVD用于脑电图癫痫检测表示学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.12930v1",
+      "source": "arxiv",
+      "title": "Optimal photostimulation selection for iterative activity maps",
+      "abstract": "All-optical two-photon holographic optogenetics enables causal circuit mapping by stimulating defined neurons or ensembles while imaging population activity. Yet exhaustive connectivity mapping remains experimentally prohibitive because of combinatorial complexity, tissue heating, photodamage, and experimental time. We present OPhELIA (Optimal Photostimulation sElection for Iterative Activity maps), a Bayesian framework for selecting informative perturbations under limited trial budgets. OPhELIA combines Beta-Bernoulli connectivity inference with an ambiguity-based acquisition heuristic and learned priors derived from pre-stimulation neural activity, augmenting active learning and compressed sensing. In standalone simulations and in vivo larval zebrafish visuomotor experiments, OPhELIA with active learning improves trial-efficient approximation of exhaustive functional connectomes. In combinatorial in vivo experiments, OPhELIA with compressed sensing most closely recovers an exhaustive connectome using only 5% of trials. These results establish OPhELIA as a sample-efficient framework for causal connectomics.",
+      "authors": [
+        "Jacob J. Morra",
+        "Kaitlyn E. Fouke",
+        "Owen Traubert",
+        "Eva A. Naumann"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "q-bio.QM"
+      ],
+      "published": "2026-07-14T16:01:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.12930v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Bayesian framework for selecting photostimulation to map neural circuits",
+      "llm_evidence_cn": "用于选择光刺激以绘制神经回路的贝叶斯框架",
+      "llm_evidence": "用于选择光刺激以绘制神经回路的贝叶斯框架",
+      "canonical_evidence": "用于选择光刺激以绘制神经回路的贝叶斯框架",
+      "llm_tldr_en": "Optimal photostimulation selection for iterative neural activity mapping",
+      "llm_tldr_cn": "用于迭代神经活动映射的最优光刺激选择",
+      "llm_tldr": "用于迭代神经活动映射的最优光刺激选择",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.12945v1",
+      "source": "arxiv",
+      "title": "RecRec: Latent Interests Recursive Reasoning for Sequential Recommendation",
+      "abstract": "Sequential recommender systems rely on a single forward pass to encode user interaction histories and predict the next item. Increasing inference-time computation through latent reasoning, with the model proceeding step by step before the final prediction, has been recently explored in sequential recommendation with promising results. However, how to structure the reasoning process for sequential recommendation remains an open question. Existing approaches couple reasoning and prediction in a single $d$-dimensional state, limiting reasoning depth and often relying on multi-stage pipelines with reinforcement learning (RL). We propose RecRec (Recursive Reasoning for Recommendation), an RL-free framework that decouples reasoning from prediction, overcoming the fixed $d$-dimensional state bottleneck of prior methods. RecRec consists of a Context Compressor and a Recursive Reasoner, trained in two simple supervised stages. The Context Compressor distills the backbone's hidden states into a small set of latent interests, with an Interest Diversity Regularizer encouraging each interest to capture a distinct aspect of user behavior. The Recursive Reasoner then refines these interests by reasoning in a separate intermediate latent space. Deep supervision lets the reasoning depth be freely adjusted at inference without retraining. On four real-world datasets, RecRec outperforms state-of-the-art reasoning-enhanced methods, and on three of four datasets, gains extend past the training-time depth. Our findings point to a decoupled, multi-vector recipe that unleashes latent reasoning from the single-state bottleneck of prior methods, suggesting reasoning-state structure as a design axis to explore further in sequential recommendation.",
+      "authors": [
+        "Wenhao Deng",
+        "Junchen Fu",
+        "Hanwen Du",
+        "Alexandros Karatzoglou",
+        "Ioannis Arapakis",
+        "Hangjun Guo",
+        "Kaiwen Zheng",
+        "Yongxin Ni",
+        "Joemon M. Jose"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-14T16:28:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.12945v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes recursive reasoning framework for sequential recommendation predicting user behavior over time",
+      "llm_evidence_cn": "提出递归推理框架用于序列推荐，随时间预测用户行为",
+      "llm_evidence": "提出递归推理框架用于序列推荐，随时间预测用户行为",
+      "canonical_evidence": "提出递归推理框架用于序列推荐，随时间预测用户行为",
+      "llm_tldr_en": "RecRec decouples reasoning from prediction for sequential recommendation, improving inference.",
+      "llm_tldr_cn": "RecRec将推理与预测解耦用于序列推荐，提升推理效果。",
+      "llm_tldr": "RecRec将推理与预测解耦用于序列推荐，提升推理效果。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.13216v1",
+      "source": "arxiv",
+      "title": "Classifying daily activities needs posture, reconstructing them needs motion",
+      "abstract": "Humans recognize movements effortlessly, even from noisy and complex visual input. But what information in the stimulus allows humans to rapidly classify movements? No framework has systematically compared different strategies of movement analysis to address this question. Here, we used videos of 16 daily activities from the MoVi dataset and compared three strategies: Temporal Movement Primitives (TMPs), which decompose movements into weighted sums of temporally smooth basis functions; Legendre polynomial coefficients, which project joint-coordinate trajectories onto an orthogonal polynomial basis; and Autoencoder latent embeddings. Legendre coefficients and TMPs achieved the highest classifier accuracy, followed by autoencoders. We found two discriminative features for movement classification. The most informative is the general posture of the body, the average spatial configuration that distinguishes one activity from another. Additionally, we identified 9 critical joints that are most predictive for movement classification. Interestingly, good classification accuracy did not automatically lead to good movement generation: when we reconstructed movements for each activity, TMPs preserved the temporal dynamics and produced perceptually natural motion, whereas reconstructions from Legendre coefficients retained only the average posture and appeared frozen. These results reveal a dissociation in how movement information is organized: the static configuration of the body suffices to classify what activity is performed, but the temporal dynamics of movement are required to reconstruct how it unfolds. This distinction clarifies which features the visual system may rely upon for rapid action recognition, and suggests that postural features could enable efficient movement screening in clinical applications, while dynamic information remain essential wherever movement generation is the goal.",
+      "authors": [
+        "Arefeh Farahmandi",
+        "Gunnar Blohm"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "cs.AI",
+        "cs.IR",
+        "cs.LG"
+      ],
+      "published": "2026-07-14T19:21:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.13216v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "compares autoencoder and other representations for movement classification",
+      "llm_evidence_cn": "比较自编码器等表示用于动作分类",
+      "llm_evidence": "比较自编码器等表示用于动作分类",
+      "canonical_evidence": "比较自编码器等表示用于动作分类",
+      "llm_tldr_en": "Compares Temporal Movement Primitives, Legendre coefficients, and autoencoders for action analysis",
+      "llm_tldr_cn": "比较时间运动基元、勒让德系数和自编码器用于动作分析",
+      "llm_tldr": "比较时间运动基元、勒让德系数和自编码器用于动作分析",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.12364v1",
+      "source": "arxiv",
+      "title": "Lost in Visual Translation: A VLM-Assisted Perceptual-Semantic Coherence Framework for EEG-to-Image Reconstruction",
+      "abstract": "EEG-to-image evaluation should distinguish visual fidelity from recoverable meaning. Yet EEG-derived reconstructions are blurry, distorted, and low-detail, causing SSIM, LPIPS, and CLIP to penalize semantically recoverable outputs or reward plausible but incorrect ones. We analyze 6,855 ground-truth/reconstruction pairs from ATM, ENIGMA, BrainVis, and DreamDiffusion using semantic probes, caption harshness and blind-spot rates, and controlled degradations. Pixel metrics show near-zero correlation with semantic consistency, while representation metrics conflate perceptual and semantic errors. We therefore introduce a BCI-aware framework in which four VLMs assess image pairs through structured questions, producing Tolerant Perceptual Alignment Scores (T-PAS) and Tolerant Semantic Alignment Scores (T-SAS). Their consensus is distilled into the BCI-Coherence Score (BCS), a compact evaluator achieving a T-PAS MAE of 0.079 (r = 0.700) and a T-SAS MAE of 0.082 (r = 0.850) on our data. Human validation shows highly reliable joint coherence judgments, with Cohen's kappa = 0.882 +/- 0.174 and Krippendorff's alpha = 0.882, supporting perceptual-semantic recoverability over generic visual similarity. Code and resources are available at https://sukt03.github.io/BCS/.",
+      "authors": [
+        "Sukriti Tiwari",
+        "BHVSP Subrahmanyam",
+        "Nidhi Goyal",
+        "Sai Amrit Patnaik"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-14T05:40:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.12364v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "EEG-to-image reconstruction evaluation with VLMs for neural decoding",
+      "llm_evidence_cn": "使用VLM评估EEG到图像重建，用于神经解码",
+      "llm_evidence": "使用VLM评估EEG到图像重建，用于神经解码",
+      "canonical_evidence": "使用VLM评估EEG到图像重建，用于神经解码",
+      "llm_tldr_en": "Introduces a VLM-assisted framework to evaluate semantic coherence in EEG-to-image reconstructions.",
+      "llm_tldr_cn": "提出基于VLM的框架评估EEG到图像重建的语义一致性。",
+      "llm_tldr": "提出基于VLM的框架评估EEG到图像重建的语义一致性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.12195v1",
+      "source": "arxiv",
+      "title": "Comparing Semantic Navigation in Humans and Large Language Models using Natural Language Processing",
+      "abstract": "Semantic memory retrieval can be conceptualized as navigation through conceptual space. We compared semantic search dynamics between humans and three large language models (GPT-4o, Gemini-2.5-Pro, Claude-Sonnet-4.5) using verbal fluency data. By applying trajectory-based NLP metrics to the items generated by 82 human participants and LLM output across eight temperature settings, we quantified three complementary dimensions: entropy (step size predictability), distance to next (successive semantic steps), and distance to centroid (global dispersion). Humans exhibited higher entropy, larger semantic steps and broader dispersion than all LLMs, indicating more variable and exploratory search. Temperature tuning produced only partial alignments, as individual metrics matched between humans and LLMs at specific settings, but no configuration reproduced the complete human profile (in all dimensions). These findings suggest that human semantic search implements a distinctive balance between local exploitation and global exploration that current model architectures fail to reproduce.",
+      "authors": [
+        "Gabriel Paris-Colombo",
+        "Rodrigo M. Cabral-Carvalho",
+        "Felipe D. Toro-Hernández"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-13T22:38:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.12195v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "trajectory-based analysis of sequential semantic steps in verbal fluency",
+      "llm_evidence_cn": "基于轨迹的言语流畅性顺序语义步长分析",
+      "llm_evidence": "基于轨迹的言语流畅性顺序语义步长分析",
+      "canonical_evidence": "基于轨迹的言语流畅性顺序语义步长分析",
+      "llm_tldr_en": "Compares human and LLM semantic search dynamics using trajectory-based metrics on sequential item generation.",
+      "llm_tldr_cn": "使用轨迹度量比较人类和LLM在顺序生成项目中的语义搜索动态。",
+      "llm_tldr": "使用轨迹度量比较人类和LLM在顺序生成项目中的语义搜索动态。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.12369v1",
+      "source": "arxiv",
+      "title": "Nonparametric Multi Change Point Detection for Markov Chains via Adaptive Clustering",
+      "abstract": "Offline change point detection tries to detect time points of distribution change in a given data sequence; and is now routinely used in signal processing, speech processing, climatology etc. Despite this broad applicability across economics, computer science, and planetary sciences, rigorous, nonparametric techniques for change point detection with non-independent and identically distributed (i.i.d.) datasets has remained elusive. This paper establishes such guarantees by proposing a non-parametric clustering algorithm which can accurately obtain the change points from a given Markovian dataset of length $n$. It does so by bridging together two different components of mathematical statistics; Rademacher complexities of Markov chains, and adaptive clustering via penalisation. Our first result uses recent advances in Rademacher complexities of regenerating Markov chains to derive a Dvoretzky Kiefer Wolfowitz (DKW) type inequality for the empirical distribution of the Markov chain. We then use this to show that an adaptive clustering algorithm recovers the correct change points for a Markovian sequence. We establish the tightness of our rates by showing that they essentially coincide with the best known rates for i.i.d. data. We end the paper by discussing the computational considerations of the problem.",
+      "authors": [
+        "Imon Banerjee",
+        "Jiaqi Lei",
+        "Sanjay Mehrotra"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME",
+        "math.ST"
+      ],
+      "published": "2026-07-14T05:41:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.12369v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "nonparametric change point detection in sequential Markovian data",
+      "llm_evidence_cn": "序列马尔可夫数据中的非参数变点检测",
+      "llm_evidence": "序列马尔可夫数据中的非参数变点检测",
+      "canonical_evidence": "序列马尔可夫数据中的非参数变点检测",
+      "llm_tldr_en": "Proposes nonparametric clustering for change point detection in Markov chains",
+      "llm_tldr_cn": "提出非参数聚类方法用于马尔可夫链变点检测",
+      "llm_tldr": "提出非参数聚类方法用于马尔可夫链变点检测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.12382v1",
+      "source": "arxiv",
+      "title": "Differentiable Clone-Structured Causal Graphs for End-to-End Cognitive Map Learning from Image Sequences",
+      "abstract": "How can an agent build a structured map of its world from nothing but an ongoing sequence of raw sensory input and its own movements, especially when natural variation means exact sensory patterns rarely repeat? The Clone-Structured Causal Graph algorithm (CSCG), a normative hippocampus model, shows how an interpretable map can be learned from aliased observations. However, CSCG requires a predefined discrete alphabet, and its expectation-maximization formulation is not easily combined with existing neural network modules, preventing the end-to-end processing of raw image sequences. We remove this barrier by reformulating CSCG as a single, fully differentiable module, gradCSCG, and coupling it to a learned vector-quantized variational autoencoder (VQ-VAE) perceptual front-end. A soft emission forward pass allows the map-learning objective to flow back into perception, while a set of loss-balancing mechanisms mitigates module collapse during joint training. We demonstrate, first, that gradient training reproduces CSCG's results on original symbolic grid worlds by recovering room topology from heavily aliased observations. Second, we show that map recovery remains robust on MNIST image sequences, where each visit to a location yields a newly sampled image of its assigned digit. Across four heavily aliased environments, the end-to-end pipeline successfully uncovers the underlying adjacency graph with high edge precision and recall, directly from visual input. This work provides a proof of principle that CSCG can serve as a composable building block in a deep learning architecture.",
+      "authors": [
+        "Arash Nikzad",
+        "Sasan Sarbishegi",
+        "Ali Dasmeh",
+        "Muhammad Asif",
+        "Parsa Gharavi",
+        "Erik Husom",
+        "Sagar Sen",
+        "Andrew B. Lehr",
+        "Olivier Penacchio",
+        "Ana Clemente",
+        "Tristan M. Stöber"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "q-bio.NC"
+      ],
+      "published": "2026-07-14T05:54:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.12382v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "End-to-end learning of causal graphs from image sequences",
+      "llm_evidence_cn": "从图像序列端到端学习因果图",
+      "llm_evidence": "从图像序列端到端学习因果图",
+      "canonical_evidence": "从图像序列端到端学习因果图",
+      "llm_tldr_en": "Differentiable cognitive map learning from raw image sequences using clone-structured causal graphs",
+      "llm_tldr_cn": "可微认知地图学习从原始图像序列使用克隆结构因果图",
+      "llm_tldr": "可微认知地图学习从原始图像序列使用克隆结构因果图",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.12391v1",
+      "source": "arxiv",
+      "title": "ReDiTT: Retrieval Augmented Conditional Diffusion Transformers for Asynchronous Time Series",
+      "abstract": "We present a diffusion based model for asynchronous time series prediction, where the goal is to predict the next inter event time and event type. To address the inherent uncertainty of future events, we introduce ReDiTT, a retrieval augmented conditional diffusion transformer that operates in latent space. ReDiTT retrieves structurally similar latent sequences from a memory bank during both training and inference and incorporates them as reference conditions through cross attention. This retrieval based conditioning allows the model to attend to relevant temporal dynamics and provides global structural guidance for generation. As a result, ReDiTT stabilizes long horizon forecasting and improves sample diversity. Experiments on seven real world datasets demonstrate state of the art performance on next event prediction and long horizon forecasting. Our code is available at https://github.com/BorealisAI/ReDiTT.",
+      "authors": [
+        "Saiyue Lyu",
+        "Zhitian Zhang",
+        "Ruizhi Deng",
+        "Thibaut Durand"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-14T06:11:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.12391v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "diffusion model for asynchronous time series prediction",
+      "llm_evidence_cn": "用于异步时间序列预测的扩散模型",
+      "llm_evidence": "用于异步时间序列预测的扩散模型",
+      "canonical_evidence": "用于异步时间序列预测的扩散模型",
+      "llm_tldr_en": "Proposes ReDiTT, a retrieval-augmented diffusion transformer for asynchronous time series prediction.",
+      "llm_tldr_cn": "提出ReDiTT，一种检索增强的扩散Transformer用于异步时间序列预测。",
+      "llm_tldr": "提出ReDiTT，一种检索增强的扩散Transformer用于异步时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

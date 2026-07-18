@@ -1,0 +1,1760 @@
+Title: Bias Correction for Relative Importance Measures via Doubly Stochastic Reallocation
+
+URL Source: https://arxiv.org/pdf/2607.13850v1
+
+Published Time: Thu, 16 Jul 2026 01:07:14 GMT
+
+Number of Pages: 23
+
+Markdown Content:
+# BIAS CORRECTION FOR RELATIVE IMPORTANCE MEASURES VIA 
+
+# DOUBLY STOCHASTIC REALLOCATION 
+
+A P REPRINT 
+
+Tien-En Chang 
+
+Institute of Industrial Engineering National Taiwan University Taipei, Taiwan 
+
+f09622009@ntu.edu.tw 
+
+Argon Chen ∗
+
+Institute of Industrial Engineering National Taiwan University Taipei, Taiwan 
+
+achen@ntu.edu.tw 
+
+ABSTRACT 
+
+Relative importance (RI) analysis quantifies each predictor’s contribution to the explained vari-ance of a linear model. General Dominance (GD), a widely used benchmark, requires evaluating 
+
+2p − 1 sub-models and becomes computationally intensive as the number of predictors p grows. 
+
+Orthogonalization-Reallocation Measures (ORMs), including Relative Weights (RW) and the Green– Carroll–DeSarbo measure (GCD), provide efficient alternatives by assigning importance to orthog-onalized predictors and reallocating it to the original predictors. Each, however, has a structural limitation: RW exhibits a leveling problem that compresses differences among predictor importance values, whereas GCD exhibits an a priori bias that systematically favors certain predictors before a response is observed. We show that this bias is governed by the row-sums of the reallocation matrix. A closed-form analysis under compound symmetry relates the reallocations underlying GCD and RW to a GD-based benchmark, showing that homogeneous multicollinearity alone does not induce an a priori bias and formalizing RW’s leveling problem as excess shrinkage relative to the benchmark. We correct GCD’s bias by mapping its reallocation matrix to a doubly stochastic matrix using the Method of Alternating Projections (MAP) and the Sinkhorn–Knopp (SK) algorithm, yielding GCD-MAP and GCD-SK. Comprehensive simulations show that GCD-SK removes the structural row-sum bias, substantially improves upon GCD, and often outperforms RW when the first principal component is dominant. We conclude with empirical guidelines for selecting among the measures. 
+
+Keywords relative importance analysis · general dominance · orthogonalization-reallocation measures · a priori bias ·
+
+Sinkhorn–Knopp algorithm 
+
+1 Introduction 
+
+Relative importance (RI) analysis is critical for model interpretation in statistical modeling. Originating in quantitative behavioral and psychological research, RI defines a predictor’s importance as its proportionate contribution to the explained variance of the response [Johnson and LeBreton, 2004, Grömping, 2015]. Beyond mathematical attribution, RI allows decision makers to prioritize scarce organizational resources [Johnson and LeBreton, 2004]. For instance, in human resources, job supervisors utilize RI to determine which task or contextual performance dimensions are the primary drivers of overall job performance [Johnson, 2001]. Similarly, in marketing analytics, practitioners rely on RI to infer which customer satisfaction attributes most significantly influence the overall customer experience [Garver and Williams, 2020]. Assessing importance is straightforward when predictors are uncorrelated, as simple metrics like squared marginal correlations or squared standardized regression coefficients suffice. However, the analysis becomes challenging in the presence of multicollinearity. When predictors are correlated, their contributions to the response partially overlap, rendering simple metrics ambiguous. A standard method to address this challenge is General Dominance (GD) [Budescu, 
+
+> ∗
+
+Corresponding author. arXiv:2607.13850v1 [stat.ME] 15 Jul 2026 1993, Azen and Budescu, 2003], which provides a definitive solution by averaging a predictor’s incremental contribution across all possible combinatorial sub-models. Due to its comprehensiveness and theoretical rigor, GD is generally regarded as the most plausible measure of relative importance. However, its exponentially increasing complexity, requiring the evaluation of 2p − 1 models for p predictors, makes it computationally expensive when p grows. This computational barrier of GD has led to the development of Orthogonalization-Reallocation Measures (ORMs), a class of efficient alternatives. These methods first transform correlated predictors into orthogonal predictors whose importance is unambiguous due to their orthogonality, and then reallocate the importance of orthogonal predictors back to the original predictors. Examples include importance weights ( w2) [Johnson, 1966], the Green–Carroll–DeSarbo measure (GCD; δ2) [Green et al., 1978], and Relative Weights (RW; ε) [Johnson, 2000]. Among these, RW has gained popularity as a reliable and computationally efficient alternative to GD [LeBreton et al., 2004, Chao et al., 2008]. Consequently, RW has been applied across various contexts, including logistic regression [Tonidandel and LeBreton, 2010] and multivariate regression [LeBreton and Tonidandel, 2008, Hong and Chen, 2012]. The statistical significance of RW has been examined in depth by Tonidandel et al. [2009], while its extension to higher-order regression models is explored by LeBreton et al. [2013]. More recently, RW has been adapted to high-dimensional settings, where the number of predictors exceeds the sample size, showing competitive performance compared to methods such as the lasso [Tibshirani, 1996] in variable selection tasks [Shen and Chen, 2020, Chang and Chen, 2026]. Despite this widespread adoption, the theoretical foundations of ORMs remain contested. Notably, Thomas et al. [2014] argued that the original derivations of both RW and GCD are conceptually flawed and cautioned against their use, notwithstanding their close empirical agreement with GD. The ORM framework of Chang and Chen [2025] takes a different perspective: it sets aside the original rationales and views these methods simply as a common orthogonalization (Johnson’s minimal transformation) paired with different reallocation rules—correlation-based for RW and regression-based for GCD—asking instead when and why such combinations approximate GD, a question that, beyond simulation evidence, the RI literature has largely left unexamined. From this viewpoint, the empirical success of ORMs is something to be explained, and their failures something to be located in specific predictor correlation structures, rather than grounds for dismissal. Within this framework, two structural limitations have been identified [Chang and Chen, 2025]. RW suffers from the 
+
+leveling problem , which compresses differences among predictor importance values when the first principal component is dominant. GCD exhibits the a priori bias , systematically favoring particular predictors before the response is observed—driven by row-sum imbalance in its reallocation matrix. The latter also carries a practical cost: ever since GCD was found to underperform [Johnson, 2000], applied research has relied almost exclusively on RW, leaving regression-based reallocation effectively unused even where leveling undermines RW. Correcting the a priori bias thus restores a competitive regression-based alternative precisely where RW is weakest. This paper makes three contributions: • We provide a self-contained formal characterization of the a priori bias. We show that the expected normalized importance assigned by an ORM is determined by the row-sums of its reallocation matrix, and relate GCD’s row-sums to predictor Variance Inflation Factors (VIFs). In contrast, GD assigns every predictor an expected normalized importance of 1/p . For GCD, we further show that these row-sums are weighted averages of predictor VIF ratios. • We derive closed-form expressions for the GD-based (GDA), regression-based (RegPA, underlying GCD), and correlation-based (CorPA, underlying RW) reallocations under compound symmetry. This analytical benchmark shows that severe but homogeneous multicollinearity does not induce an a priori bias in GCD, while CorPA applies stronger shrinkage toward equal importance than GDA, providing an analytical illustration of RW’s leveling problem. • We correct the a priori bias by mapping the RegPA matrix to a nearby doubly stochastic matrix. We consider the Method of Alternating Projections (MAP) [Von Neumann, 1949] and the Sinkhorn–Knopp (SK) algo-rithm [Sinkhorn and Knopp, 1967], yielding the corrected measures GCD-MAP and GCD-SK. Comprehensive simulations show that GCD-SK substantially improves upon uncorrected GCD and provides a robust alternative to RW across diverse predictor correlation structures. The remainder of this paper is organized as follows. Section 2 reviews GD and the ORM framework. Section 3 characterizes the a priori bias, derives closed-form ORM expressions under compound symmetry, develops the proposed corrections, and provides a numerical illustration. Section 4 evaluates the methods through comprehensive Monte Carlo simulations and presents practical guidelines. Finally, Section 5 summarizes the findings and discusses future research directions. 22 Relative Importance Measures 
+
+Let X = [ x1, . . . , x p] be an n × p matrix of predictors and y an n × 1 response vector. We assume that X has full column rank and that all predictors xi and the response y are normalized to have zero mean and unit ℓ2 norm. 
+
+2.1 General Dominance 
+
+General Dominance [Budescu, 1993, Azen and Budescu, 2003] quantifies a predictor’s importance by averaging its incremental contribution in predicting y across all possible combinatorial sub-models, providing a comprehensive perspective. Specifically, the squared multiple correlation R2 
+
+> y·X
+
+is used to assess the contribution when all predictors X
+
+are used in predicting y. Formally, GD of xi (with respect to y), denoted by Di, can be defined as the weighted average of all possible increments: 
+
+Di = 1
+
+p
+
+X 
+
+> S⊆P\{ i}
+
+1
+
+ p−1
+
+> |S|
+
+
+
+R2 
+
+> y·XS∪{ i}
+
+− R2
+
+> y·XS
+
+
+
+(1) where P = {1, . . . , p } is a predictor index set, S is a subset of predictor indices, | · | denotes the cardinality of a set, 
+
+S ⊆ P \ { i} denotes all possible subsets excluding the index of predictor i, and XS denotes a subset of predictors corresponding to indices S. It is worth noting that the concept of GD coincides with the Shapley value [Shapley, 1953], which originates from game theory and has recently been used in the context of explainable machine learning. However, GD becomes computationally intensive as the number of predictors increases because it requires calculations for 2p − 1
+
+sub-models. 
+
+2.2 Orthogonalization-Reallocation Measures 
+
+Chang and Chen [2025] introduced a unified framework for Orthogonalization-Reallocation Measures, decomposing them into two sequential steps: (1) Orthogonalization, and (2) Reallocation. In the first step, the original predictor matrix 
+
+X is transformed into an orthogonal predictor matrix ˜Z = [˜ z1, . . . , ˜zp], satisfying ˜Z⊤ ˜Z = Ip. Because the orthogonal predictors are uncorrelated, their individual contributions to the response y are unambiguous and are quantified using their squared marginal correlations ρ2˜zj y . These values define the importance of each orthogonal predictor. In the second step, the importance of the orthogonal predictors is reallocated back to the original predictors. This process is governed by a reallocation matrix A ˜Z ∈ Rp×p, where each entry a ˜Zij represents the proportion of importance from ˜zj attributed to xi. The resulting ORM importance estimate for each xi is given by: 
+
+D ˜ZA,i =
+
+> p
+
+X
+
+> j=1
+
+a ˜Zij ρ2˜zj y and D ˜ZA = [ D ˜ZA, 1, . . . , D ˜ZA,p ]⊤. (2) 
+
+Orthogonalization Methods Several orthogonalization methods are available, including principal component analysis (PCA), Gram–Schmidt, and the minimal transformation proposed by Johnson [1966]. The minimal transformation, in particular, minimizes the squared distance between the orthogonal predictors and the original predictors: 
+
+OJ ( ˜Z) = Tr 
+
+
+
+( ˜Z − X)⊤( ˜Z − X)
+
+
+
+, (3) where Tr( ·) denotes the trace of a matrix. The minimizer of this optimization problem is 
+
+Z = X(X⊤X)−1/2. (4) 
+
+Reallocation Methods The reallocation step determines how the importance of orthogonal predictors is redistributed back to the original predictors. Based on the unified ORM formulation in Eq. (2) , Chang and Chen [2025] summarized several reallocation methods, described below. These methods are defined for an arbitrary orthogonal predictor matrix 
+
+˜Z:• Identity reallocation (IdA): 
+
+a ˜Zij = IdA ˜Zij =
+
+1, if i = j, 
+
+0, otherwise. (5) This method simply retains the orthogonal predictor’s importance without redistribution. 3• Regression-based proportional reallocation (RegPA): 
+
+a ˜Zij = RegPA ˜Zij = γ2˜Z,ij 
+
+Ppk=1 γ2˜Z,kj 
+
+, (6) where γ ˜Z,ij is the coefficient of xi in regressing ˜zj on all x1, . . . , x p.• Correlation-based proportional reallocation (CorPA): 
+
+a ˜Zij = CorPA ˜Zij = ℓ2˜Z,ij 
+
+Ppk=1 ℓ2˜Z,kj 
+
+, (7) where ℓ ˜Z,ij denotes the marginal (Pearson) correlation between ˜zj and xi.• GD-based reallocation (GDA): 
+
+a ˜Zij = GDA ˜Zij = Di(˜ zj , X ), (8) where Di(˜ zj , X ) is the GD value of xi in regressing ˜zj on all x1, . . . , x p. This method was proposed by Chang and Chen [2025] as a theoretically ideal reallocation, as it best captures the contribution of xi to the variance explained in ˜zj . While GDA is computationally intractable for large p, it serves as a benchmark for evaluating the performance of practical ORM methods. 
+
+Desirable Properties of Reallocation Matrices Under the ORM framework, a reallocation matrix A ˜Z should satisfy several key properties: 1. Non-negativity: 
+
+a ˜Zij ≥ 0, ∀i, j = 1 , . . . , p. (9) This ensures interpretability, as negative allocations of importance are not meaningful. 2. Column-sums equal to one: pX
+
+> i=1
+
+a ˜Zij = 1 , ∀j = 1 , . . . , p. (10) This ensures that the total importance of each orthogonal predictor is fully distributed across the original predictors, i.e., Ppi=1 D ˜ZA,i = Ppi=1 (Ppj=1 a ˜Zij ρ2˜zj y ) = Ppj=1 ρ2˜zj y = R2 
+
+> y·X
+
+.3. Row-sums equal to one: pX
+
+> j=1
+
+a ˜Zij = 1 , ∀i = 1 , . . . , p. (11) This condition will be shown in the next section to prevent an ORM from systematically favoring particular predictors on average across possible responses. Non-negativity ensures that the reallocations remain interpretable, whereas unit column-sums preserve the total explained variance. As shown in the next section, unit row-sums characterize the absence of the a priori bias under the response-generating framework considered here. A nonnegative matrix with unit row- and column-sums is doubly stochastic. Empirical studies by Chang and Chen [2025] show that the minimal transformation Z yields the most robust results across a variety of settings. Therefore, this paper will adopt the minimal transformation Z as the default orthogonaliza-tion method. For notational simplicity, we drop the superscript ˜Z when referring to the reallocation matrix and ORM. When paired with the minimal transformation, the most common ORMs adopted in the literature are summarized in Table 1. Table 1: Existing ORMs using the minimal transformation Z as the orthogonalization method. Reallocation Method Corresponding ORM Reference IdA w2 Johnson [1966], Chang and Chen [2026] RegPA GCD; δ2 Green et al. [1978] CorPA RW; ε Johnson [2000], Genizi [1993], Shen and Chen [2020] 43 The A Priori Bias and Its Correction 
+
+This section first characterizes the a priori bias in terms of the expected importance assigned across possible responses and relates GCD’s bias to VIF-induced row-sum imbalance in the RegPA matrix. We then use compound symmetry as an analytical benchmark to distinguish the a priori bias from multicollinearity itself and to compare the reallocation behavior of GDA, RegPA, and CorPA. Finally, we develop two corrections based on double stochasticity and illustrate their effects numerically. 
+
+3.1 Characterization of the A Priori Bias 
+
+We characterize the a priori bias by considering expected importance across all possible systematic responses while holding the predictor correlation structure fixed. Throughout this section, a subscript 0 denotes a random quantity. We first express the response in terms of an orthogonal basis: 
+
+y0 = z⊤ 
+
+> 0
+
+u0 + ϵ0, (12) where z0 ∼ Np(0 , I p), ϵ0 ∼ N (0 , σ 2), and z0i ⊥⊥ ϵ0 for all i. The coefficient vector 
+
+u0 ∼ U (Sp−1), Sp−1 =
+
+(
+
+u ∈ Rp :
+
+> p
+
+X
+
+> i=1
+
+u2 
+
+> i
+
+= 1 
+
+)
+
+,
+
+is independent of (z0, ϵ 0) and uniformly distributed on the unit sphere. Thus, the systematic component ˆy0 = z⊤ 
+
+> 0
+
+u0
+
+ranges uniformly over all directions in the predictor space, while ϵ0 adds independent noise. To obtain the corresponding model with correlated predictors, let Σ ∈ Rp×p be a positive-definite predictor correlation matrix, and let Σ1/2 denote its symmetric positive-definite square root. Define x0 = Σ 1/2z0 and β0 = Σ −1/2u0 and the model becomes: 
+
+y0 = x⊤ 
+
+> 0
+
+β0 + ϵ0. (13) Here, β0 is a derived random variable whose distribution is induced by the uniform distribution of u0 ∼ U (Sp−1).We formally write β0 ∼ F , where F denotes the distribution resulting from the transformation β0 = Σ −1/2u0.This setup of the relationship between y0 and x0 via z0 is critical to ensure that the resulting systematic responses 
+
+ˆy0 = x⊤ 
+
+> 0
+
+β0 = z⊤ 
+
+> 0
+
+u0 are uniformly distributed in the predictor space while having the correlation structure of x0
+
+specified by any Σ.The RI measures discussed in the previous section are determined by the predictor correlation structure and the predictor–response correlations (equivalently, RI measures are functions of Σ and β0). To place all response realizations on a common scale, we normalize each RI vector by the full-model coefficient of determination R2 
+
+> y0·x0
+
+. Accord-ingly, throughout this section, Di(Σ , β 0) and DA,i (Σ , β 0) denote the normalized GD and ORM importance values, respectively, each summing to one across predictors. Considering all possible responses for a fixed set of predictors is particularly important in many practical contexts, such as behavioral science, where the same predictors are often used to analyze multiple responses. In this setting, an RI method should not systematically favor particular predictors before a response is observed. This principle motivates the concept of the a priori bias introduced by Chang and Chen [2025]. 
+
+Proposition 1 (Expected normalized importance) . Under the model in Eqs. (12) and (13) , the expected normalized GD importance satisfies 
+
+Eβ0∼F [Di(Σ , β 0)] = 1
+
+p , i = 1 , . . . , p. (14) 
+
+Moreover, let A ∈ Rp×p be a fixed, response-independent reallocation matrix of an ORM based on a standardized orthogonal representation of the predictor space. Then 
+
+Eβ0∼F [DA,i (Σ , β 0)] = 1
+
+p
+
+> p
+
+X
+
+> j=1
+
+aij , i = 1 , . . . , p. (15) The proof of Proposition 1 is provided in Appendix A.1. The proposition shows that the expected normalized importance assigned by an ORM is determined directly by the row-sums of its reallocation matrix. If the i-th row-sum is greater than one, the expected importance of xi exceeds the unbiased benchmark 1/p ; if it is less than one, the expected importance falls below 1/p . Thus, the predictor correlation structure can predetermine which predictors are favored on average before any particular response is observed, giving rise to the a priori bias. 5This result identifies unit row-sums as the condition for eliminating the a priori bias. We next examine why this condition can fail for GCD. Among the ORMs listed in Table 1, GCD is the only method whose reallocation matrix does not generally have unit row-sums. The following proposition relates this failure to predictor VIFs under Johnson’s minimal transformation, formalizing the mechanism identified by Chang and Chen [2025]. 
+
+Proposition 2 (VIF-induced a priori bias of GCD) . Let z0 = Σ −1/2x0 be Johnson’s minimal transformation, and let 
+
+ΓZ = ( γij )pi,j =1 = Σ −1/2, VIF j = (Σ −1)jj .
+
+Then the RegPA weights used by GCD satisfy 
+
+RegPA ij = γ2
+
+> ij
+
+VIF j
+
+. (16) 
+
+Let ri = Ppj=1 RegPA ij denote the i-th row-sum and define 
+
+wij = γ2
+
+> ij
+
+VIF i
+
+.
+
+Then wij ∈ [0 , 1] , Ppj=1 wij = 1 , and 
+
+ri =
+
+> p
+
+X
+
+> j=1
+
+wij 
+
+VIF i
+
+VIF j
+
+. (17) 
+
+If k ∈ arg max i=1 ,...,p VIF i, then rk ≥ 1, with strict inequality whenever there exists some j such that γkj ̸ = 0 and 
+
+VIF j < VIF k. In that case, 
+
+Eβ0∼F [DRegPA ,k (Σ , β 0)] = rk
+
+p > 1
+
+p .
+
+Moreover, because RegPA is column-stochastic, Ppi=1 ri = p. Hence, if rk > 1, then rℓ < 1 for at least one ℓ̸ = k,implying 
+
+Eβ0∼F [DRegPA ,ℓ (Σ , β 0)] < 1
+
+p .
+
+The proof of Proposition 2 is provided in Appendix A.2. Equation (17) shows that each RegPA row-sum is a weighted average of the VIF ratios VIF i/VIF j . For a maximal-VIF predictor, 
+
+rk − 1 = 
+
+> p
+
+X
+
+> j=1
+
+wkj 
+
+ VIF k
+
+VIF j
+
+− 1
+
+
+
+. (18) Thus, large VIF contrasts can produce substantial overestimation when the corresponding weights wkj are non-negligible. Because the row-sums total p, this overestimation must be offset by underestimation of other predictors. This structural imbalance explains why severe and heterogeneous multicollinearity can degrade GCD in both quantitative accuracy and ranking consistency. This mechanism also helps explain earlier empirical findings, such as those of Johnson [2000], in which GCD was found to underperform. These results identify the lack of row stochasticity in RegPA as the structural source of GCD’s a priori bias. 
+
+3.2 Compound Symmetry as an Analytical Benchmark 
+
+The preceding results show how VIF contrasts can induce row-sum imbalance in RegPA. To distinguish this mechanism from multicollinearity itself, we now consider compound symmetry, under which all predictors have identical correlation structures and identical VIFs. This setting provides a tractable benchmark for comparing the reallocation behavior of GDA, RegPA, and CorPA. For this analytical comparison, we return to the standardized design-matrix notation of Section 2, with Σ = X⊤X.
+
+Proposition 3 (Reallocation matrices under compound symmetry) . Let p ≥ 3 and suppose that 
+
+Σ = (1 − ρ)Ip + ρJ p, − 1
+
+p − 1 < ρ < 1, (19) 
+
+where 1p is the p-vector of ones and Jp = 1 p1⊤ 
+
+> p
+
+. Under Johnson’s minimal transformation Z = XΣ−1/2, define 
+
+τρ =
+
+p1 + ( p − 1) ρ − √1 − ρp , hρ = 1 + ( p − 2) ρ, 
+
+6and 
+
+κρ = 1
+
+p − 1
+
+> p−2
+
+X
+
+> s=0
+
+11 + sρ .
+
+Then 
+
+CorPA = (1 − pα C )Ip + αC Jp, αC = τ 2 
+
+> ρ
+
+,
+
+GDA = (1 − pα G)Ip + αGJp, αG = κρτ 2 
+
+> ρ
+
+, (20) 
+
+RegPA = (1 − pα R)Ip + αRJp, αR = τ 2 
+
+> ρ
+
+/h ρ.
+
+Thus, each matrix has diagonal entries 1 − (p − 1) αA and off-diagonal entries αA, where A ∈ { C, G, R }. In particular, for every i̸ = j,
+
+GDA ij = κρ CorPA ij = hρκρ RegPA ij . (21) 
+
+When ρ = 0 , all three matrices reduce to Ip.
+
+The proof of Proposition 3 is provided in Appendix A.3. The first consequence concerns the a priori bias. 
+
+Corollary 1 (Absence of the a priori bias) . Under the conditions of Proposition 3, CorPA, GDA, and RegPA are doubly stochastic. Consequently, for A ∈ { CorPA , GDA , RegPA },
+
+Eβ0∼F [DA,i (Σ , β 0)] = 1
+
+p , i = 1 , . . . , p. (22) 
+
+Moreover, all predictors have the same VIF: 
+
+VIF i = 1 + ( p − 2) ρ
+
+[1 + ( p − 1) ρ](1 − ρ) , i = 1 , . . . , p. (23) The proof is provided in Appendix A.4. Although the common VIF in Eq. (23) diverges as ρ → 1−, RegPA remains doubly stochastic. Therefore, severe homogeneous multicollinearity is not sufficient to induce GCD’s a priori bias. The bias is caused by row-sum imbalance, which does not arise under the exchangeable structure of compound symmetry. Absence of the a priori bias does not imply that the three reallocation methods agree. Their differences can be characterized by how strongly they shrink importance toward equality. Let 
+
+ηj = ρ2 
+
+> zjy
+
+R2
+
+> y·X
+
+, η = ( η1, . . . , η p)⊤, μp = 1
+
+p 1p,
+
+so that 1⊤ 
+
+> p
+
+η = 1 .
+
+Corollary 2 (Shrinkage toward equal importance under compound symmetry) . Let DC , DG, and DR denote the normalized ORM importance vectors obtained with the CorPA, GDA, and RegPA reallocations, respectively. For each 
+
+M ∈ { C, G, R },
+
+DM − μp = (1 − pα M )( η − μp), 0 < 1 − pα M < 1 for ρ̸ = 0 . (24) 
+
+If 0 < ρ < 1, then 
+
+αR < α G < α C , equivalently 1 − pα C < 1 − pα G < 1 − pα R, (25) 
+
+so that, whenever η̸ = μp, for any norm, 
+
+∥DC − μp∥ < ∥DG − μp∥ < ∥DR − μp∥. (26) 
+
+Furthermore, 
+
+DC,i − DG,i = p(αC − αG)
+
+ 1
+
+p − ηi
+
+
+
+, i = 1 , . . . , p, (27) 
+
+with αC − αG > 0. For − 1 
+
+> p−1
+
+< ρ < 0, the orderings in Eqs. (25) and (26) and the sign of αC − αG are all reversed. 
+
+The proof is provided in Appendix A.5. Equation (24) shows that, under compound symmetry, every method returns a vector of the same form: the deviation of η from equal importance, scaled by a retention factor 1 − pα M . Differences among the three methods therefore reduce to how much of this deviation each one retains. For 0 < ρ < 1, the benchmark GDA retains the fraction 1 − pα G, which represents the degree of shrinkage warranted by the GD criterion itself. CorPA retains strictly less: by Eq. (27) , relative to GDA it pulls every above-average component of η down and every 7below-average component up, with the size of the distortion governed by the positive excess p(αC − αG). Since CorPA combined with Johnson’s minimal transformation is exactly RW, this excess shrinkage is a closed-form expression of RW’s leveling problem: under compound symmetry, the leveling problem is precisely shrinkage beyond the benchmark, and CorPA is the only method that exhibits it. RegPA deviates in the opposite direction ( 1 − pα R > 1 − pα G): it preserves more of the contrasts in η than the benchmark deems warranted, an over-concentration rather than a leveling. As a numerical illustration, at p = 3 and ρ = 0 .9 the retention factors are 0.39 for CorPA, 0.53 for GDA, and 0.68 for RegPA. One caveat applies to ordinal comparisons. Because Eq. (24) rescales η − μp by a common positive factor, the three methods produce identical predictor rankings under compound symmetry, and any rank-based performance metric would not distinguish them. The corollary therefore characterizes distortions in the magnitudes of importance values; differences in ordinal accuracy among the methods, such as those observed in Section 4, can only arise under asymmetric predictor correlation structures. Together, the two corollaries separate two distinct requirements for a reallocation matrix. Unit row-sums ensure that no predictor’s importance is systematically over- or under-estimated in expectation, while agreement with GDA further depends on how the elements are distributed within the doubly stochastic matrix. The present study addresses the first requirement: we next correct the row-sum imbalance of RegPA by mapping it to a nearby doubly stochastic matrix. 
+
+3.3 Bias Correction via Double Stochasticity 
+
+Propositions 1 and 2 show that GCD’s a priori bias arises because the RegPA reallocation matrix is column-stochastic but not generally row-stochastic. We therefore correct RegPA by mapping it to a nearby doubly stochastic matrix, thereby enforcing unit row-sums while preserving the complete allocation of each orthogonal predictor’s importance. Let ∆ = {a ∈ Rp : 1 ⊤ 
+
+> p
+
+a = 1 , a ≥ 0} be the probability simplex, Mr = {M ∈ Rp×p 
+
+> +
+
+: M 1p = 1 p} be the set of row-stochastic matrices, and Mc = {M ∈ Rp×p 
+
+> +
+
+: 1 ⊤ 
+
+> p
+
+M = 1 ⊤ 
+
+> p
+
+} be the set of column-stochastic matrices. We present two algorithms for constructing a corrected RegPA matrix that lies in Mr ∩ Mc.
+
+Method of Alternating Projections: The MAP procedure alternates Euclidean projections onto the Mr and Mc sets. The resulting sequence converges to a matrix in their intersection. At each step, rows and columns are projected onto the probability simplex ∆ by solving: 
+
+min 
+
+> ˜a∈∆
+
+12 ∥˜a − a∥22, (28) where a is a row or column vector of the matrix. An efficient algorithm to solve this projection problem is provided by Wang and Carreira-Perpinán [2013] (Algorithm 1). This iterative procedure can be interpreted as alternating projections onto two convex, closed sets Mr and Mc (Algorithm 2). The von Neumann alternating projection theorem [Von Neumann, 1949] guarantees convergence to a point in the intersection Mr ∩ Mc (if nonempty). Moreover, due to the linear regularity of Mr and Mc [Bauschke and Borwein, 1996, Corollary 5.26], the convergence is linear, as shown in [Bauschke and Borwein, 1993, Corollary 3.14]. We denote the resulting doubly stochastic matrix by RegPA-MAP, and the corresponding corrected ORM as GCD-MAP. 
+
+Algorithm 1 Euclidean Projection of a Vector onto the Probability Simplex [Wang and Carreira-Perpinán, 2013] 
+
+Input: a ∈ Rp
+
+Sort a into a : a1 ≥ a2 ≥ · · · ≥ ap
+
+Find b = max {1 ≤ j ≤ p : aj + 1 
+
+> j
+
+(1 − Pji=1 ai) > 0}
+
+Define c = 1 
+
+> b
+
+(1 − Pbi=1 ai)
+
+Output: ˜a s.t. ˜ai = max {ai + c, 0}, ∀i = 1 , . . . , p .
+
+Sinkhorn–Knopp Algorithm (SK): The Sinkhorn–Knopp (SK) algorithm [Sinkhorn and Knopp, 1967] offers another approach to double stochasticity by alternating row and column normalization. Unlike MAP, which projects in Euclidean space, SK performs multiplicative normalization as shown in Algorithm 3. Mathematically, applying the SK algorithm to a non-negative matrix A is equivalent to solving the following problem: 
+
+min   
+
+> M∈Mr∩Mc
+
+KL( M ∥A), (29) where KL( M || A) = Ppi=1 
+
+Ppj=1 Mij log Mij  
+
+> Aij
+
++Aij −Mij is the Kullback–Leibler divergence. This is also a Bregman projection onto the doubly stochastic set using KL divergence [Wang et al., 2010]. Sinkhorn and Knopp have proved 8Algorithm 2 Method of Alternating Projections to Double Stochasticity 
+
+Input: A reallocation matrix A ∈ Rp×p and a number of iterations Tt = 0 , A (t) = A
+
+repeat 
+
+t ← t + 1 
+
+A(t) = A(t−1) 
+
+Apply Algorithm 1 to each column of A(t).Apply Algorithm 1 to each row of A(t).
+
+until t = T
+
+Output: A(t)
+
+that if the matrix is square and strictly positive, then SK is guaranteed to converge to a unique doubly stochastic matrix. The strict positivity also ensures the convergence is linear [Knight, 2008]. For non-negative matrices (i.e., some zeros allowed), convergence still holds under mild technical conditions. In our problem, RegPA is typically strictly positive, so that the convergence is rapid and reliable. We denote the resulting corrected matrix by RegPA-SK, and the corresponding ORM as GCD-SK. 
+
+Algorithm 3 Sinkhorn–Knopp Algorithm [Sinkhorn and Knopp, 1967] 
+
+Input: A reallocation matrix A ∈ Rp×p and a number of iterations Tt = 0 , A (t) = A
+
+repeat 
+
+t ← t + 1 
+
+A(t) = A(t−1) 
+
+Make col-sums equal to 1 by normalizing ˜a(t) 
+
+> ij
+
+= a(t) 
+
+> ij
+
+/Ppk=1 a(t) 
+
+> kj
+
+, ∀i, j = 1 , . . . , p. 
+
+Make row-sums equal to 1 by normalizing a(t) 
+
+> ij
+
+= ˜ a(t) 
+
+> ij
+
+/Ppℓ=1 ˜a(t) 
+
+> iℓ
+
+, ∀i, j = 1 , . . . , p. 
+
+until t = T
+
+Output: A(t)
+
+3.4 Numerical Illustration 
+
+We illustrate the a priori bias and the effects of the proposed corrections using a setting with p = 10 predictors and severe multicollinearity. The purpose of this example is to visualize how row-sum imbalance in RegPA distorts GCD importance and how the MAP and SK corrections alter both the reallocation matrix and the resulting importance estimates. Figure 1a displays the reallocation matrices for four methods: RegPA, RegPA-MAP, RegPA-SK, and the benchmark GDA. The original RegPA matrix exhibits substantial row-sum imbalance. In particular, the row corresponding to x4 sums to 2.58, meaning that x4 receives more than twice its fair share of total importance on average across possible responses. Figure 1b shows the resulting RI values produced by different methods. The RI values are ordered by GD (shown in black), which serves as the reference. As expected, the uncorrected GCD (blue) deviates notably from GD, dramatically overestimating the importance of x4. In contrast, the corrected methods, GCD-MAP (light blue) and GCD-SK (light green), closely track the GD rankings, indicating that both corrections successfully mitigate the bias. Moreover, the structural similarity of the corrected reallocation matrices to the benchmark GDA can be quantified using the Frobenius distance: dF (A, B ) = ∥A − B∥F = ( Ppi=1 
+
+Ppj=1 (aij − bij )2)1/2. The distances are summarized in Table 2. These results illustrate that both MAP and SK substantially reduce the discrepancy from GDA, helping to Table 2: The Frobenius distances of RegPA and its corrections to the benchmark GDA in the numerical illustration. 
+
+dF (RegPA , GDA ) dF (RegPA-MAP , GDA ) dF (RegPA-SK , GDA )
+
+0.83 0.36 0.49 explain the improved RI performance. 90 0 0 0.01 0 0 0.01 0 0.01 0.57 0.01 0 0 0 0.01 0 0 0.04 0.8 0.01 0 0.03 0 0.01 0.01 0 0 0.76 0.06 0.01 0 0 0 0.01 0.01 0 0.72 0 0 00 0.07 0 0.05 0.01 0.64 0 0 0.01 0.01 0.01 0.01 0.01 0 0.84 0 0.01 0 0 00.43 0.01 0.37 0.81 0.01 0.35 0.26 0.17 0.08 0.37 0.01 0.04 0.61 0.07 0.06 0 0 0.01 0.02 0.02 0 0.83 0 0 0.01 0.01 0 0.01 0 00.53 0 0 0.04 0.04 0 0 0 0.02 0.01                                                                                                                                                                                                                                                                               
+
+> x10 x9 x8 x7 x6 x5 x4 x3 x2 x1
+> z1 z2 z3 z4 z5 z6 z7 z8 z9 z10
+> RegPA
+> 0.05 0.02 0.05 0.06 0.02 0.05 0.05 0.04 0.03 0.62 0.03 00.03 0.02 00.02 0.02 0.05 0.8 0.03 0.02 0.02 0.02 0.03 0.01 0.02 0.02 0.77 0.06 0.03 0.03 0.01 0.03 0.04 0.02 0.03 0.75 0.02 0.02 0.04 0.03 0.07 0.03 0.08 0.01 0.67 0.03 0.02 0.02 0.04 0.03 0.01 0.03 0.02 0.83 0.02 0.03 0.01 00.02 0.17 00.11 0.54 00.08 0000.1 0.04 0.04 0.63 0.1 0.06 0.03 0.02 0.02 0.03 0.04 0.02 0.82 0.03 0.02 00.03 0.02 0.02 00.02 0.57 0.02 0.05 0.08 0.06 0.04 0.04 0.04 0.04 0.06
+> x10 x9 x8 x7 x6 x5 x4 x3 x2 x1
+> z1 z2 z3 z4 z5 z6 z7 z8 z9 z10
+> RegPA−MAP
+> 0.01 00.01 0.06 000.01 0.01 0.01 0.88 0.02 00.01 0.01 0000.05 0.88 0.01 00.02 00.03 0.01 000.87 0.05 0.01 0000.04 0.01 00.94 000.01 00.03 00.11 0.01 0.84 00000.03 0.01 0.02 00.91 0.01 0.01 0.01 000.12 00.14 0.47 00.11 0.04 0.03 0.01 0.06 0.01 0.01 0.78 0.14 0.02 0000.01 0.01 00.92 0.01 00.01 0.03 00.02 000.81 00.01 0.12 0.03 0000.02 0.01
+> x10 x9 x8 x7 x6 x5 x4 x3 x2 x1
+> z1 z2 z3 z4 z5 z6 z7 z8 z9 z10
+> RegPA−SK
+> 0.06 0.01 0.02 0.09 0.01 0.02 0.01 0.01 0.01 0.76 0.02 00.04 0.03 0.02 0.02 0.01 0.07 0.76 0.01 0.02 0.02 0.04 0.06 0.01 0.03 0.01 0.71 0.07 0.01 0.02 00.02 0.07 0.01 0.02 0.82 0.01 0.01 0.01 0.04 0.03 0.06 0.12 0.01 0.63 0.03 0.03 0.03 0.02 0.03 0.02 0.04 0.01 0.84 0.01 0.01 0.02 0.02 0.01 0.13 0.01 0.13 0.34 0.02 0.13 0.06 0.06 0.04 0.08 0.04 0.02 0.58 0.13 0.03 0.06 0.03 0.05 0.04 0.02 00.89 0.02 0.01 0.02 0.04 00.02 00.01 0.64 0.01 0.03 0.14 0.03 0.03 0.02 0.02 0.02 0.06
+> x10 x9 x8 x7 x6 x5 x4 x3 x2 x1
+> z1 z2 z3 z4 z5 z6 z7 z8 z9 z10
+> GDA
+
+(a) Reallocation matrices: RegPA (top left) exhibits severe row-sum imbalance; corrected matrices via MAP and SK (top right and bottom left) are doubly stochastic and closer to the bench-mark GDA (bottom right). 0.1 0.2 
+
+1 2 3 4 5 6 7 8 9 10 
+
+The i−th important predictor variable 
+
+> Relative Importance
+
+Method 
+
+> DGDA
+> GCD
+> GCD−MAP
+> GCD−SK
+> GD
+> RW
+
+(b) Relative importance values computed by different methods. Predictors are ordered by GD importance (black). GCD (blue) significantly overestimates x4 due to the a priori bias, while corrected versions GCD-MAP (light blue) and GCD-SK (light green) more closely follow the GD trend. 
+
+Figure 1: A p = 10 numerical illustration of the a priori bias in RegPA (GCD) and its correction via MAP and SK algorithms. 
+
+4 Simulations 
+
+To evaluate the effectiveness of our proposed corrections for the a priori bias, we adopt the comprehensive Monte Carlo simulation framework developed by Chang and Chen [2025]. Their design is specifically aimed at assessing how well ORMs approximate the gold standard GD across a wide range of predictor correlation structures and response scenarios. 
+
+4.1 Simulation Design 
+
+The evaluation centers on estimating the expected (dis)similarity between an ORM and GD over all possible responses, for any fixed predictor correlation matrix Σ. Formally, the expected performance evaluation f is defined as: 
+
+f (Σ) = Eβ [g (DA(Σ , β ), D (Σ , β ))] , (30) where DA is the ORM using minimal transformation Z for orthogonalization and A for reallocation, and D denotes the GD vector. The function g(·, ·) is a (dis)similarity metric. We use (1) Root Mean Square Error (RMSE) to measure quantitative deviation (lower is better) and (2) Kendall’s τ to assess ordinal consistency (higher is better) [Kendall, 1938]. This expectation is approximated via Monte Carlo simulation with B samples: 
+
+ˆf (Σ) = 1
+
+B
+
+BX
+
+b=1 
+
+h
+
+g
+
+
+
+DA(Σ , β (b)), D (Σ , β (b))
+
+i 
+
+, (31) where each β(b) is drawn from F . This setup mirrors real-world applications (e.g., behavioral sciences), where multiple responses are analyzed over the same set of predictors. Evaluating ORMs across all possible responses provides a principled way to assess generalizability with respect to the predictor structure. 
+
+4.2 Simulation Procedure 
+
+To generate diverse and representative predictor correlation structures, the simulation consists of the following steps: 1. Varying number of predictors. The number of predictors p is varied from 3 to 10. 10 2. Sampling eigenvalues. For each p, we generate nev eigenvalue sets sampled uniformly from the (p − 1) -dimensional simplex 
+
+∆p−1 = {λ ∈ Rp : Ppi=1 λi = p, λ 1 ≥ . . . ≥ λp > 0} using Kraemer’s algorithm [Smith and Tromble, 2004]. 3. Generating predictor correlation matrices. For each eigenvalue set, ns distinct correlation matrices Σ are generated using the rMAP function in the R
+
+package fungible [Waller, 2020]. These matrices share the same eigenvalues but differ in their eigenvectors, which significantly affect multicollinearity (e.g., VIFs). 4. Sampling responses. For each predictor correlation matrix Σ
+
+• Sample nu coefficient vectors u ∼ U (Sp−1).• Transform each u to β = Σ −1/2u and compute ρxy = Σ β = Σ 1/2u.5. Computing importance measures. For each generated correlation structure Σ and ρxy , compute: GD, ORMs with various reallocation methods (IdA, RegPA, CorPA, GDA), and ORMs corrected via proposed MAP and SK strategies (RegPA-MAP, RegPA-SK). 6. Evaluating performance. Each ORM is evaluated against GD using both RMSE and Kendall’s τ . The Monte Carlo approximation ˆf (Σ) 
+
+in Eq. (31) is computed for each correlation matrix. The parameters are set as follows: number of eigenvalue sets nev = 1000 for p ∈ { 3, 4, 5, 6} and nev = 2500 
+
+for p ∈ { 7, 8, 9, 10 }; number of predictor correlation matrices for a given eigenvalue set ns = 10 ; number of responses evaluated per correlation matrix nu = 100 (equivalently, B = 100 ). The number of iterations was set to 
+
+T = 100 for both MAP and SK, which was empirically sufficient to achieve numerical convergence in all simulated settings. Code to reproduce the simulation study and empirical illustration is available via the OSF repository: 
+
+https://osf.io/zga2p/overview?view_only=6b7f4b27c3924886a35b281550efacc6 .
+
+4.3 Results 
+
+To facilitate interpretation, we follow the evaluation framework of Chang and Chen [2025], which partitions the comprehensive Monte Carlo simulation results into four mutually exclusive scenarios, defined by two key factors of the predictor correlation structure together with their corresponding thresholds: (1) λ1/√p, where λ1 is the largest eigenvalue of the predictor correlation matrix, reflecting the dominance of the first principal component, and (2) VIF max /p , capturing the severity of multicollinearity. For each predictor xi, VIF is computed as VIF i =1/(1 − R2 
+
+> xi·X−i
+
+) where X−i is the matrix of all predictors except xi and the maximum is taken across all predictors. Using the thresholds λ1/√p = 1 .5 and VIF max /p = 4 adopted in this framework, the simulation results are categorized into four scenarios based on combinations of mild/severe multicollinearity and mild/strong first principal component. Figures 2 and 4 present the performance of each reallocation method in terms of RMSE and Kendall’s τ . Since the orthogonalization method is fixed to the minimal transformation Z, we refer to each ORM by its reallocation matrix and use the names interchangeably. Each point corresponds to a Monte Carlo estimate of f (Σ) under a distinct predictor correlation matrix. 
+
+4.3.1 Scenario 1.1: Mild Multicollinearity with Mild First Principal Component 
+
+In Scenario 1.1 (Figure 2A, B), all methods perform comparably and closely approximate GD, with IdA performs consistently worse across both metrics. For this scenario, the a priori bias in GCD (RegPA) is minimal. Accordingly, the proposed corrections applied to RegPA yield only marginal improvements. As expected, the benchmark GDA achieves the strongest overall performance, with ORMs closely following. These results indicate that GCD-SK (RegPA-SK) is a viable and robust alternative to RW when multicollinearity is mild and predictor structure is not dominated by the first principal component. 
+
+4.3.2 Scenario 1.2: Mild Multicollinearity with Strong First Principal Component 
+
+In Scenario 1.2 (Figure 2C, D), the first principal component is dominant, leading RW to suffer from the leveling problem, which tends to flatten the predictor importance. This flattening is consistent with the excess shrinkage of CorPA established in Corollary 2 for the symmetric case. As previously observed in Chang and Chen [2025], this results in noticeably degraded performance of RW. 11 10 −5 10 −4 10 −3 10 −2 10 −1        
+
+> 345678910
+> RMSE
+
+A       
+
+> 0.4 0.6 0.8 1.0
+> 345678910
+> Kendall's tau
+
+B       
+
+> 10 −2 10 −1.8 10 −1.6 10 −1.4 10 −1.2 10 −1
+> 345678910
+> RMSE
+
+C       
+
+> 0.7 0.8 0.9
+> 345678910
+> the number of predictor variables
+> Kendall's tau
+
+D
+
+Method 
+
+> IdA
+> RegPA
+> RegPA−MAP
+> RegPA−SK
+> CorPA
+> GDA
+
+Figure 2: Performance of ORMs across predictor structures with mild multicollinearity and mild first principal component (A, B) and strong first principal component (C, D). Median performances of RegPA, RegPA-MAP, RegPA-SK, CorPA and GDA are highlighted in blue, light blue, light green, red and gray lines, respectively. In contrast, GCD performs better in this setting, and its corrected versions (GCD-MAP and GCD-SK) further improve upon this performance, approaching the benchmark GDA. Of the two, GCD-SK again achieves better consistency with GD in ranking the variables’ importance. These findings demonstrate both the underlying strength of RegPA in such predictor correlation structures and the efficacy of our proposed corrections. To further quantify these differences, we conduct a win–loss analysis between RW and GCD-SK (Figure 3), adapting the approach of Chang and Chen [2025]. The analysis exploits the structure of the simulation design: each eigenvalue set is associated with ns = 10 correlation matrices that share the same eigenvalues—and hence the same λ1/√p—but differ in their eigenvectors. For each eigenvalue set, the Monte Carlo estimates ˆf (Σ) of the two methods on these ten matrices form ten matched pairs, to which we apply a two-sided Wilcoxon signed-rank test at the 5% significance level, separately for RMSE and Kendall’s τ . If the test is significant, the eigenvalue set is recorded as a win for the method 12 976 15 29 71 35 60 63 37 100       
+
+> 18 55 28 33 55 12 65 30 596 100
+> 20 40 40 48 37 16 78 21 97 100
+> 90 7787 626 72 49 51 100
+> 61 35 24 71 562 37 80 20 100
+> 12 44 45 59 36 88 12 97 100
+> RMSE Kendall's tau
+> p = 4  p = 7  p = 10
+> [0.6,0.9] (0.9,1.2] (1.2,1.5] (1.5,1.8] (1.8,2.1]
+> [0.6,0.9] (0.9,1.2] (1.2,1.5] (1.5,1.8] (1.8,2.1]
+> 0.00 0.25 0.50 0.75 1.00
+> 0.00 0.25 0.50 0.75 1.00
+> 0.00 0.25 0.50 0.75 1.00
+> Interval for λ1p
+> Proportion  Result
+> GCD−SK wins
+> tie
+> RW wins
+
+Figure 3: Win–loss analysis between RW and GCD-SK under mild multicollinearity (Scenarios 1.1 and 1.2), based on RMSE and Kendall’s τ . Each comparison corresponds to one eigenvalue set: a method wins if a Wilcoxon signed-rank test over the ns = 10 paired correlation matrices sharing those eigenvalues indicates significantly better performance at the 5% level, and the comparison is a tie otherwise. The dashed line marks the threshold λ1/√p = 1 .5, beyond which the first principal component is considered dominant. with the better paired performance (lower RMSE or higher τ ); otherwise it is recorded as a tie. Figure 3 reports the resulting proportions of wins and ties as a function of λ1/√p. As λ1/√p increases, RW’s win proportion drops sharply, reflecting the growing severity of the leveling problem. The comparison with uncorrected GCD quantifies the gain from the SK correction: in the corresponding RW-versus-GCD analysis of Chang and Chen [2025], the crossover beyond which the regression-based measure prevails occurs at λ1/√p = 1 .5, whereas the win proportion of GCD-SK exceeds that of RW for λ1/√p > 0.9. The SK correction thus substantially enlarges the region of predictor structures in which the regression-based reallocation is preferable, extending it to structures with only moderate first principal component dominance. 
+
+4.3.3 Scenario 2.1: Severe Multicollinearity with Mild First Principal Component 
+
+Scenario 2.1 (Figure 4A, B) presents severe multicollinearity without dominance of the first principal component. In this setting, the a priori bias in RegPA becomes pronounced, leading to degraded GCD performance. However, both corrections effectively eliminate this bias, restoring performance to a level comparable to RW. Between the two, GCD-SK shows superior performance in both RMSE and Kendall’s τ .
+
+4.3.4 Scenario 2.2: Severe Multicollinearity with Strong First Principal Component 
+
+Scenario 2.2 (Figure 4C, D) represents the most difficult case, combining severe multicollinearity and a dominant principal component. As expected, both RW and GCD perform poorly. Nevertheless, the corrected methods, especially GCD-SK, recover some of the lost performance. GCD-SK consistently outperforms RW as the number of predictors increases. This illustrates that correcting the a priori bias can significantly improve the robustness of RegPA even under difficult conditions. 13 10 −2 10 −1.5 10 −1        
+
+> 345678910
+> RMSE
+
+A       
+
+> 0.00 0.25 0.50 0.75 1.00
+> 345678910
+> Kendall's tau
+
+B       
+
+> 10 −2 10 −1.5 10 −1
+> 345678910
+> RMSE
+
+C       
+
+> 0.25 0.50 0.75
+> 345678910
+> the number of predictor variables
+> Kendall's tau
+
+D
+
+Method 
+
+> IdA
+> RegPA
+> RegPA−MAP
+> RegPA−SK
+> CorPA
+> GDA
+
+Figure 4: Performance of ORMs across predictor structures with severe multicollinearity and mild first principal component (A, B) and strong first principal component (C, D). Median performances of RegPA, RegPA-MAP, RegPA-SK, CorPA and GDA are highlighted in blue, light blue, light green, red and gray lines, respectively. Figure 5 presents the win–loss analysis for the severe multicollinearity scenarios, where the improvement over uncorrected GCD is most striking. In this regime, the a priori bias is so pronounced that uncorrected GCD fails to outperform RW at any level of λ1/√p [Chang and Chen, 2025]. Removing the bias restores the competitiveness of the regression-based reallocation: GCD-SK overtakes RW once λ1/√p exceeds approximately 1.5, with consistent gains in both RMSE and Kendall’s τ . Taken together, the two crossover points— λ1/√p ≈ 0.9 under mild and ≈ 1.5 under severe multicollinearity—form the empirical basis of the selection guidelines in Section 4.4. 
+
+4.4 Practical Guidelines 
+
+To avoid the a priori bias, an ORM should use a doubly stochastic reallocation matrix. Among the bias-free methods considered here, the simulation results suggest the following guidelines: 14 33 67 20 66 14 23 63 14 530 65 100     
+
+> 842 49 25 68 7666 29 10 59 31 86 14
+> 645 49 10 67 23 60 37 43 50 767 33
+> 100 89 11 671 23 90 10 100
+> 25 75 68 29 677 17 14 69 17 29 57 14
+> 27 72 10 74 16 32 65 79 21 67 33
+> RMSE Kendall's tau
+> p = 4  p = 7  p = 10
+> [0.6,0.9] (0.9,1.2] (1.2,1.5] (1.5,1.8] (1.8,2.1]
+> [0.6,0.9] (0.9,1.2] (1.2,1.5] (1.5,1.8] (1.8,2.1]
+> 0.00 0.25 0.50 0.75 1.00
+> 0.00 0.25 0.50 0.75 1.00
+> 0.00 0.25 0.50 0.75 1.00
+> Interval for λ1p
+> Proportion  Result
+> GCD−SK wins
+> tie
+> RW wins
+
+Figure 5: Win–loss analysis between RW and GCD-SK under severe multicollinearity (Scenarios 2.1 and 2.2), based on RMSE and Kendall’s τ . Wins and ties are determined as in Figure 3. 1. Mild Multicollinearity ( VIF max /p < 4): • If the first principal component is weak (λ1/√p < 0.9) , RW is the preferred choice due to its simplicity and high ordinal consistency. • If the first principal component is moderate to strong (λ1/√p ≥ 0.9) , GCD-SK is recommended. In this range, RW begins to suffer from the leveling problem, while GCD-SK maintains robustness. • For reference, even the uncorrected GCD outperforms RW when λ1/√p ≥ 1.5.2. Severe Multicollinearity ( VIF max /p ≥ 4): • If the first principal component is weak (λ1/√p < 1.5) , RW remains a viable option. In this setting, the a priori bias causes uncorrected GCD to underperform significantly, whereas RW remains robust. While GCD-SK successfully eliminates this bias and drastically improves the uncorrected GCD, empirical results indicate that RW still maintains a slight performance advantage over GCD-SK in this specific scenario. • If the first principal component is strong ( λ1/√p ≥ 1.5), both standard RW and uncorrected GCD struggle. In this challenging regime, GCD-SK is the recommended method, particularly as the number of predictors increases, offering a balanced performance. These thresholds are empirical rather than universal constants. They summarize the present simulation design for p = 3 , . . . , 10 and should be interpreted as practical diagnostics rather than sharp theoretical boundaries. 
+
+5 Discussion and Conclusion 
+
+Orthogonalization-Reallocation Measures provide computationally efficient approximations to GD, but their perfor-mance depends critically on how the importance of orthogonal predictors is reallocated. In this study, we formalized the a priori bias by showing that the expected normalized importance assigned by an ORM is determined by the row-sums 15 of its reallocation matrix. For GCD, we further showed that these row-sums can be expressed as weighted averages of VIF ratios, explaining why heterogeneous predictor structures can systematically favor high-VIF predictors. The compound-symmetry analysis provides a complementary perspective. Under this homogeneous correlation structure, GDA, RegPA, and CorPA admit closed-form expressions and are all doubly stochastic. Consequently, GCD remains free of the a priori bias even as the common VIF diverges. This demonstrates that severe multicollinearity alone is insufficient to produce the bias; row-sum imbalance is the essential mechanism. The same analysis also shows that, for positive correlations, CorPA applies stronger shrinkage toward equal importance than GDA, providing an analytical explanation of RW’s leveling behavior in this setting. Thus, the a priori bias and the leveling problem are structurally distinct: the former concerns unequal expected allocation across predictors, whereas the latter can arise even from a doubly stochastic reallocation matrix. To correct the a priori bias, we proposed enforcing double stochasticity through the Method of Alternating Projections and the Sinkhorn–Knopp algorithm, yielding GCD-MAP and GCD-SK. The simulation results show that GCD-SK generally provides a closer approximation to GD than GCD-MAP. This suggests that multiplicative scaling may preserve the informative allocation structure of RegPA more effectively than the Euclidean projections used by MAP. Across a broad range of predictor correlation structures, GCD-SK substantially improves upon uncorrected GCD and frequently outperforms RW, particularly when RW is affected by leveling. These comparisons are summarized in the selection guidelines, which recommend RW or GCD-SK according to the dominance of the first principal component and the severity of multicollinearity. These findings also clarify the value of regression-based reallocation. RegPA uses regression coefficients rather than marginal correlations between the original and orthogonal predictors, and this joint information can be useful once the systematic row-sum imbalance is removed. Although the present compound-symmetry result explains the leveling mechanism in an analytically tractable setting, a general characterization and correction of leveling under arbitrary predictor correlation structures remain open problems. More broadly, understanding why computationally distinct ORMs can closely approximate GD remains an important direction for future research. 
+
+Acknowledgment 
+
+This work was partially supported by Grant NSTC 114-2221-E-002-168-MY2 from the National Science and Technology Council, Taiwan. 
+
+A Technical Derivations and Proofs 
+
+A.1 Proof of Proposition 1 
+
+Proof. Let P = {1, . . . , p }, and B = Σ 1/2, so that x0 = Bz 0. For any subset S ⊆ P , let BS be the submatrix formed by the rows of B indexed by S. Since B is nonsingular, BS has rank |S|. For nonempty S, the population coefficient of determination from regressing y0 on x0,S is 
+
+R2 
+
+> y0·x0,S
+
+= Cov( y0, x 0,S )Var( x0,S )−1Cov( x0,S , y 0)Var( y0)= u⊤ 
+
+> 0
+
+B⊤ 
+
+> S
+
+(BS B⊤ 
+
+> S
+
+)−1BS u0
+
+1 + σ2 , (32) because Var( y0) = ∥u0∥22 + σ2 = 1 + σ2.Define ΠS = B⊤ 
+
+> S
+
+(BS B⊤ 
+
+> S
+
+)−1BS . Then ΠS is the orthogonal projection onto the row space of BS , and therefore 
+
+Tr(Π S ) = Rank(Π S ) = |S|.
+
+For S = ∅, set Π∅ = 0 and R2 
+
+> y0·x0,∅
+
+= 0 . For the full predictor set, ΠP = Ip, and hence 
+
+R2 
+
+> y0·x0
+
+= 11 + σ2 .
+
+The normalized subset value function is consequently 
+
+vβ0 (S) = R2
+
+> y0·x0,S
+
+R2
+
+> y0·x0
+
+= u⊤ 
+
+> 0
+
+ΠS u0.
+
+16 Rotational invariance of the uniform distribution on Sp−1 implies 
+
+Eu0 [u0u⊤ 
+
+> 0
+
+] = 1
+
+p Ip.
+
+Therefore, 
+
+Eβ0∼F [vβ0 (S)] = Tr  ΠS Eu0 [u0u⊤ 
+
+> 0
+
+]
+
+= Tr(Π S )
+
+p = |S|
+
+p . (33) The normalized GD importance is the Shapley allocation of vβ0 :
+
+Di(Σ , β 0) = 1
+
+p
+
+X 
+
+> S⊆P\{ i}
+
+vβ0 (S ∪ { i}) − vβ0 (S)
+
+ p−1
+
+> |S|
+
+ .
+
+By Eq. (33), every expected marginal contribution equals 
+
+Eβ0∼F [vβ0 (S ∪ { i}) − vβ0 (S)] = 1
+
+p .
+
+The corresponding GD weights sum to one: 
+
+1
+
+p
+
+X 
+
+> S⊆P\{ i}
+
+1
+
+ p−1
+
+> |S|
+
+ = 1
+
+p
+
+> p−1
+
+X
+
+> s=0
+
+1 = 1 .
+
+It follows that 
+
+Eβ0∼F [Di(Σ , β 0)] = 1
+
+p .
+
+For the ORM identity, let ˜z0 be its standardized orthogonal representation. Since ˜z0 and z0 are orthonormal repre-sentations of the same predictor space, there exists an orthogonal matrix Q ∈ Rp×p such that ˜z0 = Q⊤z0. Defining 
+
+˜u0 = Q⊤u0 gives z⊤ 
+
+> 0
+
+u0 = ˜ z⊤ 
+
+> 0
+
+˜u0. By rotational invariance, 
+
+˜u0 ∼ U (Sp−1), Eu0 [˜ u20j ] = 1
+
+p .
+
+Because Var(˜ z0j ) = 1 and Cov(˜ z0j , y 0) = ˜ u0j ,
+
+ρ2˜z0j y0 = ˜u20j
+
+1 + σ2 .
+
+After normalization by R2 
+
+> y0·x0
+
+= 1 /(1 + σ2), the ORM importance is 
+
+DA,i (Σ , β 0) = 
+
+> p
+
+X
+
+> j=1
+
+aij ˜u20j .
+
+Since A is response-independent, 
+
+Eβ0∼F [DA,i (Σ , β 0)] = 
+
+> p
+
+X
+
+> j=1
+
+aij Eu0 [˜ u20j ]= 1
+
+p
+
+> p
+
+X
+
+> j=1
+
+aij . (34) This proves both identities. 17 A.2 Proof of Proposition 2 
+
+Proof. Under Johnson’s minimal transformation, 
+
+z0 = Σ −1/2x0,
+
+so the matrix of regression coefficients of z0 on x0 is 
+
+ΓZ = Σ −1Cov( x0, z 0) = Σ −1Σ1/2 = Σ −1/2.
+
+Because ΓZ is symmetric, 
+
+Γ⊤ 
+
+> Z
+
+ΓZ = Γ Z Γ⊤ 
+
+> Z
+
+= Σ −1.
+
+Therefore, both the squared norm of the j-th column and the squared norm of the j-th row of ΓZ equal 
+
+> p
+
+X
+
+> i=1
+
+γ2 
+
+> ij
+
+=
+
+> p
+
+X
+
+> i=1
+
+γ2 
+
+> ji
+
+= (Σ −1)jj = VIF j .
+
+By the definition of RegPA, 
+
+RegPA ij = γ2
+
+> ij
+
+Ppℓ=1 γ2
+
+> ℓj
+
+= γ2
+
+> ij
+
+VIF j
+
+,
+
+which proves Eq. (16). Similarly, 
+
+wij = γ2
+
+> ij
+
+VIF i
+
+∈ [0 , 1] ,
+
+> p
+
+X
+
+> j=1
+
+wij = 1 .
+
+Hence, 
+
+ri =
+
+> p
+
+X
+
+> j=1
+
+γ2
+
+> ij
+
+VIF j
+
+=
+
+> p
+
+X
+
+> j=1
+
+wij 
+
+VIF i
+
+VIF j
+
+,
+
+which proves Eq. (17). Now let 
+
+k ∈ arg max  
+
+> i=1 ,...,p
+
+VIF i.
+
+Then VIF k/VIF j ≥ 1 for every j, so 
+
+rk =
+
+> p
+
+X
+
+> j=1
+
+wkj 
+
+VIF k
+
+VIF j
+
+≥
+
+> p
+
+X
+
+> j=1
+
+wkj = 1 .
+
+The inequality is strict if γkj ̸ = 0 for at least one j satisfying VIF j < VIF k. By Proposition 1, this implies 
+
+Eβ0∼F [DRegPA ,k (Σ , β 0)] = rk
+
+p > 1
+
+p .
+
+Finally, because every RegPA column sums to one, 
+
+> p
+
+X
+
+> i=1
+
+ri =
+
+> p
+
+X
+
+> i=1
+> p
+
+X
+
+> j=1
+
+RegPA ij = p. 
+
+Thus, if rk > 1, at least one other row-sum must satisfy rℓ < 1. Applying Proposition 1 again gives 
+
+Eβ0∼F [DRegPA ,ℓ (Σ , β 0)] < 1
+
+p ,
+
+which completes the proof. 18 A.3 Proof of Proposition 3 
+
+Proof. Let 
+
+λ1 = 1 + ( p − 1) ρ, λ2 = 1 − ρ, τ = τρ.
+
+The eigenspaces spanned by 1p and orthogonal to 1p have eigenvalues λ1 and λ2, respectively. Therefore, 
+
+Σ1/2 = pλ2Ip + τ J p, Σ−1/2 = 1
+
+√λ2
+
+Ip − τ
+
+√λ1λ2
+
+Jp. (35) Under Johnson’s transformation, Z = XΣ−1/2, so 
+
+X⊤Z = Σ 1/2.
+
+The entries of Σ1/2 are the correlations between the original and orthogonal predictors. Moreover, the squared entries in each column sum to h
+
+(Σ 1/2)⊤Σ1/2i
+
+> jj
+
+= Σ jj = 1 .
+
+Hence, for i̸ = j,
+
+CorPA ij = τ 2 = αC .
+
+The regression-coefficient matrix of Z on X is ΓZ = Σ −1/2. Under compound symmetry, 
+
+VIF j = (Σ −1)jj = hρ
+
+λ1λ2
+
+, j = 1 , . . . , p. 
+
+The off-diagonal entries of ΓZ equal −τ / √λ1λ2, and therefore 
+
+RegPA ij = τ 2/(λ1λ2)
+
+hρ/(λ1λ2) = τ 2
+
+hρ
+
+= αR, i̸ = j. 
+
+It remains to derive GDA. Fix i̸ = j and treat zj as the response. By permutation symmetry, GDA ij = Di(zj , X ) is identical for all i̸ = j; denote this common value by αG.For a subset of s predictors, its correlation matrix has inverse 
+
+Σ−1 
+
+> s
+
+= 11 − ρ
+
+
+
+Is − ρ
+
+1 + ( s − 1) ρ Js
+
+
+
+,
+
+where Js = 1 s1⊤ 
+
+> s
+
+. Let R0(s) denote R2  
+
+> zj·XS
+
+when |S| = s and j / ∈ S, and let R1(s) denote the corresponding value when j ∈ S. For a subset S, let 
+
+wS = (Σ 1/2)S,j 
+
+denote the vector of correlations between zj and the predictors indexed by S. Equation (35) gives 
+
+R0(s) = τ 2s
+
+1 + ( s − 1) ρ ,R1(s) = 1
+
+λ2
+
+
+
+(pλ2 + τ )2 + ( s − 1) τ 2 − ρ(√λ2 + sτ )2
+
+1 + ( s − 1) ρ
+
+
+
+. (36) Define 
+
+qs = 1 + ( s − 1) ρ, ts = pλ2 + sτ, 
+
+and note the identity 
+
+ρ = τ
+
+p λ1 + pλ2
+
+
+
+, (37) which follows from λ1 − λ2 = pρ and the definition of τ . Let 
+
+∆0(s) = R0(s + 1) − R0(s), s = 0 , . . . , p − 2, ∆1(s) = R1(s + 1) − R1(s), s = 1 , . . . , p − 1.
+
+Since qs+1 = qs + ρ and qs − sρ = 1 − ρ = λ2,
+
+∆0(s) = τ 2
+
+ s + 1 
+
+qs+1 
+
+− sqs
+
+
+
+= τ 2 (s + 1) qs − sq s+1 
+
+qsqs+1 
+
+= τ 2λ2
+
+qsqs+1 
+
+.
+
+19 For ∆1(s), note that 1⊤ 
+
+> s
+
+wS = ts when j ∈ S, so that Eq. (36) can be written as R1(s) = λ−12
+
+(√λ2 + τ )2 + ( s −
+
+1) τ 2 − ρt 2
+
+> s
+
+/q s
+
+. Using ts+1 = ts + τ and qs+1 = qs + ρ,
+
+∆1(s) = 1
+
+λ2
+
+
+
+τ 2 − ρ
+
+ t2
+
+> s+1
+
+qs+1 
+
+− t2
+
+> s
+
+qs
+
+ 
+
+= 1
+
+λ2
+
+· τ 2qsqs+1 − ρ 2τ q sts + τ 2qs − ρt 2
+
+> s
+
+
+
+qsqs+1 
+
+,
+
+and expanding the numerator yields the perfect square 
+
+τ 2q2 
+
+> s
+
+− 2τ ρ q sts + ρ2t2 
+
+> s
+
+= ( τ q s − ρt s)2 .
+
+Crucially, τ q s − ρt s does not depend on s: by Eq. (37), 
+
+τ q s − ρt s = τ (1 − ρ) − ρpλ2 = τ λ 2 − τ
+
+p λ1 + pλ2
+
+ p λ2 = −τ pλ1λ2.
+
+Hence (τ q s − ρt s)2 = τ 2λ1λ2, and 
+
+∆0(s) = τ 2λ2
+
+qs(qs + ρ) , ∆1(s) = τ 2λ1
+
+qs(qs + ρ) . (38) In particular, ∆1(s)/∆0(s) = λ1/λ 2 for every s: the marginal contribution of xi to explaining zj is exactly λ1/λ 2
+
+times larger when the subset already contains xj than when it does not, uniformly over subset sizes. Among the subsets of size s excluding i, the proportions that contain and do not contain j are s/ (p − 1) and 
+
+(p − 1 − s)/(p − 1) , respectively. Consequently, 
+
+αG = 1
+
+p(p − 1) 
+
+"p−2X
+
+> s=0
+
+(p − 1 − s)∆ 0(s) + 
+
+> p−1
+
+X
+
+> s=1
+
+s∆1(s)
+
+#
+
+= τ 2
+
+p(p − 1) 
+
+> p−1
+
+X
+
+> s=0
+
+sλ 1 + ( p − 1 − s)λ2
+
+qs(qs + ρ) , (39) where the second equality adds the two vanishing boundary terms. The summand satisfies 
+
+sλ 1 + ( p − 1 − s)λ2
+
+qs(qs + ρ) = p − 11 + sρ + s
+
+ 1
+
+qs
+
+− 1
+
+qs + ρ
+
+
+
+.
+
+The second term is evaluated by shifting the summation index: 
+
+> p−1
+
+X
+
+> s=0
+
+s
+
+ 1
+
+qs
+
+− 1
+
+qs+1 
+
+
+
+=
+
+> p−1
+
+X
+
+> s=1
+
+sqs
+
+−
+
+> p
+
+X
+
+> r=1
+
+r − 1
+
+qr
+
+=
+
+> p−1
+
+X
+
+> s=1
+
+1
+
+qs
+
+− p − 1
+
+qp
+
+=
+
+> p−2
+
+X
+
+> s=0
+
+11 + sρ − p − 1
+
+λ1
+
+,
+
+since {qs}p−1 
+
+> s=1
+
+= {1, 1 + ρ, . . . , 1 + ( p − 2) ρ} and qp = λ1. The first term contributes 
+
+> p−1
+
+X
+
+> s=0
+
+p − 11 + sρ = ( p − 1) 
+
+> p−2
+
+X
+
+> s=0
+
+11 + sρ + p − 1
+
+λ1
+
+,
+
+and adding the two parts cancels the λ1 terms, giving 
+
+> p−1
+
+X
+
+> s=0
+
+sλ 1 + ( p − 1 − s)λ2
+
+qs(qs + ρ) = p
+
+> p−2
+
+X
+
+> s=0
+
+11 + sρ .
+
+Therefore, 
+
+αG = τ 2
+
+p − 1
+
+> p−2
+
+X
+
+> s=0
+
+11 + sρ = κρτ 2.
+
+All three matrices have unit column-sums, so their diagonal entries are 1 − (p − 1) αM , establishing Eq. (20) , and Eq. (21) follows by taking ratios of the off-diagonal entries. At ρ = 0 , τρ = 0 , so all three matrices equal Ip.20 A.4 Proof of Corollary 1 
+
+Proof. By Proposition 3, each of the three reallocation matrices has the form 
+
+A(α) = (1 − pα )Ip + αJ p.
+
+Hence, 
+
+A(α)1 p = (1 − pα )1 p + αp 1p = 1 p.
+
+Because A(α) is symmetric, it also satisfies 1⊤ 
+
+> p
+
+A(α) = 1 ⊤ 
+
+> p
+
+. Since each matrix has unit row- and column-sums, and is non-negative by construction, it is doubly stochastic. Proposition 1 then gives 
+
+Eβ0∼F [DA,i (Σ , β 0)] = 1
+
+p .
+
+The inverse of the compound-symmetric correlation matrix is 
+
+Σ−1 = 11 − ρ
+
+
+
+Ip − ρ
+
+1 + ( p − 1) ρ Jp
+
+
+
+.
+
+Therefore, 
+
+VIF i = (Σ −1)ii 
+
+= 11 − ρ
+
+
+
+1 − ρ
+
+1 + ( p − 1) ρ
+
+
+
+= 1 + ( p − 2) ρ
+
+[1 + ( p − 1) ρ](1 − ρ) ,
+
+which is identical for every predictor. 
+
+A.5 Proof of Corollary 2 
+
+Proof. For a reallocation matrix 
+
+A(α) = (1 − pα )Ip + αJ p,
+
+the normalized ORM importance vector is DA(α) = A(α)η. Since 1⊤ 
+
+> p
+
+η = 1 , we have Jpη = 1 p, and therefore 
+
+DA(α) = (1 − pα )η + α1p.
+
+Because (1 − pα )μp + α1p = μp, it follows that 
+
+DA(α) − μp = (1 − pα )( η − μp),
+
+which proves Eq. (24). We next order the off-diagonal values. By Proposition 3, αG/α C = κρ and αG/α R = hρκρ. For 0 < ρ < 1,
+
+κρ = 1
+
+p − 1
+
+> p−2
+
+X
+
+> s=0
+
+11 + sρ < 1,
+
+because every term in the average except the first is strictly less than one, while 
+
+hρκρ = 1
+
+p − 1
+
+> p−2
+
+X
+
+> s=0
+
+hρ
+
+1 + sρ > 1,
+
+because each ratio hρ/(1 + sρ ) is at least one, with strict inequality for at least one s. Hence αR < α G < α C . For 
+
+− 1 
+
+> p−1
+
+< ρ < 0, both arguments reverse, giving αC < α G < α R.Furthermore, pα M < 1 for every M ∈ { C, G, R } and every ρ̸ = 0 . Writing λ1 = 1 + ( p − 1) ρ and λ2 = 1 − ρ, we have λ1λ2 > 0 and, since (p − 2) λ1 > 0 and hρ > 0 on the parameter range, 
+
+p λ1 − pλ2
+
+2
+
+< λ 1 + λ2 = 2 + ( p − 2) ρ < p, λ1 + λ2 < λ 1 + λ2 + ( p − 2) λ1 = p h ρ.
+
+The first chain gives pα C = ( √λ1 − √λ2)2/p < 1, and the second gives pα R = ( √λ1 − √λ2)2/(p h ρ) < 1; since 
+
+αG always lies between αR and αC , we conclude 0 < 1 − pα M < 1 for all three methods. 21 Now suppose 0 < ρ < 1. Then 
+
+0 < 1 − pα C < 1 − pα G < 1 − pα R,
+
+and if η̸ = μp, absolute homogeneity of any norm applied to Eq. (24) yields 
+
+∥DC − μp∥ < ∥DG − μp∥ < ∥DR − μp∥.
+
+For ρ < 0, the ordering of the αM reverses, and hence so does the norm ordering. Finally, 
+
+DC − DG = [(1 − pα C ) − (1 − pα G)] η + ( αC − αG)1 p
+
+= p(αC − αG) ( μp − η) ,
+
+which proves Eq. (27). 
+
+References 
+
+Jeff W Johnson and James M LeBreton. History and use of relative importance indices in organizational research. 
+
+Organizational research methods , 2004. Ulrike Grömping. Variable importance in regression models. Wiley interdisciplinary reviews: Computational statistics ,7(2):137–152, 2015. Jeff W Johnson. The relative importance of task and contextual performance dimensions to supervisor judgments of overall performance. Journal of applied psychology , 86(5):984, 2001. Michael S Garver and Zachary Williams. Utilizing relative weight analysis in customer satisfaction research. Interna-tional Journal of Market Research , 62(2):158–175, 2020. D. V. Budescu. Dominance analysis - a new approach to the problem of relative importance of predictors in multiple-regression. Psychological Bulletin , 1993. Razia Azen and David V Budescu. The dominance analysis approach for comparing predictors in multiple regression. 
+
+Psychological methods , 2003. Richard M Johnson. The minimal transformation to orthonormality. Psychometrika , 1966. Paul E Green, J Douglas Carroll, and Wayne S DeSarbo. A new measure of predictor variable importance in multiple regression. Journal of Marketing Research , 1978. Jeff W Johnson. A heuristic method for estimating the relative weight of predictor variables in multiple regression. 
+
+Multivariate behavioral research , 2000. J. M. LeBreton, R. E. Ployhart, and R. T. Ladd. A monte carlo comparison of relative importance methodologies. 
+
+Organizational Research Methods , 2004. Y. C. Chao, Y. Zhao, L. L. Kupper, and L. A. Nylander-French. Quantifying the relative importance of predictors in multiple linear regression analyses for public health studies. Journal of occupational and environmental hygiene ,2008. Scott Tonidandel and James M LeBreton. Determining the relative importance of predictors in logistic regression: an extension of relative weight analysis. Organizational Research Methods , 13(4):767–781, 2010. James M LeBreton and Scott Tonidandel. Multivariate relative importance: extending relative weight analysis to multivariate criterion spaces. Journal of Applied Psychology , 93(2):329, 2008. Amos Hong and Argon Chen. Dominance index for many-to-many correlation and its applications to semiconductor yield analysis. In Proceedings of the 2012 Winter Simulation Conference (WSC) , pages 1–11. IEEE, 2012. Scott Tonidandel, James M LeBreton, and Jeff W Johnson. Determining the statistical significance of relative weights. 
+
+Psychological methods , 14(4):387, 2009. James M LeBreton, Scott Tonidandel, and Dina V Krasikova. Residualized relative importance analysis: A technique for the comprehensive decomposition of variance in higher order regression models. Organizational Research Methods , 16(3):449–473, 2013. Robert Tibshirani. Regression shrinkage and selection via the lasso. Journal of the Royal Statistical Society Series B: Statistical Methodology , 58(1):267–288, 1996. Zixin Shen and Argon Chen. Comprehensive relative importance analysis and its applications to high dimensional gene expression data analysis. Knowledge-Based Systems , 203:106120, 2020. 22 Tien-En Chang and Argon Chen. Variable selection using relative importance rankings. Pattern Recognition , page 113561, 2026. D Roland Thomas, Bruno D Zumbo, Ernest Kwan, and Linda Schweitzer. On johnson’s (2000) relative weights method for assessing variable importance: A reanalysis. Multivariate behavioral research , 2014. Tien-En Chang and Argon Chen. Understanding and using the relative importance measures based on orthogonalization and reallocation. arXiv preprint arXiv:2510.13389 , 2025. John Von Neumann. On rings of operators. reduction theory. Annals of Mathematics , 1949. Richard Sinkhorn and Paul Knopp. Concerning nonnegative matrices and doubly stochastic matrices. Pacific Journal of Mathematics , 1967. Lloyd S Shapley. A Value for n-Person Games , pages 307––317. Princeton University Press, 1953. Abraham Genizi. Decomposition of r 2 in multiple regression with correlated regressors. Statistica Sinica , 1993. Weiran Wang and Miguel A Carreira-Perpinán. Projection onto the probability simplex: An efficient algorithm with a simple proof, and an application. arXiv preprint arXiv:1309.1541 , 2013. Heinz H Bauschke and Jonathan M Borwein. On projection algorithms for solving convex feasibility problems. SIAM review , 1996. Heinz H Bauschke and Jonathan M Borwein. On the convergence of von neumann’s alternating projection algorithm for two sets. Set-Valued Analysis , 1993. Fei Wang, Ping Li, and Arnd Christian Konig. Learning a bi-stochastic data similarity matrix. In 2010 IEEE International Conference on Data Mining , 2010. Philip A Knight. The sinkhorn–knopp algorithm: convergence and applications. SIAM Journal on Matrix Analysis and Applications , 2008. Maurice G Kendall. A new measure of rank correlation. Biometrika , 30(1-2):81–93, 1938. Noah A Smith and Roy W Tromble. Sampling uniformly from the unit simplex. Johns Hopkins University, Tech. Rep ,29, 2004. Niels G Waller. Generating correlation matrices with specified eigenvalues using the method of alternating projections. 
+
+The American Statistician , 2020. 23
