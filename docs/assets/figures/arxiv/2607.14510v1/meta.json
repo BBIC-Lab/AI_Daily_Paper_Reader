@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-001.webp",
+      "caption": "Fig. 1: Comparison of existing PHM paradigms and the proposed VLT framework. Existing methods may have limited generalization, weak semantic use, or information loss. VLT improves PHM representation learning by aligning time-domain signals, frequency-domain features, and domain knowledge.",
+      "page": 1,
+      "index": 1,
+      "width": 554,
+      "height": 271
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-012.webp",
+      "caption": "Fig. 2: The overall architecture of the proposed VLT framework. The model integrates three modalities via dedicated branches: a Time-aware Mixture of Experts (Time-MoE) for raw time-series signals, a Visual Frequency Encoder for frequency-domain images, and a Text Encoder for domain-knowledge prompts. A time-centric multimodal gradient alignment mechanism is employed to dynamically balance modal contributions and align branch-level predictions prior to the final attention-based fusion.",
+      "page": 4,
+      "index": 12,
+      "width": 1052,
+      "height": 463
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-002.webp",
+      "caption": "Fig. 3: The proposed two-stage training architecture for multimodal imbalance learning. Stage 1 primarily optimizes the temporal experts, while Stage 2 fine-tunes the visual and knowledge branches guided by cross-branch consistency constraints and adaptive gradient modulation.",
+      "page": 6,
+      "index": 2,
+      "width": 860,
+      "height": 625
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-004.webp",
+      "caption": "TABLE I: HYPERPARAMETER SETTINGS",
+      "page": 7,
+      "index": 4,
+      "width": 462,
+      "height": 396
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-011.webp",
+      "caption": "Fig. 4: Qualitative regression visualization on the C-MAPSS engine and XJTU battery datasets. Representative testing units from FD001–FD004 are reported for C-MAPSS, and typical capacity-fading trajectories are shown for the battery dataset. For each subset, the upper panel compares predictions with ground truth, while the lower panel depicts the absolute prediction error over time.",
+      "page": 8,
+      "index": 11,
+      "width": 1072,
+      "height": 536
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-010.webp",
+      "caption": "TABLE II: Regression Task Results on the Full Training Dataset",
+      "page": 8,
+      "index": 10,
+      "width": 1044,
+      "height": 269
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-015.webp",
+      "caption": "Fig. 5: Performance of regression tasks under few-shot learning. The x-axis shows the percentage of training data used, from 5% to 100%. The y-axis denotes Root Mean Square Error, where lower is better.",
+      "page": 9,
+      "index": 15,
+      "width": 1063,
+      "height": 453
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-014.webp",
+      "caption": "TABLE III: Regression task results under few-shot learning (5% training data)",
+      "page": 9,
+      "index": 14,
+      "width": 1060,
+      "height": 269
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-005.webp",
+      "caption": "Fig. 6: Fault classification task few-shot performance comparison measured by accuracy. The x-axis indicates the number of training samples ranging from 1-shot up to the full dataset.",
+      "page": 10,
+      "index": 5,
+      "width": 520,
+      "height": 355
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-006.webp",
+      "caption": "Fig. 7: Fault classification task few-shot performance comparison measured by F1 score. The x-axis indicates the number of training samples ranging from 1-shot up to the full dataset.",
+      "page": 10,
+      "index": 6,
+      "width": 520,
+      "height": 355
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-003.webp",
+      "caption": "TABLE VI: Ablation study for regression tasks",
+      "page": 11,
+      "index": 3,
+      "width": 836,
+      "height": 267
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-013.webp",
+      "caption": "Fig. 9: Ablation results on the CWRU dataset. Subfigure (a) illustrates the performance degradation caused by removing individual modalities, where the horizontal red line denotes the zero-drop baseline of the complete Full Model and the bar heights indicate the corresponding accuracy drop. Black error bars represent the variance across trials. Subfigures (b) and (c) show the absolute performance evolution of the ablated models in terms of Accuracy and F1 Score, respectively, as the training data increases from 1-shot to full data. The solid red line represents the Full Model, while the remaining curves correspond to variants with one modality removed.",
+      "page": 12,
+      "index": 13,
+      "width": 1070,
+      "height": 365
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-009.webp",
+      "caption": "Fig. 10: UMAP visualization of multimodal feature spaces on C-MAPSS datasets (FD001–FD004). The top row shows the pre-fusion embeddings for each modality (Temporal, Text, Vision) and their concatenation, where features appear scattered and poorly structured. The bottom row presents the post-fusion feature space, revealing well-organized, continuous trajectories that reflect the progressive engine degradation process. Color gradients encode the RUL labels from minimum (blue) to maximum (red).",
+      "page": 13,
+      "index": 9,
+      "width": 1065,
+      "height": 491
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-008.webp",
+      "caption": "Fig. 11: Distribution of attention fusion weights across all datasets. The top row shows the weight distributions for C-MAPSS engine datasets (FD001–FD004) and one battery dataset, while the bottom row covers the remaining battery datasets. Blue and red bars represent the weights assigned to different modality fusion branches. The varying distributions across datasets demonstrate that the attention mechanism adaptively allocates modality importance based on task-specific characteristics.",
+      "page": 14,
+      "index": 8,
+      "width": 1064,
+      "height": 482
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14510v1/fig-007.webp",
+      "caption": "Fig. 12: t-SNE visualization of feature representations on the CWRU bearing fault dataset. Top-left: the original signal space where 10 fault categories are heavily overlapped. Top-middle and top-right: post-fusion feature spaces with full data and 1-shot, respectively. Bottom row: post-fusion feature spaces under 2-shot, 4-shot, and 8-shot settings. Each color represents a distinct fault type (Normal and Fault 1–9). The progressive improvement in cluster separation from 1-shot to full data demonstrates VLT’s ability to learn discriminative multimodal representations even under extreme data scarcity.",
+      "page": 14,
+      "index": 7,
+      "width": 1062,
+      "height": 623
+    }
+  ]
+}

@@ -1,0 +1,404 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-19T20:29:57.621300+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 28,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 37,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 9,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 4,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2607.13644v1",
+      "source": "arxiv",
+      "title": "Evaluating Encoding Strategies for Closed-Loop Classification in Biological Neural Networks",
+      "abstract": "Interfacing with Biological Neural Networks (BNNs) requires encoding information into stimulation patterns that can be effectively processed and that enable the underlying system to adapt. Nevertheless, the role of stimulation encoding remains poorly understood. In this work, we compare multiple encoding strategies, including rate-based, phase-based, burst-based, and time-to-first-spike temporal encodings, in a closed-loop neural classification task using cultured BNNs. We encode visual inputs as spatiotemporal stimulation patterns delivered via a Multi-Electrode Array (MEA) and evaluate classification performance for each encoding scheme. We find that burst-based temporal encoding yields the highest observed performance, achieving up to 95.6 % accuracy in a binary classification task, compared to substantially lower performance from rate- and phase-based approaches. We further show that performance is highly sensitive to the spatial distribution of stimulation, with suboptimal electrode selection significantly degrading accuracy. These findings indicate that effective interfacing with biological neural systems requires the joint optimization of temporal and spatial encoding strategies, and highlight temporal encoding as a key design dimension for bio-digital computing.",
+      "authors": [
+        "Martin Schottlender",
+        "Veronika Volkova",
+        "Pengjie Zhou",
+        "Ruifeng Zheng",
+        "Frank H. P. Fitzek",
+        "Pit Hofmann"
+      ],
+      "primary_category": "cs.ET",
+      "categories": [
+        "cs.ET",
+        "cs.NE",
+        "q-bio.NC"
+      ],
+      "published": "2026-07-15T09:41:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.13644v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes neural signals via MEA stimulation patterns for classification",
+      "llm_evidence_cn": "通过MEA刺激模式解码神经信号进行分类",
+      "llm_evidence": "通过MEA刺激模式解码神经信号进行分类",
+      "canonical_evidence": "通过MEA刺激模式解码神经信号进行分类",
+      "llm_tldr_en": "Compares encoding strategies for closed-loop classification in biological neural networks.",
+      "llm_tldr_cn": "比较生物神经网络中闭环分类的编码策略。",
+      "llm_tldr": "比较生物神经网络中闭环分类的编码策略。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.13852v1",
+      "source": "arxiv",
+      "title": "A Frequentist Approach to Change Point Detection: Methods and Applications",
+      "abstract": "In this paper we study the problem of change point detection in functional time series where the observations are allowed to vary on both sparse and dense support. We address the problem of mean shift as well as the process volatility. Our methodology is based on the maximization of the conditional probability of change point given all the other parameters. Further, it has been proved that the proposed estimator is consistent.",
+      "authors": [
+        "Debanjana Datta"
+      ],
+      "primary_category": "math.ST",
+      "categories": [
+        "math.ST"
+      ],
+      "published": "2026-07-15T13:59:53+00:00",
+      "link": "https://arxiv.org/pdf/2607.13852v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "change point detection in functional time series with consistency proof",
+      "llm_evidence_cn": "函数型时间序列变点检测，具有一致性证明",
+      "llm_evidence": "函数型时间序列变点检测，具有一致性证明",
+      "canonical_evidence": "函数型时间序列变点检测，具有一致性证明",
+      "llm_tldr_en": "Develops a frequentist approach for change point detection in time series.",
+      "llm_tldr_cn": "开发了一种频率学派的变点检测方法。",
+      "llm_tldr": "开发了一种频率学派的变点检测方法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.14078v1",
+      "source": "arxiv",
+      "title": "A modular state-space model of human perception, cognition, and decision dynamics",
+      "abstract": "Human-centered adaptive systems require behavioral models that are both psychologically interpretable and mathematically analyzable. Many existing predictors either operate as black-box input-output mappings or provide limited access to latent internal dynamics. This paper addresses this gap by modeling behavior as a perception-cognition-decision pipeline. We propose a modular state-space model in which attentional selection, predictive inference, cognitive-state evolution, intention formation, and action selection are represented by coupled mathematical mappings. The model links sensory inputs to observable behavior through latent internal states while retaining interpretable connections to neuro-cognitive mechanisms. We establish sufficient conditions for boundedness, Lipschitz regularity, forward invariance, contraction of perceptual inference under constant input, and input-to-state stability of the cognitive state dynamics. Numerical sensitivity analyses show that the model yields interpretable changes in perceptual tracking, cognitive amplification, intention expression, and action decisiveness. We further demonstrate a closed-loop rehabilitation case study in which a receding-horizon controller uses the model to adapt movement difficulty from partial feedback. In this proof-of-concept setting, the model-based controller sustains simulated task participation and achieves lower realized cumulative cost than target-following and random baselines. Overall, the framework provides a white-box dynamical structure for estimation, validation, and model-based control in human-centered settings.",
+      "authors": [
+        "Sven Schoonebeek",
+        "Anahita Jamshidnejad",
+        "Carlo Cenedese"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "q-bio.NC"
+      ],
+      "published": "2026-07-15T17:50:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.14078v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "state-space model for perception-cognition-decision as sequence modeling",
+      "llm_evidence_cn": "用于感知-认知-决策的状态空间模型作为序列建模",
+      "llm_evidence": "用于感知-认知-决策的状态空间模型作为序列建模",
+      "canonical_evidence": "用于感知-认知-决策的状态空间模型作为序列建模",
+      "llm_tldr_en": "Interpretable modular state-space model linking sensory inputs to behavior via latent dynamics.",
+      "llm_tldr_cn": "可解释的模块化状态空间模型，通过潜在动态链接感觉输入到行为。",
+      "llm_tldr": "可解释的模块化状态空间模型，通过潜在动态链接感觉输入到行为。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.14086v1",
+      "source": "arxiv",
+      "title": "Leveraging unlabelled data for generalizable neural population decoding",
+      "abstract": "Robust and accurate neural decoders are integral to neurotechnologies such as brain-computer interfaces and closed-loop experiments. Recent work has shown that tokenizing neural data at the spike level facilitates multi-session pretraining and delivers state-of-the-art decoding performance. However, current spike-based models are restricted to supervised learning (SL), limiting training to datasets with paired behavioural labels. To address this limitation, we introduce MOJO (Masked autOencoder-based JOint training), a training framework for spike-tokenizing models that jointly leverages self-supervised learning (SSL) via masked autoencoding and SL objectives. We evaluate MOJO on three spiking datasets spanning monkey motor cortex during reaching tasks and multi-regional mouse recordings during vision and decision making tasks, demonstrating superior performance over purely SL-trained models. This improvement is especially pronounced when training with limited labelled data, particularly in few-shot finetuning, where only a small amount of labelled data from a new session is available. Incorporating SSL also yields more interpretable neuronal representations, improving performance on brain region classification and spike-statistics prediction without explicit optimization for these tasks. We further show that MOJO generalizes beyond spiking data to human electrocorticography during speech, where it continues to outperform purely SL-trained models and achieves performance comparable to neuro-foundation models (NFMs) designed specifically for continuous signals. Overall, augmenting spike-tokenizing models with SSL improves performance in label-impoverished settings and enables the use of unlabelled data across various tasks and species, while generalizing to other neural modalities. These results suggest a path towards more flexible and scalable data usage when training NFMs.",
+      "authors": [
+        "Ximeng Mao",
+        "Nanda H. Krishna",
+        "Avery Hee-Woon Ryoo",
+        "Matthew G. Perich",
+        "Guillaume Lajoie"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "q-bio.NC"
+      ],
+      "published": "2026-07-15T17:58:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.14086v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised joint training for neural population decoding",
+      "llm_evidence_cn": "自监督联合训练用于神经群体解码",
+      "llm_evidence": "自监督联合训练用于神经群体解码",
+      "canonical_evidence": "自监督联合训练用于神经群体解码",
+      "llm_tldr_en": "MOJO combines masked autoencoding and supervised learning to improve neural decoding from spike data.",
+      "llm_tldr_cn": "MOJO结合掩码自编码和监督学习，提升来自尖峰数据的神经解码。",
+      "llm_tldr": "MOJO结合掩码自编码和监督学习，提升来自尖峰数据的神经解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.14510v1",
+      "source": "arxiv",
+      "title": "VLT: A Vision-Language-Time Series Multimodal Foundation Model for Industrial Intelligence",
+      "abstract": "Industrial time series serve as the foundation for Prognostics and Health Management (PHM) to ensure the reliability and safety of industrial equipment such as aero-engines. However, existing approaches are typically limited to single-modality modeling, which restricts their generalization in complex scenarios. Although recent advances in large language models (LLMs) provide new opportunities for multimodal learning, bridging continuous time-series signals and discrete textual semantics remains an open challenge. To this end, we propose VLT, a multimodal foundation model that jointly models time-series, frequency-spectrum visual representations, and textual knowledge. A key insight is to utilize the frequency spectrum as a visual bridge to connect continuous temporal signals with discrete semantics. Specifically, a Time-aware Mixture-of-Experts (Time-MoE) is designed to capture heterogeneous temporal dynamics, while a Frequency-Text Augmented Learner enables joint modeling of spectral and semantic features within a shared representation space. Furthermore, a time-centric gradient alignment mechanism is introduced to mitigate cross-modal optimization conflicts via gradient normalization and reliability-aware dynamic reweighting. Extensive experiments on multiple industrial datasets demonstrate that VLT outperforms state-of-the-art methods, achieving superior robustness and generalization under few-shot, noisy, and incomplete-modality settings.",
+      "authors": [
+        "Haiteng Wang",
+        "Jingheng Yan",
+        "Xiaokang Wang",
+        "Lei Ren"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-16T02:53:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.14510v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes multimodal foundation model for time series analysis and prediction",
+      "llm_evidence_cn": "提出多模态基础模型用于时间序列分析与预测",
+      "llm_evidence": "提出多模态基础模型用于时间序列分析与预测",
+      "canonical_evidence": "提出多模态基础模型用于时间序列分析与预测",
+      "llm_tldr_en": "Multimodal foundation model for time series analysis and prediction using frequency spectrum and text.",
+      "llm_tldr_cn": "使用频谱和文本的多模态时间序列分析与预测基础模型。",
+      "llm_tldr": "使用频谱和文本的多模态时间序列分析与预测基础模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.13398v1",
+      "source": "arxiv",
+      "title": "TMallGS: Scaling Unified Feature and Sequence Modeling for Generative E-commerce Search",
+      "abstract": "In industrial search and ranking systems, Click-Through Rate (CTR) prediction is shifting from traditional Deep Learning Recommendation Models (DLRM) toward unified, compute-intensive Transformer architectures. This transition is driven by the need to improve Model FLOPs Utilization (MFU) and achieve predictable gains through scaling laws. However, existing approaches such as OneTrans and Climber often adopt an all-in-tokenization strategy when adapting Large Language Model (LLM) architectures, overlooking the heterogeneous nature of ranking features. We propose TmallGS, a scalable ranking architecture for Tmall search. TmallGS includes five key components: (1) Hierarchical Distribution-Calibrated Tokenization, which combines Field-wise Saliency Reweighting (FSR) and Distribution-Calibrated Projection (DCP) to map diverse features into optimized subspaces; (2) a Field-Adaptive Gated Transformer Backbone with per-field QKV projections and noise-adaptive gating for refined semantic interaction; (3) Decoupled FiLM Late Fusion to preserve explicit high-frequency signals; (4) a Context-Aware Bias Net to decouple systemic bias from user intent; and (5) Error-Aware Progressive Training with dynamically weighted losses for robust learning. Extensive offline experiments and online A/B tests on Tmall Search show that TmallGS improves training throughput and achieves substantial gains in UCTCVR and GMV.",
+      "authors": [
+        "Zhentao Song",
+        "Yufeng Gao",
+        "Xing Fang",
+        "Jing Wang",
+        "Guangxin Song",
+        "Bokang Wang",
+        "Yipin Dai",
+        "He Guo"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-15T02:52:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.13398v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sequence modeling for CTR prediction",
+      "llm_evidence_cn": "CTR预测的序列建模",
+      "llm_evidence": "CTR预测的序列建模",
+      "canonical_evidence": "CTR预测的序列建模",
+      "llm_tldr_en": "Unified sequence modeling for CTR prediction in e-commerce search.",
+      "llm_tldr_cn": "电商搜索中统一序列建模用于CTR预测。",
+      "llm_tldr": "电商搜索中统一序列建模用于CTR预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.13432v1",
+      "source": "arxiv",
+      "title": "Local Redundancy: An Information-Theoretic Measure of Plasticity from Synthetic Memorization",
+      "abstract": "Plasticity -- a neural network's ability to adapt to new tasks -- is critical for continual and transfer learning. Existing measures, such as effective rank, dead neuron fraction, and weight norm, lack theoretical grounding and correlate poorly with performance on new tasks. We introduce local redundancy, an information-theoretic measure derived from universal compression theory. We define local redundancy as the worst-case redundancy of a local model family -- parameters in an infinitesimal neighborhood along gradient directions -- and show this is a principled measure of plasticity. Although local redundancy is intractable to compute exactly, we prove that the expected squared gradient norm on a synthetic memorization task provides an efficiently computable lower bound. Experiments on continual image classification and time series transfer learning demonstrate that local redundancy predicts downstream performance better than existing measures and enables pretraining checkpoint selection where validation loss plateaus.",
+      "authors": [
+        "Jiaxuan Cheng"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-15T04:31:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.13432v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "information-theoretic measure of plasticity for transfer learning",
+      "llm_evidence_cn": "用于迁移学习的可塑性信息论度量",
+      "llm_evidence": "用于迁移学习的可塑性信息论度量",
+      "canonical_evidence": "用于迁移学习的可塑性信息论度量",
+      "llm_tldr_en": "Local redundancy measures neural network plasticity, applicable to continual and transfer learning.",
+      "llm_tldr_cn": "局部冗余度量神经网络可塑性，适用于持续学习和迁移学习。",
+      "llm_tldr": "局部冗余度量神经网络可塑性，适用于持续学习和迁移学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.13425v1",
+      "source": "arxiv",
+      "title": "Data-Efficient Adaptation of LLMs via Attention Head Reweighting",
+      "abstract": "Learning effectively from limited data is critical in domains like security where labeled examples are scarce. Large language models (LLMs) have demonstrated some capabilities for data-efficient learning, especially through parameter-efficient adaptation methods, but continue to struggle when faced with few samples for difficult tasks. To meet this challenge, we propose Attention Head Reweighting (AHR), a data-efficient method that adapts LLMs to new text-classification tasks by learning only a single scalar per attention head. This drastically reduces the number of parameters that need to be learned by making use of the functional specialization of individual attention heads. Experiments on diverse open-source text classification datasets show that AHR can outperform standard baselines like LoRA when learning from limited samples, despite having 200-1000x fewer trainable parameters, as our AHR only modifies ~0.0001% of the model's parameters. In addition, our learned weights are easy to interpret and can be analyzed to better understand the mechanisms and attention heads responsible for in-context learning abilities in LLMs.",
+      "authors": [
+        "Tuomas Oikarinen",
+        "Zixiao Chen",
+        "Charlotte Siska",
+        "Tsui-Wei Weng",
+        "Chandan Singh",
+        "Jianfeng Gao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-15T04:03:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.13425v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adapts LLMs to new tasks with limited labeled data via attention head reweighting",
+      "llm_evidence_cn": "通过注意力头重加权在有限标注数据下适应LLMs到新任务",
+      "llm_evidence": "通过注意力头重加权在有限标注数据下适应LLMs到新任务",
+      "canonical_evidence": "通过注意力头重加权在有限标注数据下适应LLMs到新任务",
+      "llm_tldr_en": "Proposes Attention Head Reweighting for data-efficient adaptation of LLMs to new text classification tasks.",
+      "llm_tldr_cn": "提出注意力头重加权用于LLMs的数据高效适应新文本分类任务。",
+      "llm_tldr": "提出注意力头重加权用于LLMs的数据高效适应新文本分类任务。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.13437v1",
+      "source": "arxiv",
+      "title": "CLIP-Guided Label-Free Discriminative Region Scoring for Fine-Grained Classification",
+      "abstract": "Recent vision models such as CLIP and SAM enable training-free segmentation and semantic encoding for fine-grained classification. A common approach is to compare the representations of segmented image regions with the text prompt embeddings of the corresponding labels. However, it remains unclear how different local regions and CLIP-based scoring strategies affect the selection of discriminative evidence, especially when ground-truth labels are unavailable. In this paper, we propose a unified CLIP-guided label-free region scoring framework for fine-grained classification. The framework evaluates cosine similarity-based, margin-based, and entropy-based scoring strategies using both SAM-generated masks and random crops, and introduces two label-free pseudo-label variants based on global image embeddings and local region embeddings. We conduct experiments on five fine-grained classification datasets to systematically compare different region generation methods and scoring strategies. The results show that Soft Negative Margin scoring achieves the strongest performance, and pseudo-label scoring closely approximates true-label performance. Although SAM produces semantically meaningful masks, random-crop-based pseudo-label scoring consistently outperforms SAM-based scoring across all datasets, suggesting that random crops preserve surrounding information and provide more stable semantic context when pseudo-labels are noisy. In addition, SAM masks benefit from aggregating embeddings from all regions, whereas random crops tend to perform better with a smaller top-k subset. These findings provide new insights for fine-grained classification.",
+      "authors": [
+        "Yujie Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-15T04:40:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.13437v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "CLIP-guided region scoring for discriminative evidence",
+      "llm_evidence_cn": "CLIP引导的区域评分用于判别性证据",
+      "llm_evidence": "CLIP引导的区域评分用于判别性证据",
+      "canonical_evidence": "CLIP引导的区域评分用于判别性证据",
+      "llm_tldr_en": "Label-free region scoring using CLIP for fine-grained classification.",
+      "llm_tldr_cn": "使用CLIP进行无标签区域评分用于细粒度分类。",
+      "llm_tldr": "使用CLIP进行无标签区域评分用于细粒度分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.13498v1",
+      "source": "arxiv",
+      "title": "Factorized Spectral Representations for Reinforcement Learning",
+      "abstract": "Learning a compact model of the world from interaction data is central to sample-efficient deep reinforcement learning. Spectral representation methods have become the leading paradigm for representation learning in continuous control by taking a matrix view of the transition kernel, with state-action pairs on one side and next states on the other, and learning a low-rank factorization through self-supervised contrastive objectives. We take this view one step further. The transition kernel is naturally a three-mode tensor over states, actions, and next states, and a CP decomposition gives one feature map per mode. We propose FaStR, which fits this decomposition with a noise contrastive objective, producing separate state, action, and next-state encoders that together form a single spectral representation. The factored form yields a smaller hypothesis class, and the sample size needed for representation learning shrinks by a factor that scales with the smaller of the state and action dimensions. Empirically, FaStR delivers its largest gains on high-dimensional locomotion tasks whose dynamics align with the factored structure, and the learned state encoder transfers intact across actuator shift while only the action encoder is retrained.",
+      "authors": [
+        "Junyi Wu",
+        "Dan Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-15T06:52:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.13498v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "compact spectral representations for RL",
+      "llm_evidence_cn": "强化学习的紧凑谱表示",
+      "llm_evidence": "强化学习的紧凑谱表示",
+      "canonical_evidence": "强化学习的紧凑谱表示",
+      "llm_tldr_en": "Factorized spectral representation learning for RL transition kernel.",
+      "llm_tldr_cn": "强化学习转移核的分解谱表示学习。",
+      "llm_tldr": "强化学习转移核的分解谱表示学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
