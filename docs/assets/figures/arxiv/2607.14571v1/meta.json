@@ -1,0 +1,94 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-001.webp",
+      "caption": "Table 2: Continual learning matrix (10 base epochs on DA + 10 CL epochs on DB). Lower is better. PPLA and PPLB are validation perplexities on each dataset; ∆A is the post-CL minus pre-CL change in PPLA relative to each growth method’s own post-growth baseline (italic “Pre-CL (post-growth)” rows). “Scratch” trains the 857M model jointly on DA ∪DB for 10 epochs as a samecompute reference; final-epoch state shown for protocol parity. †Pure isolation (freezing duplicated blocks) is omitted for Gstack because the rank-separation guarantee of Theorem 3.1 does not hold: Gstack’s duplicated blocks immediately alter the computation, so freezing them does not preserve f∗. The Hybrid (Replay+Preserve) row uses the same loss on both growth methods; on Gstack the load-bearing preservation work comes from the KL and replay-CE terms rather than from the (here non-meaningful) freeze.",
+      "page": 6,
+      "index": 1,
+      "width": 664,
+      "height": 342
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-003.webp",
+      "caption": "Table 3: MoE cross-architecture validation (4→8 experts, 12→24 layers). Dense rows reproduce the corresponding Gate-FP entries from Table 2 for comparison under identical CL hyperparameters.",
+      "page": 7,
+      "index": 3,
+      "width": 594,
+      "height": 225
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-006.webp",
+      "caption": "Table 5: Baseline comparisons at g = 2 scale (preservation-aware recipes only; full table including no-protection rows in Appendix C). No growth fine-tunes the 300M base directly (Isolation is vacuous: no new parameters). Zero-init stacking zeroes new-block output projections instead of using a scalar gate. LoRA-CL uses rank-64 adapters with the base frozen.",
+      "page": 8,
+      "index": 6,
+      "width": 594,
+      "height": 225
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-009.webp",
+      "caption": "Table 6: Key ablations on Gate-FP. What to freeze pinpoints old-weight freezing (not gate freezing) as the binding constraint. Replay fraction confirms that adding CE-on-DA on top of isolation worsens both axes. The negative ∆A at α0 = 0.1 reflects partial CL recovery from a non-FP starting point (post-growth PPLA = 26.40 vs. 25.92 at α0 = 0), not improvement over f∗. Full tables in Appendix H.",
+      "page": 9,
+      "index": 9,
+      "width": 568,
+      "height": 526
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-002.webp",
+      "caption": "Table 7: Status of the geometric framework’s claims. Exact claims hold without conditional assumptions. Conditional claims hold under transversality (Theorem 3.1 (2)). Approximate claims hold to first order in ∥α∥ and degrade controllably as gates open. Empirical claims are not proven from the framework but are observed in our protocol.",
+      "page": 15,
+      "index": 2,
+      "width": 867,
+      "height": 239
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-011.webp",
+      "caption": "Table 8: Transversality diagnostic at the Gate-FP post-growth checkpoint (g = 4, K = 36, M = 200, D = 1,608,224). The residual (I − Pold)Jα is full-rank with well-conditioned spectrum, and gate directions are geometrically separated from the sampled old-Jacobian image by at least 56.9◦.",
+      "page": 16,
+      "index": 11,
+      "width": 427,
+      "height": 294
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-005.webp",
+      "caption": "Table 13: MoE isolation: per-epoch CL trajectory. Epoch 0 (italic) is the post-growth pre-CL state. Validation PPLA is preserved throughout; validation PPLB is best at epoch 2 and regresses thereafter, while training loss continues to decrease monotonically — the canonical train-validation overfitting signature.",
+      "page": 18,
+      "index": 5,
+      "width": 586,
+      "height": 287
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-007.webp",
+      "caption": "Figure 1: Per-epoch CL trajectory of the MoE isolation run. Top: training loss decreases monotonically from 6.85 at epoch 1 to 4.69 at epoch 10. Bottom: validation perplexity on DA and DB on a shared y-axis to honestly visualise their relative magnitudes. PPLA (green) stays within ±1 of the pre-CL baseline (67.21, dashed) throughout and is visually flat at this scale (final ∆A = +0.20). PPLB (red) reaches its minimum of 140.26 at epoch 2 (circled) and then regresses monotonically to 182.06 by epoch 10. The simultaneous decreasing training loss and increasing validation PPLB confirm overfitting rather than measurement noise as the cause of the regression. Exact per-epoch values appear in Table 13.",
+      "page": 19,
+      "index": 7,
+      "width": 626,
+      "height": 546
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-008.webp",
+      "caption": "Table 14: MoE isolation per-checkpoint diagnostic (new MoE blocks only, nnew = 12, top-k = 2, N = 8). “Top-1 share” is the fraction of tokens routed to the single most-selected expert (uniform = 1/N = 0.125); “entropy / logN” is normalised routing entropy (1.0 = uniform routing). All values computed on a held-out batch.",
+      "page": 19,
+      "index": 8,
+      "width": 714,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-010.webp",
+      "caption": "Table 15: Loss landscape geometry at three checkpoints. “Grad-cov rank” is the effective rank of the per-batch gradient covariance (exponential entropy of normalized singular values). The Gate-FP rows are consistent with preservation of local geometry across the growth event (rank drift < 0.02); CL contracts the active subspace. The Gstack row reports comparable grad-cov rank (18.37) despite not being function-preserving — this stochastic rank statistic is too coarse to distinguish FP from non-FP at growth time. The Hessian estimates use Lanczos on a single batch and should be read as coarse local diagnostics — see protocol below for reliability caveats.",
+      "page": 20,
+      "index": 10,
+      "width": 762,
+      "height": 193
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14571v1/fig-004.webp",
+      "caption": "Figure 2: Pareto frontier of final (PPLA,PPLB) across Gate-FP CL methods, freeze-strategy ablations, and the joint-training Scratch reference. Lower-left is better on both axes. The dotted green line connects the lower-left frontier; FREEZE-NOTHING and FREEZE-GATES-ONLY jointly dominate full Isolation and Hybrid, confirming the non-monotonic constraint hierarchy reported in Table 2.",
+      "page": 22,
+      "index": 4,
+      "width": 690,
+      "height": 455
+    }
+  ]
+}

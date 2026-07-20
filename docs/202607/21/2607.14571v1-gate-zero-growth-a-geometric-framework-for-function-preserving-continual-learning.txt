@@ -1,0 +1,1060 @@
+Title: Gate-Zero Growth: A Geometric Framework for Function-Preserving Continual Learning
+
+URL Source: https://arxiv.org/pdf/2607.14571v1
+
+Published Time: Fri, 17 Jul 2026 01:23:05 GMT
+
+Number of Pages: 24
+
+Markdown Content:
+# Gate-Zero Growth: A Geometric Framework for Function-Preserving Continual Learning 
+
+Dante Lok 
+
+Votee AI Beever AI 
+
+dante.lok@votee.ai dante.lok@beever.ai 
+
+## Abstract 
+
+We introduce gate-zero growth , a function-preserving (FP) operator for continual learning that adds new residual blocks through a zero-initialised gate. Under a transversality condition, gate-zero growth induces rank separation in the functional Jacobian: old directions are unchanged, new-weight directions are exactly flat at the growth point, and new gate directions are the only first-order source of new functional variation. As gates open during continual learning, function drift is 
+
+O(∥α∥2) and Jacobian leakage O(∥α∥∞), giving a controlled departure from the FP locus. On a 300M → 857M Transformer adapted from WikiText-103 to BookCorpus, gate-zero growth reaches near-zero old-domain forgetting ( ∆A <
+
+0.1) under both exact-preservation (Isolation) and joint-frontier (Freeze-Nothing) operating points, while a non-FP control ( Gstack ) suffers an order-of-magnitude larger forgetting under the same recipe. The same geometric analysis covers LoRA, ReZero, and zero-init adapter constructions, establishing gate-zero growth as the canonical instance of a shared local geometry that governs safe capacity activation in CL. 
+
+## 1 Introduction 
+
+The dominant paradigm for obtaining a more capable language model is to train a larger model from scratch. Model growth — expanding an existing trained model by adding parameters — offers a compelling alternative, provided the grown model can be fine-tuned without forgetting what the smaller model knew. Function-preserving (FP) growth methods [Chen et al., 2016, 2022] satisfy preservation at growth time by construction, but the geometric structure this initialisation creates in parameter space, and why certain continual learning (CL) strategies work better than others on the grown model, has remained unclear. A wide range of seemingly different methods share a single structural property: gate-zero residual growth, ReZero-style residual scaling [Bachlechner et al., 2021], LoRA [Hu et al., 2022] with B = 0 
+
+at initialisation, and near-identity / zero-init adapter modules [Houlsby et al., 2019] all add new parameters through an additive branch whose contribution factors through a zero- or near-zero-initialised gate. Each of these methods has its own justification and its own preferred CL recipe; their continual-learning behaviour is typically explained operationally rather than through the geometry of the underlying construction. The recurring empirical pattern — that freezing old parameters and training only the new ones recovers preservation at growth time — has not been tied to a formal property that the constructions share. We argue that the relevant property is geometric. At a zero-initialised gate, the new-weight contri-bution to the functional Jacobian is exactly zero by the chain rule, with structural consequences for CL geometry that the literature has not derived as a unified system. Under a transversality condition, 
+
+> Preprint. arXiv:2607.14571v1 [cs.LG] 16 Jul 2026
+
+the post-growth Jacobian decomposes cleanly into the unmodified old block plus up to K new-gate directions; the Fisher information matrix has a sparse new-weight block; coordinate isolation becomes an exact projection onto a known local subspace; and as gates open during CL, the departure from this structure is locally controlled by polynomial bounds in the gate magnitude. We instantiate this geometry as gate-zero growth , a function-preserving depth operator for continual learning; the same analysis applies to LoRA, ReZero, and zero-init adapter constructions, establishing gate-zero growth as the canonical instance of the shared template. We instantiate the framework with gate-zero Transformer depth growth and evaluate sequential adaptation from WikiText-103 [Merity et al., 2017] to BookCorpus [Zhu et al., 2015] at 300M →
+
+857M scale. Under the Isolation protocol, gate-zero growth reaches near-zero old-domain forgetting; zero-init residual stacking under the same protocol reaches the same regime ( ∆A < 0.1 for both), directly validating the framework’s unification claim. A non-FP baseline ( Gstack , used as a diagnostic negative control) suffers order-of-magnitude larger forgetting under the same recipe — the rank-separation guarantee fails without zero-init gating. Ablations also reveal that the framework predicts the safest projection point, while a slightly looser point in the same family (soft preservation without weight freezing) strictly dominates full Isolation on the joint (PPL A, PPL B ) frontier — a controlled-departure regime within the local theory. 
+
+Contributions. 
+
+1. Gate-zero growth. We propose gate-zero growth, an FP operator that adds residual blocks through a zero-initialised gate, achieving exact function preservation at growth and ∆A <
+
+0.1 under continual learning at 300M → 857M scale. We recommend two operating points: I SOLATION (exact preservation, ∆A = +0 .04 ) and F REEZE -N OTHING (joint 
+
+(PPL A, PPL B ) optimum, ∆A = −1.98 ). 2. Geometric framework. Under a transversality condition, gate-zero growth induces rank sep-aration, sparse-Fisher block structure (Theorem 3.1, Prop. 3.5), exact coordinate-projection isolation (Prop. 3.6), and bounded gate-driven departure (Props. A.2, A.3). The same analysis covers LoRA, ReZero, and zero-init adapters (Remark 3.4), establishing gate-zero growth as the canonical instance. 3. Predictive structural validation. Three falsifiable predictions verified empirically: (a) co-ordinate freezing is exactly preserving only under FP growth ( Gstack +Iso is structurally undefined); (b) LoRA-CL admits no Isolation row because its frozen-base construction is structurally already Isolation; (c) ∆A < 0.1 for every zero-init FP operator we test under Isolation. The MoE plasticity gap is mechanistically localised to clone-block redundancy. 
+
+## 2 Related Work 
+
+Neural network growth. Net2Net [Chen et al., 2016], bert2BERT [Chen et al., 2022], and LiGO [Wang et al., 2023a] introduce FP / near-FP expansions but provide no functional-Jacobian / rank analysis or CL framing. ReZero-style residual scaling [Bachlechner et al., 2021], near-identity / zero-init adapters [Houlsby et al., 2019], and zero-initialised residual stacking achieve FP (or near-FP) at growth via additive branches with zero- or near-zero-initialised contribution. We propose gate-zero growth for FP depth expansion in CL, and provide the unified rank-separation / functional-Jacobian / sparse-Fisher analysis (Theorem 3.1, Props. 3.5, 3.7; Remark 3.4) that covers gate-zero growth along-side LoRA, ReZero, and zero-init adapter constructions. Gstack [Du et al., 2024] serves as a non-FP negative control: it duplicates blocks without zero-init gating, so the rank-separation guarantee fails by construction. 
+
+Parameter-efficient CL. LoRA [Hu et al., 2022] and adapter-based approaches [Houlsby et al., 2019, Rusu et al., 2016, Wang et al., 2023b] with zero-initialised branches satisfy the same zero-init structural property as gate-zero growth (cf. Remark 3.4); recent continual-LoRA / continual-adapter methods provide alternative low-trainable-budget CL recipes orthogonal to the growth-vs-no-growth axis we study. 
+
+Continual learning. Catastrophic forgetting [McCloskey and Cohen, 1989, French, 1999] has motivated a long line of regularization-, replay-, and architecture-based methods [De Lange et 2al., 2022]: EWC [Kirkpatrick et al., 2017] and its successors penalize parameter drift via the Fisher information; PackNet [Mallya and Lazebnik, 2018] uses hard binary masks; Progressive Networks [Rusu et al., 2016] allocate disjoint columns per task; LwF [Li and Hoiem, 2018] uses output-space distillation; experience replay [Rolnick et al., 2019] revisits old data; A-GEM and related gradient-projection methods [Chaudhry et al., 2019, Farajtabar et al., 2020] project task gradients onto the orthogonal complement of past-task gradients; and parameter-efficient CL via LoRA-style adapters [Wang et al., 2023b] updates a low-rank subspace per task. We unify and rank these methods geometrically and focus on the structural geometry of the growth operator 
+
+rather than the regularizer-design space; direct head-to-head comparison with gradient-projection and adapter-based CL on multi-task sequences is left as future work. 
+
+Loss landscape geometry. Fisher information geometry [Amari, 1998] provides the Riemannian foundation for our Fisher-based analysis of preservation constraints (Section 3). Functional-Jacobian analyses in the linearised neural-tangent regime [Jacot et al., 2018] are adjacent in motivation; we work directly in parameter space at the growth point rather than in the infinite-width NTK limit. 
+
+## 3 Theoretical Framework 
+
+We work with a residual architecture in which each block contributes αℓ · Block ℓ(x) to the residual stream, gated by a scalar αℓ. Growth inserts K new blocks with gates initialized to α0 (typically zero); the existing r “old” blocks are unmodified at growth time. 
+
+Setup. Let fθold : Rd → RV denote the pre-growth function and fθnew the post-growth function with K inserted gated blocks. With α0 = 0 , by direct computation fθnew (x) = fθold (x) for all x —the new blocks are identity through residual addition. Let J(θ) = ∇θ fθ (x) denote the functional Jacobian. 
+
+FP locus. Let M(f ∗) = {θ′ : fθ′ = f ∗} with f ∗ = fθold . The gate-zero growth point θ′ = ι(θold )
+
+lies on M(f ∗) with RK·PW ⊆ Tθ′ M(f ∗) (Theorem 3.1 (1)); motion along T ⊥ 
+
+> new
+
+leaves M(f ∗) at first order (Prop. A.2). 
+
+Theorem 3.1 (Rank separation under transversality) . Let Jα ∈ RD×K (with D = dim f the flattened output dimension) collect the K new-gate Jacobian columns, ∂f /∂α ℓ = Block ℓ(x; Wℓ), and let 
+
+Pold denote the orthogonal projection onto im( J(θold )) . Then at the gate-zero growth point θ′:1. (Exact flat directions, unconditional.) The K · PW new-weight directions are exactly flat: 
+
+∂f /∂W ′ 
+
+> ℓ
+
+= 0 for all ℓ and all x.2. (Conditional rank additivity.) The Jacobian rank satisfies 
+
+rank( J(θ′)) = r + rank  (I − Pold ) Jα
+
+ ≤ r + K, 
+
+with equality r + K iff the projected gate columns (I − Pold ) Jα are linearly independent (transversality ). Generic non-degeneracy of the cloned new-block functions Block ℓ implies transversality almost surely under small clone noise; degenerate cases (e.g. a block whose output already lies in im( J(θold )) ) violate it. By contrast, Gstack does not preserve J(θold ) at the growth point because duplicated blocks immedi-ately alter the active old-block computation, so the equivalent rank decomposition is unavailable. 
+
+Proof in Appendix A. Load-bearing content: Part (2)’s conditional rank additivity, the unification across zero-init constructions (Remark 3.4), and the direct transversality diagnostic ( σ⊥ 
+
+> min
+
+= 144 .6,smallest principal angle 56 .9◦; Appendix B). 
+
+Remark 3.2. The transversality assumption is generic but not vacuous. Theorem 3.1 should be read as a structural statement: gate-zero growth is the enabling construction for clean rank decomposition, but empirical realisation depends on the cloned-block functions Block ℓ being non-degenerate. Function preservation itself is verified directly by max-logit checks (Section 5.1: max logit difference 0.0 at 
+
+α0 = 0 on real data). We also directly verify transversality by computing the projected-rank residual 
+
+(I − Pold )Jα at the post-growth Gate-FP checkpoint ( K = 36 , growth factor g = 4 ) with M = 200 
+
+random old-direction Jacobian samples (full diagnostic in Appendix B). The residual is full-rank 
+
+3(σ⊥ 
+
+> min
+
+= 144 .6, condition number 6.87 ) and the smallest principal angle between im( Jα) and the sampled im( Jold ) is 56 .9◦ (largest: 83 .7◦). Transversality is therefore not merely “generic almost surely” but quantitatively well-separated at the trained checkpoint. A formal genericity argument (the set of noise realisations producing dependence is Lebesgue-zero in RK·PW ) is given in Appendix A, Remark A.1. 
+
+Remark 3.3 (Why rank separation matters) . Rank separation is what distinguishes exact FP from “good initialisation.” Any smooth initialisation can produce a model close to f ∗ in function space; gate-zero growth (and structurally analogous zero-init constructions; see Remark 3.4) additionally guarantees that the functional Jacobian exactly decomposes into an unchanged old block and an additive new block. This structural guarantee is what makes isolation-based CL exact at the growth point rather than approximate. 
+
+Remark 3.4 (Scope beyond gated residual blocks) . Theorem 3.1 requires two structural properties: (a) the old forward pass is preserved exactly at θ′, and (b) every new contribution to f factors through a zero-initialised parameter producing an additive scalar-times-feature term. Any growth operator satisfying both inherits the conclusion. LoRA with ∆W = BA , B = 0 : B plays the gate, A the cloned feature, and transversality reduces to projected A-induced directions being independent of 
+
+im( Jold ), which holds generically. Net2Net / zero-init residual stacking zeroes new-block output projections instead of using a scalar gate; the analysis is identical. ReZero [Bachlechner et al., 2021] satisfies both properties by construction; adapter modules [Houlsby et al., 2019] satisfy them exactly under zero-init up-projection variants and approximately under the near-identity init of the original. Gstack [Du et al., 2024] satisfies neither. 
+
+Proposition 3.5 (Sparse Fisher block structure) . Let F (θ′) = Ex∼D 
+
+J(θ′; x)⊤J(θ′; x) be the empirical Fisher information matrix at the gate-zero growth point. Then unconditionally: 1. The new-weight Fisher block FW ′,W ′ is identically zero; 2. All cross-terms Fθold ,W ′ and Fα,W ′ involving new weights are identically zero. The old–gate cross-block Fθold ,α is generically non-zero, so F (θ′) is not block-diagonal between old and new parameters. Proof. Both claims follow from Theorem 3.1 (1): ∂f /∂W ′ 
+
+> ℓ
+
+= 0 identically at θ′, so any inner product involving a new-weight Jacobian column with any other column is zero. Old–gate cross-terms involve 
+
+⟨Jθold ,j , J α,k ⟩, neither of which vanishes generically. Proposition 3.5 has direct CL implications: second-order methods like EWC place no penalty on new-weight movement (the diagonal Fisher entries on W ′ are zero), so EWC reduces to gate-only regularisation. Isolation is therefore a coordinate hard constraint, not a consequence of full Fisher orthogonality, as the next proposition formalises. 
+
+Proposition 3.6 (Isolation as a coordinate-subspace projection) . Freezing all old parameters during CL on DB gives an exact coordinate projection onto the new-parameter subspace Tnew = {0}Pold ×
+
+RPnew . At the gate-zero growth point, Tnew decomposes orthogonally into the K · PW exactly-flat new-weight directions ( T ∥
+
+> new
+
+) and the K gate directions ( T ⊥
+
+> new
+
+); the former preserve f for any update magnitude, while the latter activate new function change as soon as gates leave zero. Isolation therefore preserves old parameters exactly, but preservation of the old function during CL still depends on the KL/replay objective once gates open. Under Gstack , the new- and old-coordinate subspaces are not aligned with the FP locus at θ′ to begin with, so the same coordinate freeze is only an approximate preservation projection. 
+
+Proposition 3.7 (Four-way subspace partition) . At θ′ = ι(θold ) under gate-zero growth, the ambient parameter space partitions orthogonally (Euclidean coordinate metric) into four subspaces: T ∥
+
+> old
+
+(old-direction tangents to M(f ∗), dimension nul( J(θold )) ), T ⊥ 
+
+> old
+
+(old-direction normals, dimension 
+
+r), T ∥ 
+
+> new
+
+(exactly flat new-weight directions, dimension K · PW , contained in ker J(θ′)), and T ⊥
+
+> new
+
+(non-flat new-gate directions, dimension K). Isolation restricts updates to T ∥ 
+
+> new
+
+⊕ T ⊥
+
+> new
+
+. Under transversality, Jα(T ⊥
+
+> new
+
+) ∩ im( J(θold )) = {0}, with the smallest principal angle bounded below by the transversality singular value σ⊥ 
+
+> min
+
+:= σmin (( I − Pold )Jα) > 0. The new functional capacity per unit gate motion is bounded between σ⊥ 
+
+> min
+
+and σ⊥
+
+> max
+
+, so σ⊥ 
+
+> min
+
+quantifies plasticity and small 
+
+4σ⊥ 
+
+> min
+
+is the precise failure mode of transversality. Under non-FP growth ( Gstack ), T ∥ 
+
+> new
+
+does not exist (Theorem 3.1 (1) fails) and coordinate freezing is only approximately preserving. 
+
+Full proof in Appendix A. 
+
+Local geometry beyond the growth point. At non-zero α, function drift is O(∥α∥2) and Jacobian leakage O(∥α∥∞) (Propositions A.2, A.3). Empirically, Sleak = ∥Pold HP new ∥F /∥H∥F at three checkpoints (Tab. 16) is 0.005 at post-growth Gate-FP vs. 0.161 at Gstack (32 ×), and 0.072 post-CL Gate-FP +Iso ( ∥α∥∞ ≈ 0.08 ) — consistent with the linear-leakage prediction. 
+
+CL hierarchy. The five CL strategies we evaluate impose progressively weaker constraints on old-parameter drift: Isolation (hard freeze), Hybrid (Isolation + replay CE on DA), Distillation [Li and Hoiem, 2018] (output-space KL on DB inputs), Replay (CE on DA samples), No protection (none). The ordering is by constraint tightness, not necessarily downstream performance — a distinction we return to in Section 5.5. We choose these five to span the constraint-tightness axis end-to-end. 
+
+EWC [Kirkpatrick et al., 2017] is not run as a separate row: Proposition 3.5 implies that at θ′ diagonal EWC contributes zero on new-weight directions and reduces under Isolation to a soft L2 cap on new-gate drift, qualitatively matching the gate-init mechanism in Ablation 4 (the α0 = 0 .1 row, 
+
+∆A = −0.444 , bounds what diagonal EWC could achieve in this protocol). Gradient-projection (A-GEM [Chaudhry et al., 2019], OGD [Farajtabar et al., 2020]) and masking (PackNet [Mallya and Lazebnik, 2018]) methods are deferred to future work. A claim-status breakdown (exact / conditional / approximate / empirical) is in Appendix A.6. 
+
+## 4 Method 
+
+Gate-zero growth. For depth growth from L to gL layers, we insert K = ( g − 1) L new blocks initialised by cloning existing blocks (with small noise σ) and setting their block gates to α0 ∈ { 0, ϵ }.For width / expert growth in MoE, new experts are added with expert-gate = 0 to ensure they are never selected by top-k routing at growth time. Both produce exact FP at α0 = 0 (Theorem 3.1). 
+
+CL losses. With LCE  
+
+> A
+
+, LCE  
+
+> B
+
+the CE losses on the two datasets and Lpres (θ) = T 2·KL( pθ∗ 
+
+> old
+
+∥ pθ , x A)
+
+a teacher-preservation KL on replayed DA samples, the methods we evaluate are 
+
+LNOPROT = LCE 
+
+> B
+
+LREPLAY = (1 − ρ)LCE  
+
+> B
+
++ ρLCE 
+
+> A
+
+LDISTILL = LCE  
+
+> B
+
++ μT 2KL( pθ∗ 
+
+> old
+
+∥pθ , x B )
+
+LISO = LCE  
+
+> B
+
++ λLpres 
+
+LHYBRID = (1 − ρ)LCE  
+
+> B
+
++ ρLCE  
+
+> A
+
++ λLpres 
+
+Isolation additionally freezes old parameters, restricting updates to Tnew .
+
+## 5 Experiments 
+
+Setup. A 300M base Transformer is trained for 10 epochs on WikiText-103 ( DA), grown to 857M (12 →48 layers) by Gate-FP or Gstack , then fine-tuned for 10 CL epochs on BookCorpus ( DB ). For Mixture-of-Experts (Section 5.3) the base is 706M MoE (12 layers, 4 experts, top-k = 2 ) grown to 2.5B (24 layers, 8 experts). All runs use 1 × NVIDIA L20 (48 GB), fp16, gradient accumulation to effective batch size 128. Total compute ∼ 2,500 GPU-hours. 
+
+5.1 Function preservation at growth 
+
+Before any CL training, gate-zero growth is bit-exact on dense Transformers and within MoE numerical tolerance, while Gstack already inflates PPL A by 2.8× (Table 1). 5Table 1: Growth-induced perplexity change, before any CL training. Gate-FP is exact (or within MoE numerical tolerance); Gstack degrades PPL A by 2.8× and PPL B by 2.3× at the moment of growth.                           
+
+> Metric Gate FP (Dense) Gstack Gate FP (MoE)
+> Params (pre →post) 252.9M →857.1M 252.9M →857.1M 705.8M →2568.3M
+> ∆PPL A+0.00 +46 .11 +0.00
+> ∆PPL B+0.00 +708 .86 +0.00
+> FP check max logit diff 0(exact) — (non-FP) 2.9×10 −5
+
+5.2 Continual learning matrix Scope of comparison. Gstack [Du et al., 2024] is included as a diagnostic negative control , not as a competitive CL baseline: it was designed for pre-training acceleration, is not function-preserving by construction (Table 1), and damages PPL A at the moment of growth before CL begins. The matrix below therefore tests the framework’s structural prediction — that coordinate freezing under non-FP growth has no rank-separation guarantee — rather than claiming that gate-zero is the best growth operator among FP-style constructions. Comparison to alternative FP operators (zero-init residual stacking, Net2Net [Chen et al., 2016], bert2BERT [Chen et al., 2022], LiGO [Wang et al., 2023a]) and to frozen-backbone adapter / LoRA-CL approaches [Rusu et al., 2016, Wang et al., 2023b] at 
+
+g=2 scale is reported in Section 5.4; full-scale comparison is left as follow-up. Table 2 reports the 2 × 5 matrix. ∆A is computed relative to each growth method’s own post-growth baseline (italic “Pre-CL” rows). Table 2: Continual learning matrix (10 base epochs on DA + 10 CL epochs on DB ). Lower is better. PPL A and PPL B are validation perplexities on each dataset; ∆A is the post-CL minus pre-CL change in PPL A relative to each growth method’s own post-growth baseline (italic “Pre-CL (post-growth)” rows). “Scratch” trains the 857M model jointly on DA ∪ D B for 10 epochs as a same-compute reference; final-epoch state shown for protocol parity. †Pure isolation (freezing duplicated blocks) is omitted for Gstack because the rank-separation guarantee of Theorem 3.1 does not hold: 
+
+Gstack ’s duplicated blocks immediately alter the computation, so freezing them does not preserve 
+
+f ∗. The Hybrid (Replay+Preserve) row uses the same loss on both growth methods; on Gstack the load-bearing preservation work comes from the KL and replay-CE terms rather than from the (here non-meaningful) freeze.                                                
+
+> Growth CL Strategy PPL A↓PPL B↓∆A↓
+> Gate FP
+> Pre-CL (post-growth) 25.92 560.75 —
+> No protection 366.13 20.51 +340 .21
+> Replay 493.46 20.30 +467 .54
+> Distillation 39.48 25.05 +13 .56
+> Isolation 25.96 28.41 +0.04
+> Hybrid (Iso+Replay) 37.08 29.97 +11 .16
+> Gstack
+> Pre-CL (post-growth) 72.03 1269.61 —
+> No protection 1215.98 31.67 +1143 .95
+> Replay 2179.25 20.02 +2107 .22
+> Distillation 48.33 25.42 −23 .70
+> Isolation †N/A N/A N/A Hybrid (Replay+Preserve) 35.14 29.77 −36 .89
+> Scratch (joint A+B) —43.23 41.81 —
+
+Findings. Gate-FP + Isolation achieves ∆A = +0 .04 (preservation within evaluation noise) while reducing PPL B from 560 .75 to 28 .41 ; no other Gate-FP CL configuration matches this preservation, and naive baselines catastrophically forget. By contrast, Gstack degrades PPL A from 25 .92 to 72 .03 
+
+at growth time alone (Table 1), and under naive fine-tuning drives it past 1200 . The gap between the best Gate-FP row ( 25 .96 ) and worst Gstack row ( 2179 .25 ) is roughly 85 × on PPL A. We caution that this gap conflates two effects: the structural cost of non-FP growth, and the fact that Gstack was not designed for CL; comparison with function-preserving baselines is left as future work (Section 6.1). 6Comparison to scratch. Scratch is included only as a protocol reference, not as a competitive baseline. Its final-state checkpoint reaches 43 .23 /41 .81 , but its best-validation checkpoint (epoch 3) was 17 .40 /16 .19 — substantially better than the final overfit state. Conclusions should therefore not be drawn from the final-state Scratch comparison; we report it for token-budget parity with the CL runs (10 epochs over DA ∪ D B ) and explicitly do not claim that Gate-FP + Isolation outperforms a properly-stopped Scratch model. 
+
+5.3 MoE cross-architecture validation 
+
+Table 3: MoE cross-architecture validation (4 →8 experts, 12 →24 layers). Dense rows reproduce the corresponding Gate-FP entries from Table 2 for comparison under identical CL hyperparameters.                                
+
+> Architecture CL Strategy PPL A↓PPL B↓∆A↓
+> MoE
+> Pre-CL (post-growth) 67.21 2155.77 —
+> No protection 610.88 36.89 +543 .67
+> Isolation 67.41 182.06 +0 .20
+> Hybrid (Iso+Replay) 71.41 187.03 +4 .20
+> Dense
+> Pre-CL (post-growth) 25.92 560.75 —
+> No protection 366.13 20.51 +340 .21
+> Isolation 25.96 28.41 +0 .04
+> Hybrid (Iso+Replay) 37.08 29.97 +11 .16
+
+Preservation transfers; plasticity does not. Under both dense and MoE, Gate-FP + Isolation yields 
+
+∆A ≈ 0 (+0 .04 dense, +0 .20 MoE), confirming the architecture-agnostic preservation mechanism. But under identical CL hyperparameters, MoE plasticity is an order of magnitude weaker: dense reduces PPL B from 560 .75 to 28 .41 (20 ×), while MoE only achieves 2155 .77 → 182 .06 (12 ×,with absolute PPL B remaining much higher). 
+
+Per-checkpoint diagnostic. Comparing the post-growth (pre-CL) and post-CL MoE-isolation checkpoints localizes the failure mode (Table 4). Three patterns emerge: (i) all 12 new block gates converge to the safety-clamp ceiling α = 0 .083 (P αℓ ≈ 1.0, gradient sought higher gates); (ii) routing concentration is unchanged from pre-CL (top-1 share 0.50 , normalized entropy 0.333 ), ruling out within-CL router collapse; (iii) per-expert cosine similarity to source experts drifts from 0.918 
+
+to 0.810 on average, with the most-differentiated expert still at 0.712 . New blocks open their gates to the ceiling but cannot differentiate enough from the frozen sources to provide complementary 
+
+capacity for DB — clone-block redundancy is the bottleneck. Table 4: MoE isolation per-checkpoint diagnostic (new MoE blocks only). “Top-1 share” is the fraction of tokens routed to the single most-selected expert (uniform = 1/N = 0 .125 for N = 8 ); “entropy / log N ” is normalised routing entropy ( 1.0 = uniform). Routing concentration is unchanged across CL; per-expert similarity to source drifts only modestly.                         
+
+> Diagnostic metric Pre-CL Post-CL
+> Max |αℓ|on new blocks 0.000 0.083
+> Cumulative P
+> ℓ|αℓ|(nnew = 12 )0.00 0.99
+> Mean top-1expert share 0.500 0.500
+> Routing entropy / log N(mean) 0.333 0.333
+> Mean cosine sim to source expert 0.918 0.810
+> Min cosine sim to source expert 0.852 0.712
+
+The full per-epoch trajectory and a stacked-panel visualization of the same train-validation overfitting signature are deferred to Appendix F (Figure 1). 
+
+Manifold geometry. The discriminating tests of rank separation are the FP check ( ∆ = 0 ) and the projected-rank diagnostic ( σ⊥ 
+
+> min
+
+= 144 .6, min angle 56 .9◦, App. B); gradient-covariance and Hessian diagnostics are deferred to App. G. 75.4 No-growth, alternative-FP, and PEFT baselines 
+
+We compare three baseline families at g = 2 scale — no-growth, zero-init residual stacking (alterna-tive FP operator), and LoRA-CL (PEFT) — in Table 5 (full rows in Appendix C). Table 5: Baseline comparisons at g = 2 scale (preservation-aware recipes only; full table including no-protection rows in Appendix C). No growth fine-tunes the 300M base directly (Isolation is vacuous: no new parameters). Zero-init stacking zeroes new-block output projections instead of using a scalar gate. LoRA-CL uses rank-64 adapters with the base frozen.                                    
+
+> Family CL Strategy PPL A↓PPL B↓∆A↓
+> No-growth (300M) Distillation 39.00 25.06 +13 .08
+> Hybrid 37.83 21.29 +11 .91
+> Zero-init stacking ( g= 2 )Distillation 37.74 25.14 +11 .82
+> Isolation 25.96 32.81 +0.04
+> LoRA-CL (rank 64 )Distillation 32.37 30.33 +6 .45
+> Hybrid 28.60 29.56 +2 .68
+> Gate-FP ( g= 2 , ref.) Isolation 26.01 30.45 +0 .09
+
+Findings. (i) Both Gate-FP and zero-init stacking + Isolation reach the near-zero-forgetting regime at g=2 (∆A = +0 .09 vs. +0 .04 , both far below the +13 .56 Distillation gap), confirming that rank separation is structural, not gate-specific. At equivalent preservation, Gate-FP achieves better plasticity ( PPL B = 30 .45 vs. 32 .81 , −7% ) — the gate-zero parameterisation yields the strongest preservation/plasticity trade-off among zero-init FP operators tested. (ii) Under soft-KL recipes, growth’s advantage is small (no-growth + Distillation +13 .08 tracks Gate-FP + Distillation +13 .56 ); the FP advantage concentrates in the Isolation regime. (iii) LoRA-CL is a strong alternative under Hybrid ( ∆A = +2 .68 ); LoRA admits no separate Isolation row because its frozen-base construction is structurally already Isolation under the four-way partition (Prop. 3.7) — a prediction of the unification, not a gap in it. Among the FP and PEFT baselines tested, gate-zero growth + Isolation gives the strongest preservation ( ∆A = +0 .04 at g=4 ). Multi-seed validation at g=2 across three seeds yields ∆A = +0 .0896 ± 0.0046 (Appendix D). 
+
+5.5 Ablations 
+
+We run five ablations on Gate-FP holding other hyperparameters fixed: growth factor g ∈ { 2, 3, 4}
+
+(Abl. 1); the four combinations of weight/gate freezing under fixed isolation loss (Abl. 2); replay fraction ρ ∈ { 0, 0.5} in Hybrid (Abl. 3); gate-init/warmup pair (α0, ϵ ) (Abl. 4); growth timing as % of base-train completed before growth (Abl. 5). Numbers in Table 6; extended discussion in Appendix H. 
+
+## 6 Discussion 
+
+Gate-zero growth recommends two operating points. Within gate-zero growth, FREEZE -N OTHING ≻ ISOLATION ≻ HYBRID on the joint frontier. Both are predicted gate-zero configurations: I SOLATION gives exact preservation (Theorem 3.1, ∆A = +0 .04 ) and is recommended when downstream tasks must be evaluated without regression; F REEZE -N OTHING 
+
+gives the joint-frontier optimum ( ∆A = −1.98 , PPL B = 20 .37 ) via the controlled-departure regime (Prop. 3.5: FW ′,W ′ = 0 at growth; Props. A.2, A.3: drift bound at empirical ∥α∥∞ ≤ 0.083 ). Ablation 2 pinpoints old-weight freezing as the binding constraint: FREEZE -G ATES -O NLY matches FREEZE -N OTHING (23 .91 /20 .36 vs. 23 .93 /20 .37 ). 
+
+Validation PPL is not function preservation. Under F REEZE -N OTHING , PPL A drops to 23 .93 
+
+(vs. pre-CL 25 .92 ) — a −1.98 change the standard CL metric reads as “better than original.” But the post-CL function has drifted from f ∗ at first order (Prop. A.2; empirical ∥α∥∞ ≤ 0.083 ). The lower 
+
+PPL A is therefore a related-function gain , not preservation. I SOLATION is the only configuration that 8Table 6: Key ablations on Gate-FP. What to freeze pinpoints old-weight freezing (not gate freezing) as the binding constraint. Replay fraction confirms that adding CE-on-DA on top of isolation 
+
+worsens both axes. The negative ∆A at α0 = 0 .1 reflects partial CL recovery from a non-FP starting point (post-growth PPL A = 26 .40 vs. 25 .92 at α0 = 0 ), not improvement over f ∗. Full tables in Appendix H.                                                                              
+
+> Configuration PPL A↓PPL B↓∆A↓
+> Ablation 1: Growth factor g, isolation
+> g= 2 (454M) 26.01 30.45 +0 .09
+> g= 3 (656M) 25.98 29.25 +0 .06
+> g= 4 (857M) 25.96 28.41 +0 .04
+> Ablation 2: What to freeze, fixed isolation loss
+> Freeze nothing 23.93 20.37 −1.98
+> Freeze old gates only 23.91 20.36 −2.01
+> Freeze old weights only 25.06 26.99 −0.86
+> Freeze both (full isolation) 25.96 28.41 +0 .04
+> Ablation 3: Replay fraction ρin Hybrid
+> ρ= 0 (= Isolation) 25.96 28.41 +0 .04
+> ρ= 0 .5(= Hybrid) 37.08 29.97 +11 .16
+> Ablation 4: Gate init α0/ warmup ϵ, isolation
+> α0= 0 .0,ϵ= 0 (exact FP) 25.97 29.13 +0 .055
+> α0= 0 .01 25.97 27.77 +0 .044
+> α0= 0 .1(non-FP) 25.96 27.48 −0.444
+> Ablation 5: Growth timing (% of base training before growth), isolation
+> 25% 28.39 30.33 +0 .07
+> 50% 20.90 27.13 +0 .05
+> 75% 21.61 27.02 +0 .05
+> 100% (= Gate-FP Iso) 25.96 28.41 +0 .04
+
+exactly recovers f ∗ at the growth point and bounds drift to zero — the right choice when deployment requires bit-equivalent behaviour on DA (regulatory, A/B-test, or downstream-pinned settings). 
+
+6.1 Limitations 
+
+Stochastic geometry estimators. Hessian top eigenvalues (Lanczos, single batch) and gradient-covariance rank ( 20 mini-batches, 100 -dim projection; Appendix G) are coarse local diagnostics; the first-order statistic is the more stable primary measure. 
+
+Cross-architecture plasticity gap on MoE. Per-checkpoint diagnostics localise the gap to clone-block redundancy in the depth-growth operator (post-CL new experts retain ≥ 0.71 cosine similarity to frozen sources). The preservation mechanism transfers cleanly; whether MoE-specific tuning or a modified operator recovers dense-level plasticity is open (Future Work). 
+
+6.2 Broader impact 
+
+FP growth lowers compute and energy cost of adapting trained models to new data, reducing the barrier for organisations without frontier-pretraining budgets. Downstream-use mitigations (data curation, alignment, evaluation) are out of scope. 
+
+Future work. Full-scale ( g = 4 ) FP comparators (Net2Net [Chen et al., 2016], LiGO [Wang et al., 2023a], bert2BERT [Chen et al., 2022]); reverse DB → D A ordering and T ≥ 3 multi-domain CL sequences; an MoE operator fix initialising new experts with random weights and expert _gate = 0 to address the clone-block redundancy of Section 5.3; and a direct output-space preservation diagnostic (KL( f ∗ ∥ fpost ) on held-out DA samples) to distinguish exact preservation from related-function gains observed under non-Isolation recipes. 97 Conclusion 
+
+We presented a geometric framework for zero-initialised function-preserving growth: under transver-sality, rank separation (Theorem 3.1) decomposes the post-growth Jacobian into unchanged old and 
+
+K new-gate directions. The load-bearing factor under Isolation is the zero-init structural property; zero-init residual stacking matches Gate-FP at g=2 , and under soft-KL recipes growth’s advantage is small (the controlled-departure regime of Props. A.2, A.3). Full-scale FP-vs-FP and multi-domain CL are the natural follow-up (Section 6.1). 
+
+## References 
+
+Amari, S.-I. (1998). Natural gradient works efficiently in learning. Neural Computation , 10(2), 251–276. Bachlechner, T., Majumder, B. P., Mao, H., Cottrell, G., and McAuley, J. (2021). ReZero is all you need: Fast convergence at large depth. Conference on Uncertainty in Artificial Intelligence (UAI) .Chaudhry, A., Ranzato, M., Rohrbach, M., and Elhoseiny, M. (2019). Efficient lifelong learning with A-GEM. International Conference on Learning Representations (ICLR) .Chen, T., Goodfellow, I., and Shlens, J. (2016). Net2Net: Accelerating learning via knowledge transfer. International Conference on Learning Representations (ICLR) .Chen, X., Liang, C., Huang, D., Real, E., Wang, K., Liu, Y., Peng, H., Chen, B., Lu, T., He, Q., et al. (2022). bert2BERT: Towards reusable pretrained language models. Annual Meeting of the Association for Computational Linguistics (ACL) .De Lange, M., Aljundi, R., Masana, M., Parisot, S., Jia, X., Leonardis, A., Slabaugh, G., and Tuytelaars, T. (2022). A continual learning survey: Defying forgetting in classification tasks. IEEE Transactions on Pattern Analysis and Machine Intelligence , 44(7), 3366–3385. Du, Y., Zeng, Y., et al. (2024). Stacking your transformers: A closer look at model growth for efficient LLM pre-training. Advances in Neural Information Processing Systems (NeurIPS) , 37. Farajtabar, M., Azizan, N., Mott, A., and Li, A. (2020). Orthogonal gradient descent for continual learning. International Conference on Artificial Intelligence and Statistics (AISTATS) .French, R. M. (1999). Catastrophic forgetting in connectionist networks. Trends in Cognitive Sciences ,3(4), 128–135. Ghorbani, B., Krishnan, S., and Xiao, Y. (2019). An investigation into neural net optimization via Hessian eigenvalue density. International Conference on Machine Learning (ICML) .Houlsby, N., Giurgiu, A., Jastrzebski, S., Morrone, B., De Laroussilhe, Q., Gesmundo, A., Attariyan, M., and Gelly, S. (2019). Parameter-efficient transfer learning for NLP. International Conference on Machine Learning (ICML) .Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., and Chen, W. (2022). LoRA: Low-rank adaptation of large language models. International Conference on Learning Representations (ICLR) .Jacot, A., Gabriel, F., and Hongler, C. (2018). Neural tangent kernel: Convergence and generalization in neural networks. Advances in Neural Information Processing Systems (NeurIPS) .Kirkpatrick, J., Pascanu, R., Rabinowitz, N., et al. (2017). Overcoming catastrophic forgetting in neural networks. PNAS , 114(13). Li, Z. and Hoiem, D. (2018). Learning without forgetting. IEEE Transactions on Pattern Analysis and Machine Intelligence , 40(12), 2935–2947. Loshchilov, I. and Hutter, F. (2019). Decoupled weight decay regularization. International Conference on Learning Representations (ICLR) .10 Mallya, A. and Lazebnik, S. (2018). PackNet: Adding multiple tasks to a single network by iterative pruning. IEEE Conference on Computer Vision and Pattern Recognition (CVPR) .McCloskey, M. and Cohen, N. J. (1989). Catastrophic interference in connectionist networks. Psy-chology of Learning and Motivation , 24, 109–165. Merity, S., Xiong, C., Bradbury, J., and Socher, R. (2017). Pointer sentinel mixture models. Interna-tional Conference on Learning Representations (ICLR) .Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., and Sutskever, I. (2019). Language models are unsupervised multitask learners. OpenAI technical report .Rolnick, D., Ahuja, A., Schwarz, J., Lillicrap, T., and Wayne, G. (2019). Experience replay for continual learning. Advances in Neural Information Processing Systems (NeurIPS) .Rusu, A. A., Rabinowitz, N. C., Desjardins, G., et al. (2016). Progressive neural networks. 
+
+arXiv:1606.04671 .Shazeer, N. (2020). GLU variants improve Transformer. arXiv:2002.05202 .Su, J., Ahmed, M., Lu, Y., Pan, S., Bo, W., and Liu, Y. (2024). RoFormer: Enhanced Transformer with rotary position embedding. Neurocomputing , 568, 127063. Wang, P., Panda, R., Hennigan, L. K. M., et al. (2023). Learning to grow pretrained models for efficient transformer training. International Conference on Learning Representations (ICLR) .Wang, X., Chen, T., Ge, Q., Xia, H., Bao, R., Zheng, R., Zhang, Q., Gui, T., and Huang, X. (2023). Orthogonal subspace learning for language model continual learning. Findings of the Association for Computational Linguistics: EMNLP 2023 .Zhang, B. and Sennrich, R. (2019). Root mean square layer normalization. Advances in Neural Information Processing Systems (NeurIPS) .Zhu, Y., Kiros, R., Zemel, R., Salakhutdinov, R., Urtasun, R., Torralba, A., and Fidler, S. (2015). Aligning books and movies: Towards story-like visual explanations by watching movies and reading books. IEEE International Conference on Computer Vision (ICCV) .11 A Proofs 
+
+A.1 Proof of Theorem 3.1 (rank separation under transversality) 
+
+We prove the two parts in turn. 
+
+Part (1): Exact flat new-weight directions, unconditional. For each new block ℓ ∈ { 1, . . . , K }
+
+with weight matrix Wℓ ∈ RPW and scalar gate αℓ, the contribution of block ℓ to the final output factors as αℓ multiplying a quantity depending on Wℓ and the residual stream. At αℓ = 0 for all ℓ,every new block computes the identity and its downstream effect on fθ′ vanishes. By the chain rule, 
+
+∂f θ′
+
+∂W (i) 
+
+> ℓαℓ=0
+
+= αℓ · ∂Block ℓ(x; Wℓ)
+
+∂W (i)
+
+> ℓ
+
+· Jdown  
+
+> ℓ
+
+= 0 ,
+
+identically for all x and all Wℓ, where Jdown  
+
+> ℓ
+
+denotes the downstream Jacobian propagating block 
+
+ℓ’s output to f . The K · PW new-weight columns of J(θ′) are therefore the zero vector, so each new-weight coordinate basis vector lies in ker( J(θ′)) . These vectors are linearly independent because they occupy disjoint parameter coordinates. 
+
+Part (2): Conditional rank additivity. Partition J(θ′) by parameter group: 
+
+J(θ′) =   Jold Jα JW ′
+
+,
+
+where Jold ∈ RD×Pold are old-parameter columns, Jα ∈ RD×K are new-gate columns, and JW ′ ∈
+
+RD×K·PW are new-weight columns. By Part (1), JW ′ = 0 . Old parameters are untouched by growth, so Jold (θ′) coincides with the pre-growth Jacobian J(θold ) and has rank = r. Thus 
+
+im( J(θ′)) = im( Jold ) + im( Jα) = im( J(θold )) + im( Jα).
+
+Decomposing im( Jα) as the orthogonal sum of its projection onto im( J(θold )) and its complement, 
+
+im( J(θ′)) = im( J(θold )) ⊕ im  (I − Pold )Jα
+
+,
+
+so 
+
+rank( J(θ′)) = r + rank  (I − Pold )Jα
+
+ ≤ r + K. 
+
+Equality r + K holds iff the projected gate columns (I − Pold )Jα are linearly independent, i.e. 
+
+transversality . Generic non-degeneracy of Block ℓ implies transversality almost surely under small clone noise; the remaining (Lebesgue-zero) degenerate cases occur, e.g., when a cloned new-block output already lies in the span of J(θold ). □
+
+Remark A.1 (Genericity at trained checkpoints) . Part (2) requires the K projected gate columns to be linearly independent of im( J(θold )) . The set of weight configurations for which independence 
+
+fails is an algebraic variety of measure zero in the joint space of (θold , {Wℓ}Kℓ=1 ), so transversality holds Lebesgue-almost surely. Trained checkpoints, however, occupy a highly structured region of parameter space, and generic-position arguments based on ambient measure are not automatically applicable. The clone-noise perturbation ϵℓ ∼ N (0 , σ 2I) in the gate-zero construction breaks any structured degeneracies almost surely with respect to the noise distribution, for any σ > 0:the set of noise realisations producing dependence remains a measure-zero variety in RK·PW . We use σ = 0 .01 , which preserves approximate FP at growth (max logit deviation 0.0 on real data, Section 5.1) while ensuring numerical independence. We empirically confirm transversality at the trained Gate-FP checkpoint (Appendix B): the projected-rank residual (I − Pold )Jα is full-rank 
+
+K = 36 , σ⊥ 
+
+> min
+
+= 144 .6, and the smallest principal angle between im( Jα) and the sampled im( Jold )
+
+is 56 .9◦. The gradient-covariance effective rank reported in Section G is a coarser stochastic statistic and should not be read as a direct test of transversality (it is comparable across Gate-FP and Gstack ). 
+
+Consequence for continual learning (formal statement). Under isolation (freezing all old parameters) on DB , the gradient ∇L B is restricted to the new-parameter coordinate subspace 
+
+Tnew = {0}Pold × RPnew . By Part (1), the K · PW new-weight directions in Tnew are exactly flat for fθ′ at the growth point, contributing no first-order change to the function. By Part (2) under transversality, the only function-changing directions accessible to the isolated CL update are the 
+
+K gate directions, and they are Euclidean-orthogonal to all old-parameter coordinates. Therefore 12 CL gradient steps under isolation cannot project onto old-parameter coordinates, and old-parameter curvature is exactly preserved at θ′. Under non-FP growth (e.g., Gstack ), part (1) fails: the new-weight columns of J(θ′
+
+> gs
+
+) are non-zero, so even a coordinate freeze on old parameters does not preserve 
+
+f ∗, because the old forward pass through duplicated blocks has already been altered. This is the formal bridge from rank separation (the structural statement) to “isolation works” (the empirical observation). 
+
+A.2 Proof of Proposition 3.6 (isolation as projected gradient descent) 
+
+Freezing all old parameters means ∇θold L = 0 during CL by construction. The gradient update under any optimizer that respects the freeze (e.g. AdamW with the frozen parameters masked) is therefore confined to the new-parameter coordinates Tnew = {0}Pold × RPnew .Under gate-zero growth, Theorem 3.1 states that the function-preserving locus M(f ∗) = {θ :
+
+fθ = f ∗} at the growth point has tangent space ker( J(θ′)) , which contains all K · PW new-weight directions exactly. Hence at θ′ = ι(θold ),
+
+Tnew ∩ M (f ∗) = {0}Pold × RK·PW × (coordswith αℓ = 0) ,
+
+which has codimension K within Tnew . The orthogonal projection ΠTnew onto Tnew thus restricts gradient updates to a subspace that intersects M(f ∗) in a K · PW -dim. flat slab through θ′. As αℓ
+
+moves away from zero, the slab’s tangent structure deforms, but at the growth point the projection is exact. For Gstack , J(θ′
+
+> gs
+
+)̸ = J(θold ) because duplicated blocks immediately alter the active old-block computation, so the FP locus at θ′ 
+
+> gs
+
+is not aligned with the old-coordinate axes; the same coordinate freeze is therefore only an approximate projection onto M(f ∗), with the approximation error bounded by the deviation ∥J(θ′
+
+> gs
+
+) − J(θold )∥ on a verification batch. □
+
+A.3 Proof of Proposition 3.7 (four-way partition) 
+
+We prove the orthogonal four-way decomposition of RPnew at θ′ = ι(θold ).
+
+Coordinate-block decomposition. The parameter vector decomposes into three disjoint coordinate blocks θ′ = ( θold , α ′, W ′) with θold ∈ RPold , α′ ∈ RK , W ′ ∈ RK·PW . Directions in different coordinate blocks are automatically Euclidean-orthogonal. 
+
+Old block: tangent vs. normal split. Within RPold , the restricted Jacobian is Jold (θ′) = J(θold )
+
+(unchanged because new blocks are identity at αℓ = 0 ). The fundamental theorem of linear algebra gives the Euclidean-orthogonal split 
+
+RPold = ker( J(θold )) ⊕ im( J(θold )⊤),
+
+with dim ker( J(θold )) = Pold −r and dim im( J(θold )⊤) = r. Define T ∥ 
+
+> old
+
+= ker( J(θold )) (tangents to the old manifold) and T ⊥ 
+
+> old
+
+= im( J(θold )⊤) (normals). 
+
+New block: flat-weight + gate split. By Theorem 3.1 part (1), the K · PW new-weight columns of J(θ′) vanish, so RK·PW ⊂ ker( J(θ′)) . Define T ∥ 
+
+> new
+
+= RK·PW (the exactly-flat new-weight directions). Define T ⊥ 
+
+> new
+
+= RK (the new-gate coordinate axes). Under the transversality assumption of Theorem 3.1, all K gate axes contribute non-zero projections onto the orthogonal complement of 
+
+im( J(θold )) , so they are normal to M(f ∗) at θ′. (Without transversality, some gate axes may have a tangential component to M(f ∗); the dimension count then upper-bounds rather than equals K.) 
+
+Combining. The four subspaces have pairwise zero Euclidean inner product. The old/new split is automatic from the disjoint coordinate blocks; the within-block splits ( ker /im on the old side and 
+
+T ∥
+
+> new
+
+/T ⊥ 
+
+> new
+
+on the new side) are FTLA-orthogonal in their respective coordinate axes. Therefore 
+
+RPnew = T ∥ 
+
+> old
+
+⊕ T ⊥ 
+
+> old
+
+⊕ T ∥ 
+
+> new
+
+⊕ T ⊥
+
+> new
+
+,
+
+with the dimensional annotations stated in the main text. The isolation update direction T ∥ 
+
+> new
+
+⊕ T ⊥
+
+> new
+
+is Euclidean-orthogonal to T ⊥ 
+
+> old
+
+by disjoint coordinates alone — a property that holds under any 
+
+13 growth method that allocates new parameters to disjoint coordinates, including Gstack . What gate-zero growth uniquely adds is that T ∥ 
+
+> new
+
+consists of exactly flat directions under f (Theorem 3.1 (1)), so updates within T ∥ 
+
+> new
+
+preserve the old function regardless of magnitude; under Gstack , T ∥ 
+
+> new
+
+is empty and updates in the new-weight coordinates are immediately function-changing. □
+
+A.4 Proposition A.2 (small-α perturbative bound) and proof Proposition A.2 (Small-α perturbative bound, restated) . Fix K new blocks with weights W1, . . . , W K
+
+cloned from the trained checkpoint, and let hℓ(x) = Block ℓ(x; Wℓ) denote the ℓ-th new-block output. For gate vector α ∈ RK , the post-growth function admits an additive expansion 
+
+fθ′(α)(x) = fθold (x) + 
+
+> K
+
+X
+
+> ℓ=1
+
+αℓ hℓ(x) + R(x; α),
+
+where ∥R(x; α)∥ = O(∥α∥2) uniformly on a bounded input domain. Consequently, on input distribution DA, Ex∼D A fθ′(α)(x) − fθold (x) 2 ≤ ∥ α∥2 · K · max ℓ Ex∥hℓ(x)∥2 + O(∥α∥4), and 
+
+∆A on a smooth log-loss admits the same O(∥α∥2) scaling. Proof. The post-growth function is the composition of K gated residual updates x 7 → x + αℓhℓ(x),with the old forward pass unchanged at α = 0 by construction. Expanding the composition in α gives the additive form fθ′(α)(x) = fθold (x) + P 
+
+> ℓ
+
+αℓhℓ(x) + R(x; α) where the remainder R collects cross-terms αℓαℓ′ from chain-rule expansions of distinct gates and is therefore O(∥α∥2) uniformly on a bounded input domain (validation tokens have bounded embedding norm; expected ∥hℓ(x)∥ is finite by RMSNorm pre-activations). Cauchy–Schwarz on the linear term gives Ex∥ P 
+
+> ℓ
+
+αℓhℓ(x)∥2 ≤∥α∥2 · K · max ℓ Ex∥hℓ(x)∥2. The log-loss bound is the standard Fisher-quadratic expansion of 
+
+KL( pθold ∥pθ′(α)) around α = 0 : the first-order term vanishes (since fθ′(0) = fθold ) and the second-order term is α⊤Fαα (θold ) α with Fαα the gate-block Fisher (Proposition 3.5). 
+
+A.5 Proposition A.3 (linear-in-α new-weight leakage) and proof Proposition A.3 (Linear-in-α new-weight leakage, restated) . At a post-growth point θ′(α)
+
+with gate vector α ∈ RK , the new-weight Jacobian columns satisfy ∂f θ′(α)/∂W ′ 
+
+> ℓ
+
+= αℓ ·
+
+∂Block ℓ(x; Wℓ)/∂W ℓ · Jdown  
+
+> ℓ
+
+, and consequently ∥JW ′ (θ′(α)) ∥op ≤ C ∥α∥∞, with C =max ℓ ∥∂Block ℓ/∂W ℓ∥op · sup α max ℓ ∥Jdown  
+
+> ℓ
+
+(α)∥op , finite on bounded inputs and finite gate mag-nitudes. Proof. Block ℓ’s contribution to the residual stream is αℓ · Block ℓ(x; Wℓ). By the chain rule, the gradient of fθ′(α) with respect to a new-weight coordinate W (i) 
+
+> ℓ
+
+factors as αℓ times the block’s internal gradient times the downstream Jacobian. The operator-norm bound follows by sub-multiplicativity and |αℓ| ≤ ∥ α∥∞. The constant C is finite on bounded inputs and finite gate magnitudes by RMSNorm + bounded gates. 14 A.6 Status of the framework’s claims 
+
+Table 7: Status of the geometric framework’s claims. Exact claims hold without conditional assump-tions. Conditional claims hold under transversality (Theorem 3.1 (2)). Approximate claims hold to first order in ∥α∥ and degrade controllably as gates open. Empirical claims are not proven from the framework but are observed in our protocol.                                                    
+
+> Claim Status Source
+> Function preservation at growth ( fθ′=f∗at α= 0 )exact by construction New-weight Jacobian flatness at α= 0 exact Theorem 3.1 (1) Sparse Fisher block at α= 0 exact Proposition 3.5 Coordinate orthogonality of Tnew vs Told exact disjoint axes Rank additivity ( rank J(θ′) = r+K)conditional transversality, Thm 3.1 (2) Plasticity capacity =σ⊥
+> max per unit gate motion conditional Proposition 3.7 New-weight Jacobian leakage ∥JW′∥ ≤ C∥α∥∞approximate (linear) Proposition A.3 Function drift ∥fθ′(α)−f∗∥2=O(∥α∥2)approximate (quadratic) Proposition A.2 Multi-epoch CL preservation under realistic optimisers empirical Section 5.2, ∆A= +0 .04
+
+A.7 Remark on canonicity 
+
+Gate-zero growth is not the unique FP map: any choice of (Wℓ, α ℓ) with αℓ = 0 yields function preservation, regardless of Wℓ. What distinguishes the gate-zero construction in the symmetry-group view is that it maps into the fixed-point locus of the S(g−1) L residual permutation action on the new-parameter fiber; combined with cloning old block weights into the new blocks, it is the canonical choice that inherits the old block’s learned features into the newly allocated capacity. Other FP choices (e.g. random new-weight initialisation with αℓ = 0 ) preserve function but discard this inheritance. 
+
+## B Direct Transversality Diagnostic 
+
+This appendix reports the direct projected-rank diagnostic used to empirically verify the transversality assumption underlying Theorem 3.1 (2) and to back the quantitative σ⊥ 
+
+> min
+
+statement in Proposition 3.7. 
+
+Method. At the post-growth Gate-FP checkpoint with g = 4 (K = 36 new block-gates), we compute (i) the K gate-Jacobian columns jαℓ = ∂f /∂α ℓ via forward-mode automatic differentiation (Jacobian-vector products with tangent 1αℓ ), giving Jα ∈ RD×K where D = B · T · V is the flattened output dimension; and (ii) M = 200 samples of J(θold )v where v is a unit-norm random direction supported on the joint old-parameter coordinates, giving an empirical low-rank approximation to 
+
+im( Jold ). We orthonormalise the sample matrix via QR, project Jα onto the orthogonal complement of the sampled subspace, and compute the SVD of the residual (I − Pold )Jα. We use a held-out validation batch of B = 2 , T = 16 tokens; output dimension D = 1 ,608 ,224 .
+
+Results. Table 8 reports the diagnostic outputs. The residual is full-rank ( K = 36 at threshold 
+
+10 −3σ⊥
+
+> max
+
+), the smallest singular value σ⊥ 
+
+> min
+
+= 144 .6 is on the same order of magnitude as the gate-column norms ( ∥jαℓ ∥ ranging 279 –660 ), and the smallest principal angle between im( Jα) and the sampled im( Jold ) is 56 .9◦. All K residual singular values exceed 144 , and all K principal angles exceed 56 ◦. Transversality therefore holds quantitatively, not merely generically. 15 Table 8: Transversality diagnostic at the Gate-FP post-growth checkpoint ( g = 4 , K = 36 , M = 200 ,
+
+D = 1 ,608 ,224 ). The residual (I − Pold )Jα is full-rank with well-conditioned spectrum, and gate directions are geometrically separated from the sampled old-Jacobian image by at least 56 .9◦.                     
+
+> Quantity Value
+> K(new block-gates) 36
+> M(sampled old directions) 200
+> Output dimension D1,608 ,224
+> Effective rank of residual at 10 −3σmax 36 (= K)
+> σ⊥
+> max 993 .4
+> σ⊥
+> min 144 .6
+> Condition number σ⊥
+> max /σ ⊥
+> min 6.87
+> Smallest principal angle (deg) 56 .9◦
+> Largest principal angle (deg) 83 .7◦
+> Gate-column norm range ∥jαℓ∥[279 ,660]
+
+Interpretation. The diagnostic confirms the load-bearing conditional in Theorem 3.1 (2): all 36 
+
+new-gate Jacobian columns are linearly independent of im( Jold ) at the trained checkpoint, and the geometric separation ( 56 .9◦ minimum) leaves substantial margin against finite-precision degradation. The condition number 6.87 indicates that the rank decomposition is numerically robust — σ⊥ 
+
+> min
+
+is not in the precision-limited regime where rank claims become estimator-dependent. 
+
+Caveat on the sampling approximation. We approximate im( Jold ) by sampling M = 200 random old-direction Jacobian columns. This is a sufficient (not necessary) test for transversality: if all K
+
+residual columns are linearly independent of the sampled subspace, they are linearly independent of any subspace contained in it; but a positive projection onto a direction we did not sample remains possible in principle. Increasing M to 500 in pilot runs did not materially change the residual singular values, suggesting the sample is sufficient at this scale. A complete Lanczos-based test of 
+
+rank( J(θold )) is left as future work. 
+
+## C Baseline Comparisons: Full Table 
+
+Table 9 reports the no-protection rows omitted from the body Table 5. All four no-protection cells produce the expected catastrophic forgetting signature ( ∆A > +200 ). Table 9: No-protection rows for each baseline family, omitted from the body for compactness. Outcomes are uniformly catastrophic, as expected without a preservation regulariser.                          
+
+> Family CL Strategy PPL A↓PPL B↓∆A↓
+> No-growth (300M) No protection 303 .59 20 .46 +277 .67
+> No-growth (300M) Replay 504 .61 20 .31 +478 .69
+> Zero-init stacking ( g= 2 )No protection 320 .14 20 .56 +294 .22
+> LoRA-CL (rank 64 )No protection 248 .36 22 .02 +222 .44
+
+## D Multi-Seed Validation at g = 2 
+
+We report three seeds of Gate-FP + Isolation at g = 2 scale (300M →454M) to estimate variance on the headline preservation finding. Seed 42 corresponds to the original Ablation 1 row; seeds 1234 
+
+and 999 were chosen before launch and reported regardless of outcome. All three seeds completed all 10 CL epochs. 16 Table 10: Multi-seed validation of the Gate-FP + Isolation preservation finding at g = 2 scale. The pre-CL row is identical across seeds because growth at α = 0 is bit-exact and pre-CL evaluation precedes any training. Variance is reported on the post-CL columns only.                                    
+
+> Seed Pre-CL PPL APost-CL PPL A↓Post-CL PPL B↓∆A↓
+> 42 (original Ablation 1) 25 .918 26 .013 30 .447 +0 .0946 1234 25 .918 26 .007 30 .556 +0 .0884 999 25 .918 26 .004 30 .520 +0 .0857
+> Mean ±std (3 seeds) —26 .008 ±0.005 30 .51 ±0.06 +0 .0896 ±0.0046
+
+Reading. On the two completed seeds, ∆A varies by σ = 0 .0031 , which is two orders of magnitude smaller than the gap to the non-FP baseline ( ∆A > +1 ,100 for Gstack under no-protection at 
+
+g = 4 , Table 2) and three orders of magnitude smaller than the gap to no-growth + Distillation (∆A = +13 .08 , Table 5). The qualitative preservation finding is therefore robust to seed variation at 
+
+g = 2 scale. Multi-seed validation at g = 4 scale ( ∼ 100 GPU-hours per additional seed, vs. ∼ 17 
+
+hours per g = 2 seed) was prohibitively expensive within our compute budget and is the natural follow-up. 
+
+## E Preliminary Cross-Architecture Validation 
+
+Before the main 300M →857M Transformer experiments, we ran smaller-scale studies (Phases 1–4) across four architecture families to validate that gate-zero FP holds beyond a single configuration. Phases 1–2 (MLP and ResNet on small data) verified bit-exact FP under sequential growth; Phase 3 (SE-ResNet on CIFAR-10 class split) provided the negative empirical result that motivated full isolation; Phase 4 (Transformer on a small WikiText slice) verified depth-vs-width FP behaviour at the architecture used in the main experiments. 
+
+Function preservation across architectures. Table 11 reports the maximum logit difference between pre- and post-growth models on a held-out batch. Depth growth via gate-zero is bit-exact across all four architecture families. Width growth on a Transformer breaks FP because the RMSNorm denominator changes with hidden dimension, producing a compound distortion of pdold /d new per norm layer ( 13 layers ⇒ 0.866 13 ≈ 0.15 × scaling for 384 → 512 ). This confirms the structural prediction that FP requires gate-zero structure, not merely careful initialisation. Table 11: Function preservation at growth across four architecture families. “Max diff” is the maximum absolute logit difference between pre- and post-growth models on the same held-out batch. 
+
+Phase Architecture Growth type Max diff FP exact? 
+
+1 MLP (2-16-16-3) Width (+2 neurons) 0.0 Yes 2 ResNet (MNIST) Width (channels 2×) 0.0 Yes 3 SE-ResNet (CIFAR-10) Width (channels 1.5×) 0.0 Yes 4 Transformer (WikiText) Depth ( 6 → 8 layers) 0.0 Yes 4 Transformer (WikiText) Width ( 384 → 512 ) 13.2 No 
+
+CL on grown SE-ResNet: naïve strategies all forget. Phase 3 trained an SE-ResNet grown from (8 , 16 , 32) to (16 , 32 , 64) channels sequentially on CIFAR-10 classes 0–4 (Task A) then 5–9 (Task B). Three naïve CL strategies were tested (Table 12); all three drove Task A accuracy to near zero. The diagnostic finding was that even with convolutional weights fully frozen (third row), trainable old gates alone caused enough feature drift (cosine similarity dropping to 0.5–0.9) to destroy classifier calibration. This negative result directly motivated the full-isolation design used in the main experiments: freezing old weights is necessary but not sufficient; old gates must also be frozen. 17 Table 12: Phase 3 CL on grown SE-ResNet (CIFAR-10 class split). Every naïve CL strategy results in near-complete forgetting of Task A after training on Task B. “Feature drift” is cosine similarity between pre- and post-CL backbone features on Task A inputs. 
+
+Strategy Task A Task B Feat. drift What failed 
+
+Fine-tune (no protection) 0.00% 90 .50% 0.6 Everything drifts Grow + differential LR 0.00% 79 .78% 0.3 Slow LR insufficient Grow + freeze conv weights 0.02% 72 .96% 0.5–0.9 Gate drift alone fatal The geometric reading is direct: freezing weights constrains T ⊥ 
+
+> old
+
+but trainable old gates allow drift along directions that change old-block computation. Full isolation (freeze old weights and old gates) eliminates both sources of drift, which is precisely the strategy Theorem 3.1 predicts. 
+
+## F MoE Per-Epoch Trajectory and Diagnostic Table 
+
+This appendix provides the full per-epoch CL trajectory for the MoE isolation run summarised in Section 5.3 and the mechanistic per-checkpoint diagnostic. 
+
+F.1 Per-epoch CL trajectory 
+
+Table 13 reports the trajectory of the exp2_moe_isolation run across all 10 CL epochs. Training loss decreases monotonically from 6.85 at epoch 1 to 4.69 at epoch 10, while validation PPL B
+
+reaches its minimum of 140 .26 at epoch 2 and then regresses monotonically to 182 .06 by epoch 10. Validation PPL A shows small negative ∆A in early epochs (slight positive transfer back to DA from CL training) before drifting up to a final ∆A = +0 .20 , an order of magnitude smaller than the dense baseline catastrophic-forgetting signature, confirming the preservation half of the framework. Table 13: MoE isolation: per-epoch CL trajectory. Epoch 0 (italic) is the post-growth pre-CL state. Validation PPL A is preserved throughout; validation PPL B is best at epoch 2 and regresses thereafter, while training loss continues to decrease monotonically — the canonical train-validation overfitting signature.                                                      
+
+> Epoch Train loss ↓Val PPL A↓Val PPL B↓∆A
+> 0 (pre-CL) —67.21 2155.77 —
+> 16.85 66.79 145.75 −0.42
+> 25.41 66.59 140.26 −0.62
+> 35.18 66.27 149.48 −0.94
+> 45.05 66.64 155.14 −0.57
+> 54.94 67.03 163.16 −0.18
+> 64.85 67.20 164.86 −0.01
+> 74.78 67.30 169.90 +0 .09
+> 84.73 67.36 176.50 +0 .15
+> 94.70 67.40 180.33 +0 .19
+> 10 4.69 67.41 182.06 +0 .20
+
+F.2 Per-checkpoint mechanistic diagnostic 
+
+Table 14 reproduces the diagnostic of Section 5.3 with extended commentary. The protocol loads the 
+
+706 M MoE base, applies grow_moe (4 →8 experts, 12 →24 layers), and runs a single forward pass on 
+
+2 WikiText-103 validation sequences with diagnostic hooks; the post-CL checkpoint is loaded from 
+
+exp2_moe_isolation/cl_final.pt and the same hooks executed. 18 5.0                  
+
+> 5.5
+> 6.0
+> 6.5
+> Training loss (CE)
+> Training loss
+> Training loss (CE)
+> 12345678910
+> CL epoch
+> 60
+> 80
+> 100
+> 120
+> 140
+> 160
+> 180
+> 200
+> Validation perplexity
+> Validation perplexity on Aand B(shared scale)
+> Val PPL A(preserved, A= +0.20)
+> Val PPL B
+> Pre-CL PPL A= 67.21
+
+Figure 1: Per-epoch CL trajectory of the MoE isolation run. Top: training loss decreases monoton-ically from 6.85 at epoch 1 to 4.69 at epoch 10 . Bottom: validation perplexity on DA and DB on a shared y-axis to honestly visualise their relative magnitudes. PPL A (green) stays within ±1 of the pre-CL baseline ( 67 .21 , dashed) throughout and is visually flat at this scale (final ∆A = +0 .20 ). 
+
+PPL B (red) reaches its minimum of 140 .26 at epoch 2 (circled) and then regresses monotonically to 182 .06 by epoch 10 . The simultaneous decreasing training loss and increasing validation PPL B
+
+confirm overfitting rather than measurement noise as the cause of the regression. Exact per-epoch values appear in Table 13. Table 14: MoE isolation per-checkpoint diagnostic (new MoE blocks only, nnew = 12 , top-k = 2 ,
+
+N = 8 ). “Top-1 share” is the fraction of tokens routed to the single most-selected expert (uniform 
+
+= 1 /N = 0 .125 ); “entropy / log N ” is normalised routing entropy ( 1.0 = uniform routing). All values computed on a held-out batch. 
+
+Diagnostic metric Pre-CL Post-CL Reading 
+
+Max |αℓ| on new blocks 0.000 0.083 gradient sought higher Mean |αℓ| on new blocks 0.000 0.083 all gates at clamp Cumulative P 
+
+> ℓ
+
+|αℓ| (nnew = 12 ) 0.00 0.99 ≈ one fully-open block Mean top-1 expert share 0.500 0.500 no within-CL collapse Routing entropy / log N (mean) 0.333 0.333 inherited concentration Mean cosine sim to source expert 0.918 0.810 modest differentiation Min cosine sim to source expert 0.852 0.712 most-changed still 71% similar 
+
+Reading. Three patterns emerge. First, all 12 new block gates converge to the safety-clamp ceiling 
+
+α = 1 /n new = 0 .083 , indicating the optimizer sought larger gates than the gate-norm-clip safety budget allowed. The cumulative gate-sum P 
+
+> ℓ
+
+|αℓ| ≈ 1.0 is equivalent to one fully-open block of new-path contribution distributed across the 12 new layers. Second, routing concentration is unchanged from pre-CL ( ρtop1 = 0 .50 in both states; normalised entropy 0.333 ), ruling out within-CL router collapse as the failure mode. The concentration is inherited from the cloned base routers and persists. Third, per-expert cosine similarity to source experts drifts from 0.918 to 0.810 (mean) and 0.852 to 0.712 (min). New experts learn something , but they remain mostly clones of their frozen sources in parameter-space terms. The combination is consistent with clone-block redundancy: new 19 blocks open their gates to the safety ceiling but cannot differentiate enough from the frozen sources to provide complementary capacity for DB , so what they fit is sample-specific memorisation rather than generalisable features. 
+
+## G Manifold Geometry 
+
+This appendix details the protocol used for Section G and Table 15. Table 15: Loss landscape geometry at three checkpoints. “Grad-cov rank” is the effective rank of the per-batch gradient covariance (exponential entropy of normalized singular values). The Gate-FP rows are consistent with preservation of local geometry across the growth event (rank drift < 0.02 ); CL contracts the active subspace. The Gstack row reports comparable grad-cov rank ( 18 .37 ) despite 
+
+not being function-preserving — this stochastic rank statistic is too coarse to distinguish FP from non-FP at growth time. The Hessian estimates use Lanczos on a single batch and should be read as coarse local diagnostics — see protocol below for reliability caveats.                           
+
+> Checkpoint Method Grad-cov rank Top eig. Trace est. Hessian n+
+> Pre-growth Base 18.45 203.09 66.75 3Post-growth Gate FP 18.47 188.05 66.79 3Post-growth Gstack 18.37 201.12 64.30 3Post-CL Gate FP + Iso 11.01 901.02 2066.71 4
+
+G.1 Estimators Gradient-covariance effective rank. We compute the per-example gradient gn = ∇θ L(θ; xn) ∈
+
+RP for n = 1 , . . . , N b, where Nb = 20 mini-batches of size 2. To control memory at P ≈ 10 9,we apply a Johnson-Lindenstrauss random projection Π : RP → R100 before stacking, giving 
+
+˜gn = Π gn ∈ R100 . We then form the empirical gradient-covariance Σ = (1 /N b) ˜G⊤ ˜G and compute its singular values {σi}100 
+
+> i=1
+
+. The effective rank is reported as the exponential entropy of the normalised singular values: 
+
+deff (Σ) = exp −
+
+> 100
+
+X
+
+> i=1
+
+˜σi log ˜ σi
+
+!
+
+, ˜σi = σi
+
+ P  
+
+> j
+
+σj .
+
+This is the participation ratio of the spectrum and equals the rank exactly for a uniform spectrum, the leading-eigenvector index for a spike, and intermediate values otherwise. 
+
+Top-3 Hessian eigenvalues. We use Lanczos iteration [Ghorbani et al., 2019] on Hessian-vector products v 7 → Hv = ∇θ (g⊤v) at a fixed θ, with 20 Lanczos iterations and a single batch of size 
+
+1. To control GPU memory at the 1.14B-parameter scale, we offload the Lanczos basis vectors to CPU. We report the top-3 Ritz values from the resulting tridiagonal matrix. Trace estimate is via Hutchinson’s stochastic trace. 
+
+Reliability caveat. The Hessian estimator is stochastic, single-batch, and uses only 20 Lanczos iterations; absolute eigenvalue magnitudes should be read as coarse local diagnostics rather than precise global curvature. The first-order gradient-covariance rank statistic is substantially more stable: in pilot runs varying Nb from 20 to 256 , deff values changed by less than 0.5 at any checkpoint. We therefore treat deff as the primary manifold proxy and the Hessian estimates as secondary indicators. 
+
+G.2 Spectral leakage 
+
+We define a single scalar metric for tracking how rank separation degrades during CL and report Hutchinson-HVP estimates at three checkpoints (post-growth Gate-FP, post-growth Gstack , post-CL Gate-FP+Iso). Results in Table 16. 
+
+Definition G.1 (Spectral leakage) . Let H ∈ RP ×P be the Hessian at a checkpoint, and let Pold , P new 
+
+denote the orthogonal projections onto old-parameter and new-parameter coordinate subspaces 
+
+20 respectively. The spectral leakage is 
+
+Sleak = ∥Pold H P new ∥F
+
+∥H∥F
+
+.
+
+Sleak = 0 means old and new parameter subspaces are completely decoupled in the Hessian; 
+
+Sleak > 0 means curvature “leaks” across the old/new boundary. 
+
+By Theorem 3.1, Sleak = 0 at the gate-zero growth point (the Fisher new-weight block and all new-weight cross-terms vanish); as CL training opens gates, Sleak grows controllably (linear in ∥α∥∞
+
+at first order; Proposition A.3). We estimate Sleak via Hutchinson with Hessian-vector products. The estimator samples v ∈ RP supported on new-parameter coordinates with Rademacher entries, computes Hv once, and reports ∥(Hv )old ∥2 averaged over draws as the numerator; the denominator uses full-dim Rademacher v. We use 16 Hutchinson draws per estimator on a single batch of size 2
+
+with sequence length 64 from DA.Table 16: Spectral leakage at three checkpoints (Hutchinson-HVP estimator, 16 draws). Sleak at post-growth Gate-FP is two orders of magnitude smaller than at post-growth Gstack (32 × separation) — the metric distinguishes FP from non-FP construction sharply, where the gradient-covariance rank statistic (Table 15) does not. Post-CL Gate-FP +Iso rises to 0.072 , consistent with the linear-in-∥α∥∞
+
+prediction of Proposition A.3 at ∥α∥∞ ≈ 0.083 (the safety clamp).                             
+
+> Checkpoint ∥Pold HP new ∥2
+> F∥H∥2
+> FSleak ↓
+> Post-growth Gate-FP 2.03 ×10 38.18 ×10 70.0050
+> Post-growth Gstack 7.59 ×10 62.94 ×10 80.1608
+> Post-CL Gate-FP +Iso 4.25 ×10 58.16 ×10 70.0722
+
+Reading. Three observations. (i) The Gate-FP / Gstack separation at growth time ( 32 ×) is the discriminating measurement of the Fisher-block rank-separation prediction (Proposition 3.5); the gradient-covariance rank ( 18 .47 vs. 18 .37 , Table 15) does not distinguish them. (ii) The post-CL Gate-FP value ( Sleak = 0 .072 at ∥α∥∞ ≈ 0.083 ) is consistent with the Proposition A.3 linear-leakage prediction: Sleak rises by ∼ 14 × as ∥α∥∞ rises from 0 to 0.083 , an empirical slope of ∼ 0.83 in the same units. (iii) Even after 10 epochs of CL, the post-CL Gate-FP value is less than half of the post-growth Gstack at-growth value: a Gate-FP model that has fully run CL retains cleaner old/new Hessian decoupling than a Gstack model that has not moved a single training step. 
+
+## H Extended Ablation Results 
+
+The combined Table 6 in the main text already reports all completed ablation rows. This appendix provides additional reading and a frontier visualisation that makes the non-monotonic constraint hierarchy easier to read off. 
+
+H.1 Pareto frontier across Gate-FP CL methods 
+
+Figure 2 plots final (PPL A, PPL B ) for all Gate-FP CL methods, the two completed freeze-strategy ablations, and the joint-training Scratch reference, on log–log axes so that runs spanning four orders of magnitude on PPL A are visible together. The Pareto frontier (lower PPL A and lower PPL B
+
+jointly) is dominated by F REEZE -N OTHING and F REEZE -G ATES -O NLY , both of which leave the old weight matrices trainable. Full Isolation sits to the right of the frontier (higher PPL B ), and Hybrid sits further right still — the same non-monotonic ordering observed in Table 2, here visible as a Pareto-dominance relation rather than a single-axis comparison. 21 10 2 
+
+> PPL A(log scale, lower is better)
+> 10 2
+> PPL B (log scale, lower is better)
+> Pre-CL
+> (560.75)
+
+Pareto frontier across Gate-FP CL methods 
+
+Freeze-Nothing / Freeze-Gates-Only dominate full Isolation; 
+
+Hybrid (more constraints) is worse than Isolation. 
+
+> Pre-CL anchor (post-growth)
+> No protect (Gate-FP)
+> Replay (Gate-FP)
+> Distillation (Gate-FP)
+> Isolation (Gate-FP)
+> Hybrid (Gate-FP)
+> Freeze-Nothing (abl 2)
+> Freeze-Gates-Only
+> Scratch (joint A+B)
+> Pareto frontier
+
+Figure 2: Pareto frontier of final (PPL A, PPL B ) across Gate-FP CL methods, freeze-strategy ablations, and the joint-training Scratch reference. Lower-left is better on both axes. The dotted green line connects the lower-left frontier; F REEZE -N OTHING and F REEZE -G ATES -O NLY jointly dominate full Isolation and Hybrid, confirming the non-monotonic constraint hierarchy reported in Table 2. 
+
+Ablation 1 (growth factor g). All three rows complete. The trend is monotonic: larger g provides more trainable subspace and yields lower PPL B , with |∆A| < 0.1 across all three. 
+
+Ablation 2 (what to freeze). All four rows complete. The two configurations that leave old weights trainable (F REEZE -N OTHING and F REEZE -O LD -G ATES -O NLY ) achieve essentially identical 
+
+PPL A ≈ 23 .9 and PPL B ≈ 20 .4; the two configurations that freeze old weights sit higher on both axes. Freezing the old weight matrices, not the old growth gates, is the binding constraint that over-restricts plasticity. 
+
+Ablation 3 (replay fraction). Two endpoints: ρ = 0 (collapses Hybrid loss to Isolation; reuses Gate-FP Isolation) and ρ = 0 .5 (default Hybrid; reuses Gate-FP Hybrid). Both directly read off Table 2. Interpolating values ρ ∈ (0 , 0.5) are not run; the two-point contrast already supports the message that adding CE-on-DA on top of Isolation hurts both axes. 
+
+Ablation 4 (gate-init / warmup). All three rows complete. The α0 = 0 row uses zero gate-warmup (ϵ = 0 ) so the literal α0 = 0 condition is honestly tested; gradient flow to new-block weights then depends entirely on the scalar gate opening through its own gradient. The α0 = 0 .01 row starts from a non-zero gate ( δf = O(α0) ≈ 3 × 10 −3 in PPL A at growth time) and benefits from immediate gradient flow into new-block internal weights, yielding lower PPL B (27 .77 vs. 29 .13 ). The α0 = 0 .1 row recovers the original base PPL A post-CL ( ∆A = −0.44 relative to its drifted post-growth baseline), indicating that under isolation, CL training can absorb the small approximate-FP perturbation introduced by α0 > 0 while benefiting from faster gradient flow into new-block weights. 
+
+Ablation 5 (growth timing): preservation is timing-robust. We grow the base model after 25 %, 
+
+50 %, 75 %, and 100 % of the base-training schedule (i.e. at 2.5, 5, 7.5, 10 epochs on DA), then run the standard 10-epoch CL phase under isolation. The 100 % row reuses exp1_gate_fp_isolation ,since 100 %-then-grow-then-CL is identical to the headline configuration of Table 2; we do not duplicate the run. Across all four timings, |∆A| < +0 .08 , confirming that the preservation property of gate-zero growth + isolation is robust to base-training maturity — the rank-separation mechanism does not require the base to be fully converged. 22 Table 17: Ablation 5 (growth timing). The 100 % row is the Gate-FP Isolation entry from Table 2 and is not re-run. Pre-CL PPL A varies non-monotonically with timing because mid-schedule base checkpoints can have lower validation perplexity than the final-schedule checkpoint (the 100 % base trains 10 full epochs and may sit past its best-validation point on WikiText-103). The preservation property holds in all four cases: |∆A| < +0 .08 .                         
+
+> Growth timing Pre-CL PPL APost-CL PPL A↓Post-CL PPL B↓∆A
+> 25 %28.31 28.39 30.33 +0 .074 50 %20.85 20.90 27.13 +0 .052 75 %21.56 21.61 27.02 +0 .053 100 % (= Gate-FP Iso) 25.92 25.96 28.41 +0 .043
+
+Reading. Two observations. First, ∆A stays in the same narrow band ( +0 .04 to +0 .07 ) regardless of when growth happens, supporting the claim that the rank-separation mechanism is a structural property of the growth operator rather than an artefact of any particular base configuration. Second, the non-monotonicity of Pre-CL PPL A across timings is consistent with the from-scratch baseline’s overfitting trajectory (Section 5.2, the PPL A = 17 .40 at epoch 3 vs. 43 .23 at epoch 10 phenomenon): mid-schedule checkpoints can have lower validation perplexity than the final-schedule checkpoint. The fact that Gate-FP + isolation preserves whichever Pre-CL state it starts from is the relevant invariant, not the absolute perplexity level. 
+
+## I Implementation Details 
+
+Architecture. Base model: GPT-style decoder-only Transformer with dmodel = 1024 , nheads = 16 ,
+
+dffn = 4096 , L = 12 layers, Lmax = 1024 context, GPT-2 BPE tokenizer [Radford et al., 2019] (vocab 50 ,257 ), SwiGLU FFN [Shazeer, 2020], RMSNorm [Zhang and Sennrich, 2019], rotary positional encoding [Su et al., 2024]. Gate-zero variants add scalar growth gates ( αℓ, head-gate, ffn-gate, expert-gate). MoE base: same backbone with 4 experts, top-k = 2 routing, dexpert = 4096 ,load-balancing loss weight λaux = 0 .01 .
+
+Base training (Phase 1). DA = WikiText-103 [Merity et al., 2017] (training split, ∼118M tokens after tokenization). 10 epochs. AdamW [Loshchilov and Hutter, 2019] with β = (0 .9, 0.999) , weight decay 0.1 on non-gate params, 0.0 on gate params. Learning rate 3 × 10 −4 (non-gate) and 1 × 10 −3
+
+(gate), linear warmup over 500 steps then cosine decay to 0. Microbatch size 2, gradient accumulation 
+
+64 (effective batch 128 ). Mixed-precision (fp16). Gradient clipping: ∥g∥2 ≤ 1.0 on non-gate params, 
+
+≤ 0.1 on gate params. Random seed 42 .
+
+Growth (Phase 2). Gate-FP: depth growth factor g = 4 (12 → 48 layers); new blocks cloned from existing blocks round-robin with i.i.d. Gaussian noise σ = 0 .01 on weights; α0 = 0 for new block-gates by default (Ablation 4 also tests α0 ∈ { 0.01 , 0.1}). Append pattern: new blocks stacked after old. MoE: g = 2 (12 → 24) plus 4 new experts per existing MoE layer with expert-gate = 0 .
+
+Gstack : g = 4 block duplication without gating (per Du et al. 2024). 
+
+Continual learning (Phase 3). DB = BookCorpus [Zhu et al., 2015], capped at 118 ,000 ,000 
+
+tokens to match |D A|. 10 CL epochs. Optimizer reset; CL learning rate 1 × 10 −4 (non-gate) and 
+
+5 × 10 −5 (gate), linear warmup 500 steps then cosine decay. CL gate learning rate is deliberately low (∝ 1/√nnew ) to bound cumulative gate perturbation; new-block gates are clamped to |αℓ| ≤ 1/n new 
+
+each step to prevent gate explosion. Replay buffer: random sample of 10% of DA training set (≈ 11 ,500 sequences), reshuffled each epoch; replay microbatch size 2 (capped to 1 for MoE due to memory). Distillation hyperparameters: λ = 0 .5, T = 2 .0 (effective KL weight λT 2 = 2 .0). Hybrid replay fraction ρ = 0 .5. For Isolation, gate warmup ϵ = 1 × 10 −3 applied at CL start when α0 = 0 
+
+(set to 0 for the α0 = 0 row of Ablation 4). All gradient-clipping values from Phase 1 carried over. 
+
+Evaluation. PPL on WikiText-103 validation ( ∼ 247 K tokens) and BookCorpus validation ( ∼
+
+500 K tokens), microbatch 2, fp16. Reported ∆A = PPL post −CL  
+
+> A
+
+−PPL pre −CL  
+
+> A
+
+(post-growth, pre-CL baseline). FP verification: max absolute logit difference between pre- and post-growth models on a 23 verification batch of 2 × 64 random tokens; passing threshold 10 −5 for dense, 10 −4 for MoE (MoE top-k routing introduces small numerical drift). 
+
+Geometry estimation (Section G). Gradient covariance rank: per-example gradient matrix over 
+
+Nb mini-batches, projected to 100 dimensions via random projection, followed by truncated SVD; effective rank reported as exponential entropy of normalized singular values. Hessian top eigenvalues: Lanczos-style Hessian-vector products with 20 iterations, single batch, CPU offload. We adopt this stochastic protocol because exact large-batch second-order measurement is infeasible at 1.14B-scale on single-GPU memory; absolute values should therefore be read as coarse local diagnostics, with the gradient-covariance rank statistic the more stable primary measure. The ranking across checkpoints (Table 15) is robust to varying Nb from 20 to 256 in our pilot runs. 
+
+Compute. All runs on a single NVIDIA L20 GPU (48 GB) per configuration. Total compute across the 2 × 5 CL matrix, MoE experiments, and ablations is approximately 2,500 GPU-hours. 
+
+Reproducibility caveats. Single seed per cell of Tables 2, 3, and 6 due to compute cost. Multi-seed validation at smaller scale is in progress and will be reported in supplementary material. We also test only one dataset ordering ( DA → D B ); reverse ordering is left as future work. 24

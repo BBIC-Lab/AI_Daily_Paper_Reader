@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-20
-- 运行时间：2026-07-20 04:33:30 北京时间
+- 最新运行日期：2026-07-21
+- 运行时间：2026-07-21 04:56:29 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日聚焦生物神经网络闭环编码与频率学派变点检测，速览电商生成式搜索、LLM高效适配与细粒度分类三大应用。  
-最值得关注的两个高分方向：闭环分类的编码策略评估如何桥接神经科学，以及用频率学派方法简化变点检测的落地路径。  
-建议对类脑计算或时序预测感兴趣的读者，从这两篇精读切入，再搭配速读中的注意力头重加权技巧，探索小样本高效适配的新思路。
-- 详情：[/202607/20/README](/202607/20/README)
+今日重点解读了脑机接口实时开发平台和脉冲神经网络的高效训练方法。  
+值得一看的是《Dendrite》为在线BCI研究提供了模块化Python工具，以及可微分脉冲时间离散化让连续时间脉冲网络训练更容易扩展。  
+建议动手尝试Dendrite框架，并关注脉冲网络在低功耗实时控制中的潜力。
+- 详情：[/202607/21/README](/202607/21/README)
 
 ### 精读区论文标签
-1. [Evaluating Encoding Strategies for Closed-Loop Classification in Biological Neural Networks](/202607/20/2607.13644v1-evaluating-encoding-strategies-for-closed-loop-classification-in-biological-neural-networks)  
+1. [Dendrite: A Real-Time Python Application for Online Brain-Computer Interface Research and Development](/202607/21/2607.14655v1-dendrite-a-real-time-python-application-for-online-brain-computer-interface-research-and-development)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过MEA刺激模式解码神经信号进行分类
-2. [A Frequentist Approach to Change Point Detection: Methods and Applications](/202607/20/2607.13852v1-a-frequentist-approach-to-change-point-detection-methods-and-applications)  
+   evidence：用于解码器训练和实时推理的脑机接口应用
+2. [Scalable Training of Continuous-Time Spiking Neural Networks with Differentiable Spike-Time Discretization](/202607/21/2607.14672v1-scalable-training-of-continuous-time-spiking-neural-networks-with-differentiable-spike-time-discretization)  
    标签：评分：9.0/10、query:ndai
-   evidence：函数型时间序列变点检测，具有一致性证明
-3. [A modular state-space model of human perception, cognition, and decision dynamics](/202607/20/2607.14078v1-a-modular-state-space-model-of-human-perception-cognition-and-decision-dynamics)  
+   evidence：用于时间神经数据建模的连续时间脉冲神经网络
+3. [Counterfactuals for Feature-Weighted Clustering](/202607/21/2607.14719v1-counterfactuals-for-feature-weighted-clustering)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于感知-认知-决策的状态空间模型作为序列建模
-4. [Leveraging unlabelled data for generalizable neural population decoding](/202607/20/2607.14086v1-leveraging-unlabelled-data-for-generalizable-neural-population-decoding)  
+   evidence：聚类反事实中使用的特征权重
+4. [GAttNHP: Group Attention Neural Hawkes Process for Extrapolation Reasoning in Temporal Knowledge Graphs](/202607/21/2607.14733v1-gattnhp-group-attention-neural-hawkes-process-for-extrapolation-reasoning-in-temporal-knowledge-graphs)  
    标签：评分：9.0/10、query:ndai
-   evidence：自监督联合训练用于神经群体解码
-5. [VLT: A Vision-Language-Time Series Multimodal Foundation Model for Industrial Intelligence](/202607/20/2607.14510v1-vlt-a-vision-language-time-series-multimodal-foundation-model-for-industrial-intelligence)  
+   evidence：时间点过程模型，用于预测时序事件
+5. [Asymmetric Peak-Aware Loss for Peak-Critical Time Series Forecasting](/202607/21/2607.14871v1-asymmetric-peak-aware-loss-for-peak-critical-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：提出多模态基础模型用于时间序列分析与预测
+   evidence：用于峰值关键时间序列预测的非对称损失
 
 ### 速读区论文标签
-1. [TMallGS: Scaling Unified Feature and Sequence Modeling for Generative E-commerce Search](/202607/20/2607.13398v1-tmallgs-scaling-unified-feature-and-sequence-modeling-for-generative-e-commerce-search)  
+1. [An offline approach to fNIRS-guided reinforcement learning for robot behavior](/202607/21/2607.14393v1-an-offline-approach-to-fnirs-guided-reinforcement-learning-for-robot-behavior)  
    标签：评分：8.0/10、query:ndai
-   evidence：CTR预测的序列建模
-2. [Data-Efficient Adaptation of LLMs via Attention Head Reweighting](/202607/20/2607.13425v1-data-efficient-adaptation-of-llms-via-attention-head-reweighting)  
+   evidence：解码神经信号以调节机器人行为
+2. [MIDI-RAE-JEPA: Hierarchical Representation Learning and Generation for Symbolic Music](/202607/21/2607.14537v1-midi-rae-jepa-hierarchical-representation-learning-and-generation-for-symbolic-music)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过注意力头重加权在有限标注数据下适应LLMs到新任务
-3. [CLIP-Guided Label-Free Discriminative Region Scoring for Fine-Grained Classification](/202607/20/2607.13437v1-clip-guided-label-free-discriminative-region-scoring-for-fine-grained-classification)  
+   evidence：符号音乐序列的自监督层次化表示学习
+3. [Gate-Zero Growth: A Geometric Framework for Function-Preserving Continual Learning](/202607/21/2607.14571v1-gate-zero-growth-a-geometric-framework-for-function-preserving-continual-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：CLIP引导的区域评分用于判别性证据
-4. [Factorized Spectral Representations for Reinforcement Learning](/202607/20/2607.13498v1-factorized-spectral-representations-for-reinforcement-learning)  
+   evidence：使用门控零增长进行功能保持的持续学习，将Transformer适应到新领域
+4. [Multimodality as Supervision: Self-Supervised Specialization to the Test Environment via Multimodality](/202607/21/2607.14721v1-multimodality-as-supervision-self-supervised-specialization-to-the-test-environment-via-multimodality)  
    标签：评分：8.0/10、query:ndai
-   evidence：强化学习的紧凑谱表示
-5. [Local Redundancy: An Information-Theoretic Measure of Plasticity from Synthetic Memorization](/202607/20/2607.13432v1-local-redundancy-an-information-theoretic-measure-of-plasticity-from-synthetic-memorization)  
+   evidence：从多模态数据中自监督表示学习
+5. [Dysco: Dynamic Subspace Boosting to Mitigate LoRA Interference in Federated Learning](/202607/21/2607.14367v1-dysco-dynamic-subspace-boosting-to-mitigate-lora-interference-in-federated-learning)  
    标签：评分：7.0/10、query:ndai
-   evidence：用于迁移学习的可塑性信息论度量
+   evidence：用于联邦微调预训练模型的动态子空间增强
 

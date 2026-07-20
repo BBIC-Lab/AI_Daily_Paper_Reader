@@ -1,0 +1,150 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-010.webp",
+      "caption": "Figure 1: Overview of Dysco. (1) Local subspace selection: each client runs SVD on its latent features to obtain a basis A∗ i spanning directions insensitive to its own data, and uploads only this basis. (2) Server-side subspace merging : the server combines the other clients’ bases into a merged subspace Amerge for each client, allocating directions that are broadly insensitive to the other clients’ representations. (3) Multi-round subspace boosting : to track representation drift, each round refreshes local selection and server-side merging on the current features and stacks a fresh LoRA block on top of the frozen prior pair (B,Amerge), growing the adapter as an additive ensemble of round-wise subspaces.",
+      "page": 4,
+      "index": 10,
+      "width": 786,
+      "height": 579
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-016.webp",
+      "caption": "Figure 2: Training loss (top) and test accuracy (bottom) across Transformer depths L ∈ {1, 2, 5}. Dysco’s subspace allocation persists as the network deepens, substantially lowering training loss and lifting test accuracy at every depth.",
+      "page": 9,
+      "index": 16,
+      "width": 686,
+      "height": 347
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-005.webp",
+      "caption": "Figure 3: Training loss (top) and test accuracy (bottom) when LoRA targets only V versus all three Q+K+V projections. Aligning LoRA on the value projection alone captures nearly all of the Q+K+V gain, because V writes interfering content into the residual stream.",
+      "page": 10,
+      "index": 5,
+      "width": 490,
+      "height": 379
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-001.webp",
+      "caption": "Figure 4: Training loss (top) and test accuracy (bottom) as the number of clients N varies across {4, 16, 100} at rank r = 4. Dysco dominates FedAvg when N ·r ≤ d permits a strict orthogonal partition, and retains a clear lead via random orthonormal fallback as N grows.",
+      "page": 11,
+      "index": 1,
+      "width": 686,
+      "height": 347
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-002.webp",
+      "caption": "Figure 5: Training loss (top) and test accuracy (bottom) for LoRA ranks r ∈ {8, 16, 32}. Higher LoRA rank amplifies FedAvg’s interference, while Dysco converts the extra capacity into stable accuracy at every rank.",
+      "page": 11,
+      "index": 2,
+      "width": 686,
+      "height": 349
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-014.webp",
+      "caption": "Table 1: Performance (%) of the global model on the MIMIC-IV-note dataset. Dysco lifts the average accuracy of every tested FL algorithm, with gains ranging from +0.5 (Scaffold) to +4.3 (FedAvgM) points.",
+      "page": 12,
+      "index": 14,
+      "width": 660,
+      "height": 346
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-009.webp",
+      "caption": "Figure 6: Average training loss vs. communication round on GLUE (a) and MIMIC-IV-note (b) under the standard configuration. Dysco’s loss falls below FedAvg’s within the first few rounds on both benchmarks and remains lower for the remainder of training.",
+      "page": 13,
+      "index": 9,
+      "width": 686,
+      "height": 256
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-003.webp",
+      "caption": "Figure 7: Training loss (top) and test accuracy (bottom) for Q-only and K-only LoRA configurations. Restricting LoRA to Q or K leaves both methods near random chance, confirming that softmaxmediated attention weights are insensitive to the LoRA basis.",
+      "page": 26,
+      "index": 3,
+      "width": 979,
+      "height": 752
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-015.webp",
+      "caption": "Figure 8: Training loss (top) and test accuracy (bottom) at the boundary case N = 64 with r = 4 and dmodel = 128. Dysco retains a clear advantage over FedAvg in both metrics, consistent with the random-orthonormal-fallback analysis in Section 4.4.",
+      "page": 27,
+      "index": 15,
+      "width": 394,
+      "height": 613
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-008.webp",
+      "caption": "Figure 9: Training loss (top) and test accuracy (bottom) at the small-capacity case r = 4. Dysco retains its training-loss and test-accuracy advantage over FedAvg, consistent with the rank-scaling analysis in Section 4.5.",
+      "page": 28,
+      "index": 8,
+      "width": 394,
+      "height": 611
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-004.webp",
+      "caption": "Figure 10: Average accuracy across all GLUE tasks over communication rounds with and without Dysco. Dysco consistently achieves a faster and better convergence compared to the baseline.",
+      "page": 30,
+      "index": 4,
+      "width": 640,
+      "height": 425
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-017.webp",
+      "caption": "Table 4: Performance (%) of the global model on the GLUE benchmark.",
+      "page": 31,
+      "index": 17,
+      "width": 860,
+      "height": 373
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-018.webp",
+      "caption": "Table 5: Ablation results (%) on the GLUE benchmark (8 tasks, round 10).",
+      "page": 31,
+      "index": 18,
+      "width": 668,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-011.webp",
+      "caption": "Table 7: Performance (%) of the global model on the GLUE benchmark with r = 16.",
+      "page": 32,
+      "index": 11,
+      "width": 686,
+      "height": 261
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-012.webp",
+      "caption": "Table 8: Performance (%) of the global model on the GLUE benchmark with r = 32.",
+      "page": 32,
+      "index": 12,
+      "width": 686,
+      "height": 260
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-013.webp",
+      "caption": "Table 9: Performance (%) of the global model on the MIMIC-IV-note dataset with r = 16.",
+      "page": 32,
+      "index": 13,
+      "width": 760,
+      "height": 384
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-007.webp",
+      "caption": "Table 10: Performance (%) of the global model in the MIMIC-IV-note dataset with r = 32.",
+      "page": 33,
+      "index": 7,
+      "width": 760,
+      "height": 384
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14367v1/fig-006.webp",
+      "caption": "Table 11: Detailed wall-clock time per round (seconds) for each FL method and setting, comparing Baseline and Dysco. All experiments use 1 outer round.",
+      "page": 33,
+      "index": 6,
+      "width": 698,
+      "height": 502
+    }
+  ]
+}

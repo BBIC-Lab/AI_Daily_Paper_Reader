@@ -1,0 +1,166 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-020.webp",
+      "caption": "Figure 2: TST framework. 1) First, we collect (multimodal) data from the test space (Sec. 3.2.1). 2) We then use this data for self-supervised multimodal pre-training (Mizrahi et al., 2023; Oquab et al., 2023) (Sec. 3.2.2). 3) After pre-training, the model is fine-tuned on a small external transfer dataset to solve a desired downstream task, e.g. semantic segmentation (Sec. 3.2.3). 4) This model is subsequently deployed and evaluated in the same test space where it was pre-trained (Sec. 4).",
+      "page": 5,
+      "index": 20,
+      "width": 826,
+      "height": 299
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-013.webp",
+      "caption": "Figure 4: Modality scaling vs data scaling. We study the tradeoff between collecting unimodal pre-training data from more spaces versus scaling modalities in the test space (here, 5 houses). The size of each circle is proportional to the mIoU performance on segmentation. We find that scaling the number of modalities within the test space yields better performance than scaling data by including external spaces. All models use the ViT-S backbone.",
+      "page": 8,
+      "index": 13,
+      "width": 563,
+      "height": 334
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-008.webp",
+      "caption": "Figure 5: Contribution of different modalities to TST performance. We study the effect of each modality on TST by dropping one combination from TST-MM, and adding one to TST-MAE (RGBonly TST). We use the ViT-S backbone. We find that even though some modalities provide higher gains than others when added to the RGB-only TST-MAE, the performance of TST-MM stays relatively stable, agnostic to the choice of the dropped modality. This indicates that no single modality is responsible for TST-MM’s performance, but rather their collective interplay, i.e., multimodality.",
+      "page": 10,
+      "index": 8,
+      "width": 737,
+      "height": 214
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-016.webp",
+      "caption": "Figure 10: TST-MM predictions across different tasks. We present qualitative results for TST-MM against various baselines, including scratch (no pre-training) and Internet-based pre-training on real-world scenes from Scannet++ (Yeshwanth et al., 2023). TST-MM predictions are notably more consistent across both tasks. Note how TST-MM predicts the same object (magnified in red boxes) more accurately and robustly across various viewpoints, as compared to generalist models like 4M-21 (Bachmann et al., 2024) and DINOv2 (Oquab et al., 2023).",
+      "page": 12,
+      "index": 16,
+      "width": 821,
+      "height": 500
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-012.webp",
+      "caption": "Figure 11: Quantitative summary of TST. The lower bound is scratch (i.e., no pre-training and learning using the external transfer set only). The upper bound is approximated by a fully supervised model trained with a large number of annotated segmentation images. The gap between the lower and upper bounds is the playfield for the pre-training methods to fill. All methods share the same model architecture. The results here correspond to semantic segmentation on Scannet++ (Yeshwanth et al., 2023).",
+      "page": 13,
+      "index": 12,
+      "width": 660,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-011.webp",
+      "caption": "Figure 13: Label Propagation with TST. We find that the trends in performance under the Label Propagation, with no transfer set distribution shift, are similar to what we observe in Tab. 1 and Fig. 11, thereby reassuring the efficacy of pre-training in the test space. The lower bound here is learning from scratch (i.e., no pre-training and learning using the small transfer set only). The upper bound is approximated by a fully supervised model trained with a large number of annotated segmentation images from the test space. All methods share the same model architecture. The results here correspond to semantic segmentation on Scannet++ (Yeshwanth et al., 2023).",
+      "page": 23,
+      "index": 11,
+      "width": 659,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-001.webp",
+      "caption": "Figure 14: TST-MM cross-modal retrieval predictions. TST-MM retrieves corresponding RGB images from query Depth input and Depth images from RGB input more accurately than the Internetbased 4M-21(Bachmann et al., 2024) model.",
+      "page": 25,
+      "index": 1,
+      "width": 744,
+      "height": 621
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-003.webp",
+      "caption": "Figure 15: TST-MM predictions on deployment in the wild. We showcase the qualitative results for TST-MM on the semantic segmentation task against the Internet-based pre-trained model 4M21(Bachmann et al., 2024) and scratch (no-pretraining). TST-MM predictions are notably better across object categories, showing the value of access to test space and the deployment potential of TST-MM.",
+      "page": 26,
+      "index": 3,
+      "width": 568,
+      "height": 731
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-004.webp",
+      "caption": "Table 5: Comparing TST-MM against pseudolabels. We find that TST-MM outperforms all pseudolabels, underscoring the value of pre-training on them via multimodal masked modelling in the test space.",
+      "page": 30,
+      "index": 4,
+      "width": 827,
+      "height": 279
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-005.webp",
+      "caption": "Table 6: The effect of semantic modalities in TST-MM. As the results demonstrate, removing the semantic segmentation and object detection modalities obtained from off-the-shelf networks does not significantly hurt the TST-MM’s performance on the downstream semantic segmentation and object detection tasks. When all three semantic modalities are removed, we observe a drop in performance, but TST-MM still outperforms the Internet-based 4M-21 (Bachmann et al., 2024) model, demonstrating the value of specialization.",
+      "page": 30,
+      "index": 5,
+      "width": 818,
+      "height": 205
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-019.webp",
+      "caption": "Figure 24: iOS application for custom data collection. It leverages the open source ARKit API to stream outputs of various sensors such as RGB, LiDAR, IMU, magnetometer, and ambient lighting, and supports paired data collection.",
+      "page": 31,
+      "index": 19,
+      "width": 656,
+      "height": 303
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-015.webp",
+      "caption": "Figure 25: Continual Learning with TST. We study the performance of TST-MM, as the test space, undergoes lighting and minor object placement changes. The plot on the left, shows the result of the baselines on the original test space, without any changes. On the right, we present results after the test space has undergone lighting and object displacements. As expected, the TST-MM trained in the original test space, looses some performance, however as we continually train by collecting pre-training in the perturbed test space, we find that TST-MM (CL) quickly recovers performance.",
+      "page": 32,
+      "index": 15,
+      "width": 568,
+      "height": 213
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-007.webp",
+      "caption": "Table 9: Pre-training settings for scratch initialization. Training configuration for TST-MM initialized from scratch.",
+      "page": 34,
+      "index": 7,
+      "width": 748,
+      "height": 460
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-010.webp",
+      "caption": "Table 10: Pre-training settings for Internet initialization. Pre-training configuration for TST starting from the the pre-trained 4M (Bachmann et al., 2024) model weights.",
+      "page": 35,
+      "index": 10,
+      "width": 748,
+      "height": 461
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-009.webp",
+      "caption": "Table 11: Semantic segmentation settings. Configuration used for fine-tuning the pre-trained models on the semantic segmentation task.",
+      "page": 35,
+      "index": 9,
+      "width": 694,
+      "height": 336
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-014.webp",
+      "caption": "Table 12: Object detection settings. Configuration used for fine-tuning the pre-trained models on the object detection task.",
+      "page": 36,
+      "index": 14,
+      "width": 694,
+      "height": 380
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-018.webp",
+      "caption": "Figure 26: LLM Prompt instruction for ProcTHOR caption generation transfer task. We generate ground-truth captions by providing multimodal information to GPT-4o (OpenAI, 2023) including annotated image, class and instance-wise bounding-box information. For each image, we generate 5 COCO-style captions.",
+      "page": 37,
+      "index": 18,
+      "width": 740,
+      "height": 408
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-017.webp",
+      "caption": "Figure 27: Additional qualitative results. As demonstrated here TST performs better compared to the other models for all tasks.",
+      "page": 37,
+      "index": 17,
+      "width": 821,
+      "height": 500
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-002.webp",
+      "caption": "Figure 28: Additional qualitative results. As demonstrated here TST performs better compared to the other models for all tasks.",
+      "page": 38,
+      "index": 2,
+      "width": 826,
+      "height": 908
+    },
+    {
+      "url": "assets/figures/arxiv/2607.14721v1/fig-006.webp",
+      "caption": "Table 13: Training details: Image Captioning. Configuration used for transfer training for image captioning.",
+      "page": 39,
+      "index": 6,
+      "width": 672,
+      "height": 336
+    }
+  ]
+}

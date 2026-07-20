@@ -1,0 +1,316 @@
+Title: MIDI-RAE-JEPA: Hierarchical Representation Learning and Generation for Symbolic Music
+
+URL Source: https://arxiv.org/pdf/2607.14537v1
+
+Published Time: Fri, 17 Jul 2026 00:50:30 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# MIDI-RAE-JEPA: HIERARCHICAL REPRESENTATION LEARNING AND GENERATION FOR SYMBOLIC MUSIC 
+
+## Scott H. Hawley 
+
+## Department of Chemistry & Physics, Belmont University, Nashville, TN, USA 
+
+ABSTRACT 
+
+Rich internal representations of musical structure are essential for music understanding tasks such as machine-assisted music co-writing, yet self-supervised approaches for symbolic music representation remain underexplored, particularly those that encode the hierarchical multiscale nature of musical structures. We present MIDI-RAE-JEPA, combining a pitch- and time-shift equivariance objective with LeJEPA and a Swin Transformer V2 encoder to learn such hierarchical representations of symbolic music en-coded as piano roll images. The time-shift equivariance objective encourages the model to internalize temporal mu-sical relationships. The encoder is trained purely on self-supervised objectives — including a masked embedding predictor (MEP) — with collapse prevented via SIGReg. A separate decoder trained on the frozen encoder embeddings achieves reconstruction F1 of 0.995, and a flow match-ing generative model conditioned on those embeddings produces generations that closely match the pitch register and rhythmic density of the conditioning excerpt, while mismatched conditioning yields unrelated but musically plausible output. Learned representations outperform a Haar scattering transform baseline on a downstream emo-tion classification task, and embedding distances increase monotonically with pitch and time shift magnitude, con-firming measurable equivariance. These results suggest that equivariance-based SSL objectives, combined with suf-ficient fine-level encoder capacity, provide a viable path toward semantically rich, generatively useful representa-tions of symbolic music. 
+
+1. INTRODUCTION 
+
+A long-standing goal in music technology is an intelligent AI assistant that can listen to a musical idea from a human and provide meaningful feedback to refine the composi-tion, arrangement, or production. Such a system requires rich internal representations of musical structure that cap-ture not only local note patterns but also the hierarchical relationships—notes forming short phrases, phrases com-bining into sections, sections shaping entire pieces—that characterize how music is organized [1]. Large multimodal language models, despite their breadth, currently perform poorly at music understanding tasks [2], motivating domain-specific approaches. Symbolic music encoded as piano rolls presents sharply different structure from natural images. A piano roll is a 
+
+> Email: scott.hawley@belmont.edu
+
+binary 128 × 128 image where the horizontal axis encodes time (eighth-note resolution over 8 bars) and the vertical axis encodes pitch (all 128 MIDI pitches). Piano roll repre-sentations have proven robust and effective for generative music modeling, as demonstrated by Polyffusion [3] among others. This controlled sparsity also makes piano rolls a useful testbed for methods intended for audio spectro-grams: the two representations share a time-frequency grid structure, but piano rolls strip away acoustic complexity, allowing architectural and objective choices to be evaluated in isolation before scaling to the messier audio domain. A natural SSL objective for images is to have embed-dings of crops predict the embedding of the full image, as in DINOv2 [4]. However, piano rolls are far out of distribu-tion from the natural photographs on which such models are trained, and the crop-and-resize strategy central to DINOv2 is semantically problematic: “zooming in” on a piano roll would merge adjacent semitones and distort rhythmic struc-ture, unlike the smooth scale invariance of photographs. We therefore adopt an alternative SSL objective based on equivariance to pitch and time translation—musically nat-ural transformations that preserve structure while shifting position—combined with a masked embedding predictor in the spirit of JEPA [5]. Recently, Representation Autoencoders (RAEs) [6] showed that rich pretrained representations can support not only discriminative tasks but also high-quality gener-ation when paired with a separately trained decoder. Anatural question is whether this paradigm extends to music. We show that it does: our encoder representations support reconstruction, conditional generation, and downstream classification. We make the following contributions: (1) We present a system for hierarchical SSL repre-sentations for symbolic music , combining equivariance objectives, LeJEPA, and a Swin V2 encoder; to our knowl-edge the first hierarchical JEPA-based approach for this domain. (2) We demonstrate a complete RAE pipeline for mu-sic — encoder, frozen-encoder decoder, and conditioned generative model — showing the representations are useful end-to-end for both reconstruction and generation. (3) We provide empirical validation : equivariance holds measurably in pitch and time; representations transfer to a downstream emotion classification task; and condition-ing controls generation meaningfully. (4) We introduce a smooth pitch- and time-translation equivariance loss with a delta-scaled target distance that arXiv:2607.14537v1 [cs.SD] 16 Jul 2026 both attracts and repels embedding pairs, preventing col-lapse while maintaining a geometrically consistent latent space. (5) We introduce a soft factorization loss that encour-ages pitch and time directions to be geometrically orthogo-nal in latent space. All experiments run on consumer hardware (RTX 4090, 4090 MaxQ, RTX 2070), demonstrating feasibility without large-scale compute. Code is available on GitHub. 1
+
+1.1 Related Work Joint-Embedding Predictive Architectures. LeJEPA [7] provides a theoretically grounded self-supervised objective combining an attraction loss with Sketched Isotropic Gaus-sian Regularization (SIGReg), requiring no stop-gradients, no negative pairs, and no complex training tricks. I-JEPA [5] and DINO [8] provide related JEPA and teacher-student frameworks we draw on. JEPA-style objectives have been applied to various data formats. M2D [9] ap-plies masked modeling with dual networks to learn audio representations. V-JEPA 2 [10] applies JEPA principles for video understanding. To our knowledge, no prior work applies JEPA-style SSL to symbolic music representations, hierarchical or otherwise. 
+
+Representation Autoencoders. The RAE paradigm [6] replaces VAE compression with frozen pretrained encoders paired with trained decoders, operating directly in semanti-cally structured representation space. We adopt this spirit for music: the encoder learns representations suitable for both discriminative tasks and downstream generation. 
+
+Equivariant SSL for Music. Multiple recent works apply equivariance-based self-supervised learning to audio. PESTO [11] estimates pitch using a Siamese network with a Toeplitz output layer that enforces hard pitch-equivariance. Quinton [12] applies equivariant self-supervision to tempo estimation, treating time-stretching as the invariant transfor-mation. STONE [13] learns tonality representations equiv-ariant to pitch transposition. Cwitkowitz and Duan [14] pur-sue fully self-supervised multi-pitch estimation via equiv-ariance to geometric transformations and invariance to tim-bral variations. Our work addresses a related but distinct problem: 2D equivariance to simultaneous pitch and time translation in the symbolic domain, learned softly through a metric objective in a hierarchical encoder rather than en-forced architecturally. 
+
+Symbolic Music Representation Learning. 
+
+Transformer-based pretraining on symbolic music event sequences has produced strong representations for classification tasks. MusicBERT [15] adapts BERT-style masked token prediction to OctupleMIDI-encoded sequences. MidiBERT-Piano [16] pretrains on piano perfor-mance MIDI and fine-tunes on several downstream tasks. MuseBERT [17] extends this paradigm to controllable generation. These sequence-based approaches operate on event tokens and rely on fine-tuning for downstream tasks; our approach instead operates on piano-roll images, learning to predict notes outside the receptive field of the            
+
+> 1https://github.com/drscotthawley/midi-rae
+> 2× ↓
+> 2× ↓
+> 2× ↓ 2× ↓
+> 2× ↓
+> L5
+> 32 ×32
+> dim=8
+> L4
+> 16 ×16
+> dim=16
+> L3
+> 8×8
+> dim=32
+> L2
+> 4×4
+> dim=64
+> L1
+> 2×2
+> dim=128
+> L0
+> 1×1
+> dim=256
+> Hierarchical Swin Encoder (MIDI-RAE-JEPA)
+> finest coarsest
+> Patch-token grid; stack height ∝depth d
+> Windowed attention ( w= 4 tokens)
+> Per-level depth d, heads h: see Table 1. 2× ↓ =patch merging.
+
+Figure 1 . Our hierarchical Swin V2 encoder architecture. 
+
+Table 1 . Architecture configuration. Visualized in Figure 1. Level Patch size grid depth heads dim 5 4 × 4px 32 × 32 2 2 84 8 × 8 16 × 16 2 2 16 3 16 × 16 8 × 8 2 2 32 2 32 × 32 4 × 4 6 4 64 1 64 × 64 2 × 2 2 8 128 0 128 × 128 1 × 1 1 16 256 visible image crop and yielding representations that transfer without fine-tuning via linear probes. 
+
+2. METHOD 2.1 Data Representation 
+
+We use POP909 [18], 909 popular songs in MIDI format with separated melody and accompaniment. Each 8-bar segment is rendered as a 128 × 128 binary piano roll (union of melody and accompaniment), with 64 eighth-note time steps horizontally and all 128 MIDI pitches ver-tically. While larger MIDI corpora exist (e.g., the Lakh dataset [19]), POP909 serves as an effective sandbox: small enough for rapid iteration, varied enough to avoid overfit-ting, and well-curated for structural analysis. Random crop sampling with pitch and time transposition augmentation means the model rarely encounters an identical input twice, greatly expanding the effective training variety available from a compact dataset. 
+
+2.2 Hierarchical Encoder 
+
+We use Swin Transformer V2 [20, 21], which processes im-ages hierarchically using shifted windows for self-attention among neighboring patches. Each stage downsamples by 
+
+2×, doubling the embedding dimension. Our architecture uses 4×4 pixel patches on 128 ×128 pixel input, yielding a 
+
+32 × 32 initial patch grid. The hierarchy has 6 stages, each downsampling 2×, as detailed in Table 1 and illustrated in Figure 1. Window size is 4 throughout. 
+
+2.3 Encoder Training Objective 
+
+The total training objective combines three terms: 
+
+L = λLequiv + (1 − λ)LSIGReg + λMEP LMEP applied independently at each hierarchy level (excluding the two finest levels for Lequiv and LSIGReg , where patch-level equivariance is less meaningful). Model variants marked with ∧ (defined below) add a fourth term, λfact Lfact , which is the Soft Factorization Loss, described below. 
+
+View generation. Two views are created by applying random shifts in time and pitch: x1 is the original crop and x2 is shifted by (∆ x, ∆y ) pixels. Both views are full 
+
+128 × 128 windows extracted from the song’s complete piano roll; a “shift” is implemented by sampling the second window at a position offset by (∆ x, ∆y ), so views always retain the encoder’s input size. 
+
+Equivariance loss. A naive attraction loss collapses all shifted pairs to identical embeddings regardless of shift magnitude. Instead we enforce a target embedding distance proportional to the shift magnitude, so that larger shifts produce proportionally more distant embeddings: 
+
+Lequiv (z1, z2, δ) = 
+
+
+
+∥z1 − z2∥ − α√d ∥ˆδ∥
+
+2
+
+where z1 is the teacher embedding of x1 and z2 is the student embedding of x2 (see the EMA teacher paragraph below), ∥ · ∥ denotes the Euclidean (L2) norm, d is the embedding dimension, ˆδ is the shift δ = (∆ x, ∆y ) with each component divided by its per-axis maximum ( ∆tmax ,
+
+∆pmax ; defined below) so that each component lies in [0 , 1] ,and α is a scalar hyperparameter. The √d factor accounts for concentration of measure in high-dimensional spaces, giving α consistent semantic meaning across all hierarchy levels. Unlike a hinge loss, this smooth quadratic both attracts pairs that are too far apart and repels pairs that are too close, maintaining a geometrically consistent latent space. Equivariance training uses patches shifted in pitch and time up to ( ∆tmax , ∆pmax ) pixels, with each shift sam-pled from a Beta(2 , 2) distribution, which yields a slight overemphasis on small shifts while still covering the full range. For the measurements in this paper, the maximum pitch shift ∆pmax is 12 pixels (one octave) and the maxi-mum time shift ∆tmax is either 12 or 48. We denote the base configuration ∆tmax =12 as MRJ-12. A longer-shift variant with ∆tmax =48 is MRJ-48, and MRJ-12 ∧ includes the additional factorization loss component described be-low. 
+
+Chunked SIGReg. SIGReg uses the Epps-Pulley char-acteristic function test to enforce an isotropic Gaussian prior on embeddings [7], theoretically optimal for downstream tasks. SIGReg computes a tensor of shape (N, N slices , T )
+
+where Nslices = 256 . On 16 GB GPUs this tensor alone con-sumed ∼5 GB. We chunk the slice dimension into groups of 32 and accumulate in float32: 
+
+LSIGReg ≈ P 
+
+> k
+
+L(k)
+
+> SIGReg
+
+where k indexes the chunks of 32 slices. This reduces peak VRAM by ∼5 GB and counterintuitively improves throughput by reducing memory allocator pressure. We apply SIGReg only to student embeddings z2, ensuring correct gradient flow. 
+
+EMA Teacher and Masked Embedding Predictor. 
+
+Following DINOv2 [8] and I-JEPA [5], we maintain an EMA teacher θT ← η θ T + (1 − η) θS with η = 0 .96 ,initialised from the student. The teacher serves two roles simultaneously: it produces stable target embeddings z1
+
+from x1 for the equivariance loss, and it processes x2 with-out masking to supply prediction targets for the MEP. A lightweight predictor network, conditioned on the student’s full-context representation, predicts the teacher embeddings at randomly masked patch positions. We note that our EMA teacher is not redundant with SIGReg: in LeJEPA, removing the teacher is possible be-cause SIGReg alone prevents collapse, and that remains its sole role here. Our teacher instead exists to provide stable, slowly-varying regression targets for the equivari-ance and MEP losses; the two mechanisms address different problems. The MEP loss is averaged over hierarchy levels: 
+
+LMEP = 1
+
+L
+
+> L
+
+X
+
+> ℓ=1
+
+ˆeℓ − eTℓ
+
+> 2
+
+where eTℓ are the teacher embeddings and ˆeℓ are the pre-dictor’s estimates at masked positions. This encourages the student to develop predictive representations of musical con-text across the full hierarchy, beyond what the equivariance objective alone enforces. 
+
+Soft factorization of pitch and time. Much of musi-cal variety arises from interacting pitch and rhythmic pat-terns, suggesting that a latent space factored along pitch and time directions would support both structured genera-tion and motif analysis. Rather than enforcing factorization architecturally—which prior work has shown loses mean-ingful cross-dimension interactions [22,23]—we instead im-pose a soft geometric constraint through a cosine-similarity loss on augmentation difference vectors. For a triplet of em-beddings za, z1, z2, where the anchor za is the embedding of the original unshifted crop and z1, z2 are embeddings of two independently shifted crops of the same excerpt, the factorization loss is: 
+
+d1 = z1 − za, d2 = z2 − za
+
+Lfact = (cos( d1, d2) − t)2
+
+where the target t ∈ { +1 , 0, −1} encodes the geometric relationship dictated by the augmentation types: same-type same-sign shifts should be parallel (t= + 1 ), same-type opposite-sign shifts anti-parallel (t= − 1), and cross-type shifts (one pitch, one time) orthogonal (t=0 ). No directions are prescribed; the system discovers them freely subject to these pairwise constraints. Figure 2 illustrates the three target relationships. 
+
+2.4 Decoder 
+
+The decoder inverts the Swin encoder hierarchy: a mir-rored stack of transformer stages with increasing spatial resolution, coupled with a Feature Pyramid Network (FPN) that propagates information from coarse levels down to the finest level via cross-attention-like skip connections. The Figure 2 . Soft factorization targets. Differences between pairs of embeddings are encouraged to be parallel ( t= + 1 ), anti-parallel ( t= − 1), or orthogonal ( t=0 ) depending on augmentation type and sign. Directions are not prescribed; only their pairwise geometry is constrained. 
+
+Figure 3 . Multi-level conditioning dropout schedule during flow training. Each mini-batch uses one mode per sample: unconditional (no conditioning), single-level variants (drop or keep one level), patch-level dropout (50% of patches except for Level 0), or full hierarchical conditioning. decoder is trained with embeddings from the frozen pre-trained encoder. The reconstruction objective for binary piano roll images is binary cross entropy per pixel, with a small amount of label smoothing and an auxiliary MSE term to aid early spatial registration. Decoded outputs are binarized at a threshold of 0.5. 
+
+2.5 Generative Model 
+
+We train a flow matching generative model [24] in pixel space, conditioned on encoder representations. Flows oper-ate between noise and data using the standard linear path 
+
+xt = (1 − t)x0 + tx 1, with velocity learned by a U-Net. Source–target pairs are ordered per mini-batch using exact optimal transport (OT) following [25], using Tong et al.’s implementation directly. 2 Exact OT pairing accelerates training convergence and provides a near-guarantee that conditioning signals applied during training align with the correct destination marginal of the fully trained flow. Encoder embeddings at each hierarchy level are injected as conditioning signals into the corresponding U-Net layers. To reduce conditioning dimensionality, we apply PCA with whitening, retaining 95% of variance; this large compres-sion still yields effective conditioning. One important detail: whitening discards the mean, and the mean pitch carries musically meaningful information (the overall register of a passage) yet has insufficient variance to survive the 95% threshold. We therefore append the mean pitch explicitly as an additional conditioning dimension. Training uses a “Multi-Level Dropout” scheme that serves as an extension to typical classifier-free guidance (CFG) [26] training: conditioning signals are randomly dropped out during training following the multi-level scheme in Figure 3, allowing unconditional, partially- 
+
+> 2https://github.com/atong01/ conditional-flow-matching
+
+Figure 4 . PCA scatter plots of encoder embeddings at each hierarchy level (L5=finest, L0=coarsest). Finer levels show tighter, more separated clusters; coarser levels approach an isotropic Gaussian distribution. 
+
+Table 2 . Cosine similarity of embedding difference vectors at each hierarchy level. Target values: Cross pairs = 0 (orthogonal), same-sign pairs = +1 (parallel), opposite-sign pairs = -1 (anti-parallel). Level Cross Parallel Anti 0 -0.017 0.786 -0.552 1 -0.014 0.793 -0.549 2 -0.001 0.780 -0.501 3* -0.014 0.727 -0.354 conditioned, and fully-conditioned generation at inference by varying which level embeddings are provided. 
+
+3. RESULTS 3.1 Encoder Probes 
+
+Figure 4 shows PCA scatter plots of mean-pooled embed-dings at each hierarchy level. Finer levels (L5, L4) exhibit tight, well-separated clusters reflecting local note content, while coarser levels (L1, L0) show broader, more isotropic distributions consistent with SIGReg’s Gaussian prior — the coarser levels encode larger-scale musical context at the cost of local detail. 
+
+3.1.1 Factorization 
+
+The factorization loss encourages pitch-shift and time-shift directions to be geometrically orthogonal in the embed-ding space. We verify this by computing embedding dif-ference vectors for pairs of augmentations and measuring their cosine similarities. Table 2 shows that cross-type pairs (one pitch, one time shift) are nearly orthogonal (| cos | < 0.02 ), same-type same-sign pairs are strongly par-allel ( cos ≈ 0.78 ), and same-type opposite-sign pairs show clear anti-parallel alignment ( cos ≈ − 0.5). The loss estab-lishes these geometric relationships at L0–L2; L3 shows partial structure despite no factorization loss applied, sug-gesting information flow through the hierarchy. Figure 5 visualizes the L1 geometry: PCA projections show pitch and time directions separating into distinct axes, and cosine histograms confirm the expected alignment patterns. Figure 5 . Soft factorization results for level one. Left: PCA of normalized embedding difference vectors for the three target types shown in Figure 2, showing the expected geo-metric relationships. Right: histograms of cosine similarity distributions for each pair type, with means indicated by dashed lines. 
+
+3.1.2 Equivariance 
+
+Figure 6 shows embedding distance as a function of pitch and time shift magnitude at each hierarchy level. Distances increase monotonically with shift magnitude, including well beyond the nominal patch size at each level — an effect we attribute to Swin’s shifted-window attention allowing patches to attend across boundaries. While equivariance enforces geometric structure, the downstream benefits likely arise from the encoder learning musically meaningful pitch-interval and rhythmic-period relationships that transfer to tasks requiring harmonic and metric understanding, such as predicting which structures occur outside the patch size, or how far apart two passages are in time. 
+
+3.1.3 Downstream task: emotion recognition 
+
+We evaluate on EMOPIA [27], a dataset of 1,071 piano clips labelled with four emotion quadrants (Russell’s cir-cumplex: arousal × valence). Linear probes are trained on mean-pooled embeddings (4,000 crops) at each level and compared against Haar scattering [28] and DINOv2 [4] baselines. Table 3 shows the emotion results: our L3 em-beddings achieve the best scores on all three metrics, out-performing both baselines, with performance falling off toward both the finest and coarsest levels. Table 4 reports complementary structure probes. Note density is strongly encoded at fine levels (L4/L5 
+
+R2 > 0.98 ) but poorly at coarse levels, consistent with the PCA visualizations. Cross-song similarity ratio decreases monotonically from L0 to L5, indicating that finer levels are increasingly discriminative between songs. Temporal distance regression shows modest but consistent correla-0             
+
+> 10
+> 20
+> 30
+> DINOv2
+> Embedding distance
+> Pitch Transposition
+> L0 L1
+> 0
+> 5
+> 10
+> 15
+> 20
+> Time Translation
+> L0 L1
+> 0
+> 1
+> 2
+> 3
+> 4
+> 5
+> Ours (no factorization)
+> Embedding distance  L0
+> L1
+> L2
+> L3
+> L4
+> L5
+> 0
+> 10
+> 20
+> 30
+> L0
+> L1
+> L2
+> L3
+> L4
+> L5
+> 0510 15 20 25
+> Pitch shift (semitones)
+> 0
+> 5
+> 10
+> 15
+> 20
+> Ours (with factorization)
+> Embedding distance  L0
+> L1
+> L2
+> L3
+> L4
+> L5
+> 025 50 75 100 125
+> Time shift (pixels)
+> 0.0
+> 0.5
+> 1.0
+> 1.5
+> 2.0
+> 2.5
+> 3.0 L0
+> L1
+> L2
+> L3
+> L4
+> L5
+
+Figure 6 . Equivariance curves: embedding distance vs. pitch transposition (left) and time translation (right) at each hierarchy level, for DINOv2 (top), Our Model (middle), and Our model with factorization loss (bottom). Distances increase monotonically, extending beyond boundaries of small patches, but typically saturate after twenty pixels of time. The factorization loss establishes monotonicity for greater distances. 
+
+Table 3 . Emotion recognition probes (EMOPIA). Chance: 0.29 (4-class), 0.50 (Arousal/Valence). ↑ = higher better. Bold = best per metric. Model, Level 4-class ↑ Arousal ↑ Valence ↑
+
+Chance .290 .500 .500 Haar .411 .726 .615 DINOv2, L0 .396 .712 .573 DINOv2, L1 .391 .697 .584 MRJ-12, L0 .316 .568 .564 MRJ-12, L1 .349 .631 .534 MRJ-12, L2 .436 .725 .591 MRJ-12, L3 .488 .754 .640 
+
+MRJ-12, L4 .462 .737 .593 MRJ-12, L5 .425 .736 .571 Table 4 . Structure probes. ↑ = higher better, ↓ = lower better. Bold = best per metric. Model, Level Density R2 ↑ Cross-song ↓
+
+Temp 
+
+R2 ↑
+
+DINOv2, L0 .930 .770 .256 DINOv2 L1 .943 .740 .307 
+
+MRJ-12, L0 .208 .936 .093 MRJ-12, L1 .563 .928 .084 MRJ-12, L2 .803 .860 .075 MRJ-12, L3 .930 .785 .038 MRJ-12, L4 .991 .682 .157 MRJ-12, L5 .984 .640 .177 
+
+Table 5 . Decoder reconstruction performance, for our mod-els trained with different maximum time shift ∆tmax and with/without the factorization loss, compared against a DI-NOv2 baseline. ↑ = higher better. The numbers are close enough to be within the noise floor of training runs, yet the factorization seems to help, as seen by the slightly higher F1 of MRJ-48 ∧ compared to MRJ-48. Encoder ∆tmax Factorization F1 ↑
+
+MRJ-12 12 no 0.9955 MRJ-48 48 no 0.981 MRJ-48 ∧ 48 yes 0.9953 DINOv2 n/a n/a 0.987 tion at all levels; DINOv2 outperforms our encoder on this metric. 
+
+3.2 Decoder Performance 
+
+The decoder achieves high-fidelity reconstruction with an F1 score of approximately 0.995 on a held-out test set (Ta-ble 5), confirming that the frozen encoder embeddings re-tain sufficient information for accurate piano roll recon-struction. Extending the max time shift during encoder training can have a detrimental effect on reconstruction ac-curacy, likely because larger shifts encourage the encoder to focus more on coarse-level structure at the expense of fine-level detail; however, the factorization loss appears to mitigate this effect, as seen by the improved F1 of MRJ-48 ∧
+
+compared to MRJ-48. 
+
+3.3 Conditional Generation 
+
+We first attempted generation directly in representation space, but this did not produce satisfactory results. Flow-ing in pixel space conditioned on encoder representations proved fast and highly effective. PCA visualization of embeddings at each hierarchy level shows the expected structure: coarse levels cluster nearby crops tightly while fine levels separate by shift magnitude, with approximately isotropic distributions consistent with SIGReg’s Gaussian prior. Figure 7 shows real samples alongside matched, shuffled, and unconditional generations. Matched generations closely 
+
+Figure 7 . Conditional generation results on POP909. Each row is a different excerpt. Real : ground truth piano roll. 
+
+Match : generation conditioned on embeddings from that same excerpt (PCA 95% variance + mean pitch). Shuffle :conditioned on embeddings from a randomly selected ex-cerpt. Uncond : unconditional generation. Matched genera-tions closely follow the rhythmic density and pitch register of the real excerpt; shuffled and unconditional samples are musically plausible but unrelated to the target. 0k 20k 40k 60k 80k 100k 
+
+> Training Step
+> 2
+> 4
+> 6
+> 8
+> 10
+> 12
+> Global Cond. Proj. Norm  Wcond  F Shuffle
+> Full Cond
+> ML Dropout
+
+Figure 8 . Frobenius norm of the global conditioning pro-jection Wcond over training steps. When conditioning is shuffled, the model learns to ignore it ( ∥Wcond ∥F → 0). Both full and multi-level dropout conditioning (Fig. 3) yield stable, nonzero weights, with dropout producing slightly lower values, suggesting marginally reduced reliance on the conditioning signal. follow the rhythmic and pitch character of the conditioning excerpt. Shuffled conditioning (mismatched encoder em-beddings) and unconditional generation produce plausible but unrelated piano rolls, confirming that the encoder em-beddings carry musically meaningful information that the flow model successfully exploits. As a further check that the trained flow genuinely uses the conditioning signal, Figure 8 tracks the norm of the conditioning projection during training: with shuffled (un-informative) conditioning the model learns to ignore it, whereas full and multi-level dropout conditioning maintain stable, nonzero weights. 
+
+4. CONCLUSION 
+
+We have shown that a self-supervised equivariance objec-tive, combined with a Swin V2 encoder and LeJEPA, pro-duces representations of symbolic music that are useful across multiple downstream tasks without any end-to-end training. A decoder trained on frozen encoder embeddings achieves F1 ≈ 0.995, confirming that the SSL objective alone forces the encoder to retain sufficient information for high-fidelity reconstruction. The soft factorization loss, which encourages pitch and time directions to be orthogonal in latent space, improves equivariance and resists saturation of embedding distances at large shifts. On the EMOPIA emotion classification task, a linear probe on our embed-dings outperforms a Haar scattering baseline, suggesting that musically relevant information is accessible without fine-tuning. Conditioning a flow matching generative model on PCA-reduced encoder embeddings produces outputs that closely track the pitch register and rhythmic density of the conditioning excerpt, and unconditional or mismatched con-ditioning yields musically plausible but unrelated output— demonstrating that the representations carry generatively useful structure. Most of the representational capacity resides at the finer levels of the hierarchy; the coarser levels do not yet capture obviously interpretable musical abstractions. Getting more musically meaningful structure into those levels—whether through modified objectives, explicit labels, or architectural changes—is an open problem. More broadly, extending this approach to audio spectrograms, scaling to larger datasets, and exploring richer downstream tasks such as arrangement or accompaniment generation are natural next steps. 
+
+5. ACKNOWLEDGEMENTS 
+
+Thanks TwinOS and Razer Corporation for making avail-able the Blade 16” and Blade 18” GPU laptops used for some of the computations in this paper. Thanks to Vincent Lostanlen for the suggestion of the Haar wavelet baseline. 
+
+6. AI USAGE STATEMENT 
+
+A large language model (Claude, Anthropic) was used as a coding assistant for debugging, visualization, and test gen-eration; as an experiment management assistant for launch-ing jobs and tracking results; and as an interactive writing assistant in editing this paper, including portions of the introduction and related work. All scientific hypotheses, experimental designs, architectural decisions, and conclu-sions are the author’s own, and all content, references, and claims were verified by the author.                                                            
+
+> 7. REFERENCES
+> [1] F. Lerdahl and R. Jackendoff, A Generative Theory of Tonal Music .MIT Press, 1983. [2] Y. Ma, S. Li, J. Yu, E. Benetos, and A. Maezawa, “CMI-Bench: A comprehensive benchmark for evaluating music instruction following,” in Proceedings of the 26th International Society for Music Information Retrieval Conference (ISMIR) , 2025. [3] L. Min, J. Jiang, G. Xia, and J. Zhao, “Polyffusion: A diffu-sion model for polyphonic score generation with internal and external controls,” in Proceedings of the 24th International Society for Music Information Retrieval Conference (ISMIR) ,2023. [4] M. Oquab, T. Darcet, T. Moutakanni, H. Vo, M. Szafraniec, V. Khalidov, P. Fernandez, D. Haziza, F. Massa, A. El-Nouby
+> et al. , “DINOv2: Learning robust visual features without supervision,” arXiv preprint arXiv:2304.07193 , 2023. [5] M. Assran, Q. Duval, I. Misra, P. Bojanowski, P. Vincent, M. Rabbat, Y. LeCun, and N. Ballas, “Self-supervised learning from images with a joint-embedding predictive architecture,” in Conference on Computer Vision and Pattern Recognition ,2023. [6] B. Zheng, N. Ma, S. Tong, and S. Xie, “Diffusion trans-formers with representation autoencoders,” arXiv preprint arXiv:2510.11690 , 2025. [7] R. Balestriero and Y. LeCun, “LeJEPA: Provable and scalable self-supervised learning without the heuristics,” 2025. [Online]. Available: https://arxiv.org/abs/2511.08544 [8] M. Caron, H. Touvron, I. Misra, H. Jégou, J. Mairal, P. Bojanowski, and A. Joulin, “Emerging properties in self-supervised vision transformers,” in International Conference on Computer Vision , 2021. [9] D. Niizumi, D. Takeuchi, Y. Ohishi, N. Harada, and K. Kashino, “Masked modeling duo: Learning representations by encouraging both networks to model the input,” in IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) , 2023, pp. 1–5. [10] M. Assran, A. Bardes, D. Fan, Q. Garrido, R. Howes, Mojtaba, Komeili, M. Muckley, A. Rizvi, C. Roberts, K. Sinha, A. Zholus, S. Arnaud, A. Gejji, A. Martin, F. R. Hogan, D. Dugas, P. Bojanowski, V. Khalidov, P. Labatut, F. Massa, M. Szafraniec, K. Krishnakumar, Y. Li, X. Ma, S. Chandar, F. Meier, Y. LeCun, M. Rabbat, and N. Ballas, “V-jepa 2: Self-supervised video models enable understanding, prediction and planning,” 2025. [Online]. Available: https://arxiv.org/abs/2506.09985 [11] A. Riou, S. Lattner, G. Hadjeres, and G. Peeters, “PESTO: Pitch estimation with self-supervised transposition-equivariant objective,” in International Society for Music Information Retrieval Conference , 2023. [12] E. Quinton, “Equivariant self-supervision for musical tempo estimation,” in Proceedings of the 23rd International Society for Music Information Retrieval Conference (ISMIR) , 2022, pp. 84–92.
+
+[13] Y. Kong, V. Lostanlen, G. Meseguer-Brocal, S. Wong, M. La-grange, and R. Hennequin, “STONE: Self-supervised tonality estimator,” in Proceedings of the 25th International Society for Music Information Retrieval Conference (ISMIR) , 2024, pp. 954–961. [14] F. Cwitkowitz and Z. Duan, “Toward fully self-supervised multi-pitch estimation,” arXiv preprint arXiv:2402.15569 ,2024. [15] M. Zeng, X. Tan, R. Wang, Z. Ju, T. Qin, and T.-Y. Liu, “MusicBERT: Symbolic music understanding with large-scale pre-training,” in Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021 , 2021, pp. 791–800. [16] Y.-H. Chou, I.-C. Chen, J. Ching, C.-J. Chang, and Y.-H. Yang, “MidiBERT-Piano: Large-scale pre-training for symbolic mu-sic classification tasks,” Journal of Creative Music Systems ,vol. 8, no. 1, 2024. [17] Z. Wang and G. Xia, “MuseBERT: Pre-training music repre-sentation for music understanding and controllable generation,” in Proceedings of the 22nd International Society for Music In-formation Retrieval Conference (ISMIR) , 2021, pp. 722–729. [18] Z. Wang, K. Chen, J. Jiang, Y. Zhang, M. Xu, S. Dai, G. Xia, and S. Dubnov, “POP909: A pop-song dataset for music arrangement generation,” arXiv preprint arXiv:2008.07142 ,2020. [19] C. Raffel, “Learning-based methods for comparing sequences, with applications to audio-to-MIDI alignment and matching,” Ph.D. dissertation, Columbia University, 2016. [20] Z. Liu, Y. Lin, Y. Cao, H. Hu, Y. Wei, Z. Zhang, S. Lin, and B. Guo, “Swin transformer: Hierarchical vision transformer using shifted windows,” in International Conference on Com-puter Vision , 2021. [21] Z. Liu, H. Hu, Y. Lin, Z. Yao, Z. Xie, Y. Wei, J. Ning, Y. Cao, Z. Zhang, L. Dong et al. , “Swin transformer V2: Scaling up capacity and resolution,” in Conference on Computer Vision and Pattern Recognition , 2022. [22] X. Wu, Z. Huang, K. Zhang, J. Yu, X. Tan, T. Zhang, Y. Li, Z. Wang, and L. Sun, “MelodyGLM: Multi-task pre-training for symbolic melody generation,” arXiv preprint arXiv:2309.10738 , 2023. [23] K. Chen, G. Xia, and S. Dubnov, “Music SketchNet: Control-lable music generation via factorized representations of pitch and rhythm,” arXiv preprint arXiv:2008.01291 , 2020. [24] Y. Lipman, R. T. Q. Chen, H. Ben-Hamu, M. Nickel, and M. Le, “Flow matching for generative modeling,” in The Eleventh International Conference on Learning Representations , 2023. [Online]. Available: https://openreview. net/forum?id=PqvMRDCJT9t [25] A. Tong, K. FATRAS, N. Malkin, G. Huguet, Y. Zhang, J. Rector-Brooks, G. Wolf, and Y. Bengio, “Improving and generalizing flow-based generative models with minibatch optimal transport,” Transactions on Machine Learning Research , 2024, expert Certification. [Online]. Available: https://openreview.net/forum?id=CD9Snc73AW [26] J. Ho and T. Salimans, “Classifier-free diffusion guidance,” in NeurIPS 2021 Workshop on Deep Generative Models and Downstream Applications , 2021. [Online]. Available: https://openreview.net/forum?id=qw8AKxfYbI [27] H.-T. Hung, J. Ching, S. Doh, N. Kim, J. Nam, and Y.-H. Yang, “EMOPIA: A multi-modal pop piano dataset for emo-tion recognition and emotion-based music generation,” in Proc. Int. Society for Music Information Retrieval Conf. , 2021. [28] X. Chen, X. Cheng, and S. Mallat, “Unsupervised deep haar scattering on graphs,” in Advances in Neural Infor-mation Processing Systems , Z. Ghahramani, M. Welling, C. Cortes, N. Lawrence, and K. Weinberger, Eds., vol. 27. Curran Associates, Inc., 2014. [Online]. Avail-able: https://proceedings.neurips.cc/paper_files/paper/2014/ file/34fde01345258939e718af181fc0f996-Paper.pdf

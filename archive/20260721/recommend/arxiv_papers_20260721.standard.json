@@ -1,0 +1,412 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-20T20:52:47.019339+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 40,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 62,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 14,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 9,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 15
+  },
+  "deep_dive": [
+    {
+      "id": "2607.14655v1",
+      "source": "arxiv",
+      "title": "Dendrite: A Real-Time Python Application for Online Brain-Computer Interface Research and Development",
+      "abstract": "Online brain-computer interface research requires software that can acquire multimodal physiological data, train and update decoders, run live inference, and preserve the full experimental provenance in a reproducible workflow. We present Dendrite, a real-time brain-computer interface application in Python that brings signal acquisition, decoder training, and live inference together in a single, ready-to-run application that stays modifiable. Dendrite records several signal streams at once, each at its native rate, and executes multiple processing modes concurrently against them. A decoder can start from a previously trained model or be fit mid-session while the pipeline keeps running, and the same recordings feed offline training in the same application. Each recording, decoder, and training run is tracked in a database, and every decoder records the configuration and the source recordings it was trained from, so a deployed decoder traces back to what produced it. The experimental paradigm stays external, an independent program in any language that reaches Dendrite over the network, rather than a module built inside the runtime. We validate the full system end-to-end on in-house and public BCI datasets, training and updating decoders online while the pipeline runs in real time. Dendrite is open-source under the GPL-3.0 license at https://github.com/dendrite-bci/dendrite. The result is a reproducible, open-source biomedical-computing system for developing and evaluating online BCI paradigms.",
+      "authors": [
+        "Niko Kroflic",
+        "Jan Babič"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC"
+      ],
+      "published": "2026-07-16T07:22:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.14655v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Real-time BCI application for decoder training and live inference",
+      "llm_evidence_cn": "用于解码器训练和实时推理的脑机接口应用",
+      "llm_evidence": "用于解码器训练和实时推理的脑机接口应用",
+      "canonical_evidence": "用于解码器训练和实时推理的脑机接口应用",
+      "llm_tldr_en": "Provides a Python framework for online BCI research integrating signal acquisition and decoding",
+      "llm_tldr_cn": "提供在线脑机接口研究的Python框架，整合信号采集和解码",
+      "llm_tldr": "提供在线脑机接口研究的Python框架，整合信号采集和解码",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.14672v1",
+      "source": "arxiv",
+      "title": "Scalable Training of Continuous-Time Spiking Neural Networks with Differentiable Spike-Time Discretization",
+      "abstract": "Continuous-time spiking neural networks (SNNs) provide an event-driven framework for temporal computation, computational neuroscience, and neuromorphic hardware. However, training deep continuous-time SNNs is severely constrained by the memory required for exact spike-time computation, which evaluates and retains candidate firing times over intervals determined by presynaptic spike ordering. Here we introduce a memory-efficient training framework based on differentiable spike-time discretization (DSTD) for leaky integrate-and-fire neurons with general membrane and synaptic time constants. DSTD maps irregular presynaptic spikes onto differentiable weighted events at fixed time points, replacing the input-dependent candidate dimension with $M$ fixed time intervals while accurately approximating continuous-time membrane-potential dynamics. This reduces candidate-related activation memory from $O(N_{\\mathrm{out}}N_{\\mathrm{in}})$ to $O(N_{\\mathrm{out}}M)$ in the case of time-to-first-spike (TTFS) coding, where $N_{\\mathrm{in}}$ and $N_{\\mathrm{out}}$ denote the numbers of presynaptic and postsynaptic neurons, respectively. We further introduce synfire-chain-inspired temporal regularization that organizes layer-wise firing windows, mitigates dead-neuron failures, and enables pipeline-like processing. In dense LIF layers, DSTD reduced peak memory consumption by up to approximately 100-fold and training time by up to approximately 20-fold compared with exact spike-time computation. Together, these methods allowed us to train 9-layer convolutional SNNs on CIFAR-10 and 20-layer convolutional SNNs on Fashion-MNIST on a single GPU.",
+      "authors": [
+        "Yusuke Sakemi",
+        "Tomoya Takeuchi",
+        "Takeo Hosomi",
+        "Kazuyuki Aihara"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-16T07:38:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.14672v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "continuous-time spiking neural networks for temporal neural data modeling",
+      "llm_evidence_cn": "用于时间神经数据建模的连续时间脉冲神经网络",
+      "llm_evidence": "用于时间神经数据建模的连续时间脉冲神经网络",
+      "canonical_evidence": "用于时间神经数据建模的连续时间脉冲神经网络",
+      "llm_tldr_en": "Memory-efficient training of spiking neural networks with differentiable spike-time discretization.",
+      "llm_tldr_cn": "使用可微分尖峰时间离散化的脉冲神经网络内存高效训练。",
+      "llm_tldr": "使用可微分尖峰时间离散化的脉冲神经网络内存高效训练。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.14719v1",
+      "source": "arxiv",
+      "title": "Counterfactuals for Feature-Weighted Clustering",
+      "abstract": "Counterfactual explanations provide local, interpretable insight by identifying changes to an input that would alter its assigned outcome. Although well established in supervised learning, their extension to clustering is less direct, since cluster assignments are unlabeled and governed by the geometry of the partition. This paper introduces VoICE, a Voronoi-Induced Counterfactual Explainability framework for feature-weighted $k$-means clustering. Rather than treating cluster change as a crossing of a single pairwise centroid boundary, VoICE formulates counterfactual generation as projection onto the full weighted Voronoi region of a target cluster, incorporating feature weights directly into both the clustering geometry and the counterfactual objective to yield least-cost and parsimonious explanations under actionability constraints. Target regions are further intersected with data-derived bounds and homothetically contracted towards their centroids, limiting extrapolation and boundary sensitivity. VoICE consistently produces valid target-cluster membership, across several benchmark datasets, where the leading pairwise baseline does not.",
+      "authors": [
+        "Richard J. Fawley",
+        "Renato Cordeiro de Amorim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-16T08:36:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.14719v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "feature weights used in clustering counterfactuals",
+      "llm_evidence_cn": "聚类反事实中使用的特征权重",
+      "llm_evidence": "聚类反事实中使用的特征权重",
+      "canonical_evidence": "聚类反事实中使用的特征权重",
+      "llm_tldr_en": "Introduces counterfactuals for feature-weighted clustering, computing importance weights for features.",
+      "llm_tldr_cn": "为特征加权聚类引入反事实解释，计算特征的重要性权重。",
+      "llm_tldr": "为特征加权聚类引入反事实解释，计算特征的重要性权重。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.14733v1",
+      "source": "arxiv",
+      "title": "GAttNHP: Group Attention Neural Hawkes Process for Extrapolation Reasoning in Temporal Knowledge Graphs",
+      "abstract": "Temporal Knowledge Graphs (TKGs) record how facts evolve over time, but forecasting future events on a TKG remains difficult for three reasons: (i) long-range temporal dependencies are hard to encode; (ii) events on different chains mutually excite or inhibit one another in ways that snapshot-level models cannot express; and (iii) inter-arrival times are heavy-tailed and statistically sparse, so deterministic time predictors are unreliable. We address these three issues with a single framework, the \\textbf{Group Attention Neural Hawkes Process (GAttNHP)}, built around three matched components. First, a self-attention encoder casts each subject--relation chain as a continuous-time point process and captures the lingering excitation of distant history. Second, a semantic soft-grouping module turns globally learnable Hawkes priors into an analytical cross-attention mask, so chains share excitation patterns through their latent group memberships rather than through exhaustive pairwise computation. Third, a Non-Crossing Quantile (NCQ) regression head replaces mean-based time prediction, providing calibrated, monotonically ordered quantile estimates that remain stable under heavy-tailed inter-arrival distributions. On six benchmark TKG datasets, GAttNHP improves over state-of-the-art baselines on both entity prediction and time prediction, and ablations confirm that its largest gains arise on the long-tail event chains where existing models fail most severely.",
+      "authors": [
+        "Xiangni Tian",
+        "Kaixian Yu",
+        "Runpeng Dai",
+        "Niansheng Tang",
+        "Hongtu Zhu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-07-16T08:58:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.14733v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "temporal point process model for predicting sequential events over time",
+      "llm_evidence_cn": "时间点过程模型，用于预测时序事件",
+      "llm_evidence": "时间点过程模型，用于预测时序事件",
+      "canonical_evidence": "时间点过程模型，用于预测时序事件",
+      "llm_tldr_en": "Group attention neural Hawkes process for forecasting events in temporal knowledge graphs.",
+      "llm_tldr_cn": "组注意力神经霍克斯过程用于时序知识图谱事件预测。",
+      "llm_tldr": "组注意力神经霍克斯过程用于时序知识图谱事件预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.14871v1",
+      "source": "arxiv",
+      "title": "Asymmetric Peak-Aware Loss for Peak-Critical Time Series Forecasting",
+      "abstract": "In many operational time-series forecasting applications, such as crowd demand forecasting, the risk related to under-prediction is substantially higher than that of over-prediction. Accurate prediction of rare demand spikes plays a critical role in downstream tasks. Yet most time-series forecasters are trained with symmetric objectives (e.g., MSE, MAE) and evaluated primarily on aggregate error, which can mask failures in extreme-values and peak-timing predictions. We introduce Asymmetric Peak-Aware Loss (APAL), a simple, model-agnostic objective that (i) penalizes under-predictions more heavily and (ii) increases the training weight of peak regions within each forecast window. We further propose a peak-critical evaluation protocol that complements MAE/MSE with channel-wise tail error (Top-10% and Top-1%) and peak metrics (precision, recall, F1 under timing tolerance, and peak timing error). We evaluate APAL on long-horizon multivariate forecasting across five state-of-the-art backbones, with a focus on pedestrian demand forecasting using (i) a production-ready subset of the City of Melbourne pedestrian hourly count dataset and (ii) a beach visitor count dataset. The generality of the loss function for time-series forecasting is tested on additional benchmarks. Across peak-critical datasets and settings, APAL improves tail accuracy and peak-prediction quality while exposing a controllable trade-off with aggregate error, making it a practical solution when peak-prediction failures are the dominant operational concern.",
+      "authors": [
+        "Theivaprakasham Hari",
+        "Yanan Xin",
+        "Winnie Daamen",
+        "Serge Paul Hoogendoorn",
+        "Sascha Hoogendoorn-Lanser"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-16T11:44:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.14871v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Asymmetric loss for peak-critical time series forecasting",
+      "llm_evidence_cn": "用于峰值关键时间序列预测的非对称损失",
+      "llm_evidence": "用于峰值关键时间序列预测的非对称损失",
+      "canonical_evidence": "用于峰值关键时间序列预测的非对称损失",
+      "llm_tldr_en": "APAL improves time series forecasting by penalizing under-predictions and focusing on peaks.",
+      "llm_tldr_cn": "APAL通过惩罚低估并聚焦峰值改进时间序列预测。",
+      "llm_tldr": "APAL通过惩罚低估并聚焦峰值改进时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.14393v1",
+      "source": "arxiv",
+      "title": "An offline approach to fNIRS-guided reinforcement learning for robot behavior",
+      "abstract": "Human-in-the-loop Reinforcement Learning has become a popular approach to training, finetuning, and aligning robot behavior with user preferences. Our paper explores the feasibility of using brain signals via functional near-infrared spectroscopy (fNIRS) to modulate robot learning in simulation. We compare agents trained on passive (observational) versus active (demonstrative) interaction tasks, and test multiple methods for enhancing the RL algorithm with the neural signal, focusing on parameter augmentation rather than replacement. We further examine how model granularity and noise affect agent learning. Our results show that this framework is effective: the neural signal improves learning when augmenting trajectory priorities and state-action q-values. Additionally, the framework learns successfully from offline data, offering a practical alternative for settings where real-time BCI setups are impractical or only limited data is available.",
+      "authors": [
+        "Julia Santaniello",
+        "Madelaine Brower",
+        "Benson Jiang",
+        "Donatello Sassaroli",
+        "Robert Jacob",
+        "Jivko Sinapov"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-15T22:12:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.14393v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "decodes neural signals to modulate robot actions",
+      "llm_evidence_cn": "解码神经信号以调节机器人行为",
+      "llm_evidence": "解码神经信号以调节机器人行为",
+      "canonical_evidence": "解码神经信号以调节机器人行为",
+      "llm_tldr_en": "Uses fNIRS brain signals to guide reinforcement learning for robot behavior.",
+      "llm_tldr_cn": "使用fNIRS脑信号指导机器人强化学习。",
+      "llm_tldr": "使用fNIRS脑信号指导机器人强化学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.14367v1",
+      "source": "arxiv",
+      "title": "Dysco: Dynamic Subspace Boosting to Mitigate LoRA Interference in Federated Learning",
+      "abstract": "Federated fine-tuning of large pre-trained models increasingly relies on Low-Rank Adaptation (LoRA) to reduce communication and computation, but heterogeneous clients can make adapter aggregation unstable. We identify the data-parameter interference as a geometric source of this instability. This interference is controlled by the alignment between LoRA update subspaces and client activations, suggesting that federated LoRA aggregation should be viewed not only as parameter averaging but also as subspace allocation. We propose Dynamic Subspace Boosting (Dysco), a plug-in method that allocates client-specific LoRA subspaces in a federated and dynamic manner. In each round, clients compute activation-insensitive subspaces from local representations and transmit only the resulting bases; the server then constructs client-specific merged subspaces through a closed-form solution that maximizes compatibility with other clients' insensitive directions. To handle representation drift, Dysco performs multi-round subspace boosting to preserve past update directions while adapting to future representations. We provide a convergence analysis that embeds the data-parameter interference as an aggregation-error term in a standard federated optimization bound, and prove that Dysco's server-fixed merged subspaces yield a tighter upper bound on this error. Experiments on controlled synthetic federated tasks and on MIMIC-IV clinical-note classification with Llama-3.2-1B show that Dysco substantially reduces interference, reduces the final-round synthetic training loss by up to 9 times relative to baselines under the orthogonal-subspace partition the theory identifies, improves all five tested FL algorithms by up to 4.3% on MIMIC, outperforms recent federated LoRA methods, and adds only 0.9% wall-clock overhead. Our code is available at https://github.com/illidanlab/Dysco.",
+      "authors": [
+        "Haobo Zhang",
+        "Jiankun Wang",
+        "Suraj Rajendran",
+        "Weishen Pan",
+        "Lam Tsoi",
+        "Yong Chen",
+        "Fei Wang",
+        "Jiayu Zhou"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-15T21:15:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.14367v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Dynamic subspace boosting for federated fine-tuning of pretrained models",
+      "llm_evidence_cn": "用于联邦微调预训练模型的动态子空间增强",
+      "llm_evidence": "用于联邦微调预训练模型的动态子空间增强",
+      "canonical_evidence": "用于联邦微调预训练模型的动态子空间增强",
+      "llm_tldr_en": "Dysco improves federated LoRA fine-tuning by allocating client-specific subspaces.",
+      "llm_tldr_cn": "Dysco通过分配客户端特定子空间改进联邦LoRA微调。",
+      "llm_tldr": "Dysco通过分配客户端特定子空间改进联邦LoRA微调。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.14537v1",
+      "source": "arxiv",
+      "title": "MIDI-RAE-JEPA: Hierarchical Representation Learning and Generation for Symbolic Music",
+      "abstract": "Rich internal representations of musical structure are essential for music understanding tasks such as machine-assisted music co-writing, yet self-supervised approaches for symbolic music representation remain underexplored, particularly those that encode the hierarchical multiscale nature of musical structures. We present MIDI-RAE-JEPA, combining a pitch- and time-shift equivariance objective with LeJEPA and a Swin Transformer V2 encoder to learn such hierarchical representations of symbolic music encoded as piano roll images. The time-shift equivariance objective encourages the model to internalize temporal musical relationships. The encoder is trained purely on self-supervised objectives -- including a masked embedding predictor (MEP) -- with collapse prevented via SIGReg. A separate decoder trained on the frozen encoder embeddings achieves reconstruction F1 of 0.995, and a flow matching generative model conditioned on those embeddings produces generations that closely match the pitch register and rhythmic density of the conditioning excerpt, while mismatched conditioning yields unrelated but musically plausible output. Learned representations outperform a Haar scattering transform baseline on a downstream emotion classification task, and embedding distances increase monotonically with pitch and time shift magnitude, confirming measurable equivariance. These results suggest that equivariance-based SSL objectives, combined with sufficient fine-level encoder capacity, provide a viable path toward semantically rich, generatively useful representations of symbolic music.",
+      "authors": [
+        "Scott H. Hawley"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.LG",
+        "eess.AS"
+      ],
+      "published": "2026-07-16T03:42:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.14537v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised hierarchical representation learning for symbolic music sequences",
+      "llm_evidence_cn": "符号音乐序列的自监督层次化表示学习",
+      "llm_evidence": "符号音乐序列的自监督层次化表示学习",
+      "canonical_evidence": "符号音乐序列的自监督层次化表示学习",
+      "llm_tldr_en": "MIDI-RAE-JEPA learns hierarchical representations of music via equivariance and masked prediction.",
+      "llm_tldr_cn": "MIDI-RAE-JEPA通过等变性和掩蔽预测学习音乐的层次化表示。",
+      "llm_tldr": "MIDI-RAE-JEPA通过等变性和掩蔽预测学习音乐的层次化表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.14571v1",
+      "source": "arxiv",
+      "title": "Gate-Zero Growth: A Geometric Framework for Function-Preserving Continual Learning",
+      "abstract": "We introduce \\emph{gate-zero growth}, a function-preserving (FP) operator for continual learning that adds new residual blocks through a zero-initialised gate. Under a transversality condition, gate-zero growth induces \\emph{rank separation} in the functional Jacobian: old directions are unchanged, new-weight directions are exactly flat at the growth point, and new gate directions are the only first-order source of new functional variation. As gates open during continual learning, function drift is $O(\\|\\boldsymbolα\\|^2)$ and Jacobian leakage $O(\\|\\boldsymbolα\\|_\\infty)$, giving a controlled departure from the FP locus. On a $300\\mathrm{M}\\to857\\mathrm{M}$ Transformer adapted from WikiText-103 to BookCorpus, gate-zero growth reaches near-zero old-domain forgetting ($Δ_A < 0.1$) under both exact-preservation (Isolation) and joint-frontier (Freeze-Nothing) operating points, while a non-FP control ($G_{\\text{stack}}$) suffers an order-of-magnitude larger forgetting under the same recipe. The same geometric analysis covers LoRA, ReZero, and zero-init adapter constructions, establishing gate-zero growth as the canonical instance of a shared local geometry that governs safe capacity activation in CL.",
+      "authors": [
+        "Dante Lok"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-16T05:00:49+00:00",
+      "link": "https://arxiv.org/pdf/2607.14571v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses gate-zero growth for function-preserving continual learning adapting Transformer to new domain",
+      "llm_evidence_cn": "使用门控零增长进行功能保持的持续学习，将Transformer适应到新领域",
+      "llm_evidence": "使用门控零增长进行功能保持的持续学习，将Transformer适应到新领域",
+      "canonical_evidence": "使用门控零增长进行功能保持的持续学习，将Transformer适应到新领域",
+      "llm_tldr_en": "Gate-zero growth enables function-preserving continual learning for adapting large models to new domains.",
+      "llm_tldr_cn": "门控零增长实现了功能保持的持续学习，用于将大模型适应到新领域。",
+      "llm_tldr": "门控零增长实现了功能保持的持续学习，用于将大模型适应到新领域。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.14721v1",
+      "source": "arxiv",
+      "title": "Multimodality as Supervision: Self-Supervised Specialization to the Test Environment via Multimodality",
+      "abstract": "Cross-modal learning, i.e., learning to predict one modality from another, is a fundamental mechanism for self-supervision via leveraging multimodality. Many practical applications, e.g., deploying a household robot, involve devices that are equipped with a rich set of sensors that enable multimodal sensing in their test environment. This presents an opportunity to apply cross-modal learning to the multimodal data sensed by these devices to learn representations. Findings in developmental psychology also suggest that biological agents leverage it to build an effective representation of their surroundings.   To study this, we propose a controlled setup, where we restrict a user device to just a given test environment. It results in a specialization setup where we attempt to develop a performant model for this specific test environment. Under this setup, we develop Test-Space Training (TST), which performs multimodal data collection in the test environment and performs self-supervised pre-training on it. We evaluate these models on various downstream tasks in the same environment.   Under this setup, we find various interesting insights, such as collecting rich multimodal data only from the test environment and leveraging cross-modal learning, we can achieve competitive results with generalist models (e.g., DINOv2 and CLIP) pre-trained on large-scale internet datasets. This enables an alternative scenario where the need for external Internet-scale datasets for pre-training models is reduced. We also present a set of analyses and ablations that raise intriguing points on substituting data with (multi)modality, and how varying pre-training data enables a tradeoff between a model's abilities to specialise to a test environment, and generalize to held-out spaces.",
+      "authors": [
+        "Kunal Pratap Singh",
+        "Ali Garjani",
+        "Rishubh Singh",
+        "Muhammad Uzair Khattak",
+        "Efe Tarhan",
+        "Jason Toskov",
+        "Andrei Atanov",
+        "Oğuzhan Fatih Kar",
+        "Amir Zamir"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-16T08:36:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.14721v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised representation learning from multimodal data",
+      "llm_evidence_cn": "从多模态数据中自监督表示学习",
+      "llm_evidence": "从多模态数据中自监督表示学习",
+      "canonical_evidence": "从多模态数据中自监督表示学习",
+      "llm_tldr_en": "Cross-modal prediction as self-supervision to learn representations specialized for a test environment.",
+      "llm_tldr_cn": "利用跨模态预测作为自监督，学习适应测试环境的表示。",
+      "llm_tldr": "利用跨模态预测作为自监督，学习适应测试环境的表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
