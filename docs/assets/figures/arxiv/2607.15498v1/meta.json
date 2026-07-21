@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-003.webp",
+      "caption": "Figure 1: VarRate allocates rank by salience—it neither evicts tokens nor spreads rank uniformly. Each token is a bar whose height is its allocated rank, given below it. (a) Token selection evicts the low-scoring tokens; the dropped KV is gone for good, so a mistaken decision cannot be undone. (b) Uniform low-rank coding keeps every token but spends the same rank on all of them—wasted on the easy tokens, starved on the critical ones. (c) The uncompressed cache: every token at full rank, the accuracy target. (d) VarRate varies rank with salience and holds every token above a nonzero floor (rmin=16), reaching the target at (a) and (b)’s budget. Panels (a), (b), (d) use the same KV budget; (c) is uncompressed. Ranks are schematic.",
+      "page": 2,
+      "index": 3,
+      "width": 943,
+      "height": 336
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-007.webp",
+      "caption": "Figure 2: VarRate, one layer. (1) Keys are un-rotated to pre-RoPE and joined with the values into one per-token vector zt, so a single basis serves every head. (2) Strided anchors and the recent window are stored exactly; every other token is coded as a residual et to the mean of its c nearest anchors. (3) SnapKV salience ŝt is water-filled into a per-token rank rt at the flat codec’s budget. Each bar is the allocation: a grey floor rmin that every token keeps, plus what salience buys above it. Because∑ t∈C rt = B, the bar area above the uniform-rank line equals the area below it—VarRate spends exactly the flat codec’s budget, only redistributed. (4) A single projection onto the shared basis is truncated per token to its leading rt coefficients; every column retains at least rmin, so no token is dropped. The reconstructed keys are finally re-rotated to post-RoPE. Ranks are schematic.",
+      "page": 4,
+      "index": 7,
+      "width": 960,
+      "height": 327
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-001.webp",
+      "caption": "Table 1: LongBench (16 tasks) at a matched 20% KV budget (5× compression). Bold marks the best matched-memory compressor on each model. †KIVI-4 stores 31% of the cache (1.55× the others) and is therefore not a matched comparison. Two-model means at matched memory: VarRate 46.85, SnapKV 46.02, Ada-KV 45.91, KIVI-2 45.82, PyramidKV 45.46, flat 36.99.",
+      "page": 6,
+      "index": 1,
+      "width": 832,
+      "height": 433
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-002.webp",
+      "caption": "Figure 3: Budget sweep against the published low-rank codec (Llama-3.1-8B). Palu was built for the keep-50–70% regime: in ours it is at essentially zero, and only becomes viable at keep-50%. The sweep also shows, honestly, where VarRate’s margin over uniform rank lives—largest where the budget is tightest, closing as it loosens.",
+      "page": 6,
+      "index": 2,
+      "width": 1040,
+      "height": 280
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-004.webp",
+      "caption": "Figure 4: Accuracy under query-agnostic reuse against compression cost. Both axes are measured and the cost axis is logarithmic. The dashed guide traces the trade-off frontier: VarRate lies on it, coming within 1.9 points of KVzip at roughly one-eighth of the prefill overhead. Uniform rank and Expected Attention are dominated—cheaper methods reach higher accuracy than either.",
+      "page": 7,
+      "index": 4,
+      "width": 490,
+      "height": 371
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-006.webp",
+      "caption": "Table 9: Third-model cross-check, Mistral-7B-Instruct-v0.2, n=200. The same pattern generalizes: flat collapses on retrieval, VarRate recovers to near-ceiling and matches or beats full on multi-hop QA, and quantization again wins summarization.",
+      "page": 13,
+      "index": 6,
+      "width": 652,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-005.webp",
+      "caption": "Figure 5: Worked example of the per-token allocation on a 64K needle-in-a-haystack instance. Each token’s salience ŝt (its SnapKV observation-window score) sets a per-token rank rt by water-filling the shared budget: a low-salience boring token is coarsened to the floor rmin, whereas the high-salience needle token is raised toward the cap R, so that its key and value survive reconstruction. This is the mechanism behind VarRate’s 92.0% at the 64K cell, where SnapKV—having irreversibly evicted the needle once its stale window score misjudged it—falls to 48.0% (Table 24). The salience values shown are illustrative.",
+      "page": 14,
+      "index": 5,
+      "width": 960,
+      "height": 810
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-010.webp",
+      "caption": "Table 16: Real end-to-end wall-clock, Llama-3.1-8B, one A100 (n=18). VarRate’s fixed compress() cost dominates on prefill-heavy retrieval but is noise on decode-heavy summarization.",
+      "page": 16,
+      "index": 10,
+      "width": 660,
+      "height": 213
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-009.webp",
+      "caption": "Figure 6: Why the signal has to be content-aligned, not just graded. One token (⋆, outlined) plays a query-critical “needle” placed in the document’s boring middle, away from both the attention-sink start and the query-proximate end. (a) Flat coding does not look at the needle at all. (b) Mass (ours) scores it highest, because it is the only condition that reads content. (c) Shuffle keeps the identical multiset of scores from (b) but reassigns them across tokens, so the needle inherits an arbitrary score instead of its own. (d) Position reproduces the recency/attention-sink shape from Figure 7 with no content signal, so a needle in the middle is scored low purely by where it sits. Only the content-aligned condition (b) recovers the needle; a graded-but-content-free score, however shaped, does not substitute for it.",
+      "page": 17,
+      "index": 9,
+      "width": 990,
+      "height": 411
+    },
+    {
+      "url": "assets/figures/arxiv/2607.15498v1/fig-008.webp",
+      "caption": "Figure 7: Where does the rank budget actually go? Mean allocated rank by document-position decile, pooled over 300 sampled (layer, example) traces on gov_report at KR20 (0 = document start, 9 = the end, where the query sits after the query-aware transform appends it). Three regimes, annotated directly on the data: an attention-sink bump at the very start (a well-documented effect where the first tokens draw disproportionate attention regardless of content); a dip through the “boring middle,” where content alignment (Appendix A.17) is doing most of the remaining work; and a sharp, monotonic climb toward the query at the end, where recency and query proximity dominate. The dashed floor line is the same rmin = 16 from Table 21—every decile’s mean sits 10–45× above it, visual confirmation that the floor is slack everywhere, not just on average.",
+      "page": 19,
+      "index": 8,
+      "width": 923,
+      "height": 415
+    }
+  ]
+}

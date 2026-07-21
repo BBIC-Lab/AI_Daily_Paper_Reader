@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-21
-- 运行时间：2026-07-21 04:56:29 北京时间
+- 最新运行日期：2026-07-22
+- 运行时间：2026-07-22 05:07:03 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日重点解读了脑机接口实时开发平台和脉冲神经网络的高效训练方法。  
-值得一看的是《Dendrite》为在线BCI研究提供了模块化Python工具，以及可微分脉冲时间离散化让连续时间脉冲网络训练更容易扩展。  
-建议动手尝试Dendrite框架，并关注脉冲网络在低功耗实时控制中的潜力。
-- 详情：[/202607/21/README](/202607/21/README)
+今日聚焦脑电情感识别与灵长类视觉神经建模，精读两项9分研究揭示生理先验与大规模神经元数据如何突破跨被试与计算神经科学瓶颈。
+生理信号驱动的标签增强显著提升跨被试情感识别鲁棒性，而STSBench数据集为模拟视觉皮层背侧通路提供了珍贵基准。
+若对临床落地感兴趣，可速览LLM对齐医疗时间序列和乳腺X光片检测引导的分类新思路。
+- 详情：[/202607/22/README](/202607/22/README)
 
 ### 精读区论文标签
-1. [Dendrite: A Real-Time Python Application for Online Brain-Computer Interface Research and Development](/202607/21/2607.14655v1-dendrite-a-real-time-python-application-for-online-brain-computer-interface-research-and-development)  
+1. [Physiological Prior-Driven Label Enhancement for Cross-Subject EEG Emotion Recognition](/202607/22/2607.15566v1-physiological-prior-driven-label-enhancement-for-cross-subject-eeg-emotion-recognition)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于解码器训练和实时推理的脑机接口应用
-2. [Scalable Training of Continuous-Time Spiking Neural Networks with Differentiable Spike-Time Discretization](/202607/21/2607.14672v1-scalable-training-of-continuous-time-spiking-neural-networks-with-differentiable-spike-time-discretization)  
+   evidence：使用生理先验的跨被试脑电图标签增强
+2. [STSBench: A Large-Scale Dataset for Modeling Neuronal Activity in the Dorsal Stream of Primate Visual Cortex](/202607/22/2607.15631v1-stsbench-a-large-scale-dataset-for-modeling-neuronal-activity-in-the-dorsal-stream-of-primate-visual-cortex)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于时间神经数据建模的连续时间脉冲神经网络
-3. [Counterfactuals for Feature-Weighted Clustering](/202607/21/2607.14719v1-counterfactuals-for-feature-weighted-clustering)  
+   evidence：用于背侧流神经元活动建模的大规模数据集
+3. [Adaptive Multi-Step Lookahead Decoding for Diffusion Language Models](/202607/22/2607.15655v1-adaptive-multi-step-lookahead-decoding-for-diffusion-language-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：聚类反事实中使用的特征权重
-4. [GAttNHP: Group Attention Neural Hawkes Process for Extrapolation Reasoning in Temporal Knowledge Graphs](/202607/21/2607.14733v1-gattnhp-group-attention-neural-hawkes-process-for-extrapolation-reasoning-in-temporal-knowledge-graphs)  
+   evidence：扩散语言模型的自适应前瞻解码生成序列
+4. [Toward a mechanistic understanding of inference in visual cortex and diffusion models](/202607/22/2607.15693v1-toward-a-mechanistic-understanding-of-inference-in-visual-cortex-and-diffusion-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：时间点过程模型，用于预测时序事件
-5. [Asymmetric Peak-Aware Loss for Peak-Critical Time Series Forecasting](/202607/21/2607.14871v1-asymmetric-peak-aware-loss-for-peak-critical-time-series-forecasting)  
+   evidence：稀疏编码递归动力学模型视觉皮层推理
+5. [A Benchmark for Electrical Load Forecasting Across Grid Levels: Time-Series Transformers Outperform Established Methods](/202607/22/2607.15705v1-a-benchmark-for-electrical-load-forecasting-across-grid-levels-time-series-transformers-outperform-established-methods)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于峰值关键时间序列预测的非对称损失
+   evidence：用于负荷预测的时间序列Transformer
 
 ### 速读区论文标签
-1. [An offline approach to fNIRS-guided reinforcement learning for robot behavior](/202607/21/2607.14393v1-an-offline-approach-to-fnirs-guided-reinforcement-learning-for-robot-behavior)  
+1. [LLM4EHR: Aligning Clinical Time Series with Medical Event Sequences via Large Language Models](/202607/22/2607.15447v1-llm4ehr-aligning-clinical-time-series-with-medical-event-sequences-via-large-language-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：解码神经信号以调节机器人行为
-2. [MIDI-RAE-JEPA: Hierarchical Representation Learning and Generation for Symbolic Music](/202607/21/2607.14537v1-midi-rae-jepa-hierarchical-representation-learning-and-generation-for-symbolic-music)  
+   evidence：对齐临床时间序列与医疗事件序列
+2. [VarRate: Training-Free Variable-Rate KV Cache Compression for Long-Context LLMs](/202607/22/2607.15498v1-varrate-training-free-variable-rate-kv-cache-compression-for-long-context-llms)  
    标签：评分：8.0/10、query:ndai
-   evidence：符号音乐序列的自监督层次化表示学习
-3. [Gate-Zero Growth: A Geometric Framework for Function-Preserving Continual Learning](/202607/21/2607.14571v1-gate-zero-growth-a-geometric-framework-for-function-preserving-continual-learning)  
+   evidence：基于令牌查询显著性分配可变低秩预算
+3. [Region-Grounded Vision-Language Learning for Detection-Guided Mammographic Lesion Classification](/202607/22/2607.15615v1-region-grounded-vision-language-learning-for-detection-guided-mammographic-lesion-classification)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用门控零增长进行功能保持的持续学习，将Transformer适应到新领域
-4. [Multimodality as Supervision: Self-Supervised Specialization to the Test Environment via Multimodality](/202607/21/2607.14721v1-multimodality-as-supervision-self-supervised-specialization-to-the-test-environment-via-multimodality)  
+   evidence：区域级对比学习从乳腺X光图像学习紧凑表征
+4. [StemFX: Learning Mixing Style Representations via Autoregressive FX Chain Prediction on Source-Separated Stems](/202607/22/2607.15634v1-stemfx-learning-mixing-style-representations-via-autoregressive-fx-chain-prediction-on-source-separated-stems)  
    标签：评分：8.0/10、query:ndai
-   evidence：从多模态数据中自监督表示学习
-5. [Dysco: Dynamic Subspace Boosting to Mitigate LoRA Interference in Federated Learning](/202607/21/2607.14367v1-dysco-dynamic-subspace-boosting-to-mitigate-lora-interference-in-federated-learning)  
+   evidence：自回归预测变长效果链作为序列
+5. [Efficient Frame Selection for Long Videos at Test Time with Attention-Based MLLM Selectors](/202607/22/2607.15689v1-efficient-frame-selection-for-long-videos-at-test-time-with-attention-based-mllm-selectors)  
    标签：评分：7.0/10、query:ndai
-   evidence：用于联邦微调预训练模型的动态子空间增强
+   evidence：基于注意力的相关性得分用于帧选择
 
