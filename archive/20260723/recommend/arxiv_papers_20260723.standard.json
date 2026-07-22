@@ -1,0 +1,420 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-22T20:51:51.600625+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 46,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 87,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 19,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 14,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 20
+  },
+  "deep_dive": [
+    {
+      "id": "2607.16980v1",
+      "source": "arxiv",
+      "title": "Efficient Audio-Visual Event Recognition via Knowledge Distillation and Dynamic INT8 Quantization of a Hybrid Cross-Attention Network",
+      "abstract": "Audio-visual event recognition (AVER) has achieved significant performance improvements through transformer-based multimodal architectures. However, the high computational complexity, large memory footprint, and inference cost of these models hinder their deployment on edge and resource-constrained devices. This paper presents an efficient compression framework for hybrid cross-attention-based audiovisual event recognition by combining architectural model compression, knowledge distillation, and dynamic INT8 quantization. A high-capacity teacher model integrates VideoMAE for visual representation learning, the Audio Spectrogram Transformer (AST) for audio feature extraction, and a hybrid cross-attention fusion network for multimodal feature integration. A lightweight student model is constructed by reducing the hidden feature dimension, the number of attention heads, and the feedforward network size while preserving the overall network architecture. The student model is trained using knowledge distillation to effectively transfer discriminative knowledge from the teacher. Finally, dynamic INT8 post-training quantization is applied to further reduce the model size for efficient deployment. Experimental results on the Audio-Visual Event (AVE) dataset show that the proposed framework reduces the number of trainable parameters in the multimodal fusion module by 59.06%, with only a 2.14% decrease in classification accuracy compared with the teacher model. Furthermore, dynamic INT8 quantization reduces the model size from 10.71 MB to 2.04 MB while maintaining competitive recognition performance. These results demonstrate that the proposed framework provides an effective trade-off between recognition accuracy and computational efficiency, making it a promising solution for deployment on resource-constrained edge AI platforms.",
+      "authors": [
+        "Parinaz Binandeh Dehaghani",
+        "Danilo Pena",
+        "A. Pedro Aguiar"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.SD"
+      ],
+      "published": "2026-07-18T22:04:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.16980v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "leverages pretrained VideoMAE and AST for downstream audio-visual recognition",
+      "llm_evidence_cn": "利用预训练的VideoMAE和AST进行下游视听识别",
+      "llm_evidence": "利用预训练的VideoMAE和AST进行下游视听识别",
+      "canonical_evidence": "利用预训练的VideoMAE和AST进行下游视听识别",
+      "llm_tldr_en": "Compresses a teacher model using distillation and quantization for efficient audio-visual event recognition.",
+      "llm_tldr_cn": "通过蒸馏和量化压缩教师模型以实现高效视听事件识别。",
+      "llm_tldr": "通过蒸馏和量化压缩教师模型以实现高效视听事件识别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17264v1",
+      "source": "arxiv",
+      "title": "Coordinated Disentanglement with Iterative Mode Discovery Under Hidden Correlations",
+      "abstract": "Disentangled representation learning is a powerful paradigm for robust attribute prediction. While recent methods address attribute correlations, hidden correlations remain underexplored, where data under the value of a certain attribute exhibit underlying modes correlated with other attributes. To preserve mode information and achieve disentanglement, we jointly discover modes and enforce mode-based conditional independence. Yet, the interdependency between these two modules may lead to error amplification under naive iterations. We propose Coordinated Disentanglement with Iterative mode Discovery (CoDID), an end-to-end framework featuring a dynamic architecture that adapts to evolving number of modes, and a coordination mechanism that mitigates error amplification via meta-optimization. Empirical results demonstrate the state-of-the-art performance on diverse tasks.",
+      "authors": [
+        "Rong Hu",
+        "Ling Chen"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-19T14:08:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.17264v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Disentangled representation learning with mode discovery",
+      "llm_evidence_cn": "具有模式发现的解耦表示学习",
+      "llm_evidence": "具有模式发现的解耦表示学习",
+      "canonical_evidence": "具有模式发现的解耦表示学习",
+      "llm_tldr_en": "End-to-end framework for disentangled representation learning",
+      "llm_tldr_cn": "解耦表示学习的端到端框架",
+      "llm_tldr": "解耦表示学习的端到端框架",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17272v1",
+      "source": "arxiv",
+      "title": "Node4All: Learning Node Representation Beyond Datasets",
+      "abstract": "Node representation learning has advanced rapidly, yet most existing methods rely on per-dataset training and hyperparameter tuning. This dataset-specific optimization comes from the difficulty of designing reusable graph models that generalize across diverse graph datasets. In this work, we introduce Node4All, a node representation learner applicable to arbitrary graph datasets without any dataset-specific optimization.   Node4All is built on two complementary ideas. At the architectural level, we introduce the Channel Graph Transformer (CGT), which enables a single fixed parameterization to process arbitrary graph datasets. At the learning level, we propose a self-supervised learning based on a series of synthetic graphs. Together, these components enable generalization beyond individual datasets, which is infeasible with existing architectures and learning frameworks. We extensively evaluate Node4All on node classification across 25 benchmarks against 21 baselines, covering both supervised and self-supervised methods. Despite all baselines being trained and optimized for each dataset, a single Node4All, applied uniformly across the datasets, achieves a competitive ranking of 5th among 21 baselines. Moreover, Node4All supports one-shot and in-context learning with an appropriate predictor and outperforms recent graph foundation models (GFMs) in these settings. These results demonstrate that Node4All not only achieves reusability across arbitrary graph datasets, but also remains an effective solution in practice. Code and model checkpoints are available in https://github.com/dooho00/node4all.",
+      "authors": [
+        "Dooho Lee",
+        "Jaemin Yoo"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.SI"
+      ],
+      "published": "2026-07-19T14:26:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.17272v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learns node representations from graph data without dataset-specific tuning",
+      "llm_evidence_cn": "无需数据集特定调优学习图节点表示",
+      "llm_evidence": "无需数据集特定调优学习图节点表示",
+      "canonical_evidence": "无需数据集特定调优学习图节点表示",
+      "llm_tldr_en": "Node4All learns general node representations using a Channel Graph Transformer and self-supervised learning.",
+      "llm_tldr_cn": "Node4All通过通道图变换器和自监督学习学习通用节点表示。",
+      "llm_tldr": "Node4All通过通道图变换器和自监督学习学习通用节点表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17486v1",
+      "source": "arxiv",
+      "title": "SALT: Salience-Aware Lexical Trie for Long-Context Compression",
+      "abstract": "As large language models (LLMs) process increasingly longer prompts, computation and KV-cache memory costs have emerged as major bottlenecks in inference systems. Existing input-level prompt compression methods address this, but rank each sentence by a scalar relevance score, treating the document as an unstructured pool of words and sentences. Under tight budgets, this causes theme collapse, where the dominant theme(s) of a document consumes the budget, discarding less-frequent yet task-relevant themes. Preserving thematic coverage instead requires allocating the budget across recurring themes rather than scoring sentences in isolation. To this end, we propose SALT, a model-agnostic extractive framework that organizes per-sentence keywords into a trie ordered by sentence frequency (SF), a lightweight, reusable proxy for document thematic structure. This trie-based organization smooths memory allocation and prevents dominant themes from monopolizing the budget. Multi-anchor retrieval activates trie nodes labeled by query keywords at any depth, and the trie persists across dialogue turns, supporting multi-turn use without re-encoding the document. By preserving document themes, SALT reduces the prefill computation and memory cost of long-context prompts while remaining composable with KV-cache methods that target decoding-time latency and memory.",
+      "authors": [
+        "Oteo Mamo",
+        "Hyunjin Yi",
+        "Joydhriti Choudhury",
+        "Shangqian Gao",
+        "Weikuan Yu"
+      ],
+      "primary_category": "cs.PF",
+      "categories": [
+        "cs.PF",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-20T02:20:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.17486v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "salience-aware budget allocation for prompt compression",
+      "llm_evidence_cn": "基于显著性的提示压缩预算分配",
+      "llm_evidence": "基于显著性的提示压缩预算分配",
+      "canonical_evidence": "基于显著性的提示压缩预算分配",
+      "llm_tldr_en": "SALT uses salience to allocate compression budget across themes",
+      "llm_tldr_cn": "SALT利用显著性在主题间分配压缩预算",
+      "llm_tldr": "SALT利用显著性在主题间分配压缩预算",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17653v1",
+      "source": "arxiv",
+      "title": "LFM: Leveraging Foundation Models for Source-Free Universal Domain Adaptation",
+      "abstract": "Source-free universal domain adaptation (SF-UniDA) adapts a pre-trained source model to an unlabeled target domain under both covariate and label shifts, without access to source data. However, existing SF-UniDA methods rely on inefficient techniques such as threshold tuning and clustering. Foundation models (FMs), known for their generalization and zero-shot capabilities, remain underexplored in SF-UniDA. In this paper, we propose a framework that leverages foundation models (LFM) for SF-UniDA. We use a vision-language model (VLM) to compute similarities between target samples and text labels, including those for unknown classes generated by prompting a large language model. The label shift type is determined by analyzing the coefficient of variation of a similarity-based sample-level score. Unknown samples are identified using a binary Gaussian mixture model fitted to another similarity-based metric. Under a consensus strategy, the pseudo-labels generated by the VLM are refined by the target model initialized with the pre-trained source model, integrating knowledge from both the source domain and foundation models. Finally, these refined pseudo-labels are used to train the target model. Extensive experiments across all possible label shifts and multiple benchmarks demonstrate the effectiveness and superiority of our proposed LFM framework. Our code is available at https://github.com/iamjingli/LFM.",
+      "authors": [
+        "Jing Li",
+        "Pan Liu",
+        "Meng Zhao",
+        "Wanli Xue",
+        "Yanhong Yang",
+        "Xu Cheng",
+        "Fan Shi",
+        "Jianhua Zhang",
+        "Qinghua Hu",
+        "Shengyong Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG",
+        "cs.MM"
+      ],
+      "published": "2026-07-20T08:06:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.17653v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "source-free domain adaptation using foundation models for unlabeled target domains",
+      "llm_evidence_cn": "使用基础模型进行无源域适应于未标注目标域",
+      "llm_evidence": "使用基础模型进行无源域适应于未标注目标域",
+      "canonical_evidence": "使用基础模型进行无源域适应于未标注目标域",
+      "llm_tldr_en": "Leverages foundation models for source-free universal domain adaptation without target labels.",
+      "llm_tldr_cn": "利用基础模型进行无源通用域适应，不需要目标域标签。",
+      "llm_tldr": "利用基础模型进行无源通用域适应，不需要目标域标签。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.16549v1",
+      "source": "arxiv",
+      "title": "Encoding EEG Signals to Examine Human-Like Next-Word Prediction Behaviour in Language Models",
+      "abstract": "Language models (LMs) are trained to excel at predicting the next word in the sequence given prior context, and humans also share this predictability in reading comprehension. Neuroscience research reveals that next-word predictability influences brain response, as recorded at millisecond resolution using electroencephalography (EEG). While our evidence indicates that advanced LMs achieve accuracies closely aligned with human performance at the next-word prediction task, this raises the question: Does higher prediction accuracy necessarily mean that these models adequately capture the cognitive signals associated with human reading comprehension? Here, we generate regressors for both humans and LMs based on two information measures, including top-1 prediction and surprisal, to predict event-related potential (ERP) elicited from EEG recordings which reflect different stages of cognitive processing during reading. We argue that modelling ERP patterns offers fine-grained analysis of the cognitive plausibility of various LMs during reading. Our results indicate that only surprisal potentially correlates with language-processing ERPs, especially for open-class words with high semantic content. Moreover, our findings challenge the assumption that scaling LMs with increased parameters and computational budgets will consistently lead to improved convergence with human-like linguistic processing.",
+      "authors": [
+        "Boi Mai Quach",
+        "Binh T. Nguyen",
+        "Cathal Gurrin",
+        "Graham Healy"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-17T23:11:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.16549v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "EEG decoding of next-word prediction in LMs",
+      "llm_evidence_cn": "用EEG解码语言模型中的下一词预测行为",
+      "llm_evidence": "用EEG解码语言模型中的下一词预测行为",
+      "canonical_evidence": "用EEG解码语言模型中的下一词预测行为",
+      "llm_tldr_en": "Examines whether LM next-word prediction aligns with human EEG signals",
+      "llm_tldr_cn": "探究语言模型下一词预测是否与人类EEG信号一致",
+      "llm_tldr": "探究语言模型下一词预测是否与人类EEG信号一致",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.16637v1",
+      "source": "arxiv",
+      "title": "TopoTuner: Topological Finetuning of Large Language Models",
+      "abstract": "Full fine-tuning remains a strong way to adapt pretrained LLMs, but it updates all weights and can be expensive. LoRA reduces the number of trainable parameters, but it does not directly answer which pretrained components should be trained and which can be frozen during adaptation. We introduce TopoTuner, a topology-guided fine-tuning framework for selective freezing of attention projection matrices. \\method treats each projection matrix as a row cloud and uses Wasserstein distances between persistence diagrams to measure how its topology changes during fine-tuning.   TopoTuner learns a reusable freezing profile from a source dataset and transfers it to efficiently fine-tune models on out-of-domain datasets, evaluating whether task-specific topological drift generalizes across question answering and sentiment analysis tasks.   Across LLaMA-3.1-8B, Mistral-7B-v0.3, and Qwen3-8B-Base, TopoTuner is competitive with full fine-tuning while training only 1-2\\% of the model parameters, and outperforms LoRA in 7 out of 9 model-dataset settings, which can change up to 39.57\\% of the projection parameters. Along with minimized updates, TopoTuner reduces training time by 20.4\\% relative to full fine-tuning and 5.5\\% relative to LoRA on average. TopoTuner opens a new direction for reusable freezing profiles, where fine-tuning behavior learned on one dataset can be shared across multiple tasks.",
+      "authors": [
+        "Abdulkadir Erol",
+        "Yash Mahajan",
+        "Vepaul Hariprashad",
+        "Baha Rababah",
+        "Santu Karmaker",
+        "Cuneyt G. Akcora",
+        "Mubarak Shah"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-18T04:50:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.16637v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Leveraging pretrained models via topology-guided fine-tuning",
+      "llm_evidence_cn": "通过拓扑引导微调利用预训练模型",
+      "llm_evidence": "通过拓扑引导微调利用预训练模型",
+      "canonical_evidence": "通过拓扑引导微调利用预训练模型",
+      "llm_tldr_en": "Selectively freezes attention matrices based on topological drift for efficient LLM adaptation.",
+      "llm_tldr_cn": "基于拓扑漂移选择性冻结注意力矩阵，实现高效的LLM自适应。",
+      "llm_tldr": "基于拓扑漂移选择性冻结注意力矩阵，实现高效的LLM自适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.16789v1",
+      "source": "arxiv",
+      "title": "MultiLoReFT: Decoupling Shared and Modality-Specific Subspaces in Multimodal Learning via Low-Rank Representation Fine-Tuning",
+      "abstract": "Real-world perception and decision making are inherently multimodal, integrating complementary signals across modalities. However, training multimodal models faces two main obstacles. First, collecting large-scale, well-aligned paired multimodal datasets is often impractical, making end-to-end multimodal training difficult. Second, existing multimodal representations frequently entangle information shared across modalities with modality-specific information, hindering interpretability and control. We introduce MultiLoReFT, an efficient and scalable low-rank representation fine-tuning framework for multimodal learning with pretrained unimodal models. MultiLoReFT extends low-rank adaptation to the multimodal setting and learns interpretable projection subspaces that decouple shared and modality-specific information. Across simulated and real-world benchmarks, it produces representations that support multimodal prediction while explicitly revealing how shared and modality-specific information is distributed across modalities.",
+      "authors": [
+        "Sana Tonekaboni",
+        "Viktoria Schuster",
+        "Caroline Uhler"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-18T11:53:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.16789v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "low-rank fine-tuning of pretrained multimodal models",
+      "llm_evidence_cn": "预训练多模态模型的低秩微调",
+      "llm_evidence": "预训练多模态模型的低秩微调",
+      "canonical_evidence": "预训练多模态模型的低秩微调",
+      "llm_tldr_en": "Proposes efficient low-rank adaptation for multimodal learning with pretrained models.",
+      "llm_tldr_cn": "提出用于预训练模型多模态学习的低秩适应方法。",
+      "llm_tldr": "提出用于预训练模型多模态学习的低秩适应方法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.16806v1",
+      "source": "arxiv",
+      "title": "Token-Wise Latent Streaming from Slow Reasoners to Fast Planners for Dynamic Vision Language Navigation",
+      "abstract": "Vision-Language Navigation in dynamic, human-centric environments exposes a fundamental tension: linguistic reasoning is slow and deliberative, whereas safe, socially compliant planning should be instant and reactive. The resulting observation staleness is safety-critical: a maneuver chosen during inference can already be unsafe by the time it executes. We observe that, long before a VLM finishes its inference, its intermediate hidden states already encode action-relevant intent. We propose SPARK-VLN, a dual-system framework for dynamic social VLN that streams the slow VLM reasoner's knowledge to a fast flow-matching expert planner throughout token generation, providing fresh and evolving guidance during inference. This design is realized by three modules: a Token-Wise Hidden Streamer that extracts intermediate hidden states along the token generation process, a Sequence-to-Slot Latent Bridge that projects them into fixed-size latent slots, and an Evolving Latent Conditioner that infuses them into the expert planner. We also introduce a human-centric benchmark suite for dynamic social vision-language navigation that keeps pedestrians and the robot active throughout inference and reports navigation success, social compliance, human collisions, and explicit staleness statistics. Across these settings, SPARK-VLN mproves navigation success and social compliance while sustaining inference efficiency. Webpage: https://hutslib.github.io/SPARK-VLN/.",
+      "authors": [
+        "Tianshuai Hu",
+        "Yangyi Zhong",
+        "Zeying Gong",
+        "Lingdong Kong",
+        "Xiaodong Mei",
+        "Guoyang Zhao",
+        "Xiaolu Liu",
+        "Song Wang",
+        "Rong Li",
+        "Junwei Liang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-18T12:55:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.16806v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "streams intermediate hidden states as tokens for planning",
+      "llm_evidence_cn": "将中间隐藏状态作为令牌流用于规划",
+      "llm_evidence": "将中间隐藏状态作为令牌流用于规划",
+      "canonical_evidence": "将中间隐藏状态作为令牌流用于规划",
+      "llm_tldr_en": "SPARK-VLN streams latent tokens from a VLM to a fast planner for dynamic navigation.",
+      "llm_tldr_cn": "SPARK-VLN将VLM的潜令牌流式传输到快速规划器用于动态导航。",
+      "llm_tldr": "SPARK-VLN将VLM的潜令牌流式传输到快速规划器用于动态导航。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.16882v1",
+      "source": "arxiv",
+      "title": "HyBDM: Multi-Scale Hybrid Experts for Time Series Forecasting with Bidirectional Dependency Modeling",
+      "abstract": "Time series forecasting (TSF) is vital to many applications, yet existing models often struggle to capture the heterogeneous long-range global patterns and short-range local variations in multivariate time series. While some approaches partially model these dependencies, they often do not jointly exploit temporal and feature-wise information. To address this challenge, we propose HyBDM, a multi-scale hybrid model that decomposes temporal dynamics into global patterns and local variations, which are modeled by two specialized experts. The Global Patterns Expert employs an enhanced BiConv-Mamba module that integrates bidirectional convolutions, an M-SSM layer, a forgetting mechanism, and a GDD-MLP module for cross-channel modeling. The Local Variations Expert uses a Local Window Transformer (LWT) to perform efficient locality-aware attention with reduced computational complexity. In addition, a Multi-Scale Patcher and a Long-Short Router enable multi-resolution representations and adaptive fusion of the two experts. Experiments on six benchmark datasets show that HyBDM outperforms state-of-the-art methods in both forecasting accuracy and computational efficiency, demonstrating its effectiveness in bridging global-local dependencies for multivariate TSF.",
+      "authors": [
+        "Wenqiang Ma",
+        "Chen Cheng",
+        "Xue Cheng",
+        "Jiarui Ye"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-18T16:51:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.16882v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "multi-scale hybrid model for time series forecasting",
+      "llm_evidence_cn": "用于时间序列预测的多尺度混合模型",
+      "llm_evidence": "用于时间序列预测的多尺度混合模型",
+      "canonical_evidence": "用于时间序列预测的多尺度混合模型",
+      "llm_tldr_en": "HyBDM uses multi-scale hybrid experts to capture global and local patterns in time series.",
+      "llm_tldr_cn": "HyBDM使用多尺度混合专家捕获时间序列的全局和局部模式。",
+      "llm_tldr": "HyBDM使用多尺度混合专家捕获时间序列的全局和局部模式。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

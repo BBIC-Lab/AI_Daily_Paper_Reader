@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-001.webp",
+      "caption": "Fig. 1: Comparison of VLN execution paradigms. (a) SingleSystem (Reason-Then-Act): the VLM must finish full inference before emitting an action; the agent idles while the environment advances. (b) Dual-System (Blocking Update): the expert planner acts continuously, but receives guidance (yellow arrows) only after the VLM finishes, yielding a stale conditioning signal. (c) Ours (Token Streaming): SPARK-VLN streams hidden states to the planner throughout inference (blue arrows), providing progressively refined guidance.",
+      "page": 1,
+      "index": 1,
+      "width": 402,
+      "height": 685
+    },
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-006.webp",
+      "caption": "Fig. 2: Overview of the SPARK-VLN framework. Top: The VLM backbone processes egocentric RGB and instruction tokens; the Token-Wise Hidden Streamer extracts hidden states from designated layers during autoregressive generation, producing an evolving stream Hkt ∈ Rl×kt×D . Middle: The Sequence-to-Slot Latent Bridge augments the stream with layer and time positional encodings, projects it into the planner’s embedding space, and compresses it into fixed-size latent slots via cross-attention with learnable queries. Bottom: The expert planner fuses observation and latent slot embeddings, generates candidate trajectories via rectified flow matching, and selects the action through a safety critic. As the VLM continues generating, the latent slots are re-computed and the planner re-plans.",
+      "page": 3,
+      "index": 6,
+      "width": 779,
+      "height": 648
+    },
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-009.webp",
+      "caption": "Fig. 3: Data flow of SPARK-VLN. The slow VLM reasoner receives the language instruction together with 8 recent egocentric RGB frames. As it autoregressively generates the answer (e.g., “The next action is move forward 75 cm.”), the Token-Wise Hidden Streamer extracts intermediate-layer hidden states during generation, and the Sequence-to-Slot Latent Bridge compresses the evolving hidden stream into N=8 fixed-size latent slots that are streamed to the planner. The fast expert planner conditions on the current egocentric RGB-D observation fused with the streamed latent slots, and generates multiple candidate trajectories via rectified flow matching. A safety critic supervised by the Euclidean Signed Distance Field (ESDF) scores the candidates and selects the executed trajectory.",
+      "page": 5,
+      "index": 9,
+      "width": 1040,
+      "height": 573
+    },
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-003.webp",
+      "caption": "Fig. 4: Overview of our dynamic social VLN benchmark. (a) Benchmark Overview. The benchmark spans diverse indoor scenes (such as bedroom, office, hall, and corridor) and covers several human encounter patterns, including frontal approach, intersection, following, and corner, with the robot path in green and the pedestrian path in red. It supports both the PointNav and VLN tasks under two evaluation modes, the Idealized Dynamic Environment (with pedestrians, blocking simulation) and the Realistic Dynamic Environment (with pedestrians, non-blocking simulation). (b) Instruction Vocabulary. Word cloud of navigation instructions, colored by semantic role, namely action, direction, place, and object. (c) Spatial Statistics. Distributions of start-to-goal geodesic distance (blue, median 8.2 m) and per-pedestrian patrol path length (orange, median 17.4 m), showing that pedestrian trajectories are long enough to repeatedly intersect the agent’s route.",
+      "page": 7,
+      "index": 3,
+      "width": 1052,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-004.webp",
+      "caption": "Fig. 5: Radar comparison across tasks and dynamic environments. (a,b) Vision-Language Navigation (VLN) and (c,d) point-goal navigation, each evaluated under the Idealized and Realistic dynamic environments. SPARK-VLN achieves the largest coverage in each setting, with annotated raw values. The performance gap between the Idealized and Realistic panels, i.e., (a) vs. (b) and (c) vs. (d), reflects each method’s robustness to observation staleness induced by inference latency.",
+      "page": 7,
+      "index": 4,
+      "width": 1036,
+      "height": 309
+    },
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-007.webp",
+      "caption": "TABLE I: Evaluation of VLN methods on the dynamic social VLN benchmark. Idealized Dynamic Environment: pedestrians move but the simulator pauses during inference; Realistic Dynamic Environment: the simulator runs continuously during inference, so pedestrians advance during model inference. ↑ higher is better; ↓ lower is better. Bold denotes best; underline denotes second-best within each mode.",
+      "page": 8,
+      "index": 7,
+      "width": 1040,
+      "height": 635
+    },
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-008.webp",
+      "caption": "TABLE II: Evaluation of point-goal social navigation on the dynamic social benchmark. Idealized Dynamic Environment: the simulator pauses during inference, so the agent acts on fresh observations; Realistic Dynamic Environment: the simulator runs continuously, so pedestrians advance and observations become stale at action time. Methods in gray use a privileged environment mesh and mesh-derived reference path (oracle, not direct competitors). ↑ higher is better; ↓ lower is better. Bold best; underline second-best (excluding oracles).",
+      "page": 9,
+      "index": 8,
+      "width": 512,
+      "height": 453
+    },
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-005.webp",
+      "caption": "Fig. 6: Qualitative comparison in dynamic environments. Each row shows the egocentric RGB view, the third-person view, and the top-down occupancy map, where the blue curve is the executed trajectory toward the goal (red pin) and the orange curve is the reference ground-truth path (computed without pedestrians). All episodes are run in the Realistic Dynamic Environment, where the simulator keeps running during inference and pedestrians advance while the model reasons. Scene 1 (vs. NaVILA): SPARK-VLN faithfully follows the instruction and proactively avoids the moving pedestrian, reaching the target near the couch, whereas NaVILA both deviates from the instructed route and eventually collides with a pedestrian. Scene 2 (vs. DualVLN): the dual-system baseline DualVLN must finish full VLM inference before transferring guidance to its fast planner, so the robot reacts late, colliding with the pedestrian in gray. SPARK-VLN instead streams guidance during VLM decoding, smoothly negotiating both pedestrians and adhering to the instruction.",
+      "page": 10,
+      "index": 5,
+      "width": 822,
+      "height": 1250
+    },
+    {
+      "url": "assets/figures/arxiv/2607.16806v1/fig-002.webp",
+      "caption": "Fig. 7: Qualitative comparison on a human-populated navigation episode. Given the same instruction (“Walk towards the desk in the office area. Stop next to the desk.”), we compare the Wait-then-Act baseline (Left) with our SPARK-VLN (Right). Each row shows the egocentric RGB view, the third-person view, and the top-down occupancy map, where the blue curve is the executed trajectory toward the goal (red pin) and the orange curve is the reference ground-truth path (computed without pedestrians). All episodes are run in the Realistic Dynamic Environment, where the simulator keeps running during inference and pedestrians advance while the model reasons. The baseline stalls and then reacts abruptly, colliding with a moving pedestrian, whereas our method anticipates the human and follows the instruction to reach the target.",
+      "page": 11,
+      "index": 2,
+      "width": 842,
+      "height": 608
+    }
+  ]
+}

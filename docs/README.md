@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-22
-- 运行时间：2026-07-22 05:07:03 北京时间
+- 最新运行日期：2026-07-23
+- 运行时间：2026-07-23 04:55:42 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日聚焦脑电情感识别与灵长类视觉神经建模，精读两项9分研究揭示生理先验与大规模神经元数据如何突破跨被试与计算神经科学瓶颈。
-生理信号驱动的标签增强显著提升跨被试情感识别鲁棒性，而STSBench数据集为模拟视觉皮层背侧通路提供了珍贵基准。
-若对临床落地感兴趣，可速览LLM对齐医疗时间序列和乳腺X光片检测引导的分类新思路。
-- 详情：[/202607/22/README](/202607/22/README)
+今日聚焦多模态前沿：精读两篇高分论文，探索音频-视觉事件识别的高效量化与跨注意力蒸馏，以及隐藏关联下的协同解耦发现机制；速读则涵盖脑电编码、多模态低秩微调与动态视觉语言导航。  
+最值得关注的是，通过迭代模式发现与量化压缩，我们正让多模态模型在保持识别精度的同时轻装上阵，并开始窥探语言模型与人类脑电活动的类人预测行为。  
+建议普通读者从脑电与语言模型的对比实验入手，理解AI如何模拟认知，再逐步探索视觉导航中的实时规划与推理优化。
+- 详情：[/202607/23/README](/202607/23/README)
 
 ### 精读区论文标签
-1. [Physiological Prior-Driven Label Enhancement for Cross-Subject EEG Emotion Recognition](/202607/22/2607.15566v1-physiological-prior-driven-label-enhancement-for-cross-subject-eeg-emotion-recognition)  
+1. [Efficient Audio-Visual Event Recognition via Knowledge Distillation and Dynamic INT8 Quantization of a Hybrid Cross-Attention Network](/202607/23/2607.16980v1-efficient-audio-visual-event-recognition-via-knowledge-distillation-and-dynamic-int8-quantization-of-a-hybrid-cross-attention-network)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用生理先验的跨被试脑电图标签增强
-2. [STSBench: A Large-Scale Dataset for Modeling Neuronal Activity in the Dorsal Stream of Primate Visual Cortex](/202607/22/2607.15631v1-stsbench-a-large-scale-dataset-for-modeling-neuronal-activity-in-the-dorsal-stream-of-primate-visual-cortex)  
+   evidence：利用预训练的VideoMAE和AST进行下游视听识别
+2. [Coordinated Disentanglement with Iterative Mode Discovery Under Hidden Correlations](/202607/23/2607.17264v1-coordinated-disentanglement-with-iterative-mode-discovery-under-hidden-correlations)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于背侧流神经元活动建模的大规模数据集
-3. [Adaptive Multi-Step Lookahead Decoding for Diffusion Language Models](/202607/22/2607.15655v1-adaptive-multi-step-lookahead-decoding-for-diffusion-language-models)  
+   evidence：具有模式发现的解耦表示学习
+3. [Node4All: Learning Node Representation Beyond Datasets](/202607/23/2607.17272v1-node4all-learning-node-representation-beyond-datasets)  
    标签：评分：9.0/10、query:ndai
-   evidence：扩散语言模型的自适应前瞻解码生成序列
-4. [Toward a mechanistic understanding of inference in visual cortex and diffusion models](/202607/22/2607.15693v1-toward-a-mechanistic-understanding-of-inference-in-visual-cortex-and-diffusion-models)  
+   evidence：无需数据集特定调优学习图节点表示
+4. [SALT: Salience-Aware Lexical Trie for Long-Context Compression](/202607/23/2607.17486v1-salt-salience-aware-lexical-trie-for-long-context-compression)  
    标签：评分：9.0/10、query:ndai
-   evidence：稀疏编码递归动力学模型视觉皮层推理
-5. [A Benchmark for Electrical Load Forecasting Across Grid Levels: Time-Series Transformers Outperform Established Methods](/202607/22/2607.15705v1-a-benchmark-for-electrical-load-forecasting-across-grid-levels-time-series-transformers-outperform-established-methods)  
+   evidence：基于显著性的提示压缩预算分配
+5. [LFM: Leveraging Foundation Models for Source-Free Universal Domain Adaptation](/202607/23/2607.17653v1-lfm-leveraging-foundation-models-for-source-free-universal-domain-adaptation)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于负荷预测的时间序列Transformer
+   evidence：使用基础模型进行无源域适应于未标注目标域
 
 ### 速读区论文标签
-1. [LLM4EHR: Aligning Clinical Time Series with Medical Event Sequences via Large Language Models](/202607/22/2607.15447v1-llm4ehr-aligning-clinical-time-series-with-medical-event-sequences-via-large-language-models)  
+1. [Encoding EEG Signals to Examine Human-Like Next-Word Prediction Behaviour in Language Models](/202607/23/2607.16549v1-encoding-eeg-signals-to-examine-human-like-next-word-prediction-behaviour-in-language-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：对齐临床时间序列与医疗事件序列
-2. [VarRate: Training-Free Variable-Rate KV Cache Compression for Long-Context LLMs](/202607/22/2607.15498v1-varrate-training-free-variable-rate-kv-cache-compression-for-long-context-llms)  
+   evidence：用EEG解码语言模型中的下一词预测行为
+2. [MultiLoReFT: Decoupling Shared and Modality-Specific Subspaces in Multimodal Learning via Low-Rank Representation Fine-Tuning](/202607/23/2607.16789v1-multiloreft-decoupling-shared-and-modality-specific-subspaces-in-multimodal-learning-via-low-rank-representation-fine-tuning)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于令牌查询显著性分配可变低秩预算
-3. [Region-Grounded Vision-Language Learning for Detection-Guided Mammographic Lesion Classification](/202607/22/2607.15615v1-region-grounded-vision-language-learning-for-detection-guided-mammographic-lesion-classification)  
+   evidence：预训练多模态模型的低秩微调
+3. [Token-Wise Latent Streaming from Slow Reasoners to Fast Planners for Dynamic Vision Language Navigation](/202607/23/2607.16806v1-token-wise-latent-streaming-from-slow-reasoners-to-fast-planners-for-dynamic-vision-language-navigation)  
    标签：评分：8.0/10、query:ndai
-   evidence：区域级对比学习从乳腺X光图像学习紧凑表征
-4. [StemFX: Learning Mixing Style Representations via Autoregressive FX Chain Prediction on Source-Separated Stems](/202607/22/2607.15634v1-stemfx-learning-mixing-style-representations-via-autoregressive-fx-chain-prediction-on-source-separated-stems)  
+   evidence：将中间隐藏状态作为令牌流用于规划
+4. [HyBDM: Multi-Scale Hybrid Experts for Time Series Forecasting with Bidirectional Dependency Modeling](/202607/23/2607.16882v1-hybdm-multi-scale-hybrid-experts-for-time-series-forecasting-with-bidirectional-dependency-modeling)  
    标签：评分：8.0/10、query:ndai
-   evidence：自回归预测变长效果链作为序列
-5. [Efficient Frame Selection for Long Videos at Test Time with Attention-Based MLLM Selectors](/202607/22/2607.15689v1-efficient-frame-selection-for-long-videos-at-test-time-with-attention-based-mllm-selectors)  
+   evidence：用于时间序列预测的多尺度混合模型
+5. [TopoTuner: Topological Finetuning of Large Language Models](/202607/23/2607.16637v1-topotuner-topological-finetuning-of-large-language-models)  
    标签：评分：7.0/10、query:ndai
-   evidence：基于注意力的相关性得分用于帧选择
+   evidence：通过拓扑引导微调利用预训练模型
 
