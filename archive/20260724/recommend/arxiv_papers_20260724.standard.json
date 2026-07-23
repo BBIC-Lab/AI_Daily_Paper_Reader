@@ -1,0 +1,412 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-23T21:17:29.984495+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 43,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 79,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 15,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 10,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 16
+  },
+  "deep_dive": [
+    {
+      "id": "2607.17340v1",
+      "source": "arxiv",
+      "title": "Orthogonal Knowledge Refreshing for Domain-Incremental Object Detection",
+      "abstract": "Domain-incremental object detection (DIOD) requires models to continually adapt to new domains while preserving prior knowledge. Recently, parameter-efficient fine-tuning offers a promising avenue, wherein a pre-trained model is frozen and a small number of learnable parameters are injected for downstream tasks. However, these methods risk overwriting critical past knowledge, triggering inter-domain interference and performance degradation. To address this challenge, we propose Orthogonal Knowledge Refreshing (OKR), a simple yet effective framework for DIOD. OKR incrementally constructs independent domain-specific subspaces via dedicated low-rank branches for each domain, which are seamlessly fused for a holistic decision, enabling conflict-free capacity expansion without domain selection during inference. To minimize knowledge interference during fusion, we present a gradient-based orthogonal refreshing strategy that projects gradient updates of new domains onto the orthogonal complement of the fused historical subspace, supporting continual adaptation without forgetting. Moreover, to mitigate semantic fragmentation across domains, we enforce topology-aware consistency, aligning the semantic structures of old and new domains. Extensive experiments validate the superiority of OKR, outperforming the best exemplar-free method by significant margins of +5.6% and +6.5% mAP on the Pascal VOC and BDD100K series, respectively.",
+      "authors": [
+        "Aoting Zhang",
+        "Dongbao Yang",
+        "Chang Liu",
+        "Xiaopeng Hong",
+        "Can Ma",
+        "Yu Zhou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-19T17:02:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.17340v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "domain-incremental object detection with limited labeled data via orthogonal knowledge refreshing",
+      "llm_evidence_cn": "通过正交知识刷新在有限标注数据下进行域增量目标检测",
+      "llm_evidence": "通过正交知识刷新在有限标注数据下进行域增量目标检测",
+      "canonical_evidence": "通过正交知识刷新在有限标注数据下进行域增量目标检测",
+      "llm_tldr_en": "Proposes OKR for domain-incremental detection using low-rank branches to avoid interference",
+      "llm_tldr_cn": "提出OKR方法，使用低秩分支避免域增量检测中的干扰",
+      "llm_tldr": "提出OKR方法，使用低秩分支避免域增量检测中的干扰",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17481v1",
+      "source": "arxiv",
+      "title": "Panache: One-Pass Motif Discovery at Every Window Length",
+      "abstract": "Motif discovery, the search for recurring patterns within a time series, is a core primitive of exploratory data analysis. A pattern, however, is defined by its duration, which analysts rarely know in advance. To resolve this unknown duration, an interval of window lengths is defined, and the accepted method is to try every length in that interval. Existing pan matrix profile (PMP) methods compute one z-normalized matrix profile per length, so $L$ lengths cost $L$ quadratic self-joins over the same series. We introduce Panache, to our knowledge the first one-pass streaming algorithm for z-normalized PMP motif discovery. It replaces the repeated self-joins with a single scan whose runtime is near-linear in the series length. The key observation is that mean-centering a subsequence changes only its DC Fourier coefficient, so the non-DC spectrum of every z-normalized subsequence can be maintained online by sliding-DFT recurrences and running statistics. This spectral state is the key under which similar subsequences collide in an occupancy-controlled hash directory and, through Parseval's theorem, yields a lower bound that rejects most colliding pairs before any exact computation. Panache computes every data-dependent parameter itself, leaving only a resource budget to tune. At the default budget, it recovers all top-20 pan-motifs against exact fixed-exclusion ground truth on 17 UCR configurations, and is faster than every CPU and GPU baseline benchmarked in this paper. On Wafer at five million samples over 51 lengths, Panache completes one pass in 2.9 minutes and emits the exact motifs in 6.0 minutes, against 7.95 hours for the fastest exact CPU baseline and 38.3 minutes for SCAMP on an H100 GPU.",
+      "authors": [
+        "Tej Sanibh Ranade"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.DB",
+        "cs.LG"
+      ],
+      "published": "2026-07-20T02:06:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.17481v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "one-pass streaming algorithm for z-normalized time series motif discovery at all window lengths",
+      "llm_evidence_cn": "所有窗口长度下的z归一化时间序列模式发现的一遍流式算法",
+      "llm_evidence": "所有窗口长度下的z归一化时间序列模式发现的一遍流式算法",
+      "canonical_evidence": "所有窗口长度下的z归一化时间序列模式发现的一遍流式算法",
+      "llm_tldr_en": "A streaming algorithm that discovers recurring patterns in time series across all window lengths in near-linear time.",
+      "llm_tldr_cn": "一种流式算法，在近线性时间内发现时间序列中所有窗口长度的重复模式。",
+      "llm_tldr": "一种流式算法，在近线性时间内发现时间序列中所有窗口长度的重复模式。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18027v1",
+      "source": "arxiv",
+      "title": "L1 Augmented Attention as an Improved Vector Similarity Metric",
+      "abstract": "Scaled dot product attention conflates directional alignment and vector magnitude, limiting its effectiveness as a similarity metric in Transformer models. We introduce L1 augmented attention, a simple and computationally parallelizable modification that subtracts a learned, head specific L1 distance between queries and keys from the dot product score. This hybrid similarity captures complementary geometric information. Dot product rewards directional alignment, while L1 penalizes coordinate deviations. To reduce the cost of L1 computation, we project queries and keys into low dimensional subspaces whose parameters specialize to preserve informative L1 structure. Evaluated on WikiText 2 using a compact transformer, L1 augmented attention achieves up to a 14.5% reduction in perplexity over the original transformer baseline and outperforms an RBF L2 kernel. Analysis of norm variance and learned L1 weights reveals distinct geometric roles across layers and strong head level specialization. These results demonstrate that enriching attention with L1 geometry provides a principled and effective improvement to similarity computation in modern language models, with practical benefits for both accuracy and parallel efficiency.",
+      "authors": [
+        "Kurt Godden"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-20T14:59:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.18027v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Improves attention weight computation by integrating L1 distance as importance metric",
+      "llm_evidence_cn": "通过融合L1距离改进注意力权重计算",
+      "llm_evidence": "通过融合L1距离改进注意力权重计算",
+      "canonical_evidence": "通过融合L1距离改进注意力权重计算",
+      "llm_tldr_en": "L1 augmented attention improves vector similarity for transformer attention weights",
+      "llm_tldr_cn": "L1增强注意力改进Transformer注意力权重的向量相似性",
+      "llm_tldr": "L1增强注意力改进Transformer注意力权重的向量相似性",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18149v1",
+      "source": "arxiv",
+      "title": "Differentiable Logic Gate Networks for Low-Latency EEG Classification on Edge Devices",
+      "abstract": "Real-time EEG classification on edge devices is bottlenecked by the floating-point arithmetic of conventional neural networks. We investigated Differentiable Logic Gate Networks (Diff-Logic) as a hardware-native alternative that compiles models into pure Boolean circuits executable via bitwise CPU operations. Through rigorous iso-parameter experiments across four EEG datasets spanning two classification tasks, binary dementia detection and 3-class emotion recognition, we compared Diff-Logic against matched-capacity Multi-Layer Perceptron (MLP) and Binarized Neural Network (BNN) baselines at four complexity tiers (50k-500k parameters). On dementia screening, Diff-Logic achieved 80.2% Macro F1, outperforming the MLP baseline by 6.8%. On emotion recognition, the MLP retained a moderate performance advantage but incurred a 2.3$\\times$ higher latency and 14$\\times$ larger model size when deployed on a power-constrained (7W) Nvidia Jetson Orin Nano CPU (Single-core). Critically, Diff-Logic inference time remained nearly constant across a 10$\\times$ increase in model scale, achieving a peak speedup of 2.9$\\times$ over MLPs at the largest complexity tier. Our results establish logic-based neural architectures as a practical paradigm for resource-constrained brain-computer interfaces, achieving competitive or superior performance while natively satisfying the latency and memory constraints of portable edge deployment. Code is available on GitHub: https://github.com/Shyamal-Dharia/eeg-difflogic",
+      "authors": [
+        "Shyamal Y. Dharia",
+        "Stephen D. Smith",
+        "Camilo E. Valderrama"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T16:49:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.18149v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decoding EEG signals into dementia and emotion classifications",
+      "llm_evidence_cn": "将EEG信号解码为痴呆和情绪分类",
+      "llm_evidence": "将EEG信号解码为痴呆和情绪分类",
+      "canonical_evidence": "将EEG信号解码为痴呆和情绪分类",
+      "llm_tldr_en": "Diff-Logic networks enable low-latency EEG classification on edge devices.",
+      "llm_tldr_cn": "Diff-Logic网络在边缘设备上实现低延迟EEG分类。",
+      "llm_tldr": "Diff-Logic网络在边缘设备上实现低延迟EEG分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18344v2",
+      "source": "arxiv",
+      "title": "FSDBN: Foreground-Aware EEG-Visual Alignment via Dynamic Brain Networks",
+      "abstract": "EEG-based visual decoding provides a non-invasive pathway for interpreting visual semantics. However, existing methods often overlook the perceptual asymmetry between foreground and background in complex scenes, leading to background interference and semantic misalignment. EEG signals also exhibit rapid temporal dynamics and nonstationary spatial patterns, making it difficult to capture the time-varying brain connectivity associated with focal visual attention. To address these limitations, we propose FSDBN, a unified framework for robust EEG-visual decoding. FSDBN introduces Semantic-Consistent Saliency Alignment to separate semantically relevant foreground regions from background noise under joint saliency and semantic constraints. It further employs Semantic-Prior Dynamic Gating Foreground Fusion to adaptively regulate the contributions of foreground and background features. In parallel, EEG signals are modeled as adaptive spatiotemporal brain networks whose functional connectivity dynamically reorganizes to capture neural responses to salient foregrounds. Experiments on zero-shot brain-to-image retrieval demonstrate that FSDBN achieves 69.0 percent top-1 accuracy and 92.2 percent top-5 accuracy, outperforming previous state-of-the-art methods. Code is available at https://github.com/LiuYiheng1/FSDBN-EEG.",
+      "authors": [
+        "Yiheng Liu",
+        "Chuhang Zheng",
+        "Peiliang Gong",
+        "Jingtao Liu",
+        "Daoqiang Zhang",
+        "Qi Zhu"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T07:40:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.18344v2",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG-visual decoding with foreground-aware alignment and dynamic brain networks",
+      "llm_evidence_cn": "基于前景感知对齐和动态脑网络的EEG视觉解码",
+      "llm_evidence": "基于前景感知对齐和动态脑网络的EEG视觉解码",
+      "canonical_evidence": "基于前景感知对齐和动态脑网络的EEG视觉解码",
+      "llm_tldr_en": "Decodes visual semantics from EEG using saliency alignment and dynamic connectivity",
+      "llm_tldr_cn": "利用显著性对齐和动态连接性从EEG解码视觉语义",
+      "llm_tldr": "利用显著性对齐和动态连接性从EEG解码视觉语义",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.16976v1",
+      "source": "arxiv",
+      "title": "Adaptive Ridge-Regularized Hotelling Change-Point Tests for Functional Data",
+      "abstract": "We propose a unified ridge-regularized Hotelling framework for detecting and locating mean changes in functional time series. A growing basis expansion converts the functional observations into high-dimensional score vectors. Their long-run covariance is estimated by an edge-corrected difference-based procedure. Ridge regularization stabilizes inference under spectral decay. An explicit local-power formula shows that the power-maximizing ridge depends on the unknown spectral orientation of the change. We therefore combine a family of ridge CUSUM statistics by a Cauchy transform and calibrate the aggregate directly from their joint weighted-bridge limit. For multiple changes, we embed local maximum-ridge statistics in a wild binary segmentation procedure, followed by local refinement. Under mild conditions, we establish the validity, local power, consistency, and localization properties of the proposed tests. In the multiple-change setting, the procedure consistently recovers the number of changes and uniformly estimates their locations. The framework accommodates weak dependence and non-Gaussian functional errors. Simulations and two empirical applications demonstrate the favorable finite-sample performance of the proposed methods.",
+      "authors": [
+        "Ping Zhao",
+        "Long Feng"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-07-18T22:02:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.16976v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "ridge-regularized Hotelling test for change points in functional time series",
+      "llm_evidence_cn": "脊正则化Hotelling检验用于函数型时间序列变化点检测",
+      "llm_evidence": "脊正则化Hotelling检验用于函数型时间序列变化点检测",
+      "canonical_evidence": "脊正则化Hotelling检验用于函数型时间序列变化点检测",
+      "llm_tldr_en": "Adaptive ridge-regularized framework for detecting mean changes in functional time series",
+      "llm_tldr_cn": "自适应脊正则化框架用于函数型时间序列均值变化检测",
+      "llm_tldr": "自适应脊正则化框架用于函数型时间序列均值变化检测",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.17098v1",
+      "source": "arxiv",
+      "title": "Multi-Level Privacy-Preserving Dementia Detection from Speech via Targeted Adversarial Obfuscation and Representation Learning",
+      "abstract": "Speech recordings used for dementia detection inherently expose speaker identity, raising critical privacy concerns. Existing methods typically address only singular threats and fail to resolve the privacy--utility trade-off. We propose a multi-level framework designed to neutralize two distinct eavesdropping vectors. At the signal level, a Cumulative Signal Attack (CSA) concentrates perturbations in keyword-aligned regions to maximize transcription error (Word Error Rate WER = 1.00) while preserving vital prosodic biomarkers. At the feature level, a Gradient Reversal Layer (GRL) with Mutual Information (MI)-guided noise injection suppresses speaker-discriminative dimensions while retaining dementia-relevant diagnostic structure. Evaluated on the DementiaBank Pitt Corpus, our framework achieves near-chance speaker identification (Equal Error Rate EER = 0.59, F1 = 0.003) while maintaining strong dementia classification performance (F1 = 0.78, AUC = 0.86).",
+      "authors": [
+        "Henriette Flore Kenne",
+        "Raphael Anaadumba",
+        "Mohammad Arif Ul Alam"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.CR"
+      ],
+      "published": "2026-07-19T06:48:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.17098v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Representation learning from speech for dementia detection",
+      "llm_evidence_cn": "从语音中学习表示用于痴呆检测",
+      "llm_evidence": "从语音中学习表示用于痴呆检测",
+      "canonical_evidence": "从语音中学习表示用于痴呆检测",
+      "llm_tldr_en": "Multi-level privacy-preserving framework that learns compact speech representations while obfuscating identity.",
+      "llm_tldr_cn": "多级隐私保护框架，学习紧凑语音表示同时混淆身份。",
+      "llm_tldr": "多级隐私保护框架，学习紧凑语音表示同时混淆身份。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.17568v1",
+      "source": "arxiv",
+      "title": "CoCurve: Cross-Module Co-Pruning Curvature for Training-Free Structured LLM Pruning",
+      "abstract": "Structured pruning compresses large language models (LLMs) by removing whole computational units, such as attention heads and feed-forward (FFN) channel groups. Most training-free methods, however, rank these units independently, implicitly treating the loss from pruning a set as the sum of its individual losses. This view fails for Transformers, whose sublayers are coupled through a shared residual stream. Two individually weak units can thus be jointly indispensable, yet independent scoring is blind to such dependence and removes them together. We introduce CoCurve (Cross-Module Co-Pruning Curvature), a calibration-only, fine-tuning-free method that prunes attention and FFN units jointly. A second-order Taylor expansion of the token-level KL between the frozen model and its masked copy yields a single Fisher matrix whose diagonal is classical node saliency and whose off-diagonal entries are co-pruning curvature edges: the extra damage of removing two units together. Under a single-ablation additivity approximation this matrix reduces to a Gram product of single-unit ablation features, so the full M x M interaction is recovered from M forward passes, with no pairwise sweeps or gradients. Pruning then reduces to one budgeted quadratic program, solved in a single shot under a shared attention--FFN budget, with no labels, fine-tuning, or recovery.",
+      "authors": [
+        "Zhiren Gong",
+        "Zihao Zeng",
+        "Zijie Wang",
+        "Tiantong Wang",
+        "Chau Yuen",
+        "Wei Yang Bryan Lim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T05:27:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.17568v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "computes importance weights for model units via co-pruning curvature",
+      "llm_evidence_cn": "通过共剪枝曲率计算模型单元的重要性权重",
+      "llm_evidence": "通过共剪枝曲率计算模型单元的重要性权重",
+      "canonical_evidence": "通过共剪枝曲率计算模型单元的重要性权重",
+      "llm_tldr_en": "A training-free LLM pruning method that computes joint importance scores for attention and FFN units.",
+      "llm_tldr_cn": "一种无需微调的LLM剪枝方法，联合计算注意力层和前馈层单元的重要性分数。",
+      "llm_tldr": "一种无需微调的LLM剪枝方法，联合计算注意力层和前馈层单元的重要性分数。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.17632v1",
+      "source": "arxiv",
+      "title": "TypiCore: A Hybrid Active Query Strategy for Class-Incremental Learning on Time Series",
+      "abstract": "Time series data play a pivotal role across numerous domains, including healthcare and manufacturing. In real-world environments, models must cope with distribution shifts over time, a challenge commonly addressed through Continual Learning (CL) techniques. However, existing CL methods face a critical limitation: real-world data streams are rarely fully labeled, making annotation cost a major practical constraint. This paper investigates Active Class-Incremental Learning (ACIL) for multivariate time series, where a model must sequentially learn new classes while selectively querying labels under a fixed annotation budget. We present a systematic evaluation of a wide range of query strategies combined with multiple rehearsal-based approaches, assessing their impact on plasticity, stability, and label efficiency across four benchmark datasets. Our analysis reveals the limitations of uncertainty-based and distribution-aware methods in achieving strong performance under constrained labeling budgets. To address these shortcomings, we propose TypiCore, a novel hybrid query strategy that alternates between typicality-based and diversity-based sample selection across active learning cycles, enabling the construction of memory buffers that are both representative and diverse. Evaluated on the TSCIL benchmark, TypiCore delivers statistically significant improvements over all baselines and matches or surpasses fully supervised continual learning performance on multiple datasets while requiring a fraction of the available labels.",
+      "authors": [
+        "Gabor Szucs",
+        "Samuel Jacsev",
+        "Marcell Nemeth",
+        "Davide Dalle Pezze",
+        "Gian Antonio Susto"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T07:39:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.17632v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "active class-incremental learning for time series, handling sequential data with limited labels",
+      "llm_evidence_cn": "时间序列上的主动类增量学习，处理有限标签的序列数据",
+      "llm_evidence": "时间序列上的主动类增量学习，处理有限标签的序列数据",
+      "canonical_evidence": "时间序列上的主动类增量学习，处理有限标签的序列数据",
+      "llm_tldr_en": "Proposes active query strategy for class-incremental learning on multivariate time series with limited annotation budget.",
+      "llm_tldr_cn": "提出主动查询策略用于多元时间序列上的类增量学习，标注预算有限。",
+      "llm_tldr": "提出主动查询策略用于多元时间序列上的类增量学习，标注预算有限。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.18072v1",
+      "source": "arxiv",
+      "title": "SGN: A Similarity-based Generative Network for Data Generation under Distribution Shift",
+      "abstract": "Generative models trained on a source domain often produce samples that are poorly aligned with shifted target domains, limiting their effectiveness for target-domain data augmentation. Although target-specific adaptation can reduce this mismatch, it typically requires additional optimization and domain-specific parameters. We propose a Similarity-based Generative Network (SGN), a reusable framework that is trained once on labeled source data and applied to new target domains without parameter updates. SGN learns a latent space structured by label-induced pairwise similarities while preserving reconstructive information through an encoder-decoder architecture. At generation time, a small labeled representative set from the target domain is encoded and combined in the learned latent space, allowing the generated samples to inherit target-specific characteristics while maintaining class consistency. We further analyze the realizability and dimensionality requirements of the proposed similarity structure. Experiments on image and tabular datasets demonstrate the effectiveness of SGN for target-guided data augmentation under source-to-target distribution shifts.",
+      "authors": [
+        "Jiaqi Zhu",
+        "Xincheng Chen",
+        "Yuncheng Wu",
+        "Zhaojing Luo",
+        "Beng Chin Ooi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T15:40:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.18072v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "generates target-domain data using small labeled set",
+      "llm_evidence_cn": "使用少量标记样本生成目标域数据",
+      "llm_evidence": "使用少量标记样本生成目标域数据",
+      "canonical_evidence": "使用少量标记样本生成目标域数据",
+      "llm_tldr_en": "SGN generates data for shifted target domains without retraining.",
+      "llm_tldr_cn": "SGN无需重新训练即可为偏移的目标域生成数据。",
+      "llm_tldr": "SGN无需重新训练即可为偏移的目标域生成数据。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

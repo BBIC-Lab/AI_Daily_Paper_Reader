@@ -1,0 +1,182 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-003.webp",
+      "caption": "Figure 1: Overview of CoCurve. (a) Transformer sublayers read and write a shared residual stream, so a low-saliency bridge unit u can be jointly indispensable with units many layers away; scoring each unit in isolation misses this. (b) A second-order expansion of the token-level KL yields one Fisher matrix H whose diagonal is classical node saliency and whose off-diagonal is the co-pruning curvature between attention and FFN units. The full matrix is a Gram product of M single-unit ablations (no O(M2) pairwise sweeps), solved once by cost-normalized greedy co-pruning with no weight updates or recovery.",
+      "page": 2,
+      "index": 3,
+      "width": 829,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-004.webp",
+      "caption": "Table 1: Main comparison on Llama-3.1-8B-Instruct at 20% structured pruning. All methods are training-free under one shared harness. PPL lower is better (↓), accuracy higher (↑); bold = best among pruned, underline = second; Dense is the unpruned reference. Avg is the 7-task commonsense mean; ρ=20% is the removed non-embedding parameter fraction, PPL at context 2048. GSM8K is omitted (every method is near floor; Section N).",
+      "page": 7,
+      "index": 4,
+      "width": 827,
+      "height": 272
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-015.webp",
+      "caption": "Table 2: Cross-model summary at 20%. Four capability scores (commonsense = 7-task average, code = HumanEval/MBPP mean). “Best base.” is the per-metric best training-free baseline (nine methods for Llama-3.1-8B-Instruct, seven for the others); bold = better of Best base. and CoCurve, which is occasionally the baseline. CoCurve leads WikiText perplexity on all models and code on three; the reported config is λ=1 except Falcon3 (λ=0.5; Section 3.4). A larger 24B model is evaluated separately (Figure 2, Table 14).",
+      "page": 8,
+      "index": 15,
+      "width": 622,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-016.webp",
+      "caption": "Figure 2: Scaling to Mistral-Small-24B (real measured data). (a) WikiText-2 perplexity (log scale) versus pruning ratio: CoCurve leads at every ratio, and its advantage over the strongest valid baseline widens with compression—4.9× at 30% and 14.5× at 40%, exactly where redundancy is exhausted and co-pruning curvature becomes decisive. (b) Multiple-choice average: CoCurve leads from 20% up, with a near-tie at 10% where a 24B model is highly redundant. Under-pruned baseline points are excluded (Table 14).",
+      "page": 8,
+      "index": 16,
+      "width": 815,
+      "height": 272
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-021.webp",
+      "caption": "Figure 3: CoCurve across pruning ratios. WikiText-2 perplexity (left, log scale) and MMLU (right) vs. ratio for three models. Degradation is graceful through the moderate regime; beyond ∼30% all training-free methods enter the shaded collapse zone. Curves are a single compressed model per point; baselines and the accuracy–efficiency frontier are in Section U.",
+      "page": 9,
+      "index": 21,
+      "width": 814,
+      "height": 306
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-020.webp",
+      "caption": "Table 5: Where CoCurve sits among structured and interaction-aware pruners. Cross-module off-diag.: an explicit attention↔FFN / cross-layer curvature term, not just within-group or nodeindependent scores. Selection-only: no post-pruning weight update, LoRA, or fine-tuning. Singleshot: no iterative re-estimation or search. Gradient-free counts closed-form calibration-Hessian importance. Properties describe each method’s native form; in our experiments all recovery (AMP’s and LLM-Pruner’s LoRA, etc.) is disabled for a selection-only comparison (Section 3.1). ✓/✗: property present/absent; CoCurve is the only method with all six.",
+      "page": 12,
+      "index": 20,
+      "width": 830,
+      "height": 197
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-012.webp",
+      "caption": "Table 6: Summary of notation.",
+      "page": 18,
+      "index": 12,
+      "width": 748,
+      "height": 686
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-001.webp",
+      "caption": "Table 7: Evaluation suite. 14 benchmarks across 5 capability families, all on a single compressed model with one shared harness.",
+      "page": 25,
+      "index": 1,
+      "width": 776,
+      "height": 337
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-013.webp",
+      "caption": "Table 11: Mistral-7B — full 14 tasks at 20% pruning (selection-only, no recovery). PPL↓; accuracy↑. Bold=best among pruned; underline=2nd. Dense in gray. “–” = not evaluated.",
+      "page": 28,
+      "index": 13,
+      "width": 776,
+      "height": 258
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-014.webp",
+      "caption": "Table 12: Llama-3.2-3B — full 14 tasks at 20% pruning (selection-only, no recovery). PPL↓; accuracy↑. Bold=best among pruned; underline=2nd. Dense in gray. “–” = not evaluated.",
+      "page": 28,
+      "index": 14,
+      "width": 772,
+      "height": 234
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-005.webp",
+      "caption": "Table 13: Falcon3-7B — full 14 tasks at 20% pruning (selection-only, no recovery). PPL↓; accuracy↑. Bold=best among pruned; underline=2nd. Dense in gray. “–” = not evaluated.",
+      "page": 29,
+      "index": 5,
+      "width": 826,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-006.webp",
+      "caption": "Table 14: Mistral-Small-24B — full 14 tasks at 20% pruning (selection-only, no recovery). PPL↓; accuracy↑. Bold=best among pruned; underline=2nd. Dense in gray. “–” = not evaluated. †SlimLLM realizes only 17.2% at this budget (severe under-pruning; its cosine-cascade allocation stalls), so its numbers are inflated by pruning less and are excluded from the ranking.",
+      "page": 29,
+      "index": 6,
+      "width": 772,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-022.webp",
+      "caption": "Table 18: Extended ablations at 20% (Llama-3.1-8B-Instruct; WikiText↓ / MMLU↑ / MBPP↑; one fixed config). Bold=best in each column (per block); the shaded row is the shipped full-matrix default. “Keep-one-block” rows (italic) are incoherence diagnostics, not methods.",
+      "page": 31,
+      "index": 22,
+      "width": 722,
+      "height": 361
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-018.webp",
+      "caption": "Figure 5: Edge-structure and cross-layer-reach ablation (Llama-3.1-8B-Instruct, 20%, real data; Table 18). Left: the cross-module attn↔FFN block is load-bearing—removing only it (withinmodule) is worse than dropping all edges (diagonal), and adding it back recovers both perplexity and code (MBPP, in-bar). Right: the co-pruning benefit is dominantly local—restricting edges to adjacent/same layers stays within the 3-task proxy noise—which we read as an efficiency opportunity while keeping the full matrix as the configuration-free default selected on the complete suite.",
+      "page": 32,
+      "index": 18,
+      "width": 814,
+      "height": 297
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-019.webp",
+      "caption": "Figure 6: Surrogate fidelity across the operating range (Llama-3.1-8B-Instruct, real measured data). Left: predicted solver surrogate 1 2s ⊤Hs vs. measured per-token DKL(p0∥pS) for the pruning sets selected at ρ ∈ {10, . . . , 50}%, colored by ratio: across the full operating range the surrogate increases monotonically with the true damage (Spearman ρ=1.00, Pearson r=0.95), confirming the second-order model tracks measured KL as the budget grows. This is a cross-ratio check; the stronger same-budget discrimination test—does the surrogate rank different pruning sets at one fixed ratio?—is Figure 7. Right: both rise with ρ, but the predicted–measured gap widens superlinearly—the O(∥s∥31) third-order term of Proposition 5—explaining the high-ratio collapse zone of Figure 3.",
+      "page": 32,
+      "index": 19,
+      "width": 813,
+      "height": 287
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-009.webp",
+      "caption": "Figure 7: Same-budget discrimination (Llama-3.1-8B-Instruct, 20%, real data; from diagnose edge mechanism.py). Predicted surrogate vs. measured KL over 26 pruning sets at the same 20% budget. Structured selections (CoCurve, diagonal, local swaps) cluster at low measured risk; random sets at the identical budget are ∼3× worse. Rank correlation 0.81 across sets at fixed ρ shows the surrogate discriminates selection quality, not just the budget.",
+      "page": 33,
+      "index": 9,
+      "width": 505,
+      "height": 382
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-008.webp",
+      "caption": "Figure 8: Interpretability evidence (Llama-3.1-8B-Instruct), from the real estimated H. (a) the curvature correlation |ϱuv| averaged within (type, layer) blocks: the off-diagonal cross-module block (white dashed) carries substantial coupling (mean 0.086), comparable to the within-module blocks. (b) node saliency vs. edge connectivity: the 87 low-saliency, high-connectivity bridge units (red, shaded region) are exactly those diagonal pruning discards.",
+      "page": 34,
+      "index": 8,
+      "width": 820,
+      "height": 343
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-010.webp",
+      "caption": "Figure 9: Non-uniform, type-asymmetric per-layer pruning (Llama-3.1-8B-Instruct, 20%), from the real CoCurve solution: the shared attention/FFN budget is spent unevenly across depth—decided by the objective, not a fixed split.",
+      "page": 35,
+      "index": 10,
+      "width": 813,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-011.webp",
+      "caption": "Figure 10: Block-wise mean |ϱuv| of the estimated H (real data): the cross-module attn–FFN block is non-trivial across models—direct evidence for cross-module co-pruning edges.",
+      "page": 35,
+      "index": 11,
+      "width": 542,
+      "height": 392
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-017.webp",
+      "caption": "Table 21: FFN redundancy vs. edge benefit (from H): low redundancy⇒ full edges help; high⇒ damp (λ<1), as predicted by Proposition 8.",
+      "page": 36,
+      "index": 17,
+      "width": 820,
+      "height": 431
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-002.webp",
+      "caption": "Table 23: Graceful fallback across two unfavorable regimes (20%; commonsense is the 7-task average, Code is the mean of HumanEval and MBPP pass@1; all baselines are at-ratio). On a high-redundancy model (Yi-1.5-9B, gate 0.169) and a gray-zone boundary model (Mistral-Nemo12B, 0.111), the gate of Proposition 8 flags the regime from calibration alone and CoCurve runs its damped (λ→0) configuration, which beats the strongest at-ratio baseline on every axis except Yi code (where it trails .108 vs. .122). The forced-λ=1 row is a diagnostic ablation, not a shipped configuration; its damage grows with redundancy (catastrophic on Yi, mild on Nemo), exactly as the gate predicts. The named baseline is the strongest overall at-ratio baseline (SlimLLM/LLMPruner); on Nemo the best baseline on code specifically is Random (.057), which CoCurve (.067) also exceeds.",
+      "page": 38,
+      "index": 2,
+      "width": 614,
+      "height": 279
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17568v1/fig-007.webp",
+      "caption": "Table 24: Inference efficiency of every timed method at 20% (Llama-3.1-8B-Instruct). Real physical removal on a single RTX 6000 Ada (batch 1, sequence 2048, bf16). At iso-budget (∼17.4% of non-embedding parameters removed) throughput is a method-independent band—prefill 1.15– 1.19×, decode 1.03–1.17×—so the differentiator is accuracy at a given speedup, not the speedup itself.",
+      "page": 39,
+      "index": 7,
+      "width": 652,
+      "height": 253
+    }
+  ]
+}
