@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-003.webp",
+      "caption": "Figure 1: Latent strategy structure in output space. A pretrained LM’s response distribution mixes strategies implicitly (left). A latent variable model initialized to match it leaves z unused (center). Training aligns z with reference strategies, disentangling them in latent space while preserving the base model’s response distribution (right).",
+      "page": 2,
+      "index": 3,
+      "width": 811,
+      "height": 250
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-008.webp",
+      "caption": "Figure 2: Autoregressive router-generator Transformer architecture. The adapted Transformer ϕ implements both the router rϕ(z|x), which reads the prompt and produces a latent distribution, and the strategy-conditioned generator gϕ(y|x, z), which attends to E(z) while generating the response. During variational training, qξ(z|x, y) infers z from the full input-response pair.",
+      "page": 4,
+      "index": 8,
+      "width": 811,
+      "height": 366
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-007.webp",
+      "caption": "Figure 6: Method comparison on pretrained Qwen2.5 runs. For each objective variant and model size, bars show Distributional Fidelity and Strategy Alignment, with open points giving per-task values. Strategy Alignment denotes cross-input latent strategy alignment measured by Analogical Consistency. Hatching marks baselines and ablations.",
+      "page": 8,
+      "index": 7,
+      "width": 821,
+      "height": 252
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-010.webp",
+      "caption": "Figure 8: Left: training trajectories in fidelity-alignment phase space for different objective variants. Right: token-weighted reconstruction loss versus Strategy Alignment at training endpoints; outlined points show method centroids and translucent points show individual runs.",
+      "page": 9,
+      "index": 10,
+      "width": 803,
+      "height": 284
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-001.webp",
+      "caption": "Table 1: Controlled multi-strategy algorithmic benchmark. Each task family admits multiple valid solution procedures for the same problem instance. The benchmark uses the listed sampled strategies as reference labels for evaluating strategy-aligned latent variables.",
+      "page": 15,
+      "index": 1,
+      "width": 806,
+      "height": 456
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-009.webp",
+      "caption": "Table 2: Objective variants used in the experimental figures. All model-directed variants train on samples x ∼ DX , y ∼ pθ(·|x) and keep pθ frozen as the reference model.",
+      "page": 19,
+      "index": 9,
+      "width": 791,
+      "height": 307
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-002.webp",
+      "caption": "Figure 9: Task-faceted posterior latent dynamics. Each row shows one benchmark task for the selected multi-task token-weighting run, and columns show checkpoints over training. Points are posterior mean latents projected with task-local PCA and colored by reference strategy. The view complements Figure 7 by showing that strategy organization emerges within each task family.",
+      "page": 21,
+      "index": 2,
+      "width": 794,
+      "height": 653
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-005.webp",
+      "caption": "Figure 10: Method success across β settings. Plots show the product of Distributional Fidelity and Strategy Alignment across different KL weights β for the multi-task randomly initialized diagnostic grid. Standard ELBO-style baselines remain weak in fidelity-alignment across β, while modeldirected objectives succeed robustly once β is small enough to enable informative latents.",
+      "page": 22,
+      "index": 5,
+      "width": 814,
+      "height": 293
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-004.webp",
+      "caption": "Figure 11: Endpoint metric associations in single-task diagnostic runs. Left: base-relative reconstruction versus Strategy Alignment. There is a general positive association between reconstruction measured in base model units and strategy alignment; however, unlike the token-weighted reconstruction shown in the main text, the association is weaker for the pure token-weighted variant. This is likely caused by too little reconstruction pressure on non high-surprisal tokens, which causes some loss on these tokens. This motivates setting α > 0 in the global+token variant to preserve some uniform reconstruction pressure. Right: Distributional Fidelity versus Strategy Alignment. Larger outlined points show method centroids and smaller translucent points show individual runs; these diagnostics illustrate that it is possible to have high distributional fidelity without strategy alignment. In general distributional fidelity is easy, especially because the factorization is initialized near the pretrained model’s response distribution, but strategy alignment is harder and requires the right objective design.",
+      "page": 22,
+      "index": 4,
+      "width": 819,
+      "height": 313
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17674v1/fig-006.webp",
+      "caption": "Figure 12: Phase-space training dynamics of pretrained Qwen model factorization. Phasespace dynamics diagrams of Qwen2.5 0.5B and 1.5B multi-task runs are shown across base-relative reconstruction, token-weighted reconstruction, Distributional Fidelity, and Prior KL, each plotted against Strategy Alignment. Trajectories show how each method moves through these diagnostic phase spaces over training, from initialization to the final checkpoint.",
+      "page": 23,
+      "index": 6,
+      "width": 818,
+      "height": 476
+    }
+  ]
+}

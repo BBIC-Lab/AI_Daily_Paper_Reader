@@ -1,0 +1,409 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-24T20:31:25.167924+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 50,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 87,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 19,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 14,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 20
+  },
+  "deep_dive": [
+    {
+      "id": "2607.21402v1",
+      "source": "arxiv",
+      "title": "MSBraM: A Multi-scale Self-supervised Brain Foundation Model for Hierarchical EEG Dynamics Learning",
+      "abstract": "Self-supervised foundation models have recently shown strong potential for electroencephalogram (EEG)-based analysis. However, existing approaches struggle to capture the inherently multi-scale temporal structure of EEG signals, where local neural patterns and long-range dependencies jointly encode task-relevant information. This limitation hampers cross-scale representation learning and generalization across diverse downstream tasks. To address this challenge, we propose MSBraM, a Multi-Scale self-supervised Brain foundation Model designed to learn hierarchical EEG representations. MSBraM follows a two-stage pretraining framework. First, a multi-scale neural tokenizer discretizes raw EEG signals into semantic codes at different temporal resolutions via vector-quantized reconstruction. Second, the model is pretrained to predict masked codes using a curriculum multi-scale masking strategy, progressively integrating fine-grained local patterns with global temporal context. We pretrain MSBraM on over 2,400 hours of EEG data and evaluate it across 10 downstream tasks on 12 public datasets. Extensive experiments show that MSBraM achieves superior performance on other state-of-the-art pretrained models, demonstrating strong generalization and transferability. These results indicate that explicitly modeling multi-scale temporal dynamics is critical for effective EEG foundation models.",
+      "authors": [
+        "Tao Zhou",
+        "Jing Han",
+        "Lingyu Shu",
+        "Zixing Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-23T15:03:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.21402v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Multi-scale self-supervised brain foundation model for hierarchical EEG dynamics learning.",
+      "llm_evidence_cn": "用于层次化脑电图动态学习的多尺度自监督基础模型。",
+      "llm_evidence": "用于层次化脑电图动态学习的多尺度自监督基础模型。",
+      "canonical_evidence": "用于层次化脑电图动态学习的多尺度自监督基础模型。",
+      "llm_tldr_en": "MSBraM learns hierarchical EEG representations from raw signals using a multi-scale self-supervised approach.",
+      "llm_tldr_cn": "MSBraM使用多尺度自监督方法从原始信号学习层次化脑电图表示。",
+      "llm_tldr": "MSBraM使用多尺度自监督方法从原始信号学习层次化脑电图表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17625v1",
+      "source": "arxiv",
+      "title": "Brain-Aligned Multi-Stream Video Transformers with Sparse Self-Selection",
+      "abstract": "Modern video transformers typically ignore principles from primate vision and are rarely evaluated against neural data, limiting their biological interpretability. We introduce a sparse winner-takes-all token selection module that replaces dense self-attention to improve efficiency and approximate competitive routing observed in biological visual circuits. We further propose a neuro-inspired split-and-fuse video transformer which uses two complementary pathways: a high-resolution, low-frame-rate \"what\" stream and a low-resolution, high-frame-rate \"where\" stream, fused before classification. On Kinetics-400 and Something-Something V2, our best variant operates on the Pareto frontier of accuracy versus inference time among models of comparable scale and pretraining, and showing improved robustness to spatial perturbations. Using representational similarity analysis between model embeddings and time-resolved EEG recordings for the same video stimuli, our model attains a peak brain-model correlation of 0.18 (about 78% of the noise ceiling) and consistently outperforms strong video transformer baselines, suggesting that pathway specialization and sparse competition are useful inductive biases for efficient, brain-aligned video understanding.",
+      "authors": [
+        "Amir Hosein Fadaei",
+        "Mahyar Maleki",
+        "Mohammad-Reza A. Dehaqani"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-20T07:30:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.17625v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "neuro-inspired video transformer with sparse self-selection evaluated against neural data",
+      "llm_evidence_cn": "受神经启发的视频变换器，具有稀疏自选择，并对神经数据进行评估",
+      "llm_evidence": "受神经启发的视频变换器，具有稀疏自选择，并对神经数据进行评估",
+      "canonical_evidence": "受神经启发的视频变换器，具有稀疏自选择，并对神经数据进行评估",
+      "llm_tldr_en": "A brain-aligned video transformer using sparse winner-takes-all token selection and dual pathways for efficiency and biological plausibility.",
+      "llm_tldr_cn": "一种脑对齐的视频变换器，使用稀疏赢者通吃令牌选择和双通路实现效率和生物合理性。",
+      "llm_tldr": "一种脑对齐的视频变换器，使用稀疏赢者通吃令牌选择和双通路实现效率和生物合理性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18226v1",
+      "source": "arxiv",
+      "title": "Causal Discovery on Irregular Time Series",
+      "abstract": "Causal discovery methods have shown strong performance in temporal systems, but they typically rely on regular and discrete lag structures, limiting their applicability to regularly sampled data. However, many real-world tasks require dealing with irregularly sampled streams of events, such as sensor streams, healthcare data, and financial transactions. In this work, we propose an extension of PCMCI+, a state-of-the-art method for causal discovery on regular multivariate time series, to allow for handling irregular time series. Instead of modelling causal relations through fixed-lag dependencies, our method aggregates causal influence over predefined temporal windows. We evaluate our method on synthetic irregular event streams with known causal structures under different signal-to-noise ratios, showing that it consistently recovers the underlying causal graph and substantially outperforms the standard PCMCI+ on irregularly sampled data.",
+      "authors": [
+        "Martim Penim",
+        "Ricardo Ribeiro Pereira",
+        "Jacopo Bono",
+        "Hugo Ferreira",
+        "Mário A. T. Figueiredo",
+        "Pedro Bizarro"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ME"
+      ],
+      "published": "2026-07-20T17:57:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.18226v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "causal discovery on irregular time series",
+      "llm_evidence_cn": "不规则时间序列上的因果发现",
+      "llm_evidence": "不规则时间序列上的因果发现",
+      "canonical_evidence": "不规则时间序列上的因果发现",
+      "llm_tldr_en": "Extends causal discovery to irregularly sampled time series.",
+      "llm_tldr_cn": "将因果发现扩展到不规则采样的时间序列。",
+      "llm_tldr": "将因果发现扩展到不规则采样的时间序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18439v1",
+      "source": "arxiv",
+      "title": "Learnable Sequential Memory in Coupled Oscillator Networks",
+      "abstract": "The Hopfield network established that static memories can be stored as energy minima of a recurrent dynamical system, yet real intelligent agents must navigate \\emph{sequences} of memories rather than isolated snapshots.Biological cortex addresses this through a separation of timescales: fast synaptic dynamics encode individual states while slow neuromodulatory processes govern transitions between them. Inspired by this multi-timescale organization, we propose a sequential memory architecture that is fully continuous, admits exponential storage capacity, and is learnable in the sense that the transition structure is carried by a separate routing matrix -- decoupled from the stored patterns, driven by the input context, and free to be chosen, optimized, or learned from data rather than hard-wired into the memory substrate. Specifically, we construct an autonomous three-timescale dynamical system with three coupled layers: a fast Kuramoto layer that stores phase patterns as exponentially stable phase-locked configurations, an intermediate hysteresis layer that enforces reliable dwell times, and a slow attention layer that routes sequential transitions. We provide a complete theoretical analysis of the stability and robustness of each layer, and we validate the full system through numerical simulations of sequential memory retrieval.",
+      "authors": [
+        "Taosha Guo",
+        "Fabio Pasqualetti"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-20T18:48:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.18439v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Learnable sequential memory in coupled oscillator networks",
+      "llm_evidence_cn": "耦合振荡器网络中的可学习序列记忆",
+      "llm_evidence": "耦合振荡器网络中的可学习序列记忆",
+      "canonical_evidence": "耦合振荡器网络中的可学习序列记忆",
+      "llm_tldr_en": "Continuous architecture stores and retrieves sequences with exponential capacity and learnable transitions.",
+      "llm_tldr_cn": "连续架构以指数容量存储和检索序列，转换可学习。",
+      "llm_tldr": "连续架构以指数容量存储和检索序列，转换可学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18614v1",
+      "source": "arxiv",
+      "title": "End-to-End Markov State Sequence Learning for Auditory Attention Decoding",
+      "abstract": "Auditory attention decoding (AAD) identifies the speaker a listener attends to from neural responses like electroencephalography (EEG), making it a key algorithm in neuro-steered hearing aids. However, most neural AAD models are trained as independent short-window classifiers, despite auditory attention being a temporally persistent cognitive state and short-window EEG--audio evidence often being noisy and ambiguous. We propose an end-to-end Markov AAD framework based on conditional random field (CRF) that trains window-level neural emissions under a two-state attention prior. The framework treats the logits of any AAD backbone as Markov emissions, learns the transition rate from a standard HMM initialization, and jointly optimizes cross-entropy and CRF objectives, allowing temporal continuity to guide representation learning rather than merely smoothing predictions after training. We also introduce ESCNet, an EEG--speech correlation backbone that preserves time-aligned features and converts the difference between two mean Pearson correlations into state logits. We evaluate the framework with four emission backbones spanning correlation-based, convolutional, recurrent, and attention-based designs. On the dynamic AVGC dataset, CRF training generally outperforms post-hoc HMM smoothing; with ESCNet, it achieves $86.5\\%$ causal and $92.4\\%$ non-causal accuracy using $1$s windows. On the static KUL and USTC datasets, it improves causal decoding over fixed-rate post-hoc HMM baselines by $5.6\\%$ and $2.0\\%$, respectively, showing the superiority of learning AAD as attention state sequence over isolated-window classification.",
+      "authors": [
+        "Yushan Yashengjiang",
+        "Jie Zhang",
+        "Miao Sun",
+        "Huadong Liang",
+        "Xin Li",
+        "Zhen-hua Ling"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.HC"
+      ],
+      "published": "2026-07-21T01:33:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.18614v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "End-to-end Markov framework for auditory attention decoding from EEG",
+      "llm_evidence_cn": "基于条件随机场的端到端听觉注意力解码",
+      "llm_evidence": "基于条件随机场的端到端听觉注意力解码",
+      "canonical_evidence": "基于条件随机场的端到端听觉注意力解码",
+      "llm_tldr_en": "Improves auditory attention decoding by modeling temporal persistence with conditional random fields",
+      "llm_tldr_cn": "通过条件随机场建模时间持续性提升听觉注意力解码",
+      "llm_tldr": "通过条件随机场建模时间持续性提升听觉注意力解码",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.17419v1",
+      "source": "arxiv",
+      "title": "Kernelized Linear Attention: Breaking the Capacity Wall with Symmetric Cones",
+      "abstract": "Linear attention promises constant-time recurrent inference but degrades sharply on associative recall. We formulate attention recall as a spherical-packing problem and introduce Kernelized Linear Attention Activations (KATA), a framework whose feature maps are derived from first principles by certifying nonnegative attention weights through a self-dual homogeneous cone. Building on this observation, we show that rank-one positive semi-definite (PSD) features offer a favorable capacity--interference tradeoff. KATA recovers a parameter-free convex output gate and characterizes associative capacity through the Welch interference floor. For tolerances above this floor, KATA enlarges the state without adding parameters and admits spherical codes with exponentially many keys in the projection dimension. We implement KATA as fused Triton kernels at two operating points: a flash-attention-style forward up to ${\\sim}1.6\\times$ FlashAttention-2 throughput, and an exact $O(T)$ chunked-state form that reaches ${\\sim}11\\times$ FlashAttention-2 forward throughput at $131$k tokens. An associative scan of the first-order feature lowers the inter-chunk recurrence depth to $O(\\log(T/C))$ for chunk size $C$ and averages ${\\sim}2.4\\times$ the throughput of a matched sequential linear-attention baseline. On long-range MQAR and repeated-key overwrite, several KATA variants outperform Gated DeltaNet, with parameter counts and state sizes reported alongside accuracy. Induction preserves near-perfect recall, while kernel benchmarks show that the maps can be implemented efficiently. KATA retains $0.985$ MQAR at a $16\\times$ out-of-distribution length, approaching the softmax with roughly one quarter of the KV-cache entries. Experiments on 340M-parameter LLMs reveal a feature-dependent fluency trade-off and clarify how positional embeddings, delta rules, and decay gates interact with feature geometry.",
+      "authors": [
+        "Ayoub Ghriss",
+        "Sourav Chakraborty"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.IT",
+        "stat.ML"
+      ],
+      "published": "2026-07-19T21:46:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.17419v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Attention weights compute feature importance",
+      "llm_evidence_cn": "注意力权重计算特征重要性",
+      "llm_evidence": "注意力权重计算特征重要性",
+      "canonical_evidence": "注意力权重计算特征重要性",
+      "llm_tldr_en": "KATA improves linear attention with symmetric cones for better recall",
+      "llm_tldr_cn": "KATA通过对称锥改进线性注意力提升召回",
+      "llm_tldr": "KATA通过对称锥改进线性注意力提升召回",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.17404v1",
+      "source": "arxiv",
+      "title": "EM-based iterations for multiple instance learning on a query-value model",
+      "abstract": "In multiple instance regression (MIR) data are organized into bags (collections of instances in feature space) and the goal is to learn a mapping that assigns labels to bags. A typical assumption is that there is a so-called concept point in feature space, the proximity to which dictates the bag label. Motivated by modern MIR architectures which are based on attention, we study a softmax model that decouples the concept point and the labeling scheme. The two are respectively determined by a query direction and a value direction value in feature space. This problem isolates a basic challenge of learning both the query and value vectors from bag-level supervision. From this model we derive a parametric family of iterations in the noiseless limit, which generalizes a method known as the EM-DD algorithm. We then derive concentration results for the MLE estimators of the query and value vectors obtained from a random selection of instances. Our result for the value vector shows that a single random initialization of the value vector already points in the correct direction on average, so that a polynomial (in the number of instances per bag and the feature dimension) number of bags is enough for the EM algorithm to converge in $O(1)$ steps with high probability. A key aspect of this analysis is the interplay between concentration of empirical covariance matrices and extremal statistics arising from the selection rule.",
+      "authors": [
+        "Ethan Levien"
+      ],
+      "primary_category": "math.ST",
+      "categories": [
+        "math.ST"
+      ],
+      "published": "2026-07-19T20:27:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.17404v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learning query and value vectors for bag representation in multiple instance learning",
+      "llm_evidence_cn": "在多实例学习中学习查询和值向量用于包表示",
+      "llm_evidence": "在多实例学习中学习查询和值向量用于包表示",
+      "canonical_evidence": "在多实例学习中学习查询和值向量用于包表示",
+      "llm_tldr_en": "Studies EM-like iterations for learning query and value vectors in attention-based multiple instance regression.",
+      "llm_tldr_cn": "研究基于注意力的多实例回归中学习查询和值向量的EM迭代。",
+      "llm_tldr": "研究基于注意力的多实例回归中学习查询和值向量的EM迭代。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.17593v1",
+      "source": "arxiv",
+      "title": "Miles: Metric Learning with Expandable Subspace for Pre-Trained Model-Based Class-Incremental Learning",
+      "abstract": "Class Incremental Learning (CIL) aims to learn new concepts consistently from a data stream without forgetting. Unlike typical CIL methods which need to learn a model from scratch, pre-trained model (PTM) can easily adapt to a new task with fine-tuning. However, existing PTM-based CIL methods fail to achieve a trade-off between performance and computational expenditure, i.e., they either adopt the same parameter space so that leading catastrophic forgetting, or expand a new branch for each task but adding more computational cost. To this end, we propose MetrIc Learning with Expandable Subspace (Miles) to harness the prior information within pre-trained knowledge, thereby orchestrating an efficient expansion of the parameter space through guided optimization. Specifically, it decouples the learnable modules with the pre-trained model, exploiting prior information from intermediate features of the backbone network to enable more flexible parameter expansion. Then, a central loss is adopted to guide the new category to cluster towards the corresponding prototype in the new task subspace while incorporating an auxiliary distance regularization term to maintain metric equilibrium across tasks. Extensive experiments on six benchmark datasets demonstrate that Miles achieves state-of-the-art performance in various CIL settings.",
+      "authors": [
+        "Kai Jiang",
+        "Zisong Lin",
+        "Hongyuan Zhang",
+        "Xueru Bai",
+        "Xuelong Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-20T06:22:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.17593v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses metric learning with expandable subspace to adapt pre-trained models to new classes without forgetting",
+      "llm_evidence_cn": "使用可扩展子空间的度量学习，使预训练模型适应新类别而不遗忘",
+      "llm_evidence": "使用可扩展子空间的度量学习，使预训练模型适应新类别而不遗忘",
+      "canonical_evidence": "使用可扩展子空间的度量学习，使预训练模型适应新类别而不遗忘",
+      "llm_tldr_en": "Miles enables efficient class-incremental learning by expanding subspaces while leveraging pre-trained knowledge.",
+      "llm_tldr_cn": "Miles 通过扩展子空间并利用预训练知识实现高效的类增量学习。",
+      "llm_tldr": "Miles 通过扩展子空间并利用预训练知识实现高效的类增量学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.17668v1",
+      "source": "arxiv",
+      "title": "Selectivity Matters: Source Node Influence Pruning for Unsupervised Graph Domain Adaptation",
+      "abstract": "Unsupervised Graph Domain Adaptation (UGDA) aims to facilitate knowledge transfer from a labeled source graph to an unlabeled target graph by mitigating cross-domain distribution shifts. Existing methods primarily focus on node-level feature alignment in latent spaces, relying on the implicit assumption that all source nodes contribute positively to the alignment. However, this assumption often fails because a node's semantic information is intrinsically coupled with its topological graph structure. Due to structural shifts, source nodes with severe structural deviations (e.g., structural outliers) lack semantic counterparts in the target graph, and forcing alignment on them introduces severe noise and causes negative transfer. To bridge this gap, we argue that selective source node utilization is superior to full-graph training, thereby shifting the research paradigm from feature-level alignment to data-level refinement. To this end, we propose Source Node Influence Pruning (SNIP), a novel model-agnostic, data-centric refinement framework. Specifically, SNIP quantifies the structural discrepancy between individual source nodes and the target domain by integrating multiple centrality measures, assigning each source node an influence score. A rank-based normalization mechanism is further employed to eliminate scale variations across different measures, allowing SNIP to effectively identify and filter out structurally incompatible nodes with low influence scores. As a plug-and-play method, SNIP constructs a refined \"sub-source\" graph that is inherently more beneficial for subsequent alignment. Comprehensive experiments across eight transfer scenarios on five real-world datasets demonstrate that SNIP consistently outperforms competitive baselines and significantly enhances adaptation performance, validating the superiority of selective node utilization over full-graph training.",
+      "authors": [
+        "Ridong Han",
+        "Yawen Shen",
+        "Zhongnian Li",
+        "Tongfeng Sun",
+        "Xinzheng Xu",
+        "Abdulmotaleb El Saddik"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T08:19:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.17668v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unsupervised graph domain adaptation with node pruning to reduce negative transfer",
+      "llm_evidence_cn": "通过节点剪枝减少负迁移的无监督图域适应",
+      "llm_evidence": "通过节点剪枝减少负迁移的无监督图域适应",
+      "canonical_evidence": "通过节点剪枝减少负迁移的无监督图域适应",
+      "llm_tldr_en": "Prunes source nodes for effective unsupervised graph domain adaptation",
+      "llm_tldr_cn": "剪枝源节点实现有效的无监督图域适应",
+      "llm_tldr": "剪枝源节点实现有效的无监督图域适应",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.17674v1",
+      "source": "arxiv",
+      "title": "Uncovering Latent Reasoning Strategies in Language Models",
+      "abstract": "A language model $p_θ(y \\mid x)$ trained on reasoning tasks learns to solve problems via multiple distinct strategies, yet these strategies are implicit and entangled within the model's response distribution. We study the problem of decomposing the response distribution of a given pretrained language model into a structured, strategy-conditioned representation. Specifically, we learn a latent-variable factorization $p_θ(y \\mid x) \\leadsto (r_φ(z \\mid x), g_φ(y \\mid x,z))$, where a router $r$ maps each input to a distribution over latent strategies $z$ and a generator $g$ produces the response conditioned on that strategy. A key challenge is that the generator, initialized from the base model, already represents $p_θ(y \\mid x)$ without using $z$. Standard variational inference therefore gives the model no incentive to route information through $z$ and can yield a severe form of posterior collapse. To address this, we propose a variational objective that measures fractional information gain relative to the base model's response loss and concentrates reconstruction pressure on tokens with high base model surprisal, encouraging $z$ to encode strategy-relevant response variation. We introduce a benchmark of multi-strategy algorithmic tasks and show that this objective recovers latent codes aligned with distinct reference strategies while preserving the base model's response distribution.",
+      "authors": [
+        "Awni Altabaa",
+        "John Lafferty"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T08:27:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.17674v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learning latent strategy representations",
+      "llm_evidence_cn": "学习潜在策略表示",
+      "llm_evidence": "学习潜在策略表示",
+      "canonical_evidence": "学习潜在策略表示",
+      "llm_tldr_en": "Decomposes LM response distribution into structured strategy representations.",
+      "llm_tldr_cn": "将LM响应分解为结构化策略表示。",
+      "llm_tldr": "将LM响应分解为结构化策略表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

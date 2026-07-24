@@ -1,0 +1,800 @@
+Title: Miles: Metric Learning with Expandable Subspace for Pre-Trained Model-Based Class-Incremental Learning
+
+URL Source: https://arxiv.org/pdf/2607.17593v1
+
+Published Time: Tue, 21 Jul 2026 01:48:51 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+> 1
+
+# MILES : Metric Learning with Expandable Subspace for Pre-Trained Model-Based Class-Incremental Learning 
+
+Kai Jiang , Zisong Lin, Hongyuan Zhang , Xueru Bai , Senior Member, IEEE , and Xuelong Li , Fellow, IEEE 
+
+Abstract —Class Incremental Learning (CIL) aims to learn new concepts consistently from a data stream without forgetting. Unlike typical CIL methods which need to learn a model from scratch, pre-trained model (PTM) can easily adapt to a new task with fine-tuning. However, existing PTM-based CIL methods fail to achieve a trade-off between performance and computational expenditure, i.e., they either adopt the same parameter space so that leading catastrophic forgetting, or expand a new branch for each task but adding more computational cost. To this end, we propose MetrIc Learning with Expandable Subspace (M ILES )to harness the prior information within pre-trained knowledge, thereby orchestrating an efficient expansion of the parameter space through guided optimization. Specifically, it decouples the learnable modules with the pre-trained model, exploiting prior information from intermediate features of the backbone network to enable more flexible parameter expansion. Then, a central loss is adopted to guide the new category to cluster towards the corresponding prototype in the new task subspace while incorporating an auxiliary distance regularization term to maintain metric equilibrium across tasks. Extensive experiments on six benchmark datasets demonstrate that M ILES achieves state-of-the-art performance in various CIL settings. 
+
+Index Terms —Class incremental learning, metric learning, expandable subspace. 
+
+I. I NTRODUCTION 
+
+# DEEP learning has demonstrated remarkable success in the field of computer vision and has been gradually extended to real-world applications [1], [2], [3], [4]. However, existing AI systems cannot continuously learn new concepts without forgetting, which hinders their rapid development in many fields [5], [6], [7]. For instance, autonomous driving requires AI systems to adapt to seasonal changes [8], and medical systems require AI assistance continually learn to recognize new diseases [9]. Therefore, continual learning is proposed to solve these real-world requirements [10], [11], [12]. As an important direction of continual learning, class in-cremental learning (CIL) requires models to learn new cat-egories sequentially without forgetting old ones [13], [14], [15]. Conventional CIL methods can be roughly divided into three types, i.e., regularization-based methods [16], [17], [18], 
+
+This work was supported in part by the National Natural Science Founda-tion of China under Grant 62425113 and Grant 62131020. ( Corresponding author : Xueru Bai). Kai Jiang, Zisong Lin and Xueru Bai are with the National Key Laboratory of Radar Signal Processing, Xidian University, Xi’an 710071, China (e-mail: xrbai@xidian.edu.cn). Hongyuan Zhang is with The University of Hong Kong, Hong Kong SAR, China (e-mail: hyzhang98@gmail.com). Xuelong Li is with the Institute of Artificial Intelligence (TeleAI) of China Telecom, China (e-mail: xuelong li@ieee.org). FeCAM  CoFiMA  Miles CIFAR-100 CUB-200 Omnibenchmark ImageNet-A ImageNet-R FOOD-101 93.93 93.02 85.02 62.33 84.90 93.23  L2P  DualPrompt  CODA-Prompt 
+
+Fig. 1. Average accuracies of incremental trends for different approaches. 
+
+rehearsal-based methods [19], [20], [21], and architecture-based methods [22], [23], [24], [25]. Since these methods learn a model from the scratch, they usually lead to a long training time and poor generalization capability. With the advancement of pre-training techniques, the ap-proach of pre-training on upstream tasks followed by fine-tuning on downstream tasks has been widely adopted in real-world applications [26], [27], [28], and has also shed lights on developing CIL methods. By employing pre-trained weights to initialize models, training speed and generalization capacity can experience profound elevation [29]. Although the pre-trained model (PTM) furnishes a wealth of prior knowledge, directly fine-tuning it across multiple downstream tasks still encounters severe catastrophic forgetting [5], [6]. To resolve this challenge, pre-trained model-based incremental learning (PTM-based CIL) is proposed to exploit the prior information learned from a large scale of datasets, such as some low-level vision characteristics like edges or textural patterns, so that enhancing the generalization ability in downstream tasks [30]. Since we observe that unseen categories during pre-training usually exhibit clustering rather than dispersion in the feature space of the PTM, as illustrated in Fig. 2, we are motivated to integrating metric learning with pre-trained models in CIL [31]. By initializing the model with pre-trained weights, a reliable prototype [32] can be computed without training for each category of downstream tasks. Then, we aim to arXiv:2607.17593v1 [cs.CV] 20 Jul 2026 2Untrained model Pre-trained model task 1 task 2 task 3 feature space feature subspace SPP+SRE feature from task 1 feature from task 2 feature from task 3  
+
+> Fig. 2. Motivation of the M ILES .
+
+adopt these prototypes as prior knowledge from pre-training to guide the optimization of adapting new task instead of only applying the current task data, thus avoiding model preference for new tasks. Specifically, we propose Subspace Prototype Projection (SPP ) to cascade a tiny learnable module after the backbone for each task to reduce the distance between features and the corresponding prototypes. In theory, features after the mapping process should be close to the prototype of the ground truth and be away from the out-of-task prototypes. However, the cascaded learnable modules following the backbone network usually exhibit constrained representational capacity. Some existing methods prefer to embed the trainable modules into the pre-trained backbone to strengthen model representation [33], [34], [35], [36]. But these approaches present two limitations: primarily, they induce modifications to pretrained backbone networks, thereby complicating archi-tectural substitutions; secondly, their requirement for multiple forward propagation induces inference time increases linearly with the task quantity [37]. Therefore, we attempt to devise a CIL method which can adapt new tasks with minimal modification in the pre-trained network and propagates forward only once. Based on this idea, we propose Subspace Representation Extension (SRE ), which decouples the pre-trained weights with learnable weights and extends a low-rank sub-network for each task to learn all the intermediate features from the pre-trained model, thereby enhancing the model representational capacity without mod-ification of the pre-trained network. Moreover, employing metric learning to learn subsequent tasks can achieve CIL naturally, which only need to compute prototypes of new task categories and optimize features towards these prototypes. However, the model easily overfits on these downstream tasks, which is manifested as the average distance on a certain task being significantly smaller than the average distance on previous tasks. In view of this, we propose Distance Regularization (DR ), which adds a distance regularization term to maintain a consistent average distance for each task. The main contributions of our work are three-folds:  
+
+> •
+
+We integrate metric learning and pre-trained models into CIL and propose Subspace Prototype Projection (SPP) to optimize the distance between current task features and corresponding prototypes in the new task subspace.  
+
+> •
+
+We propose Subspace Representation Extension (SRE) to add a tiny sub-network to learn the intermediate features from PTM, aiming to strengthen the model representa-tional capacity with minimal modification of pre-trained network.  
+
+> •
+
+We propose Distance Regularization (DR) to add a dis-tance regularization term to maintain a consistent average distance for each task, with the aim of solving the overfitting issue for new tasks. As shown in Fig. 1, M ILES shows state-of-the-art perfor-mance in multiple datasets. II. R ELATED WORKS 
+
+In this section, we briefly introduce some related works including conventional class incremental learning and PTM-based class-incremental learning: 
+
+a) Class incremental learning (CIL): aims to learn a unified model from a task data stream containing multiple disjoint categories. Conventional CIL approaches include three types. The first type is regularization-based methods, which aim to penalize modifications of crucial parameters [16], [38], [39], [40], [41], [42] by adding a regularization term to the optimization function [43], [44]. The second type is rehearsal-based methods, which construct an exemplar set to save a few samples from previous tasks for future training [19], [20], [21], [45], [46]. The last type is architecture-based methods, which aim to increase model capacity by adding learnable parameters for a new task to solve the plasticity-stability dilemma [22], [47], [48]. However, all three methods need to train a model from scratch, which leads to a longer training time and weaker generalization ability. 
+
+b) Pre-trained model-based class incremental learning (PTM-based CIL): aims to utilize pre-trained models to obtain a better generalization ability in downstream tasks. Due to the large scale of parameters for the PTM, PTM-based CIL ap-proaches usually adopt parameter-efficient fine-tuning (PEFT) methods [49] to learn a new task. For instance, L2P [50] adopt visual prompt tuning [35] to adapt subsequent tasks. Specifically, it constructs a prompt pool and selects a prompt via the key-query matching selection mechanism, which serves as a learnable token inserted in the embedding vector. Dual-Prompt [51] develops L2P by decomposing prompt into task-invariant and task-specific parts. CODA-Prompt [52] designs an attention-based weighting method to combine multiple prompts. FeCAM [53] proposes a feature covariance-aware Mahalanobis distance without backbone updates to handle heterogeneous class distributions. APER [29] explores various PEFT methods and shows that prototypical classifiers serve as a strong baseline. EASE [37] enables a model to learn 3Task t training Embedding Layer 
+
+> Multi-Head Attention
+
+MLP 
+
+> ReLU
+> d1→d 2→d 1
+
+Transformer Block × N SRE Subnet Block × N 
+
+MLP ReLU 
+
+> d1→d 3→d 1
+
+MLP ReLU 
+
+> d1→d 3→d 1
+> C
+
+Frozen parameters Trainable parameters 
+
+> MLP
+> U-Net
+
+SPP Adapter d1→d 1
+
+> Prototypes Subspace feature original feature Subspace projection feature Shorten distance
+> Embedding Layer
+> Multi-Head Attention
+
+MLP 
+
+> ReLU
+> d1→d 2→d 1
+
+Transformer Block × N 
+
+t
+
+t
+
+SRE Subnet 1
+
+SRE Subnet t
+
+> …… Subspace feature
+> C
+
+SPP Adapter 1
+
+SPP Adapter 2
+
+SPP Adapter t…………
+
+> Compute distance Compute distance Compute distance Prototypes
+
+# Task t testing Frozen parameters Trainable parameters  
+
+> Fig. 3. Overall structure of the proposed method.
+
+new task branches and concatenates feature representations of multiple task-specific backbones. CoFiMA [54] introduces the fisher-weighted parameter to adaptively balance stability and plasticity via task-specific parameter importance. DGR pro-poses a gradient reweighting method and a distribution-aware knowledge distillation to address imbalanced catastrophic forgetting in CIL [55], [56]. BoostCL [57] enhances the model stability by theoretically justifying the effectiveness of random projection, employing a multi-view boosting strategy for a strong ensemble classifier, and integrating task-adaptive prompts with a self-improvement inference process. MiN [58] learns to generate and dynamically mix beneficial noise to mitigate catastrophic forgetting and preserve generalization. TUNA [59] integrates task-specific and universal adapters by effectively mitigating catastrophic forgetting and improv-ing discrimination across tasks through specialized feature extraction and shared knowledge consolidation. MoAL [60] enhances pre-trained model-based class-incremental learning with momentum-based adapter interpolation for adaptability and designs a knowledge rumination mechanism to consol-idate old knowledge. SAFE [61] introduces complementary slow and fast parameter-efficient tuning modules to achieve a balance between stability and plasticity in continual learning with pre-trained models. III. T HE PROPOSED APPROACH : M ILES 
+
+In this section, we provide a detailed introduction to M ILES .Firstly, the preliminary of our work is introduced in Sec. III-A, including the problem setup of CIL and the baseline of metric learning. Then, the overall structure of MILES is provided in Sec. III-B. In Sec. III-C, SPP is introduced to cascade a tiny learnable module for each task to apply metric learning to CIL without modifying the pre-trained backbone. In Sec. III-D, a low-rank sub-network is extended to learn 4
+
+intermediate features from the pre-trained model to strengthen the model representational capacity. In Sec. III-E, Distance Regularization is introduced by adding a regularization term in the optimization function to guarantee a consistent average distance of each task. 
+
+A. Preliminary a) Class incremental learning: aims to learn a unified classifier from a data stream. Assuming that the data stream 
+
+D = {D 1, D2, · · · , DT } consists of T tasks containing disjoint categories, then, Dt = {(xi, y i)}nt 
+
+> i=1
+
+denotes the training data for the tth task with nt instances, xi ∈ X t denotes the training images, yi ∈ Y t denotes the corresponding label, and Xt,
+
+Yt denote image sets and label sets for task t, respectively. Specially, we denote the label sets of new categories and old categories as Yn = Yt and Yo = Y1 ∪ · · · ∪ Y t−1, respectively, with Yn ∩ Y o = ∅. In addition, we denote the number of categories in task t as |Y t| = K t and the number of old categories as |Y o| = M = Pt−1 
+
+> i=1
+
+Ki. We follow the exemplar-free setting [16], [50], [51], [52], where no data from previous tasks is retained in subsequent tasks. Therefore, only Dt can be accessed in task t. After learning each task, the model is tested on all seen categories. 
+
+b) Metric learning: employs the distance between the sample features and the class prototypes as the classification criterion. As shown in Eq. (1), it embeds the image x into feature vectors through the frozen backbone network. 
+
+f = F (x) (1) Then, for the Nc training samples of category c, the feature set f c1 , · · · , f cNc is obtained by Eq. (1), and the prototype is calculated by 
+
+pc = 1Nc
+
+XNc 
+
+> i=1
+
+f c 
+
+> i
+
+(2) Let the number of all categories be C, then, a set of prototypes 
+
+{p1, · · · , p c} is obtained by Eq. (2). For the embedded feature vector fu of an unknown image, we calculate the Manhattan distance between the unknown feature and each prototype as 
+
+lc = |fu − pc| (3) and the category yielding to the smallest distance is taken as the inferred label. It is worth noting that applying metric learning to CIL provides a simple and effective baseline, i.e., we only need to calculate the prototype of each new category using training samples, and can directly infer class labels with the updated set of prototypes. 
+
+B. Overall structure 
+
+The overall structure of the proposed method is shown in Fig. 3, which consists of a frozen pre-trained backbone network, SPP adapters, and SRE sub-networks. Given that most pre-trained models adopt the transformer architecture, we employ the classical Vision Transformer [62] as the backbone network [29], [37], [54]. When the tth task arrives, a new SPP adapter and a SRE sub-network are added in the model to adapt for the new task. MLP 
+
+## φ
+
+> SPP Adapter
+> input features
+
+## φZero Initialization   
+
+> φdown
+> φdown
+> φdown
+> ⋯
+> φup
+> φup
+> φup
+> ⋯
+> Input Output
+> Fig. 4. Structure of a SPP adapter.
+
+In the training phase, only a set of SPP adapter and SRE sub-network is involved to maintain a low training cost. The SRE sub-network learns features from samples of the current task and intermediate features from the backbone network, aiming to augment the representation capacity of the frozen backbone. Then, the output subspace feature is concatenated with the original feature of the backbone network and projected by a SPP adapter to shorten the distance to the corresponding prototypes. In the testing phase, the backbone network is utilized only once to infer a sequence of intermediate features. Subse-quently, all SRE sub-networks receive both these intermedi-ate features and the input image, and then output subspace features. Each subspace feature is concatenated with its cor-responding intermediate feature from the backbone network and fed into the dedicated SPP adapter, generating subspace projection features. Finally, Manhattan distances are computed between these subspace projection features and their respective class prototypes, and the class with the minimum distance is assigned as the final prediction. 
+
+C. Subspace Prototype Projection 
+
+The motivation of integrating metric learning into CIL arises from the observation that untrained categories exhibit clustering rather than dispersion in the feature space of the pre-trained model. Therefore, as demonstrated by the baseline method in Sec. III-A, metric learning can achieve CIL easily by computing prototypes of new categories and classifying the instances via distance metrics. However, such approach relies entirely on pre-trained knowledge and lacks ability to learn downstream tasks. Consequently, numerous ambiguous samples cannot be distinguished at the overlapping boundaries of different categories, limiting the model performance. To ad-dress this limitation, we aim to leverage the prior information extracted by the pre-trained model to guide the optimization of the downstream task while maintaining the scalability of the baseline. The primary factor limiting the baseline approach is the overlapping class boundaries in the feature space. Conse-quently, reducing this overlap is essential for identifying ambiguous samples. Since class prototypes provide prior in-formation for classification, we propose to shorten the distance between the sample features with the corresponding prototypes to reduce the overlapping region of different categories in the feature space. To this end, we design a lightweight learnable 5
+
+module, i.e., SPP adapter A, cascaded after the backbone net-work to project the output features of the pre-trained backbone into a subspace and learn classification patterns for categories within the task. As illustrated in Fig. 4, the SPP adapter consists of a MLP layer and a progressive down/up projection branch ϕ. Unlike a conventional U-Net, this branch does not model spatial alignment or multi-scale spatial correspondence. Instead, it operates on the channel dimension of a 1D feature vector. The downsampling path gradually compresses the original feature into a low-dimensional bottleneck, and the upsampling path restores it to the original dimension. In this way, the adapter performs lightweight task-specific feature re-parameterization while remaining compatible with the frozen backbone representation. Its output is depicted by 
+
+A (f ) = f + fmlp + fϕ (4) 
+
+fmlp = Wmlp · f + bmlp (5) 
+
+fϕ = ϕ (f ) (6) where Wmlp ∈ Rd1×d1 , bmlp ∈ Rd1 , d1 is the dimension of the original feature output of the frozen backbone network, and ϕ is composed of a down-sampling block ϕdown and an up-sampling block ϕup , i.e., 
+
+ϕi
+
+> down
+
+ f i
+
+> in
+
+ = o  W i
+
+> down
+
+f i 
+
+> in
+
++ bi
+
+> down
+
+ (7) 
+
+ϕi
+
+> up
+
+ f i
+
+> in
+
+ = o  fdown + W i
+
+> up
+
+f i 
+
+> in
+
++ bi
+
+> up
+
+ (8) In the above formulae, o (·) denotes the activation function, and fin ∈ Rdin denotes the input vector. For Eq. (7), Wdown ∈
+
+Rdin × din  
+
+> r
+
+and bdown ∈ R din  
+
+> r
+
+, r is a hyperparameter that deter-mines the downsampling ratio to achieve a trade-off between performance and efficiency. For Eq. (8), Wup ∈ R din   
+
+> r×din
+
+and 
+
+bup ∈ Rdin , fdown is the vector after downsampling. The SPP adapter can be understood as a three-part residual design. First, the MLP branch performs full-dimensional linear correction on the backbone feature. Second, the down/up projection branch progressively compresses the channel di-mension into a low-dimensional bottleneck and then restores it to the original dimension, so as to learn a lightweight task-specific transformation. Third, the outputs of these two learnable branches are added to the identity mapping, which keeps the adapter close to an identity transformation at initialization and enables stable adaptation during training. For clarity, we provide a concrete dimensional example of the down/up projection branch. When the backbone feature dimension is 768 and the progressive bottleneck is configured as {768 , 192 , 48 , 12 }, the transformation path of the branch can be written as 
+
+768 → 192 → 48 → 12 → 48 → 192 → 768 .
+
+This example shows that the proposed branch performs pro-gressive compression and restoration along the channel dimen-sion of a 1D feature vector. In the CIL scenario, a SPP adapter At is added to adapt to the new task when the t-th task arrives. To maintain the stability of prototypes, all weights and biases are initialized to zeros to ensure At (f ) = f at the beginning of training. Multi-Head Attention 
+
+MLP 
+
+> ReLU
+> d1→d 2→d 1Transformer Block SRE Subnet Block
+
+MLP ReLU 
+
+> d1→d 3→d 1
+
+MLP ReLU 
+
+> d1→d 3→d 1
+
+t 
+
+> Fig. 5. Structure of a SRE sub-network.
+
+Then, the distance between the intra-task categories and their corresponding prototypes is optimized according to Eq. (9). 
+
+Lcenter (xi, y i) = |A t (F (xi)) − pyi | (9) Considering that merely optimizing the SPP adapter At
+
+by Eq. (9) may induce overfitting to new tasks (as all input vectors will be pulled closer to the prototypes of new cate-gories), we propose to introduce the prior information of old categories to enhance distinguishability between the new task and old tasks. Specifically, features of old categories could be modeled by pseudo Gaussian distribution Gc (pc, σ c), where 
+
+pc ∈ { p1, · · · , p M} denotes the prototype and σc denotes the variance of the cth category. Then, pseudo features ˆfc of the 
+
+cth category can be sampled from Gc (pc, σ c). Then, Lstable 
+
+is calculated by Eq. (10) to increase the distance between the old categories and the new task prototypes in the new task feature space: 
+
+Lstable 
+
+ ˆfc
+
+
+
+= 1Kt
+
+> Kt
+
+X
+
+> k=1
+
+1
+
+At
+
+ ˆfc
+
+
+
+− pM+ k
+
+(10) Finally, the training loss of the SPP strategy is defined by Eq. (11) with a hyperparameter β for the trade-off between model stability and plasticity: 
+
+Lcenter + β · L stable (11) The center loss minimizes the distance between intra-task features and their corresponding prototypes, while the stability loss maximizes the distance between out-of-task features and intra-task categories. By this means, we ensure that the dis-tance from the output features to the prototype of the ground truth is less than that to other prototypes, thereby mitigating the issue of overlapping decision boundaries among different categories. In the test phase, features of the input images are extracted by the pre-trained backbone network and processed 6
+
+Algorithm 1: Training pipeline of M ILES 
+
+Input: New data Dt, pre-trained model F, SRE sub-network St and SPP adapter At.
+
+Output: New task prototypes {pM+1 , · · · , p M+K t },updated St and At 
+
+> 1
+
+Calculate the prototypes {pM+1 , · · · , p M+K t } of new task categories using the pre-trained model  
+
+> 2
+
+for epoch = 1 to epochs do  
+
+> 3
+
+Forward propagation using F, St and At 
+
+> 4
+
+Calculate the loss by Eq. (24)  
+
+> 5
+
+Update St and At 
+
+> 6
+
+Recalculate the prototypes {pM+1 , · · · , p M+K t } 
+
+> 7
+
+end  
+
+> 8
+
+Calculate ¯lt 
+
+> old
+
+by Eq. (25) and (26)  
+
+> 9
+
+return {pM+1 , · · · , p M+K t }, St and At
+
+by a set of SPP adapters {A 1, · · · , At}. Then, distances in the task subspace are calculated by Eq. (12): 
+
+lc = |A i (F (x)) − pc| , c ∈ Y i (12) Finally, a set of distances {l1, · · · , l M+K t } is obtained and the category with the smallest distance is identified as the predicted class. 
+
+D. Subspace Representation Extension 
+
+The SPP adapter projects original features into a task-specific subspace. Leveraging class prototype priors, it guides intra-task category feature aggregation to minimize the over-laps of decision boundaries across tasks. However, as the backbone network is entirely frozen, such learning strategy is heavily dependent on the representational capacity acquired during pre-training. Consequently, purely adopting the cas-caded SPP adapter is limited to learning high-dimensional semantics from the output features of the pre-trained model, which struggles to extract additional features for new tasks directly from the original image data. In view of this, we introduce a sub-network, i.e., SRE, to enhance the representation capacity of a new task with-out inducing large computational load. Fig. 5 illustrates the detailed structure of a block in the SRE sub-network. Since each block in the backbone network comprises an attention module and a feed-forward network (FFN) layer, we utilize two low-rank MLP modules per block in the sub-network to approximate architecture of the backbone block with minimal computational overhead. The first low-rank MLP module mimics the mapping relation of the attention module, while the second one approximates the FFN layer. The output of the attention module is then connected between these two low-rank MLP layers. By this means, we enable the SRE sub-network to integrate prior knowledge from the pre-trained model and efficiently extend the feature representations for new tasks at low computational cost. Specifically, the pre-trained model F = {B0, B 1, · · · , B L}
+
+consists of an embedding layer B0 and L transformer blocks 
+
+{B1, · · · , B L}. In the training phase, an input image x is processed by an embedding layer to generate a feature vector 
+
+Algorithm 2: Test pipeline of M ILES 
+
+Input: Input image x, pre-trained model F, SRE sub-networks {S 1, · · · , St} and SPP adapters 
+
+{A 1, · · · , At}.
+
+Output: Prediction logits {l1, · · · , l M+K t } 
+
+> 1
+
+for i = 1 to t do  
+
+> 2
+
+for k = 1 to Ki do  
+
+> 3
+
+Calculate the distance for category c by: 
+
+lc = |A i (F (x) ⊕ S i (x)) − pc| , c ∈ Y i 
+
+> 4
+
+end  
+
+> 5
+
+end  
+
+> 6
+
+return Prediction logits {l1, · · · , l M+K t }
+
+xF 
+
+> 0
+
+according to Eq. (13), and the entire forward propagation process of the pre-trained model is described by Eq. (13) and (14): 
+
+xF 
+
+> 0
+
+= B0 (x) (13) 
+
+xF 
+
+> i
+
+= Bi
+
+ xF
+
+> i−1
+
+ (14) In particular, for the tth task, only the tth SRE sub-network 
+
+St = {st 
+
+> 1
+
+· · · , s tL} is involved in the forward propagation process during training, as defined in Eq. (15) and (16): 
+
+xt 
+
+> 1
+
+= st
+
+> 1
+
+ xF 
+
+> 0
+
+, Attn F
+
+> 1
+
+ xF
+
+> 0
+
+ (15) 
+
+xti = sti
+
+ xti−1, Attn F
+
+> i
+
+ xF
+
+> i−1
+
+ (16) where Atten F 
+
+> i
+
+denotes the attention module of the ith trans-former block in the backbone network, and sti denotes the ith 
+
+SRE block in the tth SRE sub-network, which is calculated by 
+
+xti = MLP ti, 2
+
+ MLP ti, 1
+
+ xti−1
+
+ + Attn F
+
+> i
+
+ xF
+
+> i−1
+
+ (17) where MLP ti, 1 and MLP ti, 2 denote the first and second MLP modules in the SRE block, each module consisting of a downsampling layer, an activation function, and an upsampling layer. Finally, the subspace feature output by the SRE sub-network and the original feature output by the pre-trained model are concatenated and fed into the SPP adapter At to update the model for the new task. After each training epoch, the prototypes of the new task are updated to obtain a suitable center for clustering features. 
+
+E. Distance Regularization 
+
+Although the application of SPP and SRE strategies es-tablishes a subspace for each new task to minimize task confusion, the absence of a unified distance constraint across task subspaces hinders a consistent metric criterion. This de-ficiency can result in a model exhibiting substantially reduced distances from projected features to prototypes in specific task subspaces relative to others, leading to a bias toward those tasks. To mitigate this limitation, we introduce two distance regularization terms to constrain the training of new tasks and maintain inter-task balance. The first term is the task average distance constraint, de-signed to ensure maximal consistency in the average distance from feature vectors to irrelevant tasks. Specifically, for a 7
+
+sample (xi, y i) ∈ Dt from task t, we randomly select a previous task and project it into the subspace of task t, yielding the projected feature vector in Eq. (18): 
+
+f mi = Am (F (xi) ⊕ S m (xi)) (18) where m is the index of a random task, Sm (xi) is the feature vector output by the SRE block, and f mi is the projected feature vector in the feature subspace of task m.Subsequently, we compute the average distance between f mi
+
+and the prototypes for the task m by: 
+
+¯lm = 1Km
+
+XKm 
+
+> k=1
+
+|f mi − pk| (19) Then, we sample a set of pseudo-features 
+
+n ˆf mk
+
+oKm
+
+> k=1
+
+from the pseudo-Gaussian distribution Gk (pk, σ k) , k ∈ Y m of each category in task m, and then calculate the average distance to the prototype pyi in the feature subspace of task t by: 
+
+¯lt = 1Km
+
+XKm 
+
+> k=1
+
+At
+
+ ˆf mk
+
+
+
+− pyi (20) Finally, the task average distance constraint is presented in Eq. (21). 
+
+Ltask = ¯lm − ¯lt (21) The second term is the class average distance constraint, designed to ensure consistent average distances between intra-task features and their corresponding prototypes across all task subspaces. Specifically, after the model is trained on the initial task, the average distance between samples of each class and their corresponding prototypes is first calculated as: 
+
+¯l1old = 1
+
+n1
+
+Xn1 
+
+> i=1
+
+|A 1 (F (xi) ⊕ S (xi)) − pyi | (22) For each subsequent task t (t > 1), we compute the average distance between the features and their corresponding proto-types within each batch. This distance is then optimized to align with the class average distance from old tasks by: 
+
+Lclass = ¯lt−1old − 1
+
+B
+
+XB 
+
+> i=1
+
+|A t (F (xi) ⊕ S (xi)) − pyi |
+
+(23) where B denotes the batch size. To prevent the regularization terms from impairing the model plasticity during optimization, we employ the hyperparameter γ to regulate these two terms. Finally, the total loss is expressed as: 
+
+Ltota l = Lcenter + β · L stable + γ · (Ltask + Lclass ) (24) After the training phase of task t, the class average distance needs to be updated by: 
+
+¯lnew = 1
+
+nt
+
+Xnt 
+
+> i=1
+
+|A t (F (xi) ⊕ S (xi)) − pyi | (25) 
+
+¯lt 
+
+> old
+
+= ¯lt−1old − 1
+
+t
+
+ ¯lt−1old − ¯lnew 
+
+ (26) Finally, the complete training and pipelines are presented in Algorithm 1 and 2, respectively. IV. E XPERIMENTS 
+
+In this section, extensive experiments are conducted to validate the effectiveness of the proposed method. The detailed experimental settings are provided in Sec. IV-A. Then, the proposed method is compared with other CIL methods in six widely adopted benchmark datasets, including CIFAR-100, CUB, Omnibenchmark, ImageNet-A, ImageNet-R and FOOD-101. Comparison results and analysis are provided in Sec. IV-B. Furthermore, ablation study is performed in Sec. IV-C to verify the effectiveness of each component. In Sec. IV-D, more experiments are provided to validate the robustness with different learning orders and different com-binations of hyper-parameters. Additionally, we also provide a comparison of the model parameters and computational overhead among different CIL methods. Finally, visualizations of the proposed method are provided to validate its working mechanism. 
+
+A. Experimental settings a) Datasets: The following experiments are conducted on six widely adopted benchmark datasets, with detailed information shown in Tab. I. It is worth noting that all the six datasets are not included in the pre-training data, thus naturally avoiding data leakage. Additionally, they exhibit significant differences in image style, resolution, and object categories from the pre-training data, thereby being capable of evaluating the model continual learning capability. 
+
+b) Protocols: Following recent work on CIL, we evenly split a dataset into T tasks, denoted as T steps, where the model learns an equal number of categories per step. Specif-ically, we set T to 10 or 50 to evaluate model performance under short and long task sequences. Consistent with [19], [37], [50], [52], the learning order is determined by the random seed of 1993. Each experiment is repeated three times, with results averaged for final reporting. 
+
+c) Evaluation metric: After learning the task t, we validate the model performance on all known categories. Assuming that At represents the accuracy on the test set of all known categories, then, we can obtain a set of task accuracy 
+
+{A1, · · · , A T } and adopt ¯A = 1
+
+> T
+
+PTt=1 At for performance evaluation. Furthermore, we utilize the entire dataset to jointly train the model and subsequently compute the overall clas-sification accuracy, denoted as Ajoint . Then, we employ the forgetting rate F = Ajoint − AT to quantify the forgetting of the CIL method compared to joint training.                                                                                                                                                                                                                                                                                                                
+
+> TABLE I DETAILED INFORMATION ON SIX DATASETS .
+> Dataset Classes Training set Test set Avg. size
+> CIFAR-100 [63] 100 50,000 10,000 32 ×32 CUB-200 [64] 200 9,430 2,358 467 ×386 Omnibenchmark [65] 300 89,697 5,985 764 ×581 ImageNet-A [66] 200 5,960 1,515 443 ×427 ImageNet-R [67] 200 24,000 6,000 443 ×427 FOOD-101 [68] 101 75,750 25,250 475 ×479 8
+> TABLE II THE RESULTS ON CIFAR , C UB AND OMNIBENCHMARK DATASETS
+> Methods Exemplars
+> CIFAR CUB Omnibenchmark
+> T=10 T=50 T=10 T=50 T=10 T=50
+> ¯A↑F↓¯A↑F↓¯A↑F↓¯A↑F↓¯A↑F↓¯A↑F↓
+> Joint †✘92.94 92.94 93.53 93.53 82.59 82.59 Finetune ✘79.24 22.58 45.03 63.72 67.32 41.32 38.13 74.15 66.86 32.03 47.28 56.93 Replay ✔85.06 15.16 82.00 24.90 87.82 12.57 84.55 20.75 76.05 14.88 75.21 18.54 iCaRL [19] ✔87.34 13.69 84.97 20.27 88.96 11.21 87.66 17.58 77.04 13.80 76.53 17.19 DER [22] ✔88.48 9.30 85.99 18.63 88.93 11.24 87.80 17.30 78.03 13.02 77.89 15.38 L2P [50] ✘85.92 13.75 74.29 31.11 84.29 19.02 78.51 28.94 72.91 19.30 69.81 23.49 DualPrompt [51] ✘88.44 9.40 73.66 28.97 84.39 20.08 78.06 28.73 77.38 15.14 71.28 22.66 FOSTER [23] ✔89.75 8.74 87.98 15.28 89.36 9.69 88.39 16.20 79.40 10.93 79.60 12.84 CODA-Prompt [52] ✘89.28 8.50 69.54 37.28 84.15 19.53 75.66 31.70 78.96 12.58 70.50 22.09 FeCAM [53] ✘90.83 6.74 88.43 10.06 91.23 7.15 91.16 7.65 82.46 8.35 80.03 11.36 BEEF [24] ✔85.10 7.84 ––90.00 9.06 88.89 15.38 80.22 9.44 80.11 11.98 APER [29] ✘90.98 6.35 87.97 11.03 88.32 7.78 88.42 8.24 80.05 9.29 80.27 9.59 EASE [37] ✘92.11 5.22 84.31 18.47 90.12 9.77 88.28 7.06 75.93 14.00 73.56 17.07 CoFiMA [54] ✘92.51 4.87 82.64 19.70 87.22 13.93 82.72 21.53 81.69 9.21 72.11 19.84 MTD [42] ✔91.72 6.35 ––90.38 8.49 88.48 10.06 80.62 8.54 81.59 9.89 DGR [55] ✔93.05 4.85 89.74 9.74 91.15 7.61 91.55 6.93 83.14 6.46 82.70 8.30 SAFE [61] ✘92.56 3.38 88.47 8.10 90.32 4.73 89.30 5.57 77.21 13.29 74.39 18.15 TUNA [59] ✘91.10 3.40 91.08 4.17 92.55 5.29 92.65 5.09 82.91 13.12 81.36 11.44 MILES ✘93.93 3.12 91.90 6.03 93.02 4.57 92.86 4.94 85.02 4.04 84.84 5.45
+> †denotes the result of joint training for all tasks, and only the final accuracy is reported.
+
+d) Comparison methods: We first evaluate the perfor-mance upper bound for CIL, i.e., Ajoint , by training the model on all the available data. Subsequently, we assess two baseline methods, i.e., Finetune and Replay. Among them, Finetune learns the new task data by adjusting all parameters of the old model directly, which leads to severe catastrophic forgetting; Replay maintains a limited-capacity exemplar set to preserve a subset of old samples, and trains the model with both the exemplar set and new task data. In particular, we compare seven exemplar-free methods, i.e., L2P [50], DualPrompt [51], CODA-Prompt [52], FeCAM [53], APER [29], EASE [37] and CoFiMA [54]; and six exemplar-based methods, i.e., iCaRL [19], DER [22], FOSTER [23], BEEF [24], MTD [42] and DGR [55], with the proposed approach. To ensure a fair comparison, all methods utilize the same pre-trained backbone network ViT-B/16-IN21K [62]. The size of the exemplar set is fixed to 20 per category, except for ImageNet-A, which adopts 2 per category due to the limited sample number. 
+
+e) Implementation details: The backbone network ViT-B/16-IN21K is pre-trained on ImageNet-21K, and the weights are available from the timm library. To accommodate the pre-trained model, all input images are resized to 224 ×224 pixels and then fed into the backbone network. To ensure the fairness, we reproduce the comparison methods and M ILES 
+
+with the same hyper-parameters and pretrained weight. All models are trained for 20 epochs in each task. The learning rate is initialized as 0.001 and decreased to zero with a cosine annealing scheduler. The batch size is set to 128 for the six datasets. The SGD optimizer is deployed, where the momentum factor is set to 0.9 and weight decay is set to 0.0005. In addition, the method-specific hyperparameters are kept as default without modification. For some architecture-based method such as DER, we only replace the backbone based on their original implementations and directly extend the complete pretrained network. For M ILES , we set d3 = 16 
+
+to maintain a low rank for each block of the SRE sub-network and set r = 4 to gradually adjust the dimension of the hidden vector in each SPP adapter from 768 to 12, i.e., 
+
+{768 , 192 , 48 , 12 }. The hyper-parameters β and γ are set to 0.1 and 0.001, respectively. 
+
+B. Comparison with other approaches 
+
+To illustrate the superiority of the proposed method, we compare M ILES with other CIL approaches on six different datasets. In this context, a higher average accuracy rate or a lower forgetting rate indicates better performance. Tab. II and III present the average accuracy and forgetting rates for each method under the settings of T =10 and T =50. For each setting, the best value is highlighted in bold, and the second-best result, i.e., the runner-up, is indicated by an underline. Furthermore, Fig. 6 and Fig. 7 present the incremental trends for each method under the settings of T =10 and T =50, respec-tively. In each trend graph, we annotate the accuracy gains of MILES relative to the suboptimal method after learning all tasks. Detailed analyses of the comparison experiments for each dataset are given below. 
+
+a) CIFAR: As illustrated in Tab. II, the average accuracy and forgetting rate of M ILES in the setting of T =10 are 93.93% and 3.12%, respectively, for the CIFAR-100 dataset. Specifically, compared with the runner-up method, DGR, the average accuracy increases by 0.88% and the forgetting rate decreases by 1.73%. Furthermore, the average accuracy and 9                                                                                                                                                                                                                                                                                    
+
+> TABLE III THE RESULTS ON IMAGENET -A/R AND FOOD DATASETS
+> Methods Exemplars
+> ImageNet-A ImageNet-R FOOD
+> T=10 T=50 T=10 T=50 T=10 T=50
+> ¯A↑F↓¯A↑F↓¯A↑F↓¯A↑F↓¯A↑F↓¯A↑F↓
+> Joint †✘54.66 54.66 84.50 84.50 92.28 92.28 Finetune ✘37.45 37.68 21.69 46.13 71.46 27.42 48.12 50.83 77.07 29.39 43.15 61.40 Replay ✔39.28 30.43 23.11 42.85 76.42 18.33 69.42 30.42 79.17 22.00 75.06 26.17 iCaRL [19] ✔39.93 29.04 23.27 41.95 78.31 15.57 72.01 26.92 81.16 19.65 77.18 23.02 DER [22] ✔43.57 24.67 37.05 32.22 78.88 14.94 74.20 24.73 85.29 13.77 81.70 17.46 L2P [50] ✘54.46 12.33 41.15 23.59 67.76 24.72 58.02 36.18 83.32 17.35 59.66 42.02 DualPrompt [51] ✘56.18 10.82 35.93 29.05 71.39 18.00 55.54 37.11 86.65 12.26 67.29 33.48 FOSTER [23] ✔46.68 20.56 39.41 29.30 79.94 13.79 77.37 20.08 86.09 12.31 82.81 15.93 CODA-Prompt [52] ✘57.79 9.77 35.69 31.09 75.70 14.18 55.98 39.07 89.21 9.14 62.88 40.71 FeCAM [53] ✘58.46 8.25 52.22 12.29 79.02 11.97 63.75 28.65 89.47 7.46 86.68 12.20 BEEF [24] ✔47.04 20.01 40.97 27.11 80.67 12.71 76.58 21.32 87.40 10.46 83.75 14.73 APER [29] ✘60.26 5.75 57.70 7.77 75.45 17.18 69.29 23.38 88.49 8.68 87.66 10.86 EASE [37] ✘59.09 9.30 58.44 6.73 81.75 8.30 76.51 15.98 88.63 9.02 85.61 13.53 CoFiMA [54] ✘58.52 7.06 43.53 23.46 82.05 8.07 71.46 26.22 90.83 6.44 77.97 24.31 MTD [42] ✔49.18 17.52 37.88 31.54 82.81 9.00 77.75 19.33 88.35 9.38 84.58 13.75 DGR [55] ✔43.66 27.80 36.33 33.40 83.85 7.73 80.57 13.50 91.15 5.81 89.21 8.54 SAFE [61] ✘54.45 9.23 35.01 29.33 78.14 7.41 63.75 21.57 89.75 5.44 87.82 9.40 TUNA [59] ✘61.34 6.71 62.54 5.29 84.17 8.03 64.53 12.35 85.36 26.27 79.62 24.60 MILES ✘62.33 2.92 62.67 2.45 84.90 5.87 81.90 9.96 93.23 3.96 90.75 5.74
+> †denotes the result of joint training for all tasks, and only the final accuracy is reported.
+
+forgetting rate of M ILES in the setting of T =50 are 91.90% and 6.03%, respectively. M ILES outperforms all methods in average accuracy with both settings. As illustrated in Fig. 6a and Fig. 7a, the accuracies of the proposed method are 1.73% and 3.71% higher than those of the runner-up after learning all tasks in the settings of T =10 and T =50, respectively, demonstrating its stronger resistance to catastrophic forgetting. 
+
+b) CUB: As illustrated in Tab. II, the average accuracies of M ILES in the settings of T =10 and 50 are 93.02% and 92.86% for the CUB dataset, achieving the best performance in all CIL methods. Moreover, as illustrated in Fig. 6b and Fig. 7b, the accuracies of the proposed method are 3.04% and 2.11% higher than those of the runner-ups after learning all tasks in the settings of T =10 and 50, respectively, demonstrat-ing that the proposed method outperforms other CIL methods by a significant margin. 
+
+c) Omnibenchmark: As illustrated in Tab. II, the average accuracies of M ILES in the settings of T =10 and 50 are 85.02% and 84.84% for the Omnibenchmark dataset, which outperform the runner-up by 1.88% and 2.14%, respectively. As illustrated in Fig. 6c and Fig. 7c, the accuracies of the proposed method are 2.42% and 2.85% higher than those of the runner-up after learning all tasks in the settings of 
+
+T =10 and 50, demonstrating the superior performance of the proposed method. 
+
+d) ImageNet-A: As illustrated in Tab. III, the average accuracies of M ILES in the settings of T =10 and 50 are 62.33% and 62.67% for the ImageNet-A dataset. As illustrated in Fig. 6d and Fig. 7d, the accuracies of the proposed method are 2.83% and 4.28% higher than those of the runner-ups after learning all tasks in the settings of T =10 and 50, respectively, demonstrating that the proposed method outperforms other CIL methods in this dataset. 
+
+e) ImageNet-R: As illustrated in Tab. III, the average accuracies of M ILES in the settings of T =10 and 50 are 84.90% and 81.90% for the ImageNet-R dataset. As illustrated in Fig. 6e and Fig. 7e, the accuracies of the proposed method are 2.20% and 3.54% higher than those of the runner-up after learning all tasks in the settings of T =10 and 50, also indicating the superiority of the proposed method. 
+
+f) FOOD: As illustrated in Tab. III, the average accu-racies of M ILES in the settings of T =10 and 50 are 93.23% and 90.75% in the FOOD-101 dataset, which outperform the runner-up by 2.08% and 1.54%, respectively. As illustrated in Fig. 6f and Fig. 7f, the accuracies of the proposed method are 1.85% and 2.80% higher than those of the runner-up after learning all tasks in the settings of T =10 and 50, validating the superior performance of the proposed method. 
+
+C. Ablation study 
+
+To verify the effectiveness of each component in M ILES ,we conduct ablation studies using the setting of T =10 on all six datasets. To eliminate randomness, each experiment was repeated three times, and the mean and standard deviation 
+
+are reported. As shown in Tab. IV, Row 3 shows the results of the baseline method, which merely adopts the prototype for classification without training. Row 4 shows the results of applying the SPP strategy with only a MLP layer to construct a subspace for learning a new task. Row 5 shows the results of applying the SPP strategy with bottleneck structure to construct a subspace for learning a new task. Row 6 shows the results of applying the complete SPP strategy to construct a subspace for learning a new task. Comparing the lines 3 to 6, 10 20 40 60 80 100 80 85 90 95 100 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 1.73 
+
+(a) CIFAR 40 80 120 160 200 75 80 85 90 95 100 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 3.04  (b) CUB 60 120 180 240 300 65 70 75 80 85 90 95 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 2.42  (c) Omnibenchmark 40 80 120 160 200 45 50 55 60 65 70 75 80 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt APER  FeCAM Miles 2.83 
+
+(d) ImageNet-A 40 80 120 160 200 60 65 70 75 80 85 90 95 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 2.20  (e) ImageNet-R 21 41 61 81 101 75 80 85 90 95 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 1.85  (f) FOOD 
+
+Fig. 6. Incremental trends on six different datasets with the 10-step setting. TABLE IV RESULTS OF ABLATION STUDY .
+
+Strategy CIFAR CUB Omnibenchmark ImageNet-A ImageNet-R FOOD 
+
+A ↑ F ↓ A ↑ F ↓ A ↑ F ↓ A ↑ F ↓ A ↑ F ↓ A ↑ F ↓
+
+Baseline 87 .92 10 .46 87 .62 7.14 79 .85 9.67 58 .98 4.56 71 .80 21 .22 86 .92 9.21 
+
+w/ SPP-MLP 89 .34 ±0.05 7.95 ±0.06 88 .15 ±0.10 7.00 ±0.09 81 .06 ±0.14 7.65 ±0.12 59 .42 ±0.28 4.28 ±0.25 77 .93 ±0.10 14 .55 ±0.08 88 .47 ±0.05 7.63 ±0.07 
+
+w/ SPP-Bottleneck 90 .06 ±0.08 7.18 ±0.08 89 .35 ±0.14 6.55 ±0.12 81 .93 ±0.08 6.88 ±0.10 60 .15 ±0.20 3.79 ±0.22 80 .96 ±0.15 10 .69 ±0.13 89 .22 ±0.06 6.44 ±0.08 
+
+w/ SPP-Full 91 .68 ±0.07 6.24 ±0.10 90 .21 ±0.06 6.43 ±0.08 82 .47 ±0.12 6.25 ±0.14 61 .06 ±0.24 3.52 ±0.19 82 .63 ±0.15 9.67 ±0.10 90 .58 ±0.07 4.95 ±0.08 
+
+w/ SPP + SRE 92 .88 ±0.12 3.85 ±0.08 91 .62 ±0.11 5.48 ±0.15 83 .92 ±0.15 4.86 ±0.10 62 .00 ±0.22 3.05 ±0.16 83 .70 ±0.17 6.88 ±0.12 92 .06 ±0.10 4.49 ±0.04 
+
+w/ SPP + SRE + DR 93 .89 ±0.08 3.20 ±0.10 93 .13 ±0.08 4.55 ±0.06 84 .96 ±0.08 4.12 ±0.08 62 .41 ±0.28 2.87 ±0.19 84 .79 ±0.23 5.76 ±0.21 93 .28 ±0.08 3.92 ±0.10 
+
+TABLE V SENSITIVITY EXPERIMENTS ON HYPERPARAMETERS .ImageNet-R T = 10 d3 = 4 d3 = 16 d3 = 48 d3 = 96 
+
+r = 2 84.52 84.64 84.89 84.90 
+
+r = 4 83.12 84.75 84.92 85.33 
+
+r = 8 83.47 83.77 83.98 84.25 
+
+the progressive structure built by the SPP module performs better than the basic MLP layers and the general bottle-neck structure . Row 7 shows the results of adding the SPP and SRE modules to strengthen the representative capacity of the backbone network. Row 8 shows the results of adding the DR strategy to balance the distance between features and prototypes in the feature subspace. The comparison between lines 7 and 8 shows that the DR strategy is effective on most benchmarks. Moreover, based on the standard deviation, it can be determined that its improvement to the model is not caused by randomness. After incrementally adding three strategies to the baseline method, the model performance is steadily improved, demonstrating the effectiveness of each component. 
+
+D. Additional experiments and visualizations a) Different learning orders: As illustrated in Fig. 8a, we validate the MILES with 5 learning orders, which are determined by a random seed selected from 
+
+{1994 , 1995 , 1996 , 1997 , 1998 }. The results show that M ILES 
+
+exhibits only a small fluctuation across various learning orders, demonstrating its robustness to order alterations. 
+
+b) Parameter robustness: There are two hyper-parameters in M ILES , i.e., the stability loss factor β and 11 20 40 60 80 100 60 70 80 90 100 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 3.71 
+
+(a) CIFAR 40 80 120 160 200 70 80 90 100 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 2.11  (b) CUB 60 120 180 240 300 60 70 80 90 100 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 2.85  (c) Omnibenchmark 40 80 120 160 200 30 40 50 60 70 80 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt APER  FeCAM Miles 4.28 
+
+(d) ImageNet-A 40 80 120 160 200 50 60 70 80 90 100 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 3.54  (e) ImageNet-R 21 41 61 81 101 50 60 70 80 90 100 Accuracy (%) Number of classes  L2P EASE  DualPrompt CoFiMA  CODA-Prompt DGR  FeCAM Miles 2.80  (f) FOOD 
+
+Fig. 7. Incremental trends on six different datasets with the 50-step setting. 40 80 120 160 200 70 75 80 85 90 95 Accuracy (%) Number of classes  FeCAM  APER  COFiMA  Miles 
+
+(a) Different learning orders 82.15 83.58 83.77 83.05 82.55 82.56 83.77 84.12 83.15 82.94 83.78 84.58 84.9 83.95 83.87 83.2 83.55 83.65 83.62 83.47 82.32 82.64 82.85 83.17 83.16 0.01 0.05 0.1 0.3 0.5 1E-4 5E-4 0.001 0.005 0.01                                  
+
+>             
+> 82.00
+> 82.50
+> 83.00
+> 83.50
+> 84.00
+> 84.50
+> 85.00
+
+(b) Sensitivity experiments DER L2P Dual. FOSTER CODA. FeCAM EASE COFiMA DGR Miles 040 80 120 160 440 480 520 Average Parameters (M) 476.3 173.1 173.4 129.9 89.8 87.1 87.4 87.9 87.7 93.2 (c) Model parameters DER L2P Dual. FOSTER CODA. FeCAM EASE COFiMA DGR Miles 010 20 30 40 90 100 MACs (G) 92.95 33.80 25.35 16.92 16.94 92.96 16.93 16.93 16.92 33.81 (d) Computation complexity 
+
+Fig. 8. Additional experiments. (a) MILES with different learning order : Different learning orders are applied for M ILES in the ImageNet-R dataset. The learning orders are determined by random seeds of {1994 , 1995 , 1996 , 1997 , 1998 }. (b) Hyperparameter sensitivity experiment : We validate M ILES with different combinations of hyper-parameters in the ImageNet-R datasets and report the average accuracy. (c) Analysis of model parameters in various CIL methods : The average number of model parameters of each task is reported for different CIL methods in the setting of 10 steps. (d) Computation complexity :Average GMACs of each task is report for each CIL method in the setting of 10 steps. 
+
+the distance regularization factor γ defined in Eq. (24). We conduct hyper-parameter sensitivity experiment to investigate the parameter robustness by selecting different combinations of the two hyper-parameters on ImageNet-R under the T =10 setting. Specifically, we choose β from {0.01 , 0.05 , 0.1, 0.3, 0.5} and γ from 1 × 10 −4, 5 × 10 −4, 0.001 , 0.005 , 0.01 , and report the average performance in Fig. 8b. It is observed that the performance remains relatively stable, and we suggest 
+
+β = 0.1, γ = 0.001 as default for other datasets. Additionally, we provide further sensitivity experiments for the hyperparameters r and d3 in Tab. V with the setting of 
+
+T =10 in ImageNet-R. Specifically, we select r from {2, 4, 8}
+
+and d3 from {4, 16 , 48 , 96 }, and report the average accuracy. It is observed that the performance remains stable, and we suggest r = 4 and d3 = 16 to achieve the tradeoff between efficiency and performance. 
+
+c) Computational overhead: We compare the number of model parameters and computational complexity for all CIL approaches. As shown in Fig. 8c, we report the aver-age number of model parameters in the setting of T =10. It demonstrates that M ILES maintains a relatively small number of model parameters. Furthermore, assuming FP32 storage per parameter, then the proposed method has a memory 12       
+
+> TABLE VI INTRA -CLASS /I NTER -CLASS DISTANCE ANALYSIS UNDER RANDOM /P RE -TRAINED WEIGHTS OF MULTIPLE MODELS
+
+Backbone 
+
+CIFAR CUB Random Pretrain Random Pretrain Intra Inter Intra Inter Intra Inter Intra Inter ResNet50 4.370 ±0.945 4.976 ±1.327 0.092 ±0.012 0.117 ±0.010 1.916 ±0.309 2.059 ±0.387 0.044 ±0.009 0.062 ±0.009 
+
+ViT-B/16 0.552 ±0.064 0.658 ±0.091 0.113 ±0.013 0.156 ±0.009 0.569 ±0.067 0.639 ±0.091 0.068 ±0.016 0.153 ±0.014 
+
+Swin-B 0.628 ±0.077 0.720 ±0.071 0.182 ±0.037 0.215 ±0.032 0.666 ±0.059 0.734 ±0.067 0.071 ±0.018 0.114 ±0.023 
+
+ConvNexT 0.697 ±0.096 0.841 ±0.096 0.128 ±0.018 0.175 ±0.015 0.718 ±0.073 0.821 ±0.095 0.077 ±0.020 0.131 ±0.022 
+
+Backbone Omnibenchmark ImageNet-A ResNet50 2.478 ±0.580 2.980 ±0.885 0.061 ±0.024 0.090 ±0.027 2.067 ±0.728 2.261 ±0.816 0.129 ±0.019 0.147 ±0.016 
+
+ViT-B/16 0.537 ±0.079 0.645 ±0.094 0.090 ±0.016 0.150 ±0.013 0.571 ±0.097 0.604 ±0.091 0.142 ±0.011 0.154 ±0.009 
+
+Swin-B 0.621 ±0.106 0.724 ±0.106 0.096 ±0.040 0.151 ±0.037 0.699 ±0.080 0.728 ±0.069 0.200 ±0.077 0.220 ±0.076 
+
+ConvNexT 0.668 ±0.121 0.820 ±0.134 0.085 ±0.036 0.153 ±0.028 0.770 ±0.117 0.822 ±0.096 0.166 ±0.023 0.184 ±0.019 
+
+Backbone ImageNet-R FOOD ResNet50 3.344 ±0.637 3.567 ±0.704 0.110 ±0.011 0.125 ±0.008 2.103 ±0.226 2.380 ±0.475 0.064 ±0.012 0.075 ±0.011 
+
+ViT-B/16 0.610 ±0.052 0.639 ±0.049 0.132 ±0.010 0.150 ±0.007 0.424 ±0.041 0.452 ±0.040 0.098 ±0.016 0.150 ±0.011 
+
+Swin-B 0.603 ±0.073 0.621 ±0.063 0.151 ±0.031 0.176 ±0.030 0.670 ±0.016 0.685 ±0.016 0.144 ±0.020 0.172 ±0.019 
+
+ConvNexT 0.667 ±0.101 0.699 ±0.092 0.144 ±0.020 0.172 ±0.012 0.641 ±0.070 0.688 ±0.065 0.106 ±0.018 0.149 ±0.017 
+
+consumption of approximately 373 MB, comparable to that of the smallest model, FeCAM (348 MB). In particular, the memory consumption for the exemplar set is not considered for the memory budget. Therefore, exemplar-based methods such as FOSTER and DGR actually require more memory consumption. Furthermore, we report the Multiply-Accumulate Operations (MACs) for reasoning a 224 ×224 colored image. As shown in Fig. 8d, the proposed method maintains a minimal computational cost among the comparative CIL methods. In particular, although EASE has only 87.4M parameters, each task branch requires a separate forward pass through the backbone network during inference. Consequently, its com-putational cost becomes comparable to that of the network expansion approach DER. 
+
+d) Visualizations: We perform t-SNE visualization in the CIFAR-100 dataset. As illustrated in Fig. 9, the model incrementally learns 5 categories per task, and we provide t-SNE visualizations of the original features and subspace projection features after learning three tasks. As shown in Fig. 9a, the features for different tasks are dispersed with overlapped boundaries between categories. As illustrated in Fig. 9b, 9c and 9d, in each task subspace, in-task samples cluster around their respective class centers, while out-of-task samples remain dispersed, thereby validating our motivation for M ILES . Furthermore, we compare the t-SNE visualizations of original features and subspace projection features of corre-sponding task space in the incremental learning process. As shown in Fig. 10, subspace projection features exhibit more distinct class boundaries, whereas the original features demon-strate significant boundary ambiguity, providing compelling validation for our research motivation. 
+
+e) Motivation Verification: The motivation diagram in Fig. 2 forms the basis of the proposed method, namely that features of similar samples naturally cluster in the feature space of pre-trained models. To further validate this prior, we conducted a metric analysis on four common pre-trained models in Tab. VI. Specifically, we calculated the average distance from each sample to its class prototype (denoted as intra-class distance) and the average distance from each sample to other class prototypes (denoted as inter-class distance) on six public benchmark datasets. The results show that in the feature space of the model with random weights, there is a significant confusion interval between intra-class and inter-class distances, within which it is impossible to determine which class a specific sample belongs to. In contrast, in the fea-ture space of pre-trained models, the intra-class distance is significantly smaller than the inter-class distance . Notably, the intra-class distance under random weights is also smaller than the inter-class distance. The reason is that for any given sample, there are always multiple distant class prototypes that raise the average distance. The standard deviation indicates a considerable confusion interval between the two, making classification with random weights infeasible. V. CONCLUSION 
+
+This paper proposes metric learning with expandable sub-space (M ILES ) for pre-trained model-based class incremental learning. Driven by the observation that features of unseen classes follow regular distributions in the feature space of the pre-trained model, we first design a subspace prototype projection strategy to project original features into a task-specific subspace, where the inter-class boundary confusion is reduced and feature divergence across tasks is amplified. To further mitigate the limited fitting capability of adapters in the SPP strategy, we introduce a subspace representation extension 
+
+strategy that effectively enhances the model representational capacity while minimizing computational overhead. Addition-ally, to address the overfitting in specific task subspaces, we propose distance regularization , which balances feature-to-prototype distances across all subspaces through a regulariza-tion term. Extensive experiments verify the effectiveness of MILES .13 
+
+(a) Original feature space  (b) Feature subspace of task 0  (c) Feature subspace of task 1  (d) Feature subspace of task 2  
+
+> Fig. 9. T-SNE visualization in original feature space and feature subspaces. The model is incrementally trained on three tasks within the CIFAR-100 dataset, each comprising five categories. Subsequently, T-SNE visualization is applied to the original features and all subspace projection features.
+
+(a) Learning 10 categories  (b) Learning 20 categories 
+
+(c) Learning 50 categories  (d) Learning 100 categories 
+
+> Fig. 10. T-SNE visualization of original features and corresponding task subspace projection features. In each group, the left is the visualization of the original features, and the right is the visualization of subspace projection features corresponding to true task.
+
+Limitation and future work: Current study mainly focuses on the standard class-incremental setting, where the pre-trained backbone is assumed to provide transferable represen-tations for incoming tasks and the downstream data largely remain within the target semantic scope. This assumption may be restrictive in real-world applications, where incremental streams often contain out-of-distribution (OOD) shifts in style, acquisition conditions, or semantic content. Under such shifts, the prototype structure and task-specific subspaces learned by MILES may become less reliable. Therefore, although M ILES 
+
+achieves strong performance on PTM-based CIL benchmarks, its robustness under OOD data streams has not yet been systematically investigated. A meaningful future direction is to extend M ILES toward OOD-aware class-incremental learning by incorporating uncertainty-aware feature or prototype mod-eling [69], content-style based augmentation or benign/malign OOD discrimination [70], and test-time shift correction before subspace projection and prototype matching [71], which may improve its applicability to realistic non-stationary environ-ments with both category growth and distribution drift. REFERENCES 
+
+[1] H. Su, Q. Yang, Y. Ning, Z. Hu, and L. Liu, “Multi-label auroral image classification based on cnn and transformer,” 
+
+IEEE Transactions on Image Processing , vol. 34, pp. 1835– 1848, 2025. [2] X. Zhang et al., “Adaptive dual-axis style-based recalibration network with class-wise statistics loss for imbalanced medical image classification,” IEEE Transactions on Image Processing ,vol. 34, pp. 2081–2096, 2025. [3] Z. Gu, Y. Xu, S. Huang, Y. Guo, and H. Zhang, “Rectified noise: A generative model using positive-incentive noise,” in 
+
+Proceedings of the AAAI Conference on Artificial Intelligence ,vol. 40, 2026, pp. 4357–4365. [4] S. Zheng, Z. Wu, Y. Xu, C. He, and Z. Wei, “Detector with classifier2: An end-to-end multi-stream feature aggregation network for fine-grained object detection in remote sensing images,” IEEE Transactions on Image Processing , vol. 34, pp. 2707–2720, 2025. [5] R. M. French, “Catastrophic forgetting in connectionist net-works,” Trends in cognitive sciences , vol. 3, no. 4, pp. 128– 135, 1999. [6] J. Kirkpatrick et al., “Overcoming catastrophic forgetting in neural networks,” Proceedings of the national academy of sciences , vol. 114, no. 13, pp. 3521–3526, 2017. 14 
+
+[7] K. Jiang, S. Huang, X. Chen, J. Shao, H. Zhang, and X. Li, “Multimodal continual learning with mllms from multi-scenario perspectives,” arXiv preprint arXiv:2511.18507 ,2025. [8] Y. Cai, L. Dai, H. Wang, and Z. Li, “Multi-target pan-class intrinsic relevance driven model for improving semantic segmentation in autonomous driving,” IEEE Transactions on Image Processing , vol. 30, pp. 9069–9084, 2021. [9] X. Zhang et al., “Adaptive dual-axis style-based recalibration network with class-wise statistics loss for imbalanced medical image classification,” IEEE Transactions on Image Processing ,vol. 34, pp. 2081–2096, 2025. [10] M. De Lange et al., “A continual learning survey: Defy-ing forgetting in classification tasks,” IEEE Transactions on Pattern Analysis and Machine Intelligence , vol. 44, no. 7, pp. 3366–3385, 2022. [11] Z. Mai, R. Li, J. Jeong, D. Quispe, H. Kim, and S. Sanner, “Online continual learning in image classification: An empir-ical survey,” Neurocomputing , vol. 469, pp. 28–51, 2022. [12] M. Masana, X. Liu, B. Twardowski, M. Menta, A. D. Bag-danov, and J. Van De Weijer, “Class-incremental learning: Sur-vey and performance evaluation on image classification,” IEEE Transactions on Pattern Analysis and Machine Intelligence ,vol. 45, no. 5, pp. 5513–5533, 2022. [13] X. Wang, X. Yang, K. Wei, Y. Gu, and C. Deng, “Class incremental learning via contrastive complementary augmen-tation,” IEEE Transactions on Image Processing , vol. 34, pp. 3663–3673, 2025. [14] J. Liu, Z. Ji, Y. Pang, and Y. Yu, “Ntk-guided few-shot class incremental learning,” IEEE Transactions on Image Process-ing , vol. 33, pp. 6029–6044, 2024. [15] R. Zhu, Z. Huang, J. Sun, P. Luo, H. Zhang, and X. Li, “Viewmask-1-to-3: Multi-view consistent image generation via multimodal discrete diffusion models,” in Proceedings of the 43rd International Conference on Machine Learning (ICML) ,2026. [16] Z. Li and D. Hoiem, “Learning without forgetting,” IEEE transactions on pattern analysis and machine intelligence ,vol. 40, no. 12, pp. 2935–2947, 2017. [17] R. Aljundi, P. Chakravarty, and T. Tuytelaars, “Expert gate: Lifelong learning with a network of experts,” in Proceedings of the IEEE conference on computer vision and pattern recog-nition , 2017, pp. 3366–3375. [18] L. Yu et al., “Semantic drift compensation for class-incremental learning,” in Proceedings of the IEEE/CVF con-ference on computer vision and pattern recognition , 2020, pp. 6982–6991. [19] S.-A. Rebuffi, A. Kolesnikov, G. Sperl, and C. H. Lampert, “Icarl: Incremental classifier and representation learning,” in 
+
+Proceedings of the IEEE conference on Computer Vision and Pattern Recognition , 2017, pp. 2001–2010. [20] Y. Liu, B. Schiele, and Q. Sun, “Rmm: Reinforced memory management for class-incremental learning,” Advances in Neu-ral Information Processing Systems , vol. 34, pp. 3478–3490, 2021. [21] Z. Luo, Y. Liu, B. Schiele, and Q. Sun, “Class-incremental exemplar compression for class-incremental learning,” in Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 11 371–11 380. [22] S. Yan, J. Xie, and X. He, “Der: Dynamically expandable representation for class incremental learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2021, pp. 3014–3023. [23] F.-Y. Wang, D.-W. Zhou, H.-J. Ye, and D.-C. Zhan, “Foster: Feature boosting and compression for class-incremental learn-ing,” in European conference on computer vision , Springer, 2022, pp. 398–414. [24] F.-Y. Wang et al., “Beef: Bi-compatible class-incremental learning via energy-based expansion and fusion,” in The Eleventh International Conference on Learning Representa-tions , 2023. [25] D.-W. Zhou, Q.-W. Wang, H.-J. Ye, and D.-C. Zhan, “A model or 603 exemplars: Towards memory-efficient class-incremental learning,” in The Eleventh International Conference on Learn-ing Representations , 2023. [26] S. Chen, G. Niu, C. Gong, J. Li, J. Yang, and M. Sugiyama, “Large-margin contrastive learning with distance polarization regularizer,” in International conference on machine learning ,PMLR, 2021, pp. 1673–1683. [27] S. Huang, H. Zhang, and X. Li, “Enhance vision-language alignment with noise,” in Proceedings of the AAAI Conference on Artificial Intelligence , 2025. [28] S. Chen, C. Gong, J. Li, J. Yang, G. Niu, and M. Sugiyama, “Learning contrastive embedding in low-dimensional space,” 
+
+Advances in Neural Information Processing Systems , vol. 35, pp. 6345–6357, 2022. [29] D.-W. Zhou, Z.-W. Cai, H.-J. Ye, D.-C. Zhan, and Z. Liu, “Re-visiting class-incremental learning with pre-trained models: Generalizability and adaptivity are all you need,” International Journal of Computer Vision , pp. 1–21, 2024. [30] D.-W. Zhou, H.-L. Sun, J. Ning, H.-J. Ye, and D.-C. Zhan, “Continual learning with pre-trained models: A survey,” arXiv preprint arXiv:2401.16386 , 2024. [31] X. Li, X. Yang, Z. Ma, and J.-H. Xue, “Deep metric learning for few-shot image classification: A review of recent develop-ments,” Pattern Recognition , vol. 138, p. 109 381, 2023. [32] J. Snell, K. Swersky, and R. Zemel, “Prototypical networks for few-shot learning,” Advances in neural information processing systems , vol. 30, 2017. [33] E. J. Hu et al., “Lora: Low-rank adaptation of large language models.,” ICLR , vol. 1, no. 2, p. 3, 2022. [34] H. Zhang, Y. Xu, S. Huang, and X. Li, “Data augmentation of contrastive learning is estimating positive-incentive noise,” 
+
+arXiv preprint arXiv:2408.09929 , 2024. [35] M. Jia et al., “Visual prompt tuning,” in European conference on computer vision , Springer, 2022, pp. 709–727. [36] S. Chen et al., “Adaptformer: Adapting vision transformers for scalable visual recognition,” Advances in Neural Information Processing Systems , vol. 35, pp. 16 664–16 678, 2022. [37] D.-W. Zhou, H.-L. Sun, H.-J. Ye, and D.-C. Zhan, “Expand-able subspace ensemble for pre-trained model-based class-incremental learning,” in Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , 2024, pp. 23 554–23 564. [38] A. Douillard, M. Cord, C. Ollion, T. Robert, and E. Valle, “Podnet: Pooled outputs distillation for small-tasks incremen-tal learning,” in Computer Vision–ECCV 2020: 16th European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part XX 16 , Springer, 2020, pp. 86–102. [39] A. Ashok, K. Joseph, and V. N. Balasubramanian, “Class-incremental learning with cross-space clustering and con-trolled transfer,” in European Conference on Computer Vision ,Springer, 2022, pp. 105–122. [40] L. Meng et al., “Improving global generalization and local personalization for federated learning,” IEEE Transactions on Neural Networks and Learning Systems , vol. 36, no. 1, pp. 76– 87, 2025. [41] X. Wang, Z. Ji, Y. Yu, Y. Pang, and J. Han, “Model atten-tion expansion for few-shot class-incremental learning,” IEEE Transactions on Image Processing , vol. 33, pp. 4419–4431, 2024. [42] H. Wen et al., “Class incremental learning with multi-teacher distillation,” in 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2024, pp. 28 443– 28 452. [43] K. Shi et al., “Protoconnet: Prototypical augmentation and alignment for open-set few-shot image classification,” Dis-plays , p. 103 364, 2026. 15 
+
+[44] Z. Qi, Y.-P. Tang, L. Meng, H. Yu, X. Li, and X. Meng, “Class-wise balancing data replay for federated class-incremental learning,” in The Thirty-ninth Annual Conference on Neural Information Processing Systems , 2025. [45] J. Bang, H. Kim, Y. Yoo, J.-W. Ha, and J. Choi, “Rainbow memory: Continual learning with a memory of diverse sam-ples,” in Proceedings of the IEEE/CVF conference on com-puter vision and pattern recognition , 2021, pp. 8218–8227. [46] Z. Ji, Z. Hou, X. Liu, Y. Pang, and X. Li, “Memorizing com-plementation network for few-shot class-incremental learning,” 
+
+IEEE Transactions on Image Processing , vol. 32, pp. 937–948, 2023. [47] A. Douillard, A. Ram´ e, G. Couairon, and M. Cord, “Dytox: Transformers for continual learning with dynamic token ex-pansion,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 9285– 9295. [48] Y. Lyu et al., “Overcoming recency bias of normalization statistics in continual learning: Balance and adaptation,” Ad-vances in Neural Information Processing Systems , vol. 36, pp. 25 475–25 494, 2023. [49] R. Zhu, S. Huang, Z. Jiao, and H. Zhang, “Explore how to inject beneficial noise in mllms,” in Proceedings of the AAAI Conference on Artificial Intelligence , vol. 40, 2026, pp. 29 150–29 158. [50] Z. Wang et al., “Learning to prompt for continual learning,” in 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2022, pp. 139–149. [51] Z. Wang et al., “Dualprompt: Complementary prompting for rehearsal-free continual learning,” in European conference on computer vision , Springer, 2022, pp. 631–648. [52] J. S. Smith et al., “Coda-prompt: Continual decomposed attention-based prompting for rehearsal-free continual learn-ing,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2023, pp. 11 909–11 919. [53] D. Goswami, Y. Liu, B. Twardowski, and J. Van De Weijer, “Fecam: Exploiting the heterogeneity of class distributions in exemplar-free continual learning,” Advances in Neural Infor-mation Processing Systems , vol. 36, pp. 6582–6595, 2023. [54] I. E. Marouf, S. Roy, E. Tartaglione, and S. Lathuili` ere, “Weighted ensemble models are strong continual learners,” in European Conference on Computer Vision , Springer, 2024, pp. 306–324. [55] J. He, “Gradient reweighting: Towards imbalanced class-incremental learning,” in Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , 2024, pp. 16 668–16 677. [56] K. Jiang, X. Bai, and F. Zhou, “Recurrent network expansion for class incremental learning,” IEEE Transactions on Neural Networks and Learning Systems , vol. 37, no. 1, pp. 122–135, 2026. [57] Q. Tran et al., “Boosting multiple views for pretrained-based continual learning,” in The Thirteenth International Confer-ence on Learning Representations , 2025. [58] K. Jiang, Z. Shi, D. Zhang, H. Zhang, and X. Li, “Mixture of noise for pre-trained model-based class-incremental learning,” in The Thirty-ninth Annual Conference on Neural Information Processing Systems , 2025. [59] Y. Wang, D.-W. Zhou, and H.-J. Ye, “Integrating task-specific and universal adapters for pre-trained model-based class-incremental learning,” in Proceedings of the IEEE/CVF Inter-national Conference on Computer Vision , 2025, pp. 806–816. [60] Z. Gao et al., “Knowledge memorization and rumination for pre-trained model-based class-incremental learning,” in 
+
+Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, pp. 20 523–20 533. [61] L. Zhao, X. Zhang, K. Yan, S. Ding, and W. Huang, “Safe: Slow and fast parameter-efficient tuning for continual learning with pre-trained models,” Advances in Neural Information Processing Systems , vol. 37, pp. 113 772–113 796, 2024. [62] A. Dosovitskiy et al., “An image is worth 16x16 words: Transformers for image recognition at scale,” arXiv preprint arXiv:2010.11929 , 2020. [63] A. Krizhevsky and G. Hinton, “Learning multiple layers of features from tiny images,” Handbook of Systemic Autoimmune Diseases , vol. 1, no. 4, 2009. [64] C. Wah, S. Branson, P. Welinder, P. Perona, and S. Belongie, “The caltech-ucsd birds-200-2011 dataset,” Technical Report CNS-TR-2011-001 , 2011. [65] Y. Zhang, Z. Yin, J. Shao, and Z. Liu, “Benchmarking omni-vision representation through the lens of visual realms,” in 
+
+European Conference on Computer Vision , Springer, 2022, pp. 594–611. [66] D. Hendrycks, K. Zhao, S. Basart, J. Steinhardt, and D. Song, “Natural adversarial examples,” CVPR , 2021. [67] D. Hendrycks et al., “The many faces of robustness: A critical analysis of out-of-distribution generalization,” ICCV , 2021. [68] L. Bossard, M. Guillaumin, and L. Van Gool, “Food-101– mining discriminative components with random forests,” in 
+
+Computer Vision–ECCV 2014: 13th European Conference, Zurich, Switzerland, September 6-12, 2014, Proceedings, Part VI 13 , Springer, 2014, pp. 446–461. [69] X. Li, Y. Dai, Y. Ge, J. Liu, Y. Shan, and L. DUAN, “Un-certainty modeling for out-of-distribution generalization,” in 
+
+International Conference on Learning Representations , 2022. [70] Z. Huang et al., “Harnessing out-of-distribution examples via augmenting content and style,” in The Eleventh International Conference on Learning Representations , 2023. [71] R. Yu, S. Liu, X. Yang, and X. Wang, “Distribution shift inversion for out-of-distribution prediction,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2023, pp. 3592–3602.                  
+
+> Kai Jiang received the B.E. and M.E. degrees from Xidian University, Xi’an, China, in 2022 and 2025, respectively. He is currently pursuing the Ph.D. degree at the School of Artificial Intelligence, Optics and Electronics (iOPEN), Northwestern Polytechni-cal University, Xi’an, China. His research interests include computer vision and machine learning.
+> Zisong Lin received the B.E. degrees from Xidian University, Xi’an, China, in 2024. He is currently pursuing the M.E degree at the National Key Labora-tory of Radar Signal Processing, Xidian University, Xi’an, China. His research interests include com-puter vision and machine learning.
+> Hongyuan Zhang received the B.E. degree in soft-ware engineering from Xidian University, Xi’an, China in 2019 and received the Ph.D. degree from the School of Computer Science and the School of Artificial Intelligence, Optics and Electronics (iOPEN), Northwestern Polytechnical University, Xi’an, China in 2024, under the supervision of Prof. Xuelong Li. He is currently a Postdoctoral Fellow of The University of Hong Kong, working with Prof. Ping Luo. 16
+
+Xueru Bai received the B.S. and Ph.D. degrees in signal and information processing from Xidian University, Xi’an, China, in 2006 and 2011, re-spectively. She is currently a Professor with the National Laboratory of Radar Signal Processing, Xi-dian University. Her research interests include high-resolution radar imaging and radar automatic target recognition. She was a recipient of the National Ex-cellent Doctoral Dissertation Award granted by the Ministry of Education of China and the Program for Excellent Young Scientist selected by the National Natural Science Foundation of China. 
+
+Xuelong Li (M’02–SM’07–F’12) is the CTO and Chief Scientist of China Telecom, where he founded the Institute of Artificial Intelligence (TeleAI) of China Telecom.

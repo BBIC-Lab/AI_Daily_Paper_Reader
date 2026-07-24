@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-005.webp",
+      "caption": "Figure 1: Ordinary real symmetric-cone geometries in R3. The PSD cone S2 + is linearly isomorphic to the Lorentz cone L3 +.",
+      "page": 4,
+      "index": 5,
+      "width": 894,
+      "height": 239
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-003.webp",
+      "caption": "Figure 2: Chunkwise associative scan. Each chunk forms its local state in parallel. An exclusive scan produces inter-chunk prefixes in ⌈log2 NC⌉ rounds, and each output kernel combines its prefix with the local C×C causal term. Only S is shown; Z follows the same scan.",
+      "page": 10,
+      "index": 3,
+      "width": 924,
+      "height": 497
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-001.webp",
+      "caption": "Figure 4: KATA-Mg latency versus sequence length on an NVIDIA H100. Forward latency (left) and forwardplus-backward latency (right) at B=8, H=16, dhead=64, and bf16 on log–log axes. Solid curves are the O(T2) kernels, FlashAttention-2 and quadratic KATA-Mg; dashed curves are the O(T) recurrences, Gated DeltaNet and linear-state KATA-Mg. Lower is better; exact timings appear in Tables 8 and 9.",
+      "page": 11,
+      "index": 1,
+      "width": 1006,
+      "height": 371
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-007.webp",
+      "caption": "Table 2: MQAR length extrapolation and repeated-key overwrite. Accuracy (higher is better); Avg. is the unweighted mean over the displayed settings. Model size and state dimension use the MQAR configuration. ⋆Softmax reports its KV-cache size at T=4096. Within each task and block, the best and second-best fixed-state results are shown in bold blue and underlined, respectively.",
+      "page": 12,
+      "index": 7,
+      "width": 1002,
+      "height": 676
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-004.webp",
+      "caption": "Table 3: Pretraining quality of the 340M models. For word-level perplexity, lower is better; for zero-shot accuracy, higher is better (acc_norm for ARC and HellaSwag, acc otherwise; LMBD is LAMBADA). Bold marks the best sub-quadratic result in the columns discussed in the text.",
+      "page": 14,
+      "index": 4,
+      "width": 842,
+      "height": 246
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-002.webp",
+      "caption": "Table 4: In-context recall of pretrained 340M language models. RULER single-needle accuracy at 1K and 2K (left; 500 samples per length) and Arora’24 cloze accuracy (right), both under normalized substring matching. The best and second-best non-softmax primary methods in each column are shown in bold blue and underlined, respectively; diagnostic ablations are unranked.",
+      "page": 15,
+      "index": 2,
+      "width": 972,
+      "height": 284
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-010.webp",
+      "caption": "Table 6: Example completions. One prompt each from SQuAD and SWDE.",
+      "page": 16,
+      "index": 10,
+      "width": 892,
+      "height": 205
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-006.webp",
+      "caption": "Table 8: Forward latency versus sequence length. Wall-clock milliseconds on one NVIDIA H100 (B=8, H=16, dhead=64, bf16); lower is better.",
+      "page": 36,
+      "index": 6,
+      "width": 656,
+      "height": 224
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-008.webp",
+      "caption": "Table 9: Training-step latency versus sequence length. Forward-plus-backward milliseconds on one NVIDIA H100 (B=8, H=16, dhead=64, bf16); lower is better. Linear-state KATA-Mg uses the O(T) twopass backward.",
+      "page": 37,
+      "index": 8,
+      "width": 648,
+      "height": 186
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17419v1/fig-009.webp",
+      "caption": "Table 10: Forward throughput across the B× T grid. Mtok/s on one NVIDIA H100 (H=16, dhead=64, bf16), sorted by B·T. Tree-scan and linear-chunk use matched d×d states with C=128. Speedup is tree-scan over linear-chunk; higher is better.",
+      "page": 37,
+      "index": 9,
+      "width": 534,
+      "height": 362
+    }
+  ]
+}

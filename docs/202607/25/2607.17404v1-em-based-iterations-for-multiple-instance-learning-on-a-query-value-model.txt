@@ -1,0 +1,1356 @@
+Title: EM-based iterations for multiple instance learning on a query-value model
+
+URL Source: https://arxiv.org/pdf/2607.17404v1
+
+Published Time: Tue, 21 Jul 2026 01:18:08 GMT
+
+Number of Pages: 20
+
+Markdown Content:
+EM-BASED ITERATIONS FOR MULTIPLE INSTANCE LEARNING ON A QUERY-VALUE MODEL 
+
+ETHAN LEVIEN 
+
+Abstract. In multiple instance regression (MIR) data are organized into bags (collections of instances in feature space) and the goal is to learn a mapping that assigns labels to bags. A typical assumption is that there is a so-called concept point in feature space, the proximity to which dictates the bag label. Motivated by modern MIR architectures which are based on attention, we study a softmax model that decouples the concept point and the labeling scheme. The two are respectively determined by a query direction q and a value direction v in feature space. This problem isolates a basic challenge of learning both q and v from bag-level supervision. From this model we derive a parametric family of iterations in the noiseless limit, which generalizes a method known as the EM-DD algorithm. We then derive concentration results for the MLE estimators of the query and value vectors obtained from a random selection of instances. Our result for the value vector shows that a single random initialization of the value vector already points in the correct direction on average, so that a polynomial (in the number of instances per bag and the feature dimension) number of bags is enough for the EM algorithm to converge in O(1) steps with high probability. A key aspect of this analysis is the interplay between concentration of empirical covariance matrices and extremal statistics arising from the selection rule. 
+
+1. Introduction 
+
+Multiple Instance Learning (MIL) was introduced for chemical identification problems in [8] and has since become a major paradigm in machine learning [4]. In contrast to standard supervised learning where individual feature vectors are paired with labels, MIL training data consists of sets of feature vectors, called bags, together with a single bag-level label for each set; see Figure 1. We represent each bag as a matrix Xk
+
+with rows xki (the instances ) and bag labels yk ∈ R (or {0, 1}). The goal in MIL is then to learn a pooling function h : ∪n′ Rn′×d → R from the data ( Xk, y k) which is assumed to be invariant to row permutations of 
+
+Xk [9, 10, 27, 26, 12]. The MIL framework applies across a wide range of applications. In drug design, one measures the binding affinity of a molecule to a target, which is often determined by a single high-binding conformation among the many conformations a molecule can adopt. Each conformation may be embedded as a feature vector and treated as an instance, with the molecule as the bag [8, 15, 24, 23]. In immune repertoire classification instances are embeddings of antibody sequences within an individual’s repertoire and the bag label measures immune response. Typically immunity is determined by only a small fraction of disease-associated sequences [29]. In image analysis, images serve as bags and patches or subregions as instances [18, 33]. The subject of this paper is the asymptotics of the MIL problem when the bag labels are determined by an active instance which is selected via some extremal rule. Specifically, we study the pooling function (1) h∞(X; q, v) = x argmax 1≤j≤n xj ·q · v.
+
+which is parameterized by a query q ∈ Sd−1 and value vector v ∈ Rd. Following [23], we consider the regression setting, henceforth called Multiple Instance Regression (MIR), in which q and v are to be learned from labeled bags {(Xk, h (Xk; q, v)) }k∈[m]. The notion that there is an extremal principle for determining which instance is used to label a bag dates to early work on MIL for drug design [8, 18]. In particular, many models were based on the idea of a concept point x∗ such that the bag label was determined by proximity to 
+
+x∗, e.g., h(Xk) = V (min i d(xi, x∗)) for some distance d and potential V . Eq. (1) falls within a more general class of models where the features used to select the active instance (determined by q) may differ from those used to assign the label to that instance (determined by v); see Figure 1 (middle and right panels). 
+
+2020 Mathematics Subject Classification. 68T07, 68Q32, 60F05. 
+
+Key words and phrases. multiple instance learning, multiple instance regression, extremal pooling, alternating optimization, attention.      
+
+> 1arXiv:2607.17404v1 [math.ST] 19 Jul 2026 2E. LEVIEN Standard supervised
+> learning Label
+> Feature 1 used for
+> selection and labeling Label
+> Feature 2 used for selection,
+> Feature 1 used for labeling Label
+> Feature 1 Feature 2
+
+Figure 1. Comparison of standard supervised learning and MIL. Each row represents a bag of instances (circles). Instances live in feature space, which here is R2 with coordinates (x1, x 2) represented by a hue (edge) and lightness (filling). In standard supervised learning each bag contains a single instance. In MIL, we select an active instance via some selection rule, which takes the lightest circle (middle) or the most orange circle (right). The middle represents an MIL dataset where the feature used for selecting the active instance is also used to label that instance. In contrast, on the right figure the hue is used to select the active instance, but the label comes from the lightness feature. In our model, the directions in feature space used for selection and labeling will be denoted by q and v as a nod to query and value matrices in attention. Eq. (1) can be viewed as a simple case of an Attention layer, where the pooling function is a softmax [14]. Such models have become common in MIL and are sometimes called Hopfield pooling layers [29, 22]. In attention based models instances are aggregated in a bag level embedding zk obtained as a weighted sum of instances: (2) zk =
+
+> n
+
+X
+
+> j=1
+
+ak,j xkj , ak,j = eλs (xkj )
+
+P 
+
+> j′
+
+eλs (xkj′ )
+
+for some scoring function s(xkj ). The scaling factor, or inverse temperature, λ ∈ R is a means of controlling the selection strength on the active instance. The aggregated point in feature space zk is then used to determine the bag label. Similar to the active instances ξk, zk acts as a form of data compression in the following sense. Conditioning on zk removes the dependence on the bag, while conditioning on ξk removes the dependence on all the instances except xkξk . These two forms of data compression are related if we treat 
+
+ak as the bag-dependent prior distribution of ξk:(3) ak,j = P(ξk = j|xk 
+
+> 1
+
+, . . . , xkn) = ⇒ zk = Eξk ∼ak [xkξk ].EM-BASED ITERATIONS 3
+
+This latent variable interpretation has also been explored in the context of self-attention and transformer models, and allows Expectation-Maximization (EM) approaches to be applied to attention layers [14], which are typically trained with gradient descent [17, 9]. The pooling function (1) can be viewed as the large λ
+
+limit of an attention model with linear scoring, s(x) = q · x followed by a linear regression on the aggregated statistic z. That is, Eq. (1) is the limit of the pooling function (4) hλ(X; q, v) := 
+
+> n
+
+X
+
+> j=1
+
+eλ xj ·q
+
+P 
+
+> j′
+
+eλ xj′ ·q (xj · v).
+
+Prior to the introduction of attention models in MIL, the EM algorithm played a major role. Specifically, a variant known as EM-DD [32] combined EM with the Diverse Density (DD) approach of Maron and Lozano-P´ erez [19]. The EM algorithm is an alternating optimization procedure for Maximum-Likelihood Estimation (MLE) which is based on the idea that once a latent variable is conditioned on, the MLE becomes tractable [1, 13]. Conditioning on the indices ξ1, . . . , ξ m of active instances in each bag turns the problem into a standard supervised learning problem, and they are therefore a natural latent variable. Beyond diverse density, classical MIL methods also include SVM and kernel-based approaches [11, 2]. Despite these developments, Attention based models are typically trained with gradient descent, with λ being a learned parameter [29]. While EM has been applied to attention layers in other contexts [16], there does not appear to be any rigorous understanding of how it performs on attention layers for simple models, such as our query-value model. We treat Eq. (1) as a limit of a probabilistic model, which is equivalent to the attention model given by Eq. (4). In particular, we take noise in both selection (which instance is active) and labeling (how y is determined from the active instances) to vanish together. That is, p(ξ|X) and p(y|X, ξ ), which respectively control the noise in the selection of the active instance and the labeling of the bag given this instance, are approaching delta functions. This leads to a general family of assignment iterations arising from the EM algorithm. These iterations treat the active instance ξ∗ 
+
+> k
+
+= argmax 1≤j≤n xkj · q∗ as a latent variable. In particular, at each step of the iteration the value vector is estimated from a linear regression problem where the rows of the design matrix are xkξk , with ξ being a current estimate of the assignment. If only a fraction 
+
+f of the bags have the correctly assigned instance – that is f = m−1 P 
+
+> k
+
+1{ξk = ξ∗ 
+
+> k
+
+} – then a fraction 1 − f
+
+of the rows will not have been used to generate the labels, while the other f will. Moreover, those f rows will be biased towards the query direction. Understanding the resulting linear regression problem therefore involves the interplay of extremal statistics and concentration for the relevant covariance matrices. We will analyze this regression problem after deriving the EM algorithm for the query-value model and presenting some numerical results. 1.1. Organization and contributions of this paper. The paper is organized as follows. 
+
+• In Section 2 we derive a family of iterations, called EM κ iterations, as a limit of the EM algorithm for a soft query–value model. The iterations are parameterized by κ, which controls the relative roles of the query and value vectors in determining the next assignment. We show that the EM-DD method, when linearized, is a variant of the κ = 1 member of this family (which we refer to as the gEM 1 iteration). This therefore clarifies the relationship between previous EM based approaches applied to concept point models, and the general EM algorithm for the query-value model. 
+
+• Section 3 presents numerical examples on synthetic data with Gaussian instances. We find that the linearized EM-DD iteration ( gEM 1) converges in a few steps to the correct assignment when the query and value directions are aligned, but fails to do so when they are misaligned. This is to be expected since the algorithm is misspecified in this case, but interestingly, it converges to a partially correct assignment faster and more reliably than the correctly specified EM iteration. Motivated by this, we find that a staged method converges faster than the constant-κ method. In this method, a κ
+
+schedule alternating between 0 and 1 is run for a fixed number of steps, followed by a fixed schedule. 
+
+• Section 4 contains theoretical results for Gaussian instances. Specifically, we state concentration theorems for the value and query vectors obtained from a random assignment, conditionally on a given fraction of correctly matched instances. Using our concentration result for the value vector we show that a single uniformly random initial assignment already points, on average, in the correct direction for gEM 1; consequently, once m ≳ dn 2(ln n)6 bags are available, this one assignment is likely to yield the true value vector in a single step. 4 E. LEVIEN 
+
+1.2. Related work. 
+
+1.2.1. CEM and clustering. The EM-DD algorithm is closely related to Classification EM (CEM). Here, the likelihood is averaged over the data posterior, with a “hardened” assignment step [5]. CEM was proposed for clustering because it allows many clustering algorithms to be viewed as variants of the EM algorithm [31]. However, while clustering and MIL are both solved with EM, they differ in how the data compression is used. In the regression setting, once ϑ is estimated, the assignment is determined by the observed pairs (yk, X k). In other words, we do not need to integrate information across bags at the E step. In clustering the latent variable is the cluster assignment and to obtain the assignment in the clustering case, we need to combine information across points, but once this is done the parameter estimates are typically determined within each cluster, or are trivial to compute given the cluster assignment (for the prior cluster probabilities, for example [7, 20]). This contrast also has a direct bearing on initialization. In the clustering setting, a random partition of the data produces cluster means that all converge to the global population mean as m → ∞ , so a random initialization carries no information about the true cluster structure; signal only emerges once the E-step has incorporated structure from the data. In the latent regression setting, we can in some cases learn from a completely random assignment (see [12]). 1.2.2. Other extremal regression problems. There are also some related models worth noting. Another problem involving max non-linearities is the max-linear factor model, where the goal is to learn v from 
+
+yk = max i{Xk,i βi} [25]. In that case the problem can be viewed as linear regression on the tropical semir-ing and solved with a tropical matrix factorization. This contrasts with Eq. (1), where the matrix–vector product Xkv occurs in Euclidean space and the max is taken afterward, making algebraic approaches more challenging to develop. 1.2.3. MIR with Gaussian instances. Prior works [6, 12] have studied the asymptotics of a regression problem with Gaussian instances when the labeling mechanism is linear. Some of their results are similar in spirit to our Theorem 4.6. In particular Lemma 3.1 in [12] provides bounds on the probability of retrieving the correct regression coefficient from randomly selected bags, with each instance being assigned the same bag label. We discuss the connection in detail in Section 4. 1.2.4. Statistical guarantees for the EM algorithm. There is also a substantial literature on statistical guaran-tees for EM-type algorithms in latent-variable models, including finite-sample and population-level analyses of EM [3, 30]. Our setting differs in that the noiseless extremal limit leads to hardened assignment iterations whose behavior is governed by empirical covariance concentration and Gaussian extreme-value statistics. 2. EM-based assignment iterations 
+
+2.1. Notation. We use the notation [ n] = {1, . . . , n } for any n ∈ N. ∥ · ∥ will denote the 2-norm for vectors and the spectral norm for matrices. We use θx,y to denote the angle between vectors x and y. As described in the introduction, our predictors are organized in m bags each containing n instances. Bags are represented as n × d design matrices Xk whose rows are d-vectors xkj . A vector ξ = ( ξ1, . . . , ξ m) ∈ [n]m is called a bag assignment and assigns each bag an instance. For an assignment ξ and data D = {(Xk, h (Xk; q, v)) }k∈[m]
+
+we define a matrix X(ξ) ∈ Rm×d whose rows are the assigned instances from each bag; that is, (5) X(ξ) = 
+
+
+
+x1
+
+> ξ1
+
+...
+
+xmξm
+
+ ∈ Rm×d.
+
+For two assignments ξ and ξ∗, we denote the Hamming distance by dH (ξ, ξ∗) := # {k ∈ [m] : ξk̸ = ξ∗ 
+
+> k
+
+}. For two assignments ξ, ξ′ ∈ [n]m, we denote the cross covariance matrix of assigned instances by (6) ˆΣ( ξ, ξ′) = 1
+
+m X(ξ)T X(ξ′).EM-BASED ITERATIONS 5
+
+2.2. The EM algorithm for a general latent variable regression model. Here we provide a brief introduction to the EM algorithm as it applies to a generic regression problem with a latent variable ξ and parameters ϑ. For the MIL problem, ξ will be the assignment defined above and ϑ will be the value and query vectors; however, the formulation is able to accommodate a generic regression problem with a latent variable. The starting point is the likelihood p(y|X, ϑ ) of the response variable given the predictors and parameters 
+
+ϑ.(7) L(ϑ) = 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+Lk(ϑ) = 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+ln p(yk|Xk, ϑ )where the likelihood of a single datum is obtained by marginalizing over ξ: p(y|X, ϑ ) = P 
+
+> ξ
+
+p(y, ξ |X, ϑ ). We assume the model is well specified, meaning the data ( yk, X k) is sampled from p(yk|Xk, ϑ ∗)π(Xk) for the true parameters ϑ∗ and predictor prior π(Xk). The idea of the EM algorithm is that the likelihood 
+
+p(y|X, ξ, ϑ ) obtained by conditioning on the latent variable ξ renders the likelihood more tractable (typically convex). By Jensen’s inequality, L(ϑ) is bounded below by (8) L(ϑ, r ) = 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+Eξ∼rk
+
+
+
+ln p(y, ξ |X, ϑ )
+
+rk(ξ)
+
+
+
+where r = m ⊗mk rk. L(ϑ, r ) is referred to as the variational lower bound (VLB) and satisfies 
+
+L(ϑ) − L(ϑ, r ) = 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+Eξ∼rk
+
+
+
+ln rk(ξ)
+
+p(ξ|yk, X k, ϑ )
+
+
+
+(9) = 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+DKL (rk, p (·| yk, X k, ϑ )) ≥ 0(10) Finding the distribution r which maximizes the VLB is therefore equivalent to minimizing the expected KL divergence between the latent variable posterior and the distribution rk, yielding ˆ pk(ξ) = p(ξ|yk, X k, ˆϑ). The EM algorithm is the alternating iteration on the VLB 
+
+r(t+1) = argmax r L(ϑ(t), r )(11) 
+
+ϑ(t+1) = argmax ϑ L(ϑ, r (t+1) )(12) where ϑ(0) is typically sampled uniformly, but may also be drawn from some prior distribution. Computing 
+
+L(ϑ, r (t+1) ) is referred to as the expectation step, while the optimization to find ϑ is the maximization step. Usually this is written in the equivalent form (13) ϑ(t+1) = argmax ϑ Q(ϑ; ϑ(t))where Q is the so-called Q-function given by (14) Q(ϑ; ϑ(t)) := 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+X
+
+> ξk
+
+p(ξk|yk, X k, ϑ (t)) ln p(yk, ξ k|Xk, ϑ )It can be checked that Eq. (14) is equivalent to (11). The basic theory of EM presented in [20] establishes that the likelihood is non-decreasing along the sequence {ϑ(t)}t≥0.In the case of MIL, a common assumption is that the assignment is generated by an extremal principle, thus p(ξk = j|ϑ) is a δ function. Computing the extremal assignment at each step gives rise to 
+
+ξ(t+1)  
+
+> k
+
+= argmax ξ Lk(ϑ(t), ξ k), k = 1 , . . . , m (15) 
+
+ϑ(t+1) = argmax ϑ L(ϑ, ξ(t+1) )(16) where L(ϑ, ξ) is shorthand for L(ϑ, δ ξ) with L defined by Eq. 8 (and similarly for L(ϑ, δ ξ)). This “hard” form of the EM is referred to as the CEM in the context of clustering [5] and is related to EM-DD [32, 33] algorithm for MIL, as we explain below. If Eq. (15) is to be understood as the limit of the EM when the posterior ˆ pk(ξ) approaches a delta function, we should also be taking both the likelihood p(yk|ξk, X k, ϑ ) and the assignment prior p(ξk|Xk, ϑ ) to approach delta function simultaneously. Depending on the relative rates 6 E. LEVIEN 
+
+at which these approach delta functions, we will arrive at different updates for the assignment ξk. However, the data generating process will not depend on this choice. 2.3. Query-value model and Q-function. We now introduce a probabilistic model for which the extremal regression problem described in the introduction is a limit. The learnable parameters are the query–value pair ϑ = ( v, q) ∈ Rd × Sd−1 and the latent variable is the assignment ξ. For each k, we introduce a distribution on [ n] depending on the instances: (17) wk,j (q) = eq·xkj −ψk (q), ψk(q) = ln X
+
+> j′
+
+eq·xkj′
+
+This can also be seen as an exponential family with natural parameter q and uniform prior over the bag instances [1]. The function ψk is known as the cumulant generating function. Our data generating model may be written compactly as 
+
+P  ξk = j|Xk, q = wk,j (λq)(18a) 
+
+yk = v · xkξk + ϵ, ϵ ∼ Normal(0 , σ 2 
+
+> ϵ
+
+)(18b) For this model, the iteration given in Eq. (15) has a simple form, which is amenable to analytical study using tools from high dimensional probability theory and extreme statistics. Notice that conditioning on the assignment removes the dependence of the likelihood on the q and turns the problem of estimating v into a linear regression problem; that is (19) p(yk|Xk, ξ k, v, q) = p(yk|Xk, ξ k, v) = 1
+
+σϵ
+
+√2π e−(yk −xkξk ·v)2/2σ2 
+
+> ϵ
+
+.
+
+In this way, ξ acts as a compression of the data, which is precisely what we want for the latent variable in the EM algorithm. The marginal likelihood (20) p(yk|Xk, v, q) = X
+
+> j
+
+wk,j (q)p(yk|Xk, ξ k = j, v, q)is related to the diverse density described in [19, 32]. A key difference, however, between our model and theirs is the query–value geometry. Specifically, in their model the bag label is determined by the distance to the “concept point,” which in our case is the query. The posterior probabilities of assignments will be written as (21) ˆpk,j (v, q) := p(ξk = j | yk, X k, v, q)which are given by ˆpk,j (v, q) = p(yk | ξk = j, X k, v)wk,j (λq)
+
+P 
+
+> j′
+
+p(yk | ξk = j′, X k, v)wk,j ′ (λq) =exp 
+
+
+
+− (yk −v·xkj )2
+
+> 2σ2
+> ϵ
+
++ λq · xkj
+
+P 
+
+> j′
+
+exp 
+
+
+
+− (yk −v·xkj′ )2
+
+> 2σ2
+> ϵ
+
++ λq · xkj′
+
+ .(22) and complete-data log-likelihood for bag k is (23) ln p(yk, ξ k = j | Xk, v, q) = − (yk − v · xkj )2
+
+2σ2
+
+> ϵ
+
++ λ q · xkj − ψk(λq) − ln( σϵ
+
+√2π).
+
+Combining all this, we arrive at the Q-function of the EM algorithm, which can be written as linear combination of terms corresponding to the value and query updates: 
+
+Q(v, q; ˆ p(v(t), q(t))) = Q1(v; ˆ p(v(t), q(t))) + Q2(q; ˆ p(v(t), q(t))) (24) with 
+
+Q1(v; p) = − 12mσ 2
+
+> ϵm
+
+X
+
+> k=1
+> n
+
+X
+
+> j=1
+
+pk,j (yk − v · xkj )2,(25) 
+
+Q2(q; p) = 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+λq ·
+
+> n
+
+X
+
+> j=1
+
+pk,j xkj − ψk(λq)
+
+ .(26) EM-BASED ITERATIONS 7
+
+These functions are to be maximized independently to obtain the query and value updates. The value update is straightforward to solve and has the form of a weighted least-squares problem, and therefore has a closed-form solution. The query update is also a convex optimization problem when ˆ pk,j > 0, since ψk is convex, however it does not have a closed form solution. In the next subsection we introduce an approximation in the hardened limit. 2.4. Assignment iterations for the hardened limit. The extremal regression model introduced in the introduction can be understood as the limit of Eq. (18b) as σ2 
+
+> ϵ
+
+, λ −1 → 0. Specifically, to obtain Eq. (1), we define (27) κ := λτ , τ := λ + 12σ2
+
+> ϵ
+
+.
+
+and take τ → ∞ while keeping κ fixed. This leads to the hard assignment update (28) ˆξκk (q, v) = argmax j
+
+κ xkj · q − (1 − κ)( yk − xkj · v)2 .
+
+We denote the full assignment mapping ˆξκ
+
+: Rd × Rd → [n]m by (29) ˆξκ
+
+(q, v) := ( ˆξκ 
+
+> 1
+
+(q, v), . . . , ˆξκm(q, v)) .
+
+This tells us how to compute the expectation (E-step) in the hard limit of the EM algorithm, since in the 
+
+τ → ∞ limit the expectation is simply given by the index ˆξκk (q, v) term in the sum for each bag k ∈ [m]. Now let ˆ q(ξ) and ˆ v(ξ) be the MLE for the query and values given an assignment ξ. That is, these are obtained by maximizing Q1 and Q2 respectively. The precise estimates we use are given in the next subsection. An iteration on assignment space is given by (30) ξ(t+1) = ˆξκ
+
+(ˆ q(ξ(t)), ˆv(ξ(t))) Taking ξ(0) ∼ Uniform([ n]m), this gives an algorithm for finding ξ. We will refer to this as the EM κ iteration. In subsequent sections we investigate properties of this iteration when applied to Gaussian instances with well-specified labeling ( meaning the labels are derived from the model in the limit τ → ∞ ). Importantly, in this limit the data does not depend on κ. In other words, when λ = O(1 /σ 2 
+
+> ϵ
+
+) and λ → ∞ the data ceases to depend on either parameter, yet the limiting behavior of the EM algorithm does. κ should therefore be treated as a tuning parameter when dealing with such extremal data. For the boundary case κ = 0, we write (31) ξ(t+1) = ˆξ0
+
+(ˆ v(ξ(t))) .
+
+Technically, this limiting case of EM κ assumes that the labeling is far less noisy than the selection, thus there is no point in using the signal from the selection rule (which comes from Q2) when we have perfect information from the labels. However, since the query MLE does not have a closed form, it may still be advantageous to use it in some situations where both the selection and labeling are noiseless. The query can also be computed after the iteration is run for some time. When q ∝ v we could use the value map as input for the query argument in the assignment map: (32) ξ(t+1) = ˆξκ
+
+(ˆ v(ξ(t)), ˆv(ξ(t))) This makes sense when the query and value are aligned, since there is no need to rely on the approximate query ˆ qa. We denote Eq. (32) by gEM κ to distinguish it from the EM κ algorithms which are derived for any 
+
+v. In this special case κ = 1, gEM 1 becomes a linearization of the EM-DD algorithm from [32]. In particular, the formulation in [32] uses a nonlinear labeling scheme where the bag label is yk = max j e−γ|| v−xkj || 22 . If γ is small and simultaneously d is large so xkj are concentrated on the sphere (or the instances are normalized), the first order approximation is e−γ|| v−xkj || 22 ≈ v · xkj + constant terms. 8 E. LEVIEN 
+
+2.5. Query and value updates. Putting the hard assignment into Q1 yields the value mapping (33) ˆv(ξ) = argmin v∈Rd ∥y − X(ξ)v∥22.
+
+In other words, ˆ v(ξ) is the solution to the regression problem with design matrix X(ξ). The maximization problem for the query does not have a closed form solution and there are different approaches we can take to update it. The gradient of the Q2 function is (34) 1
+
+λ ∇Q2(q; p(v(t), q(t))) = 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+
+
+> n
+
+X
+
+> j=1
+
+pk,j (v(t), q(t))xkj − 1
+
+λ ∇ψk(λq)
+
+
+
+where we have used λ = τ κ . Note that (35) 1
+
+λ ∇ψk(λq) = 
+
+P 
+
+> j
+
+xkj eλxkj ·q
+
+P 
+
+> j′
+
+eλxkj′ ·q ,
+
+which we recognize as softmax pooling of the kth bag, also known as the Modern Hopfield Update rule [22]. When ξ = ξ(t), the limit τ → ∞ gives (36) Q2(q; p(v(t), q(t))) → (1 /λ )Q∗(q, ξ(t)) := 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+
+
+q · xkξ(t)
+
+> k
+
+− max  
+
+> 1≤j≤n
+
+xkj · q
+
+
+
+In general, Q∗(q, ξ) does not have a unique maximizer on the unit sphere; the function is maximized on a cone where ξk = argmax 1≤j≤n xkj ·q. However, as n grows these cones converge to points which, for Gaussian instance, are well approximated by the normalized average over instances: (37) ˆqa(ξ) := ¯xξ
+
+∥¯xξ∥ , ¯xξ := 1
+
+m X(ξ)T 1 = 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+xkξk .
+
+In the next section we will provide a justification for using ˆ qa(ξ) as an approximation the optimization problem for Q∗(q, ξ). Replacing ˆ q with ˆ qa in Eqns (30) and (32) yields two families of iterations with a single parameter, κ.3. Examples on synthetic data 
+
+3.1. Experimental setup. As proof of concept and to establish some basic properties of the various it-erations, we perform simulations where the model is well-specified and the instance distribution is i.i.d. Gaussian. This means the true labels are generated by the extremal pooling function with no observation noise ( σϵ = 0): (38) xkj ∼ 
+
+> i.i.d
+
+Normal(0 , Σ) , yk = h∞(Xk, q∗, v∗).
+
+We once again emphasize that κ is absent from the data generating process in the limit τ → ∞ , and is therefore treated as an algorithmic parameter. It should be noted that if we knew our data was generated in this way, we could find v and q by searching all possible assignments for a small number of bags (say 2) and performing regression on each one. This is however highly sensitive to measurement noise. More importantly, our goal in this paper is not to solve the MIL problem for this particular data, rather to use this limiting case to probe the properties of the EM algorithm where there is strong selection. 3.2. A comparison of EM κ and gEM 1. Figure 2 presents numerical experiments where EM 0 and gEM 1 are run for a range of n values with two different angles θq∗,v∗ . We have plotted the match fraction f (t) =1 − dH (ξ(t), ξ∗)/m at t = 100. From Figure 2, we observe the following: First, for both angles considered, EM 0 achieves near-zero error for sufficiently small n, but there appears to be a threshold above which the algorithm does not converge for the sampled assignment. Second, the gEM 1 algorithm converges for nearly all n at the zero angle, but not 
+
+π/ 4. The failure at higher angles is to be expected since it violates the underlying assumption of aligned query and value. Interestingly, the match fraction in the trajectories of gEM 1 also converge, but not to f = 1. Intuitively, when the query and value are aligned, gEM 1 has an advantage coming from the fact that the assignment and value step (E and M) use different pieces of information about the data generating process; namely, the labeling and selection rule. EM-BASED ITERATIONS 920 40 
+
+## n
+
+01  
+
+> 1 − f
+> θq,v = 0 ,EM 0
+> bag index
+> t
+
+n = 5 
+
+> bag index
+
+n = 15 
+
+> bag index
+
+n = 25 
+
+> bag index
+
+n = 35 20 40 
+
+## n
+
+01    
+
+> 1 − f
+> θq,v = 0 ,˜EM 1
+> bag index
+> t
+> bag index bag index bag index
+
+20 40 
+
+## n
+
+01     
+
+> 1 − f
+> θq,v =π/ 4,EM 0
+> bag index
+> t
+> bag index bag index bag index
+
+20 40 
+
+## n
+
+0.51.0     
+
+> 1 − f
+> θq,v =π/ 4,˜EM 1
+> bag index
+> t
+> bag index bag index bag index
+
+Figure 2. Comparison of the EM 0 iteration (30) (top row) and gEM 1 (32) (bottom row) as a function of the number of instances per bag n at t = 100 steps from a uniformly random initial assignment. The image plots (right) show which bags have correctly identified active instances. For clarity, we only show a subset of the instances. The n values corresponding to these examples are circled (left). Parameter values: θq∗,v∗ = π/ 4, m = 5000, d = 15, instances i.i.d. Normal(0 , I d). 3.3. Dependence on κ schedule. In addition to the gEM 1 and EM 0 simulations we performed experiments with EM 0.5 and an alternating schedule denoted κ = 0 → 1 or EM 0→1 where the assignment step alternates between ˆξ0
+
+and ˆξ1
+
+. We show simulations sampled from random initial assignments for the different methods in Fig 3. The idea of the κ = 0 → 1 schedule is to obtain some benefits of gEM 1, but in a method which allows for distinct q and v vectors. An obvious issue is that the query step is only performed after an assignment update based on the value. The query update ˆ qa is, however, leveraging correlations in the assigned instances at the current setup which need to have been introduced in prior steps, thus this method ends up performing only marginally better than gEM 1.From Figure 3 we see that there is a tradeoff: EM 0 schedule is able to retrieve the correct assignment from a random assignment with small probability, the mixed schedules EM 0.5 and EM 0→1 are more reliable, but sensitive to the angle, much like gEM 1. gEM 1 and EM 0→1 converge quickly, but often to the wrong value, and for fixed κ the basin of attraction appears very small. Motivated by this, we tested a staged method 10 E. LEVIEN 0.00.20.40.60.81.0                
+
+> f (t)
+> θq,v  = 0
+> κ= 0 κ= 0 .5κ=0 →1˜EM 1staged
+> 050 100
+> t
+> 0.00.20.40.60.81.0
+> f (t)
+> θq,v  = π/ 4050 100
+> t
+> 050 100
+> t
+> 050 100
+> t
+> 050 100
+> t
+
+Figure 3. Trajectories of the match fraction f (t) over iterations. Each panel shows a different variant of the hard EM iteration. Faint colored curves are individual trajectories initialized from random assignments. The bold black curve is the mean over all trajectories. Parameter values: m = 1000, n = 50, d = 10, θq∗,v∗ = 0. 0      
+
+> π/ 4
+> π/ 2
+> 1 − f
+> mean
+> 1−f
+> κ= 0
+> κ= 0 .5
+> κ=0 →1
+> ˜EM 1
+> staged
+> θˆv, v ∗
+> θˆv, v ∗
+> θˆqa, q ∗
+> θˆqa, q ∗
+> 0π/ 4π/ 2
+
+θv∗,q ∗  
+
+> 0
+> π/ 4
+> π/ 2
+> 1 − f
+> Min
+> 0π/ 4π/ 2
+
+θv∗,q ∗  
+
+> θˆv, v ∗
+> 0π/ 4π/ 2
+
+θv∗,q ∗
+
+> θˆqa, q ∗
+
+Figure 4. Performance of the EM κ schedules, gEM 1, and the staged method after t = 100 iterations, as a function of the misalignment angle θv∗,q∗ . Columns show the match-fraction error 1 − f (left), the value angle θˆv,v∗ (middle), and the query angle θˆqa,q∗ (right). The top row shows the mean over the ensemble of random initial assignments (shaded bands: ± one standard error); the bottom row shows the minimum over the same ensemble. Parameter values: m = 1000, n = 15, d = 10, 400 replicates per value of θv∗,q∗ .where the first 20 steps are run with EM 0→1. In Figure 4 we show the mean final match fraction after 
+
+t = 100 iterations (top row) and the minimum over the ensemble of instances for all methods, including the staged one. The staged method outperforms all others except at low angles. A detailed study of the various EM-BASED ITERATIONS 11 
+
+schedules and addressing questions such as the optimal time to switch the κ schedule in the staged method is beyond the scope of this work. 4. Asymptotics results for many bags 
+
+Here we present results on the limit behavior of the query and value map evaluated on a random assign-ment. Our result for the value map tells us how many initial assignments we must sample in order for one to give a good approximation of the true assignment after one step of gEM 1 when θv∗,q∗ = 0. 4.1. Preliminaries. We recall the definition of a sub-Gaussian random vector and a tail bound on empirical covariance matrices with sub-Gaussian rows. 
+
+Definition 4.1. A random vector x is sub-Gaussian if there is a constant K such that 
+
+(39) sup 
+
+> u∈Sd−1
+
+P (|⟨ x, u⟩| > t ) ≤ 2e−(t/K )2
+
+.
+
+Note that for a Gaussian K is just the standard deviation. The following result is standard; e.g. see [28]. 
+
+Lemma 4.2. Let X ∈ Rm×d have m i.i.d. sub-Gaussian rows, the second moment matrix 
+
+(40) ˆΣ = 1
+
+m XT X ∈ Rd×d
+
+satisfies the tail bound 
+
+(41) P ∥ ˆΣ − Σ∥ > CK 2|| Σ|| 
+
+r d + δm + d + δm
+
+!! 
+
+< 2e−δ
+
+where Σ = E[ ˆΣ] and K is the sub-Gaussian norm of the rows of X and C is a constant. In particular, for 
+
+ϵ ≪ K2|| Σ|| there is a high probability that 
+
+(42) ∥ ˆΣ − Σ∥ = O(ϵ)
+
+when m ≳ dK 4|| Σ|| 2/ϵ 2.
+
+Owing to the fact that when we condition on dH the rows of X(ξ) are distributed according to the extremal statistics of i.i.d. Gaussians, it is important to have some estimates of these statistics. Let X1, . . . , X n be i.i.d. Normal(0 , 1) random variables and let 
+
+ξ∗ = argmax 1≤j≤n Xj .
+
+Define the following moments associated with the extremal instance: (43) μ := E[Xξ∗ ], s := E[X2 
+
+> ξ∗
+
+], w := E[X2 
+
+> j
+
+| j̸ = ξ∗], v := E[Xξ∗ Xj | j̸ = ξ∗],
+
+Two important identities are the following. 
+
+Lemma 4.3. v = (1 − s)/(n − 1) and w = v + 1 The proof is given in Appendix B. Additionally, we will use the following asymptotic result, which is standard (e.g. see [21]) 
+
+Lemma 4.4. As n → ∞ , μ ∼ √2 ln n and s ∼ 2 ln n.
+
+4.2. The value vector. If ˆΣ( ξ, ξ) is invertible, which is true almost surely, we have (44) ˆv(ξ) = ˆΣ( ξ, ξ)−1 1
+
+m X(ξ)T y = ˆΣ( ξ, ξ)−1 ˆΣ( ξ, ξ∗)v∗.
+
+The idea is to approximate the matrices ˆΣ( ξ, ξ) and ˆΣ( ξ, ξ∗) appearing in Eq. (44) with their averages using Eq. (41). 12 E. LEVIEN 
+
+Lemma 4.5. Assume Eq. (38) and without loss of generality we take q∗ = e1. Let dH = dH (ξ, ξ∗) and define 
+
+¯A(f ) := E[ ˆΣ( ξ, ξ) | dH /m = 1 − f ],(45) ¯B(f ) := E[ ˆΣ( ξ, ξ∗) | dH /m = 1 − f ](46) 
+
+where the expectations are taken over both the conditional distribution of ξ and the Xki,j . Then 
+
+¯A(f ) = Σ + ρn(f )Σ −11,1Σ1ΣT
+
+> 1
+
+(47) ¯B(f ) = f Σ + ρn(f )Σ −11,1Σ1ΣT
+
+> 1
+
+(48) 
+
+where 
+
+ρn(f ) := f (s − 1) + (1 − f )( w − 1) (49) Note that both formulas can be written as linear interpolations between f = 0 and f = 1, e.g. ¯A(f ) = ¯A(0)(1 − f ) + ¯A(1) f. (50) As a result, the proof amounts to deriving formulas for the endpoints. This is also helpful because we cannot technically apply Lemma (4.2) directly to ¯A(f ) and ¯B(f ), since conditioning on dH introduces correlations among the rows. However, the rows of ˆΣ( ξ, ξ) are conditionally independent given 1 {ξk =ξ∗ 
+
+> k}
+
+,and since cov(1 {ξk =ξ∗ 
+
+> k}
+
+, 1{ξk′ =ξ∗ 
+
+> k′}
+
+) = O(1 /m ), the conditional covariance dominates the marginal covariance asymptotically in m. These conditional covariance matrices have means such as ¯A(1) and ¯A(0). For sufficiently large m, we therefore can expect ˆ v(ξ) is concentrated around ¯A(f )−1 ¯B(f )v∗. To this end, we have the following result which is proved in Appendix B. 
+
+Theorem 4.6. Assume Eq. (38) . Fix f ∈ (0 , 1) and let ξ be sampled uniformly from 
+
+(51) {ξ ∈ [n]m : dH (ξ, ξ∗)/m = 1 − f }
+
+Let ¯A, ¯B be as in Lemma 4.5. Then for ϵ ≪ 1, we have 
+
+(52) ˆv(ξ) − ¯A(f )−1 ¯B(f )v∗∥ = O(ϵ)
+
+when m ≳ mc(ϵ) := d(ln n)6/ϵ 2.
+
+Since Σ −11,1Σ1ΣT 
+
+> 1
+
+in Lemma 4.5 is a rank 1 perturbation, we can apply the Sherman-Morrison formula to obtain (53) ¯A(f )−1 = Σ −1 − ρn(f ) Σ−11,1Σ−1Σ1ΣT 
+
+> 1
+
+Σ−1
+
+1 + ρn(f )Σ −11,1ΣT 
+
+> 1
+
+Σ−1Σ1
+
+.
+
+Since Σ q∗ = Σ 1, q∗ = Σ −1Σ1. Thus with q∗ = e1, this simplifies to (54) ¯A(f )−1 = Σ −1 − ρn(f )Σ1,1(1 + ρn(f )) q∗(q∗)T .
+
+In order to understand what the limit vector looks like, let us consider the case Σ = I, q∗ = e1. No generality is lost, since in practice we may estimate Σ using all the instances and transform the instance distribution to an isotropic one. Writing v∗/|| v∗|| = u q∗ + √1 − u2 δ where δ · q∗ = 0, an application of the Sherman-Morrison formula yields (55) 1
+
+|| v∗|| ¯A(f )−1 ¯B(f )v∗ = q∗ u φ n(f ) + f p1 − u2 δ
+
+where (56) φn(f ) := f + ρn(f )1 + ρn(f ) = s(f n − 1) + (1 − f )
+
+n + f n (s − 1) − s .
+
+In particular, if u = 1 (the query and value point in the same direction), the regression problem from a conditionally random assignment yields a scalar multiple of the correct query whenever φn(f ) > 0, i.e. for 
+
+f > (s − 1) /(sn − 1) ∼ 1/n . This is also evident simply from the symmetry of the problem. EM-BASED ITERATIONS 13 
+
+4.3. Implications for one step of the gEM 1. Since the assignment map ˆξ1
+
+cares only about the direction of its argument, not its magnitude, obtaining any positive scalar multiple of v∗ from the value map is sufficient for gEM 1 to recover the correct assignment. When q ∝ v (i.e. u = 1), Eq. (55) becomes ¯A(f )−1 ¯B(f )v∗ =
+
+φn(f ) v∗. For a completely random assignment φn(1 /n ) = 1 /n . Therefore, the question becomes when m
+
+is large enough that the estimation noise of Theorem 4.6 does not overwhelm the resulting signal, which is itself only O(1 /n ) in size, since φn(1 /n ) = 1 /n .By Theorem 4.6, ∥ˆv(ξ) − φn(f )v∗∥ = O(ϵ) once m ≳ mc(ϵ) = d(ln n)6/ϵ 2. Requiring ϵ to be a small fraction of the signal φn(1 /n ) = 1 /n , say ϵ ∼ 1/n , gives (57) m ≳ d n 2(ln n)6.
+
+It should be noted that after the initial assignment has been made, the updated assignment ξ(1) is not uniformly sampled, therefore the statements above concern only the first step. Thus, it is a different and more difficult (yet feasible) problem to say something about the actual dynamics of the EM algorithm. 4.4. The uniform selection mechanism as a special case. The case f = 1 /n analyzed in Section 4.3 is what one obtains when the active instance is selected uniformly, i.e. when ξ∗ ∼ Uniform([ n]m) as well as ξ – the same as setting λ = 0 (or κ = 0) before taking the τ → ∞ limit, so that no extremal principle governs the labeling at all. This regime was previously analyzed by [12]. A coarser version of this result, given below, is recovered from Theorem 4.6 and Lemma 4.5. 
+
+Lemma 4.7 (See Lemma 3.1 in [12]) . Assume xkj are i.i.d. Normal(0 , I d), and ξ∗, ξ ∼ Uniform([ n]m). Then, for ϵ ≪ 1,
+
+(58) || ˆv(ξ) − v∗/n || = O(ϵ)
+
+with constant probability when m ≳ d/ϵ 2. In particular, m ≳ dn 2 samples are needed to resolve the direction of v∗ from a random assignment. 
+
+We now compare to Lemma 3.1 in [12]. Their result, in our notation, concerns the large m behavior of the maximizer of Q1(v; p) when pk,j = 1 /n , i.e. p is the uniform distribution on [ n]m. Roughly speaking, they show that O(dn 2 ln( n)/ϵ 2) bags guarantee a high probability that the error in ˆ v(ξ)n is O(ϵ). In their notation, n is denoted q, ϵ is √ϵ, v∗ is r. Moreover, they compute the unscaled solution to the regression problem, denoted vmin which is then multiplied by m−1 Pmk=1 (Xk)T Xk. To see how this is related to Lemma 4.7, observe that when solving the resulting regression problem, the noise floor is controlled by the estimation of the empirical covariance matrix of the assigned instances, which has m rows even though we are using a total of n × m instances. Moreover, it is still a fraction 1 /n of the total instances which provide a signal. This heuristically justifies why the scaling is the same (up to logarithmic in n factors). Compared to the extremal selection model studied in Section 4, this uniform-selection case is therefore not qualitatively different for a random assignment. Put simply, regardless of the selection mechanism, the signal from a random assignment is 1 /n if q and v are aligned. 4.5. Angle formula when query and value are unaligned. As another consequence of Theorem 4.6, we have a formula for θˆv,v∗ in the general case when θv∗,q∗ > 0: (59) θˆv,v∗ → ¯θˆv,v∗ (f, u ) := cos −1
+
+ u2φn(f ) + (1 − u2)f
+
+(u2φn(f )2 + (1 − u2)f 2)1/2
+
+
+
+, u = cos( θv∗,q∗ ).
+
+Figure 5 validates this formula numerically. A noteworthy aspect of the formula is that it is non-monotonic in f . This also suggests that even in the unaligned case, where we no longer have a consistent estimator of the direction, the angle is still significantly reduced from a random vector. 4.6. Query update. We end this section by presenting a result for the large m behavior of the query. As with the formula above, the stated result is for isotropic instances (Σ = I) which makes the formulas simpler. Because the query update is not informative when computed from a uniformly random assignment, this result is not as useful as Theorem 4.6, but it does provide a rationale for using ˆ qa as an approximation of query MLE. 14 E. LEVIEN 0.2 0.4 0.6 0.8 1.0
+
+## f
+
+10 −3
+
+10 −2
+
+10 −1
+
+10 0       
+
+> θˆv,v∗
+> u= 0 .1
+> u= 0 .2
+> u= 0 .3
+> u= 0 .5
+> u= 0 .7
+> u= 0 .8
+> u= 0 .9
+
+0.25 0.50 0.75 1.00 
+
+## f
+
+0.00.20.40.60.81.0
+
+> u = cos( θv∗,q∗ )
+
+# ¯θˆv,v∗ (f, u )
+
+0.0000 0.0529 0.1058 0.1587 0.2116 0.2644 0.3173 0.3702 0.4231 0.4760 
+
+> ¯θˆv,v∗
+
+Figure 5. Value update (Theorem 4.6), conditioned on a given match fraction f . The angle θˆv,v∗ is shown for several values of the alignment parameter u = cos( θv∗,q∗ ), (left) as simulation vs. theory across f and (right) as a contour over ( f, u ), with the u values shown on the left indicated by dashed lines. Parameter values: n = 20, d = 3, m = 50 ,000. 10 2 10 3
+
+## m
+
+10 0    
+
+> θˆqa, q ∗
+> f= 0 .3
+> f= 0 .5
+> f= 0 .8
+> f= 1 .0
+> theory sim
+
+0.25 0.50 0.75 1.00 
+
+## f
+
+10 2
+
+10 3
+
+10 4
+
+> m
+
+# ¯θˆqa,q ∗ (f, m )
+
+0.000 0.159 0.317 0.476 0.635 0.793 0.952 1.111 1.269 1.428 
+
+> ¯θˆqa,q ∗
+
+Figure 6. Query update (Theorem 4.8). (left) the angle θˆqa,q ∗ as a function of m for several match fractions f , comparing simulation to the theoretical prediction Eq. (61). (right) a contour plot of the same prediction over ( f, m ), with the f values shown on the left indicated by dashed lines. Parameter values: n = 20, d = 500. 
+
+Theorem 4.8. Let xkj be i.i.d. Normal(0 , I d), and let ξ be sampled uniformly from 
+
+{ξ ∈ [n]m : dH (ξ, ξ∗)/m = 1 − f }.
+
+For any fixed d and n, as m → ∞ ,
+
+(60) ¯xξ → f n − 1
+
+n − 1 μq∗, almost surely When f > 1/n the limit is a positive multiple of q∗, and consequently ˆqa(ξ) → q∗ almost surely. EM-BASED ITERATIONS 15 
+
+The proof, given in Appendix B, is based on the following idea. For a vector z such that z · q∗ = 0, z · ¯xξ
+
+has mean 0 and variance O(1 /m ), while ¯ xξ · q∗ ∼ f μ for large n and f ≫ 1/n . The additional n dependence in Eq. (60) comes from accounting for the 1 − f non-extremal bags. We can use Theorem 4.8 to obtain heuristics for the finite bag angle. Since there are d − 1 orthogonal directions, the finite m angle bias is (61) θq,q∗ → ¯θˆqa,q∗ (f ) ∼ cos −1 f μ 
+
+p(f μ )2 + ( d − 1) /m 
+
+!
+
+.
+
+Figure 6 compares this prediction to simulation across a range of m values and match fractions f , confirming the 1 /√m convergence rate and the f -dependence of the signal. 5. Conclusion 
+
+We studied an extremal multiple-instance regression problem in which the selection rule and the labeling rule are decoupled through separate query and value directions. Starting from a soft latent-variable model, we derived a family of approximate EM-based assignment iterations indexed by κ ∈ [0 , 1], interpolating between residual-based and extremal assignment rules. The data itself is independent of κ in the limit when the selection and labeling are noiseless, which raises questions about how κ should be selected. We have not given an optimal schedule for κ, thus leaving open the question of what this is even for isotropic Gaussian instances, let alone other instance distributions. We presented numerical results which illustrate that the optimal schedule is highly angle-dependent. The alternating schedule performs better for large misalignment between the value and query directions, while the reverse is true for the fixed-but-mixed schedule. This has to do with how the M-step biases the assignment. In the alternating schedule, the bias introduced by one κ value can interfere with the computation of the value vector in the next step when the query and value are misaligned. The main theoretical results describe the large-m behavior of the value and query update maps conditional on a fixed match fraction f . Theorem 4.6 shows that the value update ˆ v(ξ) concentrates around a deter-ministic function of f and the alignment u = cos( θv∗,q∗ ), with error O(ϵ) once m ≳ mc(ϵ) := d(ln n)6/ϵ 2. As a consequence, we find that a single random initial assignment already yields, after one step, an assignment close to the truth once m ≳ dn 2(ln n)6 bags are available (Section 4.3). Taken together, these results establish consistency of the single-step update maps at fixed f in the large-m limit, and show that one-step recovery from a fully random initialization requires only polynomially more bags than recovery from a favorable one. In either case, the results do not by themselves characterize the full finite-time dynamics of the iteration, which is left for future work. In addition to motivating problems at the interface of high dimensional probability and extremal statistics, it is our hope that the ideas will lead to improved methods for practical problems. In particular, it would be interesting to investigate the implications for real MIL pipelines. As a step towards this, one could consider the situation where the instances are learned embeddings of samples from a sequence space. It would also be interesting to study self-attention. 
+
+Acknowledgements 
+
+Early work on this project was conducted during the workshop Extremal Statistics in Biology at the Erwin Schr¨ odinger International Institute for Mathematics and Physics (ESI), Vienna, June 2025. This research was supported in part by grants from the NSF (DMS-2235451) and Simons Foundation (MPS-NITMB-00005320) to the NSF-Simons National Institute for Theory and Mathematics in Biology (NITMB). I also acknowledge helpful conversations with Pankaj Mehta about this project. 16 E. LEVIEN 
+
+Appendix A. Notation 
+
+Table 1 summarizes the notation used in this manuscript. 
+
+Table 1. Notation used in the main text. 
+
+Data and parameters 
+
+m, n, d Number of bags; instances per bag; feature dimension 
+
+θx,y Angle between vectors x and yxkj ∈ Rd Instance j in bag k, 1 ≤ j ≤ n, 1 ≤ k ≤ myk ∈ R Bag-level response 
+
+q, v query and value vectors 
+
+κ ∈ [0 , 1] Interpolation parameter. 
+
+ξ ∈ [n]m Assignment vector ( ξ1, . . . , ξ m)
+
+dH (ξ, ξ∗) Hamming distance # {k : ξk̸ = ξ∗ 
+
+> k
+
+}
+
+X(ξ) Design matrix for assignment ξ
+
+ˆΣ( ξ, ξ′) Cross covariance matrix m−1X(ξ)T X(ξ′)
+
+f = 1 − dH (ξ, ξ∗)/m Match fraction 
+
+Update maps for EM κ iteration Domain → Range ˆξκk (q, v) Interpolating assignment in bag k (Eq. (28)) Rd × Rd → [n]ˆξκ
+
+(q, v) Bag-wise version ( ˆξκ 
+
+> 1
+
+, . . . , ˆξκm) Rd × Rd → [n]m
+
+ˆv(ξ) Value regression map (Eq. (44)) [n]m → Rd
+
+ˆqa(ξ) average estimate of query [n]m → Sd−1
+
+Extremal moments and model parameters ( §2, §4) 
+
+μ, s Mean, second moment of the extremal instance: μ := E[Xξ∗ ], s := 
+
+E[X2 
+
+> ξ∗
+
+]
+
+w, v Second moment, cross-moment of a non-extremal instance: w := 
+
+E[X2 
+
+> j
+
+| j̸ = ξ∗], v := E[Xξ∗ Xj | j̸ = ξ∗]
+
+ρn(f ) Interpolation coefficient, ρn(f ) := f (s−1)+(1 −f )( w−1) (Lemma 4.5) 
+
+φn(f ) Value-map scaling factor (Eq. (56)) 
+
+σϵ, λ, τ Labeling-noise s.d.; selection inverse temperature; τ := λ + 1 /(2 σ2 
+
+> ϵ
+
+)
+
+ϑ = ( v, q) Model parameter pair 
+
+Appendix B. Proofs 
+
+We first prove Lemma 4.3, which gives the identities for the extremal moments. 
+
+Proof. We first show E [Xξ∗ X1] = 1 /n . Note that, using standard Gaussian tail integrals 
+
+E[Xξ∗ X1|{ max  
+
+> j> 1
+
+Xj = m}] = E[X21 1{X1 > m }] + mE[X11{X1 < m }](B.1) = mϕ (m) + 1 − Φ( m) − mϕ (m) = 1 − Φ( m)(B.2) where ϕ and Φ are the pdf and cdf of a standard normal. Averaging over m gives (B.3) E[1 − Φ( m)] = P(X1 > max  
+
+> j> 1
+
+Xj ) = 1
+
+n .
+
+Hence (B.4) E[Xξ∗
+
+> n
+
+X
+
+> j=1
+
+Xj ] = 1 = s + ( n − 1) v, 
+
+where the last equality holds by exchangeability. The formula for v follows. EM-BASED ITERATIONS 17 
+
+For w, since E[X2 
+
+> j
+
+] = 1, (B.5) n = E
+
+h nX
+
+> j=1
+
+X2
+
+> j
+
+i
+
+= s + ( n − 1) w, 
+
+decomposing the sum over {j = ξ∗} and {j̸ = ξ∗} exactly as above. Hence w = ( n − s)/(n − 1). □
+
+Turning to our results about the covariance matrices, we introduce the notation 
+
+A := ˆΣ( ξ, ξ) B := ˆΣ( ξ, ξ∗)(B.6) (B.7) and keep ¯A, ¯B as defined in Lemma 4.5. 
+
+Proof of Lemma 4.5. If k is a matched instance ( ξk = ξ∗ 
+
+> k
+
+), the elements of the covariance matrix satisfy 
+
+E[Xkξ∗  
+
+> k,j ′
+
+Xkξ∗  
+
+> k,j
+
+] = EE[Xkξ∗  
+
+> k,j ′
+
+Xkξ∗  
+
+> k,j
+
+| Xkξ∗ 
+
+> k,1
+
+]
+
+(B.8) = ECov( Xkξ∗  
+
+> k,j ′
+
+, X kξ∗  
+
+> k,j
+
+| Xkξ∗ 
+
+> k,1
+
+) + E[Xkξ∗  
+
+> k,j
+
+| Xkξ∗ 
+
+> k,1
+
+]E[Xkξ∗  
+
+> k,j ′
+
+| Xkξ∗ 
+
+> k,1
+
+]
+
+(B.9) = Σ j,j ′ − Σ−11,1Σj, 1Σj′,1 + s Σ−11,1Σj, 1Σj′,1.(B.10) If k is an unmatched instance ( ξk̸ = ξ∗ 
+
+> k
+
+), then Xkξ∗  
+
+> k,j
+
+and Xkξk ,j are correlated through their shared dependence on the first coordinate. In particular, for the cross term, 
+
+E[Xkξ∗  
+
+> k,j ′
+
+Xkξk ,j ] = EE[Xkξ∗  
+
+> k,j ′
+
+| Xkξ∗ 
+
+> k,1
+
+] E[Xkξk ,j | Xkξk ,1]
+
+(B.11) = Σ −21,1Σ1,j ′ Σ1,j E[Xkξ∗ 
+
+> k,1
+
+Xkξk ,1] = Σ −11,1Σ1,j ′ Σ1,j v, (B.12) and for an unmatched instance with itself, 
+
+E[Xkξk ,j ′ Xkξk ,j ] = ECov( Xkξk ,j , X kξk ,j ′ | Xkξk ,1) + E[Xkξk ,j ′ | Xkξk ,1]E[Xkξk ,j | Xkξk ,1]
+
+(B.13) = Σ j,j ′ − Σ−11,1Σj, 1Σj′,1 + w Σ−11,1Σj, 1Σj′,1,(B.14) Using the identity E[ ˆΣ( ξ, ξ) | f ] = f E[ ˆΣ( ξ∗, ξ∗)] + (1 − f ) E[ ˆΣ( ξ, ξ) | dH = m] and collecting the matched and unmatched contributions, 
+
+E[ ˆΣ( ξ∗, ξ∗)] = Σ + ( s − 1) Σ −11,1Σ1ΣT 
+
+> 1
+
+,(B.15) 
+
+E[ ˆΣ( ξ, ξ) | dH = m] = Σ + ( w − 1) Σ −11,1Σ1ΣT 
+
+> 1
+
+,(B.16) we obtain (B.17) ¯A(f ) = Σ +  f (s − 1) + (1 − f )( w − 1) Σ−11,1Σ1ΣT 
+
+> 1
+
+= Σ + ρn(f ) Σ −11,1Σ1ΣT 
+
+> 1
+
+,
+
+with ρn(f ) = f (s − 1) + (1 − f )( w − 1). Similarly, 
+
+E[ ˆΣ( ξ, ξ∗) | dH = m] = v Σ−11,1Σ1ΣT 
+
+> 1
+
+,(B.18) and therefore (B.19) ¯B(f ) = f Σ +  f (s − 1) + (1 − f )vΣ−11,1Σ1ΣT 
+
+> 1
+
+= f Σ + ρn(f ) Σ −11,1Σ1ΣT 
+
+> 1
+
+,
+
+where we have used w = v + 1. □
+
+The proof of Theorem 4.6 will make use of the following fact, which follows from Lemma 4.4 
+
+Proof of Theorem 4.6. Write 
+
+A−1B = ¯A−1 ¯B + ( A−1 − ¯A−1) ¯B + A−1(B − ¯B) = ¯A−1 ¯B + u, (B.20) with (B.21) u = ¯A−1(A − ¯A)A−1 ¯B + A−1(B − ¯B).
+
+For η > 0, let (B.22) Eη := {∥ A − ¯A∥ ≤ η, ∥B − ¯B∥ ≤ η}.
+
+Choose η ≤ (2 ∥ ¯A−1∥)−1. On Eη ,(B.23) ∥ ¯A−1(A − ¯A)∥ ≤ 12 ,18 E. LEVIEN 
+
+so A is invertible and ∥A−1∥ ≤ 2∥ ¯A−1∥. Hence on Eη ,(B.24) ∥u∥ ≤ (2 ∥ ¯A−1∥2∥ ¯B∥ + 2 ∥ ¯A−1∥)η
+
+Let (B.25) cn := 2 ∥ ¯A(f )−1∥2∥ ¯B(f )∥ + 2 ∥ ¯A(f )−1∥
+
+Note cn = O(s) in n (note however it also depends on f which is bounded by 1). If η := ϵ/ (2 cn) then (B.26) P ∥ˆv(ξ) − ¯A−1 ¯B v∗∥ > ϵ  ≤ P(Ecη ).
+
+By the union bound, (B.27) P(Ecη ) ≤ P(∥A − ¯A∥ > η ) + P(∥B − ¯B∥ > η ).
+
+We now need to show these two terms vanish as m → ∞ . We begin with the A term. As noted in the main text, we need to address the fact that the rows of A are not independent, and thus standard concentration results do not directly apply. Let (B.28) ιk := 1 {ξk =ξ∗ 
+
+> k}
+
+and U k := xkξk (xkξk )T . We order the bags so that the first ⌊f m ⌋ are the matched ones and write 
+
+A = 1
+
+m
+
+X
+
+> k
+
+U k = f 1
+
+f m 
+
+> f m
+
+X
+
+> k=1
+
+U k + (1 − f ) 1(1 − f )m
+
+> m
+
+X
+
+> k=⌊f m ⌋+1
+
+U k
+
+(B.29) := f A (1) + (1 − f )A(0) 
+
+(B.30) (where we have dropped the floor symbols since they are irrelevant in the limit). Because distinct bags are independent, the U k are conditionally independent given {ιi}mi=1 . Then (B.31) ¯A(1) = E[A(1) | ιk = 1] , ¯A(0) := E[A(0) | ιk = 0] .
+
+Using the triangle inequality 
+
+P(∥A − ¯A∥ > η ) ≤ P(f ∥A(1) − ¯A(1) ∥ + (1 − f )∥A(0) − ¯A(0) ∥ > η )(B.32) 
+
+≤ P(∥A(1) − ¯A(1) ∥ > η/ (f 2)) + P(∥A(0) − ¯A(0) ∥ > η/ ((1 − f )2)) (B.33) The concentration result for sub-Gaussian random matrices (Eq. (41)) applies to both terms. Recall that the sub-Gaussian norm of Xkξ∗
+
+> k
+
+is O(√s). Also (B.34) || A(1) || = O(s), || A(0) || = O(1) by Lemmas 4.4 and 4.5. Since the sub-Gaussian norm of Xkξ∗
+
+> k
+
+is O(√s) and || A(1) || = O(s), Lemma 4.2 implies that for η ≪ 2f s 3,
+
+∥A(1) − ¯A(1) ∥ > η/ (2 f ) with constant probability when (B.35) mf > 4ds 4f 2
+
+η2 = 16 ds 4f 2c2
+
+> n
+
+ϵ2 = O
+
+ d(ln n)6f 2
+
+ϵ2
+
+
+
+Similarly, when η ≪ 2(1 − f ), ∥A(0) − ¯A(0) ∥ > η/ (2(1 − f )) with constant probability if (B.36) m(1 − f ) ≳ d4(1 − f )2
+
+η2 = d4(1 − f )2c2
+
+> n
+
+ϵ2 = O
+
+ d(ln n)2(1 − f )
+
+ϵ2
+
+
+
+.
+
+Therefore when ϵ ≪ 2 ln n min {f, 1 − f } ,(B.37) m ≳ d(ln n)2((ln n)4f + 1 − f )
+
+ϵ2 = O
+
+ d(ln n)6
+
+ϵ2
+
+
+
+.
+
+We now need to show that the same is true for the B term. Since B is a cross-covariance matrix, we embed it into a 2 d × 2d covariance matrix and apply the same argument. Define zk ∈ R2d by (B.38) zk := 
+
+xkξk
+
+xkξ∗
+
+> k
+
+
+
+, Lk := zkzTk , Γ := 1
+
+m
+
+> m
+
+X
+
+> k=1
+
+Lk =
+
+ A BBT ˆΣ( ξ∗, ξ∗)
+
+
+
+.EM-BASED ITERATIONS 19 
+
+The argument used for A can be applied to Γ, which now has (2 d)2 entries, but the same dominant concen-tration behavior. The result therefore follows from Eq. (41). Let (B.39) ¯Γ( f ) := E[Γ | f ].
+
+Indeed, since B − ¯B is the upper-right block of Γ − ¯Γ( f ), we have (B.40) ∥B − ¯B∥ ≤ Γ − ¯Γ( f ) .
+
+Thus it is enough to bound the right hand side. Splitting the bags according to whether they are matched gives (B.41) Γ = f Γ(1) + (1 − f )Γ (0) , Γ(1) := 1
+
+f m 
+
+X 
+
+> ιk=1
+
+Lk, Γ(0) := 1(1 − f )m
+
+X 
+
+> ιk=0
+
+Lk,
+
+where, as above, the floor symbols are irrelevant in the limit. The corresponding expectations are (B.42) ¯Γ(1) = E[Γ (1) | ιk = 1] , ¯Γ(0) = E[Γ (0) | ιk = 0] , ¯Γ( f ) = f ¯Γ(1) + (1 − f )¯Γ(0) .
+
+Using the triangle inequality, (B.43) P  Γ − ¯Γ( f ) > η  ≤ P
+
+
+
+Γ(1) − ¯Γ(1) > η/ (2 f )
+
+
+
++ P
+
+
+
+Γ(0) − ¯Γ(0) > η/ (2(1 − f )) 
+
+
+
+.
+
+Conditioned on the matched set, the zk’s are independent in each of the two sums. In the matched case zk
+
+consists of two copies of the extremal instance, while in the unmatched case one component is extremal and the other is non-extremal. Hence the sub-Gaussian norm and covariance norm are bounded by the same dominant extremal scale used above for A, up to constants. Consequently P(∥B − ¯B∥ > η ) too has the same dominant bound as the A term, up to replacing d by 2 d. □
+
+Proof of Theorem 4.8. We make the decomposition 
+
+xkj = sk,j q∗ + zkj(B.44) The true assignment ξ∗ 
+
+> k
+
+= argmax j xkj · q∗ = argmax j sk,j depends only on {sk,j }nj=1 . We also have (B.45) E[xkj |j = ξ∗] = E[sk,ξ ∗ 
+
+> k
+
+]q∗ = μq∗
+
+and because (B.46) E[xkj ] = E[xkj |j = ξ∗] 1
+
+n + E[xkj |j̸ = ξ∗] n − 1
+
+n
+
+we get (B.47) E[xkj |j̸ = ξ∗] = − q∗μn − 1 .
+
+Therefore, for fixed n, by the law of large numbers yields (B.48) ¯xξ
+
+> a.s.
+
+−−→ f μ q∗ − (1 − f )μn − 1 q∗ = f n − 1
+
+n − 1 μq∗,
+
+establishing (60). When f > 1/n , the limit ( f n − 1) /(n − 1) μ > 0, so ∥¯xξ∥ → (f n − 1) /(n − 1) μ and ˆqa = ¯ xξ/∥¯xξ∥ → q∗ almost surely. When f = 1 /n the limit is zero. □
+
+References 
+
+[1] S.-i. Amari , Information geometry and its applications , vol. 194, Springer, 2016. [2] S. Andrews, I. Tsochantaridis, and T. Hofmann , Support vector machines for multiple-instance learning , in Advances in Neural Information Processing Systems, vol. 15, 2002, pp. 577–584. [3] S. Balakrishnan, M. J. Wainwright, and B. Yu , Statistical guarantees for the em algorithm: From population to sample-based analysis , The Annals of Statistics, 45 (2017), pp. 77–120. [4] M.-A. Carbonneau, V. Cheplygina, E. Granger, and G. Gagnon , Multiple instance learning: A survey of problem characteristics and applications , Pattern Recognition, 77 (2018), pp. 329–353. [5] G. Celeux and G. Govaert , A classification EM algorithm for clustering and two stochastic versions , Computational Statistics & Data Analysis, 14 (1992), pp. 315–332. [6] K. Chauhan, R. Saket, L. Applebaum, A. Badanidiyuru, C. Giri, and A. Raghuveer , Generalization and learnability in multiple instance regression , in Proceedings of Uncertainty in Artificial Intelligence (UAI), 2024. [7] A. P. Dempster, N. M. Laird, and D. B. Rubin , Maximum likelihood from incomplete data via the EM algorithm ,Journal of the Royal Statistical Society: Series B (Methodological), 39 (1977), pp. 1–38. 20 E. LEVIEN 
+
+[8] T. G. Dietterich, R. H. Lathrop, and T. Lozano-P´ erez , Solving the multiple instance problem with axis-parallel rectangles , Artificial intelligence, 89 (1997), pp. 31–71. [9] D. R. Dooly, Q. Zhang, S. A. Goldman, and R. A. Amar , Multiple-instance learning of real-valued data , Journal of Machine Learning Research, 3 (2002), pp. 651–678. [10] G. Doran and S. Ray , Multiple-instance learning from distributions , Journal of Machine Learning Research, 17 (2016), pp. 1–50. [11] T. G¨ artner, P. A. Flach, A. Kowalczyk, and A. J. Smola , Multi-instance kernels , in Proceedings of the Nineteenth International Conference on Machine Learning, 2002, pp. 179–186. [12] A. Gupta and R. Saket , Learning algorithms for multiple instance regression , in The 41st Conference on Uncertainty in Artificial Intelligence, 2025. [13] H. Hino, S. Akaho, and N. Murata , Geometry of em and related iterative algorithms , Information Geometry, 7 (2024), pp. 39–77. [14] M. Ilse, J. Tomczak, and M. Welling , Attention-based deep multiple instance learning , in International conference on machine learning, PMLR, 2018, pp. 2127–2136. [15] A. N. Jain, K. Koile, and D. Chapman , Compass: predicting biological activities from molecular surface properties. performance comparisons on a steroid benchmark , Journal of Medicinal Chemistry, 37 (1994), pp. 2315–2327. [16] X. Li, Z. Zhong, J. Wu, Y. Yang, Z. Lin, and H. Liu , Expectation-maximization attention networks for semantic segmentation , in Proceedings of the IEEE/CVF international conference on computer vision, 2019, pp. 9167–9176. [17] Z. Luo, D. Guillory, B. Shi, W. Ke, F. Wan, T. Darrell, and H. Xu , Weakly-supervised action localization with expectation-maximization multi-instance learning , in European conference on computer vision, Springer, 2020, pp. 729– 745. [18] O. Maron , Learning from ambiguity , PhD thesis, Massachusetts Institute of Technology, 1998. [19] O. Maron and T. Lozano-P´ erez , A framework for multiple-instance learning , in Advances in Neural Information Pro-cessing Systems, vol. 10, 1998. [20] G. J. McLachlan and T. Krishnan , The EM algorithm and extensions , John Wiley & Sons, 2008. [21] A. Naess , Applied Extreme Value Statistics , Springer, 2024. [22] H. Ramsauer, B. Sch¨ afl, J. Lehner, P. Seidl, M. Widrich, T. Adler, L. Gruber, M. Holzleitner, M. Pavlovi´ c, G. K. Sandve, V. Greiff, D. Kreil, M. Kopp, G. Klambauer, J. Brandstetter, and S. Hochreiter , Hopfield networks is all you need , in International Conference on Learning Representations, 2021. [23] S. Ray and D. Page , Multiple-instance regression , in Proceedings of the International Conference on Machine Learning (ICML), 2001, p. 425–432. [24] G. Sliwoski, S. Kothiwale, J. Meiler, and E. W. Lowe Jr , Computational methods in drug discovery , Pharmacological reviews, 66 (2014), pp. 334–395. [25] N. M. Tran , The tropical geometry of causal inference for extremes , arXiv preprint arXiv:2207.10227, (2022). [26] T. Uriot , Kernel mean embedding of instance-wise predictions in multiple instance regression , arXiv preprint, (2019). [27] T. Uriot , Learning with sets in multiple instance regression applied to remote sensing , arXiv preprint arXiv:1903.07745, (2019). [28] R. Vershynin , High-dimensional probability: An introduction with applications in data science , vol. 47, Cambridge uni-versity press, 2018. [29] M. Widrich, B. Sch¨ afl, M. Pavlovi´ c, H. Ramsauer, L. Gruber, M. Holzleitner, J. Brandstetter, G. K. Sandve, V. Greiff, S. Hochreiter, et al. , Modern hopfield networks and attention for immune repertoire classification , Advances in neural information processing systems, 33 (2020), pp. 18832–18845. [30] L. Xu and M. I. Jordan , On convergence properties of the em algorithm for gaussian mixtures , Neural computation, 8 (1996), pp. 129–151. [31] M.-L. Zhang and Z.-H. Zhou , Multi-instance clustering with applications to multi-instance prediction , Applied Intelli-gence, 31 (2009), pp. 47–68. [32] Q. Zhang and S. A. Goldman , EM-DD: An improved multiple-instance learning technique , in Advances in Neural Infor-mation Processing Systems, vol. 14, 2001. [33] Z.-H. Zhou and M.-L. Zhang , Multi-instance multi-label learning with application to scene classification , in Advances in Neural Information Processing Systems, vol. 19, 2006. 
+
+Department of Mathematics, Dartmouth College 
+
+Email address : ethan.levien@dartmouth.edu

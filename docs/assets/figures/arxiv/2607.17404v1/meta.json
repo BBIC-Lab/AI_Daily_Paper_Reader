@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.17404v1/fig-001.webp",
+      "caption": "Figure 1. Comparison of standard supervised learning and MIL. Each row represents a bag of instances (circles). Instances live in feature space, which here is R2 with coordinates (x1, x2) represented by a hue (edge) and lightness (filling). In standard supervised learning each bag contains a single instance. In MIL, we select an active instance via some selection rule, which takes the lightest circle (middle) or the most orange circle (right). The middle represents an MIL dataset where the feature used for selecting the active instance is also used to label that instance. In contrast, on the right figure the hue is used to select the active instance, but the label comes from the lightness feature. In our model, the directions in feature space used for selection and labeling will be denoted by q and v as a nod to query and value matrices in attention.",
+      "page": 2,
+      "index": 1,
+      "width": 753,
+      "height": 558
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17404v1/fig-006.webp",
+      "caption": "Figure 2. Comparison of the EM0 iteration (30) (top row) and ẼM1 (32) (bottom row) as a function of the number of instances per bag n at t = 100 steps from a uniformly random initial assignment. The image plots (right) show which bags have correctly identified active instances. For clarity, we only show a subset of the instances. The n values corresponding to these examples are circled (left). Parameter values: θq∗,v∗ = π/4, m = 5000, d = 15, instances i.i.d. Normal(0, Id).",
+      "page": 9,
+      "index": 6,
+      "width": 759,
+      "height": 764
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17404v1/fig-003.webp",
+      "caption": "Figure 3. Trajectories of the match fraction f (t) over iterations. Each panel shows a different variant of the hard EM iteration. Faint colored curves are individual trajectories initialized from random assignments. The bold black curve is the mean over all trajectories. Parameter values: m = 1000, n = 50, d = 10, θq∗,v∗ = 0.",
+      "page": 10,
+      "index": 3,
+      "width": 857,
+      "height": 439
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17404v1/fig-002.webp",
+      "caption": "Figure 4. Performance of the EMκ schedules, ẼM1, and the staged method after t = 100 iterations, as a function of the misalignment angle θv∗,q∗ . Columns show the match-fraction error 1−f (left), the value angle θv̂,v∗ (middle), and the query angle θq̂a,q ∗ (right). The top row shows the mean over the ensemble of random initial assignments (shaded bands: ± one standard error); the bottom row shows the minimum over the same ensemble. Parameter values: m = 1000, n = 15, d = 10, 400 replicates per value of θv∗,q∗ .",
+      "page": 10,
+      "index": 2,
+      "width": 863,
+      "height": 402
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17404v1/fig-004.webp",
+      "caption": "Figure 5. Value update (Theorem 4.6), conditioned on a given match fraction f . The angle θv̂,v∗ is shown for several values of the alignment parameter u = cos(θv∗,q∗), (left) as simulation vs. theory across f and (right) as a contour over (f, u), with the u values shown on the left indicated by dashed lines. Parameter values: n = 20, d = 3, m = 50,000.",
+      "page": 14,
+      "index": 4,
+      "width": 951,
+      "height": 370
+    },
+    {
+      "url": "assets/figures/arxiv/2607.17404v1/fig-005.webp",
+      "caption": "Figure 6. Query update (Theorem 4.8). (left) the angle θq̂a,q∗ as a function ofm for several match fractions f , comparing simulation to the theoretical prediction Eq. (61). (right) a contour plot of the same prediction over (f,m), with the f values shown on the left indicated by dashed lines. Parameter values: n = 20, d = 500.",
+      "page": 14,
+      "index": 5,
+      "width": 951,
+      "height": 372
+    }
+  ]
+}
