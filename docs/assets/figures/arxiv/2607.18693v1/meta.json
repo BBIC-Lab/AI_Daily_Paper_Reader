@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-003.webp",
+      "caption": "Fig. 1. Illustrative example of Chain-of-Thought (CoT) reasoning for stance detection in English.",
+      "page": 2,
+      "index": 3,
+      "width": 895,
+      "height": 252
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-005.webp",
+      "caption": "Fig. 2. Representation and structural gaps in knowledge distillation between decoder-only Large Language Models and encoder-only mBERT.",
+      "page": 3,
+      "index": 5,
+      "width": 895,
+      "height": 507
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-001.webp",
+      "caption": "Fig. 3. The pipeline of reasoning rationale preparation via In-Context Learning (ICL).",
+      "page": 6,
+      "index": 1,
+      "width": 895,
+      "height": 207
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-007.webp",
+      "caption": "Fig. 4. Overall architecture of the proposed framework. Step 1 trains the source-language mBERT model with cross-lingual templates and query-centered contrastive learning. Step 2 trains the target-language student model by dual-path teacher-student distillation, where LLM-generated rationales provide additional supervision and both representation-level and response-level knowledge are transferred.",
+      "page": 8,
+      "index": 7,
+      "width": 895,
+      "height": 702
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-009.webp",
+      "caption": "Table 1. Performance comparison between our method and competitive baselines on the X-stance, CIC, and VaxxStance datasets. Accuracy (Acc) and macro 𝐹1-score (𝐹1) are reported. “improve (vs. CCSD)” denotes the absolute performance gain of our best setting over the strongest baseline CCSD.",
+      "page": 12,
+      "index": 9,
+      "width": 773,
+      "height": 290
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-006.webp",
+      "caption": "Fig. 5. Effectiveness of the LLM reasoning on four X-stance topics. (a) Accuracy comparison of w/o Rationales, Ours (Qwen), and Ours (Qwen + Thinking). (b) 𝐹1-score comparison of the same three settings.",
+      "page": 13,
+      "index": 6,
+      "width": 835,
+      "height": 280
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-004.webp",
+      "caption": "Table 2. Ablation study on the number of ICL demonstrations used for rationale generation with Qwen thinking mode. The numbers in parentheses denote the absolute change relative to the 8-sample setting, showing that 8 demonstrations provide the best overall trade-off between effectiveness and prompt length.",
+      "page": 14,
+      "index": 4,
+      "width": 569,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-002.webp",
+      "caption": "Table 3. Effect of different support-query set constructions in source-language training. Accuracy (Acc) and 𝐹1-score (𝐹1) are reported on the four X-stance topics under different combinations of support and query samples. The values in parentheses indicate the performance difference relative to the default setting of 8 support samples per class + 4 query samples, which provides the best trade-off between performance and computational cost.",
+      "page": 15,
+      "index": 2,
+      "width": 665,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-010.webp",
+      "caption": "Fig. 6. Effect of the contrastive loss weight on model performance. (a) Performance variation in the source-language training stage under different weights of the query-centered contrastive loss. (b) Performance variation in the teacher-student distillation stage under different weights of the contrastive representation distillation loss. In both subfigures, Accuracy (Acc) and 𝐹1-score (𝐹1) are reported, and the best-performing setting is highlighted.",
+      "page": 16,
+      "index": 10,
+      "width": 860,
+      "height": 364
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18693v1/fig-008.webp",
+      "caption": "Fig. 7. Qualitative comparison between the baseline model and our method using Integrated Gradients (IG). Red indicates positive contribution toward Favor, and blue indicates positive contribution toward Against; darker colors denote stronger attribution scores.",
+      "page": 17,
+      "index": 8,
+      "width": 763,
+      "height": 444
+    }
+  ]
+}

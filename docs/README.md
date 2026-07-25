@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-25
-- 运行时间：2026-07-25 04:34:42 北京时间
+- 最新运行日期：2026-07-26
+- 运行时间：2026-07-26 04:05:29 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-1) 今天精读+速读10篇前沿AI论文，重点拆解了大脑启发的自监督模型与高效视频理解架构。
-2) 最值得关注的是，多尺度脑电基础模型用层级动态学习破解神经信号解码难题，而新型视频Transformer通过稀疏自选择大幅提升类脑对齐效率。
-3) 建议速读《Kernelized Linear Attention》突破容量瓶颈的线性注意力设计，其对称锥新范式可能重塑长序列建模。
-- 详情：[/202607/25/README](/202607/25/README)
+今日聚焦脑电情感预测与 EEG-to-Text 的可行性深度分析，兼顾网络故障检测、推荐与跨语言立场识别。
+最值得关注的是《PeakFlow》对动态情绪轨迹的精细建模，以及现实场景下 EEG 转文本的神经心理学基准拷问。
+建议读者先读这两篇9分精读论文，体悟情感计算从实验室走向真实世界的挑战与突破。
+- 详情：[/202607/26/README](/202607/26/README)
 
 ### 精读区论文标签
-1. [MSBraM: A Multi-scale Self-supervised Brain Foundation Model for Hierarchical EEG Dynamics Learning](/202607/25/2607.21402v1-msbram-a-multi-scale-self-supervised-brain-foundation-model-for-hierarchical-eeg-dynamics-learning)  
-   标签：评分：10.0/10、query:ndai
-   evidence：用于层次化脑电图动态学习的多尺度自监督基础模型。
-2. [Brain-Aligned Multi-Stream Video Transformers with Sparse Self-Selection](/202607/25/2607.17625v1-brain-aligned-multi-stream-video-transformers-with-sparse-self-selection)  
+1. [PeakFlow: Peak-Guided Coarse-to-Refined Modeling for EEG-Based Dynamic Affective Trajectory Prediction](/202607/26/2607.18671v1-peakflow-peak-guided-coarse-to-refined-modeling-for-eeg-based-dynamic-affective-trajectory-prediction)  
    标签：评分：9.0/10、query:ndai
-   evidence：受神经启发的视频变换器，具有稀疏自选择，并对神经数据进行评估
-3. [Causal Discovery on Irregular Time Series](/202607/25/2607.18226v1-causal-discovery-on-irregular-time-series)  
+   evidence：对EEG神经数据进行序列建模以预测情感轨迹
+2. [Is EEG-to-Text Feasible in Real-World Scenarios? An In-Depth Analysis Using a Neuropsychology-Inspired Benchmark](/202607/26/2607.18749v1-is-eeg-to-text-feasible-in-real-world-scenarios-an-in-depth-analysis-using-a-neuropsychology-inspired-benchmark)  
    标签：评分：9.0/10、query:ndai
-   evidence：不规则时间序列上的因果发现
-4. [Learnable Sequential Memory in Coupled Oscillator Networks](/202607/25/2607.18439v1-learnable-sequential-memory-in-coupled-oscillator-networks)  
+   evidence：使用神经心理学启发基准分析EEG到文本可行性
+3. [RAMP: Recognition parametrisation by Amortised Message Passing](/202607/26/2607.18883v1-ramp-recognition-parametrisation-by-amortised-message-passing)  
    标签：评分：9.0/10、query:ndai
-   evidence：耦合振荡器网络中的可学习序列记忆
-5. [End-to-End Markov State Sequence Learning for Auditory Attention Decoding](/202607/25/2607.18614v1-end-to-end-markov-state-sequence-learning-for-auditory-attention-decoding)  
+   evidence：用于从数据学习潜在表示的摊销消息传递框架
+4. [Visual Semantic Decoding of Electrocorticography from Video Stimuli using End-to-End Deep Learning](/202607/26/2607.18923v1-visual-semantic-decoding-of-electrocorticography-from-video-stimuli-using-end-to-end-deep-learning)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于条件随机场的端到端听觉注意力解码
+   evidence：将神经信号（ECoG）解码为视觉类别
+5. [Spiking Neural Networks for fMRI-Based Visual Semantic Decoding](/202607/26/2607.19170v1-spiking-neural-networks-for-fmri-based-visual-semantic-decoding)  
+   标签：评分：9.0/10、query:ndai
+   evidence：将fMRI神经信号解码为视觉语义概念
 
 ### 速读区论文标签
-1. [Kernelized Linear Attention: Breaking the Capacity Wall with Symmetric Cones](/202607/25/2607.17419v1-kernelized-linear-attention-breaking-the-capacity-wall-with-symmetric-cones)  
+1. [Adaptive Two-Stage Online Learning for Service-Affecting Failure Detection in Mobile Core Networks](/202607/26/2607.18522v1-adaptive-two-stage-online-learning-for-service-affecting-failure-detection-in-mobile-core-networks)  
    标签：评分：8.0/10、query:ndai
-   evidence：注意力权重计算特征重要性
-2. [Miles: Metric Learning with Expandable Subspace for Pre-Trained Model-Based Class-Incremental Learning](/202607/25/2607.17593v1-miles-metric-learning-with-expandable-subspace-for-pre-trained-model-based-class-incremental-learning)  
+   evidence：用于时间序列故障检测的在线学习框架，含时序建模
+2. [Topology-Aware Tokenization for Generative Recommendation](/202607/26/2607.18600v1-topology-aware-tokenization-for-generative-recommendation)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用可扩展子空间的度量学习，使预训练模型适应新类别而不遗忘
-3. [Selectivity Matters: Source Node Influence Pruning for Unsupervised Graph Domain Adaptation](/202607/25/2607.17668v1-selectivity-matters-source-node-influence-pruning-for-unsupervised-graph-domain-adaptation)  
+   evidence：生成推荐的拓扑感知标记化
+3. [Rationale-Guided Knowledge Distillation for Cross-Lingual Stance Detection](/202607/26/2607.18693v1-rationale-guided-knowledge-distillation-for-cross-lingual-stance-detection)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过节点剪枝减少负迁移的无监督图域适应
-4. [Uncovering Latent Reasoning Strategies in Language Models](/202607/25/2607.17674v1-uncovering-latent-reasoning-strategies-in-language-models)  
+   evidence：利用LLM进行跨语言知识蒸馏用于低资源立场检测
+4. [Continual Video-MLLM Adaptation over Evolving Domains](/202607/26/2607.18716v1-continual-video-mllm-adaptation-over-evolving-domains)  
    标签：评分：8.0/10、query:ndai
-   evidence：学习潜在策略表示
-5. [EM-based iterations for multiple instance learning on a query-value model](/202607/25/2607.17404v1-em-based-iterations-for-multiple-instance-learning-on-a-query-value-model)  
+   evidence：参数高效的视频MLLM跨演进域持续适应
+5. [STeP: Signal Temporal Logic for Precise Specifications for Action Generation with Vision Language Models](/202607/26/2607.18580v1-step-signal-temporal-logic-for-precise-specifications-for-action-generation-with-vision-language-models)  
    标签：评分：7.0/10、query:ndai
-   evidence：在多实例学习中学习查询和值向量用于包表示
+   evidence：通过信号时序逻辑将语言指令转换为机器人动作序列
 

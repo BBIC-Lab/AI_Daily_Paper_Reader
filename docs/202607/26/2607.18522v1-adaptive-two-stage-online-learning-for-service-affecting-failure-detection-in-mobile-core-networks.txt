@@ -1,0 +1,338 @@
+Title: Adaptive Two-Stage Online Learning for Service-Affecting Failure Detection in Mobile Core Networks
+
+URL Source: https://arxiv.org/pdf/2607.18522v1
+
+Published Time: Wed, 22 Jul 2026 00:15:26 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Adaptive Two-Stage Online Learning for Service-Affecting Failure Detection in Mobile Core Networks 
+
+J. du Toit ∗† , G. Fita ∗, J. Salzwedel ‡, A. Stoltz †§ , R. Wolhuter ∗
+
+> ∗
+
+Department of Electrical and Electronic Engineering, Stellenbosch University, South Africa 
+
+> §
+
+School of Computer Science and Applied Mathematics, University of the Witwatersrand, South Africa 
+
+> †
+
+Technology Strategy Planning, Architecture & Assurance, Vodacom Group Limited, South Africa 
+
+> ‡
+
+Core Data Networks Performance Management, Vodacom Group Limited, South Africa 
+
+{jacowp357, gospelantoniofita, jasonsalzwedel }@gmail.com, Adham.Stoltz@vodacom.co.za, wolhuter@sun.ac.za 
+
+Abstract —Mobile network operators monitor aggregated traf-fic volumes to assess the operational health of core network infrastructure. Reliable failure detection is challenging due to strong temporal structure, non-stationarity, measurement arte-facts, and extreme class imbalance, which limit static threshold-based monitoring. This paper proposes a two-stage online learning framework for traffic-based failure detection in mobile core networks. Stage I incrementally models normal traffic dynamics using lightweight regression with time-aware features. Stage II analyses prediction residuals together with contextual indicators to detect genuine service-affecting network failures. The framework operates fully online under a prequential evaluation protocol, enabling contin-uous adaptation with low computational overhead. Across linear and non-linear models, the proposed two-stage architecture achieves the best precision–recall trade-off, attaining the highest recall, F1-score, and AUC at acceptable false positive rates. These results demonstrate the importance of explicit residual decomposition for reliable failure detection in streaming mobile core network data. 
+
+Index Terms —Core network traffic monitoring, network fail-ure detection, online learning, noisy time series data 
+
+I. I NTRODUCTION 
+
+Mobile network operators (MNOs) rely on continuous mon-itoring of aggregated traffic volumes to assess the health of their core networks. The mobile core network (MCN) com-prises the packet-switched control and user-plane infrastruc-ture responsible for session management, mobility, authenti-cation, policy enforcement, and routing of user traffic between the radio access network (RAN) and external data networks. Traffic from multiple radio access technologies, access point names (APNs), and core network elements is aggregated per geographical region at fixed intervals, providing a scalable and technology-agnostic view of system behaviour. Although aggregated traffic exhibits strong diurnal and weekly structure driven by human activity [1], it is inherently non-stationary and subject to measurement artefacts such as counter overflows, partial capture,and delayed reporting. These effects are not necessarily pervasive across all MNOs or deployments. However, core network equipment commonly relies on incremental traffic counters with finite bit-width, which can saturate or fail under sustained high load. Service continuity is often maintained through redundancy or backup processing paths that remain transparent to subscribers, while counter information is lost or corrupted. This results in abrupt apparent traffic drops that closely resemble genuine network failures, undermining static threshold-based monitoring lead-ing to high false alarm rates. Traditional threshold-based systems remain widely used due to their simplicity, but they assume quasi-stationary behaviour and require continuous manual tuning. Predictable contex-tual effects such as weekends, holidays, and tariff changes frequently trigger false alarms, eroding trust in automated decision-making systems [2], [3]. As networks scale in com-plexity and load, these limitations increasingly constrain their operational usefulness. Prior work has explored statistical and learning-based ap-proaches to traffic anomaly detection, including residual anal-ysis, change-point detection, and deep learning models [4]– [7]. However, most approaches are trained offline and treat all deviations as a single anomaly class, conflating service-impacting failures with benign measurement artefacts. This limits robustness, interpretability, and operational trust in MCN environments. Network monitoring data is inherently generated as a data stream, motivating online learning approaches that adapt in-crementally to evolving traffic patterns [8], [9]. While recent work has explored online anomaly detection for networked systems [10], [11], most methods remain end-to-end and do not explicitly separate baseline traffic dynamics from failure detection. In contrast, this work proposes a two-stage online learn-ing architecture that decouples self-supervised traffic baseline modelling from rare-event failure detection. By isolating pre-dictable traffic dynamics before classification, the framework improves robustness under severe class imbalance, delayed labels, and measurement artefacts, while remaining compu-tationally lightweight and operationally aligned. The proposed approach is intended to complement, rather than replace, existing core network failure detection systems. arXiv:2607.18522v1 [cs.LG] 20 Jul 2026 Some failure modes may not manifest clearly in aggregated traffic and are therefore better captured by more granular monitoring tools. Conversely, issues originating outside the mobile core network, such as failures in external service platforms, may still be reflected in aggregate traffic and can be detected by the proposed method. Importantly, aggregated traffic is a primary revenue-generating KPI for MNOs, and any service-affecting disruption visible in this signal has direct commercial impact. Even modest reductions in detection latency can therefore translate into meaningful operational and revenue benefits. The main contributions of this paper are:  
+
+> •
+
+A two-stage online architecture separating baseline mod-elling and failure detection.  
+
+> •
+
+Evaluation of time-aware feature encodings under stream-ing constraints.  
+
+> •
+
+Demonstration of strong performance and stability using lightweight online models on real operational MCN data. This work was carried out in collaboration with Vodacom Group Limited as part of an ongoing continuous improve-ment programme within the MCN performance management domain. II. P ROBLEM FORMULATION 
+
+A. Operational Interpretation of Traffic Anomalies 
+
+In aggregated MCN monitoring, deviations from expected traffic volumes may arise from fundamentally different causes. In this work, we distinguish between two primary sources of anomalous behaviour: genuine network failures and measure-ment artefacts. A network failure corresponds to any condition under which the mobile network is unable to deliver normal service per-formance. Such events may result from hardware or software faults, transmission failures, resource overload, or planned and unplanned maintenance, and are associated with real service impact experienced by subscribers [12]. A measurement artefact , by contrast, refers to a spurious deviation caused by errors in the collection, transmission, or aggregation of traffic counters. Common sources include counter rollovers, partial or delayed reporting, and transient monitoring faults. Although the underlying network may be operating normally, such artefacts can produce apparent traffic drops that closely resemble true failures, making them a major source of false alarms in traffic-based monitoring systems. Distinguishing between these phenomena is critical, as they produce similar signatures in aggregated traffic data but require different operational responses. The proposed framework is therefore designed to detect deviations from expected traffic dynamics while facilitating separation of genuine failures from benign measurement artefacts. Let yt ∈ R≥0 denote the observed downlink traffic volume for a given region during the t-th 15-minute interval, and let 
+
+xt denote the associated vector of temporal and contextual features. Observations arrive sequentially and form a time-ordered data stream {(xt, y t)}∞
+
+> t=1
+
+.The objective is to learn a model that estimates the expected, or normal , traffic dynamics ˆyt = f (xt) and to identify observations whose deviations from this expectation are in-consistent with normal operation. Such deviations may arise from genuine network failures, benign measurement artefacts, or transient contextual effects. Unlike batch learning, the data generation process is inher-ently sequential: measurements must be processed in arrival order, and future observations are unavailable at training time. Models are therefore trained and updated incrementally using online learning techniques, which more accurately reflect op-erational deployment conditions than offline training followed by static evaluation [8], [9]. An important practical consideration is data quality. Miss-ing, invalid, or corrupted measurements can bias learned baselines and degrade detection performance. The proposed framework therefore supports selective learning, where model updates are restricted to observations whose quality can be assessed with confidence. 
+
+B. Limitations of Threshold-Based Monitoring 
+
+Threshold-based monitoring remains widely used in oper-ational networks due to its simplicity and low computational cost [2], [3]. Alarms are triggered when observed traffic ex-ceeds predefined bounds, typically configured using historical averages or expert knowledge. Such approaches implicitly assume that acceptable traffic ranges are static or slowly varying, an assumption routinely violated in practice. Mobile traffic exhibits strong diurnal and weekly cycles, calendar effects, and long-term growth, causing fixed thresholds to generate false alarms during predictable low-usage periods while missing genuine anomalies during peak demand. Moreover, maintaining threshold-based systems requires continuous manual tuning, which does not scale well across regions, technologies, and aggregation levels. 
+
+C. Learning-Based Baseline Modelling 
+
+The approach proposed in this work replaces static thresh-olds with a learned, time-adaptive baseline. Rather than evalu-ating traffic against fixed limits, anomalies are assessed relative to model expectations ˆyt that evolve over time, allowing the system to accommodate non-stationarity, long-term trends, and recurring temporal patterns without manual reconfiguration. Anomaly detection is formulated as a streaming prediction problem in which deviations between yt and ˆyt define an anomaly score. Continuous incremental learning enables au-tomatic adaptation to changing traffic conditions and reduces reliance on heuristic rules, consistent with modern approaches to non-stationary time-series analysis [5], [7]. A central challenge is extreme class imbalance: normal operation and measurement artefacts occur frequently, while confirmed network failures are rare and labels are often delayed. The proposed two-stage architecture explicitly ad-dresses this by decoupling self-supervised baseline traffic mod-elling from failure classification. Normal dynamics is learned from abundant streaming data, while failure detection operates Fig. 1. Aggregated traffic flow in an MCN. Traffic counters are collected per core network element E and aggregated per geographical region R at fixed 15-minute intervals. 
+
+on residuals and auxiliary indicators in a cost-sensitive, semi-supervised manner. This design mitigates class imbalance, reduces dependence on scarce labels, and aligns the learning process with operational network workflows. III. D ATASET DESCRIPTION 
+
+A. Overview 
+
+Figure 1 illustrates a basic flow of user traffic through a mobile cellular network and the point at which measurements are collected for monitoring. User traffic originates at the user equipment (UE), traverses the radio access network (RAN), and is routed through multiple core network elements before reaching external internet protocol (IP) networks. Both uplink and downlink traffic follow this path in opposite directions. For operational monitoring, traffic counters are collected at individual core network elements and aggregated per ge-ographical region at fixed 15-minute intervals. The total ob-served traffic volume for a region therefore represents the aggregate traffic routed through all reporting elements in that region during the interval. Traffic may traverse multiple core network elements within a region depending on routing, and the set of reporting elements can vary over time due to equipment failures, recon-figurations, or measurement artefacts. As a result, aggregated traffic reflects both underlying user demand and the availability of the reporting infrastructure. This coupling motivates alearning-based monitoring approach that explicitly accounts for infrastructure dynamics when interpreting traffic devia-tions. The data 1 used in this study was collected during routine network performance monitoring and analysed as part of a continuous improvement initiative within Vodacom Group Limited’s core network performance management function. The dataset consists of aggregated downlink traffic volume measurements with each observation corresponding to a region and time interval. Let yr,t denote the observed downlink traffic volume for region r at time t. Traffic is obtained by aggregating counters 
+
+> 1To protect commercially sensitive information, the dataset was anonymised and rescaled in a manner that preserves relative trends and temporal behaviour but prevents recovery of absolute traffic values.
+
+across all network elements e ∈ E that successfully report during the interval: 
+
+yr,t =
+
+> Er,t
+
+X
+
+> e=1
+
+ye,r,t , (1) where Er,t denotes the number of reporting elements in region 
+
+r at time t. Variations in Er,t due to incomplete reporting or monitoring faults can induce apparent traffic drops even when the network is operating normally. The dataset is structured as a time-ordered data stream, consistent with the operational setting in which measurements are generated continuously and processed in near real time, making it well suited for evaluating online learning methods. Ground-truth network failure labels were obtained from operational incident and fault management records maintained by the MCN team. A failure label was assigned to a re-gion and time interval when a confirmed incident affecting service delivery was recorded and temporally aligned with the corresponding traffic measurement window. Confirmation typically followed manual investigation and root cause analysis by network engineers. As a result, labels are subject to practical limitations, including delay, partial observability, and minor temporal misalignment between incident logs and traffic aggregation intervals. The proposed framework explicitly accounts for this uncertainty by decoupling self-supervised baseline learning from failure classification and supporting asynchronous incor-poration of confirmed labels. 
+
+B. Features 
+
+For each 15-minute interval, the following features are available:  
+
+> •
+
+Downlink traffic volume (bytesDL ): total downlink traffic observed during the interval; the primary target variable.  
+
+> •
+
+Number of network elements (noElements ): number of core elements contributing counters during the interval.  
+
+> •
+
+Number of access point names (noAPNs ): number of APNs from which traffic was successfully recorded.  
+
+> •
+
+Geographical region (region ): categorical region iden-tifier.  
+
+> •
+
+Timestamp (dateTime ): start time of the 15-minute interval. 
+
+C. Infrastructure Effects on Traffic Measurements 
+
+Core network elements include routers, gateways, and vir-tualised network functions that collectively enable packet transport and service delivery [13]. At the time of data collection, two classes of elements were present. Legacy elements were implemented as monolithic ap-pliances and counted as a single reporting unit, while modern elements were virtualised using network function virtualisation (NFV), where a single logical function could comprise multi-ple virtual machines, each contributing a separate counter. As a result, missing statistics from a legacy element reduce the reported element count by one, whereas missing statistics from a virtualised function may reduce the count by several tens simultaneously. In both cases, the loss of counters induces an apparent traffic drop even if the network remains oper-ational. The relationship between aggregated traffic volume and noElements is inherently non-linear, as legacy elements contribute traffic in approximately proportional units, whereas virtualised functions may remove multiple counters simulta-neously, producing disproportionate traffic deviations that do not reflect true service degradation. 
+
+D. Access Point Names 
+
+An access point name (APN) defines how user traffic is routed from the mobile core to external networks. Public APNs provide Internet access, while corporate APNs connect users to private enterprise networks. In the dataset, most elements served a small number of public APNs, which carried the majority of traffic volume. A subset of elements supported hundreds of corporate APNs, which individually contributed relatively little traffic. Conse-quently, missing statistics from public-APN-heavy elements produce large apparent traffic drops with minimal change in 
+
+noAPNs , whereas missing corporate APN statistics lead to large drops in noAPNs with only minor traffic reduction. This joint relationship is non-linear, meaning similar changes in reporting counts can have very different traffic effects. 
+
+E. Implications for Anomaly Detection 
+
+Aggregated traffic drops may arise from either genuine service-impacting failures or inconsistencies in the measure-ment process. Because both produce similar signatures in traf-fic volume alone, reliable anomaly detection requires models that jointly consider traffic levels, infrastructure availability, and contextual features. This motivates the learning-based approach adopted in this work, where traffic predictions are conditioned not only on temporal patterns but also on auxiliary indicators such as 
+
+noElements and noAPNs . Incorporating this context en-ables more reliable separation of true network failures from benign measurement artefacts. IV. F EATURE ENGINEERING 
+
+Aggregated mobile core traffic exhibits strong periodic structure and non-stationarity driven by human activity, cal-endar effects, and long-term growth. Capturing these dynam-ics in an online setting requires feature representations that preserve temporal continuity while remaining computationally efficient and numerically stable. We therefore evaluate a set of time-aware feature representations that explicitly encode periodicity and are compatible with incremental learning, analysing the trade-offs between expressivity, dimensionality, and generalisation under streaming constraints. Because the dataset contains irregular missing observations, explicit lagged features are omitted. 
+
+A. Temporal and Contextual Traffic Patterns 
+
+Operational traffic exhibits repeatable diurnal, weekly, and monthly patterns. Usage typically increases at the start of billing cycles, peaks during evening hours, and reaches minima in the early morning. Tariff structures and calendar effects, such as weekends, public holidays, and school holidays, introduce systematic but benign variations that differ across regions. Although predictable, these patterns can resemble network faults when interpreted using static thresholds. We therefore incorporate explicit time-aware features, including cyclic en-codings of hour-of-day and day-of-week, calendar indicators, and trend variables, enabling models to distinguish contextual variation from abnormal behaviour. 
+
+B. Categorical Time Encoding 
+
+A simple approach treats temporal variables as categori-cal and applies one-hot encoding. While this allows linear models to learn arbitrary non-monotonic relationships and yields strong predictive performance, feature dimensionality scales poorly with temporal resolution and ignores the cyclic structure of time, increasing overfitting risk in streaming settings. 
+
+C. Trigonometric Encoding 
+
+Trigonometric encoding represents periodic time variables using sine and cosine functions, ensuring that the cyclic nature of time is preserved. This compact and numerically stable representation is well suited to online learning, but its global sinusoidal structure can underfit asymmetric or sharply varying traffic patterns. 
+
+D. Periodic Spline Encoding 
+
+Spline-based encodings provide increased expressivity while enforcing smoothness [14]. A periodic spline basis with 
+
+K components allows models to focus on specific regions of the cycle while maintaining continuity. This approach offers performance comparable to one-hot encodings with fewer features and improved generalisation. 
+
+E. Cyclic Radial Basis Function Encoding 
+
+To encode periodic temporal variables in a smooth and locally adaptive manner, we employ cyclic Gaussian radial basis function (RBF) encodings. Let xt ∈ { 0, . . . , P − 1}
+
+denote the discrete position of a time index within a period of length P (e.g., the 15-minute interval index within a day, where P = 96 ). A set of K RBF centres {ck}Kk=1 is placed uniformly over the periodic domain. Cyclic distance between a time index xt and a centre ck is defined as: 
+
+dcyc (xt, c k) = min  |xt − ck|, P − | xt − ck|, (2) which respects the wrap-around structure of periodic time. Each basis function is computed using a Gaussian kernel: 
+
+ϕk(xt) = exp 
+
+
+
+− dcyc (xt, c k)2
+
+2σ2
+
+
+
+, (3) where σ controls the width and smoothness of the encoding. The resulting feature vector ϕ(xt) ∈ RK provides a bounded, continuous representation of time that is well suited to incre-mental learning. 
+
+F. Calendar and Trend Features 
+
+To capture long-term drift and calendar effects, we include an ordinal date feature, a first-day-of-month indicator, and a public holiday flag. Unbounded features are standardised using running statistics, while bounded and binary features are left unscaled. V. T WO -S TAGE ONLINE LEARNING ARCHITECTURE 
+
+Aggregated core network traffic is treated as a reactive data stream , where observations arrive sequentially and must be processed in real time. At each time step, predictions are generated using information available up to time t − 1, fol-lowed by incremental model updates once the true observation becomes available. This predict–then–update protocol mirrors operational deployment and avoids batch retraining. The proposed framework follows a two-stage online learn-ing architecture. Stage I incrementally learns a baseline model of normal traffic dynamics, while Stage II analyses deviations from this baseline, together with contextual indicators, to detect network failures while suppressing false alarms caused by benign variation and measurement artefacts. 
+
+A. Stage I: Online Traffic Nowcasting 
+
+Let yt denote the observed traffic volume and xt the asso-ciated feature vector at time t. Stage I predicts the expected traffic ˆyt = ft(xt) and computes the residual et = yt − ˆyt.Model updates occur strictly after prediction, following a prequential (test–then–train) protocol. Models are selected for low computational cost, stability, and continuous online operation. 
+
+B. Stage II: Online Anomaly Assessment 
+
+Stage II evaluates whether deviations from the learned baseline correspond to genuine network failures or benign measurement artefacts. At each time step, Stage II receives the signed residual et together with a contextual feature vector 
+
+zt comprising auxiliary indicators such as noElements and 
+
+noAPNs . A binary classifier gt(·) produces a failure decision 
+
+ˆct = gt(et, zt), where ˆct ∈ { 0, 1} denotes normal operation or network failure, respectively. Rather than applying fixed thresholds, classification is per-formed relative to recent error statistics, improving robustness to gradual traffic evolution and extreme class imbalance. The use of signed residuals preserves directional information, with negative values being more indicative of network failures. 
+
+C. Delayed and Sparse Labels 
+
+In operational settings, network failure labels are often delayed or unavailable due to manual investigation and root-cause analysis workflows. The proposed architecture accom-modates this constraint by decoupling the learning stages. Stage I operates fully self-supervised after an initial bootstrap-ping phase, during which a small set of traffic observations 
+
+y(0)  
+
+> t
+
+corresponding to known measurement artefacts is identi-fied and excluded from model updates. Stage II operates in a semi-supervised manner and incor-porates confirmed failure labels asynchronously when they become available. A limited set of initial network failure labels c(0)  
+
+> t
+
+is used during bootstrapping, after which additional confirmed labels c+ 
+
+> t
+
+are integrated over time as investigations conclude. Algorithm 1 summarises the proposed framework, high-lighting the decoupling between self-supervised baseline learn-ing and delayed, cost-sensitive failure classification under a prequential evaluation protocol. 
+
+Algorithm 1 Require: Streaming observations {(xt, y t, zt)}∞
+
+> t=1
+
+Require: Initial baseline model f0, failure classifier g0
+
+Require: Warm-up period T0 
+
+> 1:
+
+Initialise Stage I model f ← f0 
+
+> 2:
+
+Initialise Stage II model g ← g0 
+
+> 3:
+
+Initialise running statistics  
+
+> 4:
+
+for t = 1 , 2, . . . do  
+
+> 5:
+
+Receive features xt and contextual indicators zt 
+
+> 6:
+
+Predict baseline traffic ˆyt ← f (xt) 
+
+> 7:
+
+Observe true traffic yt 
+
+> 8:
+
+Compute residual et ← yt − ˆyt 
+
+> 9:
+
+Predict failure decision ˆct ← g(et, zt) 
+
+> 10:
+
+if t > T 0 and observation quality acceptable then  
+
+> 11:
+
+Update baseline model f ← f (xt, y t) 
+
+> 12:
+
+end if  
+
+> 13:
+
+if confirmed failure label c+ 
+
+> t
+
+becomes available then  
+
+> 14:
+
+Update classifier g ← g(et, zt, c + 
+
+> t
+
+) 
+
+> 15:
+
+end if  
+
+> 16:
+
+end for 
+
+D. Online Learning Implementation 
+
+All models are implemented using the River library [15], which supports incremental preprocessing, model updates, and prequential evaluation. Deep neural network models are implemented using deep-river [16], a Python library for online deep learning that integrates the River API with PyTorch-based neural network architectures. Unbounded continuous features are standardised using run-ning statistics maintained online, while bounded or binary features are left unscaled. Model parameters are updated using stochastic gradient descent or Adam-based incremental optimisers. 
+
+E. Operational Considerations 
+
+Unlike batch-trained models that require periodic retraining, the proposed online architecture adapts continuously to grad-ual traffic evolution, seasonal effects, and concept drift. This results in reduced operational overhead, low computational cost, and minimal manual intervention, making the approach well suited to large-scale mobile network monitoring. An overview of the two-stage architecture is shown in Fig. 2. From a computational perspective, all components of the proposed framework are lightweight. Stage I employs an online linear regressor with 29 input features, while Stage II uses logistic regression with only three inputs. Both models operate with constant memory and linear per-sample update complexity in the number of features. In practice, Stage I maintains fewer than 200 parameters per region, while Stage II introduces fewer than 10 additional parameters, making the overall approach suitable for large-scale deployment across many regions with minimal computational overhead.           
+
+> Fig. 2. Two-stage online learning architecture for MCN traffic monitoring. At each time step t, Stage I predicts ˆytfrom features xtand computes the residual et. Stage II evaluates residuals and contextual indicators to produce a failure decision ˆct, incorporating delayed feedback c+
+> twhen available.
+
+VI. E XPERIMENTAL RESULTS 
+
+This section evaluates the proposed two-stage online learn-ing framework under realistic streaming conditions. Experi-ments focus on three aspects: (i) online traffic nowcasting accuracy, (ii) the impact of time-aware feature representations, and (iii) failure detection performance for linear and non-linear models under severe class imbalance and measurement artefacts. All models are evaluated using a prequential (test–then– train) protocol. Unless stated otherwise, reported metrics are cumulative prequential values computed after a 30-day warm-up period. 
+
+A. Stage I: Online Traffic Nowcasting 
+
+We first assess the ability of online regression models to learn and maintain a baseline of normal traffic dynamics. Accurate baseline modelling is a prerequisite for reliable anomaly detection and directly affects downstream failure detection performance. Table I compares cumulative prequential prediction accu-racy for different temporal encodings using a fixed online linear regression model. One-hot encodings of the 15-minute interval serve as a high-capacity baseline, while trigono-metric, periodic spline, and cyclic RBF encodings provide increasingly compact and smooth representations of temporal structure.                    
+
+> TABLE I IMPACT OF TIME -AWARE FEATURE REPRESENTATIONS ON ONLINE PREDICTION ACCURACY .
+> Encoding 15-min Features Total Features MAPE (%) R2
+> One-hot 96 142 6.15 0.97 Trigonometric 211 13.37 0.89 Periodic spline 16 ( K=16 )31 6.21 0.97 Cyclic RBF 12 ( K=12 )29 4.81 0.98
+
+Cyclic RBF encodings achieve the best overall performance, delivering improved accuracy with substantially fewer fea-tures. Periodic spline encodings capture asymmetric diurnal patterns with performance comparable to one-hot representa-tions, while trigonometric features underfit the data due to their global sinusoidal constraint. For completeness, the total number of model features associated with each encoding is also reported, highlighting the efficiency gains of the cyclic representations. Selective learning in Stage I was implemented using a two-phase approach. Initially, a small set of known measurement artefacts was manually identified and excluded from model updates to establish a clean baseline. While accurate baseline modelling is necessary, it is not sufficient for operational network monitoring. In the following experiment, we evaluate how prediction residuals produced by Stage I can be leveraged to distinguish genuine network failures from benign measurement artefacts under extreme class imbalance. 
+
+B. Stage II: Failure Detection Performance 
+
+Failure detection is evaluated under realistic operating con-ditions in which confirmed network failures are rare and mea-surement artefacts occur frequently. Performance 2 is assessed using precision, recall, F1-score, false positive rate (FPR), and area under the curve (AUC). Table II compares static thresholding, residual-based thresh-olding, single-model learning, and the proposed two-stage online architecture. The term single-model denotes classifiers trained directly on traffic and contextual features, without explicit baseline modelling or residual extraction. Static thresholding proves unsuitable under non-stationary traffic due to low precision, low recall, and high false positive rates, whereas residual-based thresholding reduces false alarms but provides only limited improvements in recall and overall F1-score. Single-model learning achieves very high precision when linear classifiers are employed, but this conservative behaviour                                             
+
+> 2Due to the extreme class imbalance inherent in MCN monitoring data, macro-averaged precision, recall, and F1-score are used as the primary evaluation metrics, as micro- and weighted averages are dominated by normal operation and can obscure failure detection performance. TABLE II FAILURE DETECTION PERFORMANCE UNDER EXTREME CLASS IMBALANCE . A LL METRICS ARE FINAL CUMULATIVE PREQUENTIAL VALUES OBTAINED UNDER A TEST –THEN –TRAIN EVALUATION PROTOCOL .
+> Method Precision Recall F1 FPR AUC
+> Threshold-based baselines
+> Static threshold 49.3% 40.5% 44.2% 20.12% –Residual threshold 51.3% 50.8% 50.9% 0.64% –
+> Linear models
+> Single-model (linear) 92.6% 61.5% 68.0% 0.04% 0.77 Two-stage (linear) 74.0% 82.5% 78.0% 0.38% 0.86
+> Non-linear models
+> Single-model (NN) 55.2% 90.9% 57.2% 8.28% 0.94 Two-stage (NN) 63.7% 96.6% 70.6% 2.71% 0.98
+
+leads to reduced recall under extreme class imbalance. Intro-ducing non-linear capacity via a feed-forward neural network increases recall markedly; however, this comes at the cost of a sharply elevated false positive rate, demonstrating that model expressiveness alone does not resolve the ambiguity between genuine failures and measurement artefacts. In contrast, the two-stage architecture consistently delivers a more favourable precision–recall trade-off for both linear and non-linear models. By isolating predictable traffic dynamics in Stage I, the residual-based representation simplifies the learn-ing problem in Stage II, improving recall while constraining false alarms. The linear two-stage model achieves the high-est F1-score, while the two-stage neural network attains the highest AUC, confirming that explicit baseline decomposition is critical for reliable failure detection under streaming class imbalance. The modest increase in false positive rate for the two-stage linear model reflects its higher sensitivity to partial or shorter-duration failure events that the conservative single-model detector suppresses, a trade-off that yields substantially higher recall and overall F1-score. Figure 3 provides a qualitative illustration of online failure detection behaviour for the linear models, complementing the aggregate results in Table II. The upper panel shows observed and predicted downlink traffic with confirmed failure events and predicted detections overlaid, while the lower panels report the cumulative prequential evolution of precision, recall, F1-score, and AUC. The single-model linear detector exhibits strongly conser-vative behaviour. Predicted failures occur infrequently and are tightly concentrated around the most severe traffic drops, resulting in high precision and a low false positive rate. However, several confirmed failure intervals are missed or only partially detected, causing recall to plateau at a lower level and constraining the achievable F1-score, as reflected in the metric trajectories. In contrast, the two-stage linear model shows improved temporal alignment with confirmed failure events. By oper-ating on residuals produced by the Stage I traffic baseline, the detector responds more consistently throughout true failure periods while maintaining a similarly low false positive rate. This leads to a sustained increase in recall with only a modest reduction in precision, yielding a higher and more stable F1-score and improved AUC over time. The zoomed inset highlights a representative failure episode, where the two-stage model generates contiguous detections aligned with the confirmed incident, while the single-model detector triggers sporadically or not at all. This visual ev-idence reinforces the quantitative findings and demonstrates that isolating predictable traffic dynamics in Stage I simplifies downstream classification, improving failure sensitivity with-out compromising operational robustness. 
+
+> Fig. 3. Observed and predicted downlink traffic with confirmed and predicted failure events. The upper panel shows traffic dynamics and detection timing, while the lower panels show the prequential evolution of model metrics. The two-stage model exhibits faster stabilisation and improved alignment with true failure events while suppressing spurious detections.
+
+VII. C ONCLUSIONS AND FUTURE WORK 
+
+This paper presented a two-stage online learning framework for traffic-based failure detection in MCNs. By explicitly sepa-rating baseline traffic modelling from failure classification, the approach achieves reliable performance under non-stationarity, extreme class imbalance, and imperfect telemetry. Experiments on real operational MCN data demonstrate that the two-stage architecture outperforms static thresholds and single-model detectors, delivering higher F1-scores and AUC at low false positive rates. The framework was developed and evaluated in collabo-ration with Vodacom Group Limited, demonstrating its suit-ability for operational deployment. Future work will explore adaptive model selection and extensions to multi-resolution and cross-region traffic dependencies. REFERENCES [1] F. Xu, Y. Li, H. Wang, P. Zhang, and D. Jin, “Understanding mobile traffic patterns of large scale cellular towers in urban environment,” 
+
+IEEE/ACM transactions on networking , vol. 25, no. 2, pp. 1147–1161, 2016, doi: 10.1145/2815675.2815680. [2] A. Lakhina, M. Crovella, and C. Diot, “Characterization of Network-Wide Traffic Anomalies in IP Backbone Networks,” IEEE/ACM Trans-actions on Networking , vol. 14, no. 6, pp. 1212–1223, 2006, doi: 10.1145/1028788.1028813. [3] V. Chandola, A. Banerjee, and V. Kumar, “Anomaly Detection: A Survey,” ACM Computing Surveys , vol. 41, no. 3, pp. 1–58, 2009, doi: 10.1145/1541880.1541882. [4] M. Basseville and I. Nikiforov, Detection of Abrupt Changes: Theory and Application . Prentice Hall, 1993. [5] N. Laptev, S. Amizadeh, and I. Flint, “Generic and Scalable Frame-work for Automated Time-Series Anomaly Detection,” in Proceedings of the 21st ACM SIGKDD Conference , 2015, pp. 1939–1947, doi: 10.1145/2783258.2788611. [6] P. Malhotra, L. Vig, G. Shroff, and P. Agarwal, “Long short term memory networks for anomaly detection in time series,” Proceedings of the European Symposium on Artificial Neural Networks , 2015. [7] H. Ren, B. Xu, Y. Wang, C. Yi, C. Huang, X. Kou, and Y. Xing, “Time-Series Anomaly Detection Service at Microsoft,” Proceedings of KDD ,2019, doi: 10.1145/3292500.3330680. [8] S. Shalev-Shwartz, Online Learning and Online Convex Optimiza-tion . Foundations and Trends in Machine Learning, 2012, doi: 10.1561/2200000018. [9] J. Gama, I. ˇ Zliobait˙ e, A. Bifet, M. Pechenizkiy, and A. Bouchachia, “A survey on concept drift adaptation,” ACM computing surveys (CSUR) ,vol. 46, no. 4, pp. 1–37, 2014, doi: 10.1145/2523813. [10] J. Burgue˜ no, I. de-la Bandera, J. Mendoza, D. Palacios, C. Morillas, and R. Barco, “Online anomaly detection system for mobile networks,” 
+
+Sensors , vol. 20, no. 24, p. 7232, 2020, doi: 10.3390/s20247232. [11] A. Shahraki, M. Abbasi, A. Taherkordi, and A. D. Jurcut, “A compar-ative study on online machine learning techniques for network traffic streams analysis,” Computer Networks , vol. 207, p. 108836, 2022, doi: 10.1016/j.comnet.2022.108836. [12] J. P. G. Sterbenz, D. Hutchison, E. K. C ¸ etinkaya, A. Jabbar, J. P. Rohrer, M. Sch¨ ollner, and P. Smith, “Resilience and survivability in communication networks: Strategies, principles, and survey of disci-plines,” Computer Networks , vol. 54, no. 8, pp. 1245–1265, 2010, doi: 10.1016/j.comnet.2010.03.005. [13] 3GPP, “System Architecture Evolution (SAE); Architecture description,” 3GPP TS 23.401, 2020, release 16. [14] P. H. Eilers and B. D. Marx, “Flexible smoothing with B-splines and penalties,” Statistical science , vol. 11, no. 2, pp. 89–121, 1996, doi: 0.1214/ss/1038425655. [Online]. Available: https://doi.org/10.1214/ss/1038425655 [15] J. Montiel, M. Halford, S. M. Mastelini, G. Bolmier, R. Sourty, R. Vaysse, A. Zouitine, H. M. Gomes, J. Read, T. Abdessalem et al. ,“River: machine learning for streaming data in Python,” 2021. [16] C. Kulbach, L. Cazzonelli, H.-A. Ngo, M. Halford, and S. M. Mastelini, “Deepriver: A deep learning library for data streams,” Journal of Open Source Software , vol. 10, no. 105, p. 7226, 2025, doi: 10.21105/joss.07226. [Online]. Available: https://doi.org/10.21105/joss.07226

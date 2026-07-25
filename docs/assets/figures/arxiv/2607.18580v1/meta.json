@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.18580v1/fig-002.webp",
+      "caption": "Figure 1: A single language instruction can encode temporal (“within 5 to 8 seconds”) and spatial (“8cm left of the pink mug” and “avoiding the stove”) requirements simultaneously. Our framework decomposes the instruction into STL-annotated subtasks, where each stage carries the relevant constraints as formal specifications that guide execution and monitoring.",
+      "page": 2,
+      "index": 2,
+      "width": 744,
+      "height": 297
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18580v1/fig-005.webp",
+      "caption": "Figure 2: Overview of STEP. System 2 uses the language instruction, current observation, skill library, and history log to decompose the task into subtasks and compile each subtask into an STL specification. System 1 executes the active subtask using the selected low-level policy or controller, while STL monitoring tracks progress and detects failures. Upon subtask completion or violation, the history log provides recall context for System 2 to update the plan while remaining grounded in the original task specification.",
+      "page": 4,
+      "index": 5,
+      "width": 708,
+      "height": 331
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18580v1/fig-001.webp",
+      "caption": "Figure 3: In-depth showcase of key components of our pipeline. a) Depicts how we construct a VLM prompt from a language instruction, along with an observation and system Skill Library. b) Shows the task specification, outlining each subtask, the VLM produces, and how that is compiled into a series of STL formulas. c) A simplified example of an entry in the History Log, showing how STL robustness is an integral part of task monitoring and failure detection.",
+      "page": 6,
+      "index": 1,
+      "width": 826,
+      "height": 310
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18580v1/fig-003.webp",
+      "caption": "Figure 4: Real World Results of our method compared to VLM-MPC-COST. We group the success rates based on the constraint type of the task. There is increased success all across the board from embedding STL, especially in temporal constraints.",
+      "page": 7,
+      "index": 3,
+      "width": 498,
+      "height": 311
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18580v1/fig-006.webp",
+      "caption": "Table 1: Quantitative robustness semantics for STL formulas.",
+      "page": 12,
+      "index": 6,
+      "width": 560,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2607.18580v1/fig-004.webp",
+      "caption": "Figure 6: Detailed views of the two modules in STEP. System 2 converts language, scene context, skill definitions, and recall context into an STL-annotated task specification. System 1 executes each subtask through either STL-guided MPC or a learned policy, while STL monitoring provides completion, violation, and recall signals.",
+      "page": 13,
+      "index": 4,
+      "width": 826,
+      "height": 537
+    }
+  ]
+}
