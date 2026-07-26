@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-26
-- 运行时间：2026-07-26 04:05:29 北京时间
+- 最新运行日期：2026-07-27
+- 运行时间：2026-07-27 04:36:21 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日聚焦脑电情感预测与 EEG-to-Text 的可行性深度分析，兼顾网络故障检测、推荐与跨语言立场识别。
-最值得关注的是《PeakFlow》对动态情绪轨迹的精细建模，以及现实场景下 EEG 转文本的神经心理学基准拷问。
-建议读者先读这两篇9分精读论文，体悟情感计算从实验室走向真实世界的挑战与突破。
-- 详情：[/202607/26/README](/202607/26/README)
+时间序列基础模型迎来“后训练”时刻：今日精读两篇高分论文，分别提出统一的后训练框架与可穿戴设备零样本心率变异性预测。
+最值得关注的是《Post-Training in Time Series Foundation Models》将各种微调策略收敛为统一范式，以及《Zero-Shot Heart Rate Variability Forecasting》在消费级手环上实现无数据重训练的健康预测。
+建议读者优先阅读这两篇，并跟进速读中“专家引导的预报编辑”与“在线预测器最优重校准”，它们能帮你在实际部署中驯服模型的偏差。
+- 详情：[/202607/27/README](/202607/27/README)
 
 ### 精读区论文标签
-1. [PeakFlow: Peak-Guided Coarse-to-Refined Modeling for EEG-Based Dynamic Affective Trajectory Prediction](/202607/26/2607.18671v1-peakflow-peak-guided-coarse-to-refined-modeling-for-eeg-based-dynamic-affective-trajectory-prediction)  
+1. [Post-Training in Time Series Foundation Models: A Unifying Framework](/202607/27/2607.20002v1-post-training-in-time-series-foundation-models-a-unifying-framework)  
    标签：评分：9.0/10、query:ndai
-   evidence：对EEG神经数据进行序列建模以预测情感轨迹
-2. [Is EEG-to-Text Feasible in Real-World Scenarios? An In-Depth Analysis Using a Neuropsychology-Inspired Benchmark](/202607/26/2607.18749v1-is-eeg-to-text-feasible-in-real-world-scenarios-an-in-depth-analysis-using-a-neuropsychology-inspired-benchmark)  
+   evidence：时间序列基础模型的后训练方法
+2. [Zero-Shot Heart Rate Variability Forecasting from Consumer Wearables Using Time Series Foundation Models](/202607/27/2607.20027v1-zero-shot-heart-rate-variability-forecasting-from-consumer-wearables-using-time-series-foundation-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：使用神经心理学启发基准分析EEG到文本可行性
-3. [RAMP: Recognition parametrisation by Amortised Message Passing](/202607/26/2607.18883v1-ramp-recognition-parametrisation-by-amortised-message-passing)  
+   evidence：使用预训练基础模型进行时间序列预测
+3. [Statistical Inference for Rank Allocation in Low-Rank Adaptation](/202607/27/2607.20205v1-statistical-inference-for-rank-allocation-in-low-rank-adaptation)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于从数据学习潜在表示的摊销消息传递框架
-4. [Visual Semantic Decoding of Electrocorticography from Video Stimuli using End-to-End Deep Learning](/202607/26/2607.18923v1-visual-semantic-decoding-of-electrocorticography-from-video-stimuli-using-end-to-end-deep-learning)  
+   evidence：基于统计推断的LoRA秩分配重要性计算
+4. [Variance-reduced Domain Adaptation using Paired Sampling](/202607/27/2607.20367v1-variance-reduced-domain-adaptation-using-paired-sampling)  
    标签：评分：9.0/10、query:ndai
-   evidence：将神经信号（ECoG）解码为视觉类别
-5. [Spiking Neural Networks for fMRI-Based Visual Semantic Decoding](/202607/26/2607.19170v1-spiking-neural-networks-for-fmri-based-visual-semantic-decoding)  
+   evidence：通过配对采样减少方差的无监督域适应方法，适用于有限标注数据
+5. [Transition-Related Potentials as Markers of Narrative Comprehension in Continuous EEG](/202607/27/2607.20720v1-transition-related-potentials-as-markers-of-narrative-comprehension-in-continuous-eeg)  
    标签：评分：9.0/10、query:ndai
-   evidence：将fMRI神经信号解码为视觉语义概念
+   evidence：通过转换电位从连续EEG中解码叙事理解
 
 ### 速读区论文标签
-1. [Adaptive Two-Stage Online Learning for Service-Affecting Failure Detection in Mobile Core Networks](/202607/26/2607.18522v1-adaptive-two-stage-online-learning-for-service-affecting-failure-detection-in-mobile-core-networks)  
+1. [Expert-Guided Forecast Editing for Time-Series Foundation Models](/202607/27/2607.19659v1-expert-guided-forecast-editing-for-time-series-foundation-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于时间序列故障检测的在线学习框架，含时序建模
-2. [Topology-Aware Tokenization for Generative Recommendation](/202607/26/2607.18600v1-topology-aware-tokenization-for-generative-recommendation)  
+   evidence：专家引导的基础模型时间序列预测编辑
+2. [Optimal Recalibration of an Online Predictor](/202607/27/2607.19689v1-optimal-recalibration-of-an-online-predictor)  
    标签：评分：8.0/10、query:ndai
-   evidence：生成推荐的拓扑感知标记化
-3. [Rationale-Guided Knowledge Distillation for Cross-Lingual Stance Detection](/202607/26/2607.18693v1-rationale-guided-knowledge-distillation-for-cross-lingual-stance-detection)  
+   evidence：在线序列预测的重校准
+3. [Point-Selection Fine-Tuning Framework for Robust Point Cloud Classification](/202607/27/2607.19711v1-point-selection-fine-tuning-framework-for-robust-point-cloud-classification)  
    标签：评分：8.0/10、query:ndai
-   evidence：利用LLM进行跨语言知识蒸馏用于低资源立场检测
-4. [Continual Video-MLLM Adaptation over Evolving Domains](/202607/26/2607.18716v1-continual-video-mllm-adaptation-over-evolving-domains)  
+   evidence：逐点影响估计用于特征重要性
+4. [Importance-Aware OBS Pruning for Diffusion Models](/202607/27/2607.20048v1-importance-aware-obs-pruning-for-diffusion-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：参数高效的视频MLLM跨演进域持续适应
-5. [STeP: Signal Temporal Logic for Precise Specifications for Action Generation with Vision Language Models](/202607/26/2607.18580v1-step-signal-temporal-logic-for-precise-specifications-for-action-generation-with-vision-language-models)  
+   evidence：使用空间重要性图指导参数剪枝
+5. [SimulS2ST-Omni: Data-Efficient Streaming Speech-to-Speech Translation via Explicit Trajectory Supervision](/202607/27/2607.19810v1-simuls2st-omni-data-efficient-streaming-speech-to-speech-translation-via-explicit-trajectory-supervision)  
    标签：评分：7.0/10、query:ndai
-   evidence：通过信号时序逻辑将语言指令转换为机器人动作序列
+   evidence：联合文本-代码轨迹监督用于流式序列生成
 

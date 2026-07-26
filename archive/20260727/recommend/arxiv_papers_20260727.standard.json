@@ -1,0 +1,417 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-26T20:33:01.781876+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 37,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 68,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 12,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 7,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 13
+  },
+  "deep_dive": [
+    {
+      "id": "2607.20002v1",
+      "source": "arxiv",
+      "title": "Post-Training in Time Series Foundation Models: A Unifying Framework",
+      "abstract": "Time series foundation models (TSFMs) have emerged as general-purpose models for time series analysis, but pretraining alone is often insufficient for reliable downstream deployment. Bridging this gap requires further intervention to handle domain shift, task heterogeneity, limited supervision, and computational constraints, which motivates post-training as a broad class of methods to adapt, augment, compose, calibrate, or specialize pretrained TSFMs for downstream tasks. In this work, we analyze TSFM post-training methods based on their locus of intervention in the prediction pipeline, yielding five categories: parameter adaptation, context augmentation, model composition, output processing and uncertainty control, and compression and specialization. Within each category, we study main representative methods and discuss their current limitations. We further identify future directions toward controlled adaptation, reliable context construction, uncertainty-aware model composition, calibrated output processing, and deployment-aware specialization. Overall, by providing a unifying framework for the emerging TSFM post-training landscape, this work aims to support future research to navigate the design space between a pretrained TSFM and its reliable downstream deployment.",
+      "authors": [
+        "Shifeng Xie",
+        "Ambroise Odonnat",
+        "Zehao Xiao",
+        "Lei Zan",
+        "Malik Tiomoko",
+        "Lujia Pan",
+        "Themis Palpanas",
+        "Boris N. Oreshkin",
+        "Chenghao Liu",
+        "Keli Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-22T10:37:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.20002v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Post-training methods for time series foundation models",
+      "llm_evidence_cn": "时间序列基础模型的后训练方法",
+      "llm_evidence": "时间序列基础模型的后训练方法",
+      "canonical_evidence": "时间序列基础模型的后训练方法",
+      "llm_tldr_en": "Unifying framework categorizes post-training techniques for time series foundation models.",
+      "llm_tldr_cn": "统一框架分类时间序列基础模型的后训练技术。",
+      "llm_tldr": "统一框架分类时间序列基础模型的后训练技术。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.20027v1",
+      "source": "arxiv",
+      "title": "Zero-Shot Heart Rate Variability Forecasting from Consumer Wearables Using Time Series Foundation Models",
+      "abstract": "Short-term Heart Rate Variability (HRV) forecasting could provide clinicians with actionable lead time for detecting autonomic dysfunction and adverse cardiac events. Consumer wearable devices generate fragmented, artifact-rich HRV signals that challenge conventional forecasting approaches. In this study, we evaluated the forecasting ability of three Time Series Foundation Models (TSFMs), TimesFM, Chronos, and MOIRAI, against traditional baselines (Mean, Exponential Smoothing, and Exponentially Weighted Moving Average) on real-world wearable data collected from 49 healthy individuals. To address data fragmentation, we introduce a variability-preserving imputation method that augments linear interpolation with locally adaptive stochastic noise, retaining physiological dynamics essential for accurate forecasting. The results show that TSFMs outperformed all baselines without fine-tuning, achieving average Mean Absolute Scaled Error (MASE) between 0.81 and 0.87 across TSFMs and both context lengths (32 and 64 time steps), with Chronos and TimesFM as the top models, though MOIRAI showed limited gains over baselines. With up to a 2-hour forecast horizon, the results establish a baseline for TSFMs' performance on a real-world dataset, highlighting domain-specific fine-tuning as a promising direction for clinical deployment.",
+      "authors": [
+        "Luukas Peräkylä",
+        "Fahad Sohrab",
+        "Ville Hautamäki",
+        "Merja Heinäniemi",
+        "Sui Huang",
+        "Pekka Abrahamsson"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-22T11:12:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.20027v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "time series forecasting using pretrained foundation models",
+      "llm_evidence_cn": "使用预训练基础模型进行时间序列预测",
+      "llm_evidence": "使用预训练基础模型进行时间序列预测",
+      "canonical_evidence": "使用预训练基础模型进行时间序列预测",
+      "llm_tldr_en": "Evaluates time series foundation models for zero-shot HRV forecasting from wearables.",
+      "llm_tldr_cn": "评估时间序列基础模型在可穿戴设备零样本心率变异性预测中的性能。",
+      "llm_tldr": "评估时间序列基础模型在可穿戴设备零样本心率变异性预测中的性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.20205v1",
+      "source": "arxiv",
+      "title": "Statistical Inference for Rank Allocation in Low-Rank Adaptation",
+      "abstract": "Low-rank adaptation (LoRA) has become a widely used parameter-efficient fine-tuning method for large language models. Since different modules and layers may contribute unequally to downstream adaptation, allocating rank resources under a fixed parameter budget is an important problem for balancing efficiency, expressiveness, and generalization. Existing adaptive rank methods address this problem mainly through carefully designed importance scores constructed from gradient-derived sensitivity and uncertainty measures, without an explicit statistical interpretation. In this paper, we formulate LoRA rank allocation as a statistical hypothesis testing problem and propose StatLoRA, a statistical inference-based rank allocation method. StatLoRA associates each LoRA component with a test statistic and uses estimated p-values to determine which components should be retained or pruned under a prescribed rank budget. The proposed testing procedure is supported by our central limit theory for stochastic optimizer trajectories. In particular, we establish asymptotic normality for a broad class of commonly used optimizers in deep learning, including AdamW, and derive the corresponding asymptotic distributions for the proposed component scores used in hypothesis testing. We evaluate StatLoRA on LoRA fine-tuning of DeBERTaV3-base, BART-Large, and Qwen2.5-7B across natural language understanding, natural language generation, and question answering tasks. Experiments show that StatLoRA achieves comparable or better performance than vanilla LoRA, AdaLoRA, and IGU-LoRA under matched rank budgets. Sensitivity analyses and empirical diagnostics further support the stability of the proposed hypothesis-testing-based allocation rule and provide empirical evidence for the asymptotic theory of component scores.",
+      "authors": [
+        "Yihang Gao",
+        "Vincent Y. F. Tan"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "math.ST"
+      ],
+      "published": "2026-07-22T14:25:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.20205v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Statistical inference-based importance for LoRA rank allocation",
+      "llm_evidence_cn": "基于统计推断的LoRA秩分配重要性计算",
+      "llm_evidence": "基于统计推断的LoRA秩分配重要性计算",
+      "canonical_evidence": "基于统计推断的LoRA秩分配重要性计算",
+      "llm_tldr_en": "Proposes StatLoRA for rank allocation in LoRA using hypothesis testing.",
+      "llm_tldr_cn": "提出StatLoRA使用假设检验为LoRA进行秩分配。",
+      "llm_tldr": "提出StatLoRA使用假设检验为LoRA进行秩分配。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.20367v1",
+      "source": "arxiv",
+      "title": "Variance-reduced Domain Adaptation using Paired Sampling",
+      "abstract": "Correlation alignment and the maximum mean discrepancy are two widely used distribution-matching frameworks for unsupervised domain adaptation (UDA). However, high variance in these losses has been shown to undermine their effectiveness in minibatch optimisation settings. Furthermore, the losses lack finite-sum structure, which renders them incompatible with classical stochastic variance reduction (SVR) methods. This paper proposes Paired Sampling for Domain Adaptation (PSDA), a novel SVR technique tailored to such objectives. PSDA pairs observations both within and across domains, to form quadruplets that are always sampled together during training. The pairings are designed to minimise expected gradient variance, and reduce to solving a set of linear assignment problems. Our simulations demonstrate reduced variance compared to related methods, and experiments on three domain shift datasets show improved target domain accuracy.",
+      "authors": [
+        "Andrea Napoli"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-22T16:58:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.20367v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "variance-reduced domain adaptation with paired sampling for limited labeled data",
+      "llm_evidence_cn": "通过配对采样减少方差的无监督域适应方法，适用于有限标注数据",
+      "llm_evidence": "通过配对采样减少方差的无监督域适应方法，适用于有限标注数据",
+      "canonical_evidence": "通过配对采样减少方差的无监督域适应方法，适用于有限标注数据",
+      "llm_tldr_en": "Proposes a stochastic variance reduction technique for domain adaptation that works with limited labeled data.",
+      "llm_tldr_cn": "提出一种针对域适应的随机方差减少技术，适用于有限标注数据。",
+      "llm_tldr": "提出一种针对域适应的随机方差减少技术，适用于有限标注数据。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.20720v1",
+      "source": "arxiv",
+      "title": "Transition-Related Potentials as Markers of Narrative Comprehension in Continuous EEG",
+      "abstract": "Harnessing the potential of electroencephalography (EEG) for brain research is fundamentally limited by intrinsic noise and the diffuse projection of brain-generated activity over the scalp. The standard event-related potential (ERP) paradigm addresses this limitation by relying on repeated independent trials, albeit at the cost of moving away from naturalistic experimental conditions. As a more naturalistic alternative, we collected continuous EEG while participants watched short films and extracted potentials aligned to sharp cinematic transitions (cuts). We demonstrate that such transition-related potentials (TRPs) exhibit canonical ERP-like temporal structure associated with significant information processing. By comparing coherent films with scene-scrambled versions containing matched post-cut sensory input, we find that these responses are systematically shaped by narrative context. We then show that the cut-related EEG signature can be recovered directly from group-averaged continuous recordings with a compact deep neural network (DNN). The detector generalized across films and subject groups, and the resulting TRPs reproduced the main context-dependent effects observed for manually annotated cuts. These results indicate that narrative context leaves a measurable signature in EEG responses, that this signature can be detected directly in continuous recordings, and that such detections provide a semi-automated framework for analyzing how viewers process and understand film narratives. We propose that the method outlined here can be adapted to parse EEG responses to other forms of continuous stimulation, providing a general tool for probing experimental conditions that are closer to natural human experience.",
+      "authors": [
+        "Bálint Csanády",
+        "Péter Vedres",
+        "Kristóf Zsolt Makó",
+        "Orsolya Papp-Zipernovszky",
+        "Márta Volosin",
+        "Dávid Apagyi",
+        "András Lukács",
+        "András Bálint Kovács",
+        "Zoltan Nadasdy"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC",
+        "cs.AI"
+      ],
+      "published": "2026-07-22T20:43:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.20720v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Decoding narrative comprehension from continuous EEG via transition potentials",
+      "llm_evidence_cn": "通过转换电位从连续EEG中解码叙事理解",
+      "llm_evidence": "通过转换电位从连续EEG中解码叙事理解",
+      "canonical_evidence": "通过转换电位从连续EEG中解码叙事理解",
+      "llm_tldr_en": "Transition-related potentials in EEG provide markers for narrative comprehension decoding.",
+      "llm_tldr_cn": "EEG转换相关电位为叙事理解解码提供标记。",
+      "llm_tldr": "EEG转换相关电位为叙事理解解码提供标记。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.19659v1",
+      "source": "arxiv",
+      "title": "Expert-Guided Forecast Editing for Time-Series Foundation Models",
+      "abstract": "Time-series foundation models can forecast across heterogeneous domains without task-specific training, but their forecasts are fixed once produced and cannot directly incorporate task-specific expert feedback. We study expert-guided forecast editing: a frozen foundation model generates candidate future trajectories, and an expensive expert evaluator scores them to guide forecast revision. Under a tight query budget, two natural strategies sit at opposite ends: best-of-$N$ purely exploits the foundation model's predictive distribution, while optimization approaches mostly explore the forecast horizon as an unstructured high-dimensional vector. Each extreme is individually sub-optimal. We introduce \\textbf{DEFT}, an expert-guided forecast editing framework that balances the two by first exploiting the foundation model's predictive samples in a decomposed trend--seasonal space, then exploring around them via component-wise refinement. DEFT queries the expert only on complete trajectories, then reuses scores for the trend and seasonal components that appeared in the queried recombinations. This lets each expert query provide structured component-level feedback while keeping the foundation model frozen. We compare DEFT against direct search approaches, including best-of-$N$, cross-entropy methods, and Bayesian optimization, under matched expert-query budgets. Across two forecasting benchmarks consisting of 78 datasets, three time-series foundation models, four feedback types, and seven query budgets, DEFT consistently improves the effectiveness of expert guidance. A molecular-dynamics case study further suggests that the same principle extends to more physically grounded feedback, supporting the hypothesis that sparse test-time guidance should be spent balancing prior exploitation with structured exploration.",
+      "authors": [
+        "Hung Le",
+        "Minh Hoang Nguyen",
+        "Manh Nguyen",
+        "Huu Hiep Nguyen",
+        "Dai Do"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-22T01:49:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.19659v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "expert-guided editing of time series forecasts from foundation models",
+      "llm_evidence_cn": "专家引导的基础模型时间序列预测编辑",
+      "llm_evidence": "专家引导的基础模型时间序列预测编辑",
+      "canonical_evidence": "专家引导的基础模型时间序列预测编辑",
+      "llm_tldr_en": "Proposes expert-guided forecast editing framework for time-series foundation models.",
+      "llm_tldr_cn": "提出专家引导的预测编辑框架用于时间序列基础模型。",
+      "llm_tldr": "提出专家引导的预测编辑框架用于时间序列基础模型。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.19810v1",
+      "source": "arxiv",
+      "title": "SimulS2ST-Omni: Data-Efficient Streaming Speech-to-Speech Translation via Explicit Trajectory Supervision",
+      "abstract": "Long-form streaming speech-to-speech translation (S2ST) requires incremental, unbounded translation under strict latency constraints. Existing methods typically suffer from sentence-bounded supervision or demand massive paired-S2ST supervision. We introduce a training recipe enabling a speech language model for sentence-level and long-form streaming S2ST using only $\\sim$2k hours of paired cross-lingual S2ST data, layered atop auxiliary supervision. Anchored by auxiliary multitask training, our approach remains robust even when the paired-S2ST budget itself is reduced by 90\\%. Our core contribution, joint text-code trajectory supervision, schedules target text and acoustic semantic codes as a unified commitment path, eliminating the need for separate, unstable speech-side emission controllers. Furthermore, our two-stream Thinker--Talker factorization significantly outperforms unified-decoder baselines by decoupling linguistic reasoning from dense acoustic prediction to mitigate modality interference. Finally, our system achieves highly competitive quality-latency trade-offs on RealSI and ACL60/60-dev, matching state-of-the-art, closed-source S2ST systems such as LiveInterpret~2.0 on ASR-BLEU.",
+      "authors": [
+        "Rongshen He",
+        "Xinyu Liang",
+        "Dekun Chen",
+        "Jiaqi Li",
+        "Mingjie Chen",
+        "Zhizheng Wu"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-07-22T06:42:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.19810v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "joint text-code trajectory supervision for streaming sequence generation",
+      "llm_evidence_cn": "联合文本-代码轨迹监督用于流式序列生成",
+      "llm_evidence": "联合文本-代码轨迹监督用于流式序列生成",
+      "canonical_evidence": "联合文本-代码轨迹监督用于流式序列生成",
+      "llm_tldr_en": "A data-efficient streaming speech translation method using explicit trajectory supervision to convert speech into sequences.",
+      "llm_tldr_cn": "一种高效数据流式语音翻译方法，通过显式轨迹监督将语音转换为序列。",
+      "llm_tldr": "一种高效数据流式语音翻译方法，通过显式轨迹监督将语音转换为序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.19689v1",
+      "source": "arxiv",
+      "title": "Optimal Recalibration of an Online Predictor",
+      "abstract": "We study the problem of recalibrating an online predictor [KE17, OKS24]: given an arbitrary \"hint\" sequence of forecasts, the learner must output new predictions that are calibrated while incurring small excess error relative to the original forecasts, under a proper loss. We give an online algorithm that achieves $(\\varepsilon, \\varepsilon^2)$-recalibration for Lipschitz proper losses in   $T \\approx \\varepsilon^{-3}$ rounds, using an imbalanced extension of the recent simultaneous Blackwell approachability reduction framework of [HTY26]. We show that this tradeoff is optimal by proving a matching lower bound for recalibrating against the squared loss. We also prove a companion $\\mathcal{K}_2$-recalibration theorem that obtains the same tradeoffs up to a logarithmic factor.   As our main application, we show how our recalibration algorithms can be combined with the online refinement method of [FH23] to obtain simultaneous $\\varepsilon$-calibration and $\\varepsilon^2$-calibeating for smooth proper losses at the same asymptotic rate, improving upon prior works that achieved these properties separately or with a worse $\\varepsilon$ dependence. In particular, the $\\mathcal{K}_2$ variant answers a question of [CHJL26] on simultaneously achieving near-optimal calibeating and calibration rates. We also derive extensions to settings with multiple hint sequences. Finally, we empirically evaluate our algorithms on a classification dataset undergoing distribution shift.",
+      "authors": [
+        "Lunjia Hu",
+        "Kevin Tian",
+        "Chutong Yang"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.DS",
+        "cs.LG"
+      ],
+      "published": "2026-07-22T02:36:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.19689v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "online recalibration of sequential forecasts",
+      "llm_evidence_cn": "在线序列预测的重校准",
+      "llm_evidence": "在线序列预测的重校准",
+      "canonical_evidence": "在线序列预测的重校准",
+      "llm_tldr_en": "Provides optimal algorithm for recalibrating online predictors with theoretical guarantees.",
+      "llm_tldr_cn": "提供具有理论保证的在线预测器最优重校准算法。",
+      "llm_tldr": "提供具有理论保证的在线预测器最优重校准算法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.19711v1",
+      "source": "arxiv",
+      "title": "Point-Selection Fine-Tuning Framework for Robust Point Cloud Classification",
+      "abstract": "Noisy and corrupted points can substantially degrade point cloud recognition performance, especially under challenging corruption settings. In particular, full fine-tuning of 3D pre-trained models may amplify the influence of outliers and overwrite robustness priors learned during pre-training, while naive parameter-efficient adaptation remains sensitive to corrupted tokens. To address this issue, we propose PSFT, a point-selection fine-tuning framework that improves robustness while remaining parameter-efficient. PSFT first estimates point-wise influence from pre-pooling features and adaptively retains minimally influential points to suppress outliers. Based on the selected subset, a prompt generation branch predicts layer-wise prompt tokens and injects them into a frozen backbone for lightweight downstream adaptation. To further mitigate residual noise after selection, we append a lightweight feature filter with bottleneck MLP transformation and Beta-gated residual blending to refine patch-token representations before prediction. Extensive experiments show that PSFT consistently reduces corruption error on ModelNet-C and ModelNet40-C across all tested 3D pre-trained backbones, while achieving the strongest ScanObjectNN-C results with ULIP-2 and Uni3D-B among the evaluated tuning strategies. Our implementation can be found at https://github.com/CVChMA/PSFT/tree/master.",
+      "authors": [
+        "Da Li",
+        "Chang Ma",
+        "Dongfu Yin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T03:27:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.19711v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "point-wise influence estimation for feature importance",
+      "llm_evidence_cn": "逐点影响估计用于特征重要性",
+      "llm_evidence": "逐点影响估计用于特征重要性",
+      "canonical_evidence": "逐点影响估计用于特征重要性",
+      "llm_tldr_en": "PSFT framework estimates point-wise influence to select minimal influential points for robust fine-tuning.",
+      "llm_tldr_cn": "PSFT框架估计逐点影响以选择最小影响点进行鲁棒微调。",
+      "llm_tldr": "PSFT框架估计逐点影响以选择最小影响点进行鲁棒微调。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.20048v1",
+      "source": "arxiv",
+      "title": "Importance-Aware OBS Pruning for Diffusion Models",
+      "abstract": "We propose importance-aware pruning for diffusion models, a training-free framework that prioritizes preserving parameters critical to semantically salient image regions. To do so, we incorporate spatial importance maps -- derived from conditioning signals or model attention -- into the pruning objective. This produces parameter rankings aligned with perceptual relevance rather than uniform reconstruction error. On MS-COCO dataset, our proposed approach consistently retains subject fidelity and structural correctness at high compression ratios where conventional pruning causes visible degradation. These results demonstrate that content-aware objectives are key to perceptually faithful compression of generative models.",
+      "authors": [
+        "Ba-Thinh Lam",
+        "Srijan Das",
+        "Hieu Le"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T11:42:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.20048v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses spatial importance maps to guide parameter pruning",
+      "llm_evidence_cn": "使用空间重要性图指导参数剪枝",
+      "llm_evidence": "使用空间重要性图指导参数剪枝",
+      "canonical_evidence": "使用空间重要性图指导参数剪枝",
+      "llm_tldr_en": "Introduces importance-aware pruning for diffusion models using attention-derived maps",
+      "llm_tldr_cn": "引入基于注意力重要图的重要性感知剪枝方法",
+      "llm_tldr": "引入基于注意力重要图的重要性感知剪枝方法",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
