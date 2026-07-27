@@ -1,0 +1,2439 @@
+Title: High-dimensional sparsity-adaptive multiple change-point detection
+
+URL Source: https://arxiv.org/pdf/2607.20928v1
+
+Published Time: Fri, 24 Jul 2026 00:30:08 GMT
+
+Number of Pages: 36
+
+Markdown Content:
+# High-dimensional sparsity-adaptive multiple change-point detection 
+
+## Hyeyoung Maeng Department of Mathematical Sciences, Durham University. Department of Statistics, Ewha Womans University. ∗
+
+## Tengyao Wang Department of Statistics, London School of Economics. Piotr Fryzlewicz Department of Statistics, London School of Economics. July 24, 2026 
+
+Abstract 
+
+We introduce a method for detecting multiple change-points in the mean of a high-dimensional data sequence. Unlike existing top-down (i.e. divisive) algorithms, we adopt a bottom-up (i.e. agglomerative) approach, whereby we iteratively merge neighboring segments of data starting from the finest level. This is particularly useful for signals with frequent change-points, since local evidence is assessed before seg-ments are combined into coarser summaries. We compute L2- and L∞-aggregated test statistics of neighboring segments and combine the information from their respective ranks, which makes the method adaptive in handling different degrees of change-point sparsity. We show the consistency of the estimated number and locations of change-points under both iid Gaussian and possibly dependent and/or non-Gaussian noise. The practicality of our approach is demonstrated through simulations and a real data example involving the UK House Price Index data. Our methodology is implemented in the R package BUHDA , available at https://github.com/hmaeng/BUHDA .
+
+Keywords: change-point, high-dimensional setting, bottom-up approach, data-adaptivity 
+
+> ∗
+
+Second affiliation effective 1 September 2026. 
+
+1arXiv:2607.20928v1 [stat.ME] 23 Jul 2026 1 Introduction 
+
+High-dimensional data arise in many different fields including finance, environmental sci-ence, biology, economics and astronomy. When vast quantities of data are collected over time, the data-generating mechanism may experience change; this paper focuses on the situation in which such changes are of an abrupt nature. Recent examples of such appli-cations include detection of exoplanets from light curve data (Fisch et al., 2022), detecting the most recent change-point in a telecommunications network (Bardwell et al., 2019), de-tecting forest changes using satellite images (Morresi et al., 2024), detecting changes in functional magnetic resonance imaging (fMRI) data for a set of subjects (Cribben and Yu, 2017; Li et al., 2019), detecting price inflation from UK retail price indices (Groen et al., 2013) and detecting changes in the incidence of terrorism (Tickle et al., 2021). In this paper, we consider a panel of p univariate data sequences recorded over n time steps, where the dimension p and the sequence length n may both be large, and p may be comparable with, or even larger than, n. We study the following data generation model for high-dimensional panel data, 
+
+Xi,t = fi,t + εi,t , i = 1 , . . . , p, t = 1 , . . . , n, (1) where f i, · = ( fi, 1, . . . , f i,n )⊤ is the underlying signal vector of the ith component time series 
+
+Xi, · = ( Xi, 1, . . . , X i,n )⊤. Initially, we consider the case that the innovations εi,t ∼ N (0 , σ 2)
+
+are independent across i and t. The assumption of temporal independence is relaxed in Appendix B, in which we consider possibly dependent and/or non-Gaussian noise. We keep the assumption of cross-sectional independence throughout the paper and show in Section 4.5 how PCA can be used to deal with possible cross-sectional dependence in practical situations. We assume that change-points in the signal vectors {f i, ·}pi=1 , if present, have locations within the set {η1, η 2, . . . , η N }, where 
+
+0 < η 1 < η 2 < . . . < η N < n. (2) We set η0 = 0 and ηN +1 = n by convention. The value of N is unknown and can grow with 
+
+n. At each change-point ηℓ, we assume that there exists at least one coordinate (e.g. kth data sequence) at which fk,η ℓ and fk,η ℓ+1 differ, and {f i, ·}pi=1 is otherwise constant between any adjacent change-points, in the following way: 
+
+Ωℓ = i ∈ { 1, . . . , p } : fi,η ℓ+1 − fi,η ℓ̸ = 0  ̸ = ∅ for ℓ = 1 , . . . , N (3) where fi,t = θi,ℓ for t ∈ [ηℓ−1 + 1 , η ℓ], ℓ = 1 , . . . , N + 1 , i = 1 , . . . , p. 
+
+For each change-point ηℓ, change can occur in a dense subset of the signal components (e.g. all or most components of {fi,η ℓ }i=1 ,...,p ) or only in a sparse subset of the components, where the level of sparsity is described by Sℓ := |Ωℓ|.Numerous methods for high-dimensional change-point analysis have been proposed, see 2e.g. Bai (2010), Zhang et al. (2010), Horváth and Hušková (2012), Wang et al. (2022), Jirak (2015), Yu and Chen (2021), Cho and Fryzlewicz (2015), Cho et al. (2016), Wang and Samworth (2018), Chen et al. (2022). Explicitly considering adaptivity to varying sparsity in high-dimensional change-point analysis is still relatively underexplored in the literature and only a small number of methods have been proposed (e.g. Enikeeva and Harchaoui (2019), Liu et al. (2020), Zhang et al. (2022), Wang and Feng (2023)). In this paper, we introduce a sparsity-adaptive bottom-up algorithm for detecting mul-tiple change-points in the mean of a high-dimensional data sequence, which we refer to as ‘BUHDA’ (Bottom-Up High-Dimensional Adaptive change-point detection). In contrast to the divisive top-down approach, our bottom-up approach agglomeratively merges adjacent data segments that are least likely to contain change-points. In the univariate setting, Fry-zlewicz (2018) and Maeng and Fryzlewicz (2024) demonstrate the attraction of the bottom-up framework for detecting multiple change-points. They provide empirical evidence that the bottom-up approach works well in detecting frequent change-points including abrupt local features where many existing top-down change-point detection methods fail. The cur-rent work extends these ideas to the high-dimensional setting. The bottom-up methodology reduces the construction of the change-point solution path to repeated pairwise compar-ison of two high-dimensional vectors. This is useful when changes are frequent and their sparsity levels vary: short segments are tested before they are merged, and combining the 
+
+L2 and L∞ ranks lets the method detect both dense and sparse changes without fixing the sparsity level in advance. More precisely, our main contributions are as follows. 1. The bottom-up tree construction starts with the finest level of data, where each data point X·,t is treated as its own segment with corresponding node (t − 1, t ]. In this context, merge refers to the process of combining adjacent nodes into higher-level parent nodes. Our first contribution is adaptivity achieved in the bottom-up tree construction. To deal with possibly varying sparsity over change-points, we use both the L2 and L∞ norms of CUSUM-type statistics in deciding which neighboring regions should be merged next. In aggregating both the L2 and L∞ norms, we first obtain the rank vector of each norm ( RL2 and RL∞ ) by sorting each norm for all possible merges, then find the combined rank by taking the entrywise maximum of RL2 and 
+
+RL∞ . We merge the pair of neighboring segments whose combined rank is the smallest so that we postpone the merge of a segment if it has either a dense or a sparse change (thus the L2 or the L∞ norm is large enough, respectively). We remark that such rank-based combination of different across-panel aggregators of contrast statistics is only possible in bottom-up/agglomerative approaches. 2. Bottom-up methods target local features at an early stage, before focusing on more global features corresponding to longer data segments. Therefore, they tend to per-form better than top-down approaches in estimating the number of change-points in frequent change-point scenarios, although they tend to underperform in localization i.e. estimating the locations of change-points (Maeng and Fryzlewicz, 2024). This is because the initial merges are based on short segments of the data. To improve local-3ization, we add pre-merging and adjusting steps to the bottom-up merge algorithm. Pre-merging adds stability to the algorithm by ensuring that even the finest-level merging tests are performed on large enough sample sizes. Adjusting adds flexibility to the algorithm by making it less greedy. We expand on these aspects in Section 2.3. As demonstrated in Section 4, the above ingredients lead to good performance of BUHDA in scenarios in which the sparsity of change varies over change-points and when relatively frequent change-points exist, especially in high-dimensional settings. This paper is organized as follows. In Section 2, we give a full description of the BUHDA procedure and Section 3 presents the relevant theoretical results. The supporting numerical studies including a real house-price data example are given in Section 4. The proofs of our main theoretical results and theoretical extensions to non-Gaussian and/or dependent noise are in the Appendix. 
+
+# 2 Methodology 
+
+## 2.1 Bottom-up tree construction 
+
+In contrast to the top-down methods, bottom-up procedures start from the finest level of the data and iteratively merge the most similar neighboring pairs of segments until all data points are in the same segment. The tree construction algorithm consists of several merge passes through the data, alongside auxiliary pre-merge and adjust passes. The pre-merge and adjust passes will be discussed in Section 2.3. We first focus on the merge passes, which form the backbone of the entire procedure. Initially, each data point X·,t is its own segment, corresponding to a node (t − 1, t ] of the bottom-up tree. In our algorithm, a node is an interval (a, b ] := {a + 1 , . . . , b } of the domain {1, . . . , n } of the time series, together with the history of its construction, where the history is achieved through storing descendant nodes using the function children( ·) defined in Algorithm 2. In each pass, the algorithm considers each pair of neighboring segments to decide which pairs to merge first. The merging priority is determined via a dissimilarity statistic, so that the most similar segments are merged first. For two neighboring segments (u, v ] and (v, w ], the statistic is computed by aggregating over the panel the following componentwise CUSUM statistic: 
+
+Ci;u,v,w =
+
+r(w − v)( v − u)
+
+w − u
+
+  ¯Xi, (u,v ] − ¯Xi, (v,w ]
+
+, i = 1 , . . . , p, (4) where u < v < w and ¯Xi, (a,b ] = 1 /(b − a) Pbt=a+1 Xi,t . In each single pass, a proportion 
+
+ρ of neighboring segment pairs get merged and the resulting segments can be thought of as parents of the constituent children segments, leading to a tree-like construction. Consequently, the algorithm needs at most a logarithmic number of passes through the data to construct the root node of the tree, in which all data points belong to the same segment. 42.2 Adaptivity to unknown sparsity level 
+
+We now illustrate how BUHDA achieves adaptivity in the bottom-up tree construction to deal with possibly varying sparsity Sℓ. We first formulate the coordinate-wise L2 and L∞
+
+aggregations of the CUSUM statistics as follows: 
+
+CL2 
+
+> u,v,w
+
+=
+
+ p
+
+X
+
+> i=1
+
+(Ci;u,v,w )2
+
+1/2
+
+, (5) 
+
+CL∞ 
+
+> u,v,w
+
+= max  
+
+> i∈{ 1,...,p }
+
+Ci;u,v,w . (6) We now provide a simple example to illustrate how the data transformation is carried out using both the L2 and L∞ norms. 
+
+Example. Suppose that ρ = 0 .3, and the input data matrix of the dimension 3 × 6 is, 
+
+X =
+
+
+
+X1,1 X1,2 X1,3 X1,4 X1,5 X1,6
+
+X2,1 X2,2 X2,3 X2,4 X2,5 X2,6
+
+X3,1 X3,2 X3,3 X3,4 X3,5 X3,6
+
+ .
+
+As shown in the right diagram of Figure 1, from the initial input of the data, there exist six nodes, {(0 , 1] , (1 , 2] , (2 , 3] , (3 , 4] , (4 , 5] , (5 , 6] }, in the current layer (i.e. L = 6 ) with the corresponding segments, { ¯X·,(0 ,1] , ¯X·,(1 ,2] , ¯X·,(2 ,3] , ¯X·,(3 ,4] , ¯X·,(4 ,5] , ¯X·,(5 ,6] }, where L is the number of current layer nodes, ¯X·,(a,b ] = ( ¯X1,(a,b ], . . . , ¯Xp, (a,b ])⊤ and ¯Xi, (a,b ] = 1 /(b −
+
+a) Pbt=a+1 Xi,t . A layer represents a depth in a tree (i.e. distance from the bottom); therefore a horizontal row of nodes sharing the same depth belongs to the same layer. Pass j = 1 : We initially look at all pairwise differences by computing the vectors of corresponding CUSUM statistics in (4), 
+
+
+
+C1;0 ,1,2
+
+C2;0 ,1,2
+
+C3;0 ,1,2
+
+ ,
+
+
+
+C1;1 ,2,3
+
+C2;1 ,2,3
+
+C3;1 ,2,3
+
+ ,
+
+
+
+C1;2 ,3,4
+
+C2;2 ,3,4
+
+C3;2 ,3,4
+
+ ,
+
+
+
+C1;3 ,4,5
+
+C2;3 ,4,5
+
+C3;3 ,4,5
+
+ ,
+
+
+
+C1;4 ,5,6
+
+C2;4 ,5,6
+
+C3;4 ,5,6
+
+ ,
+
+and this gives rise to five possible candidate merges. Then we compute the L2 and L∞
+
+aggregations of the CUSUM statistics as in (5) and (6) for each of the five candidate merges and their corresponding ranks as follows 
+
+L2 :
+
+
+
+CL2
+
+> 0,1,2
+
+, C L2
+
+> 1,2,3
+
+, C L2
+
+> 2,3,4
+
+, C L2
+
+> 3,4,5
+
+, C L2
+
+> 4,5,6
+
+
+
+→
+
+
+
+RL2
+
+> 0,1,2
+
+, R L2
+
+> 1,2,3
+
+, R L2
+
+> 2,3,4
+
+, R L2
+
+> 3,4,5
+
+, R L2
+
+> 4,5,6
+
+
+
+,L∞ :
+
+
+
+CL∞
+
+> 0,1,2
+
+, C L∞
+
+> 1,2,3
+
+, C L∞
+
+> 2,3,4
+
+, C L∞
+
+> 3,4,5
+
+, C L∞
+
+> 4,5,6
+
+
+
+→
+
+
+
+RL∞
+
+> 0,1,2
+
+, R L∞
+
+> 1,2,3
+
+, R L∞
+
+> 2,3,4
+
+, R L∞
+
+> 3,4,5
+
+, R L∞
+
+> 4,5,6
+
+
+
+, (7) 5where RL2 
+
+> ·,·,·
+
+and RL∞ 
+
+> ·,·,·
+
+are ranks of CL2 
+
+> ·,·,·
+
+and CL∞ 
+
+> ·,·,·
+
+, respectively. We then combine the above two rank vectors to form 
+
+
+
+R∗
+
+> 0,1,2
+
+, R ∗
+
+> 1,2,3
+
+, R ∗
+
+> 2,3,4
+
+, R ∗
+
+> 3,4,5
+
+, R ∗
+
+> 4,5,6
+
+
+
+,
+
+where 
+
+R∗·,·,· = max  RL2
+
+> ·,·,·
+
+, R L∞
+
+> ·,·,·
+
+. (8) We then merge the pairs whose corresponding R∗’s are the smallest. Intuitively, if CL2 or 
+
+CL∞ is large enough, then merging the corresponding pair is postponed and highly likely to survive until a later stage of merging. This allows us to identify the change-points by looking at nodes nearest to the root in the tree construction. By way of illustration, suppose that  R∗
+
+> 0,1,2
+
+, R ∗
+
+> 1,2,3
+
+, R ∗
+
+> 2,3,4
+
+, R ∗
+
+> 3,4,5
+
+, R ∗
+
+> 4,5,6
+
+ = (2 , 4, 5, 5, 2) . As ρL  = 2 , we pick the first two smallest ranks, R∗ 
+
+> 0,1,2
+
+and R∗
+
+> 4,5,6
+
+, and merge the corresponding pairs. Once the merges are done, the current layer node set becomes {(0 , 2] , (2 , 3] , (3 , 4] , (4 , 6] } with the corresponding segments, { ¯X·,(0 ,2] , ¯X·,(2 ,3] , ¯X·,(3 ,4] , ¯X·,(4 ,6] }, as illustrated in Figure 1. X1,1 X1,2 X1,3 X1,4 X1,5 X1,6                                 
+
+> X2,1 X2,2 X2,3 X2,4 X2,5 X2,6
+> X3,1 X3,2 X3,3 X3,4 X3,5 X3,6
+> X1,1 X1,2 X1,3 X1,4 X1,5 X1,6
+> X2,1 X2,2 X2,3 X2,4 X2,5 X2,6
+> X3,1 X3,2 X3,3 X3,4 X3,5 X3,6
+> X(0,1] X(1,2] X(2,3] X(3,4] X(4,5] X(5,6]
+> X(0,2] X(4,6]
+> X(0,3] X(3,6]
+> X(0,6]
+> Pass 1 Pass 2 Pass 3
+
+Figure 1: Example of bottom-up tree construction presented in Section 2.1. Left diagram: observations X (dots) and underlying signals f (solid line). Right diagram: bottom-up binary tree with segments (circled). Notation simplified in this figure: ¯X(a,b ] := ¯X·,(a,b ].Pass j = 2 : We now have four nodes in the current layer ( L = 4 ) so that ρL  = 2 . Using the current layer nodes, {(0 , 2] , (2 , 3] , (3 , 4] , (4 , 6] }, compute the L2 and L∞ of the CUSUM statistics and the corresponding combined ranks, 
+
+R∗
+
+> 0,2,3
+
+, R ∗
+
+> 2,3,4
+
+, R ∗
+
+> 3,4,6
+
+,
+
+and this gives rise to three possible candidate merges. Suppose R∗ 
+
+> 0,2,3
+
+and R∗ 
+
+> 3,4,6
+
+are the two smallest: merge the corresponding pairs and update the current layer node set as 
+
+{(0 , 3] , (3 , 6] }.Pass j = 3 : We now have only one pair to merge and the algorithm ends with one current layer node, {(0 , 6] }.6We refer to all three passes in this example as “merge passes” (see Algorithm 2). Merge passes are the key ingredient of the bottom-up tree construction and interact with other operations such as pre-merge passes and adjust passes; the details of those will be given in Section 2.3. 
+
+Algorithm 1: Pseudocode for bottom-up tree construction 
+
+Input: Xp×n, ρ (merge function parameter), cpm (pre-merge pass parameter) 
+
+Output: H (merging history sequence) 
+
+O ← { (0 , 1] , (1 , 2] , (2 , 3] , . . . , (n − 1, n ]}
+
+H ← ⟨ O⟩ // Initialise history sequence 
+
+for j = 1 to ⌊log 2(n)/c pm ⌋ do 
+
+O ← pre-merge (O) // See Algorithm 3 
+
+O ← adjust (O) // See Algorithm 4 
+
+H ← H∥⟨ O⟩ // Concatenate current state to history 
+
+end while |O| ≥ 2 do 
+
+O ← merge (O, ρ ) // See Algorithm 2 
+
+O ← adjust (O)
+
+H ← H∥⟨ O⟩
+
+end return H
+
+As shown in the above example, the merging process is repeated until all data points are in the same segment. This leads to the construction of a solution path which arranges the change-point candidates in the order of importance. This hierarchy justifies the use of thresholding for change-point estimation, described in Section 2.4. 
+
+## 2.3 Improving localization error 
+
+If merge passes are only used in constructing a bottom-up tree, the algorithm tends to underperform in localization as the bottom part of the merge tree is built by focusing on local features identified with relatively short segments. The novelty of our BUHDA procedure includes adding other types of operations: pre-merge passes and adjust passes to improve localization. The algorithm for the bottom-up tree construction including those three types of passes is formulated in Algorithm 1 and their details are given in the following (for completeness, we also include merge passes below). 
+
+Merge passes. The merge passes are formally defined in Algorithm 2 and illustrated with an example in Section 2.2. 7Algorithm 2: Pseudocode for merge pass 
+
+Input : parameter ρ,a list of nodes O = {(o0, o 1], (o1, o 2], . . . , (oL−1, o L]}
+
+Output: updated list of nodes O
+
+Function merge( O, ρ ):
+
+Define CL2 = ( CL2  
+
+> ok,o k+1 ,o k+2
+
+)0≤k≤L−2 and CL∞ = ( CL∞  
+
+> ok,o k+1 ,o k+2
+
+)0≤k≤L−2 following (5) and (6). Compute the corresponding rank vectors RL2 and RL∞ as in (7). Combine RL2 and RL∞ to form a vector R∗ as in (8) and let r1, . . . , r ⌈ρL ⌉ be the indices of the ⌈ρL ⌉ smallest elements of R∗ (in increasing order) 
+
+for j in 1, . . . , ⌈ρL ⌉ do 
+
+If {(orj , o rj +1 ], (orj +1 , o rj +2 ]} ⊆ O, then merge to form a new node (orj , o rj +2 ]
+
+such that children (( orj , o rj +2 ]) := {(orj , o rj +1 ], (orj +1 , o rj +2 ]} and update 
+
+O ← { (a, b ] ∈ O : b ≤ orj or a ≥ orj +2 } ∪ (orj , o rj +2 ].
+
+end return O
+
+Algorithm 3: Pseudocode for pre-merge pass 
+
+Input : a list of nodes O = {(o0, o 1], (o1, o 2], . . . , (oL−1, o L]}
+
+Output: updated list of nodes O
+
+Function pre-merge( O):
+
+We set 
+
+O ←
+
+
+
+{(o0, o 2], . . . , (oL−2, o L]} if L is even 
+
+{(o0, o 2], . . . , (oL−3, o L−1], (oL−1, o L]} if L is odd and o1 − o0 < o L − oL−1
+
+{(o0, o 1], (o1, o 3], . . . , (oL−2, o L]} if L is odd and o1 − o0 ≥ oL − oL−1,
+
+and children(( oj , o j+2 ]) := {(oj , o j+1 ], (oj+1 , o j+2 ]} for each (oj , o j+2 ] ∈ O.
+
+return O
+
+Pre-merge passes. Before performing any merge passes, we coalesce neighboring seg-ments to create longer segments of length O(n1/c pm ). This is achieved by running the pre-merge pass, as specified in Algorithm 3, ⌊log 2 n/c pm ⌋ times. The goal of the pre-merge phase is to guarantee that sufficiently long segments are used in the computation of the initial CUSUM statistics. Figure 2 illustrates the effect of replacing the first merge pass with a pre-merge pass in the example of Section 2.1. The number of pre-merge passes affects the shape of tree and thus the estimated change-points. If there is no pre-merge pass, then the initial stage of tree construction can be 8X1,1 X1,2 X1,3 X1,4 X1,5 X1,6                          
+
+> X2,1 X2,2 X2,3 X2,4 X2,5 X2,6
+> X3,1 X3,2 X3,3 X3,4 X3,5 X3,6
+> X1,1 X1,2 X1,3 X1,4 X1,5 X1,6
+> X2,1 X2,2 X2,3 X2,4 X2,5 X2,6
+> X3,1 X3,2 X3,3 X3,4 X3,5 X3,6
+
+Figure 2: Example of pre-merge pass affected by outliers. On the other hand, if there are too many pre-merge passes compared to merge passes, the shape of tree becomes less data-adaptive as pre-merge pass does not use the CUSUM statistics. The choice of the parameter cpm , which determines the number of pre-merge pass, will be discussed in Section 4.1. X1,1 X1,2 X1,3 X1,4 X1,5 X1,6                          
+
+> X2,1 X2,2 X2,3 X2,4 X2,5 X2,6
+> X3,1 X3,2 X3,3 X3,4 X3,5 X3,6
+> X1,1 X1,2 X1,3 X1,4 X1,5 X1,6
+> X2,1 X2,2 X2,3 X2,4 X2,5 X2,6
+> X3,1 X3,2 X3,3 X3,4 X3,5 X3,6
+
+Figure 3: Example of adjust pass 
+
+Adjust passes. The adjust pass provides an opportunity to reverse the effects of the pre-merge or merge passes by selectively reassigning the splits where local evidence suggests better segmentation. For this purpose, the adjust pass follows every pre-merge and merge passes and examines possible nodes in the current layer. Adjusting a node is equivalent to splitting a node into two children nodes, which are then respectively combined with its left and right current-layer neighbors. Such an operation decreases the total number of segments by 1. The adjust pass is done in a conservative way in that we only split a current layer node if both its left and right children are respectively more similar to the left and right neighboring segments in the current layer, according to both L2 and L∞
+
+aggregated CUSUM statistics. As an illustration, Figure 3 shows the example of an adjust 9pass following a pre-merge pass, which occurs as a result of the following: 
+
+max CL2
+
+> 0,2,3
+
+, C L2 
+
+> 3,4,6
+
+< C L2 
+
+> 2,3,4
+
+and max CL∞
+
+> 0,2,3
+
+, C L∞ 
+
+> 3,4,6
+
+< C L∞
+
+> 2,3,4
+
+.
+
+The formal algorithm for an adjust pass can be found in Algorithm 4. 
+
+Algorithm 4: Pseudocode for adjust pass 
+
+Input : A list of nodes O = {(o0, o 1], (o1, o 2], . . . , (oL−1, o L]},
+
+Output: updated list of nodes O
+
+Function adjust( O):for k in 0, . . . , L − 1 do 
+
+Let o′ 
+
+> k
+
+be defined such that children (( ok, o k+1 ]) = {(ok, o ′
+
+> k
+
+], (o′
+
+> k
+
+, o k+1 ]}.For q ∈ { 2, ∞} ,
+
+DLq ,left  
+
+> k
+
+:= CLq   
+
+> ok,o ′
+> k,o k+1
+
+− CLq 
+
+> ok−1,o k,o ′
+> k
+
+DLq ,right  
+
+> k
+
+:= CLq   
+
+> ok,o ′
+> k,o k+1
+
+− CLq  
+
+> o′
+> k,o k+1 ,o k+2
+
+,
+
+where by convention DLq ,left  
+
+> k
+
+= ∞ if k = 0 and DLq ,right  
+
+> k
+
+= ∞ if k = L − 1.
+
+end 
+
+Define K = {k : Dmin  
+
+> k
+
+> 0} where 
+
+Dmin  
+
+> k
+
+= min p−1/2DL2,left  
+
+> k
+
+, p −1/2DL2,right  
+
+> k
+
+, D L∞,left  
+
+> k
+
+, D L∞,right  
+
+> k
+
+.
+
+for k in K (sorted by Dmin  
+
+> k
+
+in decreasing order) do 
+
+If {(ok−1, o k], (ok, o k+1 ], (ok+1 , o k+2 ]} ⊂ O, then unmerge (ok, o k+1 ] into its children nodes and merge them with their left and right neighbor nodes to form a set of new nodes {(ok−1, o ′
+
+> k
+
+], (o′
+
+> k
+
+, o k+2 ]} and update 
+
+O ← { (a, b ] ∈ O : b ≤ ok−1 or a ≥ ok+2 } ∪ { (ok−1, o ′
+
+> k
+
+], (o′
+
+> k
+
+, o k+2 ]}.
+
+end return O
+
+## 2.4 Signal estimation via thresholding 
+
+As mentioned above, our procedure constructs a bottom-up tree via Algorithm 1. In this section, we describe how this tree is used in detecting change-points and estimating underlying signal vectors. We use thresholding as a way of deciding the significance of the obtained CUSUM statistics and thereby detect change-points based on the bottom-up tree. For each non-leaf node in the tree, the boundary between its two children nodes defines a change-point candidate. For a node (u, w ] with children nodes {(u, v ], (v, w ]}, we declare a 10 change-point at v if either CL2 
+
+> u,v,w
+
+or CL∞ 
+
+> u,v,w
+
+exceeds its respective pre-specified threshold, λ2
+
+and λ∞, which classifies the initial estimated change-points into three categories: L2, L∞,and L2 + L∞. An example can be found in Section 4.5. In addition, we also classify a node as having a change if any of its descendants have a change. We refer to this construction as 
+
+connected thresholding , since this ensures that the set of significant nodes form a connected pruned tree, which ensures consistent signal reconstruction from a theoretical point of view (see, e.g. Fryzlewicz, 2018, for more details). After pruning, each surviving node corresponds to an estimated change-point, sepa-rating the node’s children. Sorting these change-point locations in increasing order as 
+
+˜η1, . . . , ˜η ˜N , we obtain the initial estimators ˜f for the signal vectors as follows: 
+
+˜fi,t = 1˜ηℓ − ˜ηℓ−1˜ηℓX
+
+> s=˜ ηℓ−1+1
+
+Xi,s for t ∈ ˜ηℓ−1 + 1 , ˜ηℓ
+
+, i = 1 , . . . , p, ℓ = 1 , . . . , ˜N + 1 , (9) where ˜η0 = 0 and ˜η ˜N +1 = n.
+
+## 2.5 Additional considerations 
+
+2.5.1 Post-processing for consistency of change-point detection 
+
+As will be shown in Theorem 1 in Section 3, the piecewise-constant estimator ˜f in (9) is consistent in the L2 sense, which implies no underestimation of the number of change-points. On the other hand, empirical evidence suggests it may overestimate the number of change-points. We thus apply a two stage post-processing framework similar to that of Fryzlewicz (2018) to remove spurious estimated change-points so as to achieve consistency in estimating both the number and location of the change-points. More specifically, we post-process the estimated change-points in the following two stages: 
+
+Stage 1. In this stage, we re-run merge passes using the estimated mean ˜f from (9) as our input data, but merging only one node in each pass. In other words, in each merge pass, we merge the two neighboring nodes with smallest combined L2 and L∞ contrasts in the sense described in Section 2.2. These merge passes are performed until either of the L2
+
+and L∞ contrast exceeds their corresponding thresholds ( λ2 and λ∞ respectively), at which point, the current layer nodes in the bottom-up tree form a segmentation of the data. Say that there are ˜˜N + 1 current layer nodes, this give rise to ˜˜N change-points (˜ ˜η1, . . . , ˜˜η ˜˜N ).We can also form a new estimator ˜˜f for the mean signal as follows, 
+
+˜˜fi,t = 1˜˜ηℓ − ˜˜ηℓ−1˜˜ηℓX
+
+> s=˜ ˜ηℓ−1+1
+
+Xi,s for t ∈ ˜˜ηℓ−1 + 1 , ˜˜ηℓ
+
+, i = 1 , . . . , p, ℓ = 1 , . . . , ˜˜N + 1 , (10) 11 where ˜˜η0 = 0 and ˜˜η ˜˜N +1 = n.
+
+Stage 2. This stage prunes the change-points (˜ ˜η1, ˜˜η2, . . . , ˜˜η ˜˜N ) in ˜˜f to obtain final estima-tors of the change-points and the mean signal. For each ℓ = 1 , . . . , ˜˜N , we compute both 
+
+CL2 
+
+> uℓ,v ℓ,w ℓ
+
+and CL∞ 
+
+> uℓ,v ℓ,w ℓ
+
+aggregated CUSUM statistics as in (5) and (6), respectively, setting 
+
+uℓ =
+
+j ˜˜ηℓ−1+˜ ˜ηℓ
+
+> 2
+
+k
+
+, vℓ = ˜ ˜ηℓ and wℓ =
+
+l ˜˜ηℓ+˜ ˜ηℓ+1 
+
+> 2
+
+m
+
+. We then find the minimizer of the combined rank, ℓ0 = arg min ℓ R∗ 
+
+> uℓ,v ℓ,w ℓ
+
+. If the following conditions are satisfied, 
+
+CL2  
+
+> uℓ0,v ℓ0,w ℓ0
+
+≤ λ2 and CL∞  
+
+> uℓ0,v ℓ0,w ℓ0
+
+≤ λ∞, (11) we remove ˜˜ηℓ0 and repeat the above pruning process, until no further change-point can be removed. We write ˆN for the number of detected change-points after this final pruning stage and let ˆη1, . . . , ˆη ˆN be the remaining estimated change-points in increasing order (also, by convention, we set ˆη0 = 0 and ˆη ˆN +1 = n). The estimated function ˆf is obtained as in (10), with ˆηℓ replacing ˜˜ηℓ therein. Through these two stages of post processing, consistency of the estimated number and locations of change-points can be achieved. The corresponding theoretical results can be found in Section 3. 
+
+2.5.2 Computational complexity 
+
+The bottom-up tree construction in Algorithm 1 consists of three passes: pre-merge, adjust and merge passes, each of which, applied to a current layer with m nodes, has a compu-tational complexity of order O(pm + m log( n)) to account for both CUSUM calculation and ordering of L2 and L∞ statistics. There can be at most J = ⌈log( n)/ log(1 /(1 − ρ)) ⌉
+
+merge and pre-merge passes, since each of them reduces the total number of nodes at least by a multiple of 1 − ρ and the adjust pass that interlaces them also reduces number of nodes by 1. Hence, the overall complexity of the bottom-up tree construction is of order 
+
+O(pn + n log n). The post-processing steps have a complexity of O( ˜N n ), where ˜N is the number of change-points identified in the bottom-up tree. In view of the probabilistic bound on ˜N from Theorem 1, the worst-case complexity for the post-processing step is of order O(N n log n) with high probability. 
+
+# 3 Theoretical results 
+
+The theoretical results stated in this section consider the i.i.d. Gaussian noise. The details for dependent, possibly non-Gaussian, noise are in Appendix B. We first study the L2 consistency of ˜f i 
+
+> pi=1
+
+and ˜˜f i
+
+> pi=1
+
+, and then the change-point estimation consistency of  ˆf i
+
+> pi=1
+
+, where the estimators are defined in Section 2. The 12 L2 risk of ˜f i 
+
+> pi=1
+
+is defined as ˜f − f 2 
+
+> p,n
+
+= 1
+
+> pn
+
+Ppi=1 
+
+Pnt=1 
+
+  ˜fi,t − fi,t 
+
+2, where f i is the underlying signal in (1). 
+
+Theorem 1. Suppose that {Xi, ·}pi=1 follow model (1) with σi = 1 for all i = 1 , . . . , p .Assume that p ≲ nα for some fixed α ∈ (0 , ∞), there exist constants c1, c 2 > 0 such that taking λ∞ = c1 log 1/2(n) and λ2 = c2
+
+√p + log n, we have on an event with probability approaching 1 as n → ∞ that 
+
+∥˜f − f ∥2 
+
+> p,n
+
+≤ 1
+
+n
+
+"
+
+min 
+
+
+
+c21 log( n), c 22
+
+p + log np
+
+
+
++ 4 N
+
+ log( n)log(1 /(1 − ρ)) 
+
+
+
+max 
+
+> ℓ
+
+
+
+c21
+
+Sℓ log( n)
+
+p ∧ c22
+
+p + log np
+
+#
+
+.
+
+(12) 
+
+On the same event, the piecewise-constant estimator {˜f i, ·}pi=1 contains ˜N ≤ CN log( n)
+
+change-points for an absolute constant C > 0.
+
+Thus, ˜f is L2 consistent if N log 2 nn = o(1) . The second term in (12) shows how the estimation accuracy adapts to the sparsity level Sℓ, ℓ = 1 , . . . , N , for the N change signals. Specifically, this term is linear in max ℓ Sℓ up to max ℓ Sℓ ≍ p/ log( n) and does not depend on the maximum sparsity level when the order of the latter exceeds p/ log( n).We now look into the property of the estimator ˜˜f obtained after the first stage of post-processing. 
+
+Theorem 2. Under the assumptions of Theorem 1, we have ˜˜f − f 2 
+
+> p,n
+
+= O(Rp,n ) with probability approaching 1 as n → ∞ , where 
+
+Rp,n = N log nn max 
+
+> ℓ
+
+Sℓ log np ∧
+
+
+
+1 + log np
+
+
+
+. (13) 
+
+Moreover, there exist at most two estimated change-points in (ηℓ, η ℓ+1 ] for each ℓ = 0 , . . . , N ;in particular, ˜˜N ≤ 2( N + 1) .
+
+We see that ˜˜f is L2 consistent for estimating the mean signal. While it still possibly overestimates the number of change-points, Theorem 2 shows that we can control the spurious changes to be at most 2 on each stationary segment. This allows us to remove these spurious change-points in another post-processing stage. This second stage of the post-processing is designed to achieve consistency in estimating both the number and location of the change-points. 
+
+Theorem 3. We assume that the assumptions given in Theorem 1 hold with an additional condition N = O(log n) and let Rp,n be as defined in Theorem 2. For a sufficiently large 
+
+C′ > 0, if 
+
+min  
+
+> 1≤ℓ≤N
+
+min {∆ℓp,n δℓ−1 
+
+> p,n
+
+, ∆ℓp,n δℓp,n }
+
+
+
+≥ C′pnR p,n , (14) 13 where ∆ℓp,n = P
+
+> i∈Ωℓ
+
+ fi,η ℓ+1 − fi,η ℓ
+
+2, for 1 ≤ ℓ ≤ N and δℓp,n = ηℓ+1 − ηℓ for 0 ≤ ℓ ≤ N ,then we have 
+
+P
+
+
+
+ˆN = N, max 
+
+> ℓ=1 ,...,N
+
+n
+
+|ˆηℓ − ηℓ| · ∆ℓp,n 
+
+o
+
+≤ CpnR p,n 
+
+
+
+→ 1, (15) 
+
+as n → ∞ where C is a constant depending only on C′.
+
+This theorem states that as long as each individual change-point is prominent enough in the sense that the signal size and its spacing away from its neighbors satisfy (14), then we can consistently estimate both the number and location of all the change-points. Moreover, (14) describes the difficulty of estimating each individual change-point by its local energy statistic, as described in Verzelen et al. (2023), and the rate of convergence for a given change-point in (15) depends on its respective signal size ∆ℓp,n .
+
+# 4 Numerical studies 
+
+## 4.1 Parameter choice 
+
+Choice of thresholds λ∞ and λ2. As described in Section 2.4, the BUHDA algorithm is built on the L∞ and L2 aggregations of CUSUM statistics. The corresponding thresholds have the form of λ∞ = c1 log 1/2(n) and λ2 = c2
+
+√p + log n, where c1 and c2 are positive constants. The theoretical derivations of λ∞ and λ2 can be found in Appendix A. These thresholds are valid under the assumption that σi = 1 for all i = 1 , . . . , p , where εi,t ∼
+
+N (0 , σ 2 
+
+> i
+
+). However, in practice σi is often unknown and can vary across data sequences Xi.Thus we normalize each data sequence by its estimated standard deviation and use the thresholds described above. For this, we first estimate each σi using the Median Absolute Deviation (MAD) estimator (Hampel, 1974). To choose the optimal thresholds λ2 and λ∞
+
+in practice, for given (p, n ), we first generate 100 datasets from the null model without change-points and compute the maximum L2 and L∞ aggregated CUSUM statistics over 
+
+n randomly chosen intervals for each realization. We then take the 95% quantiles of those maximum values as λ2 and λ∞.
+
+Choice of ρ. ρ ∈ (0 , 1) is the parameter which decides the proportion of pairs of segments to merge in a single pass over the data. Empirically, the change detection performance is quite robust to the choice of this parameter. We use ρ = 0 .3 as a default in the simulation study and data analyses. 
+
+Choice of the pre-merge pass parameter cpm . As shown in Algorithm 1, we set the number of pre-merge rounds to be (log 2 n)/c pm 
+
+, where we set the default value of 
+
+cpm to be 2, based on empirical simulations and the observed robustness of this parameter. 14 scenario sparsity (S1, . . . , SN ) (θ1, . . . , θ N )(LD): Low-Dimensional 
+
+n = 120 , p = 50 , N = 3 
+
+η = 30 · (1 , 2, 3) 
+
+sparse (1, 1, 1) (2.5, 2.5, 2.5) dense (35, 35, 35) (3, 3, 3) mixed1 (1, 2, 7) (2.8, 2.8, 2.8) mixed2 (1, 1, 35) (2.3, 2.3, 2.8) mixed3 (1, 7, 35) (2.3, 2.5, 2.8) (HD): High-Dimensional 
+
+n = 300 , p = 500 , N = 5 
+
+η = 50 · (1 , 2, 3, 4, 5) 
+
+sparse (2, 2, 2, 2, 2) (2.8, 2.8, 2.8, 2.8, 2.8) moderate (22, 22, 22, 22, 22) (3.8, 3.8, 3.8, 3.8, 3.8) dense (350, 350, 350, 350, 350) (4.3, 4.3, 4.3, 4.3, 4.3) mixed (350, 2, 22, 22, 2) (4, 2.5, 3.5, 3.5, 2.5) 
+
+Table 1: Parameter settings with different types of sparsity for scenarios (LD) and (HD). 
+
+## 4.2 Simulation settings 
+
+In the simulation studies, we focus on relatively frequent change-point settings; less frequent change-point settings can be found in Appendix C. We explore two sets of scenarios, low-dimensional (LD) settings when n > p and high-dimensional (HD) settings when n < p ,where the details can be found in Table 1. For each set of scenarios, different types of sparsity are examined. Liu et al. (2021) study sparse change detection in a high-dimensional mean vector as a minimax testing problem and show that a phase transition occurs in the minimax testing rate when the sparsity level is of order pp log log(8 n). Following the settings used in Zhang et al. (2022), we call the sparsity level sparse if Sℓ = o(√p), moderate if Sℓ ≍ √p, dense if √p = o(Sℓ), and mixed if sparsity varies with change-points. Thus, under either set of scenarios in Table 1, we respectively set Sℓ = ⌊0.1 · √p⌉, Sℓ = ⌊√p⌉
+
+and Sℓ = ⌊0.7p⌉. The last column in Table 1 shows the parameter for each signal strength, where θℓ =
+
+q
+
+∆ℓp,n describes the ℓ2 norm of change at each change-point ηℓ and all Sℓ signal coordinates change by the same magnitude with the same sign. 
+
+## 4.3 Competing methods 
+
+We perform the BUHDA procedure based on the parameter choice in Section 4.1 and com-pare the performance with the following high-dimensional change-point detection method-ologies: the sparsified binary segmentation ( SBS , Cho and Fryzlewicz (2015)) and the double cusum algorithm ( DC , Cho et al. (2016)) implemented in the R package hdbinseg 
+
+and the informative sparse projection ( INSPECT , Wang and Samworth (2018)) available in the R package InspectChangepoint , the adaptive self-normalization based approach (SN , Zhang et al. (2022)), the scan statistic based algorithm ( scanEH , Enikeeva and Harchaoui (2019)), the L∞ CUSUM aggregation algorithm ( TD (L∞), Jirak (2015)), the 
+
+L2 CUSUM aggregation algorithm ( TD (L2), Horváth and Hušková (2012)). The latter three methods are primarily designed for the testing problem for a single change-point, so we extend these methods to a multiple change-point estimation algorithm using the wild binary segmentation idea of Fryzlewicz (2014) with randomly chosen intervals. Thresholds 15 for these three methods are chosen in the same way as for our algorithm, as described in Section 4.1. In implementing SN (Zhang et al., 2022), we use the adaptive WBS al-gorithm presented in Algorithm 2 of their paper that is designed for detecting multiple change-points. Whenever tuning parameters are required in running any of the methods introduced above, we follow the suggestions given by the authors in the relevant references. We also compare our BUHDA algorithm with variants of our method, where we only use 
+
+L∞ CUSUM aggregation ( BU (L∞)) or L2 CUSUM aggregation ( BU (L2)). 
+
+## 4.4 Simulation results 
+
+Under the simulation settings described in Section 4.2, we report two accuracy measures for the number of change-points: the empirical distribution of ˆN − N and the mean squared errors (MSE) of the number of change-points detected over 100 runs. As an accuracy measure for change-point locations, we report the average adjusted Rand index (ARI) of the estimated segmentation against the true one (Rand, 1971; Hubert and Arabie, 1985). Table 2 summarizes the results for sparse and dense settings considered in the low-dimensional scenarios (LD) where n > p . When only sparse changes exist, L∞ aggregation performs better than L2 for both top-down and bottom-up methods. BUHDA shows com-parable performance in terms of the number of change-points estimated. However, the location estimation accuracy, although good, is slightly inferior to some of the other com-petitors, e.g. SN and scanEH. In the dense case, the number of well-performing methods is not as high, and it is unexpected to see INSPECT and SBS performing similarly to the best method due to the dense nature of the change. Among the methods designed for adap-tivity, BUHDA outperforms scanEH and remains not far behind SN in terms of correctly estimating all three changes. Remarkably, BUHDA achieves this good level of performance in much shorter computational time compared to SBS, DC, INSPECT, scanEH and SN (running time for SN is longer than 1 minute per repetition in MATLAB, though due to the difference in platform, we have not included its actual running time in the table). In all three mixed sparsity settings presented in Table 3, L2 aggregation performs better than L∞ aggregation for both top-down and bottom-up methods. While (LD)-mixed1 represents sparse to moderate change-points, the other two include dense change-points as well. With only a fraction of the running time compared to most competitors, BUHDA performs the best in terms of correctly identifying the number of change-points in (LD)-mixed2 and (LD)-mixed3, while showing comparable results to other adaptive methods in (LD)-mixed1. This shows that BUHDA can adapt to unknown sparsity levels of multiple change-points as it uses both norms in a data-adaptive way in building the bottom-up tree. Table 4 shows the results of the high-dimensional scenario (HD) when n < p . As expected, TD( L2) and BU( L2) work well in the dense case, while TD( L∞) and BU( L∞)have the best performance in the sparse case. Excluding these four methods that directly use knowledge of sparsity, BUHDA shows competitive performance across sparse, moderate and dense settings, performing on par with the best remaining methods in each category (DC and scanEH in the sparse setting and INSPECT in the moderate and dense settings). 16 More strikingly, in the mixed sparsity setting, BUHDA shows much better performance than all other methods, confirming its superior adaptivity to sparsity levels in the high-dimensional setting. As in the low-dimensional scenarios, BUHDA is computationally more efficient than the competing methods. 
+
+ˆN − N
+
+Scenario Method ≤-3 -2 -1 0 1 2 ≥3 MSE ARI time (LD)-sparse TD( L2) 0 1 11 87 1 0 0 0.16 0.917 0.046 TD( L∞) 0 0 0 100 0 0 0 0.00 0.970 0.057 BU( L2) 0 1 25 73 1 0 0 0.30 0.819 0.014 BU( L∞) 0 0 4 94 2 0 0 0.06 0.876 0.015 SBS 0 51 45 4 0 0 0 2.49 0.505 0.050 DC 0 0 0 97 1 2 0 0.09 0.969 0.293 INSPECT 0 3 16 80 1 0 0 0.29 0.911 0.104 scanEH 0 0 0 99 0 1 0 0.04 0.969 0.283 SN 0 0 1 93 5 1 0 0.10 0.930 BUHDA 0 0 5 93 2 0 0 0.07 0.874 0.019 (LD)-dense TD( L2) 0 0 0 99 1 0 0 0.01 0.980 0.046 TD( L∞) 0 66 32 2 0 0 0 2.96 0.466 0.056 BU( L2) 0 0 0 98 2 0 0 0.02 0.911 0.015 BU( L∞) 0 87 12 1 0 0 0 3.60 0.429 0.013 SBS 0 0 2 97 1 0 0 0.03 0.938 0.052 DC 0 77 19 4 0 0 0 3.27 0.517 0.270 INSPECT 0 0 1 98 1 0 0 0.02 0.960 0.102 scanEH 0 1 20 78 0 1 0 0.28 0.903 0.277 SN 0 0 2 93 4 1 0 0.10 0.918 BUHDA 0 0 3 87 10 0 0 0.13 0.854 0.017 Table 2: Distribution of ˆN − N for scenarios (LD)-sparse and (LD)-dense and all methods listed in Section 4.3 over 100 simulation runs. Also the average MSE (Mean Squared Error) of the number of change-points detected, the average Adjusted Rand index (ARI) of the estimated segmentation against the true one, the average computational time in seconds using an Intel Core i9 3.6 GHz CPU with 40 GB of RAM, all over 100 simulations. 17 ˆN − N
+
+Scenario Method ≤-3 -2 -1 0 1 2 ≥3 MSE ARI time (LD)-mixed1 TD( L2) 0 0 3 96 1 0 0 0.04 0.961 0.048 TD( L∞) 0 0 36 59 5 0 0 0.41 0.833 0.064 BU( L2) 0 0 9 89 2 0 0 0.11 0.872 0.015 BU( L∞) 0 0 62 38 0 0 0 0.62 0.739 0.016 SBS 0 1 68 29 1 1 0 0.77 0.668 0.062 DC 0 0 15 78 6 1 0 0.25 0.875 0.337 INSPECT 0 0 2 97 1 0 0 0.03 0.970 0.109 scanEH 0 0 0 99 0 1 0 0.04 0.974 0.302 SN 0 0 0 93 6 1 0 0.10 0.926 BUHDA 0 0 2 93 5 0 0 0.07 0.878 0.018 (LD)-mixed2 TD( L2) 0 1 15 83 1 0 0 0.20 0.907 0.048 TD( L∞) 0 1 87 12 0 0 0 0.91 0.699 0.059 BU( L2) 0 0 36 63 1 0 0 0.37 0.803 0.015 BU( L∞) 0 5 94 1 0 0 0 1.14 0.622 0.016 SBS 0 16 74 10 0 0 0 1.38 0.588 0.063 DC 0 1 85 11 3 0 0 0.92 0.689 0.311 INSPECT 0 1 25 73 1 0 0 0.30 0.872 0.111 scanEH 0 1 21 77 0 1 0 0.29 0.887 0.300 SN 0 0 3 90 6 1 0 0.13 0.923 BUHDA 0 0 6 91 3 0 0 0.09 0.852 0.019 (LD)-mixed3 TD( L2) 0 0 14 84 2 0 0 0.16 0.909 0.046 TD( L∞) 0 1 92 7 0 0 0 0.96 0.658 0.062 BU( L2) 0 1 25 73 1 0 0 0.30 0.824 0.015 BU( L∞) 0 14 85 1 0 0 0 1.41 0.593 0.014 SBS 0 1 85 13 1 0 0 0.90 0.674 0.060 DC 0 0 88 11 1 0 0 0.89 0.680 0.337 INSPECT 0 0 25 74 1 0 0 0.26 0.883 0.105 scanEH 0 0 23 76 1 0 0 0.24 0.886 0.309 SN 0 2 11 82 4 1 0 0.27 0.883 BUHDA 0 0 12 85 3 0 0 0.15 0.830 0.017 
+
+Table 3: Distribution of ˆN − N for scenario (LD)-mixed1–3 and all methods listed in Section 4.3 over 100 simulation runs. Also the average MSE (Mean Squared Error) of the number of change-points detected, the average Adjusted Rand index (ARI) of the estimated segmentation against the true one, the average computational time in seconds using an Intel Core i9 3.6 GHz CPU with 40 GB of RAM, all over 100 simulations. 18 ˆN − N
+
+Scenario Method ≤-3 -2 -1 0 1 2 ≥3 MSE ARI time (HD)-sparse TD( L2) 0 13 39 48 0 0 0 0.91 0.848 1.448 TD( L∞) 0 0 0 86 13 1 0 0.17 0.953 1.568 BU( L2) 4 24 54 18 0 0 0 1.86 0.717 0.072 BU( L∞) 0 0 2 96 2 0 0 0.04 0.863 0.074 SBS 6 52 38 4 0 0 0 3.00 0.618 1.789 DC 0 0 0 93 7 0 0 0.07 0.969 4.859 INSPECT 0 41 36 23 0 0 0 2.00 0.788 2.772 scanEH 0 0 0 96 4 0 0 0.04 0.980 4.069 SN 0 0 0 0 0 88 12 0.12 0.941 BUHDA 0 0 3 94 3 0 0 0.06 0.858 0.084 (HD)-moderate TD( L2) 0 0 0 99 1 0 0 0.01 0.980 1.401 TD( L∞) 0 45 45 10 0 0 0 2.25 0.693 1.481 BU( L2) 0 0 1 98 1 0 0 0.02 0.880 0.069 BU( L∞) 15 70 15 0 0 0 0 4.30 0.617 0.068 SBS 0 0 0 90 10 0 0 0.10 0.936 1.761 DC 0 20 41 39 0 0 0 1.21 0.832 4.734 INSPECT 0 0 0 98 2 0 0 0.02 0.986 2.750 scanEH 0 0 0 99 1 0 0 0.01 0.986 4.008 SN 0 0 0 4 32 58 6 0.54 0.846 BUHDA 0 0 7 92 1 0 0 0.08 0.853 0.080 (HD)-dense TD( L2) 0 0 0 100 0 0 0 0.00 0.990 1.374 TD( L∞) 99 1 0 0 0 0 0 11.61 0.389 1.440 BU( L2) 0 0 0 94 6 0 0 0.06 0.903 0.068 BU( L∞) 100 0 0 0 0 0 0 14.46 0.325 0.067 SBS 0 2 26 71 1 0 0 0.35 0.877 1.734 DC 0 100 0 0 0 0 0 4.00 0.673 4.695 INSPECT 0 0 0 79 19 2 0 0.27 0.914 2.739 scanEH 0 32 51 17 0 0 0 1.79 0.775 3.999 SN 0 0 0 0 7 83 10 0.17 0.911 BUHDA 0 0 1 79 20 0 0 0.21 0.841 0.078 (HD)-mixed TD( L2) 0 20 41 39 0 0 0 1.21 0.839 1.359 TD( L∞) 0 57 39 4 0 0 0 2.67 0.677 1.513 BU( L2) 0 38 44 18 0 0 0 1.96 0.724 0.069 BU( L∞) 0 99 1 0 0 0 0 3.97 0.617 0.069 SBS 0 61 33 6 0 0 0 2.77 0.665 1.738 DC 0 46 51 3 0 0 0 2.35 0.710 4.856 INSPECT 0 10 45 45 0 0 0 0.85 0.852 2.697 scanEH 0 0 56 42 2 0 0 0.58 0.852 4.089 SN 0 0 0 3 52 41 4 0.68 0.797 BUHDA 0 0 13 82 5 0 0 0.18 0.830 0.082 
+
+Table 4: Distribution of ˆN − N for scenario (HD) and all methods listed in Section 4.3 over 100 simulation runs. Also the average MSE (Mean Squared Error) of the number of change-points detected, the average Adjusted Rand index (ARI) of the estimated segmentation against the true one, the average computational time in seconds using an Intel Core i9 3.6 GHz CPU with 40 GB of RAM, all over 100 simulations. 19 4.5 Real data example 
+
+We analyze monthly percentage changes in the UK’s average house price across 32 London boroughs, from January 1995 to June 2025. The average price is based on actual transaction data collected from HM Land Registry and includes all property types: detached, semi-detached and terraced houses, as well as flats and maisonettes. The data set is available from https://landregistry.data.gov.uk/app/ukhpi/?lang=en .−10  −5  0 5 10                               
+
+> 1996 1998 2000 2002 2004 2006 2008 2010 2012 2014 2016 2018 2020 2022 2024
+> L2
+> L∞
+> 2000 2010 2020
+> 11.0  12.0  13.0  14.0
+> prd dat[1, ]
+> 1996 1998 2000 2002 2004 2006 2008 2010 2012 2014 2016 2018 2020 2022 2024
+> L2
+> L∞
+
+Figure 4: Top: the log-return dataset of London house prices and estimated change-points by BUHDA on this dataset, with colors denoting categories of changes (see Section 2.4); bottom: the same change-points overlaid on the log prices. To address potential cross-sectional dependence, instead of the raw data, we used PCA-transformed data, namely the standardized matrix of principal component scores. Since the data matrix was already standardized, we skipped the normalization step prior to analysis. Applying our BUHDA algorithm using the threshold-selection method described in Section 4.1 identified 5 change-points. The other methods, scanEH and INSPECT, detect 6 and 2 change-points, respectively. As BUHDA detects change-points via connected thresholding described in Section 2.4, the detected change-points can be classified into three cases: surviving only by λ2, only by λ∞, or by both λ2 and λ∞. Figure 4 shows that those surviving either λ2 or λ∞ are 20 located around known crises such as the global financial crisis (2007–2009) and the Covid-19 restrictions. As shown at the bottom of Figure 4, the change-points identified in the returns domain capture shifts in the log-price domain. 
+
+# References 
+
+Bai, J. (2010). Common breaks in means and variances for panel data. Journal of Econo-metrics , 157:78–92. Bardwell, L., Fearnhead, P., Eckley, I. A., Smith, S., and Spott, M. (2019). Most recent changepoint detection in panel data. Technometrics , 61:88–98. Bosq, D. (1998). Nonparametric statistics for stochastic processes . Springer, New York. Chen, L., Wang, W., and Wu, W. B. (2022). Inference of breakpoints in high-dimensional time series. Journal of the American Statistical Association , 117:1951–1963. Cho, H. et al. (2016). Change-point detection in panel data via double cusum statistic. 
+
+Electronic Journal of Statistics , 10:2000–2038. Cho, H. and Fryzlewicz, P. (2015). Multiple-change-point detection for high dimensional time series via sparsified binary segmentation. Journal of the Royal Statistical Society Series B: Statistical Methodology , 77:475–507. Cribben, I. and Yu, Y. (2017). Estimating whole-brain dynamics by using spectral cluster-ing. Journal of the Royal Statistical Society Series C: Applied Statistics , 66:607–627. Enikeeva, F. and Harchaoui, Z. (2019). High-dimensional change-point detection with sparse alternatives. The Annals of Statistics , 47:2051–2079. Fisch, A. T., Eckley, I. A., and Fearnhead, P. (2022). A linear time method for the detection of collective and point anomalies. Statistical Analysis and Data Mining: The ASA Data Science Journal , 15:494–508. Fryzlewicz, P. (2014). Wild binary segmentation for multiple change-point detection. The Annals of Statistics , 42:2243–2281. Fryzlewicz, P. (2018). Tail-greedy bottom-up data decompositions and fast mulitple change-point detection. The Annals of Statistics , 46:3390–3421. Groen, J. J., Kapetanios, G., and Price, S. (2013). Multivariate methods for monitoring structural change. Journal of Applied Econometrics , 28:250–274. Hampel, F. R. (1974). The influence curve and its role in robust estimation. Journal of the american statistical association , 69:383–393. Horváth, L. and Hušková, M. (2012). Change-point detection in panel data. Journal of Time Series Analysis , 33:631–648. Hubert, L. and Arabie, P. (1985). Comparing partitions. Journal of classification , 2:193– 218. Jirak, M. (2015). Uniform change point tests in high dimension. The Annals of Statistics ,43:2451–2483. 21 Laurent, B. and Massart, P. (2000). Adaptive estimation of a quadratic functional by model selection. The Annals of Statistics , 28:1302–1338. Li, J., Xu, M., Zhong, P.-S., and Li, L. (2019). Change point detection in the mean of high-dimensional time series data under dependence. arXiv preprint arXiv:1903.07006 .Liu, B., Zhou, C., Zhang, X., and Liu, Y. (2020). A unified data-adaptive framework for high dimensional change point detection. Journal of the Royal Statistical Society Series B: Statistical Methodology , 82:933–963. Liu, H., Gao, C., and Samworth, R. J. (2021). Minimax rates in sparse, high-dimensional change point detection. The Annals of Statistics , 49:1081–1112. Maeng, H. and Fryzlewicz, P. (2024). Detecting linear trend changes in data sequences. 
+
+Statistical Papers , 65:1645–1675. Morresi, D., Maeng, H., Marzano, R., Lingua, E., Motta, R., and Garbarino, M. (2024). High-dimensional detection of landscape dynamics: a landsat time series-based algorithm for forest disturbance mapping and beyond. GIScience & Remote Sensing , 61:2365001. Rand, W. M. (1971). Objective criteria for the evaluation of clustering methods. Journal of the American Statistical Association , 66:846–850. Tickle, S. O., Eckley, I. A., and Fearnhead, P. (2021). A computationally efficient, high-dimensional multiple changepoint procedure with application to global terrorism inci-dence. Journal of the Royal Statistical Society Series A: Statistics in Society , 184:1303– 1325. Verzelen, N., Fromont, M., Lerasle, M., and Reynaud-Bouret, P. (2023). Optimal change-point detection and localization. The Annals of Statistics , 51:1586–1610. Wang, G. and Feng, L. (2023). Computationally efficient and data-adaptive changepoint inference in high dimension. Journal of the Royal Statistical Society Series B: Statistical Methodology , 85:936–958. Wang, R., Zhu, C., Volgushev, S., and Shao, X. (2022). Inference for change points in high-dimensional data via selfnormalization. The Annals of Statistics , 50:781–806. Wang, T. and Samworth, R. J. (2018). High dimensional change point estimation via sparse projection. Journal of the Royal Statistical Society Series B: Statistical Methodology ,80:57–83. Yu, M. and Chen, X. (2021). Finite sample change point inference and identification for high-dimensional mean vectors. Journal of the Royal Statistical Society Series B: Statistical Methodology , 83:247–270. Zhang, N. R., Siegmund, D. O., Ji, H., and Li, J. Z. (2010). Detecting simultaneous changepoints in multiple sequences. Biometrika , 97:631–645. Zhang, Y., Wang, R., and Shao, X. (2022). Adaptive inference for change points in high-dimensional data. Journal of the American Statistical Association , 117:1751–1762. 22 A Proofs 
+
+The proofs of Theorems 1-3 are given below. 
+
+## A.1 Some useful lemma 
+
+We first present a preparatory lemma. 
+
+Lemma 1. Suppose that {Xi, ·}pi=1 follow model (1) with σi = 1 for all i = 1 , . . . , p . Assume 
+
+λ∞ = c1 log 1/2(n) for a constant c1 ≥ p2(3 + α) and the dimension p satisfies p ≲ nα for some fixed α ∈ (0 , ∞), then we have P (Ap,n ) → 1 as n → ∞ where 
+
+Ap,n =
+
+
+
+∀0 ≤ u < v < w ≤ n max  
+
+> i
+
+|⟨ ψu,v,w , εi⟩| ≤ λ∞
+
+
+
+, (A.1) 
+
+and ψu,v,w is a n-dimensional vector, where each component ψu,v,w,t is 
+
+ψu,v,w,t =
+
+q w−v 
+
+> (v−u)( w−u)
+
+if u < t ≤ v, 
+
+−
+
+q v−u 
+
+> (w−v)( w−u)
+
+if v < t ≤ w, 
+
+0 otherwise .
+
+(A.2) 
+
+Proof. Using a simple Bonferroni inequality, we have 
+
+1 − P (Ap,n ) ≤
+
+> p
+
+X
+
+> i=1
+
+X
+
+> (u,v,w )
+
+P (|Z| > λ ∞)
+
+≤ 2pn 3 ϕZ (λ∞)
+
+λ∞
+
+= 2 pn 3 e−λ2
+
+> ∞/2
+
+/√2πλ∞
+
+= 2
+
+√2π · 1
+
+c1
+
+plog( n) · n(3+ α)
+
+nc21/2 (A.3) 
+
+→ 0,
+
+as n → ∞ , where ϕZ is the p.d.f. of a standard normal Z. The second inequality in (A.3) holds because 
+
+P (|Z| > λ ∞) = 2 1
+
+√2π
+
+Z ∞
+
+> λ∞
+
+e−x2/2dx ≤ 2 1
+
+√2π
+
+Z ∞
+
+> λ∞
+
+xλ∞
+
+e−x2/2dx = 2 ϕZ (λ∞)
+
+λ∞
+
+, (A.4) and the remaining parts because of the definition of ϕZ and λ∞ and the condition given on 
+
+c1. This completes the proof. 23 Lemma 2. Suppose that {Xi, ·}pi=1 follow model (1) with σi = 1 for all i = 1 , . . . , p . If we set the threshold λ2 = c2
+
+√p + log n with a sufficiently large constant c2 > 0 and the dimension satisfies p ≲ nα for some fixed α ∈ (0 , ∞), then we have P (Bp,n ) → 1 as n → ∞ 
+
+where 
+
+Bp,n =
+
+
+
+∀0 ≤ u < v < w ≤ n
+
+ p
+
+X
+
+> i=1
+
+|⟨ ψu,v,w , εi⟩| 2
+
+1/2
+
+≤ λ2
+
+
+
+. (A.5) 
+
+Proof. Using a simple Bonferroni inequality, we have 
+
+1 − P (Bp,n ) ≤ X
+
+> (u,v,w )
+
+P (∥Z∥2 > λ 2) = X
+
+> (u,v,w )
+
+P (∥Z∥22 > λ 22) ≤ n3 e−C log n = n3−C (A.6) where Z ∼ N (0, Ip). The last inequality holds by Lemma 1 of Laurent and Massart (2000), which states that P (∥Z∥22 > p + 2 √px + 2 x) ≤ e−x. Taking x = C log n and using 
+
+2√px ≤ p + x, we have p + 2 √px + 2 x ≤ 2p + 3 x ≤ c22(p + log n) = λ22 for a sufficiently large constant c2, so that P (∥Z∥22 > λ 22) ≤ e−C log n. Choosing C > 3 gives n3−C → 0 as 
+
+n → ∞ . This completes the proof. 
+
+## A.2 Proof of Theorems 1 - 3 
+
+Proof of Theorem 1. 
+
+From the thresholding in Section 2.4, the estimator of μi;u,v,w = ⟨f i, ·, ψ u,v,w ⟩ for i =1, . . . , p can be obtained as 
+
+ˆμi;u,v,w = Ci;u,v,w · I
+
+n
+
+∃ a child segment (u′, w ′] of (u, w ]
+
+such that CL∞ 
+
+> u′,v ′,w ′
+
+> λ ∞ or CL2 
+
+> u′,v ′,w ′
+
+> λ 2
+
+o
+
+,
+
+(A.7) where I is the indicator function. Here we introduce a different notation of ˆμi, [u,v,w ] in (A.7) as follows: 
+
+ˆμ(j,k ) 
+
+> i
+
+= C(j,k ) 
+
+> i
+
+· I
+
+(
+
+∃(j′, k ′) ∈ O j,k max  
+
+> i
+
+C(j′,k ′) 
+
+> i
+
+> λ ∞
+
+or 
+
+ p
+
+X
+
+> i=1
+
+ C(j′,k ′)
+
+> i
+
+2
+
+1/2
+
+> λ 2
+
+)
+
+, i = 1 , . . . , p, 
+
+(A.8) where 
+
+Oj,k = {(j′, k ′), j ′ = 1 , . . . , j, k ′ = 1 , . . . , K (j′) : 
+
+C(j′,k ′) 
+
+> ·;u′,v ′,w ′
+
+is such that (u′, w ′] is a child segment of (u, w ]}. (A.9) 24 Note that ˆμi;u,v,w and ˆμ(j,k ) 
+
+> i
+
+have one-to-one correspondence and the set Oj,k includes all pairs of (j′, k ′) whose corresponding CUSUM statistic C(j′,k ′) 
+
+> ·;u′,v ′,w ′
+
+is a child of C(j,k )
+
+> ·;u,v,w
+
+.Let R1 = (j, k ), j = 1 , . . . , J, k = 1 , . . . , K (j) : C(j,k ) 
+
+> ·;u,v,w
+
+is such that u < η ℓ + 1 /2 < w 
+
+for some ℓ = 1 , . . . , N , and R0 = {(j, k ), j = 1 , . . . , J, k = 1 , . . . , K (j)} \ R 1. Due to the orthonormality of the wavelet transform, on the event Ap,n ∩ Bp,n , which has probability 
+
+1 − o(1) , defined in Lemmas 1 and 2, we have 
+
+∥˜f − f ∥2
+
+> p,n
+
+= 1
+
+p
+
+1
+
+n
+
+> p
+
+X
+
+> i=1
+> J
+
+X
+
+> j=1
+> K(j)
+
+X
+
+> k=1
+
+
+
+C(j,k ) 
+
+> i
+
+· I
+
+n
+
+∃(j′, k ′) ∈ O j,k CL∞(j′,k ′) > λ ∞ or CL2(j′,k ′) > λ 2
+
+o
+
+− μ(j,k )
+
+> i
+
+2
+
++ 1
+
+pn 
+
+> p
+
+X
+
+> i=1
+
+(si, [1 ,n ] − μ(0 ,1)  
+
+> i
+
+)2
+
+≤ 1
+
+p
+
+1
+
+n
+
+> p
+
+X
+
+> i=1
+
+ X
+
+> (j,k )∈R 0
+
++ X
+
+> (j,k )∈R 1
+
+!
+
+× C(j,k ) 
+
+> i
+
+· I
+
+n
+
+∃(j′, k ′) ∈ O j,k CL∞(j′,k ′) > λ ∞ or CL2(j′,k ′) > λ 2
+
+o
+
+− μ(j,k )
+
+> i
+
+2
+
++ c21n−1 log( n)=: I + II + c21n−1 log( n), (A.10) 
+
+where 
+
+CL∞(j′,k ′) = max  
+
+> i
+
+C(j′,k ′) 
+
+> i
+
+,CL2(j′,k ′) =
+
+ p
+
+X
+
+> i=1
+
+ C(j′,k ′)
+
+> i
+
+2
+
+1/2
+
+Since (j, k ) ∈ R 0, on the set Ap,n ∩Bp,n , by Lemmas 1 and 2, we have max i C(j′,k ′) 
+
+> i
+
+≤ λ∞
+
+and  P pi=1 
+
+ C(j′,k ′)
+
+> i
+
+2 1/2 ≤ λ2 for all (j′, k ′) ∈ O j,k . Also, by the fact that μ(j,k ) 
+
+> i
+
+= 0 for 
+
+(j, k ) ∈ R 0 and i = 1 , . . . , p , we have I = 0 .For II , we denote 
+
+B =
+
+
+
+∃(j′, k ′) ∈ O j,k max  
+
+> i
+
+C(j′,k ′) 
+
+> i
+
+> λ ∞ or 
+
+ p
+
+X
+
+> i=1
+
+ C(j′,k ′)
+
+> i
+
+2
+
+1/2
+
+> λ 2
+
+
+
+and have 
+
+1
+
+pn 
+
+> p
+
+X
+
+> i=1
+
+X
+
+> (j,k )∈R 1
+
+
+
+C(j,k ) 
+
+> i
+
+· IB − μ(j,k )
+
+> i
+
+2
+
+25 = 1
+
+pn 
+
+> p
+
+X
+
+> i=1
+
+X
+
+> (j,k )∈R 1
+
+
+
+C(j,k ) 
+
+> i
+
+· IB − C(j,k ) 
+
+> i
+
++ C(j,k ) 
+
+> i
+
+− μ(j,k )
+
+> i
+
+2
+
+≤ 1
+
+pn 
+
+X
+
+> (j,k )∈R 1
+> p
+
+X
+
+> i=1
+
+"
+
+2
+
+
+
+C(j,k )
+
+> i
+
+2
+
+· I
+
+
+
+max  
+
+> i
+
+C(j,k ) 
+
+> i
+
+≤ λ∞ and 
+
+ p
+
+X
+
+> i=1
+
+ C(j′,k ′)
+
+> i
+
+2
+
+1/2
+
+≤ λ2
+
+
+
++ 2 
+
+
+
+C(j,k ) 
+
+> i
+
+− μ(j,k )
+
+> i
+
+2
+
+#
+
+≤ 1
+
+pn 
+
+X
+
+> (j,k )∈R 1
+
+max 
+
+> ℓ
+
+n
+
+Sℓ · 4c21 log( n) ∧ 4c22(p + log n)
+
+o
+
+. (A.11) The last inequality is obtained from the facts that 
+
+2
+
+
+
+C(j,k )
+
+> i
+
+2
+
+· I
+
+
+
+max  
+
+> i
+
+C(j,k ) 
+
+> i
+
+≤ λ∞
+
+
+
++ 2 
+
+
+
+C(j,k ) 
+
+> i
+
+− μ(j,k )
+
+> i
+
+2
+
+≤ 2λ2 
+
+> ∞
+
++ 2 c21 log( n)
+
+and 
+
+2
+
+( p
+
+X
+
+> i=1
+
+
+
+C(j,k ) 
+
+> i
+
+· I
+
+n p
+
+X
+
+> i=1
+
+(C(j′,k ′) 
+
+> i
+
+)2
+
+o1/2
+
+≤ λ2
+
+2
+
++
+
+> p
+
+X
+
+> i=1
+
+
+
+C(j,k ) 
+
+> i
+
+− μ(j,k )
+
+> i
+
+2
+
+)
+
+≤ 2λ22 + 2 c22p
+
+Combining with the upper bound of J, we have |R 1| ≤ N ⌈log( n)/ log(1 /(1 − ρ)) ⌉.Therefore, from (A.11) we have 
+
+∥˜f −f ∥2 
+
+> p,n
+
+≤ 1
+
+n
+
+"
+
+min  c21 log( n), c 22
+
+p + log np
+
++4 N
+
+ log( n)log(1 /(1 − ρ)) 
+
+
+
+max 
+
+> ℓ
+
+
+
+c21
+
+Sℓ log( n)
+
+p ∧c22
+
+p + log np
+
+#
+
+(A.12) Also, at each scale, the estimated change-points are obtained up to size N , combining it with the largest scale J, the number of change-points in ˜f is up to O(N log( n)) .
+
+Proof of Theorem 2. The estimator ˜˜f is obtained by repeating the first three steps of the BUHDA procedure but applying only merge passes in tree construction in a greedy way, which allows only one merge at each scale. Thus the change-points in ˜˜f are a subset of those in ˜f . Let ˜B and ˜˜B be the wavelet bases corresponding to ˜f and ˜˜f , respectively. Then ˜˜B is classified into two categories: 1) all basis vectors ψ(j,k ) ∈ ˜B such that ψ(j,k )
+
+is not associated with the change-points in ˜f and the conditions, max i C(j,k ) 
+
+> i
+
+< λ ∞ and 
+
+ P pi=1 
+
+ C(j′,k ′)
+
+> i
+
+2 1/2 < λ 2, are satisfied and 2) all basis vectors ˜ψ(j, 1) produced in Stage 1 of post-processing. As the number of scales used plays an important role in controlling the l2 behavior of 
+
+∥˜f − f ∥2
+
+> p,n
+
+, we now investigate how many scales are used in each category defined above. 26 In the first category, C(j,k ) corresponding to the basis vectors ψ(j,k ) ∈ ˜B live on no more than J scales and thus we have |R 1| ≤ N ⌈log( n)/ log(1 /(1 − ρ)) ⌉ by the same argument used in the proof of Theorem 1. Considering the second category, the basis vectors ψ(j, 1) 
+
+correspond to different change-points in ˜f and there exist at most ˜N = O(N log n) change-points in ˜f which we examine one at once, thus at most ˜N scales are required for C(j, 1) .Combining these results with (A.11), the equivalent quantity of II for ˜˜f is kept the same as ˜f , and this gives us the following l2 result 
+
+˜˜f − f 2 
+
+> p,n
+
+= O N log nn max 
+
+> ℓ
+
+Sℓ log np ∧
+
+
+
+1 + log np
+
+!
+
+(A.13) under the same assumptions given in Theorem 1. Finally, we show that there exist at most two change-points in ˜˜f between two con-secutive change-points (ηℓ, η ℓ+1 ) for ℓ = 0 , . . . , N , where η0 = 0 and ηN +1 = n. If three estimated change-points, ( ˜˜ηl, ˜˜ηl+1 , ˜˜ηl+2 ), lie between a pair of true change-points, (ηℓ, η ℓ+1 ),then max i Ci;˜ ˜ηl,˜˜ηl+1 ,˜˜ηl+2 < λ ∞ and  P pi=1 
+
+ Ci;˜ ˜ηl,˜˜ηl+1 ,˜˜ηl+2 
+
+2 1/2 < λ 2 by Lemmas 1 and 2. In other words, both L∞- and L2-aggregated CUSUM statistics computed from the adjacent intervals, (˜ ˜ηl, ˜˜ηl+1 ] and (˜ ˜ηl+1 , ˜˜ηl+2 ], are less than λ∞ and λ2, respectively, so ˜˜ηl+1 would be removed from the set of estimated change-points. This satisfies ˜˜N ≤ 2( N + 1) .
+
+Proof of Theorem 3. We work on the event, whose probability approaches 1, on which the conclusion of Theorem 2 holds. In particular, we assume that for some sufficiently large C > 0, we have ˜˜f − f 2 
+
+> p,n
+
+≤ C 
+
+> 4
+
+Rp,n . Furthermore, from (14), we have for some large C′ > 0 that C′pnR p,n 
+
+ ∆ℓp,n 
+
+−1 < min {δℓ−1 
+
+> p,n
+
+, δ ℓp,n } for all ℓ = 1 , . . . , N . We write 
+
+rℓp,n := ⌊CpnR p,n 
+
+ ∆ℓp,n 
+
+−1⌋ for ℓ ∈ { 1, . . . , N }.Suppose for at least one ℓ ∈ { 1, . . . , N }, there is no estimated change-point in ˜˜f within distance of rℓp,n of ηℓ. This implies that ˜˜fi,j is constant over the entire segment {ηℓ −
+
+rℓp,n , . . . , η ℓ + rℓp,n } for all i = 1 , . . . , p . Hence 
+
+˜˜f − f 2 
+
+> p,n
+
+≥ 1
+
+pn 
+
+X
+
+> i∈Ωℓ
+> ηℓ+rℓp,n
+
+X
+
+> j=ηℓ−rℓp,n
+
+( ˜˜fi,j − fi,j )2 ≥ rℓp,n 
+
+2pn 
+
+X
+
+> i∈Ωℓ
+
+ fi,η ℓ+1 − fi,η ℓ
+
+2 > C
+
+4 Rp,n , (A.14) From here the same argument used in the proof of Theorem 3.3 in Fryzlewicz (2018) is applied. Throughout Stage 2 of our post-processing in Section 2.5.1, there exist two possible scenarios for each index ℓ0 of an estimated change-point; ˜˜ηℓ0 is either the closest estimated change-point of any ηℓ or not. 1. Suppose that ˜˜ηℓ0 is not the closest estimated change-point to the nearest true change-point. Without loss of generality, assume that ηℓ is the nearest true change-point to 27 ˜˜ηℓ0 and that ηℓ ≥ ˜˜ηℓ0 (the case ηℓ ≤ ˜˜ηℓ0 can be handled symmetrically). Since there exists at least one estimated change-point within the distance of rℓ−1 
+
+> p,n
+
+to the true change-point ηℓ−1, we must have ˜˜ηℓ0−1 ≥ ηℓ−1 −rℓ−1 
+
+> p,n
+
+and ˜˜ηℓ0 ≥ ηℓ−1 +( ηℓ −ηℓ−1)/2. By condition (14), for a sufficiently large C′, we have (ηℓ − ηℓ−1)/2 = δℓ−1 
+
+> p,n
+
+/2 ≥ C′pnR p,n 
+
+> 2∆ ℓ−1
+> p,n
+
+≥
+
+rℓ−1 
+
+> p,n
+
+. Consequently, uℓ0 = ⌊(˜ ˜ηℓ0−1 + ˜ ˜ηℓ0 )/2⌋ as defined in Stage 2 of the refine satisfies that uℓ0 ≥ ηℓ−1. On the other hand, since ˜˜ηℓ0 is not the closest estimated change for ηℓ, we must have wℓ0 = ⌊(˜ ˜ηℓ0 + ˜ ˜ηℓ0+1 )/2⌋ < η ℓ. Therefore, the interval (uℓ0 , w ℓ0 ]
+
+contains no true change-point and Lemmas 1 and 2 guarantee that the corresponding CUSUM statistic satisfies CL2  
+
+> uℓ0,v ℓ0,w ℓ0
+
+≤ λ2 and CL∞  
+
+> uℓ0,v ℓ0,w ℓ0
+
+≤ λ∞ and thus ˜˜ηℓ0 gets removed. 2. Suppose ˜˜ηℓ0 is the closest estimated change-point of a true one, ηℓ, and therefore it is within the distance of rℓp,n from ηℓ. If ˜˜ηℓ0 gets removed as it so happens that 
+
+CL2  
+
+> uℓ0,v ℓ0,w ℓ0
+
+≤ λ2 and CL∞  
+
+> uℓ0,v ℓ0,w ℓ0
+
+≤ λ∞, there must be another ˜˜ηj within the distance of Cℓ0 · rℓp,n from ˜˜ηℓ0 (and thus from ηℓ), where Cℓ0 is a constant. If there were no such 
+
+˜˜ηj on either side of ˜˜ηℓ0 , as the segment (uℓ0 , v ℓ0 ] includes the true change-point ηℓ,either CL2  
+
+> uℓ0,v ℓ0,w ℓ0
+
+> λ 2 or CL∞  
+
+> uℓ0,v ℓ0,w ℓ0
+
+> λ ∞ would occur by the construction and ˜˜ηℓ0
+
+would not get removed. More in detail, depending on the sparsity level, the following holds. 
+
+CL∞  
+
+> uℓ0,v ℓ0,w ℓ0
+
+≥
+
+rrℓp,n ∆ℓp,n 
+
+2S ≥
+
+rC1pnR p,n 
+
+2S ≍ log 3/2 n > λ ∞, if S ≤ p
+
+log n, (A.15) 
+
+CL2  
+
+> uℓ0,v ℓ0,w ℓ0
+
+≥
+
+rrℓp,n ∆ℓp,n 
+
+2 ≥
+
+rC2pnR p,n 
+
+2 ≍ √p log n > λ 2, if S > p
+
+log n, (A.16) where S = max ℓ Sℓ. The first inequalities in (A.15) and (A.16) hold by the def-inition of CUSUM statistics and the second hold because we already set rℓp,n := 
+
+⌊CpnR p,n 
+
+ ∆ℓp,n 
+
+−1⌋ for ℓ ∈ { 1, . . . , N }. The asymptotic equivalences hold because of the definition of Rp,n given in (13) depending on the size of S and the last inequalities by λ∞ = c1 log 1/2(n) and λ2 = c2
+
+√p + log n.Due to the assumption given on the distance between two consecutive change-points, by case 2 above, once the algorithm is terminated, each true change-point ηℓ must have an estimated change-point within the distance of C′rℓp,n where C′ is a constant. If there were two, the more remote one gets removed by case 1 as it is not the closest one. Consequently, each true change-point ηℓ must have an estimated change-point within the distance of 
+
+C′rℓp,n , which contradicts the initial assumption that there is at least one ℓ ∈ { 1, . . . , N }
+
+without an estimated change-point in ˜f within distance of rℓp,n of ηℓ. This contradiction with the upper bound ∥˜˜f − f ∥2 
+
+> p,n
+
+≤ C 
+
+> 4
+
+Rp,n via (A.14) completes the proof. 28 B Extension to dependent non-Gaussian noise 
+
+In this section, we extend our bottom-up methodology to more realistic settings where the noise {εi,t }i=1 ,...,p, t =1 ,...,n in (1) has temporal dependence over t for all i and/or εi, · =(εi, 1, . . . , ε i,n )⊤ has non-Gaussianity for all i. The specified settings are precisely defined later in this section. We will define larger thresholds to control the behavior of those sums Pt2 
+
+> t=t1
+
+εi,t for dependent non-Gaussian data. The estimator of μ(j,k ) 
+
+> i
+
+for j ≥ 1 is obtained by applying the same pruning rule with different thresholds as follows. 
+
+ˆμ(j,k ) 
+
+> i
+
+= C(j,k ) 
+
+> i
+
+· I
+
+(
+
+∃(j′, k ′) ∈ O j,k max  
+
+> i
+
+C(j′,k ′) 
+
+> i
+
+> λ ∗∞
+
+or 
+
+ p
+
+X
+
+> i=1
+
+ C(j′,k ′)
+
+> i
+
+2
+
+1/2
+
+> λ ∗
+
+> 2
+
+)
+
+, i = 1 , . . . , p, 
+
+(B.1) where I is an indicator function and Oj,k is defined as in (A.9). 
+
+## B.1 Theoretical behavior of the estimators 
+
+Theorem B.1. Let the distribution of εi,t in model (1) of the main article be as follows: (a) For all i = 1 , . . . , p , {εi,t }t has mean zero and satisfies Cramer’s conditions that 
+
+E|εi,t |k ≤ ck−2k!E(ε2
+
+> i,t
+
+) < ∞, t = 1 , . . . , n, k = 3 , 4, . . . , 
+
+where c > 0.(b) For all i = 1 , . . . , p , {εi,t }t is α-mixing with α(k) ≤ cν k, c > 0, 0 < ν < 1.Let the thresholds satisfy λ∗∞ = c1 log 2(n) and λ∗ 
+
+> 2
+
+= c2
+
+√p log 2(n) with sufficiently large constants c1 > 0 and c2 > 0. Let the dimension p satisfy p ∼ nα for some fixed α ∈ (0 , ∞).On the set Dp,n defined by 
+
+Dp,n =
+
+
+
+∀i = 1 , . . . , p and ∀1 ≤ u ≤ v ≤ w ≤ n, 1
+
+√w − u + 1 
+
+> w
+
+X
+
+> t=u
+
+εi,t ≤ c4 log 2(n)
+
+
+
+(B.2) which satisfies P (Dp,n ) → 1 as n → ∞ for a sufficiently large constant c4 > 0, then we have 
+
+∥˜f − f ∥2 
+
+> p,n
+
+≤ 1
+
+n
+
+"
+
+log 4(n) min( c21, c 22) + 4 N
+
+ log n
+
+log(1 /(1 − ρ)) 
+
+
+
+log 4(n) max 
+
+> ℓ
+
+
+
+c21
+
+Sℓ
+
+p ∧ c22
+
+#
+
+.
+
+(B.3) 29 The consistency rate in (B.3) differs only by a logarithmic factor from the one obtained under iid Gaussian noise in the main article. 
+
+Proof. We first show that P (Dp,n ) → 1 as n → ∞ . For this, we consider the single sum Pat=1 εi,t for any i ∈ { 1, 2, . . . , p }. From Theorem 1.6 in Bosq (1998), we have 
+
+P 1
+
+√a
+
+> a
+
+X
+
+> t=1
+
+εi,t > c log 2(n)
+
+!
+
+=O
+
+h
+
+log 2(n) exp 
+
+n
+
+− c′ log 2(n)
+
+oi 
+
++ O
+
+h
+
+n exp  − c′′ log 2(n)
+
+i
+
+, (B.4) by setting ε = log 2(n) log( n) 
+
+> √a
+
+and q =
+
+ 
+
+> a
+> log 2(n) log( n)
+
++ 1 
+
+
+
+as in Theorem 1.6-(2) in Bosq (1998). Since there exist up to n2 forms of Pat=1 εi,t for each i ∈ { 1, 2, . . . , p }, by multiplying pn 2
+
+to the right-hand side of (B.4) via Bonferroni correction, we have P (Dp,n ) → 1 as n → ∞ .Under the null, on Dp,n , we have 
+
+P
+
+n
+
+∀0 ≤ u < v < w ≤ n max  
+
+> i
+
+|Ci;u,v,w | ≤ λ∗∞
+
+o
+
+→ 1,
+
+as n → ∞ , where λ∗∞ = c1 log 2(n) and Ci;u,v,w = ⟨ψu,v,w , εi, ·⟩. This can be obtained directly from the set Dp,n using the fact that 
+
+|Ci;u,v,w | =
+
+n w − vw − u
+
+o1/2 Pvt=u+1 εi,t 
+
+√v − u −
+
+n v − uw − u
+
+o1/2 Pwt=v+1 εi,t 
+
+√w − v
+
+≤ c4 log 2(n)
+
+√w − v + √v − u
+
+√w − u , (B.5) for all i ∈ { 1, 2, . . . , p }. This completes L∞ control of the CUSUM statistics under the null. Similarly, under the null on Dp,n , we have the L2 control of the CUSUM statistics as follows 
+
+P
+
+
+
+∀0 ≤ u < v < w ≤ n
+
+ p
+
+X
+
+> i=1
+
+|Ci;u,v,w |2
+
+1/2
+
+≤ λ∗
+
+> 2
+
+
+
+→ 1,
+
+as n → ∞ , where λ∗ 
+
+> 2
+
+= c2
+
+√p log 2(n). This can be obtained from Bonferroni correction and the fact that 
+
+> p
+
+X
+
+> i=1
+
+|Ci;u,v,w |2
+
+!1/2
+
+≤
+
+h
+
+(c′
+
+> 4
+
+)2p log 4(n)
+
+i1/2
+
+,
+
+obtained from (B.5), where c′ 
+
+> 4
+
+> 0 is a constant. The consistency rate in (B.3) can be obtained by following the same arguments used in 30 the proof of Theorem 1 with different thresholds. We can also obtain results equivalent to Theorems 2 and 3 by following exactly the same logic with the updated consistency rate in Theorem B.1. In conclusion, when the noise satisfies Cramer’s conditions with exponential 
+
+α-mixing, larger thresholds are required, which affects the consistency rate in the theorems. 
+
+# C Additional simulations 
+
+scenario sparsity (S1, . . . , SN ) (θ1, . . . , θ N )(Freq) Frequent 
+
+n = 150 , p = 50 , N = 4 
+
+η = 30 · (1 , 2, 3, 4) 
+
+sparse (1, 1, 1, 1) (3, 3, 3, 3) dense (35, 35, 35, 35) (3.5, 3.5, 3.5, 3.5) mixed1 (1, 7, 1, 7) (3, 3, 3, 3) mixed2 (1, 35, 35, 1) (2.3, 2.8, 2.8, 2.3) mixed3 (35, 1, 7, 35) (2.8, 2.3, 2.5, 2.8) (L.Freq) Less frequent 
+
+n = 300 , p = 50 , N = 2 
+
+η = (100 , 200) 
+
+sparse (1, 1) (1.5, 1.5) dense (35, 35) (1.5, 1.5) mixed (1, 35) (1.5, 1.5) 
+
+Table C.1: Parameter settings with different types of sparsity for scenarios (Freq) and (L.Freq). In the additional simulations, we explore two sets of scenarios, frequent (Freq) change-point settings and less frequent (L.Freq) change-point settings, where the details can be found in Table C.1. SN is not included due to its difference in platform. As done in the main paper, for each set of scenarios, different types of sparsity are examined. Tables C.2 and C.3 summarize the results for frequent (Freq) change-point settings and have similar interpretations to those for Tables 2 and 3. Table C.4 shows the results of less frequent (L.Freq) change-point settings. BUHDA, scanEH and INSPECT show competitive performance across all settings. As expected, L2 aggregation performs better than L∞ for both top-down and bottom-up methods in the dense and mixed cases. 
+
+# D Connections between bottom-up tree construction and wavelet transform 
+
+Constructing a bottom-up tree via Algorithm 1 is the same as applying a conditionally or-thonormal wavelet transform to the data matrix. Fryzlewicz (2018) studies this connection in the univariate setting where p = 1 , and here we extend this to the high-dimensional set-ting. We first define the smooth-type coefficient matrix S. At the initial stage of merging, 31 ˆN − N
+
+Scenario Method ≤-3 -2 -1 0 1 2 ≥3 MSE ARI time (Freq)-sparse TD( L2) 0 0 6 91 3 0 0 0.09 0.944 0.053 TD( L∞) 0 0 0 96 4 0 0 0.04 0.965 0.072 BU( L2) 0 0 8 92 0 0 0 0.08 0.893 0.019 BU( L∞) 0 0 0 99 1 0 0 0.01 0.917 0.018 SBS 2 59 32 6 1 0 0 2.87 0.572 0.056 DC 0 0 0 95 5 0 0 0.05 0.965 0.382 INSPECT 0 0 2 95 3 0 0 0.05 0.959 0.118 scanEH 0 0 0 95 5 0 0 0.05 0.966 0.380 BUHDA 0 0 0 98 2 0 0 0.02 0.919 0.021 (Freq)-dense TD( L2) 0 0 0 98 2 0 0 0.02 0.975 0.053 TD( L∞) 14 80 6 0 0 0 0 4.52 0.504 0.067 BU( L2) 0 0 0 99 1 0 0 0.01 0.934 0.019 BU( L∞) 43 57 0 0 0 0 0 6.15 0.464 0.017 SBS 0 0 2 95 3 0 0 0.05 0.937 0.059 DC 0 98 2 0 0 0 0 3.94 0.599 0.364 INSPECT 0 0 0 99 1 0 0 0.01 0.960 0.120 scanEH 0 0 4 96 0 0 0 0.04 0.959 0.376 BUHDA 0 0 1 91 8 0 0 0.09 0.894 0.021 
+
+Table C.2: Distribution of ˆN − N for scenarios (Freq)-sparse and (Freq)-dense and all methods over 100 simulation runs. Also the average MSE (Mean Squared Error) of the number of change-points detected, the average Adjusted Rand index (ARI) of the estimated segmentation against the true one, the average computational time in seconds using an Intel Core i9 3.6 GHz CPU with 40 GB of RAM, all over 100 simulations. 32 ˆN − N
+
+Scenario Method ≤-3 -2 -1 0 1 2 ≥3 MSE ARI time (Freq)-mixed1 TD( L2) 0 0 3 93 4 0 0 0.07 0.951 0.053 TD( L∞) 0 39 41 20 0 0 0 1.97 0.724 0.071 BU( L2) 0 0 4 96 0 0 0 0.04 0.900 0.018 BU( L∞) 0 59 32 9 0 0 0 2.68 0.656 0.018 SBS 0 57 39 4 0 0 0 2.67 0.625 0.056 DC 0 28 43 29 0 0 0 1.55 0.762 0.367 INSPECT 0 0 0 97 3 0 0 0.03 0.959 0.122 scanEH 0 0 0 99 1 0 0 0.01 0.975 0.378 BUHDA 0 0 3 96 1 0 0 0.04 0.900 0.021 (Freq)-mixed2 TD( L2) 0 5 29 65 1 0 0 0.50 0.861 0.051 TD( L∞) 0 35 64 1 0 0 0 2.04 0.622 0.082 BU( L2) 0 13 34 53 0 0 0 0.86 0.787 0.019 BU( L∞) 0 75 25 0 0 0 0 3.25 0.512 0.018 SBS 0 75 24 1 0 0 0 3.24 0.587 0.057 DC 0 44 56 0 0 0 0 2.32 0.616 0.458 INSPECT 0 5 21 71 2 1 0 0.47 0.864 0.116 scanEH 0 1 44 55 0 0 0 0.48 0.845 0.403 BUHDA 0 0 12 84 4 0 0 0.16 0.838 0.021 (Freq)-mixed3 TD( L2) 0 0 27 72 1 0 0 0.28 0.901 0.051 TD( L∞) 10 88 2 0 0 0 0 4.44 0.551 0.064 BU( L2) 0 1 34 65 0 0 0 0.38 0.828 0.018 BU( L∞) 31 68 1 0 0 0 0 5.52 0.494 0.016 SBS 0 7 80 13 0 0 0 1.08 0.720 0.068 DC 2 95 3 0 0 0 0 4.01 0.579 0.356 INSPECT 0 0 21 79 0 0 0 0.21 0.881 0.119 scanEH 0 12 45 43 0 0 0 0.93 0.817 0.362 BUHDA 0 1 20 76 3 0 0 0.27 0.830 0.021 
+
+Table C.3: Distribution of ˆN − N for scenario (Freq)-mixed1–3 and all methods over 100 simulation runs. Also the average MSE (Mean Squared Error) of the number of change-points detected, the average Adjusted Rand index (ARI) of the estimated segmentation against the true one, the average computational time in seconds using an Intel Core i9 3.6 GHz CPU with 40 GB of RAM, all over 100 simulations. 33 ˆN − N
+
+Scenario Method ≤-3 -2 -1 0 1 2 ≥3 MSE ARI time (L.Freq)-sparse TD( L2) 0 0 0 98 2 0 0 0.02 0.985 0.182 TD( L∞) 0 0 0 84 16 0 0 0.16 0.954 0.245 BU( L2) 0 0 0 98 2 0 0 0.02 0.958 0.030 BU( L∞) 0 0 0 100 0 0 0 0.00 0.947 0.032 SBS 0 0 0 74 26 0 0 0.26 0.922 0.220 DC 0 0 0 97 3 0 0 0.03 0.980 1.649 INSPECT 0 0 0 98 2 0 0 0.02 0.986 0.395 scanEH 0 0 0 98 2 0 0 0.02 0.984 1.665 BUHDA 0 0 0 99 1 0 0 0.01 0.953 0.034 (L.Freq)-dense TD( L2) 0 0 0 99 1 0 0 0.01 0.987 0.176 TD( L∞) 0 0 60 40 0 0 0 0.60 0.646 0.225 BU( L2) 0 0 0 99 1 0 0 0.01 0.955 0.028 BU( L∞) 0 0 95 5 0 0 0 0.95 0.557 0.029 SBS 0 0 0 96 4 0 0 0.04 0.974 0.220 DC 0 0 66 33 1 0 0 0.67 0.694 1.582 INSPECT 0 0 0 100 0 0 0 0.00 0.981 0.394 scanEH 0 0 0 99 1 0 0 0.01 0.983 1.654 BUHDA 0 0 0 95 5 0 0 0.05 0.936 0.036 (L.Freq)-mixed TD( L2) 0 0 0 99 1 0 0 0.01 0.990 0.176 TD( L∞) 0 0 38 62 0 0 0 0.38 0.768 0.237 BU( L2) 0 0 0 99 1 0 0 0.01 0.958 0.029 BU( L∞) 0 0 79 21 0 0 0 0.79 0.622 0.030 SBS 0 0 0 90 10 0 0 0.10 0.954 0.219 DC 0 0 39 60 1 0 0 0.40 0.813 1.613 INSPECT 0 0 0 99 1 0 0 0.01 0.986 0.396 scanEH 0 0 0 99 1 0 0 0.01 0.990 1.668 BUHDA 0 0 0 96 4 0 0 0.04 0.949 0.036 
+
+Table C.4: Distribution of ˆN −N for scenario (L.Freq) and all methods over 100 simulation runs. Also the average MSE (Mean Squared Error) of the number of change-points detected, the average Adjusted Rand index (ARI) of the estimated segmentation against the true one, the average computational time in seconds using an Intel Core i9 3.6 GHz CPU with 40 GB of RAM, all over 100 simulations. we assign the initial S to be the data matrix as below: 
+
+S =
+
+
+
+s1,(0 ,1] s1,(1 ,2] . . . s1,(n−1,n ]
+
+s2,(0 ,1] s2,(1 ,2] . . . s2,(n−1,n ]
+
+... ... ... ...
+
+sp, (0 ,1] sp, (1 ,2] . . . sp, (n−1,n ]
+
+
+
+> p×n
+
+=
+
+
+
+X1,1 X1,2 . . . X1,n 
+
+X2,1 X2,2 . . . X2,n 
+
+... ... ... ...
+
+Xp, 1 Xp, 2 . . . Xp,n 
+
+
+
+> p×n
+
+. (D.1) 34 Each column of S shows the initial nodes in the current layer, (0 , 1] , (1 , 2] , . . . , (n − 1, n ].As merges are performed, the set of current layer nodes and the corresponding columns of matrix S in (D.1) are updated. From a wavelet-transform viewpoint, merging a pair of neighboring nodes e.g. (u, v ], (v, w ]
+
+is equivalent to applying a local orthonormal transformation to the scaled mean vector called smooth coefficients as follows: 
+
+ si, (u,w ]
+
+Ci;u,v,w 
+
+
+
+=
+
+ au,v,w bu,v,w 
+
+−bu,v,w au,v,w 
+
+  si, (u,v ]
+
+si, (v,w ]
+
+
+
+, i = 1 , . . . , p, (D.2) where 
+
+si, (u,w ] = ( w − u)−1/2
+
+> w
+
+X
+
+> t=u+1
+
+Xi,t , i = 1 , . . . , p, (D.3) and 
+
+au,v,w = p(w − v)/(w − u), bu,v,w = p(v − u)/(w − u). (D.4) The transform in (D.2) shows that applying an orthonormal transform updates two smooth-type constant vectors, ( si, (u,v ], s i, (v,w ]), in S to one smooth-type vector ( si, (u,w ]) and one CUSUM statistic vector ( Ci;u,v,w ), where si, (u,w ] corresponds to the scaled mean vector of merged segments while Ci;u,v,w represents the scaled difference between two segments. In a different view, after performing a merge, a pair of current layer nodes, (u, v ], (v, w ], are replaced with one top-layer node, (u, w ], which reduces the total number of current layer nodes by one. Note that in the wavelet literature, a CUSUM statistic is often called a detail-type coefficient. Constructing a bottom-up tree in Algorithm 1 is equivalent to recursively applying the local orthonormal transform in (D.2) to a chosen pair of smooth-type coefficient vectors in the data matrix until only one smooth-type coefficient vector is left (i.e. until only one current layer node is left). These transforms produce a data-adaptive multiscale decom-position of the data matrix and eventually convert the input data matrix X of dimension 
+
+p × n into the matrix containing one column of smooth coefficients and n − 1 columns of CUSUM statistics as follows: 
+
+
+
+s1,(0 ,n ] C1; ·,·,· . . . C1; ·,·,·
+
+s2,(0 ,n ] C2; ·,·,· . . . C2; ·,·,·
+
+... ... ... ...
+
+sp, (0 ,n ] Cp;·,·,· . . . Cp;·,·,·
+
+
+
+> p×n
+
+=
+
+
+
+X1,1 X1,2 . . . X1,n 
+
+X2,1 X2,2 . . . X2,n 
+
+... ... ... ...
+
+Xp, 1 Xp, 2 . . . Xp,n 
+
+
+
+> p×n
+
+Ψn×n, (D.5) where Ψ is an orthonormal unbalanced wavelet basis for Rn obtained in an adaptive way. Note that Ci;·,·,· in (D.5) is given without exact notation indicating the endpoints of the merged neighboring segments, because they are decided in an adaptive way. The columns of 
+
+Ψ correspond to the wavelet basis used in computing the smooth coefficients and CUSUM 35 statistics as follows: 
+
+si, (0 ,n ] = ⟨(Xi, 1, . . . , X i,n )⊤, ψ (0) ⟩,Ci;u,v,w = ⟨(Xi, 1, . . . , X i,n )⊤, ψ u,v,w ⟩,
+
+where ψ(0) is the first column vector of Ψ and ψu,v,w is a general form of the remaining column vectors of Ψ.The orthonormality of the unbalanced wavelet basis, Ψ, implies Parseval’s identity: 
+
+> n
+
+X
+
+> t=1
+
+(Xi,t )2 =
+
+> J
+
+X
+
+> j=1
+> K(j)
+
+X
+
+> k=1
+
+ C(j,k )
+
+> i;·,·,·
+
+2 + ( si, (0 ,n ])2, for i = 1 , . . . , p, (D.6) thus nX
+
+> t=1
+
+(Xi,t − ¯Xi)2 =
+
+> J
+
+X
+
+> j=1
+> K(j)
+
+X
+
+> k=1
+
+ C(j,k )
+
+> i;·,·,·
+
+2, for i = 1 , . . . , p, (D.7) where ¯Xi = 1 /n Pnt=1 Xi,t . By construction, the CUSUM statistics obtained during early merges tend to be small in magnitude. Thus, Parseval’s identity in (D.7) implies that a large portion of Ppi=1 
+
+Pnt=1 (Xi,t − ¯Xi)2 is explained by only a few large CUSUM statistics arising at coarse levels in a bottom-up tree. In other words, the resulting orthonormal transform of each data sequence tends to encode most of the energy of the signals in only a few CUSUM statistics arising in the later stages of the transform. In this sense, the orthonormal wavelet transform provides a sparse signal representation, which motivates thresholding as the next stage of the algorithm. 36

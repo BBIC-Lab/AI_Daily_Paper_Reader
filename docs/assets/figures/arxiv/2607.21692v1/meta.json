@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-007.webp",
+      "caption": "Table 3: Single-record routed accuracy at a 10% block budget: pooling routers trained against seed 0, means over five teacher seeds, 500 examples per condition. 2×/4× scale the block count at evaluation; stale-4 adds obsolete writes; family distractors share the query’s family token. Per-seed values: Appendix G.",
+      "page": 5,
+      "index": 7,
+      "width": 552,
+      "height": 233
+    },
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-001.webp",
+      "caption": "Table 4: Multi-hop routing at k=3 (300 examples). Oracles route on labels directly, as ranges over the four converged seeds (attention: both head poolings); recall lists selection rates for first pointer, second pointer, and end value.",
+      "page": 6,
+      "index": 1,
+      "width": 622,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-004.webp",
+      "caption": "Table 7: Recovery estimators on the synthetic mixture: label agreement with the hidden annotations over the 8,000 training examples, and routed accuracy of routers trained only on the recovered labels (mean of three router seeds, 300 examples per condition). Cover: the recovered set contains an annotated sufficient set. Each single-signal estimator fails in the regime Section 2.3 predicts; the floored estimator, whose every size decision is an intervention, is the one the main text reports. The last row is an attribution baseline at the same budget, labeling the top blocks by input-gradient saliency.",
+      "page": 13,
+      "index": 4,
+      "width": 640,
+      "height": 191
+    },
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-002.webp",
+      "caption": "Table 8: Final teacher accuracy per task and seed.",
+      "page": 15,
+      "index": 2,
+      "width": 582,
+      "height": 223
+    },
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-003.webp",
+      "caption": "Table 9: Per-seed routed accuracy at the 10% budget (single-hop teachers, routers trained against seed 0).",
+      "page": 15,
+      "index": 3,
+      "width": 586,
+      "height": 877
+    },
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-009.webp",
+      "caption": "Table 10: Per-seed results for the label-by-loss ablation (five-task teachers). Seed 3 never learned multi-hop (dense 0.04) and is reported for completeness.",
+      "page": 16,
+      "index": 9,
+      "width": 627,
+      "height": 502
+    },
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-008.webp",
+      "caption": "Table 11: Cross-seed agreement per seed pair: causal-evidence labels (left of slash) against adaptive attention (right).",
+      "page": 16,
+      "index": 8,
+      "width": 536,
+      "height": 253
+    },
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-005.webp",
+      "caption": "Table 13: Frozen pretrained models on unique retrieval (400 examples per model; Qwen2.5-14B is a 60-example anchor; candidates from outside the context; chance flip under full removal is 0.75).",
+      "page": 17,
+      "index": 5,
+      "width": 627,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2607.21692v1/fig-006.webp",
+      "caption": "Table 14: Operator robustness (150 examples; overwrite averaged over three nonce fillers). The two operators are defined in the text. Causal and Attention give the causal-supervision and attentionimitation routers’ accuracy; Repair keeps only the annotated current record; Flip cur. and Flip rnd. are the rates at which removing the current or a random record changes the answer.",
+      "page": 17,
+      "index": 6,
+      "width": 727,
+      "height": 317
+    }
+  ]
+}

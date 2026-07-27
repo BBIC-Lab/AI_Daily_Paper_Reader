@@ -1,0 +1,4677 @@
+Title: Self-Balancing Sequential Sampling: Fast Convergence with Controlled Predictability
+
+URL Source: https://arxiv.org/pdf/2607.20818v1
+
+Published Time: Fri, 24 Jul 2026 00:22:19 GMT
+
+Number of Pages: 47
+
+Markdown Content:
+# Self-Balancing Sequential Sampling: Fast Convergence with Controlled Predictability 
+
+Zachary McNulty ∗1 and Daniel Raban †21Department of Mathematics, University of California, Berkeley 
+
+> 2
+
+Department of Statistics, University of California, Berkeley 
+
+Abstract 
+
+Many instances of sequential sampling, including audit and inspection scheduling, rep-resentative sampling, and treatment assignment, require selections to be distributed evenly without becoming easy to anticipate or exploit. We study a family of sequential sampling rules that adaptively bias sampling probabilities in order to achieve faster convergence of the empirical distribution to a desired target law, while keeping the resulting samples as unpredictable as possible. The resulting self-balancing sampler is simple to implement, arises naturally among a class of Markovian samplers sharing a certain invariance prop-erty, and admits a stochastic mirror-descent interpretation. Our main results show that (i) this self-balancing sampler converges at the fastest possible O(n−1) rate with explicit dependence on biasing parameters, beating the standard O(n−1/2) rate of IID sampling, (ii) it is the unique solution to a natural entropy-regularized optimization problem which balances the convergence rate of the empirical law and the unpredictability of the samples, and (iii) in the weak-biasing regime, the properly centered counts process converges to an Ornstein–Uhlenbeck process in the diffusive limit. Together, these results support a prac-tical framework for reducing repeated selections and long gaps in coverage without making future selections overly predictable. 
+
+1 INTRODUCTION 
+
+Consider the problem of sequentially sampling Xi from d outcomes [ d] := {1, 2, ..., d } in a way that allows the empirical distributions 
+
+μ(n) := 1
+
+n
+
+> n
+
+X
+
+> i=1
+
+δXi
+
+to converge to the uniform distribution. Two naive ways of doing this are: 
+
+• Uniformly at random : Sample Xi IID 
+
+∼ Uniform([ d]). 
+
+• Deterministically/Greedily : Sample Xi = i (mod d) + 1. 
+
+> ∗
+
+Email: zachary mcnulty@berkeley.edu 
+
+> †
+
+Email: danielraban@berkeley.edu 
+
+2020 Mathematics Subject Classification. 60J10 (Primary); 62L05, 90C25, 60F17 (Secondary) 
+
+Key words and phrases. sequential sampling; entropy-regularized optimization; citizen’s assembly; audit scheduling; negatively-reinforced stochastic process; optimal control; stratified sampling 
+
+1arXiv:2607.20818v1 [math.PR] 23 Jul 2026 For these two sampling schemes, there’s a trade-off between the speed of convergence and the predictability of the samples. Namely, the former converges at rate O(n−1/2) in the total variation distance, while the latter converges at the much faster rate O(n−1). On the other hand, the former process is as unpredictable as possible, maximizing the entropy at each sampling step, while the latter is perfectly predictable. This tradeoff becomes readily apparent in the problem of scheduling audits or inspections, such as testing for doping in professional sports. A sports regulatory body is tasked with routinely testing teams for the use of performance enhancing drugs, but any deterministic schedule has the potential to be taken advantage of, since the players can temporarily cease doping in anticipation of the tests. On the other hand, sampling teams IID to receive doping tests can lead to wasteful behavior, such as spending resources to test a team multiple times in relatively short succession, while letting other teams remain temporarily untested; in effect, temporary imbalances in the empirical distribution of audited teams reflect inefficiencies in the order of teams chosen. Moreover, empirical evidence suggests biasing inspections towards individuals with certain risk factors can improve outcomes Lauritzen and Holden [2023]. Similar tradeoffs arise in the scheduling of restaurant health inspections, where inspection agencies often seek to prioritize higher-risk establishments or those with poor inspection histories while still preserving enough unpredictability to prevent strategic compliance behavior Buchholz et al. [2002]. Another closely related problem is how to sample from a population while keeping the realized sample balanced across several overlapping strata. For example, suppose we are con-structing a citizen’s assembly of 100 members out of a volunteer pool of 1000, and we would like our assembly to be demographically representative across multiple overlapping characteristics, such as gender, age, and education level. We may attempt to balance these characteristics us-ing a deterministic or quota-constrained selection algorithm for choosing a committee, but, as noted in Flanigan et al. [2021], some algorithms can lead to somewhat undemocratic outcomes in which certain members of the volunteer pool have a minuscule chance of being chosen for the committee. On the other hand, a simple random sample can result in a committee which is not properly representative for each characteristic. Lastly, in randomized controlled trials there is inherent tension between ensuring covariates known to influence treatment effects are balanced across groups, while maintaining enough randomness to provide robustness against unknown prognostic factors. Harshaw et al. [2024] explore this trade-off between covariate balance and robustness, but their sampling strategy is inherently non-sequential. On the other hand, the classical work of Pocock and Simon [1975] provides a sequential analogue, biasing each assignment toward the treatment group that would reduce observed covariate imbalance. While effective as a balancing heuristic, the resulting procedure is not derived from optimizing any explicit objective, making the balance/robustness tradeoff relatively opaque. In this paper, we aim to explore the trade-off between these two aims—balance/convergence and robustness/unpredictability—for a natural family of sequential sampling rules. Heuristi-cally, we show that by adaptively biasing our sampling process, we can limit predictability while maintaining fast convergence rates. For this purpose, consider the following sequential sampling rule, informally described as “downweight the outcome’s probability and renormalize”: Fix some α ∈ (0 , 1), and start with some initial distribution p(0) ∈ ∆d
+
+> +
+
+, where ∆d 
+
+> +
+
+:= {x ∈ Rd : xi > 0, X xi = 1 }
+
+is the d-dimensional unit simplex with full support. At step n, recursively do the following: Step 1: Sample an outcome Xn ∼ p(n − 1). Step 2: Define p(n) by downweighting pXn (n − 1) by a factor of α and renormalizing the 21
+
+> d
+> 1
+> d
+> 1
+> d
+> 1
+> d
+> 1
+> d
+
+choose   
+
+> 1
+> d
+> 1
+> d
+> αd1
+> d
+> 1
+> dαd−1+ α
+> 1
+> d−1+ α
+> 1
+> d−1+ α
+
+Figure 1: Schematic of the self-balancing update starting from a uniform distribution: choose an outcome, downweight it by α, then renormalize. probability vector, i.e. 
+
+pi(n) := 
+
+  
+
+> α·pi(n−1) 1−(1 −α)·pXn (n−1)
+
+if i = Xn,  
+
+> pi(n−1) 1−(1 −α)·pXn (n−1)
+
+if i̸ = Xn.
+
+See Figure 1 for a visual schematic of the update rule. This sequential sampling rule is still random, and intuitively, it generates empirical distri-butions which are closer to uniform because it de-emphasizes outcomes which are currently over-represented in the empirical distribution. More precisely, if we denote the counts process 
+
+Ni = Ni(n) := # {1 ⩽ j ⩽ n : Xj = i},
+
+then this rule generates samples according to 
+
+pi = pi(n) := pi(0) · αNi(n)
+
+Pdj=1 pj (0) · αNj (n) .
+
+Hence we can see that this sampler interpolates the two naive sampling methods: when α = 1 (and p(0) is uniform), we recover the uniform sampler, and when α ↓ 0, we recover greedy least-count sampling with uniformly random tie-breaking; if ties are broken deterministically, we recover deterministic sampling. As we will later see, the same scheme works for non-uniform target distributions by replacing a uniform α by a suitable αi for each i; more precisely, for a target distribution p∗, one can set 
+
+αi = e−c/p ∗ 
+
+> i
+
+for every i, where the choice of c > 0 determines the trade-off between balance and predicability. Perhaps most unexpectedly, this simple sampling rule admits three independent characterizations: as the essentially unique invariant potential-based sampler (Proposition 2.1), as the Gibbs optimizer of an entropy-regularized count-imbalance objective (Theorem 2.10), and as an entropic stochastic mirror-descent algorithm (Theorem 2.11). 
+
+Related Work. Our sampling rule is related to several bodies of work on negatively dependent and history-dependent sampling. Negatively reinforced and de-preferential urn models assign lower selection probabilities to colors that are currently overrepresented, typically by applying a fixed decreasing weight function to the vector of urn proportions [Bandyopadhyay and Kaur, 2018, Kaur, 2019]. These works establish laws of large numbers and central limit theorems under general replacement mechanisms. Our model differs in that observations directly increment the selection counts and the sampling probabilities depend exponentially on the raw counts, 
+
+pi(n) ∝ pi(0) e−(− log αi)Ni(n), rather than sample proportions. Equivalently, the weight applied to the empirical proportion μi(n) is e−n(− log αi)μi(n), so for fixed αi, the strength of the repulsion 3on the empirical measure scale grows with time. This produces a positive-recurrent centered-count process and empirical convergence on the n−1 scale, rather than ordinary central-limit fluctuations. A second closely related line of work concerns self-interacting and self-repellent random walks. Recent self-repellent random-walk constructions modify a base Markov kernel by down-weighting states having large empirical occupation proportions and establish almost-sure con-vergence and central limit theorems with reduced asymptotic variance Doshi et al. [2024]. Ex-ponentially interacting reinforced walks on complete graphs have also been studied, particularly for systems of several attracting or repelling walkers Rosales et al. [2022]. In contrast, our sam-pler has no graph constraint or dependence on the current location, and its exponential weights are applied to cumulative counts rather than to occupation proportions with a fixed interaction strength. As above, a time-inhomogeneous choice of α parameters expresses the process in terms of proportions, rather than counts, connecting the two regimes. The trade-off between balance and unpredictability has a long history in restricted random-ization for sequential experiments. Beginning with Efron’s biased-coin design and its subsequent extensions, these procedures increase the probability of assigning the next subject to an under-represented treatment while retaining sufficient randomness to limit selection bias Efron [1971], Smith [1984], Atkinson [2002], Antognini and Giovagnoli [2004], Markaryan and Rosenberger [2010]. This literature commonly evaluates a design through both its resulting treatment im-balance and the probability with which an observer can predict the next assignment. Our framework shares these objectives, but extends them to arbitrary finite target distributions and uses assignment probabilities that depend exponentially on the weighted cumulative counts. The resulting strength of correction increases with the observed count imbalance, rather than remaining at a fixed bias level. We further derive this exponential rule from an explicit entropy-regularized count-imbalance objective and analyze its convergence, centered-count dynamics, and weak-bias diffusion behavior. In this sense, the self-balancing sampler may be viewed as a multidimensional family of biased-coin designs for which the balance–unpredictability trade-off is both explicitly parameterized and amenable to a unified stochastic-process analysis. 
+
+Outline. Section 2.2 shows that such samplers arise naturally by enforcing an invariance property on the sampling probabilities p(n), namely that they depend only on relative differences in the counts Ni. We show that after properly centering the counts process, it descends to an irreducible and positive recurrent Markov chain on the centered counts, a process which exhibits strong mean-reversion properties. Then, in Section 2.3 we show our first main result: that for any choice of α, the self-balancing sampler converges at rate O(1 /n ) in expectation, matching the fastest possible rate up to constants, while in the worst case it remains within O(log n/n ) of its target law almost surely, which is optimal up to a logarithmic factor. Hence, the self-balancing property of this sampler drastically improves upon the convergence rate of IID sampling, and matches the convergence rate of the naive greedy sampler. Moreover, we quantify the influence the bias parameter 
+
+α has on the leading order constant and show there are two regimes: the leading constant is order (log(1 /α )) −1/2 when p(0) = p∗, where p∗ is the asymptotic sampling distribution, and is order (log(1 /α )) −1 otherwise. We additionally show that these two regimes apply for time-inhomogeneous biasing parameters, as well. A key technical ingredient is a quantitative specialization of the drift criterion of Pemantle and Rosenthal [1999], which provides the explicit parameter dependence needed in our convergence bounds. In Section 2.4, we show that the self-balancing sampler admits a natural interpretation through an entropy-regularized optimization problem, balancing minimization of the mean-squared imbalance in the counts with maximizing entropy. This formalizes the balance/convergence versus robustness/unpredictability trade off in terms of an explicit objective, a limitation of the classical procedure Pocock and Simon [1975]. We further show that the self-balancing sampler 4implements stochastic mirror descent on the space of sampling distributions. Section 3.3 later shows that the sampler further fits within the broader framework of entropy-regularized optimal control. In an effort to further quantify the trade-off between convergence and unpredictability, we develop diffusion limits in Section 3 and an adversarial notion of predictability in Section 3.2. The latter defines the unpredictability as the error-rate an adversary trying to predict the next sampled index would achieve if they behaved optimally, which is possibly more natural than the entropy-based characterization of Section 2.4. We are particularly interested in a weak-biasing regime , in which α ↑ 1, which is the natural regime under which diffusion limits arise. Using these tools, we study how the behavior of the sampler changes as we vary the bias parameter 
+
+α.In this weak-biasing regime, the centered counts are well-approximated by an Ornstein– Uhlenbeck process with stationary fluctuations of order (log(1 /α )) −1/2, quantifying how stronger biasing enforces mean-reversion while reducing randomness. Moreover, as a function of β, the leading order constants match those found in Section 2.3. Complementing this, the adversarial analysis in Section 3.2 translates these fluctuations into prediction accuracy. In the weak-bias regime α ↑ 1, if the asymptotic sampling distribution 
+
+p∗ has a unique maximizer, then the optimal prediction accuracy is exponentially close to the baseline max i p∗ 
+
+> i
+
+, achieved by always guessing the most frequently sampled outcome. If the maximizer is not unique, however, the adversary can exploit fluctuations among the tied outcomes, and its excess prediction accuracy above max i p∗ 
+
+> i
+
+is of order plog(1 /α ). Applications and empirical demonstrations of our results are in Appendix A. For clarity of exposition, the proofs are postponed until Appendix B.  
+
+> 2BASIC RESULTS
+
+2.1 Definitions 
+
+A sequential sampling rule on [ d] consists of a filtered probability space (Ω , F, (Fn)n⩾0, P), an 
+
+Fn-adapted sequence ( ρn)n⩾0 of random distributions on [ d], and random variables ( Xn)n⩾1 on [d] so that 
+
+P(Xn+1 = i | F n) = ρn(i), ∀i ∈ [d].
+
+Most commonly, we have Fn = σ(X1, ..., X n). Such a sequential sampling rule selects its distribution ρn based solely on the previously observed outcomes, and then conditional on ρn
+
+generates the next outcome Xn+1 by sampling from ρn.We say such a rule is Markovian if it selects its next sample Xn+1 ∈ [d] based solely on the current selection counts {Ni(n)}di=1 where: 
+
+Ni(n) := |{ 1 ⩽ j ⩽ n : Xj = i}| .
+
+Formally, such a sampling rule is given by a measurable function π : Nd → ∆d where ∆ d is the unit simplex in Rd, and samples are generated via: 
+
+P (Xn+1 = i | { Xj }j⩽n) = πi(N (n)) .
+
+The self-balancing sampler is then a Markovian sampling rule with sampling function πi = pi.In this paper, we will show that this sampler (and more generally samplers with αi ∈ (0 , 1) possibly different for each outcome) arises naturally within this class of sampling rules after enforcing a specific symmetry on the sampling function π, and that it exhibits nice optimality properties. Note we can express this sampling rule as a softmax 
+
+pi = pi(n) = pi(0) · e−βiNi(n)
+
+Pdj=1 pj (0) · e−βj Nj (n) , (2.1) 5where βi = − log αi. As we will see below, these βi are in some sense a more natural parameterization. Heuristically, they can be interpreted as follows: for i, j ∈ [d], if β−1 
+
+> i
+
+/β −1 
+
+> j
+
+= pq
+
+is rational, then p samples of i are weighted the same as q samples of j under this sampling scheme. Thus β−1 
+
+> i
+
+measures the relative weight assigned to sampling i ∈ [d]. Higher weighted indices tend to be selected more often. In this paper, we are interested in how the empirical sampling distributions 
+
+μ(n) := 1
+
+n
+
+> n
+
+X
+
+> i=1
+
+δXi
+
+evolve over time under the self-balancing sampler. We show the limiting distribution is 
+
+p∗ 
+
+> i
+
+:= β−1
+
+> i
+
+Pdj=1 β−1
+
+> j
+
+.
+
+Namely, asymptotically we just select each i proportional to its relative weight β−1 
+
+> i
+
+.
+
+Since the counts Ni(n) drift off to infinity over time, we will require some form of centering to properly study this process. There are two natural centering schemes. The first, which we call the mean-centered counts , just centers each count by its expected limiting proportion: 
+
+Yi(n) := Ni(n) − np ∗ 
+
+> i
+
+.
+
+The second, which we call the projection-centered counts , reweights the counts according to their relative weights β−1 
+
+> i
+
+, fixes the coordinate d as a baseline, and compares the counts against this baseline: 
+
+eYi(n) := βiNi(n) − βdNd(n) = βiβd · [β−1 
+
+> d
+
+Ni(n) − β−1 
+
+> i
+
+Nd(n)] .
+
+We can express the sample probabilities pi directly in terms of these centered counts via 
+
+pi = pi(0) · e−βiYi(n)
+
+Pdj=1 pj (0) · e−βj Yj (n) = pi(0) · e− eYi(n)
+
+Pdj=1 pj (0) · e− eYj (n) .
+
+2.2 Potential-based sampling 
+
+In this section, we show that the self-balancing sampler arises naturally by enforcing a certain invariance property on our class of Markovian sampling rules, and that under this relation the counts process ( N (n)) n∈N descends to our projection-centered counts ( ˜Y (n)) n∈N. This projected chain is a Markov chain in its own right, and under mild assumptions is irreducbile, positive recurrent, and admits a unique stationary distribution. Proofs can be found in Appendix B.1. For a Markovian sampling rule, one natural choice for the sampling function π is to define a potential φi : N → (0 , ∞) for each coordinate and to select a sample proportional to its potential 
+
+πφi (x) := φi(xi)
+
+Pdj=1 φj (xj ) , ∀x ∈ Nd.
+
+We say a Markovian sampling rule π is translation invariant if 
+
+π(x + 1) = π(x), ∀x ∈ Nd.
+
+Translation-invariance expresses the opinion that our next sample Xn+1 should depend only on the relative differences in the sampling counts {Ni(n)}di=1 rather than their absolute sizes. More generally, we say π is v-invariant for some v ∈ Nd if 
+
+π(x + v) = π(x), ∀x ∈ Nd.
+
+6Here v-invariance expresses the heuristic that sampling i a total of vi times ought to be equivalent to sampling j a total of vj times. Thus ( vi) plays an analogous role to the relative weights ( β−1 
+
+> i
+
+). Note that we can view v-invariance as inducing an equivalence relation ∼v on Nd:
+
+x ∼v y ⇐⇒ vdxi − vixd = vdyi − viyd, ∀i, j ∈ [d].
+
+Under this relation, our counts process ( N (n)) n∈N descends to a Markov chain on Zd−1
+
+N (n) 7 → vdNi(n) − viNd(n) = β−1 
+
+> d
+
+Ni(n) − β−1 
+
+> i
+
+Nd(n),
+
+which, up to constants, is just our projection-centered counts ˜Y (n). Alternatively, we can express the above equivalence as 
+
+xi
+
+vi
+
+− 1
+
+d
+
+> d
+
+X
+
+> j=1
+
+xj
+
+vj
+
+= yi
+
+vi
+
+− 1
+
+d
+
+> d
+
+X
+
+> j=1
+
+yj
+
+vj
+
+, ∀i ∈ [d],
+
+which shows the projection-centered counts ˜Y (n) center the reweighted counts βiNi(n) by their mean, rather than the long-term average np ∗ as Y (n) does. Now, we show the self-balancing sampler is essentially the only v-invariant sampling rule generated by a potential. 
+
+Proposition 2.1. If πφ is v-invariant, there exists b, c i,k > 0 so 
+
+φi(mv i + k) = ci,k bm, ∀m ∈ N, k ∈ { 0, 1, . . . , v i − 1}.
+
+Moreover, if φi is either log-convex or log-concave, then φi(n) = ciαni where 
+
+log( αi) = log( b)v−1 
+
+> i
+
+.
+
+In the case of translation-invariance, the log-convexity/concavity condition is unnecessary and we recover the self-balancing sampler in the case of uniform βi ≡ β. Note that the sampling function for the self-balancing sampler is v-invariant only in the case the ratios β−1 
+
+> i
+
+/β −1 
+
+> j
+
+are all rational, enforcing a relatively minor constraint on β.In a sense, the projection-centered counts are more natural because they live on a countable space Zd−1. As the self-balancing sampler has strong mean-reversion properties, it is natural to expect the projection-centered counts are positive recurrent, and hence have some stationary distribution. This is indeed the case. 
+
+Lemma 2.2. For βi = cv −1 
+
+> i
+
+, where v ∈ Nd>0 and c > 0, the projected chain 
+
+(vdNi(n) − viNd(n)) d−1
+
+> i=1
+
+with potential φi(n) = pi(0) e−βin as in (2.1) is irreducible and positive recurrent, and thus has a unique stationary distribution η on 
+
+n
+
+(vdni − vind)d−1 
+
+> i=1
+
+: n ∈ Zdo
+
+⊆ Zd−1.
+
+In general, determining the stationary distribution η is challenging, as the chain is non-reversible for d > 2. However, in the special case d = 2, we can calculate η explicitly, which we will do in Lemma 3.3 below. Positive recurrence is just the first manifestation of the sampler’s mean-reversion properties, which we will explore more in the following sections. Unsurprisingly, at stationarity the sampler generates samples according to the target p∗.
+
+Lemma 2.3. Suppose π is v-invariant and the projection-centered chain ˜Y v(n) = vdNi(n) −
+
+viNd(n) has stationary distribution η on Zd−1. If we sample y ∼ η and X | y ∼ π(y), then: 
+
+P(X = i) = vi
+
+P 
+
+> j
+
+vj
+
+= p∗ 
+
+> i
+
+.
+
+72.3 Fast convergence of the empirical distribution for self-balancing sampling 
+
+In this section, we show that for any choice of αi ∈ (0 , 1), the self-balancing sampler converges to the desired limiting distribution at a rate faster than IID sampling, and in fact converges as fast as possible. Below, for functions f, g : N → [0 , ∞) we say f = O(g) if lim sup n→∞ f /g < ∞.Further, we say f = Ω( g) if g = O(f ) and f = Θ( g) if f = O(g) and g = O(f ). Proofs can be found in Appendix B.2. As a preliminary result, we note that the empirical distributions associated to many sequen-tial sampling rules generally converge, which is a consequence of their close relationship with the C´ esaro means of the sampling distributions p(n). However, this relationship is at the scale of O(1 /√n), which is the best one can hope for in general. 
+
+Proposition 2.4. 
+
+E
+
+"
+
+max  
+
+> 1⩽i⩽d
+
+μi(n) − 1
+
+n
+
+> n−1
+
+X
+
+> m=0
+
+pi(m)
+
+#
+
+≲ d
+
+√n .
+
+Moreover, if the projection-centered count process for a sequential sampling rule is irreducible and positive recurrent, then both of these quantities converge almost surely. 
+
+Any empirical distribution sampled on d ⩾ 2 values (each with nonzero probability) con-verges at least as slow as 1 /n , because for any distribution q ∈ ∆d,
+
+∥μn − q∥TV = 12
+
+> d
+
+X
+
+> i=1
+
+Ni
+
+n − qi ⩾ 12n
+
+> d
+
+X
+
+> i=1
+
+min  
+
+> z∈Z
+
+|z − nq i|.
+
+If qi is irrational for some i, then {nq i (mod 1) }∞ 
+
+> n=1
+
+is dense in [0 , 1], so there are infinitely many n such that min z∈Z |z − nq i| ⩾ 1/3, giving an overall lower bound of ∥μn − q∥TV ⩾ 16n for infinitely many n. On the other hand, if all qi are rational with least common denominator m,then for any n not divisible by m, min z∈Z |z − nq i| ⩾ 1/m for some i. Thus, for infinitely many 
+
+n, we get ∥μn − q∥TV ⩾ 12mn .IID sampling converges at the rate Θ(1 /√n) in expectation, as for samples from a distribu-tion q,
+
+E[∥μn − q∥TV ] = 12√n
+
+> d
+
+X
+
+> i=1
+
+E
+
+ Ni − nq i
+
+√n
+
+
+
+,
+
+where each expectation term is Θ(1) by the central limit theorem. However, for our self-balancing sampler, the empirical distribution converges much faster than IID sampling! Theo-rem 2.5 shows that in expectation, the convergence actually matches the fastest possible rate of O(1 /n ), regardless of the choice of αi ∈ (0 , 1)! 
+
+Theorem 2.5 (Average-case convergence rate) . For the self-balancing sampling rule, the em-pirical distribution μ(n) converges at a rate of 1/n :
+
+E∥μ(n) − p∗∥TV = O(1 /n ).
+
+More granularly, for max i βi ⩽ 1,
+
+E∥μ(n) − p∗∥TV ≲
+
+( 1
+
+> n
+
+P  
+
+> i1
+> βi
+
+if p(0) ̸ = p∗,
+
+> 1
+> n
+
+P  
+
+> i1√βi
+
+if p(0) = p∗.where the constant depends only on p(0) , p∗, κ := max i βi  
+
+> min iβi
+
+, and d.
+
+8As one might expect, increasing the bias β tends to decrease the gap between the target sampling law p∗ and the empirical sampling distribution. To see why these two regimes arise, note when p(0) = p∗, the sampling law when Y (0) = 0 is already p∗. Hence it only has to correct the fluctuations about this stationary sampling law. When p(0) ̸ = p∗, the sampling law is p∗ only when Y (n) = ci/β i, so the sampler must additionally correct this initial gap of order 
+
+β−1 
+
+> i
+
+caused by this mismatch. 
+
+Remark 2.6. Theorem 2.5 allows us to analyze time-inhomogeneous scalings β = β(n), as well: scaling β by a constant leaves p∗ unchanged, so if βi(n) = a(n)bi for all i, where an ↓ 0 as 
+
+n → ∞ , then 
+
+E∥μ(n) − p∗∥TV ≲
+
+
+
+> 1
+> n
+
+P  
+
+> i1
+> a(n)
+
+if p(0) ̸ = p∗,
+
+> 1
+> n
+
+P 
+
+> i1
+
+√a(n) if p(0) = p∗.For example, if we take p(0) = p∗ and β(n) = n−γ bi for 0 ⩽ γ ⩽ 1 (so that αi(n) = e−n−γ bi ≈
+
+1 − n−γ bi), we get a sampler with convergence behavior that interpolates between the rates of iid sampling and deterministic sampling: 
+
+E∥μ(n) − p∗∥TV ≲ n−1+ γ/ 2.
+
+The scaling βi(n) = bi/n is also the regime in which the transition probabilities become fixed functions of the empirical occupation measure pi(n) ∝ pi(0) e−biμi(n), bringing the model into the stochastic-approximation scale commonly considered for negatively reinforced urns and self-repellent nonlinear Markov chains. The following shows even in the worst-case, the self-balancing sampler still improves upon the O(n−1/2) convergence rate of IID sampling, staying within distance O(log n/n ) of its target 
+
+p∗ almost surely. 
+
+Theorem 2.7 (Worst-case convergence rate) . For the self-balancing sampling rule, the empirical distribution 
+
+∥μ(n) − p∗∥TV a.s. 
+
+−−→ 0
+
+as n → ∞ . Moreover, almost surely, 
+
+∥μ(n) − p∗∥TV ≲ log nn
+
+> d
+
+X
+
+> i=1
+
+1
+
+βi
+
+∀n ⩾ 1.
+
+Hence, even in the worst-case realization, the empirical distribution converges at a rate of O(log n/n ), which is only a logarithmic factor worse than the optimal O(1 /n ) rate, and drastically improves over the rate of O(1 /√n) for IID sampling. 
+
+2.4 Interpretation as an optimization problem 
+
+Here, we formalize the interpretation of the self-balancing sampler as optimizing the trade-off between the convergence rate of the empirical distribution and its unpredictability at each step. To this end, we show that this sampling rule solves a greedy optimization problem, attempting to maximize both these quantities at every step. Proofs can be found in Appendix B.3. Let H(q) := − Pdi=1 qi log qi denote the Shannon entropy, let H(q, p ) := − Pdi=1 qi log pi
+
+denote the cross-entropy, and let KL( q∥p) := H(q, p ) − H(q) = Pdi=1 qi log qi 
+
+> pi
+
+.
+
+Theorem 2.8. Let L(n) := 12
+
+Pdi=1 (Ni(n) − nd )2 denote the quadratic loss for the empirical counts and D(q) := E[L(n + 1) − L(n) | N (n), q ] denote the one-step increase in L when sampling Xn+1 ∼ q. Then the unique solution to the optimization problem 
+
+arg max 
+
+> q∈∆d
+
+(H(q) − βD (q)) 
+
+is the self-balancing sampling method pi(n) ∝ e−βN i(n), initialized at the uniform distribution. 
+
+9Theorem 2.8 is a special case of the following more general version, which allows the αi (and hence the βi) to be non-constant in i.
+
+Theorem 2.9. Let Lβ (n) := 12
+
+Pdi=1 βi(Ni(n) − np ∗ 
+
+> i
+
+)2 denote the weighted quadratic loss for the empirical counts and Dβ (q) := E[Lβ (n + 1) − Lβ (n) | N (n), q ] denote the one-step increase in 
+
+Lβ when sampling Xn+1 ∼ q. Then the unique solution to the optimization problem 
+
+arg max 
+
+> q∈∆d
+
+(H(q) − H(q, p (0)) − Dβ (q)) = arg min 
+
+> q∈∆d
+
+(KL( q∥p(0)) + Dβ (q)) 
+
+is the 1/2-offset self-balancing sampling method pi(n) ∝ pi(0) e−βi(Ni(n)+1 /2) , initialized at the distribution pi(0) .
+
+The entropy-regularized optimization problem found in Theorem 2.9 appears naturally in the context of optimal control and reinforcement learning. In this setting, such regularization is used to quantify the classical exploration versus exploitation trade-off So et al. [2022], Wang et al. [2020], Haarnoja et al. [2018]. Moreover, as Todorov [2006] observes, such exponential reweighting naturally appears as a result of this entropy penalty. We briefly summarize some of the main results in discrete-time in Section 3.3 below, and show that the self-balancing sampler and the above entropy-regularized optimization problem arise naturally in this framework when you penalize imbalance using mean-squared error. The curious offset of 1 /2 in the counts appears to be an effect of greedy optimization over 
+
+discrete time steps with a quadratic cost. Indeed, βi 
+
+> 2
+
+(( x + 1) 2 − x2) = βix + βi 
+
+> 2
+
+. When all βi
+
+are equal, this factor is absorbed into the normalization of the density. Theorem 2.10 gives an “instantaneous” optimization perspective, which does not include the 1 /2 offset. 
+
+Theorem 2.10. Let Lβ (x) := 12
+
+Pdi=1 βi(xi − np ∗ 
+
+> i
+
+)2 denote the weighted quadratic loss as a function of counts x. Then the unique solution to the optimization problem 
+
+arg min 
+
+> q∈∆d
+
+(⟨∇ Lβ (N (n)) , q ⟩ + KL( q∥p(0))) 
+
+is the self-balancing sampling method pi ∝ pi(0) e−βiNi(n), initialized at the distribution pi(0) .
+
+It is somewhat remarkable that the same sampling rule characterized by a global invariance rule (as in Proposition 2.1) can also be uniquely characterized by a myopic, one-step opti-mization. However, Theorem 2.10 can be viewed as an instance of the usual Gibbs variational principle Donsker and Varadhan [1975]: a linear cost regularized by relative entropy has an exponentially weighted optimizer. The cost assigned to index i is βi(Ni(n) − np ∗ 
+
+> i
+
+), and since 
+
+βip∗ 
+
+> i
+
+is constant in i, the target-centering term does not affect the optimizer after normalization. The resulting policy therefore depends only on the weighted counts βiNi(n). Finally, we provide a third interpretation of the sampler: we observe that the self-balancing sampler implements stochastic mirror descent Nemirovski et al. [2009], minimizing the objective 
+
+ℓβ (x) := 12
+
+Pdi=1 βi(pi − p∗ 
+
+> i
+
+)2. The sampler uses the unbiased stochastic gradient βXn eXn − 
+
+> 1Pdj=1 β−1
+> j
+
+1, where e1, . . . , e d are the standard basis vectors: 
+
+E
+
+
+
+βXn eXn − 1Pdj=1 β−1
+
+> j
+
+1 | p(n)
+
+
+
+=
+
+> d
+
+X
+
+> i=1
+
+βi(pi(n) − p∗ 
+
+> i
+
+)ei = ∇ℓβ (p(n)) .
+
+Theorem 2.11 (Stochastic mirror descent formulation) . Let ℓβ (x) := 12
+
+Pdi=1 βi(pi −p∗ 
+
+> i
+
+)2 denote the weighted quadratic imbalance in the sampling probabilities. Then for fixed h > 0, the unique solution to the optimization problem 
+
+arg min 
+
+> q∈∆d
+
+
+
+h
+
+
+
+βXn eXn − 1Pdj=1 β−1
+
+> j
+
+1, q 
+
+
+
++ KL( q∥p(n)) 
+
+
+
+is the self-balancing sampler pi(n) ∝ pi(0) e−hβ iNi(n).
+
+10 Theorem 2.11 shows that the elementary “downweight the selected coordinate and renor-malize” operation is precisely an entropic mirror-descent step Beck and Teboulle [2003]. In the standard mirror-descent identity, qi(n) ∝ pi(n)e−hg i , where g is a stochastic gradient. In our case, the stochastic gradient is supported only on the sampled coordinate Xn. Hence the mirror-descent update simply downweights the probability of the outcome which was just sampled and then renormalizes. From the usual optimization perspective, the constant step-size h may seem strange, since it generally means that the stochastic mirror descent algorithm may not converge. In our case, this is expected, since the sequence p(n) does not converge. Considering a step size decreasing in n, as in Remark 2.6, can lead to a version of the sampler in which p(n) (and the associated stochastic mirror descent) does converge. The role of entropy here is also slightly different from its usual interpretation in reinforcement learning. There, entropy is often used to encourage exploration while learning an unknown environment Haarnoja et al. [2018]. Here, the environment is known, and the entropy term instead prevents the sampling rule from becoming overly predictable. Thus the corresponding trade-off is between reducing the current imbalance and preserving randomness in the next sample. 
+
+2.5 Expected cover time 
+
+Beyond asymptotic convergence of the empirical distribution, it is also important in applications that the sampler does not neglect any index for too long. A natural way to quantify this is via the cover time, namely the number of steps required before every outcome has been sampled at least once. In audit and inspection settings, this measures how long a team can go entirely untested; in sampling and representation problems, it measures how long a category can remain completely unrepresented in the realized sample. Proofs can be found in Appendix B.4. For deterministic sampling, the number of steps to see all d outcomes is d, and for IID sampling, the expected number of steps to see all the outcomes, known as the “coupon collector problem,” is Θ( d log d). The self-balancing sampler has behavior which interpolates between these two extremes, as we now show. 
+
+Theorem 2.12. Let C := max 1⩽i⩽d min {n ⩾ 1 : Xn = i} be the number of steps until the self-balancing sampler sees every outcome at least once. Then, starting from the initial condition 
+
+pi(0) = 1 /d ,
+
+E[C] = 
+
+> d
+
+X
+
+> i=1
+
+log(1 + βi log d)
+
+βi
+
++ O(d).
+
+For fixed βi, the cover time is Θ( d log log d). Moreover, in the extremal cases β ↑ ∞ and 
+
+β ↓ 0, the self-balancing sampler’s behavior converges to the deterministic and IID behaviors, respectively: lim  
+
+> β↑∞
+
+E[C] = Θ( d), lim  
+
+> β↓0
+
+E[C] = Θ( d log d).
+
+As a result, the self-balancing sampler only marginally increases the expected cover time com-pared to deterministic sampling.  
+
+> 3DIFFUSION APPROXIMATION
+
+In this section, we explore a few different diffusion approximations of our self-balancing sampler, highlighting its mean-reversion and other asymptotic properties. We are primarily interested in the weak-biasing regime where β ↓ 0. Since for fixed β the centered counts process is essentially bounded, this is the natural regime under which a diffusive limit can arise. Our first result shows that in this weak-biasing regime each coordinate is in a sense just a time-changed Ornstein–Uhlenbeck (OU) process. Proofs can be found in Appendix B.5. 11 Proposition 3.1. Fix i ∈ [d] and let ˜Y βi (n) := βiNi(n) − βdNd(n) be the projection-centered version of the self-balancing sampler with the given β. Let: 
+
+τ βk := inf 
+
+n
+
+n > τ βk−1 : ˜Y βi (n)̸ = ˜Y βi (τ βk−1)
+
+o
+
+, τ β 
+
+> 0
+
+= 0 .
+
+For h > 0, define the continuous-time chain: 
+
+Zht := h−1/2  ˜Y hβ i (τ βh 
+
+> ⌊t/h ⌋
+
+) − cβ
+
+
+
+, cβ := log 
+
+ pi(0) 
+
+pd(0) 
+
+
+
+− log 
+
+ p∗
+
+> i
+
+p∗
+
+> d
+
+
+
+.
+
+If Zh 
+
+> 0
+
+→ z0, then we have Zht ⇒ Zt as h ↓ 0 where Zt is the diffusion 
+
+dZ t = − βiβd
+
+βi + βd
+
+Ztdt + pβiβd · dW t, Z0 = z0.
+
+Here Wt denotes a standard 1-dimensional Brownian motion and ⇒ denotes convergence in the Skorokhod space D([0 , T ], R) for any T < ∞.
+
+In the uniform case βi ≡ β, the diffusion simplifies to 
+
+dZ t = − β
+
+2 Ztdt + βdW t,
+
+a simple OU process. The OU process is well-known for its strong mean-reversion properties, so in a sense it is unsurprising it appears as a limit of our discrete self-balancing sampler. The correction cβ shifts the starting point of ˜Y (n) to the location where it has zero drift and where the sampling law p(n) agrees with the stationary law p∗. In a sense, cβ represents a penalty we pay for starting our process away from stationarity. As we saw in Theorem 2.5, this penalty has a strong impact on leading-order constants of the convergence rate. We develop an analogous diffusion-approximation for the mean-centered counts, this time without needing a time-change. Here, the interaction between the different coordinates becomes visible, and again the process exhibits mean-reversion. 
+
+Proposition 3.2. Let M β (n) := ( βi[Ni(n) − np ∗ 
+
+> i
+
+]) di=1 be the (weighted) mean-centered version of the self-balancing sampler with the given β. For h > 0, define the continuous-time chain: 
+
+Zht := h−1/2 
+
+M hβ (⌊t/h ⌋) − cβ
+
+
+
+, (cβ )i := log 
+
+ pi(0) 
+
+p∗
+
+> i
+
+
+
++ KL( p∗ | p(0)) .
+
+If Zh 
+
+> 0
+
+→ z0, then Zht ⇒ Zt as h ↓ 0 where Zt is the diffusion: 
+
+dZ t = − 1
+
+Sβ
+
+Ztdt + Σ 1/2dWt, Z0 = z0,
+
+for Sβ = P 
+
+> j
+
+β−1 
+
+> j
+
+and Σ = S−1 
+
+> β
+
+diag( β) − S−2 
+
+> β
+
+11 T . Here Wt denotes a d-dimensional standard Brownian motion. 
+
+As a consequence of the centering, this diffusion is constrained to the hyperplane 
+
+{z : ⟨z, p ∗⟩ = 0 }.
+
+Again, the situation simplifies considerably in the uniform βi ≡ β case. 
+
+dZ t = − βd Ztdt + βd (dI d − 11 T )1/2dW t.
+
+The centering cβ in Proposition 3.2 satisfies 
+
+⟨cβ , p (0) ⟩ = KL( p(0) | p∗) + KL( p∗ | p(0)) , (3.1) the symmetrized KL divergence. Hence again cβ is a measure of the typical discrepancy between the initial sampling law p(0) and the stationary sampling law p∗.12 3.1 Interpreting Diffusive Limits 
+
+Using our diffusion limits, we can study how our two centered-counts processes behave in this weak-biasing regime. This section is non-rigorous and mainly serves to provide some evidence the upper bounds appearing in Theorem 2.5 are in a sense tight. We start with the projection-centered case. Moreover, by studying the process’s autocorrelation we aim to provide an alter-native measure of its predictability in contrast to the adversarial notion discussed in Section 3.2. Below, we will rely on some basic facts about OU processes, details of which can be found in Section 6.5 of Risken [1996]. Recall the one-dimensional OU process 
+
+dZ t = −θZ tdt + σdW t, Z0 = z0,
+
+has stationary distribution N (0 , σ 2/2θ) and autocorrelation Corr( Zt, Z t+s) = e−θs .
+
+For small β, where sampling is close to uniform, the waiting times τ βk − τ βk−1 ≈ Geo(2 /d ), so we wait roughly time d/ 2 between samples. Hence using Proposition 3.1, we heuristically see that in the uniform β case the (time-changed) projection-centered counts are well-approximated by: 
+
+Ni(n) − Nd(n) ≈ Z2nh/d 
+
+β√h .
+
+which is an OU process with stationary distribution N (0 , (βh )−1). At stationarity: Corr( Ni(n + k) − Nd(n + k), N i(n) − Nd(n)) ≈ exp 
+
+
+
+− βhk d
+
+
+
+.
+
+Since βh was just our rescaled bias, this essentially says in the small β regime at stationarity the process’s auto-correlations decay exponentially at rate O(β). Since p∗(β) = p∗(cβ ) for any 
+
+c > 0, scaling β has no effect on the limiting distribution. For the mean-centered counts, the story is similar. Specifically, for arbitrary d × d matrices Θ, Σ the d−dimensional OU process 
+
+dZ t = −ΘZtdt + Σ dW t,
+
+has stationary distribution N (0 , ω ) for ω solving the Lyapunov equation Θω + ωΘT = ΣΣ T .
+
+Moreover, stationary covariance is Cov( Zt+s, Z t) = e−Θsω
+
+In the context of Proposition 3.2, it is easy to see Θ = S−1 
+
+> β
+
+Id and 
+
+ω = 12 [Dβ − S−1 
+
+> β
+
+11 T ] = 12 Dβ [Id − p∗1T ],
+
+for Dβ = diag( βi). Thus, Proposition 3.2 implies 
+
+N (n) − np ∗ ≈ D−1
+
+> β
+
+ cβ
+
+h + Znh 
+
+√h
+
+
+
+∼ N D−1 
+
+> β
+
+cβ
+
+h , D−1 
+
+> β
+
+ωD −1
+
+> β
+
+h
+
+!
+
+.
+
+At stationarity, for any nonzero a ∈ Rd we have autocorrelation Corr( aT (N (n + k) − (n + k)p∗), a T (N (n) − np ∗)) = e−kh/S β ,
+
+13 Hence the auto-correlation decay rate is O(β). Note 
+
+E|| μn − p∗|| T V = 12n
+
+X
+
+> i
+
+|Ni(n) − np ∗ 
+
+> i
+
+| = E|| Y (n)|| 
+
+2n .
+
+Using the above stationary distribution, our diffusion approximation suggests 
+
+E|| μn − p∗|| T V ≈ 12n
+
+> d
+
+X
+
+> i=1
+
+E N
+
+ (cβ )i
+
+βih , 1 − p∗
+
+> i
+
+2βih
+
+ !
+
+.
+
+Hence, the mean of a folded-normal 
+
+E|N (μ, σ 2)| = σ
+
+r 2
+
+π exp 
+
+
+
+− μ2
+
+2σ2
+
+
+
++ μ
+
+h
+
+1 − 2Φ 
+
+
+
+− μσ
+
+i 
+
+,
+
+suggests there are two regimes: 
+
+E|| μn − p∗|| T V ≈
+
+
+
+O
+
+ dn√βh 
+
+
+
+cβ = 0 ,O
+
+ 1
+
+> nh
+
+P |(cβ )i|
+
+> βi
+
+
+
+cβ̸ = 0 .
+
+Since cβ = 0 if and only if p(0) = p∗, we recover the same leading order constants appearing in the upper bound Theorem 2.5. This suggests these constants are indeed tight, and we supplement this with further empirical evidence in Appendix A. 
+
+3.2 Adversarial Interpretation of Predictability 
+
+In order to develop a notion of how “predictable” such a sampler is, consider the case where an adversary attempts to guess the next sample given the current sample history. Then one way of quantifying the predictability of the sampler is to study how accurate such an adversary can be if they behave optimally. In this section, we formalize this idea. Proofs can be found in Appendix B.6. Predictability criteria of this form have been studied extensively for restricted randomization designs, where selection bias is commonly measured by the probability that an observer can correctly guess the next treatment assignment Efron [1971], Smith [1984], Atkinson [2002]. Using our diffusive limits, we show if β is small that the predictability is of the order max i p∗ 
+
+> i
+
++ O(√β)when p∗ does not have a unique maximizer. When it does, the predictability is roughly of order max i p∗ 
+
+> i
+
++ O  exp( −β−1). Clearly, since the sampler exponentially favors under-sampled indices, the best strategy for the adversary is to just guess the most under-sampled index. Under this strategy, we define the adversary’s asymptotic error-rate as 
+
+Eβ := lim sup 
+
+> n→∞
+
+1
+
+n
+
+> n−1
+
+X
+
+> k=0
+
+P Xk+1 ̸ = arg max 
+
+> i∈[d]
+
+pi(N (k)) 
+
+!
+
+= 1 − lim inf 
+
+> n→∞
+
+1
+
+n
+
+> n−1
+
+X
+
+> k=0
+
+Ey∼ ˜Y (k)
+
+
+
+max  
+
+> i∈[d]
+
+pi(y)
+
+
+
+where ˜Y (k) denote our projection-centered counts. Lemma 2.2 shows these centered counts form an ergodic Markov chain, so it has a stationary distribution η. Moreover, the ergodic theorem implies the finite-sample error-rate ought to converge to the expected error-rate at stationarity: 
+
+Eβ = 1 − Ey∼η
+
+
+
+max  
+
+> i∈[d]
+
+pi(y)
+
+
+
+.
+
+In general, it is hard to determine what the stationary distribution of the projection-centered counts ˜Y is. However, in the special case of d = 2, then ˜Y becomes a simple birth-death process on Z which makes this a lot more tractable. 14 Lemma 3.3. When d = 2 and uniform β1 = β2 = β > 0, the projection-centered counts ˜Y (n)
+
+form a reversible Markov chain on βZ with stationary distribution: 
+
+η(βz ) ∝ p2(0) + p1(0) e−βz 
+
+p1(0) + p2(0) 
+
+ p1(0) 
+
+p2(0) 
+
+z
+
+e−β(z
+
+> 2
+
+)In the case p1(0) = p2(0) = 12 , we get the symmetric and especially simple form: 
+
+η(βz ) ∝ cosh 
+
+ βz 
+
+2
+
+
+
+e− βz 22 .
+
+In the d = 2 case, we can quantify how this error-rate depends on β in the weak-biasing regime. 
+
+Lemma 3.4. When d = 2 and uniform β, as β ↓ 0 we have: 
+
+Eβ = 12 − Θ( pβ).
+
+More precise constants can be found in Appendix B. Even when d = 2, if β is non-uniform we lose this simple birth-death structure. Instead, to analyze the general β case we rely on our diffusive limits. Again, the following section is non-rigorous, but aims to add some heuristic evidence for why this Θ( √β) rate appears. We saw in Section 3 that in the weak-biasing regime the weighted mean-centered counts are approximated at stationarity by 
+
+M β (n) = Dβ [N (n) − np ∗] ≈ cβ + √hZ, Z ∼ N (0 , ω ),
+
+where ω is the stationary covariance from Section 3. Since 
+
+pi(M ) = pi(0) e−Mi
+
+Pdj=1 pj (0) e−Mj
+
+, p(cβ ) = p∗,
+
+this suggests 
+
+E
+
+
+
+max  
+
+> i
+
+pi(n)
+
+
+
+≈ E
+
+
+
+max  
+
+> i
+
+pi(cβ + √hZ )
+
+
+
+.
+
+Let Jβ denote the Jacobian of the softmax map at cβ . A direct calculation gives 
+
+Jβ = − diag( p∗) − p∗(p∗)T  ,
+
+and hence the first-order Taylor expansion yields 
+
+p(cβ + √hZ ) = p∗ + √hJ β Z + O(h).
+
+so heuristically 
+
+E
+
+
+
+max  
+
+> i
+
+pi(n)
+
+
+
+≈ E
+
+
+
+max 
+
+> i
+
+
+
+p∗ 
+
+> i
+
++ √hG i
+
+
+
+, G = Jβ Z ∼ N (0 , J β ωJ Tβ ).
+
+If the maximizer of p∗ (equivalently minimizer of β) is unique, then the max function is differ-entiable at p∗, and since E[G] = 0 the first-order correction vanishes: 
+
+E
+
+
+
+max  
+
+> i
+
+pi(n)
+
+
+
+= max  
+
+> i
+
+p∗ 
+
+> i
+
++ O(h).
+
+15 In contrast, if several coordinates tie for the maximum of p∗, then the max is no longer differ-entiable and the first-order Gaussian fluctuation contributes. Writing I∗ = {i : p∗ 
+
+> i
+
+= max j p∗ 
+
+> j
+
+}
+
+for the set of maximizers, a first-order expansion gives 
+
+E
+
+
+
+max  
+
+> i
+
+pi(n)
+
+
+
+= max  
+
+> i
+
+p∗ 
+
+> i
+
++ √h E
+
+
+
+max  
+
+> i∈I∗
+
+Gi
+
+
+
++ O(h).
+
+Using the fact ⟨Z, p ∗⟩ = 0, we see: 
+
+G = −diag( p∗)Z d
+
+= −diag( p∗)( W − ⟨ W, p ∗⟩1) for W ∼ N (0 , D β /2). Hence as the second term is constant on I∗ and mean-zero 
+
+E
+
+
+
+max  
+
+> i
+
+pi(n)
+
+
+
+− max  
+
+> i
+
+p∗ 
+
+> i
+
+=
+
+s h
+
+2βmin S2
+
+> β
+
+· E max  
+
+> i⩽|I∗|
+
+Bi + O(h) ⩽
+
+s
+
+h log |I∗|
+
+βmin S2
+
+> β
+
++ O(h).
+
+for Bi iid 
+
+∼ N (0 , 1). The second approximation comes from classical asymptotics for the maximum of iid Gaussians, and is approximately tight when |I∗| is large. Hence 
+
+Eβ ≈ 1 − max  
+
+> i
+
+p∗ 
+
+> i
+
+−
+
+s
+
+h log |I∗|
+
+βmin S2
+
+> β
+
++ O(h).
+
+In the uniform β case, this becomes 
+
+Eβ ≈ 1 − 1
+
+d −√βh log dd + O(h)Again, this is reasonable when d is large. Thus, the diffusion limit suggests in the weak-biasing regime, the predictability of the sampler is governed primarily by the maximum of p∗, and by the number of coordinates sharing this maximum value. Increasing either increases the predictability of the sampler. Moreover, for fixed p∗, it shows this predictability grows at rate Θ( β1/2) as β ↓ 0, which matches the d = 2 case from Lemma 3.4. Somewhat interestingly, predictability can increase when several coordinates share the mini-mal value of βi, since the adversary can exploit the largest realized fluctuation among these tied coordinates. Lastly, we briefly return to the case where p∗ has a unique maximizer. Suppose 
+
+m := arg max i p∗ 
+
+> i
+
+and let ∆∗ := p∗ 
+
+> m
+
+− max   
+
+> j̸=m
+
+p∗ 
+
+> i
+
+> 0,
+
+be the gap between the two most likely outcomes. Then we see m̸ = arg max p(cβ + √hZ )essentially only when some coordinate Zi = O(∆ ∗/√h) experiences a large deviation. Roughly, using P(N (0 , 1) > t ) ≍ t−1e−t2/2, this has probability O(( ch )−1/2 · e−1/2ch ) exponentially small in c−1. Hence in the case of a unique maximizer, when c is small we are exponentially close to the naive baseline p∗
+
+> max
+
+.
+
+3.3 Optimal Control 
+
+In this section, we briefly review some basic optimal control theory, and discuss how Theorem 2.9 fits into the entropy-regularized optimal control framework. Suppose we have some discrete time dynamical system on some state space S:
+
+xt+1 = b(xt, u t), xt ∈ S, u t ∈ U
+
+16 where ut is the input of some controller and U is the set of all allowable controls. In classical control theory, we have some loss function ℓ(x, u ) and we wish to minimize the cumulative (discounted) loss over the entire trajectory ( xt)t∈N. Namely we aim to solve 
+
+V (x) := inf 
+
+> (ut)
+
+" ∞X
+
+> s=1
+
+γs · ℓ(xus , u s)
+
+#
+
+,
+
+for some discount γ ∈ (0 , 1) and where x0 = x is the initial state of the system. Here ( xut ) is the trajectory of the process when control sequence ( ut) is applied. The value function V and optimal control ( u∗ 
+
+> t
+
+) can be determined using the standard Bellman equation: 
+
+V (x) = inf  
+
+> u∈U
+
+{ℓ(x, u ) + γV (b(x, u )) } .
+
+If we let Qγ (x, u ) := ℓ(x, u )+ γV (b(x, u )) then we see the optimal policy u∗ and its corresponding value function V satisfy 
+
+u∗(x) = arg min  
+
+> u∈U
+
+Qγ (x, u ), V (x) = Qγ (x, u ∗(x)) . (3.2) We can generalize the above by allowing the control policy to select its control ut at random, possibly depending on the current state. This paradigm is useful in the following settings: (i) Adversarial or Strategic Environments : In some settings, predictability can be exploited by an adversary or the environment. Entropy regularization encourages policies that remain sufficiently randomized, thereby mitigating worst-case or strategic responses to deterministic behavior Husain et al. [2021]. (ii) Exploration Versus Exploitation : In reinforcement learning, we often want to encourage the agent to explore the state space in order to learn about the environment and the corresponding reward process. Randomized policies explicitly encode this exploration into the objective function. (iii) Robustness and Regularization : Entropy regularization acts as a convex regularizer on the control problem, smoothing the optimization landscape and preventing degenerate (overly deterministic) solutions. This can significantly improve stability and sample efficiency in practice Haarnoja et al. [2018]. (iv) Information Constraints / Bounded Rationality : Entropy regularization can also be inter-preted as penalizing deviations from a reference policy via a Kullback–Leibler divergence. In this view, the controller faces a cost for using highly concentrated policies, reflecting limited information-processing capacity or a preference for staying close to a prior behavior (Ortega et al. [2015]). Let U denote the set of available controls. Suppose there is some deterministic function 
+
+π(· | x) : S → P (U ) which maps the state-space S into the set P(U ) of probability distributions on the set of controls. Define dynamics 
+
+Xt+1 | Xt ∼ b(Xt, U t), P(Ut ∈ · | { Xi}i⩽t, {Ui}i<t ) = π(· | Xt), X0 = x0.
+
+Namely, at time t our state Xt determines a distribution π(· | Xt) over the set of controls, and conditional on Xt we sample a new control independently from this distribution. This generalizes the Markovian sampler we discuss above. We then force a trade-off between the entropy of the control and the accrued loss: 
+
+V (x0) := inf  
+
+> (π)
+
+E
+
+" ∞X
+
+> s=0
+
+γs · (ℓ(Xus , U s) − τ H (π(· | Xs))) 
+
+#
+
+,
+
+17 In this case, Bellman’s equation gives: 
+
+V (x) = inf  
+
+> μ∈P (U)
+
+Z 
+
+> U
+
+[Qγ (x, u ) + τ log( μ(u))] μ(du )
+
+
+
+.
+
+This can be optimized to find the optimal policy π pointwise, as well as the value function. In the case U is finite, these solutions can be expressed implicitly as 
+
+π∗(u | x) ∝ exp 
+
+
+
+− Qγ (x, u )
+
+τ
+
+
+
+, V (x) = −τ log X
+
+> u∈U
+
+exp 
+
+
+
+− Qγ (x, u )
+
+τ
+
+!
+
+. (3.3) As we can see, the optimal policy is naturally a soft-min / Gibbs distribution with Hamiltonian 
+
+−Qγ (x, ·)/τ , and the value function is essentially the log-partition function of this distribution. Note how entropy-regularization essentially smooths out the strict minimization problem that occurs in equation (3.3). While equations (3.3) only implicitly define the optimal policy, for certain choices of dynamics and loss functions we can be more explicit. Suppose we have some potential Φ : S → R and we define loss: 
+
+ℓ(x, u ) := Φ( x) + τ log X
+
+> v∈U
+
+exp 
+
+
+
+− γτ · Φ( b(x, v )) 
+
+
+
+,
+
+which is independent of u. Note that the second term is a simple soft-minimum. That is, we penalize spending time in states x that have high-potential Φ( x) and that do not have neighboring low-potential states. In this setting: 
+
+π∗(u | x) ∝ exp 
+
+
+
+− γ(Φ( b(x, u )) − Φ( x)) 
+
+τ
+
+
+
+, V (x) = Φ( x).
+
+The self-balancing sampler fits nicely into this framework. If we choose state-space S = Nd,controls u ∈ [d], dynamics b(x, u ) = x + δu, and potential Φ( x) = 12 || x|| 2 then we have 
+
+π∗(u|x) ∝ e−γx u/τ . Hence we recover optimization problem Theorem 2.8, the uniform βi ≡ β
+
+case. Analogously, if we instead choose Φ( x) = 12
+
+P 
+
+> i
+
+βi(xi − np ∗ 
+
+> i
+
+)2 we recover optimization problem 2.9. The former gives us another way of interpreting the role of β in the self-balancing sampler: 
+
+β = γ/τ measures the trade-off between minimizing future imbalance through the value term 
+
+Qγ and maintaining randomness in the sampling policy via entropy-regularization. Alternatively, if we choose a linear loss ℓ(x, u ) = βuxu, and myopic discounting γ = 0, we see the policy π∗(u | x) ∝ exp( −βuxu) is the minimizer of: 
+
+V (x) := inf 
+
+> π
+
+( dX
+
+> i=1
+
+[π(i|x)βixi] − H(π(· | x)) 
+
+)
+
+,
+
+Hence the self-balancing sampler can be viewed as an entropy-regularized greedy mechanism that favors actions having smaller weighted current counts βixi, analogous to Theorem 2.10. We showed above that the self-balancing sampler converges at rate O(n−1) on average. The theory of entropy-regularized optimal control provides us a convenient framework for extending these ideas to a broader class of samplers. The following shows as long as under-sampled indices are at least exponentially favored, we get the same convergence rate. 
+
+Proposition 3.5. Suppose we have sampler πi(x) ∝ ai exp( −Hi(x)) so that for P = I − p∗1T
+
+then π(x) = π(x′) whenever P x = P x ′. Moreover, suppose there are constants c, C > 0 so for all y with P yi = 0 and yj ⩽ yi we have: 
+
+Hi(y) − Hj (y) ⩾ c(yi − yj ) − C. 
+
+18 Then if μn is the empirical distribution associated to sampler π, we have: 
+
+E|| μn − p∗|| T V ⩽ O(n−1).
+
+As in the previous sections, p∗ plays the role of the limiting distribution. Our assumptions on 
+
+π simply state that it is a function of the mean-centered counts alone, and the proper centering 
+
+p∗ determines the limiting distribution. If we have a sampler generated by potential Φ as above, then the assumptions of Theorem 3.5 reduce to the constraints: Φ( x + δi) − Φ( x) = Φ( P x + δi) − Φ( P x ) + κ, 
+
+Φ( x + δi) − Φ( x + δj ) ⩾ c(( P x )i − (P x )j ) − C, 
+
+for some κ independent of x, i . The self-balancing sampler is the special case Hi(y) = βiyi which is globally linear and arises from potential Φ( x) = 12 || x|| 2. 
+
+> 4CONCLUDING REMARKS
+
+We introduced a family of self-balancing sequential samplers that adaptively downweight pre-viously sampled outcomes. The resulting process interpolates between IID sampling, which is maximally random but poorly balanced, and deterministic sampling, which is optimally bal-anced but perfectly predictable. Despite retaining randomness at every step, the self-balancing sampler achieves empirical convergence at the deterministic scale O(n−1) in expectation and 
+
+O(log n/n ) almost surely. A central theme of the paper is that this sampler is not merely a heuristic. It arises naturally from an invariance principle for potential-based Markovian samplers, is the unique solution to a one-step entropy-regularized imbalance minimization problem, implements a stochastic mirror descent on the space of next-step sampling distributions, and shows up informally in actual policy decisions. Together, these perspectives give complementary evidence that such exponential sampling rules arise naturally. The weak-biasing regime makes the convergence–predictability tradeoff explicit. As the bias parameter decreases, the centered counts fluctuate on a larger scale and mix more slowly, preserving more unpredictability. As the bias parameter increases, the process becomes more tightly mean-reverting, improving balance but making the next sample easier to predict. The diffusion approximation quantifies this tradeoff and shows that the geometry of the target law matters: tied maximizers of p∗ produce first-order Gaussian corrections to predictability, while unique maximizers with fixed gaps only contribute through rare crossing events. Several extensions remain open. One natural direction is to replace categorical balance with covariate balance, sampling units according to their contribution to a cumulative covariate imbalance. Namely, suppose each unit i ∈ [d] has some covariate vector vi assigned to it. If we have samples X1, ..., X n ∈ [d] define the cumulative (centered) covariate vector as: 
+
+Sn := 
+
+> n
+
+X
+
+> i=1
+
+vXi − n¯v, ¯v := 1
+
+d
+
+> d
+
+X
+
+> i=1
+
+vi.
+
+We can then generalize our self-balancing sampler so that index i is sampled with probability: 
+
+pi(n) ∝ exp 
+
+− X
+
+> j
+
+βj vij (Sn)j
+
+ .
+
+19 When vi = ei are the standard basis vectors, this recovers our original self-balancing sampler. This provides a sequential analog to the Gram-Schmidt walk of Bansal et al. [2019], which in the context of Harshaw et al. [2024] provides the key tool for balancing covariates across treatment groups in randomized controlled trials. Another is to study risk-weighted or nonstationary versions of the sampler, where the target distribution changes over time or depends on observed outcomes. Such extensions would bring the model closer to applications in inspections, audits, randomized experiments, and other settings where one seeks to balance coverage, responsiveness, and resistance to prediction. For instance, in both our health-inspections and anti-doping examples, follow-up inspections are scheduled more frequently for those performing poorly on the initial inspection. Overall, we have shown that self-balancing exponential sampling rules provide a simple yet principled framework for designing sequential randomized procedures that balance coverage, unpredictability, and long-run empirical stability. 
+
+Acknowledgements. The authors gratefully acknowledge Sinho Chewi, Steven Evans, and Robin Pemantle for many helpful comments. Daniel Raban acknowledges financial support from Sandia National Laboratories, a U.S. Department of Energy multimission laboratory. 20 REFERENCES 
+
+Alessandro Baldi Antognini and Alessandra Giovagnoli. A new ‘biased coin design’ for the se-quential allocation of two treatments. Journal of the Royal Statistical Society: Series C (Ap-plied Statistics) , 53(4):651–664, 2004. doi: https://doi.org/10.1111/j.1467-9876.2004.00436. x. URL https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-9876.2004. 00436.x .Anthony C. Atkinson. The comparison of designs for sequential clinical trials with covari-ate information. Journal of the Royal Statistical Society: Series A (Statistics in Soci-ety) , 165(2):349–373, 2002. doi: https://doi.org/10.1111/1467-985X.00564. URL https: //rss.onlinelibrary.wiley.com/doi/abs/10.1111/1467-985X.00564 .Antar Bandyopadhyay and Gursharn Kaur. Linear de-preferential urn models. Advances in Applied Probability , 50(4):1176–1192, 2018. doi: 10.1017/apr.2018.55. Nikhil Bansal, Daniel Dadush, Shashwat Garg, and Shachar Lovett. The Gram–Schmidt walk: A cure for the Banaszczyk blues. Theory of Computing , 15(21):1–27, 2019. doi: 10.4086/toc. 2019.v015a021. Amir Beck and Marc Teboulle. Mirror descent and nonlinear projected subgradient methods for convex optimization. Operations Research Letters , 31(3):167–175, 2003. ISSN 0167-6377. doi: https://doi.org/10.1016/S0167-6377(02)00231-6. URL https://www.sciencedirect. com/science/article/pii/S0167637702002316 .U. Buchholz, G. Run, J. L. Kool, J. Fielding, and L. Mascola. A risk-based restaurant inspection system in los angeles county. Journal of Food Protection , 65(2):367–372, 2002. doi: 10.4315/ 0362-028X-65.2.367. M. D. Donsker and S. R. S. Varadhan. Asymptotic evaluation of certain markov process ex-pectations for large time, i. Communications on Pure and Applied Mathematics , 28(1):1–47, 1975. doi: https://doi.org/10.1002/cpa.3160280102. URL https://onlinelibrary.wiley. com/doi/abs/10.1002/cpa.3160280102 .Vishwaraj Doshi, Jie Hu, and Do Young Eun. Self-repellent random walks on general graphs – achieving minimal sampling variance via nonlinear markov chains, 2024. URL https: //arxiv.org/abs/2305.05097 .Richard Durrett. Stochastic Calculus: A Practical Introduction . Probability and Stochastics Series. CRC Press, Boca Raton, FL, 1996. ISBN 0-8493-8071-5. Bradley Efron. Forcing a sequential experiment to be balanced. Biometrika , 58(3):403–417, 1971. ISSN 00063444, 14643510. URL http://www.jstor.org/stable/2334377 .Bailey Flanigan, Paul G¨ olz, Anupam Gupta, Brett Hennig, and Ariel D. Procaccia. Fair algorithms for selecting citizens’ assemblies. Nature , 596:548–552, 2021. doi: 10.1038/ s41586-021-03788-6. Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, and Sergey Levine. Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor, 2018. URL 
+
+https://arxiv.org/abs/1801.01290 .Christopher Harshaw, Fredrik S¨ avje, Daniel A. Spielman, and Peng Zhang. Balancing covariates in randomized experiments with the gram–schmidt walk design. Journal of the American Statistical Association , 119(548):2934–2946, 2024. doi: 10.1080/01621459.2023.2285474. URL 
+
+https://doi.org/10.1080/01621459.2023.2285474 .21 Hisham Husain, Kamil Ciosek, and Ryota Tomioka. Regularized policies are reward robust. In Proceedings of the 24th International Conference on Artificial Intelligence and Statistics ,volume 130 of Proceedings of Machine Learning Research , pages 64–72, 2021. Gursharn Kaur. Negatively reinforced balanced urn schemes. Advances in Applied Mathematics ,105:48–82, 2019. Fredrik Lauritzen and Geir Holden. Intelligence-based doping control planning improves test-ing effectiveness: Perspectives from a national anti-doping organisation. Drug Testing and Analysis , 15(5):506–515, 2023. doi: https://doi.org/10.1002/dta.3435. URL https: //analyticalsciencejournals.onlinelibrary.wiley.com/doi/abs/10.1002/dta.3435 .Tigran Markaryan and William F. Rosenberger. Exact properties of Efron’s biased coin random-ization procedure. The Annals of Statistics , 38(3):1546 – 1567, 2010. doi: 10.1214/09-AOS758. URL https://doi.org/10.1214/09-AOS758 .Sean P. Meyn and Richard L. Tweedie. Markov Chains and Stochastic Stability . Cambridge University Press, 2 edition, 2009. A. Nemirovski, A. Juditsky, G. Lan, and A. Shapiro. Robust stochastic approximation approach to stochastic programming. SIAM Journal on Optimization , 19(4):1574–1609, 2009. doi: 10.1137/070704277. URL https://doi.org/10.1137/070704277 .Pedro A. Ortega, Daniel A. Braun, Justin Dyer, Kee-Eung Kim, and Naftali Tishby. Information-theoretic bounded rationality, 2015. URL https://arxiv.org/abs/1512. 06789 .Robin Pemantle and Jeffrey S. Rosenthal. Moment conditions for a sequence with negative drift to be uniformly bounded in Lr. Stochastic Processes and their Applications , 82(1):143–155, 1999. doi: 10.1016/S0304-4149(99)00003-6. S. J. Pocock and R. Simon. Sequential treatment assignment with balancing for prognostic factors in the controlled clinical trial. Biometrics , 31(1):103–115, 1975. Hannes Risken. The Fokker–Planck Equation: Methods of Solution and Applications , volume 18 of Springer Series in Synergetics . Springer, Berlin, Heidelberg, 2 edition, 1996. ISBN 978-3-540-61530-9. doi: 10.1007/978-3-642-61544-3. Rafael A. Rosales, Fernando P.A. Prado, and Benito Pires. Vertex reinforced random walks with exponential interaction on complete graphs. Stochastic Processes and their Applications ,148:353–379, 2022. ISSN 0304-4149. doi: https://doi.org/10.1016/j.spa.2022.03.007. URL 
+
+https://www.sciencedirect.com/science/article/pii/S0304414922000631 .Richard L. Smith. Sequential treatment allocation using biased coin designs. Journal of the Royal Statistical Society. Series B (Methodological) , 46(3):519–543, 1984. ISSN 00359246. URL http://www.jstor.org/stable/2345691 .Oswin So, Ziyi Wang, and Evangelos A. Theodorou. Maximum entropy differential dynamic programming, 2022. URL https://arxiv.org/abs/2110.06451 .Emanuel Todorov. Linearly-solvable markov decision problems. In B. Sch¨ olkopf, J. Platt, and T. Hoffman, editors, Advances in Neural Information Processing Systems , volume 19. MIT Press, 2006. URL https://proceedings.neurips.cc/paper_files/paper/2006/file/ d806ca13ca3449af72a1ea5aedbed26a-Paper.pdf .Haoran Wang, Thaleia Zariphopoulou, and Xun Yu Zhou. Reinforcement learning in continuous time and space: A stochastic control approach. Journal of Machine Learning Research , 21 (198):1–34, 2020. 22 A EMPIRICAL RESULTS 
+
+In this section, we provide some additional empirical evidence for some of the β scalings we de-veloped heuristically in Section 3 above. Simulation code can be found in the GitHub repository self balancing sampler. In the first few sections, we study the behavior of the self-balancing sampler under two differ-ent unit-norm choices of β when d = 4: the uniform β and the non-uniform β ∝ [1 .1, 0.8, 0.9, 1.2], the latter of which also has a unique maximizer of p∗(β). In the last section, we give an example of how the self-balancing sampler can be applied to the citizen’s assembly problem, and analyze its behavior in this setting. 
+
+A.1 Convergence Rate 
+
+For dn := E|| μn − p∗|| T V , Theorem 2.5 and the preceding remarks imply lim sup 
+
+> m⩾n
+
+md m = C(β).
+
+The goal of this section is to determine how the bias parameter β influences the coefficient of the leading O(n−1) term. Theorem 2.5 and our heuristic analysis in Section 3 suggests 
+
+C(cβ ) = 
+
+(
+
+Θ( c−1/2) p(0) = p∗,
+
+Θ( c−1) p(0) ̸ = p∗.
+
+We provide empirical evidence these are the correct scalings. To do so, we generate estimates ˆdn by simulating M trajectories of the self-balancing sampler and taking the empirical average ˆdN = 1
+
+M
+
+> M
+
+X
+
+> i=1
+
+|| μ(i) 
+
+> N
+
+− p∗|| T V ,
+
+for some large N . From here, we estimate ˆC(β) = N ˆdN .
+
+To get a sense of how this constant varies with β, we fix some unit-norm β and study how C(cβ )varies as we vary the scaling c > 0. Since p∗(β) = p∗(cβ ) for any c > 0, all these samplers have the same limiting distribution. For our simulation, we chose M = 1000 and N = 10000. The latter was chosen large enough so N || μN − p∗|| T V approximately stabilizes across the range of c values tested. The results are displayed in Figure 2. Empirically, this supports the Θ( c−1) and Θ( c−1/2) scalings our analysis suggests, at least in the small β regime. 
+
+A.2 Predictability 
+
+In this section, we explore how the parameter β affects the predictability of the sampler, as described in Section 3.2. There, we showed that the key factor was whether or not p∗ has a unique maximizer. If it does not, then the predictability scales like Θ( √β) above the naive baseline p∗ 
+
+> max
+
+of IID sampling. If the maximizer is unique, we saw this first order correction vanishes, and the gap is exponentially small. We compare it to our two naive baselines: IID sampling and deterministic sampling. In IID sampling, the adversary will clearly always predict the index i which maximizes p∗ 
+
+> i
+
+,and hence its long-term accuracy will be p∗
+
+> max
+
+. In greedy sampling, we can make the sampler a bit more unpredictable by sampling the next index uniformly from arg max i pi(n), rather than just the purely deterministically. In the uniform β case, this gives an accuracy of approximate  
+
+> log( d)
+> d
+
+, compared to the d−1 of IID sampling. In the non-uniform β case, we estimate the error 23 (a) p(0) = p∗ (b) p(0) ̸ = p∗
+
+Figure 2: Log-log plots of N d N as a function of the scaling factor c for (a) uniform β =[0 .5, 0.5, 0.5, 0.5] and (b) non-uniform β ∝ [1 .1, 0.8, 0.9, 1.2]. In both cases p(0) is the uniform distribution. Dotted lines show the expected Θ( c−1) and Θ( c−1/2) scalings in the p(0) ̸ = p∗ and 
+
+p(0) = p∗ regimes respectively. rate under the greedy model through a simple Monte-carlo simulation. Namely, assume at step 
+
+n the adversary has probability m−1 
+
+> n
+
+of correctly guessing the next sample, where 
+
+mn = | arg max  
+
+> i
+
+pi(n)|,
+
+is the number of outcomes that are maximally likely to be sampled. We generate samples until the average accuracy N −1 PNn=1 m−1 
+
+> n
+
+approximately converges. Similarly, we can likewise estimate the adversarial accuracy for the self-balancing sampler by averaging these estimates over many sampling trajectories. The results are shown in Figure 3. In the uniform β case, prediction accuracy increases gradually as the bias scale (c) increases, and in the small-(c) regime the gap above the IID baseline roughly follows the predicted Θ( √c) scaling. In the non-uniform, unique-maximizer case, prediction accuracy increases more sharply as (c) grows. Conversely, as c ↓ 0, the gap above the IID baseline decays much faster than the √c scaling observed in the uniform case. 
+
+A.3 Trade-Off 
+
+Lastly, we study the trade-off between predictability and the convergence rate. As discussed in the previous two sections, we quantify the former using the adversary’s prediction accuracy, and the latter using the limit lim n→∞ nd n. Figure 4 highlights the results. Note the predictability starts essentially at the baseline p∗
+
+> max
+
+, and increases as we increase the scaling c. It starts smaller in the uniform β case merely because p∗ 
+
+> max
+
+is smaller than in the non-uniform case. However, we see that in the latter the predictability is much slower to increase initially, but then quickly becomes more predictable as we scale β.
+
+A.4 Citizen’s Assembly 
+
+In this section, we simulate the self-balancing sampler on the citizen’s assembly problem dis-cussed in Section 13 of Flanigan et al. [2021]. The setting is as follows. Suppose we want to select an assembly of k = 200 people that includes at least 99 members of each of the following categories: women, men, liberals, and conservatives. Let the pool consist of 1 ,000 conservative men, 999 liberal women, and 1 conservative woman. The goal is to generate an assembly satisfying these quotas while ensuring that each individual in the pool has a reasonable chance of being selected. More precisely, we want to maximize the minimum 24 (a) Uniform β = [0 .5, 0.5, 0.5, 0.5].       
+
+> (b) Non-uniform, distinct maximizer β∝[1 .1,0.8,0.9,1.2].
+
+Figure 3: Predictability plots for different choices of β. (left) Relationship between prediction accuracy and the scaling c of β. (right) The ratio of the gap ∆( c) := accuracy − p∗ 
+
+> max
+
+from the uniform baseline and the first order √c expected scaling. individual inclusion probability induced by the sampling scheme. We refer to this minimum inclusion probability as the representativeness of the scheme. In this constructed population, the stratified sampling algorithm that selects 100 uniformly drawn women and 100 uniformly drawn men satisfies the quotas and selects each pool member with equal probability 10%. On the other hand, the LEGACY algorithm discussed in Flanigan et al. [2021] has only a 0 .2% chance of selecting the conservative woman. Thus, although LEGACY aims to balance covariates across the assembly, it provides poor ex ante representation for the rare class, since the conservative woman is almost never selected. This stratified sampling strategy is tailored to the special structure of the example and does not provide a general solution. It works here because the population can be partitioned by gender into two groups of equal size, so selecting 100 women and 100 men simultaneously satisfies the gender quotas and gives every individual inclusion probability 100 /1000 = 10%. In a more general population, the quota constraints may involve several overlapping attributes, and no single stratification need both satisfy the quotas and equalize individual inclusion probabilities. Our goal is therefore to test whether the self-balancing sampler can approximate the same effect in a more flexible way: biasing selection toward underrepresented attributes while preserving reasonable individual-level representativeness. To apply the self-balancing sampler to this setting, we consider two sequential strategies: 1. Stratified self-balancing over classes : We first choose a class in 
+
+{man , woman } × { conservative , liberal }
+
+25 (a) Uniform β. (b) Non-uniform β.
+
+Figure 4: Log-log plots of the trade-off between adversarial accuracy and the convergence rate (N d N )−1. (a) uniform β = [0 .5, 0.5, 0.5, 0.5] and (b) non-uniform β ∝ [1 .1, 0.8, 0.9, 1.2]. using the self-balancing sampler, and then choose an individual uniformly at random from the selected class. The relative weights ( β−1 
+
+> i
+
+)4 
+
+> i=1
+
+are chosen proportional to the initial class sizes. This ensures that, at stationarity, individuals are selected uniformly from the total population. 2. Attribute-balanced sampler : Each individual is assigned weight proportional to exp ( −βgender Ngender − βparty Nparty ) .
+
+Equivalently, the sampler biases selection according to the current gender and party imbal-ances, and then samples among individuals with probabilities induced by these attribute-level weights. By design, the attribute-based sampler aims to match the marginal distributions of the as-sembly to those of the population. This tends to make it better at matching desired marginal quotas, but at the cost of fairness: it tends to under-sample rare joint classes (e.g. the conser-vative woman) and biases the sampling distribution away from the population distribution. On the other hand, the stratified sampler aims to be as fair as possible. In settings where fairness is the main objective, we recommend the stratified sampler. As a baseline, we additionally study the simple strategy where individuals are selected uniformly at random to be part of the assembly. We call this the IID uniform baseline . For each of these sampling strategies, we study the following quantities: 
+
+• The probability that the quota constraints are satisfied. 
+
+• The individual inclusion probabilities induced by the sampling scheme, especially the worst-case inclusion probability. Moreover, we are interested in the influence the bias β has on these quantities. To investigate this tradeoff, we simulate many assemblies sampled without replacement according to these three sampling schemes. As before, we fix baseline bias parameters β and rerun the citizen’s assembly experiment with rescaled parameters β′ = cβ over a range of scalings c.For each value of c and each sampler, we estimate both the probability that the quota constraints are met and the worst-case probability that a specific individual is selected. For the former, we use the fraction of simulated assemblies satisfying the quota constraints. For the latter, we estimate the inclusion probability ˆ pi of each individual using the fraction of simulated assemblies in which that individual appears, and then take the minimum over individuals. To generate confidence bands, we bootstrap resample from the collection of simulated assemblies. The estimator of the minimum selection probability is downward biased, since it is the minimum of many noisy empirical estimates. Heuristically, uniformly sampling a fraction p of 26 (a) Quota satisfaction probability (b) Worst-case inclusion probability 
+
+Figure 5: Citizen’s assembly simulation results. The effect of the rescaled bias parameter 
+
+β′ = cβ on the probability that the quota constraints are met and on the worst-case individual inclusion probability. a population of size m across n assemblies, the empirical selection probability of individual i
+
+satisfies ˆpi ∼ n−1Binom( n, p ) ≈ N
+
+
+
+p, p(1 − p)
+
+n
+
+
+
+,
+
+for large n, and thus 
+
+E min  
+
+> i⩽m
+
+ˆpi ≈ p + E min  
+
+> i⩽m
+
+N
+
+
+
+0, p(1 − p)
+
+n
+
+
+
+≈ p −
+
+r 2p(1 − p) log mn .
+
+Thus, the empirical minimum underestimates the population-level inclusion probability by an amount of order plog( m)/n . This motivates the IID baseline. The results are shown in Figure 5 for the class sizes described above, using 10 4 simulated assemblies and 1000 bootstrap samples. Figure 5a shows that quota-satisfaction probability increases with the bias scaling c and is already close to one for relatively small bias. Figure 5b shows a sharper distinction between the two self-balancing variants: the stratified sampler remains essentially optimally representative across the tested range, whereas the attribute-balanced sampler loses representativeness at moderate bias. This appears to be a parity effect. Because the population consists almost entirely of conservative men and liberal women, the attribute-based sampler tends to alternate between these two classes as β → ∞ , while the conservative woman receives little or no mass. The simulations confirm that the conservative woman is again underrepresented in this high-bias regime. 27 B PROOF APPENDIX 
+
+In this Appendix, we collect the formal proofs of all the main results of the paper. 
+
+B.1 Section 2.2 Proofs: Potential-Based Sampling Proof of Proposition 2.1 
+
+Proposition. If πφ is v-invariant, then for each i there exist constants b > 0 and ci,k such that 
+
+φi(mv i + k) = ci,k bm for all m ∈ N and k ∈ { 0, . . . , v i − 1}. If, in addition, each φi is log-convex or log-concave, then φi(n) = cirni and (log r1, . . . , log rd) ∝ (v−11 , . . . , v −1 
+
+> d
+
+). 
+
+Proof. Denote S(x) := P 
+
+> j
+
+φj (xj ). Then v-invariance implies: 
+
+φi(xi)
+
+S(x) = φi(xi + vi)
+
+S(x + v) , φj (xj )
+
+S(x) = φj (xj + vj )
+
+S(x + v) .
+
+Dividing these equalities and rearranging yields: 
+
+φi(xi + vi)
+
+φi(xi) = φj (xj + vj )
+
+φj (xj ) .
+
+As the left side is independent of xj and the right side is independent of xi, these ratios must equal some constant b > 0 independent of xi, x j . Hence for every i ∈ [d] and k ∈ { 0, 1, ..., v i − 1}
+
+we must have 
+
+φi(mv i + k) = φi(k) · bm, ∀m ∈ N.
+
+Log-concavity implies for k ∈ { 0, 1, ..., v i − 2}:
+
+φi(0) 
+
+φi(1) ⩽ φi(k)
+
+φi(k + 1) ⩽ φi(vi)
+
+φi(vi + 1) = φi(0) bφi(1) b .
+
+If instead φi is log-convex, the direction of the inequalities all swap. Either way, we see these ratios are constant, and thus φi(m) = ciαmi where αi = b1/v i . Thus we have log( αi) = log( b) · v−1 
+
+> i
+
+,
+
+giving the desired result. 
+
+Proof of Lemma 2.2 
+
+Lemma. For βi = cv −1 
+
+> i
+
+for v ∈ Nd and c > 0, the projection-centered chain ˜Y v(n) = 
+
+vdNi(n) − viNd(n) associated to the self-balancing sampler (2.1) is irreducible and positive recurrent, and thus has a unique stationary distribution η on some subset of Zd−1.
+
+Proof. Clearly the state-space of ˜Y v is the subset of Zd−1 generated by nonnegative integer combinations of the vectors {vdei}d−1 
+
+> i=1
+
+∪ {− v}. Of course, this does not always span Zd−1, even when gcd( vi) = 1. For example, if v1 = 2 , v 2 = 3 , v 3 = 4 then the first coordinate of ˜Y v is always a multiple of 2. Nonetheless, we show the chain is still irreducible on this state-space. To see why, suppose: 
+
+x = vdd−1X
+
+> i=1
+
+aiei − adv, ai ⩾ 0.
+
+Clearly we can go from 0 to x by sampling ai times from index i for each i ∈ [d−1] and sampling 
+
+ad times from index d. Conversely, we can go from x to 0 by sampling index i ∈ [d − 1] a total 28 of kv i − ai times, for some k large enough so kv i ⩾ ai for all i ∈ [d − 1] and kv d ⩾ ad. Then sample coordinate d a total of kv d − ad times. Lastly, we show the chain is positive recurrent by developing a suitable Lyapunov function and proving a Foster-Lyapunov drift condition. See, for example, Meyn and Tweedie [2009], for more information about this technique. Let βi = v−1 
+
+> i
+
+and define 
+
+Qi := βiNi − log( pi(0) βi), Q = 1
+
+d
+
+> d
+
+X
+
+> i=1
+
+Qi.
+
+The constants log( pi(0) βi) serve an analogous role to cβ in our diffusive limit: the shift the chain so it is centered at the zero-drift location. Note 
+
+pi = pi(0) e−βiNi
+
+P 
+
+> j
+
+pj (0) e−βj Nj = vie−Qi
+
+P 
+
+> j
+
+vj e−Qj ,
+
+is a function of Q. Using this, define Lyapunov function 
+
+V (Q) := 
+
+> d
+
+X
+
+> i=1
+
+Z2 
+
+> i
+
+, Zi := Qi − Q. 
+
+Then V is a function of the projection-centered counts vdNi − viNd alone. Moreover, V (Q) = 
+
+V (Q + c1) for all c ∈ R, so it suffices to consider the case Qd = 0. We will show V has negative drift outside some finite set. First, note as P Zi = 0 
+
+V (Q + ∆ Q) = 2 
+
+> d
+
+X
+
+> i=1
+
+Zi∆Qi +
+
+> d
+
+X
+
+> i=1
+
+(∆ Qi − ∆Q)2
+
+Thus V has expected drift 
+
+E[∆ V (Q) | Q = q] = 2 
+
+> d
+
+X
+
+> i=1
+
+Zipi(q)βi + d − 1
+
+d
+
+> d
+
+X
+
+> i=1
+
+pi(q)β2
+
+> i
+
+The second term is at most C = max β2 
+
+> i
+
+. The first term is sufficiently negative on 
+
+F := 
+
+
+
+Q ∈ Nd : max  
+
+> i
+
+Qi − min  
+
+> i
+
+Qi > R, Qd = 0 
+
+
+
+.
+
+To see why, suppose M = arg max i Qi and m = arg min i Qi.
+
+> d
+
+X
+
+> i=1
+
+Zipiβi = 1
+
+d
+
+X
+
+> i<j
+
+(qi − qj )( piβi − pj βj ).
+
+= 1
+
+d P 
+
+> j
+
+vj e−qj
+
+X
+
+> i<j
+
+(qi − qj )( e−qi − e−qj ).
+
+⩽ (qm − qM )( e−qm − e−qM )
+
+d P 
+
+> j
+
+vj e−qj
+
+⩽ (qm − qM )( e−qm − e−qM )
+
+d2e−qm max i vi
+
+⩽ − R(1 − e−R)
+
+d2 max i vi
+
+·
+
+where in the first inequality we observed every term in the sum is nonpositive. The complement 
+
+F c is a finite subset of Zd−1, so we have the desired drift condition. 29 Proof of Lemma 2.3 
+
+Lemma. Suppose π is v-invariant and the associated projection-centered chain has stationary distribution η. If y ∼ η and X | y ∼ π(y), then P(X = i) = viP  
+
+> jvj
+
+for each i ∈ [d]. 
+
+Proof. Suppose ˜Y v ∼ η. Let pi := P(X = i) and define ∆ n ˜Y v := ˜Y v(n + 1) − ˜Y v(n). If ˜Y v(n) ∼ η, then ˜Y v(n + 1) ∼ η as well. Hence E∆n ˜Y v = 0 ∈ Zd−1. As discussed above, we can view ˜Y v(n) as the image of N (n) under the map 
+
+x 7 → (vdxi − vixd)d−1 
+
+> i=1
+
+.
+
+Hence: (∆ n ˜Y v)i =
+
+
+
+vd w.p. pi,
+
+−vi w.p. pd,
+
+0 w.p. 1 − pi − pd.
+
+Hence the ith coordinate of this expectation is: (E∆n ˜Y v)i = vdpi − vipd = 0 .
+
+Thus pi = vi 
+
+> vd
+
+pd. Since Pdi=1 pi = 1, we see: 
+
+> d
+
+X
+
+> i=1
+
+vi
+
+vd
+
+= 1
+
+pd
+
+→ pd = vd
+
+Pdj=1 vj
+
+,
+
+which yields the desired result. 30 B.2 Section 2.3 Proofs: Convergence Rates Proof of Proposition 2.4 
+
+Proposition. For every sequential sampling rule, 
+
+E
+
+"
+
+max  
+
+> 1≤i≤d
+
+μi(n) − 1
+
+n
+
+> n−1
+
+X
+
+> m=0
+
+pi(m)
+
+#
+
+≲ d
+
+√n .
+
+If the projection-centered count process is irreducible and positive recurrent, then both μi(n)and 1
+
+> n
+
+Pn−1 
+
+> m=0
+
+pi(m) converge almost surely. 
+
+Proof. For a given 1 ⩽ i ⩽ d, consider the sequence Mi(0) = 0, Mi(n) := Ni(n) − Pn−1 
+
+> m=0
+
+pi(m). This is a martingale adapted to Fn := σ(Ni(1) , . . . , N i(n)), as 
+
+E[Mi(n + 1) − Mi(n) | F n] = E[1{Xn+1 =i} − pi(n) | F n] = pi(n) − pi(n) = 0 .
+
+Moreover, these martingales each have bounded differences |Mi(n + 1) − Mi(n)| ⩽ 1, so the Azuma-Hoeffding inequality gives 
+
+P(|Mi(n)| ⩾ nε ) ⩽ 2e−nε 2/2.
+
+This yields exponential concentration for μi(n) − 1
+
+> n
+
+Pn−1 
+
+> m=0
+
+pi(m) = Mi(n)/n around 0, so by the Borel-Cantelli theorem, the difference converges almost surely. And if the count process for a sequential sampling rule is irreducible and positive recurrent, then the ergodic theorem for irreducible positive-recurrent countable-state Markov chains, applied to the projection-centered count process, guarantees almost sure convergence of 1
+
+> n
+
+Pn−1 
+
+> m=0
+
+pi(m). For the expectation bound, first, a union bound gives 
+
+P max  
+
+> 1⩽i⩽d
+
+μi(n) − 1
+
+n
+
+> n−1
+
+X
+
+> m=0
+
+pi(m) ⩾ ε
+
+!
+
+⩽ 2de −nε 2/2.
+
+We conclude that 
+
+E
+
+"
+
+max  
+
+> 1⩽i⩽d
+
+μi(n) − 1
+
+n
+
+> n−1
+
+X
+
+> m=0
+
+pi(m)
+
+#
+
+=
+
+Z ∞
+
+> 0
+
+P max  
+
+> 1⩽i⩽d
+
+μi(n) − 1
+
+n
+
+> n−1
+
+X
+
+> m=0
+
+pi(m) ⩾ ε
+
+!
+
+dε 
+
+⩽
+
+Z ∞
+
+> 0
+
+2de −nε 2/2 dε 
+
+= d
+
+r 2πn .
+
+Proof of Theorem 2.5 
+
+Theorem. The empirical distribution μn converges at a rate of 1 /n :
+
+E∥μ(n) − p∗∥TV = O(1 /n ).
+
+More granularly, for max i βi ⩽ 1, 
+
+E∥μ(n) − p∗∥TV ≲
+
+( 1
+
+> n
+
+P  
+
+> i1
+> βi
+
+if p0̸ = p∗,
+
+> 1
+> n
+
+P  
+
+> i1√βi
+
+if p0 = p∗.where the constant depends only on p(0), p∗, κ := max i βi  
+
+> min iβi
+
+, and d.31 The key idea is that 
+
+E|| μn − p∗|| T V = 12n
+
+X
+
+> i
+
+|Ni(n) − np ∗ 
+
+> i
+
+|| = || Y (n)|| 1
+
+2n
+
+is a function of the moments of the mean-centered counts Y (n). To control these moments, we will develop a Foster-Lyapunov drift condition for some suit-able potential. This requires a quantitative version of Theorem 1 of Pemantle and Rosenthal [1999] which will allow us to bound these moments in terms of the level of drift. This is the content of the following Lemma. Since the drift of Y (n) is controlled by β, this uncovers the desired β dependence. 
+
+Lemma B.1. Let Un ⩾ 0 be Fn-adapted for n ⩾ 0. Suppose there exists a, b, c > 0 with a ⩽ c
+
+so (i) E[Un+1 − Un | F n] ⩽ −a on {Un ⩾ b},(ii) |Un+1 − Un| ⩽ c a.s. Then 
+
+sup 
+
+> n⩾0
+
+E[Un] ⩽ E[U0] + b + c + c2
+
+2a .
+
+Proof of Lemma B.1. The idea is to compare (a shifted version of) Un to the “worst case” birth-death process with properties (i) and (ii), which will satisfy the desired bound. To this end, define the shifted version Xn := ( Un − b)+ and the following birth-death process which makes jumps of size c:
+
+Q0 := max {c, X 0}, Qn+1 := max {c, Q n + Zn+1 },
+
+where Z1, Z 2, . . . are iid with 
+
+P(Zn = c) = θ, P(Zn = −c) = 1 − θ, θ := c − a
+
+2c ∈ [0 , 1] .
+
+Note Zi is chosen so EZi = −a and |Zi| ⩽ c, so ( i) and ( ii ) are satisfied by Qn. Moreover, Zi
+
+essentially maximizes the variance among all such random variables. Since the downside of Qn
+
+is limited to c, this choice of increment in a sense maximizes the expectation of Qn.To compare Xn and Qn, we claim for any increasing, convex F
+
+E[F (Xn+1 ) | F n] ⩽ θF (Xn + c) + (1 − θ)F (max {c, X n − c}) = E[F (Qn+1 ) | F n]. (B.1) In words, this says ( Qn+1 | F n) stochastically dominates ( Xn+1 | F n) in the order ⩽icx induced by increasing, convex functions. Define an operator T by (T F )( x) := θF (x + c) + (1 − θ)F (max {c, x − c}),
+
+so that T F (Qn) = E[F (Qn+1 ) | F n]. To prove the claim, first note that if Xn = 0, then the inequality follows from (ii) as 
+
+F (Xn+1 ) = F (( Un+1 − b)+) ⩽ F (c).
+
+When Xn > 0, let G(z) := F (max {c, X n + z}). Then G is increasing and convex, which gives 
+
+G(z) ⩽ c + z
+
+2c G(c) + c − z
+
+2c G(−c), ∀| z| ⩽ c. 
+
+In particular, we know that |Un+1 − Un| ⩽ c almost surely, so applying this inequality and taking conditional expectations gives 
+
+E[G(Un+1 − Un) | F n] ⩽ c + E[Un+1 − Un | F n]2c (G(c) − G(−c)) + G(−c).
+
+32 Since G is increasing, G(c) − G(−c) ⩾ 0. We also know that E[Un+1 − Un | F n] ⩽ −a, so 
+
+⩽ θ(G(c) − G(−c)) + G(−c)= θG (c) + (1 − θ)G(−c)= θF (Xn + c) + (1 − θ)F (max {c, X n − c}).
+
+Now, since Xn > 0, we have Xn = Un − b, so that 
+
+G(Un+1 − Un) = F (max {c, X n + Un+1 − Un}) = F (max {c, U n+1 − b}) ⩾ F (Xn+1 )by the monotonicity of F ; this proves claim (B.1). Taking expectations of both sides in the claim inequality gives E[F (Xn+1 )] ⩽ E[T F (Xn)]. Since T maps the set of increasing convex functions onto itself, we can apply claim (B.1) iteratively starting with F (x) = x to get 
+
+E[Xn] = E[F (Xn)] ⩽ E[T F (Xn−1)] ⩽ ... ⩽ E[T nF (X0)] .
+
+Since T nF is increasing and X0 ⩽ Q0 we see 
+
+⩽ ET nF (Q0) = EQn.
+
+It now only remains to bound sup n E[Qn]. If we couple Qn with Q′
+
+> n
+
+, a version started at Q′ 
+
+> 0
+
+= c
+
+but with the same increments, then we get 
+
+E[Qn] ⩽ E[Q′
+
+> n
+
+] + E[Q0 − c].
+
+The stationary distribution of the Q′ 
+
+> n
+
+chain is 
+
+π(kc ) := (1 − r)rk−1, r := θ
+
+1 − θ = c − ac + a ,
+
+and the mean of the chain at stationarity is therefore 
+
+> ∞
+
+X
+
+> k=1
+
+ck (1 − r)rk−1 = c
+
+1 − r = c
+
+2 + c2
+
+2a .
+
+Since Q′ 
+
+> 0
+
+is less than a version of the chain started at stationarity and coupled to have the same increments, we get 
+
+E[Q′
+
+> n
+
+] ⩽ c
+
+2 + c2
+
+2a .
+
+So, in total, we get 
+
+E[Qn] ⩽ E[Q′
+
+> n
+
+] + E[Q0 − c] ⩽ E[Q0] − c
+
+2 + c2
+
+2a ⩽ E[Q0] + c2
+
+2a .
+
+Unwrapping the definitions gives the final bound 
+
+E[Un] ⩽ b + E[( Un − b)+] ⩽ b + E[max {c, U 0 − b}] + c2
+
+2a ⩽ E[U0] + b + c + c2
+
+2a ,
+
+uniformly in n.
+
+Proof of Theorem 2.5. We treat the general case by essentially applying shifts to all of the counts to compensate for the “wrong” initial distribution. In particular, let 
+
+ri := log pi(0) 
+
+p∗
+
+> i
+
+, r := X
+
+> j
+
+p∗ 
+
+> j
+
+rj , ci := ri − r, ξi := βiYi − ci.
+
+33 Then 
+
+∥Y (n)∥1 = X
+
+> i
+
+ci + ξi(n)
+
+βi
+
+⩽ X
+
+> i
+
+|ci|
+
+βi
+
++ X
+
+> i
+
+|ξi(n)|
+
+βi
+
+.
+
+When pi(0) = p∗ 
+
+> i
+
+, the ci terms disappear, so it suffices to show that E[|ξi(n)|] ≲ √βi when 
+
+p(0) = p∗ and ≲ 1 otherwise. To handle all the ξi(n) at once, consider Vn := P 
+
+> iξ2
+> i
+> βi
+
+; we will control E[Vn] via a drift bound. If Xn+1 = k, then ∆ξi(n) := ξi(n + 1) − ξi(n) = βi(1{i=k} − p∗ 
+
+> i
+
+),
+
+so we may compute (keeping in mind that P 
+
+> i
+
+p∗ 
+
+> i
+
+ξi(n) = 0 for all n)
+
+Vn+1 − Vn = X
+
+> i
+
+∆ξi(n) ( ξi(n + 1) + ξi(n)) 
+
+βi
+
+= 2 ξXn+1 (n) + βXn+1 (1 − p∗ 
+
+> Xn+1
+
+).
+
+and hence 
+
+E[Vn+1 − Vn | N (n)] = X
+
+> i
+
+pi(n) [2 ξi(n) + βi(1 − p∗ 
+
+> i
+
+)] 
+
+⩽ 2 X
+
+> i
+
+ξi(n)pi(n) + X
+
+> i
+
+βipi(n)
+
+⩽ 2 X
+
+> i
+
+ξi(n)( pi(n) − p∗ 
+
+> i
+
+) + max  
+
+> i
+
+βi.
+
+To upper bound the first term in terms of (negative) Vn, recognize that it is an expectation with respect to a p∗ 
+
+> i
+
+, tilted in the direction of −ξ; in particular, pi(n) = p∗     
+
+> ie−ξi(n)
+> P
+> jp∗
+> je−ξj(n)
+
+, and the term is E[Ξ], where Ξ = ξi with probability pi(n). The more we tilt the distribution in the direction of −ξ, the lower the expectation of Ξ will be. To make this intuition precise, define the following interpolation for 0 ⩽ t ⩽ 1: 
+
+Z(t) := X
+
+> i
+
+p∗ 
+
+> i
+
+e−tξ i , qi(t) := p∗ 
+
+> i
+
+e−tξ i
+
+Z(t) , f (t) := log Z(t).
+
+Then q(0) = p∗, q(1) = p(n), and if Ξ( t) = ξi with probability q(t) we have 
+
+f ′(t) = − X
+
+> i
+
+ξiqi(t) = −E[Ξ( t)] , f ′′ (t) = Var(Ξ( t)) ⩾ 0.
+
+So we can calculate the desired expectation by tracking this interpolation: 
+
+X
+
+> i
+
+ξi(pi(n) − p∗ 
+
+> i
+
+) = −(f ′(1) − f ′(0)) = −
+
+Z 10
+
+f ′′ (t)dt ⩽ −
+
+Z min {1,1/∥ξ(n)∥∞}
+
+> 0
+
+f ′′ (t) dt. 
+
+For 0 ⩽ t ⩽ min {1, 1/∥ξ(n)∥∞}, p∗ 
+
+> i
+
+and qi(t) are readily comparable: 1
+
+e ⩽ Z(t) ⩽ e, 
+
+which gives p∗
+
+> i
+
+e2 ⩽ qi(t) ⩽ e2p∗ 
+
+> i
+
+.
+
+For such t, by the variational characterization of variance 
+
+f ′′ (t) = min 
+
+> a
+
+X
+
+> i
+
+qi(t)( ξi(n) − a)2
+
+34 ⩾ 1
+
+e2 min 
+
+> a
+
+X
+
+> i
+
+p∗ 
+
+> i
+
+(ξi(n) − a)2
+
+= 1
+
+e2 Var(Ξ(0)) = 1
+
+e2
+
+X
+
+> i
+
+ξ2 
+
+> i
+
+p∗
+
+> i
+
+= 1
+
+e2 S−1 
+
+> β
+
+Vn.
+
+for Sβ = P β−1 
+
+> i
+
+. Putting it all together, we get a bound of 
+
+E[Vn+1 − Vn | N (n)] ⩽ − 2
+
+e2 min {1, 1/∥ξ(n)∥∞}S−1 
+
+> β
+
+Vn + max  
+
+> i
+
+βi.
+
+We know that ∥ξ(n)∥∞ ⩽ √Vn max i βi, so this is 
+
+⩽ − 2
+
+e2 S−1 
+
+> β
+
+min 
+
+(
+
+Vn,
+
+s
+
+Vn
+
+max i βi
+
+)
+
++ max  
+
+> i
+
+βi.
+
+We have Sβ = P 
+
+> j
+
+β−1 
+
+> j
+
+⩽ d  
+
+> min iβi
+
+= dκ 1max i βi , so that for max i βi ⩽ 1, 
+
+⩽ − 2
+
+e2dκ (max  
+
+> i
+
+βi) min {Vn, pVn} + max  
+
+> i
+
+βi.
+
+Since √V n ⩽ Vn for Vn ⩾ 1, we will actually establish our drift bound in terms of Un := √1 + Vn.Notice that by the tangent-line inequality for the concave function x 7 → √1 + x,
+
+E[Un+1 − Un | N (n)] ⩽ E[Vn+1 − Vn | N (n)] 2√1 + Vn
+
+⩽ − 2 
+
+> e2dκ
+
+(max i βi) min {Vn, √Vn} + max i βi
+
+2√1 + Vn
+
+.
+
+For Un ⩾ √1 + e4d2κ2, we have Vn ⩾ 1 and 2
+
+> e2dκ
+
+√V n ⩾ 2, so we get 
+
+⩽ − max i βi
+
+2√2e2dκ .
+
+We also need a bound on the jump size for Un: The map x 7 →
+
+q
+
+1 + ∥x∥2 
+
+> β
+
+is 1-Lipschitz with respect to the norm ∥x∥β := 
+
+qP 
+
+> i
+
+x2 
+
+> i
+
+/β i, so again as P 
+
+> i
+
+ξip∗ 
+
+> i
+
+= 0 we get 
+
+|Un+1 − Un| ⩽
+
+sX
+
+> i
+
+(ξi(n + 1) − ξi(n)) 2
+
+βi
+
+=
+
+sX
+
+> i
+
+(1{Xn+1 =i} − p∗ 
+
+> i
+
+)∆ ξi(n)
+
+⩽ qmax  
+
+> i
+
+βi.
+
+Applying Lemma B.1 with 
+
+a = max i βi
+
+2√2e2dκ , b = p1 + e4d2κ2, c = qmax  
+
+> i
+
+βi,
+
+35 and using ξi(0) = −ci, we obtain sup 
+
+> n
+
+E[pVn] ⩽ sup 
+
+> n
+
+E[Un]
+
+⩽ E[U0] + p1 + e4d2κ2 + qmax  
+
+> i
+
+βi + √2e2dκ 
+
+=
+
+vuut1 + X
+
+> j
+
+c2
+
+> j
+
+βj
+
++ p1 + e4d2κ2 + qmax  
+
+> i
+
+βi + √2e2dκ 
+
+⩽
+
+s
+
+1 + κ
+
+max i βi
+
+X
+
+> j
+
+c2 
+
+> j
+
++ p1 + e4d2κ2 + 1 + √2e2dκ 
+
+≲
+
+(1, if p(0) = p∗,
+
+1/√max i βi, if p(0) ̸ = p∗.
+
+where we have absorbed constants that depend only on p(0) , p ∗, κ , and d. Note, in particular, that the specific form of the constants in Lemma B.1 makes the max i βi dependence cancel in the last term. We finish by applying this bound to ξi:
+
+E[|ξi(n)|] = pβiE
+
+ |ξi|√βi
+
+
+
+⩽ pβiE[pVi] ≲
+
+(√βi if p(0) = p∗
+
+1 if p(0) ̸ = p∗
+
+for every i.
+
+Proof of Theorem 2.7 (Worst-Case Convergence Rates) 
+
+Theorem. For the self-balancing sampler, 
+
+∥μ(n) − p∗∥TV a.s. 
+
+−−→ 0, ∥μ(n) − p∗∥TV ≲ log nn
+
+> d
+
+X
+
+> i=1
+
+1
+
+βi
+
+a.s. 
+
+Proof. The idea is to show that the log odds ratios of the sampling probabilities never get too large; this will force βiNi ≈ βj Nj , which will make Ni/n ∝ 1/β i. In particular, let 
+
+Ri,j := − log pi(n)
+
+pj (n) + log pi(0) 
+
+pj (0) = βiNi − βj Nj .
+
+It is very unlikely for Ri,j to exceed 2 log n, as the following one-step analysis shows: 
+
+P(Xn+1 = i, R i,j (n) ⩾ 2 log n) = E[P(Xn+1 = i, R i,j (n) ⩾ 2 log n | p(n))] = E[pi(n)1{Ri,j (n)⩾2 log n}]
+
+⩽ E
+
+
+
+pj (n) pj (0) 
+
+pi(0) 1
+
+n2 1{Ri,j (n)⩾2 log n}
+
+
+
+≲ 1
+
+n2 .
+
+Therefore, by the Borel-Cantelli theorem, with probability 1, Ri,j (n) ⩽ 2 log n + O(1) for all n.Applying this argument to Rj,i = −Ri,j , we get that |Ri,j (n)| ⩽ 2 log n + O(1) for all n.Now analyze the counts in terms of the Ri, 1:
+
+Ni
+
+n = 1
+
+βi
+
+· β1N1
+
+n + Ri, 1
+
+βin ,
+
+36 and summing over i gives 1 = 
+
+> d
+
+X
+
+> k=1
+
+Nk
+
+n = β1N1
+
+n
+
+> d
+
+X
+
+> k=1
+
+1
+
+βk
+
+!
+
++ 1
+
+n
+
+> d
+
+X
+
+> k=1
+
+Rk, 1
+
+βk
+
+,
+
+which we rearrange into 
+
+β1N1
+
+n = 1
+
+Pdk=1 1/β k
+
+1 − 1
+
+n
+
+> d
+
+X
+
+> k=1
+
+Rk, 1
+
+βk
+
+!
+
+.
+
+Plugging this back into the expression for Ni/n gives 
+
+Ni
+
+n = 1/β i
+
+Pdk=1 1/β k
+
+| {z }
+
+> p∗
+> i
+
+1 − 1
+
+n
+
+> d
+
+X
+
+> k=1
+
+Rk, 1
+
+βk
+
+!
+
++ Ri, 1
+
+βin .
+
+So the total variation distance is 
+
+∥μ(n) − p∗∥TV = 12
+
+> d
+
+X
+
+> i=1
+
+Ni
+
+n − p∗
+
+> i
+
+= 12n
+
+> d
+
+X
+
+> i=1
+
+Ri, 1
+
+βi
+
+− p∗
+
+> id
+
+X
+
+> k=1
+
+Rk, 1
+
+βk
+
+≲ log nn
+
+> d
+
+X
+
+> i=1
+
+1
+
+βi
+
+.
+
+37 B.3 Section 2.4 Proofs: Optimization Formulation Proof of Theorem 2.9 (Entropy-Regularized + Squared-Error Optimization) 
+
+Theorem. Let Lβ (n) = 12
+
+Pdi=1 βi(Ni(n) − np ∗ 
+
+> i
+
+)2 and let Dβ (q) = E[Lβ (n + 1) − Lβ (n) | N (n), q ]. Then the optimization problem arg max 
+
+> q∈∆d
+
+ H(q) − H(q, p (0)) − Dβ (q) = arg min 
+
+> q∈∆d
+
+ KL( q∥p(0)) + Dβ (q)
+
+has unique solution qi ∝ pi(0) e−βi(Ni(n)+1 /2) .
+
+Proof. First, expand D to isolate the terms depending on q:
+
+D(q) = 12
+
+> d
+
+X
+
+> i=1
+
+βiE[Ni(n + 1) 2 − 2( n + 1) p∗ 
+
+> i
+
+Ni(n + 1) + (( n + 1) p∗ 
+
+> i
+
+)2
+
+− Ni(n)2 + 2 np ∗ 
+
+> i
+
+Ni(n) − (np ∗ 
+
+> i
+
+)2 | N (n), q ]= 12
+
+> d
+
+X
+
+> i=1
+
+βi[qi(Ni(n) + 1) 2 + (1 − qi)Ni(n)2 − Ni(n)2
+
+− 2p∗ 
+
+> i
+
+(( n + 1)( Ni(n) + qi) − nN i(n)) + (2 n + 1)( p∗ 
+
+> i
+
+)2]= 12
+
+> d
+
+X
+
+> i=1
+
+βi[2 qiNi(n) + qi − 2( n + 1) p∗ 
+
+> i
+
+qi − 2p∗ 
+
+> i
+
+Ni(n) + (2 n + 1)( p∗ 
+
+> i
+
+)2]=
+
+> d
+
+X
+
+> i=1
+
+βiNi(n)qi + 12 βiqi + 2n + 1 2 βi(p∗ 
+
+> i
+
+)2 − Ni(n)
+
+Pdk=1 1/β k
+
+!
+
+− n + 1 
+
+Pdk=1 1/β k
+
+,
+
+so it is equivalent to maximize H(q) − Pdi=1 βiNi(n)qi + 12 βiqi. When all the βi are equal, this just looks like maximizing H(q) − β⟨N (n), q ⟩.Now solve the optimization problem using the Lagrange multiplier λ. The Lagrangian is 
+
+L(q) := 
+
+> d
+
+X
+
+> i=1
+
+
+
+−qi log qi + qi log pi(0) − βiNiqi − 12 βiqi + λq i
+
+
+
+− λ. 
+
+Setting ∇qL(q) = 0 gives 0 = − log qi − 1 + log pi(0) − βiNi − βi
+
+2 + λ =⇒ qi = pi(0) e−βiNi−βi/2+ λ−1.
+
+Therefore, qi ∝ pi(0) e−βi(Ni(n)+1 /2) , as claimed. 
+
+Proof of Theorem 2.10 (Instantaneous Optimization) 
+
+Theorem. If Lβ (x) = 12
+
+Pdi=1 βi(xi − np ∗ 
+
+> i
+
+)2, then arg min 
+
+> q∈∆d
+
+
+
+⟨∇ Lβ (N (n)) , q ⟩ + KL( q∥p(0)) 
+
+
+
+has unique solution qi ∝ pi(0) e−βiNi(n).38 Proof. Calculate the gradient: 
+
+∂L β
+
+∂x i
+
+(x) = βi(xi − np ∗ 
+
+> i
+
+).
+
+so we aim to optimize 
+
+> d
+
+X
+
+> i=1
+
+βi(Ni(n) − np ∗ 
+
+> i
+
+)qi +
+
+> d
+
+X
+
+> i=1
+
+qi log qi − qi log pi(0) .
+
+Define the Lagrangian 
+
+L(q) := 
+
+> d
+
+X
+
+> i=1
+
+βi(Ni(n) − np ∗ 
+
+> i
+
+)qi + qi log qi − qi log pi(0) + λq i
+
+!
+
+− λ
+
+with Lagrange multiplier λ. Setting ∇qL(q) = 0 gives 0 = βi(Ni(n) − np ∗ 
+
+> i
+
+) + log qi + 1 − log pi(0) + λ, 
+
+= βiNi(n) − n
+
+Pnj=1 1/β i
+
++ log qi + 1 − log pi(0) + λ, 
+
+which we solve to get 
+
+qi ∝ pi(0) e−βiNi(n).
+
+Proof of Theorem 2.11 (Stochastic Mirror Descent) 
+
+Theorem. The optimization problem arg min 
+
+> q∈∆d
+
+h
+
+*
+
+βXn eXn − 1
+
+Pdj=1 β−1
+
+> j
+
+1, q 
+
++
+
++ KL( q∥p(n)) 
+
+!
+
+has unique solution q = p(n + 1), i.e. qi ∝ pi(0) e−hβ iNi(n+1) .
+
+Proof. Since ⟨1, q ⟩ = 1, it is equivalent to minimize 
+
+h⟨βXn eXn , q ⟩ + KL( q∥p(n)) = hβ Xn qXn +
+
+> d
+
+X
+
+> i=1
+
+qi log qi − qi log pi(n).
+
+Defining the Lagrangian 
+
+L(q) := hβ Xn qXn − λ +
+
+> d
+
+X
+
+> i=1
+
+qi log qi − qi log pi(n) + λq i
+
+with Lagrange multiplier λ, the condition ∇qL(q) = 0 gives 0 = 
+
+(
+
+hβ i + log qi + 1 − log pi(n) + λ if Xn = i, 
+
+log qi + 1 − log pi(n) + λ if Xn̸ = i. 
+
+Solving for qi gives 
+
+qi ∝
+
+(
+
+pi(n)e−hβ i if Xn = i, pi(n) if Xn̸ = i, 
+
+which is precisely the update rule for the self-balancing sampler. 39 B.4 Section 2.5 Proofs: Expected Cover Time Proof of Theorem 2.12 (Expected Cover Time) 
+
+Theorem. If C = max 1≤i≤d min {n ≥ 1 : Xn = i} and pi(0) = 1 /d , then 
+
+E[C] = 
+
+> d
+
+X
+
+> i=1
+
+log(1 + βi log d)
+
+βi
+
++ O(d).
+
+Proof. Writing C = C1 + · · · + Cd, where Ci := {1 ⩽ n ⩽ C : Xn = i} is the number of times we see outcome i before covering all the outcomes, we need only show that E[Ci] =    
+
+> log(1+ βilog d)
+> βi
+
++ O(1). The key insight is to embed the self-balancing sampler into a continuous time stochastic process with the sampling order determined by independent exponential clocks. For 1 ⩽ i ⩽ d
+
+and j ⩾ 0, let Wi,j ∼ Exp( αji ) be independent, and let Yi,j := Pjk=0 Wi,k . Then the order of the 
+
+Yi,j and their associated i indices has the same distribution as the order of the Xn, e.g. P(Y1,0 <Y1,1 < Y 6,0 < · · · ) = P(X1 = 1 , X 2 = 1 , X 3 = 6 , . . . ). Letting eCi(t) := max {j ⩾ 0 : Yi,j ⩽ t}, we claim that log(1 + βit)
+
+βi
+
+⩽ E[ eCi(t)] ⩽ log(1 + βit)
+
+βi
+
++ 1 .
+
+The lower bound is equivalent to 1 + βit ⩽ eβiE[ eCi(t)] , which follows from 
+
+eβiE[ eCi(t)] = 1 + 
+
+Z t
+
+> 0
+
+ddu eβiE[ eCi(u)] 
+
+> u=s
+
+ds 
+
+= 1 + βi
+
+Z t
+
+> 0
+
+ddu E[ eCi(u)] 
+
+> u=s
+
+· eβiE[ eCi(s)] ds 
+
+= 1 + βi
+
+Z t
+
+> 0
+
+E[e−βi eCi(s)]eβiE[ eCi(s)] ds 
+
+⩾ 1 + βi
+
+Z t
+
+> 0
+
+e−βiE[ eCi(s)] eβiE[ eCi(s)] ds 
+
+= 1 + βit, 
+
+where we used that the derivative of the expectation of a birth process is the expected birth rate. For the upper bound, we have 
+
+eβiE[ eCi(t)] ⩽ E[eβi eCi(t)]= 1 + 
+
+Z t
+
+> 0
+
+ddu E[eβi eCi(u)]
+
+> u=s
+
+ds. 
+
+By Kolmogorov’s forward equation, ddu E[eβi eCi(u)] is the expectation of the generator of the birth process eCi(t) applied to the function f (z) = eβiz .= 1 + 
+
+Z t
+
+> 0
+
+E[e−βi eCi(s)(eβi( eCi(s)+1) − eβi eCi(s))] ds 
+
+= 1 + 
+
+Z t
+
+> 0
+
+eβi − 1 ds 
+
+= 1 + ( eβi − 1) t. 
+
+This gives an upper bound of E[ eCi(t)] ⩽ log(1+( eβi −1) t) 
+
+> βi
+
+⩽ log(1+ βit) 
+
+> βi
+
++ 1. 40 Now, we incorporate the random time in the continuous process which corresponds to the cover time in the self-balancing sampler: M−i := max {Wj, 0 : j̸ = i}. Then Ci d
+
+=max {1, eCi(M−i)}, so that 
+
+E[Ci] = E[ eCi(M−i)] + P(Wi, 0 < W j, 0 ∀j̸ = i)
+
+| {z }
+
+> =1 /d
+
+.
+
+Applying our previous inequalities gives 
+
+E[Ci] − E
+
+ log(1 + βiM−i)
+
+βi
+
+
+
+⩽ 1 + 1
+
+d ,
+
+and all that remains now is to show that E[ eCi(M−i)] ≈ E[ eCi(log d)], where E[M−i] = Pd−1 
+
+> k=1 1
+> k
+
+≈
+
+log d. We have 
+
+E[Ci] − log(1 + βi log d)
+
+βi
+
+⩽ E[Ci] − E
+
+ log(1 + βiM−i)
+
+βi
+
+
+
++ E
+
+ log(1 + βiM−i)
+
+βi
+
+
+
+− log(1 + βi log d)
+
+βi
+
+.
+
+The latter term can be bounded using the fact that g(x) := log(1+ βix) 
+
+> βi
+
+is 1-Lipschitz, which follows from |g′(x)| = | 11+ βx | ⩽ 1 for all x ⩾ 0. 
+
+⩽ 1 + 1
+
+d + E[|M−i − log d|]
+
+⩽ 1 + 1
+
+d + pE[( M−i − log d)2]= 1 + 1
+
+d + p(E[M−i − log d]) 2 + Var( M−i)= 1 + 1
+
+d +
+
+vuut log d −
+
+> d−1
+
+X
+
+> k=1
+
+1
+
+k
+
+!2
+
++
+
+> d−1
+
+X
+
+> k=1
+
+1
+
+k2
+
+⩽ 1 + 1
+
+d +
+
+r
+
+1 + π2
+
+6 .
+
+41 B.5 Section 3.1 Proofs: Diffusion Approximations Proof of Proposition 3.1 (Projection-Centered Diffusion Limit) 
+
+Proposition. Fix i ∈ [d]. If Zh 
+
+> 0
+
+→ z0, then Zh ⇒ Z in D([0 , T ], R) for each T < ∞, where Z
+
+solves 
+
+dZ t = − βiβd
+
+βi + βd
+
+Zt dt + pβiβd dW t, Z0 = z0.
+
+Proof. For convenience, drop the subscript on cβ and let qi := pi(0). Note: 
+
+pβh i
+
+pβh i + pβh d
+
+= qie−βihN i
+
+qie−βihN i + qde−βdhN d = e−Y βh i
+
+qd/q i + e−Y βh i
+
+Since Zhnh = z implies Y hβ i (n) = z√h + cβ , we have increments: ∆Zhnh := Zh 
+
+> (n+1) h
+
+− Zhnh | { Zhnh = z} =
+
+
+
+βi
+
+√h w.p. e−(z√h+c) 
+
+> qd/q i+e−(z√h+c)
+
+,
+
+−βd
+
+√h w.p. qd/q i 
+
+> qd/q i+e−(z√h+c)
+
+,
+
+so since e−c = βdqd 
+
+> βiqi
+
+, our process has drift: 
+
+μh(z) := E[∆ Zhnh | Zhnh = z]=
+
+√hqd/q i + e−(z√h+c)
+
+h
+
+βie−(z√h+c) − βdqd/q i
+
+i
+
+= βd
+
+√h
+
+1 + βd 
+
+> βi
+
+e−z√h
+
+h
+
+e−z√h − 1
+
+i
+
+.
+
+Hence: 
+
+μh(z) = − βd
+
+1 + βd
+
+> βi
+
+zh + O(z2h3/2) = − zβ−1 
+
+> d
+
++ β−1
+
+> i
+
+h + O(z2h3/2).
+
+Hence h−1μh(z) converges uniformly for z in a compact set. Similarly, for the variance 
+
+σ2
+
+> h
+
+(z) := E[(∆ Zhnh )2 | Zhnh = z] − μh(z)2
+
+= hqd/q i + βdqd 
+
+> βiqi
+
+e−z√h
+
+
+
+β2 
+
+> i
+
+· βdqd
+
+βiqi
+
+e−z√h + β2 
+
+> d
+
+· qd
+
+qi
+
+
+
++ O(z2h2)= βiβd + β2
+
+> d
+
+1 + βd
+
+> βi
+
+h + O(z2h3/2)= βiβdh + O(z2h3/2).
+
+Again h−1σh(z) converges uniformly for z in a compact set. Lastly, since 
+
+|∆Zhnh | ⩽ max( βi, β d)√h → 0,
+
+we have no large jumps. Namely, for every ϵ > 0
+
+P(|∆Zhnh | > ϵ | Zhnh = z) = o(h),
+
+42 independently of z, as this probability is zero for sufficiently small h. As the diffusion 
+
+dZ t = − βiβd
+
+βi + βd
+
+Ztdt + pβiβd · dW t, Z0 = z0,
+
+has globally Lipschitz coefficients, there exists a unique strong solution, namely just the OU process. Standard theory shows the desired convergence. See for example Section 8.7 of Durrett [1996]. 
+
+Proof of Proposition 3.2 (Mean-Centered Diffusion Limit) 
+
+Proposition. If Zh 
+
+> 0
+
+→ z0, then Zh ⇒ Z as h ↓ 0, where 
+
+dZ t = − 1
+
+Sβ
+
+Zt dt + Σ 1/2dW t, Sβ = X
+
+> j
+
+β−1 
+
+> j
+
+, Σ = S−1 
+
+> β
+
+diag( β) − S−2 
+
+> β
+
+11 T ,
+
+and the limiting diffusion is supported on {z : ⟨z, p ∗⟩ = 0 }.
+
+Proof. For ease, drop the subscript of cβ and let qi := pi(0). Since βip∗ 
+
+> i
+
+is independent of iphβ i = qie−hβ iNi
+
+P 
+
+> j
+
+qj e−hβ j Nj = qie−M hβ i
+
+P 
+
+> j
+
+qj e−M hβ j
+
+,
+
+so the transitions are a function of our mean-centered counts alone. The value cβ is chosen so that e−ci = κ(qiβi)−1 for κ > 0 independent of i, and so ⟨cβ , p ∗⟩ = 0 satisfies the same constraint as M β . Since Zhnh = z implies M βh n = z√h + c, note for standard basis vector ei
+
+P
+
+
+
+|∆Zhnh | = βi
+
+√h(ei − p∗)
+
+
+
+= qie−(zi
+
+> √h+ci)
+
+Pdj=1 qj e−(zj  
+
+> √h+cj)
+
+= e−zi
+
+> √h
+
+Pdj=1 1 
+
+> βj
+
+e−zj 
+
+> √h
+
+.
+
+Hence this process has drift (μh(z)) i := E[(∆ Zhnh )i | Zhnh = z]= √h
+
+ e−zi
+
+> √h
+
+Pdj=1 1 
+
+> βj
+
+e−zj 
+
+> √h
+
+− βip∗
+
+> i
+
+
+
+= √h
+
+ 1 − zi
+
+√h
+
+Pdj=1 1 
+
+> βj
+
+(1 − zj
+
+√h) − βip∗ 
+
+> i
+
++ O(h)
+
+
+
+= √h
+
+Pdj=1 p∗ 
+
+> j
+
+zj − zi
+
+ √h
+
+Pdj=1 1 
+
+> βj
+
+(1 − zj
+
+√h) + O(h)
+
+
+
+= 1
+
+Pdj=1 1
+
+> βj
+
+
+
+> d
+
+X
+
+> j=1
+
+p∗ 
+
+> j
+
+zj − zi
+
+ h + o(h)As above, it is easy to see the convergence is uniform for z in compact sets. Similarly 
+
+E[(∆ Zhnh )2 
+
+> i
+
+| Zhnh = z] = hβ 2
+
+> i
+
+(p∗ 
+
+> i
+
+)2 + (1 − 2p∗ 
+
+> i
+
+) · 
+
+> 1
+> βi
+
+e−zi
+
+> √h
+
+Pdj=1 1 
+
+> βj
+
+e−zj
+
+> √h
+
+
+
+43 = hβ 2
+
+> i
+
+h
+
+(p∗ 
+
+> i
+
+)2 + (1 − 2p∗ 
+
+> i
+
+) ·
+
+
+
+p∗ 
+
+> i
+
++ O(√h)
+
+i 
+
+= hβ 2 
+
+> i
+
+p∗ 
+
+> i
+
+(1 − p∗ 
+
+> i
+
+) + o(h)Moreover, for i̸ = j:
+
+E[(∆ Zhnh )i(∆ Zhnh )j | Zhnh = z] = hβ iβj
+
+p∗ 
+
+> i
+
+p∗ 
+
+> j
+
+−
+
+ 
+
+> p∗
+> i
+> βj
+
+e−zj 
+
+> √h
+
++ p∗ 
+
+> j
+> βi
+
+e−zi
+
+> √h
+
+Pdℓ=1 1 
+
+> βℓ
+
+e−zℓ
+
+> √h
+
+
+
+= hβ iβj
+
+p∗ 
+
+> i
+
+p∗ 
+
+> j
+
+−
+
+ 
+
+> p∗
+> i
+> βj
+
++ p∗ 
+
+> j
+> βi
+
+− O(√h)
+
+Pdℓ=1 1 
+
+> βℓ
+
+− O(√h)
+
+
+
+= −βiβj p∗ 
+
+> i
+
+p∗ 
+
+> j
+
+h + o(h).
+
+Thus we have the desired covariance. As the coefficients of the limiting diffusion are globally Lipschitz, the associated SDE has a unique strong solution. Again standard theory, such as Section 8.7 of Durrett [1996], gives the desired convergence result. This gives a limiting diffusion 
+
+dZ t = − 1
+
+Sβ
+
+(Zt − ¯Zt)dt + Σ 1/2dW t, ¯Zt := ⟨p∗, Z t⟩.
+
+Lastly, we show that the limiting diffusion lives in the hyperplane 
+
+Zt ∈ { z : ⟨z, p ∗⟩ = 0 }.
+
+Note that by construction 
+
+⟨Y β (n), p ∗⟩ = ⟨cβ , p ∗⟩ = 0 .
+
+and hence ⟨Zht , p ∗⟩ = 0 for all h and t, from which the result follows. In particular, ¯Zt = 0, so our above diffusion simplifies to the desired form. 44 B.6 Section 3.3 Proofs: Adversarial Error-Rate Proof of Lemma 3.3 ( d = 2 Stationary Distribution) 
+
+Lemma. When d = 2 and β1 = β2 = β > 0, the projection-centered chain ˜Y (n) is reversible on 
+
+Z with stationary distribution 
+
+π(z) ∝ p2(0) + p1(0) e−βz 
+
+p1(0) + p2(0) 
+
+ p1(0) 
+
+p2(0) 
+
+z
+
+e−β(z
+
+> 2
+
+).
+
+Proof. In the d = 2 case then ˜Yn is a simple birth-death chain with birth probability: 
+
+λn = p1(0) e−βn 
+
+p2(0) + p1(0) e−βn 
+
+and death otherwise. The detailed balance equations then imply: 
+
+π(n)
+
+π(n − 1) = λn−1
+
+1 − λn
+
+.
+
+Hence: 
+
+π(n) = π0
+
+> n
+
+Y
+
+> j=1
+
+λj−1
+
+1 − λj
+
+= π0
+
+p2(0) + p1(0) e−βn 
+
+p1(0) + p2(0) 
+
+ p1(0) 
+
+p2(0) 
+
+n
+
+e−β(n
+
+> 2
+
+)If β > 0 then this is normalizable as it has discrete Gaussian tails. 
+
+Proof of Lemma 3.4 ( d = 2 Adversarial Error-Rate) 
+
+Lemma. For d = 2, and uniform β, as β → 0: lim sup 
+
+> n→∞
+
+1
+
+n
+
+> n−1
+
+X
+
+> k=0
+
+P
+
+
+
+Xk̸ = arg min  
+
+> i=1 ,2
+
+Ni(k − 1) 
+
+
+
+= 12 − Θ( pβ).
+
+Proof. Note in the d = 2 case with uniform β, we have: lim sup 
+
+> n→∞
+
+1
+
+n
+
+> n−1
+
+X
+
+> k=0
+
+P Xk̸ = arg max 
+
+> i=1 ,2
+
+πi(N (k − 1)) 
+
+!
+
+= lim sup 
+
+> n→∞
+
+1
+
+n
+
+> n−1
+
+X
+
+> k=0
+
+Ey∼ ˜Y (k)
+
+ 11 + eβ|y|
+
+
+
+.
+
+Since Y (n) is ergodic, the ergodic theorem and Lemma 3.3 imply: 
+
+Ey∼π
+
+ 11 + eβ|y|
+
+
+
+= Z−1 X
+
+> y∈Z
+
+cosh 
+
+ βy 
+
+> 2
+
+
+
+1 + eβ|y| · e− βy 22 = 12Z
+
+X
+
+> y∈Z
+
+e− β(y2+|y|)2 .
+
+for Z = P 
+
+> z∈Z
+
+cosh( βz/ 2) · e−βz 2/2. While no simple closed-form exists, the simple bound: 12 − x
+
+4 ⩽ (1 + ex)−1 ⩽ 12 − x
+
+4 + x3
+
+48 , ∀x ⩾ 0,
+
+implies for small β our error-rate is of order: 
+
+Ey∼π
+
+ 11 + eβ|y|
+
+
+
+= 12 − β
+
+4 Eπ|Y | + O  β3Eπ|Y |3 .
+
+45 To control this, note the stationary distribution of Y is a mixture of two (discrete) Gaussians cosh 
+
+ βy 
+
+2
+
+
+
+e−βy 2/2 ∝ 12
+
+h
+
+e− β 
+
+> 2(y−1/2) 2
+
++ e− β  
+
+> 2(y+1 /2) 2
+
+i
+
+.
+
+centered at ± 12 with variance β−1. For small β, the standard Riemann sum comparison implies the distribution of Y is well-approximated by the continuous counterpart. Hence Y ≈ ξ 
+
+> 2
+
++β−1/2G
+
+for a standard discrete gaussian G and Rademacher ξ ∼ Unif {± 1}.We can then estimate E|Y | and E|Y |3 using the standard moments of the folded normal. In particular, as β ↓ 0 the gaussian portion G dominates and we get the moments of the half-normal distribution: 
+
+E|Y | ≍ 
+
+r 2
+
+πβ , E|Y |3 = O(β−3/2).
+
+Combining this with the above yields: 
+
+Ey∼π
+
+ 11 + eβ|y|
+
+
+
+= 12 − cpβ + O(β3/2) = 12 − Θ( pβ).
+
+as desired. 
+
+Proof of Theorem 3.5 
+
+Theorem. Suppose πi(x) ∝ aie−Hi(x), that π(x) = π(x′) whenever ( I − p∗1T )x = ( I − p∗1T )x′,and that there exist c, C > 0 such that for all y with P 
+
+> i
+
+yi = 0 and yj ≤ yi,
+
+Hi(y) − Hj (y) ≥ c(yi − yj ) − C. 
+
+Then the empirical distribution associated to π satisfies E∥μn − p∗∥TV = O(n−1). 
+
+Proof. Let Y (n) := N (n) − np ∗ and Wn := ∥Y (n)∥1. By the invariance assumption, 
+
+π(N (n)) = π(Y (n)) ,
+
+so the transition probabilities may be viewed as functions of the centered counts. Define 
+
+hi(u) := |u − p∗ 
+
+> i
+
+| − | u|, gi(u) := |u + 1 − p∗ 
+
+> i
+
+| − | u − p∗ 
+
+> i
+
+|.
+
+Then 
+
+E[Wn+1 − Wn | Y (n) = y] = X
+
+> i
+
+hi(yi) + X
+
+> i
+
+πi(y)gi(yi).
+
+Let p∗ 
+
+> min
+
+:= min i p∗ 
+
+> i
+
+and p∗ 
+
+> max
+
+:= max i p∗ 
+
+> i
+
+. Since 
+
+X
+
+> i:yi>0
+
+yi = ∥y∥1
+
+2 ,
+
+whenever ∥y∥1 ≥ 2dp ∗
+
+> max
+
+, some yj ≥ p∗ 
+
+> j
+
+, and hence 
+
+X
+
+> i
+
+hi(yi) ≤ 1 − 2p∗
+
+> min
+
+.
+
+Now let m := min i yi and S := {i : yi > −1}. Since P 
+
+> i
+
+yi = 0, 
+
+m ≤ − ∥y∥1
+
+2d .
+
+46 Choosing j such that yj = m, for i ∈ S the assumption on H gives 
+
+πi(y) ≤ amax 
+
+amin 
+
+e−c(yi−m)+ C ≤ amax 
+
+amin 
+
+e−c∥y∥1/(2 d)+ C+c.
+
+Therefore X
+
+> i∈S
+
+πi(y) ≤ d amax 
+
+amin 
+
+e−c∥y∥1/(2 d)+ C+c =: L(∥y∥1).
+
+Since gi(yi) = −1 for i / ∈ S and gi(yi) ≤ 1 otherwise, 
+
+X
+
+> i
+
+πi(y)gi(yi) ≤ 2L(∥y∥1) − 1.
+
+Thus, outside a sufficiently large compact set, 
+
+E[Wn+1 − Wn | Y (n) = y] ≤ 2L(∥y∥1) − 2p∗ 
+
+> min
+
+≤ − p∗
+
+> min
+
+.
+
+Finally, 
+
+|Wn+1 − Wn| ≤ ∥ eXn+1 − p∗∥1 ≤ 2.
+
+Lemma B.1 therefore implies sup 
+
+> n
+
+E∥Y (n)∥1 < ∞.
+
+Since 
+
+∥μn − p∗∥TV = ∥Y (n)∥1
+
+2n ,
+
+the result follows. 47

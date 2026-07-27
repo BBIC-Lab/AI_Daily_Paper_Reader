@@ -1,0 +1,400 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-27T20:26:11.822967+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 39,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 72,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 10,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2607.20828v1",
+      "source": "arxiv",
+      "title": "High-Dimensional Change Point Analysis for Temporally Dependent Data",
+      "abstract": "This paper develops adaptive procedures for detecting and locating mean changes in high-dimensional time series. Quadratic CUSUM statistics target dense changes, whereas coordinatewise maximum statistics target sparse changes. Two weighting schemes are considered to accommodate both interior and boundary changes. Under general non-Gaussian vector dependence, we establish the limiting distributions, validate the required centering and scaling estimators, and prove asymptotic independence between matched quadratic and maximum statistics. These results justify Cauchy combination tests. We further establish single-change localization and consistent multiple-change recovery using wild binary segmentation. Numerical results illustrate the effectiveness of the proposed methods.",
+      "authors": [
+        "Xiaoyi Wang",
+        "Le Zhou",
+        "Jixuan Liu",
+        "Long Feng"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-07-23T01:28:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.20828v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "change point analysis for time series",
+      "llm_evidence_cn": "时间序列变化点分析",
+      "llm_evidence": "时间序列变化点分析",
+      "canonical_evidence": "时间序列变化点分析",
+      "llm_tldr_en": "Develops adaptive procedures for detecting mean changes in high-dimensional time series.",
+      "llm_tldr_cn": "开发自适应程序检测高维时间序列中的均值变化。",
+      "llm_tldr": "开发自适应程序检测高维时间序列中的均值变化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21000v1",
+      "source": "arxiv",
+      "title": "Naju: A Native Discrete State-Space Model with Independent Retention and Writing for Long-Sequence Memory",
+      "abstract": "Long-sequence memory tracking places two opposing demands on a recurrent state: near-lossless retention of stored bindings over long horizons, and active overwriting of stale ones. In our diagnostic suite, the strongest efficient baselines tend to solve only one side well. Continuous-time-parameterized state-space models (SSMs) such as Mamba obtain their discrete recurrence by zero-order-hold discretization of a continuous-time system; we argue that this detour is unnecessary for memory tracking and parameterize the discrete transition directly. Naju (Native Adaptive Junction Unit) factorizes the recurrent update, schematically $x_n = f_n\\odot x_{n-1} + i_n\\odot(B_n u_n)$, into an explicit discrete pole (a learned forget gate $f_n$), an independent write gain $i_n$, and input-dependent write/read maps. Since the sigmoid pole satisfies $0<f_n<1$, each frozen local coordinate is Schur-stable by construction, and the full time-varying recurrence satisfies a fading-memory/BIBO bound under uniform boundedness assumptions, with no stability regularizer. We formalize the key structural limitation of coupled designs: any non-expansive complementary single-gate recurrence ties the effective retention $r$ and write gain $w$ through $|r|+w\\le 1$, so near-complete retention forces weak writing; decoupling $f_n$ from $i_n$ removes this constraint. Empirically, Naju is the only evaluated model that remains strong on both retention and overwriting at 4x the training length. Beyond the diagnostic suite, we evaluate Naju on WikiText-103 language modeling, Long Range Arena, and multi-query associative recall. Across these settings, Naju consistently combines strong long-range memory with competitive or superior performance, outperforming the Mamba baselines in the principal comparisons while remaining competitive with the Transformer and preserving linear-time, linear-memory scaling.",
+      "authors": [
+        "Hyuk Lim",
+        "Seunghyun Yoon"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-23T07:34:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.21000v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "native discrete state-space model for long-sequence memory tracking",
+      "llm_evidence_cn": "用于长序列记忆追踪的原生离散状态空间模型",
+      "llm_evidence": "用于长序列记忆追踪的原生离散状态空间模型",
+      "canonical_evidence": "用于长序列记忆追踪的原生离散状态空间模型",
+      "llm_tldr_en": "Naju factorizes recurrent update for near-lossless retention and active overwriting in long sequences",
+      "llm_tldr_cn": "Naju分解循环更新实现长序列中的近乎无损保留和主动覆盖",
+      "llm_tldr": "Naju分解循环更新实现长序列中的近乎无损保留和主动覆盖",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21384v1",
+      "source": "arxiv",
+      "title": "Multimodal Pretraining for Generalizable EEG Representation Learning",
+      "abstract": "Electroencephalography (EEG) models used for epilepsy are often limited to specific datasets and tasks. This limited approach can make it challenging to apply these models across different datasets or in various situations. However, recent studies in foundation models and self-supervised learning suggest that an adaptable EEG backbone could support a range of EEG related tasks. In this study, we have developed a multimodal EEG foundation model that combines a raw signal encoder based on the Mamba architecture, a Vision Transformer (ViT)-style encoder for time-frequency data, and a lightweight encoder for text, all within a shared embedding space. The pretraining process relies on several innovative techniques, such as masked modeling, cross-view contrastive alignment, and temporal consistency losses. These methods are designed to create rich, seizure-relevant representations without requiring labeled data. To assess the efficacy and generalization of our pretrained model, we fine-tuned it on the canonical CHB-MIT seizure detection benchmark and additional seizure detection datasets, and conducted extensive experiments comparing different model variants. On the standard CHB-MIT split, our best single model achieved an AUROC of 0.874, and an ensemble variant reached 0.878 AUROC, representing state-of-the-art performance on this benchmark. In addition to standard train-test splits, we evaluated performance under a leave-one-subject-out (LOSO) protocol, which is rarely reported in prior EEG seizure modeling work and highlights the difficulty of patient-independent seizure detection, with a mean LOSO balanced accuracy of 0.558 across 19 subjects. Across datasets and evaluation settings, our multimodal foundation model enabled robust seizure detection and straightforward adaptation to new seizure detection scenarios, while also supporting interpretable seizure localization.",
+      "authors": [
+        "Targol Bakhtiarvand",
+        "Jugal Kalita",
+        "Adham Atyabi"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-23T14:47:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.21384v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multimodal EEG foundation model",
+      "llm_evidence_cn": "多模态脑电图基础模型",
+      "llm_evidence": "多模态脑电图基础模型",
+      "canonical_evidence": "多模态脑电图基础模型",
+      "llm_tldr_en": "Develops a multimodal EEG foundation model for generalizable representation learning.",
+      "llm_tldr_cn": "开发多模态脑电图基础模型用于可泛化的表示学习。",
+      "llm_tldr": "开发多模态脑电图基础模型用于可泛化的表示学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21681v1",
+      "source": "arxiv",
+      "title": "CARNet Cycle-Conditioned Core Aggregation and Redistribution for Multivariate Time Series Forecasting",
+      "abstract": "Accurately modeling cross-variate dependencies remains a key challenge in multivariate time series forecasting, particularly in the presence of strong periodic patterns. Many existing approaches rely on attention-based mechanisms that incur quadratic complexity and scale poorly with increasing numbers of variates. Recent attention-free aggregation models address this issue through linear-complexity core-based interactions, but they do not explicitly leverage the global periodic structure present in the data. To overcome this limitation, we propose CARNet, a Cycle-Conditioned Core Aggregation and Redistribution framework that integrates global recurrent cycle information into efficient core based interaction modeling via Multihead Core Aggregation. Extensive experiments on multiple real-world multivariate forecasting benchmarks demonstrate that CARNet consistently outperforms strong transformer and non-attention baselines across diverse prediction horizons while preserving linear-complexity modeling of cross-variate dependencies.",
+      "authors": [
+        "Awsaf Tausif Adib",
+        "Md. Shahria Sarker Shuvo",
+        "Md. Estehaar Ahmed Emon",
+        "Mustafa Kamal",
+        "Fuad Rahman",
+        "Shafin Rahman",
+        "Nabeel Mohammed"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-23T13:47:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.21681v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multivariate time series forecasting with periodic pattern modeling",
+      "llm_evidence_cn": "具有周期性模式建模的多变量时间序列预测",
+      "llm_evidence": "具有周期性模式建模的多变量时间序列预测",
+      "canonical_evidence": "具有周期性模式建模的多变量时间序列预测",
+      "llm_tldr_en": "CARNet uses cycle-conditioned core aggregation for time series forecasting.",
+      "llm_tldr_cn": "CARNet利用周期条件核心聚合进行时间序列预测。",
+      "llm_tldr": "CARNet利用周期条件核心聚合进行时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21692v1",
+      "source": "arxiv",
+      "title": "Learning What Matters: Supervising Sparse Attention Routing with Causal Evidence Sets",
+      "abstract": "Sparse attention reduces the cost of long contexts by allowing each query to read only selected parts of the input. These selectors are often trained by distilling the attention patterns of a dense teacher, assuming that attention reveals which context the teacher actually uses. We test that assumption on retrieval tasks where the evidence for each answer is known exactly. By masking parts of the context and measuring whether the answer changes, we find that attention and causal dependence often disagree, and distilled selectors inherit the mismatch. Teachers attend to outdated facts they have learned to ignore, and their attention can vary across training runs even when they rely on the same evidence. In a two-step reference task, attention at the answer skips the intermediate step because it was resolved earlier in the forward pass: a selector trained on attention achieves 41% accuracy, while the same selector trained on causal evidence reaches 99% and matches the teacher. These evidence sets require no annotation: recovered from a frozen teacher by masking alone, they train selectors to the same accuracy. We find the same conflict in pretrained models: Qwen2.5-3B gives more attention to an outdated fact than the current one on 58% of conflicting-fact examples despite answering correctly, while Gemma-2-9B rises from 56% to 99% accuracy when restricted to the two relevant sentences. Attention shows where a model looks, not necessarily what its answer depends on; across the regimes we tested, that dependence matched or outperformed attention as a training target.",
+      "authors": [
+        "Jim Allchin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-07-23T17:11:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.21692v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "computes causal importance weights for input features via masking",
+      "llm_evidence_cn": "通过掩码计算输入特征的因果重要性权重",
+      "llm_evidence": "通过掩码计算输入特征的因果重要性权重",
+      "canonical_evidence": "通过掩码计算输入特征的因果重要性权重",
+      "llm_tldr_en": "Causal evidence sets reveal attention importance mismatch and improve sparse attention routing",
+      "llm_tldr_cn": "因果证据集揭示注意力重要性失配并改进稀疏注意力路由",
+      "llm_tldr": "因果证据集揭示注意力重要性失配并改进稀疏注意力路由",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.20873v1",
+      "source": "arxiv",
+      "title": "LO-FAR: A Cost-Aware Local Filter for Sparse Feature Ranking in Industrial Ad Recommendation",
+      "abstract": "Industrial ad recommendation models rely heavily on sparse, high-cardinality ID-list features that encode user histories and contextual identifiers. Each is backed by a dedicated embedding table, so these features dominate storage, training, and serving cost and must be revisited as traffic and downstream models evolve. Therefore, sparse feature ranking is not just an offline modeling problem but also a recurrent systems decision limited by compute budgets and iteration cadence. We present Localized Feature Ranking (LO-FAR), a CPU-only, model-agnostic workflow that ranks each candidate feature from its stand-alone held-out predictive signal using lightweight local estimators rather than the GPU-bound retraining loops of permutation- and stochastic-gate-based methods. On a production dataset of more than one million logged interactions and 475 sparse ID-list features, LO-FAR completes ranking in approximately two CPU-hours and preserves downstream Normalized Entropy gains on CTR and CVR tasks that are competitive with shuffle-based importance, Binary Stochastic Neurons, and a coverage-based heuristic across budgets of 100--400 retained features. The contribution is a deployable workflow showing that, when cost and turnaround constraints are binding, a simple local filter can be a practical production choice over heavier interaction-aware alternatives.",
+      "authors": [
+        "Egemen Erbayat",
+        "Luis Duque",
+        "Sohini Roychowdhury",
+        "Mohammad Amin",
+        "Srihari Reddy"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-23T02:52:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.20873v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "ranks sparse features by stand-alone predictive signal using local estimators",
+      "llm_evidence_cn": "使用局部估计器根据独立预测信号对稀疏特征进行排序",
+      "llm_evidence": "使用局部估计器根据独立预测信号对稀疏特征进行排序",
+      "canonical_evidence": "使用局部估计器根据独立预测信号对稀疏特征进行排序",
+      "llm_tldr_en": "Proposes LO-FAR for efficient sparse feature ranking with cost awareness.",
+      "llm_tldr_cn": "提出LO-FAR，实现成本感知的高效稀疏特征排序。",
+      "llm_tldr": "提出LO-FAR，实现成本感知的高效稀疏特征排序。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.20818v1",
+      "source": "arxiv",
+      "title": "Self-Balancing Sequential Sampling: Fast Convergence with Controlled Predictability",
+      "abstract": "Many instances of sequential sampling, including audit and inspection scheduling, representative sampling, and treatment assignment, require selections to be distributed evenly without becoming easy to anticipate or exploit. We study a family of sequential sampling rules that adaptively bias sampling probabilities in order to achieve faster convergence of the empirical distribution to a desired target law, while keeping the resulting samples as unpredictable as possible. The resulting self-balancing sampler is simple to implement, arises naturally among a class of Markovian samplers sharing a certain invariance property, and admits a stochastic mirror-descent interpretation. Our main results show that (i) this self-balancing sampler converges at the fastest possible $O(n^{-1})$ rate with explicit dependence on biasing parameters, beating the standard $O(n^{-1/2})$ rate of IID sampling, (ii) it is the unique solution to a natural entropy-regularized optimization problem which balances the convergence rate of the empirical law and the unpredictability of the samples, and (iii) in the weak-biasing regime, the properly centered counts process converges to an Ornstein-Uhlenbeck process in the diffusive limit. Together, these results support a practical framework for reducing repeated selections and long gaps in coverage without making future selections overly predictable.",
+      "authors": [
+        "Zachary McNulty",
+        "Daniel Raban"
+      ],
+      "primary_category": "math.PR",
+      "categories": [
+        "math.PR",
+        "stat.ME",
+        "stat.ML"
+      ],
+      "published": "2026-07-23T01:10:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.20818v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "adaptive sequential sampling with mirror-descent interpretation",
+      "llm_evidence_cn": "自适应顺序采样，具有镜像下降解释",
+      "llm_evidence": "自适应顺序采样，具有镜像下降解释",
+      "canonical_evidence": "自适应顺序采样，具有镜像下降解释",
+      "llm_tldr_en": "Adaptive sequential sampler that balances convergence and unpredictability.",
+      "llm_tldr_cn": "自适应顺序采样器，平衡收敛性和不可预测性。",
+      "llm_tldr": "自适应顺序采样器，平衡收敛性和不可预测性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.20913v1",
+      "source": "arxiv",
+      "title": "Source-Prior-Driven Selective Adaptation for Efficient Diffusion Model Finetuning",
+      "abstract": "Fine-tuning large diffusion models for new domains or styles involves a trade-off: improving target-specific generation often degrades the pretrained model's broad generative capability. Existing full and parameter-efficient fine-tuning methods typically handle this trade-off only implicitly. In this work, we propose a novel source-prior-driven selective adaptation method to efficiently fine-tune diffusion models, achieving a favorable trade-off. Our method relies on two key observations: (1) the loss of general generative capability is highly inconsistent across pretrained parameters, and (2) parameters that have a relatively small impact on the model's general generative capability remain structurally inconsistent across layers and parameter types. Motivated by these observations, we first learn a static mask to explicitly identify parameters better suited for downstream adaptation, and then construct structured update strategies for the selected subset. Experiments show that our method achieves a better adaptation-retention trade-off than existing strong baselines.",
+      "authors": [
+        "Yi Xiong",
+        "Yuan-Yuan Cheng",
+        "Xiao-Ming Fu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-23T04:46:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.20913v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Source-prior-driven selective adaptation for efficient diffusion model finetuning",
+      "llm_evidence_cn": "基于源先验的选择性适应方法用于高效扩散模型微调",
+      "llm_evidence": "基于源先验的选择性适应方法用于高效扩散模型微调",
+      "canonical_evidence": "基于源先验的选择性适应方法用于高效扩散模型微调",
+      "llm_tldr_en": "Selectively finetunes diffusion model parameters to balance domain adaptation and general capability.",
+      "llm_tldr_cn": "选择性微调扩散模型参数以平衡领域适应和通用能力。",
+      "llm_tldr": "选择性微调扩散模型参数以平衡领域适应和通用能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.20928v1",
+      "source": "arxiv",
+      "title": "High-dimensional sparsity-adaptive multiple change-point detection",
+      "abstract": "We introduce a method for detecting multiple change-points in the mean of a high-dimensional data sequence. Unlike existing top-down (i.e. divisive) algorithms, we adopt a bottom-up (i.e. agglomerative) approach, whereby we iteratively merge neighboring segments of data starting from the finest level. This is particularly useful for signals with frequent change-points, since local evidence is assessed before segments are combined into coarser summaries. We compute $L_2$- and $L_\\infty$-aggregated test statistics of neighboring segments and combine the information from their respective ranks, which makes the method adaptive in handling different degrees of change-point sparsity. We show the consistency of the estimated number and locations of change-points under both iid Gaussian and possibly dependent and/or non-Gaussian noise. The practicality of our approach is demonstrated through simulations and a real data example involving the UK House Price Index data.",
+      "authors": [
+        "Hyeyoung Maeng",
+        "Tengyao Wang",
+        "Piotr Fryzlewicz"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-07-23T05:19:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.20928v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "High-dimensional sparsity-adaptive method for detecting multiple change-points in sequential data",
+      "llm_evidence_cn": "高维稀疏自适应多变点检测方法用于序列数据",
+      "llm_evidence": "高维稀疏自适应多变点检测方法用于序列数据",
+      "canonical_evidence": "高维稀疏自适应多变点检测方法用于序列数据",
+      "llm_tldr_en": "Proposes a bottom-up change-point detection method for high-dimensional sequences, directly addressing sequence analysis.",
+      "llm_tldr_cn": "提出自下而上的高维序列变点检测方法，直接用于序列分析。",
+      "llm_tldr": "提出自下而上的高维序列变点检测方法，直接用于序列分析。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.20970v1",
+      "source": "arxiv",
+      "title": "From Scalars to Time Series: Rethinking Implicit Neural Representations for Time-Varying Volumetric Data",
+      "abstract": "Implicit neural representations (INRs) for time-varying volumetric data are typically trained using dense sampling over spatiotemporal coordinates, where each observation corresponds to a single point in space and time. This coordinate-wise formulation requires extensive sampling during optimization, leading to high computational cost and inefficient use of temporal structure. In this work, we revisit this design choice and show that dense spatiotemporal sampling is not necessary for learning time-varying fields. Instead, we represent the data as a collection of spatially indexed time series and train INRs using sequence-level supervision over each spatial location, rather than coordinate-wise scalar samples. This reformulation eliminates the need for dense spatiotemporal sampling and instead learns each spatial location from its full temporal evolution in a structured manner. We demonstrate that this representation is compatible with a range of existing INR architectures and consistently improves reconstruction quality, while significantly reducing training cost. Furthermore, we show that this formulation can be combined with mixture-of-experts architectures, and that our MoE instantiation further improves reconstruction quality compared to both the base reformulation and existing MoE-based INR methods, providing a stronger capacity allocation under heterogeneous temporal dynamics.",
+      "authors": [
+        "Weihan Zhang",
+        "Xuan Zhao",
+        "Yenwen Peng",
+        "Yuqi Chen",
+        "Jun Tao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-23T06:46:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.20970v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sequence-level supervision for implicit neural representations of time-varying data",
+      "llm_evidence_cn": "用于时变数据的隐式神经表示的序列级监督",
+      "llm_evidence": "用于时变数据的隐式神经表示的序列级监督",
+      "canonical_evidence": "用于时变数据的隐式神经表示的序列级监督",
+      "llm_tldr_en": "INRs trained with sequence-level supervision better capture temporal structure in volumetric data",
+      "llm_tldr_cn": "使用序列级监督训练INR更好地捕捉体积数据中的时间结构",
+      "llm_tldr": "使用序列级监督训练INR更好地捕捉体积数据中的时间结构",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
