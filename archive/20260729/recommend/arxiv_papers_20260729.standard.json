@@ -1,0 +1,422 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-28T21:25:30.002233+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 58,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 82,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 23,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 18,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 24
+  },
+  "deep_dive": [
+    {
+      "id": "2607.23165v1",
+      "source": "arxiv",
+      "title": "Adaptive Multi-Scale Forecasting and Gate-Localized Conformal Prediction for Multivariate Nonstationary Time Series",
+      "abstract": "We propose ABF-T-GLCP, a model-agnostic framework for forecasting and uncertainty quantification in nonstationary multivariate time series. The central idea is to learn an adaptive predictive state representation for point forecasting and reuse it for conformal calibration. The forecasting module combines horizon-specific temporal experts through a learned gate and refines predictions using sparse predictive transfer across related series. The uncertainty module, Gate-Localized Conformal Prediction (GLCP), uses the learned gate state, together with temporal recency, to select locally relevant calibration residuals, thereby coupling uncertainty calibration to the predictive regimes used by the forecasting model. This shared representation allows point forecasts and prediction intervals to adapt consistently under evolving temporal dynamics while retaining the model-agnostic nature of conformal prediction and yielding approximate local coverage under mild stability conditions. Experiments on a large-scale high-frequency commodity forecasting benchmark show consistent gains in point forecasting accuracy and substantially narrower prediction intervals with empirical coverage close to the nominal level. Additional results indicate that the framework extends beyond the motivating financial application.",
+      "authors": [
+        "Ziling Ma",
+        "Junshu Jiang",
+        "Ángel López-Oriona",
+        "Ying Sun",
+        "Hernando Ombao"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "stat.AP",
+        "stat.ME"
+      ],
+      "published": "2026-07-25T11:46:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.23165v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Adaptive multi-scale forecasting for nonstationary time series with conformal prediction",
+      "llm_evidence_cn": "非平稳时间序列的自适应多尺度预测与共形预测",
+      "llm_evidence": "非平稳时间序列的自适应多尺度预测与共形预测",
+      "canonical_evidence": "非平稳时间序列的自适应多尺度预测与共形预测",
+      "llm_tldr_en": "Proposes a model-agnostic framework for point forecasting and uncertainty quantification in time series",
+      "llm_tldr_cn": "提出一个模型无关的时间序列点预测与不确定性量化框架",
+      "llm_tldr": "提出一个模型无关的时间序列点预测与不确定性量化框架",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21901v1",
+      "source": "arxiv",
+      "title": "AdaptICA: Data-Adaptive Transformation Learning for Independent Component Analysis",
+      "abstract": "Independent component analysis (ICA) is widely used to recover latent structure from signal and imaging data, but standard ICA assumes that the observed measurement scale preserves a linear mixing structure. This assumption may fail for features produced through nonlinear preprocessing, such as band-specific power in motor-imagery EEG. We propose AdaptICA, an adaptive transformation-based framework that jointly learns grouped componentwise transformations and the demixing structure using a profiled mutual-information criterion. Because the transformation and demixing parameters may compensate for one another, their joint estimation introduces new identifiability and asymptotic challenges. We establish identifiability, consistency, and asymptotic normality of the transformation estimator, together with joint strong consistency of the transformation and demixing estimators. AdaptICA selects the transformation structure data-adaptively and includes the identity transformation as a candidate, thereby reducing to standard ICA when no scale adjustment is needed. Extensive simulations support the theoretical results. Applications demonstrate that AdaptICA can recover more independent and interpretable sources when transformation is beneficial while retaining standard ICA when the original measurement scale is adequate.",
+      "authors": [
+        "Lida Jalili",
+        "Jingyu Liu",
+        "Vince D. Calhoun",
+        "Li-Hsiang Lin"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-07-24T02:11:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.21901v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adaptively learns transformation for ICA of EEG motor imagery",
+      "llm_evidence_cn": "自适应学习EEG运动想象ICA变换",
+      "llm_evidence": "自适应学习EEG运动想象ICA变换",
+      "canonical_evidence": "自适应学习EEG运动想象ICA变换",
+      "llm_tldr_en": "AdaptICA learns data-adaptive transformations for ICA to recover latent sources from EEG signals.",
+      "llm_tldr_cn": "AdaptICA学习数据自适应变换用于ICA从EEG信号恢复潜在源。",
+      "llm_tldr": "AdaptICA学习数据自适应变换用于ICA从EEG信号恢复潜在源。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21973v1",
+      "source": "arxiv",
+      "title": "Rethinking Layer-Wise Information Allocation for Vision Foundation Model Adaptation",
+      "abstract": "Vision foundation models are increasingly reused as frozen backbones for downstream visual recognition, making parameter-efficient adaptation a central problem. Prompt-based adaptation, including Visual Prompt Tuning (VPT), provides a lightweight way to specialize these models, but its layer-wise behavior remains poorly understood: performance is sensitive to prompt depth, placement, and task distribution, and gains on standard in-domain benchmarks do not always translate into robust generalization. We argue that this limitation is not solely an optimization issue, but a layer-wise information allocation issue: existing prompt-based methods lack principled control over what prompt-conditioned representations should preserve, suppress, and propagate across depth. Inspired by the Information Bottleneck principle, we introduce Prompted Information Bottlenecks (PIB), a framework that regularizes layer-wise compression-sufficiency trade-offs and promotes a more coherent cross-layer information path. The key idea is that effective adaptation should be minimal yet sufficient, retaining task-relevant local evidence in earlier layers while progressively discarding nuisance factors and redundant details in deeper layers. Extensive experiments show that PIB achieves strong performance across 34 datasets, reaching 92.1% on FGVC, 93.01% on HTA, and 77.33% on VTAB-1k, while tuning only 0.35% parameters on average across the main settings. Beyond benchmark accuracy, PIB helps explain the non-monotonic behavior of prompt capacity scaling, reduces shortcut reliance, and improves robustness under distribution shift and fine-grained recognition settings. These results position PIB as both a practical method and an information-allocation perspective for adapting frozen vision foundation models. Our code is available at https://github.com/itsnotacie/MM-26-PIB",
+      "authors": [
+        "Yuqi Li",
+        "Xi Xiao",
+        "Yunbei Zhang",
+        "Lin Zhao",
+        "Yu Li",
+        "Aiden Zhao",
+        "Tianyang Wang",
+        "Hao Xu",
+        "Yingli Tian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-24T04:39:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.21973v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Leveraging pretrained vision models for downstream tasks via prompt adaptation",
+      "llm_evidence_cn": "通过提示适配利用预训练视觉模型处理下游任务",
+      "llm_evidence": "通过提示适配利用预训练视觉模型处理下游任务",
+      "canonical_evidence": "通过提示适配利用预训练视觉模型处理下游任务",
+      "llm_tldr_en": "Rethinks layer-wise information allocation for prompt-based adaptation of vision foundation models.",
+      "llm_tldr_cn": "重新思考基于提示的视觉基础模型适配中的信息分配。",
+      "llm_tldr": "重新思考基于提示的视觉基础模型适配中的信息分配。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.22299v1",
+      "source": "arxiv",
+      "title": "Hopformer: Homogeneity-Pursuit Transformer for Time Series Forecasting",
+      "abstract": "Forecasting multiple time-series with high-dimensional covariates presents a core challenge: unifying common temporal patterns while retaining meaningful series-specific information. We introduce Hopformer (Homogeneity-Pursuit Transformer), a two-stage framework that addresses this challenge. In the first stage, we perform a Sparsity Pattern Aggregation (SPA) scheme extracting a common low-variance trend that incorporates the covariates. This acts as a homogenization layer. In the second stage, a LoRA-fine-tuned Transformer models the remaining complex dependencies in the residual. Our method is theoretically grounded. We prove that SPA achieves a near-optimal bias-variance trade-off via an oracle inequality. We also provide generalization bounds for the second stage under dependent time series data. Hopformer sets a new state of the art, improving MASE by an average of 6.56% across synthetic and real-world forecasting benchmarks.",
+      "authors": [
+        "Wan Zhang",
+        "Qinjie Lin",
+        "Chan Lee",
+        "Weijian Li",
+        "Han Liu",
+        "Kai Zhang"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-07-24T13:44:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.22299v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "homogeneity-pursuit transformer for time series forecasting",
+      "llm_evidence_cn": "用于时间序列预测的同质性追求Transformer",
+      "llm_evidence": "用于时间序列预测的同质性追求Transformer",
+      "canonical_evidence": "用于时间序列预测的同质性追求Transformer",
+      "llm_tldr_en": "Hopformer forecasts multiple time series by extracting common trends and modeling residuals with LoRA-Transformer.",
+      "llm_tldr_cn": "Hopformer通过提取共同趋势并用LoRA-Transformer建模残差来预测多时间序列。",
+      "llm_tldr": "Hopformer通过提取共同趋势并用LoRA-Transformer建模残差来预测多时间序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.22397v1",
+      "source": "arxiv",
+      "title": "Universal BCI Personalization: One API for Frozen EEG Trunks and Foundation Models",
+      "abstract": "Frozen EEG encoders proliferate; per-model fine-tune defaults do not scale. We present Nimbus Personalizer: one contract encode to Bayesian head to BrainState (optional affine mid-tier) that sits on heterogeneous frozen trunks without a new personalization stack per architecture. Thesis (systems): the contribution is the trunk-agnostic API - not LDA-on-embeddings as an ML novelty - so OEMs integrate once and swap trunks. Evidence: the same surface runs on five classical trunks EEGNet, Shallow, Deep, Conformer, ATCNet x four MI datasets (18 cells) and on a foundation encoder (REVE) under the same Personalizer. Where embedding capacity exists, the head is a cheap default mid-point versus warm-start fine-tune or PEFT, costing orders of magnitude less adaptation wall time while recovering much of the fine-tune accuracy gain; calibration-only-when-clean holds in 12/18 cells. Head gains are supporting evidence that the API is useful where capacity exists. Subject-level confidence intervals identify the clearest dataset and span zero elsewhere. All results are exploratory (subject-level bootstrap, no confirmatory tests); the decision logic for when to escalate adaptation is addressed in our companion work on the control layer.",
+      "authors": [
+        "Sergey Musienko"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.LG",
+        "q-bio.NC"
+      ],
+      "published": "2026-07-24T15:20:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.22397v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "provides a trunk-agnostic API for personalizing BCI models across subjects and sessions",
+      "llm_evidence_cn": "提供与主干无关的API，用于跨被试和会话个性化脑机接口模型",
+      "llm_evidence": "提供与主干无关的API，用于跨被试和会话个性化脑机接口模型",
+      "canonical_evidence": "提供与主干无关的API，用于跨被试和会话个性化脑机接口模型",
+      "llm_tldr_en": "Nimbus Personalizer enables universal BCI adaptation by swapping frozen EEG encoders without retraining.",
+      "llm_tldr_cn": "Nimbus Personalizer通过无需重新训练即可交换冻结脑电解码器实现通用脑机接口适应。",
+      "llm_tldr": "Nimbus Personalizer通过无需重新训练即可交换冻结脑电解码器实现通用脑机接口适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.21949v1",
+      "source": "arxiv",
+      "title": "MA-DAR: Manifold-Aligned Dynamic Adaptive Routing for Continual Temporal Knowledge Graph Reasoning",
+      "abstract": "Continual temporal knowledge graph (TKG) reasoning aims to continuously incorporate newly emerging facts while preserving previously acquired knowledge. Replay-based continual learning has achieved promising performance by revisiting historical representations. However, existing methods primarily focus on what to replay, while largely overlooking how replayed representations should be integrated with current ones. Such direct integration often gives rise to two critical forms of representation conflict: \\textit{norm domination} and \\textit{semantic blurring}, ultimately degrading continual reasoning performance. To address these challenges, we propose MA-DAR (Manifold-Aligned Dynamic Adaptive Routing), a lightweight plug-and-play framework for replay representation fusion. MA-DAR first aligns replayed and current representations onto a shared manifold to alleviate distribution discrepancies. It then employs a dynamic gating mechanism to learn dimension-wise fusion weights, adaptively determining the contribution of replayed and current representations to the fused representation. Furthermore, a polarization regularizer encourages more decisive routing behaviors by discouraging ambiguous gating decisions, resulting in more stable and effective knowledge integration. Extensive experiments on four public continual TKG benchmarks demonstrate that MA-DAR consistently improves the performance of representative TKG encoders while remaining effective under different replay settings. Comprehensive ablation studies and visualization analyses further verify the effectiveness of manifold alignment and dynamic adaptive routing in mitigating representation conflicts and improving continual reasoning.",
+      "authors": [
+        "Xiangjun Shi",
+        "Chong Mu",
+        "Jinchuan Zhang",
+        "Lizong Zhang",
+        "Yuefeng He",
+        "Shang Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-24T03:52:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.21949v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "models temporal knowledge graph sequences with continual learning to reason over time",
+      "llm_evidence_cn": "对时序知识图谱序列进行建模，通过持续学习实现时间推理",
+      "llm_evidence": "对时序知识图谱序列进行建模，通过持续学习实现时间推理",
+      "canonical_evidence": "对时序知识图谱序列进行建模，通过持续学习实现时间推理",
+      "llm_tldr_en": "MA-DAR addresses representation conflicts in continual temporal knowledge graph reasoning via manifold-aligned routing.",
+      "llm_tldr_cn": "MA-DAR通过流形对齐路由解决持续时序知识图谱推理中的表示冲突。",
+      "llm_tldr": "MA-DAR通过流形对齐路由解决持续时序知识图谱推理中的表示冲突。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.21916v1",
+      "source": "arxiv",
+      "title": "Estimating dynamic models by matching random features",
+      "abstract": "Scientists increasingly express their ideas as dynamic models of complex processes. It is often much easier to simulate these models than to calculate the probability of their generating a particular outcome, making likelihood-based estimation infeasible. Existing likelihood-free approaches rely either on manually chosen summary statistics or on representations learned by neural networks. The former is error-prone and laborious, while the latter is computationally intensive, leaving many scientists in a difficult position. We show that, for a large class of dynamic models, parameters can be estimated by matching a small number of random features of the observed and simulated data. Specifically, we adapt results from nonlinear dynamics to show that models with a $p$-dimensional parameter can generically be identified from just $2p+1$ random features. We introduce two estimators for stationary and nonstationary processes, respectively, and we establish their consistency under mild regularity conditions. More broadly, our results serve as the foundation for a new class of random feature methods for simulation-based estimation and inference.",
+      "authors": [
+        "Michael Wieck-Sosa",
+        "Cosma Rohilla Shalizi"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME",
+        "math.ST",
+        "nlin.CD",
+        "physics.data-an"
+      ],
+      "published": "2026-07-24T02:43:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.21916v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Estimates dynamic models using random feature matching",
+      "llm_evidence_cn": "使用随机特征匹配估计动态模型",
+      "llm_evidence": "使用随机特征匹配估计动态模型",
+      "canonical_evidence": "使用随机特征匹配估计动态模型",
+      "llm_tldr_en": "Proposes likelihood-free estimation of dynamic models by matching random features of simulated and observed data",
+      "llm_tldr_cn": "提出通过匹配模拟与观测数据的随机特征来无似然估计动态模型",
+      "llm_tldr": "提出通过匹配模拟与观测数据的随机特征来无似然估计动态模型",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21978v1",
+      "source": "arxiv",
+      "title": "MoE$^2$-LoRA: When MoE Models Meet MoE-style Low-Rank Adaptation",
+      "abstract": "Mixture-of-Experts (MoE) architectures have been widely adopted in large language models, yet parameter-efficient fine-tuning (PEFT) for MoE models remains underexplored. Existing PEFT methods for MoE either ignore router priors with uniform adapters, reducing efficiency and risking forgetting, or rely on static expert selection, limiting per-token capacity and cross-expert feature learning. In this paper, we make the first attempt to fine-tune MoE models with MoE-style low-rank adaptation: our method, entitled MoE$^2$-LoRA, deeply couples the pretrained expert specialization with task-specific adaptivity via a dual-channel Routing-Conditioned Projection (RCP) module, which reuses base router activations to inform LoRA routing. We further introduce a single global LoRA expert pool shared across all layers, enabling model-wide adaptation with emergent layer-wise affinities and balanced expert utilization. MoE$^2$-LoRA simultaneously benefits from the advantages of prior reuse, dynamic adapter routing, and model-wide knowledge sharing. Evaluated on multiple MoE backbones with varying scales and expert granularities, MoE$^2$-LoRA consistently achieves state-of-the-art downstream accuracy while retaining stronger general capabilities.",
+      "authors": [
+        "Qingyu Yang",
+        "Haonan He",
+        "Minglei Li",
+        "Jingqi Ye",
+        "Tao Chen",
+        "Lei Bai",
+        "Peng Ye"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-24T04:50:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.21978v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "parameter-efficient fine-tuning for MoE models using low-rank adaptation",
+      "llm_evidence_cn": "使用低秩适配的MoE模型参数高效微调",
+      "llm_evidence": "使用低秩适配的MoE模型参数高效微调",
+      "canonical_evidence": "使用低秩适配的MoE模型参数高效微调",
+      "llm_tldr_en": "MoE^2-LoRA fine-tunes MoE models with routing-conditioned low-rank adapters for better specialization.",
+      "llm_tldr_cn": "MoE^2-LoRA通过路由条件低秩适配器微调MoE模型以实现更好的专业化。",
+      "llm_tldr": "MoE^2-LoRA通过路由条件低秩适配器微调MoE模型以实现更好的专业化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.22082v1",
+      "source": "arxiv",
+      "title": "When Language Models Meet NeuroGraphs: Exploring Enhanced Agentic LLM Framework Towards Brain Network Analysis",
+      "abstract": "Brain network analysis is crucial for understanding cognition and neurological disorders, yet existing deep learning methods mainly treat connectome analysis as a graph-to-logit classification problem, offering limited explanatory reasoning. Large language models (LLMs) provide a promising interface for knowledge-intensive scientific analysis, but directly applying general-purpose LLMs to brain networks remains challenging due to the structure-language gap, limited neuroscience grounding, and overconfident positive predictions. In this paper, we propose \\textbf{BrainAgent}, an agentic LLM framework for knowledge-enhanced brain network analysis. BrainAgent reformulates connectome classification as an iterative process of topology-aware understanding, external retrieval, reasoning, and reflection. Specifically, it first converts raw brain networks into compact multi-level structural descriptions through brain-specific analysis tools, then retrieves relevant neuroscience knowledge and task-specific cases to ground the reasoning process, and finally generates structured predictions with reflective verification. Experiments on four public rs-fMRI datasets show that BrainAgent consistently improves different closed-source and open-source LLM backbones over direct prompting and standard reasoning baselines. Further ablation and interpretability analyses demonstrate the effectiveness of each component and show that BrainAgent produces more comprehensive, multi-level, and verifiable explanations.These results indicate that agentic LLMs provide a practical route toward interpretable and knowledge-grounded brain network analysis.",
+      "authors": [
+        "Jiaxing Li",
+        "Rui Dong",
+        "Muyao Tang",
+        "Youyong Kong"
+      ],
+      "primary_category": "cs.MA",
+      "categories": [
+        "cs.MA"
+      ],
+      "published": "2026-07-24T08:31:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.22082v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "LLM framework for brain network analysis",
+      "llm_evidence_cn": "用于脑网络分析的LLM框架",
+      "llm_evidence": "用于脑网络分析的LLM框架",
+      "canonical_evidence": "用于脑网络分析的LLM框架",
+      "llm_tldr_en": "Proposes BrainAgent, an agentic LLM framework for knowledge-enhanced brain network analysis.",
+      "llm_tldr_cn": "提出BrainAgent，一个用于知识增强脑网络分析的智能LLM框架。",
+      "llm_tldr": "提出BrainAgent，一个用于知识增强脑网络分析的智能LLM框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.22114v1",
+      "source": "arxiv",
+      "title": "Pretraining EHR Foundation Models with Patient-Aware Sampling",
+      "abstract": "Autoregressive foundation models for electronic health records (EHRs) typically inherit pretraining methods from language modeling, where patient trajectories are concatenated into a single token stream and windows are sampled from that stream. In EHR data, this choice is consequential: windows may mix multiple patients, and patients with longer records contribute more optimization updates, potentially introducing bias. We propose Patient Sampling, a pretraining sequence-construction method that allows us to control how training signal is distributed across patients. We compare this method to the standard approach, which we refer to as Global Stream. We show that stochastic Patient Sampling with controllable weighting improves performance on real-world EHR data. Across downstream clinical tasks on MIMIC-IV v2.2 and v3.1, Patient Sampling improves Macro AUROC and AUPRC over the Global Stream baseline. These results identify training and validation sequence construction as important and underexplored design choices for autoregressive EHR foundation models.",
+      "authors": [
+        "Joshua Placidi",
+        "Yuxuan Liu",
+        "Jinpei Han",
+        "Marek Rei",
+        "A. Aldo Faisal"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-24T09:10:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.22114v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "pretraining sequence models for EHR trajectories",
+      "llm_evidence_cn": "为电子健康记录轨迹预训练序列模型",
+      "llm_evidence": "为电子健康记录轨迹预训练序列模型",
+      "canonical_evidence": "为电子健康记录轨迹预训练序列模型",
+      "llm_tldr_en": "Patient Sampling improves EHR foundation model pretraining by controlling sequence construction.",
+      "llm_tldr_cn": "患者采样通过控制序列构建改进EHR基础模型预训练。",
+      "llm_tldr": "患者采样通过控制序列构建改进EHR基础模型预训练。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

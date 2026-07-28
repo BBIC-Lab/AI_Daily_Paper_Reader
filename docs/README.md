@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-28
-- 运行时间：2026-07-28 04:30:01 北京时间
+- 最新运行日期：2026-07-29
+- 运行时间：2026-07-29 05:28:59 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-高维时序变点监测与长序列记忆模型双线并进，精读两篇9分力作。  
-最值得关注：处理时序依赖的高维变点分析新框架，以及Naju原生离散状态空间模型实现独立记忆保留与写入，为长记忆效率带来突破。  
-建议可以优先复现Naju的记忆机制，观察其在长文本或流式任务中的实际表现。
-- 详情：[/202607/28/README](/202607/28/README)
+攻克多变量非平稳时间序列的自适应多尺度预测与保形推理，同时深度解读独立成分分析的新范式。  
+重点看满分论文《Adaptive Multi-Scale Forecasting and Gate-Localized Conformal Prediction》如何用门控定位实现可靠的不确定性量化。  
+建议近期关注多尺度动态建模与分布外泛化的交叉突破，尤其在时序预测和持续学习场景。
+- 详情：[/202607/29/README](/202607/29/README)
 
 ### 精读区论文标签
-1. [High-Dimensional Change Point Analysis for Temporally Dependent Data](/202607/28/2607.20828v1-high-dimensional-change-point-analysis-for-temporally-dependent-data)  
+1. [Adaptive Multi-Scale Forecasting and Gate-Localized Conformal Prediction for Multivariate Nonstationary Time Series](/202607/29/2607.23165v1-adaptive-multi-scale-forecasting-and-gate-localized-conformal-prediction-for-multivariate-nonstationary-time-series)  
+   标签：评分：10.0/10、query:ndai
+   evidence：非平稳时间序列的自适应多尺度预测与共形预测
+2. [AdaptICA: Data-Adaptive Transformation Learning for Independent Component Analysis](/202607/29/2607.21901v1-adaptica-data-adaptive-transformation-learning-for-independent-component-analysis)  
    标签：评分：9.0/10、query:ndai
-   evidence：时间序列变化点分析
-2. [Naju: A Native Discrete State-Space Model with Independent Retention and Writing for Long-Sequence Memory](/202607/28/2607.21000v1-naju-a-native-discrete-state-space-model-with-independent-retention-and-writing-for-long-sequence-memory)  
+   evidence：自适应学习EEG运动想象ICA变换
+3. [Rethinking Layer-Wise Information Allocation for Vision Foundation Model Adaptation](/202607/29/2607.21973v1-rethinking-layer-wise-information-allocation-for-vision-foundation-model-adaptation)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于长序列记忆追踪的原生离散状态空间模型
-3. [Multimodal Pretraining for Generalizable EEG Representation Learning](/202607/28/2607.21384v1-multimodal-pretraining-for-generalizable-eeg-representation-learning)  
+   evidence：通过提示适配利用预训练视觉模型处理下游任务
+4. [Hopformer: Homogeneity-Pursuit Transformer for Time Series Forecasting](/202607/29/2607.22299v1-hopformer-homogeneity-pursuit-transformer-for-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：多模态脑电图基础模型
-4. [CARNet Cycle-Conditioned Core Aggregation and Redistribution for Multivariate Time Series Forecasting](/202607/28/2607.21681v1-carnet-cycle-conditioned-core-aggregation-and-redistribution-for-multivariate-time-series-forecasting)  
+   evidence：用于时间序列预测的同质性追求Transformer
+5. [Universal BCI Personalization: One API for Frozen EEG Trunks and Foundation Models](/202607/29/2607.22397v1-universal-bci-personalization-one-api-for-frozen-eeg-trunks-and-foundation-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：具有周期性模式建模的多变量时间序列预测
-5. [Learning What Matters: Supervising Sparse Attention Routing with Causal Evidence Sets](/202607/28/2607.21692v1-learning-what-matters-supervising-sparse-attention-routing-with-causal-evidence-sets)  
-   标签：评分：9.0/10、query:ndai
-   evidence：通过掩码计算输入特征的因果重要性权重
+   evidence：提供与主干无关的API，用于跨被试和会话个性化脑机接口模型
 
 ### 速读区论文标签
-1. [LO-FAR: A Cost-Aware Local Filter for Sparse Feature Ranking in Industrial Ad Recommendation](/202607/28/2607.20873v1-lo-far-a-cost-aware-local-filter-for-sparse-feature-ranking-in-industrial-ad-recommendation)  
+1. [MA-DAR: Manifold-Aligned Dynamic Adaptive Routing for Continual Temporal Knowledge Graph Reasoning](/202607/29/2607.21949v1-ma-dar-manifold-aligned-dynamic-adaptive-routing-for-continual-temporal-knowledge-graph-reasoning)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用局部估计器根据独立预测信号对稀疏特征进行排序
-2. [Source-Prior-Driven Selective Adaptation for Efficient Diffusion Model Finetuning](/202607/28/2607.20913v1-source-prior-driven-selective-adaptation-for-efficient-diffusion-model-finetuning)  
+   evidence：对时序知识图谱序列进行建模，通过持续学习实现时间推理
+2. [MoE$^2$-LoRA: When MoE Models Meet MoE-style Low-Rank Adaptation](/202607/29/2607.21978v1-moe2-lora-when-moe-models-meet-moe-style-low-rank-adaptation)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于源先验的选择性适应方法用于高效扩散模型微调
-3. [High-dimensional sparsity-adaptive multiple change-point detection](/202607/28/2607.20928v1-high-dimensional-sparsity-adaptive-multiple-change-point-detection)  
+   evidence：使用低秩适配的MoE模型参数高效微调
+3. [When Language Models Meet NeuroGraphs: Exploring Enhanced Agentic LLM Framework Towards Brain Network Analysis](/202607/29/2607.22082v1-when-language-models-meet-neurographs-exploring-enhanced-agentic-llm-framework-towards-brain-network-analysis)  
    标签：评分：8.0/10、query:ndai
-   evidence：高维稀疏自适应多变点检测方法用于序列数据
-4. [From Scalars to Time Series: Rethinking Implicit Neural Representations for Time-Varying Volumetric Data](/202607/28/2607.20970v1-from-scalars-to-time-series-rethinking-implicit-neural-representations-for-time-varying-volumetric-data)  
+   evidence：用于脑网络分析的LLM框架
+4. [Pretraining EHR Foundation Models with Patient-Aware Sampling](/202607/29/2607.22114v1-pretraining-ehr-foundation-models-with-patient-aware-sampling)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于时变数据的隐式神经表示的序列级监督
-5. [Self-Balancing Sequential Sampling: Fast Convergence with Controlled Predictability](/202607/28/2607.20818v1-self-balancing-sequential-sampling-fast-convergence-with-controlled-predictability)  
+   evidence：为电子健康记录轨迹预训练序列模型
+5. [Estimating dynamic models by matching random features](/202607/29/2607.21916v1-estimating-dynamic-models-by-matching-random-features)  
    标签：评分：7.0/10、query:ndai
-   evidence：自适应顺序采样，具有镜像下降解释
+   evidence：使用随机特征匹配估计动态模型
 
