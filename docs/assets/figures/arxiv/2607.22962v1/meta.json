@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.22962v1/fig-002.webp",
+      "caption": "Figure 1: Memory contamination and the ConsistencyGate mitigation. (Left) A baseline agent writes every extracted fact to memory, including hallucinated ones (red), which then propagate into downstream answers. (Right) ConsistencyGate samples a verification score K times before each write; facts with low average support are rejected and memory stays clean. (Bottom) Contamination rate and downstream QA accuracy versus interaction turns on MemContam (Qwen2.5-32B-Instruct).",
+      "page": 2,
+      "index": 2,
+      "width": 904,
+      "height": 754
+    },
+    {
+      "url": "assets/figures/arxiv/2607.22962v1/fig-004.webp",
+      "caption": "Table 2: Cross-model generalization of ConsistencyGate (K=5). Qwen2.5-32B and Llama3.3-70B use fixed τ=0.7; Gemma-31B and Llama4-Scout report the adaptive schedule (τmin=0.4, τmax=0.8) used in their respective cross-model runs. ConsistencyGate QA F1 on MemContam is the mean over 3 seeds. ρ: contamination rate (%). Prec/Rec: admission precision/recall. Rec of WriteAll is trivially 1.0. Bold: best per model group.",
+      "page": 10,
+      "index": 4,
+      "width": 902,
+      "height": 212
+    },
+    {
+      "url": "assets/figures/arxiv/2607.22962v1/fig-001.webp",
+      "caption": "Table 3: Ablation summary on MemContam: key variants per model. Full results (K ∈ {1, 3, 5, 10}, all τ values) in Table 4. Bold: best per model group.",
+      "page": 11,
+      "index": 1,
+      "width": 909,
+      "height": 858
+    },
+    {
+      "url": "assets/figures/arxiv/2607.22962v1/fig-005.webp",
+      "caption": "Table 4: Full ablation study on MemContam across all four backbones. K-ablation rows use Adaptive τ (no-tuning fallback); τ -ablation rows use K=5. Recommended configuration: fixed τ=0.7, K=5. Bold: best per section per model.",
+      "page": 18,
+      "index": 5,
+      "width": 760,
+      "height": 1188
+    },
+    {
+      "url": "assets/figures/arxiv/2607.22962v1/fig-006.webp",
+      "caption": "Table 5: Contamination rate ρ (%) of soft scoring (K=5, default) vs. LogProb on MemContam (synthetic, structured) and LoCoMo-Contam (real conversations). Bold: lower contamination per dataset per model. LogProb dominates on MemContam; soft scoring dominates on LoCoMo-Contam.",
+      "page": 19,
+      "index": 6,
+      "width": 672,
+      "height": 188
+    },
+    {
+      "url": "assets/figures/arxiv/2607.22962v1/fig-003.webp",
+      "caption": "Table 6: Representative ConsistencyGate admission decisions on LoCoMo-Contam. p̂: consistency score (0–1). τ∗: adaptive threshold. ✓: correct decision; ✗: error.",
+      "page": 22,
+      "index": 3,
+      "width": 868,
+      "height": 527
+    }
+  ]
+}

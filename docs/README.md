@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-29
-- 运行时间：2026-07-29 05:28:59 北京时间
+- 最新运行日期：2026-07-30
+- 运行时间：2026-07-30 05:09:35 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-攻克多变量非平稳时间序列的自适应多尺度预测与保形推理，同时深度解读独立成分分析的新范式。  
-重点看满分论文《Adaptive Multi-Scale Forecasting and Gate-Localized Conformal Prediction》如何用门控定位实现可靠的不确定性量化。  
-建议近期关注多尺度动态建模与分布外泛化的交叉突破，尤其在时序预测和持续学习场景。
-- 详情：[/202607/29/README](/202607/29/README)
+今日精读两篇高分论文，聚焦二分类中的变量重要性惰性训练机制与时间序列预测基础模型微调新范式。
+二分类可解释性和时间序列基础模型正处突破期，其中惰性训练简化了特征选择，微调策略则重塑了时序预测框架。
+若对模型决策透明性及时序预测前沿感兴趣，可优先延伸阅读这两篇9分论文。
+- 详情：[/202607/30/README](/202607/30/README)
 
 ### 精读区论文标签
-1. [Adaptive Multi-Scale Forecasting and Gate-Localized Conformal Prediction for Multivariate Nonstationary Time Series](/202607/29/2607.23165v1-adaptive-multi-scale-forecasting-and-gate-localized-conformal-prediction-for-multivariate-nonstationary-time-series)  
-   标签：评分：10.0/10、query:ndai
-   evidence：非平稳时间序列的自适应多尺度预测与共形预测
-2. [AdaptICA: Data-Adaptive Transformation Learning for Independent Component Analysis](/202607/29/2607.21901v1-adaptica-data-adaptive-transformation-learning-for-independent-component-analysis)  
+1. [Variable Importance Identification Through Lazy Training for Binary Classification](/202607/30/2607.22979v1-variable-importance-identification-through-lazy-training-for-binary-classification)  
    标签：评分：9.0/10、query:ndai
-   evidence：自适应学习EEG运动想象ICA变换
-3. [Rethinking Layer-Wise Information Allocation for Vision Foundation Model Adaptation](/202607/29/2607.21973v1-rethinking-layer-wise-information-allocation-for-vision-foundation-model-adaptation)  
+   evidence：懒训练识别二分类中重要特征
+2. [Foundation Models and Fine-Tuning: Toward a New Generation of Models for Time Series Forecasting](/202607/30/2607.23146v1-foundation-models-and-fine-tuning-toward-a-new-generation-of-models-for-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过提示适配利用预训练视觉模型处理下游任务
-4. [Hopformer: Homogeneity-Pursuit Transformer for Time Series Forecasting](/202607/29/2607.22299v1-hopformer-homogeneity-pursuit-transformer-for-time-series-forecasting)  
+   evidence：用于时间序列预测的基础模型
+3. [Learning Regularization Structure for Biosignal Template Estimation](/202607/30/2607.23232v1-learning-regularization-structure-for-biosignal-template-estimation)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于时间序列预测的同质性追求Transformer
-5. [Universal BCI Personalization: One API for Frozen EEG Trunks and Foundation Models](/202607/29/2607.22397v1-universal-bci-personalization-one-api-for-frozen-eeg-trunks-and-foundation-models)  
+   evidence：通过SURE正则化学习进行生物信号模板估计
+4. [CAPT: A Multi-task Continuous Autoregressive Transformer enabling Cross-dataset and Cross-species Transfer for Calcium Population Dynamics](/202607/30/2607.23258v1-capt-a-multi-task-continuous-autoregressive-transformer-enabling-cross-dataset-and-cross-species-transfer-for-calcium-population-dynamics)  
    标签：评分：9.0/10、query:ndai
-   evidence：提供与主干无关的API，用于跨被试和会话个性化脑机接口模型
+   evidence：连续自回归Transformer用于神经群体动力学及跨物种迁移
+5. [Neonatal Hypoxic-ischaemic Encephalopathy Classification from the EEG and HRV Signals Using a Conformer based Masked Autoencoder](/202607/30/2607.23554v1-neonatal-hypoxic-ischaemic-encephalopathy-classification-from-the-eeg-and-hrv-signals-using-a-conformer-based-masked-autoencoder)  
+   标签：评分：9.0/10、query:ndai
+   evidence：从EEG/HRV序列中进行自监督表示学习
 
 ### 速读区论文标签
-1. [MA-DAR: Manifold-Aligned Dynamic Adaptive Routing for Continual Temporal Knowledge Graph Reasoning](/202607/29/2607.21949v1-ma-dar-manifold-aligned-dynamic-adaptive-routing-for-continual-temporal-knowledge-graph-reasoning)  
+1. [ConsistencyGate: Preventing Memory Contamination in LLM Agents via Self-Consistency Admission Control](/202607/30/2607.22962v1-consistencygate-preventing-memory-contamination-in-llm-agents-via-self-consistency-admission-control)  
    标签：评分：8.0/10、query:ndai
-   evidence：对时序知识图谱序列进行建模，通过持续学习实现时间推理
-2. [MoE$^2$-LoRA: When MoE Models Meet MoE-style Low-Rank Adaptation](/202607/29/2607.21978v1-moe2-lora-when-moe-models-meet-moe-style-low-rank-adaptation)  
+   evidence：在将事实写入内存前多次查询LLM获取软支持分数
+2. [Structure over Depth: A Single-Block Spatio-Temporal Transformer for Multi-Entity Reasoning](/202607/30/2607.23077v1-structure-over-depth-a-single-block-spatio-temporal-transformer-for-multi-entity-reasoning)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用低秩适配的MoE模型参数高效微调
-3. [When Language Models Meet NeuroGraphs: Exploring Enhanced Agentic LLM Framework Towards Brain Network Analysis](/202607/29/2607.22082v1-when-language-models-meet-neurographs-exploring-enhanced-agentic-llm-framework-towards-brain-network-analysis)  
+   evidence：单块时空Transformer显式建模多实体数据中的时间交互
+3. [Operator Neural Jump ODEs: $L^2$-optimal prediction in function spaces](/202607/30/2607.23110v1-operator-neural-jump-odes-l2-optimal-prediction-in-function-spaces)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于脑网络分析的LLM框架
-4. [Pretraining EHR Foundation Models with Patient-Aware Sampling](/202607/29/2607.22114v1-pretraining-ehr-foundation-models-with-patient-aware-sampling)  
+   evidence：从非规则观测对连续时间随机过程进行最优预测
+4. [A scalable online machine learning approach for Stock Recommendation](/202607/30/2607.23120v1-a-scalable-online-machine-learning-approach-for-stock-recommendation)  
    标签：评分：8.0/10、query:ndai
-   evidence：为电子健康记录轨迹预训练序列模型
-5. [Estimating dynamic models by matching random features](/202607/29/2607.21916v1-estimating-dynamic-models-by-matching-random-features)  
+   evidence：在线深度学习用于序列股票推荐，处理概念漂移
+5. [Modeling Memory-Dependent Reliability of LLMs: A Hidden Markov Model](/202607/30/2607.22951v1-modeling-memory-dependent-reliability-of-llms-a-hidden-markov-model)  
    标签：评分：7.0/10、query:ndai
-   evidence：使用随机特征匹配估计动态模型
+   evidence：使用HMM建模LLM响应序列中的时序依赖
 

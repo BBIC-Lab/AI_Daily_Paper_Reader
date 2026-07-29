@@ -1,0 +1,12445 @@
+Title: Variable Importance Identification Through Lazy Training for Binary Classification
+
+URL Source: https://arxiv.org/pdf/2607.22979v1
+
+Published Time: Tue, 28 Jul 2026 00:28:20 GMT
+
+Number of Pages: 76
+
+Markdown Content:
+# Variable Importance Identification Through Lazy Training for Binary Classification 
+
+Anand Singh 1, Luke Pennella 2, Eshan Kabir 3, and Xiaoxi Shen 41Department of Mathematics, Georgia Institute of Technology 
+
+> 2
+
+Department of Mathematics, University of Connecticut 
+
+> 3
+
+Department of Mathematics, Columbia University 
+
+> 4
+
+Department of Mathematics, Texas State University July 28, 2026 
+
+Abstract 
+
+Deep neural networks have been widely used in many applications (e.g., computer vision and natural language processing); however, understanding their explainability remains a challenging task. Recently, substantial research has been devoted to improving the explainability of deep neural networks, with most of this work focusing on the regression framework. In this paper, we instead focus on the binary classification framework and adopt a variable-importance framework combined with the idea of lazy training to propose an efficient algorithm for identifying important features. From a theoretical perspective, our method relies on only a minimal set of assumptions and achieves well-controlled error rates. The validity of the proposed method and algorithm is examined through extensive simulation studies and real-data applications. 
+
+Keywords : Feature Attribution, Local Rademacher Complexity, Lazy Training, Neural Tangent Kernel, Variable Importance 
+
+# 1 Introduction 
+
+As a foundational building block in modern artificial intelligence (AI), deep neural networks play vital roles in various AI methods. Although deep neural networks exhibit superior predictive performance compared to classical statistical models, their explainability remains limited. However, evaluating the contribution of input variables to predicting a response is of great interest in many areas of scientific research, including healthcare, education, and genetic studies. In classical statistical models, this problem is often formulated as a hypothesis-testing task to assess the significance of a given feature. The goal of this paper is to propose an approach for identifying important variables using deep ReLU neural networks in binary classification settings. 
+
+1.1 Related Literature 
+
+In recent years, many methods have been proposed to make deep neural networks explainable. According to Zhang et al. (2025), these methods can be broadly classified into three categories: 
+
+feature attribution , data attribution , and component attribution . Perturbation-based methods (Lundberg and Lee, 2017; Petsiuk et al., 2018) and gradient-based methods (Simonyan 1arXiv:2607.22979v1 [stat.ML] 25 Jul 2026 et al., 2013; Smilkov et al., 2017) are the two most commonly used approaches across all three categories. Our work falls within the category of perturbation-based feature attribution, which quantifies how model outputs change when input features are modified. In perturbation-based feature attribution, feature importance is generally measured by the difference in feature scores, where one score is calculated using all features and the other is obtained by modifying the features of interest. From a statistical perspective, identifying important features can be formulated as a hypothesis testing problem: 
+
+H0 : the features of interest are NOT important vs H1 : the features of interest are important .
+
+(1) Several methods have been proposed to test this hypothesis, and most test statistics are expressed as differences in feature importance scores (e.g., differences in mean squared error in regression settings). For instance, Horel and Giesecke (2020) applied a Lindeberg–Feller–type central limit theorem for stochastic processes together with a second-order functional delta method to construct a test statistic for evaluating feature importance. Similarly, Shen et al. (2021), Shen and Wang (2024) and Dai et al. (2022) defined feature importance scores based on differences in mean squared errors and established the asymptotic normality of the resulting test statistics. More recently, due to the wide variety of deep learning models and training algorithms, model-agnostic methods for testing feature significance have become increasingly popular. In particular, Williamson et al. (2023) proposed a general framework for model-agnostic variable importance, and Gao et al. (2022) built on this framework by incorporating the lazy training regime (Chizat et al., 2019) to develop an efficient procedure for testing variable importance in deep neural networks. Additionally, other applications of testing the hypothesis (1) using (deep) neural networks include a quasi-likelihood ratio test proposed by Shen et al. (2022) and a permutation test proposed by Mandel and Barnett (2024). 
+
+1.2 Our Contributions 
+
+In this paper, we build upon the general variable importance framework to propose a new approach and algorithm for identifying important input features using lazy-trained deep neural network features in binary classification problems. The contributions of our work are threefold: 
+
+• Methodologically , most existing methods focus on regression settings, whereas we develop our methodology under the binary classification setting. Moreover, by formulating the problem through the likelihood function, our framework naturally extends to other types of response variables (e.g., count responses) within the generalized linear model framework (McCullagh and Nelder, 1999). 
+
+• Theoretically , we improve the error rate from Op(n−1/2) in Gao et al. (2022) to op(n−1/2),which is essential for the validity of the general variable importance framework proposed by Williamson et al. (2023). In addition, we substantially reduce the number of assumptions required for our theoretical results. Specifically, the only assumptions imposed concern the eigenvalue decay rate of the kernel matrix constructed from neural tangent features, the order of the regularization parameter in the penalized logistic regression problem, and the assumptions on the total number of weights in a deep ReLU neural network. 
+
+• Computationally , we implement the proposed algorithm as a Python library. Empirical studies demonstrate that our approach is more computationally efficient than retraining-based 2methods. Furthermore, simulation studies are conducted to empirically validate the assumed eigenvalue decay of the neural tangent kernel matrix and to evaluate the Type I error and power of the proposed test. 
+
+1.3 Notations 
+
+Throughout the rest of the paper, bold font alphabetic letters and Greek letters will be used to denote vectors or matrices. For a pseudo-metric space (T, d ), N (ε, T, d ) denotes the covering number, which is the minimum number of ε-balls needed to cover T with respect to the metric d.For functions f, g ∈ L2(X , P ) with P being a probability measure, ∥·∥ and ⟨· , ·⟩ denote the L2 norm and the inner product, i.e., 
+
+∥f ∥ =
+
+> [∫
+> X
+
+f 2(x)dP (x)
+
+> ]1/2
+
+, ⟨f, g ⟩ =
+
+> ∫
+> X
+
+f (x)g(x)dP (x).
+
+Moreover, ∥·∥ n and ⟨· , ·⟩ n represent the L2-norm and inner product with respect to the empirical probability measure Pn, i.e., if x1, . . . , xn are the observed data points, 
+
+∥f ∥n = 
+
+> [
+
+1
+
+n
+
+> n∑
+> i=1
+
+f 2(xi)
+
+> ]1/2
+
+, ⟨f, g ⟩n = 1
+
+n
+
+> n∑
+> i=1
+
+f (xi)g(xi).
+
+For a matrix A ∈ Rm×n, [A]ij , [A]i, : and [A]:,j represent the (i, j )th component of A, the ith row of A, and the jth column of A respectively. ∥A∥op denotes the operator norm: ∥A∥op =sup ∥x∥=1 ∥Ax ∥, which is the same as the largest eigenvalue of AT A; ∥A∥F denotes the Frobenius norm: ∥A∥F =
+
+> √
+
+tr (AT A) and ∥A∥2,1 denotes the (2 , 1) -norm of A, that is ∥A∥2,1 = ∑ni=1 ∥[A]:,i ∥,which is the sum of the ℓ2-norm of each column in A. Additionally, for a square matrix B ∈ Rn×n,
+
+λ1(B), . . . , λ n(B) will be used to denote its eigenvalues. For any p-dimensional vector u and 
+
+S ⊂ [p] := {1, 2, . . . , p }, we refer to the elements of u with index in S and not in S as uS and u−S ,respectively. In terms of asymptotic notations, suppose that {an}, {bn} are two sequences, we denote an = o(bn)
+
+if lim n→∞ an 
+
+> bn
+
+= 0 and an = ω(bn) if lim n→∞ an 
+
+> bn
+
+= ∞. In addition, an = O(bn) if   
+
+> ∣∣∣an
+> bn
+> ∣∣∣
+
+is bounded and an ≲α bn means an ≤ C(α)bn, where C(α) is some constant depending on α only. Moreover, let {Xn} and {Yn} be sequences of random variables, we denote Xn = op(Yn) if |Xn/Y n| p
+
+−→ 0 and 
+
+Xn = Op(Yn) if |Xn/Y n| is bounded in probability, i.e. sup n P(|Xn/Y n| ≥ k) → 0 as k → ∞ .
+
+1.4 Organization of the Paper 
+
+The rest of the paper is organized as follows. Section 2 provides some preliminary materials to provide readers with sufficient background in kernels and reproducing kernel Hilbert spaces, local Rademacher complexity, and the framework of variable importance. The main theoretical results and the lazy variable importance (VI) framework for binary classification are provided in Section 3, followed by some simulation and experimental results in Section 4. All the proofs are given in the appendices. 
+
+# 2 Preliminaries 
+
+2.1 Kernels and Reproducing Kernel Hilbert Space 
+
+Let X be an arbitrary set. The idea of a kernel is to define a comparison function K : X × X → R
+
+to measure the similarity of a pair of two inputs from X . In particular, positive definite kernels are 3the most widely used ones in statistics and machine learning. 
+
+Definition 1. A positive definite kernel on a set X is a function K : X × X → R that is 
+
+• Symmetric : K(x, y ) = K(y, x ) for all x, y ∈ X .
+
+• Positive Semidefinite : for all N ∈ N, (a1, . . . , a N ) ∈ RN and x1, . . . , x N ∈ X ,
+
+> n∑
+> i=1
+> n∑
+> j=1
+
+aiaj K(xi, x j ) ≥ 0.
+
+An important property of positive definite kernels is the reproducing property, which means that for a function f in a reproducing kernel Hilbert space (RKHS) (H, ⟨· , ·⟩ H), its evaluation at a point x ∈ X can be represented as the inner product between f and K(·, x ).
+
+Definition 2 (Reproducing Kernel Hilbert Space) . Let X be a set and H ⊂ { h : X → R} be a class of functions forming a Hilbert space with inner product ⟨· , ·⟩ H. The function K : X × X → R is called a reproducing kernel of H if 
+
+• K(·, x ) is an element in H for all x ∈ X .
+
+• For every x ∈ X and h ∈ H , the following reproducing property holds: 
+
+f (x) = ⟨f, K (·, x )⟩H .
+
+If a reproducing kernel exists, then H is called a reproducing kernel Hilbert space (RKHS). 
+
+The seminar paper by Aronszajn (1950) developed an important property that a kernel function is positive definite if and only if it is a reproducing kernel. Consequently, if H is an RKHS associated with a kernel function K and let ϕ : X → H with ϕ(x) = K(·, x ), then for any x, y ∈ H ,
+
+⟨ϕ(x), ϕ (y)⟩H = ⟨K(·, x ), K (·, y )⟩H = K(x, y ).
+
+The map ϕ is commonly known as the feature map. In other words, the kernel function maps an element x in an arbitrary set X to the element ϕ(x) = K(·, x ) in a high dimensional feature space H and the nonlinear input-output relationship could become a linear relationship in the high dimensional feature space H.
+
+2.2 Local Rademacher Complexity 
+
+Given a function class F, the Rademacher complexity is a quantitative measure of its complexity, which essentially evaluates the alignment or correlation between the vector of predicted values and a vector of random noise. However, Rademacher complexity provides global estimates of the complexity of the function class and it does not reflect the fact that good learning algorithms often pick functions having small errors. As a result, suboptimal rates will be obtained in some situations (Bartlett et al., 2005). Local Rademacher complexities are similar to Rademacher complexities except that they restrict to a small subset of the function class. The main results rely heavily on some results related to local Rademacher complexity in Bartlett et al. (2005). We summarize some key concepts and results in this subsection. 4Definition 3 (Star-shaped Class) . Let F be a class of functions and f0 is a given function. F is said to be star-shaped around f0 if f0 + γ(f − f0) ∈ F for any f ∈ F and γ ∈ [0 , 1] . The star hull of F around f0 is defined as star (F, f 0) = {f0 + γ(f − f0) : γ ∈ [0 , 1] , f ∈ F} .
+
+Definition 4 (Sub-root Function) . A function ψ : [0 , ∞) → [0 , ∞) is sub-root if it is nonnegative, nondecreasing and if r 7 → ψ(r)/√r is nonincreasing for r > 0.
+
+The following lemma shows that local Rademacher complexities are sub-root when the function class F is star-shaped. 
+
+Lemma 5 (Lemma 3.4 in Bartlett et al. (2005)) . If the class F is star-shaped around ˆf (which may depend on the data), then the (random) function ψ defined for r ≥ 0 by 
+
+ψ(r) = Eξ 
+
+> 
+
+sup  
+
+> f∈F ,
+
+∥f − ˆf ∥≤√r
+
+1
+
+n
+
+> n∑
+> i=1
+
+ξif (Xi) 
+
+> ∣∣∣∣∣∣
+
+X1, . . . , X n 
+
+> 
+
+,
+
+is sub-root and r 7 → E[ψ(r)] is also sub-root. 
+
+It is well-known in machine learning theory that for a uniformly bounded function class F,with high probability, E[f (X)] can be upper bounded by the empirical mean 1 
+
+> n
+> ∑ni=1
+
+f (Xi) and the (empirical) Rademacher complexity of F (Theorem 3.3 in Mohri et al. (2018)). The following theorem shows similar results in terms of local Rademacher complexity. 
+
+Theorem 6 (Theorem 3.3 in Bartlett et al. (2005)) . Let F be a class of functions with ranges in 
+
+[a, b ] and assume that there are some functional T : F → R+ and some constant B such that for every f ∈ F , Var [f ] ≤ T (f ) ≤ DE[f ]. Let ψ be a sub-root function and let r∗ be the fixed point of 
+
+ψ, i.e. ψ(r∗) = r∗. Assume that ψ satisfies for any r ≥ r∗,
+
+DE
+
+> [
+
+sup    
+
+> f∈F ,T (f)≤r
+
+1
+
+n
+
+> n∑
+> i=1
+
+ξif (Xi)
+
+> ]
+
+≤ ψ(r).
+
+Then with c1 = 704 and c2 = 26 , for any C > 1 and every δ > 0, with probability at least 1 − δ,
+
+E[f (X)] ≤ CC − 11
+
+n
+
+> n∑
+> i=1
+
+f (Xi) + c1CD r∗ + 11( b − 1) + c2CD n log 1
+
+δ , ∀f ∈ F 
+
+Also, with probability at least 1 − δ,
+
+1
+
+n
+
+> n∑
+> i=1
+
+f (Xi) ≤ C + 1 
+
+C E[f (X)] + c1CD r∗ + 11( b − a) + c2CD n log 1
+
+δ , ∀f ∈ F 
+
+2.3 The Framework of Variable Importance 
+
+Williamson et al. (2023) proposed a general framework for nonparametric inference on interpretable algorithm-agnostic variable importance. Let S ⊂ [p] be the index set of the features subgroup of interest, and let F be a rich class of functions from X → R endowed with a norm ∥·∥ F . Define 
+
+F−S := {f ∈ F : f (u) = f (v) for all u, v ∈ X satisfying u−S = v−S } , (2) 5to be the class of functions in F whose evaluation ignores elements of the input with index in S.Additionally, suppose that V (f, P 0) is a measure of predictiveness of a given candidate prediction function f ∈ F when P0 is the true data-generating distribution, with large values of V (f, P 0)
+
+implying high predictiveness. If P0 is known, a natural candidate prediction function would be 
+
+f0 ∈ argmax f ∈F V (f, P 0). (3) Similarly, we can define 
+
+f0,−S ∈ argmax f ∈F −S V (f, P 0). (4) Then the population-level important of the variable XS relative to the full feature vector X is defined as the amount of predictiveness lost by excluding XS from X:
+
+ψ0,S := V (f0, P 0) − V (f0,−S , P 0).
+
+Once the data are observed, a natural estimator of ψ0,S is 
+
+ˆψn,S := V ( ˆfn, Pn) − V ( ˆfn, −S , Pn),
+
+where Pn is the empirical probability distribution and ˆfn, ˆfn, −S are estimators of population optimizers f0 and f0,−S respectively and are often obtained by building the predictive model for Y
+
+using all features X or only those features in X−S respectively. Let M be a class of probability distributions and define the vector space of finite signed measures generated by M as 
+
+S = {c(P1 − P2) : c ≥ 0, P 1, P 2 ∈ M} .
+
+For any ν = c(P1 − P2) ∈ S, let ∥ν∥∞ = c sup x |F1(z) − F2(z)| where F1 and F2 are the distribution functions with respect to P1 and P2 respectively. The main result in Williamson et al. (2023) shows that ˆψn,S is asymptotically normal under two sets of conditions, which can be classified as deterministic (D) and random (R) conditions in nature. (D1) (Optimality ) There exists some constant C > 0 such that for each sequence f1, f 2, . . . , ∈ F 
+
+such that ∥fj − f0∥F → 0,
+
+∣∣∣V (fj , P 0) − V (f0, P ))
+
+∣∣∣ ≤ C ∥fj − f0∥2 
+
+> F
+
+for each j large enough. (D2) (Differentiability ) There exists some constant δ > 0 such that for each sequence η1, η 2, · · · ∈ R
+
+and H, H 1, H 2, · · · ∈ S satisfying that ηj → 0 and ∥H − Hj ∥∞ → 0, it holds that 
+
+sup    
+
+> f∈F ,∥f−f0∥F<δ
+
+∣∣∣∣∣
+
+V (f, P 0 + ηj Hj ) − V (f, P 0)
+
+ηj
+
+− ˙V (f, P 0; ηj )
+
+∣∣∣∣∣ → 0,
+
+where ˙V (f, P 0; H) is the Gâteaux derivative of P 7 → V (f, P ) at P0 along the direction H ∈ S .(R1) ( Minimum Rate of Convergence )
+
+∥∥∥ ˆfn − f0
+
+∥∥∥F = op(n−1/4).(R2) (Weak Consistency ) ∫ [gn(z)] 2dP 0(z) = op(1) , where gn : z 7 → ˙V ( ˆfn, P 0; δz − P0) −
+
+˙V (f0, P 0; δz − P0) with δz being the degenerate distribution on {z}.(R3) ( Limited Complexity ) There exists some P0-Donsker class D0 such that P0(gn ∈ D 0) → 1.
+
+Theorem 7 (Theorem 1 in Williamson et al. (2023)) . If (D1)-(D2) and (R1)-(R3) hold, then 
+
+V ( ˆfn, Pn) is an asymptotically linear estimator of V (f0, P 0), that is, 
+
+V ( ˆfn, Pn) − V (f0, P 0) = 1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+˙V (f0, P 0; δZi − P0) + op(n−1/2). (5) 
+
+under sampling from P0.
+
+63 Main Results 
+
+3.1 Problem Setup 
+
+Suppose that (X, Y ), (X1, Y 1), . . . , (Xn, Y n) ∼ i.i.d. P0, where X ∈ Rp satisfying ∥X∥ ≤ κ for some κ > 0, Y ∈ { 0, 1} and P0 is some probability distribution. In classical statistical methods, logistic regression is the most widely used approach to model dichotomous response variables. Recall that in a logistic regression, the assumption on the conditional distribution of Y |X is 
+
+PY |X = Ber 
+
+(
+
+σ(XT β)
+
+)
+
+. In other words, the logit of the conditional mean E[Y |X] is a linear function with respect to the input variables. A natural way to generalize the linear assumption is to assume a more general function. In other words, it is reasonable to assume more generally that 
+
+PY |X = Ber (π(X)) .Now, let F be a class of functions and 
+
+f0 ∈ argmin f ∈F EP0 [ℓ(f (X), Y )] , (6) where 
+
+ℓ(f (X), Y ) = −Y f (X) + log 
+
+(
+
+1 + ef (X))
+
+. (7) In other words, the function V (f,P0) measuring the predictive performance in the VI framework is V (f, P 0) = EP0
+
+[
+
+Y f (X) − log 
+
+(
+
+1 + ef (X))] 
+
+. Our first observation, as shown in Proposition 8, is that the underlying function π(X) that generates the response variable Y is the same as σ(f0(X)) 
+
+almost surely. 
+
+Proposition 8. Suppose that PY |X = Ber (π(X)) for some function π(X) satisfying logit (π(X)) ∈F and f0 is as defined in (6) Then 
+
+π(X) = σ(f0(X)) , PX − a.s. 
+
+Similar to Section 2.3, Let S ⊂ [p] be the set of indices of variables to be tested for importance. Define 
+
+f0,−S ∈ argmin f ∈F −S EP0
+
+[
+
+−Y f (X) + log 
+
+(
+
+1 + ef (X))] 
+
+,
+
+where F−S is the same as defined in (2). Throughout the remaining of the paper, we consider the class of deep ReLU neural networks as in Bartlett et al. (2017) 
+
+F =
+
+{
+
+hθf (x) = W Lφ(W L−1φ(· · · W 2φ(W 1x))) : ∥W i∥op ≤ κi,
+
+∥∥∥W Ti
+
+∥∥∥2,1 ≤ bi, ∀i ∈ [L]
+
+}
+
+, (8) where φ : R → R is an activation function and W i ∈ Rpi×pi−1 , i = 1 , . . . , L are weight matrices in the network with p0 = p and pL = 1 . In particular, we consider φ to be the most popular rectified linear unit (ReLU) activation function (Nair and Hinton, 2010). In addition, write W i = [ wi, 1, . . . , wi,p i−1 ].Then note that 
+
+∥W i∥op = sup 
+
+> ∥u∥=1
+
+∥W iu∥ = sup 
+
+> ∥u∥=1
+
+∥∥∥∥∥∥
+
+> pi−1
+
+∑
+
+> j=1
+
+uj wi,j 
+
+∥∥∥∥∥∥
+
+≤ sup 
+
+> ∥u∥=1
+> pi−1
+
+∑
+
+> j=1
+
+|uj | ∥ wi,j ∥≤
+
+> pi−1
+
+∑
+
+> j=1
+
+∥wi,j ∥ =
+
+∥∥∥W Ti
+
+∥∥∥2,1 .
+
+7So it is reasonable to assume bi ≥ κi, for all i ∈ [L], and we will implicitly make this assumption in the sections to follow. Let θ ∈ RW be the vector of all parameters ( W is the total number of parameters) in a deep neural network in F. The estimator of f0 is given by the empirical risk minimizer: 
+
+θf = argmin θ∈RW
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+[
+
+−Yi log hθ(Xi) + log 
+
+(
+
+1 + ehθ (Xi))] 
+
+(9) Denote X−S be the vector of X with the indices in S replaced by their corresponding mean. The estimator of f0,−S can similarly by defined as 
+
+θf, −S = argmin θ∈RW
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+[
+
+−Yihθ(Xi, −S ) + log 
+
+(
+
+1 + ehθ (Xi, −S ))] 
+
+. (10) To address the computational complexity of retraining a neural network, we considered the lazy regime by linearly approximating hθ around θf :
+
+hθ ≈ hθf + [ ∇θhθf ]T (θ − θf ).
+
+Under such a framework, the estimator of f0,−S will be ˜hθf +∆ θS := hθf + [ ∇θhθf ]T ∆θS , where 
+
+∆θS = argmin w∈RW
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+[
+
+−Yi(hθf (Xi, −S ) + [ ∇θhθf (Xi, −S )] T w)+ log 
+
+(
+
+1 + ehθf (Xi, −S )+[ ∇θ hθf (Xi, −S )] T w)
+
+)] 
+
++ λ
+
+2 ∥w∥2 (11) The optimization problem (11) now becomes a logistic regression with a ridge penalty, and λ > 0 is the regularization parameter. Let Lλ(w) be the target function. Then 
+
+∂∂w Lλ(w) = − 1
+
+n ΦT
+
+> −S
+
+[
+
+Y − σ
+
+(
+
+hθf ,−S + ΦT 
+
+> −S
+
+w
+
+)] 
+
++ λw
+
+∂2
+
+∂w∂wT Lλ(w) = 1
+
+n ΦT 
+
+> −S
+
+Π−S Φ−S + λIW ,
+
+where 
+
+ΦT 
+
+> −S
+
+=
+
+[
+
+∇θhθf (X1,−S ), · · · , ∇θhθf (Xn, −S )
+
+]
+
+∈ RW ×n,
+
+Π−S = Diag 
+
+(
+
+σ
+
+(
+
+hθf ,−S + Φ−S w
+
+) ( 
+
+1 − σ
+
+(
+
+hθf ,−S + Φ−S w
+
+))) 
+
+,
+
+hθf ,−S =
+
+[
+
+hθf (X1,−S ), · · · , h θf (Xn, −S )
+
+]T
+
+.
+
+It is easy to see that Lλ(w) is a convex function in w. Because of this, the optimizer can be obtained through the Newton-Raphson algorithm and the updating equation for w in the Newton-Raphson algorithm is 
+
+w(k+1) = w(k) +
+
+[
+
+ΦT 
+
+> −S
+
+Π(k) 
+
+> −S
+
+Φ−S + nλ IW
+
+]−1 [
+
+ΦT
+
+> −S
+
+[
+
+Y − σ
+
+(
+
+hθf ,−S + ΦT 
+
+> −S
+
+w(k))] 
+
+− nλ w(k)]
+
+=
+
+[
+
+ΦT 
+
+> −S
+
+Π(k) 
+
+> −S
+
+Φ−S + nλ IW
+
+]−1 [
+
+ΦT 
+
+> −S
+
+Π(k) 
+
+> −S
+
+Φ−S w(k) + ΦT
+
+> −S
+
+[
+
+Y − σ
+
+(
+
+hθf ,−S + ΦT 
+
+> −S
+
+w(k))]] 
+
+=
+
+[
+
+ΦT 
+
+> −S
+
+Π(k) 
+
+> −S
+
+Φ−S + nλ IW
+
+]−1
+
+ΦT 
+
+> −S
+
+Π(k)
+
+> −S
+
+[
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+[
+
+Y − σ
+
+(
+
+hθf ,−S + ΦT 
+
+> −S
+
+w(k))]] 
+
+= ΦT 
+
+> −S
+
+Π(k)
+
+> −S
+
+[
+
+Φ−S ΦT 
+
+> −S
+
+Π(k) 
+
+> −S
+
++ nλ In
+
+]−1 [
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+[
+
+Y − σ
+
+(
+
+hθf ,−S + ΦT 
+
+> −S
+
+w(k))]] 
+
+,
+
+8where the last equation follows from the Sherman-Morrison-Woodbury identity. Consequently, 
+
+˜h(k+1)   
+
+> θf+∆ θS
+
+:= hθf ,−S + Φ−S w(k+1) 
+
+= hθf ,−S + Φ−S ΦT 
+
+> −S
+
+Π(k)
+
+> −S
+
+[
+
+Φ−S ΦT 
+
+> −S
+
+Π(k) 
+
+> −S
+
++ nλ In
+
+]−1
+
+[
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+[
+
+Y − σ
+
+(
+
+hθf ,−S + ΦT 
+
+> −S
+
+w(k))]] 
+
+= hθf ,−S + K−S Π(k)
+
+> −S
+
+[
+
+K−S Π(k) 
+
+> −S
+
++ nλ In
+
+]−1 [
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+[
+
+Y − σ
+
+(
+
+hθf ,−S + ΦT 
+
+> −S
+
+w(k))]] 
+
+= hθf ,−S + K−S
+
+[
+
+K−S + nλ Π(k)−1
+
+> −S
+
+]−1 [
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+[
+
+Y − σ
+
+(
+
+hθf ,−S + ΦT 
+
+> −S
+
+w(k))]] 
+
+,
+
+where K−S := Φ−S ΦT 
+
+> −S
+
+is the neural tangent kernel (NTK) matrix (Jacot et al., 2018). To provide a systematic overview of the theoretical results, we summarize the main ideas in Figure 1. In the figure, the red point represents the underlying function f0; the blue point represents the fitted deep ReLU neural network hθf using all input features; the green point represents 
+
+˜hθf +∆ θS , where ∆θS is obtained by fitting a logistic regression model using the neural tangent kernel (NTK); and the black point represents hθf +∆ θS , which is a deep ReLU neural network with weights θf + ∆ θS. The latter model is used to evaluate predictive performance over F−S . There are three quantities of primary interest. (I) The approximation error 
+
+∥∥∥f0 − hθf
+
+∥∥∥, which measures how well the deep ReLU neural network fits the underlying function f0. The convergence rate of the DNN within the class F is studied in Section 3.3, which is depicted in the left panel of Figure 1. (II) The distance between ˜hθf +∆ θS and hθf +∆ θS , which quantifies the discrepancy between the lazy VI–fitted linearized deep ReLU neural network around the fitted parameters—an element of the RKHS induced by the NTK—and the corresponding deep ReLU neural network in F with parameters θf + ∆ θS. This quantity is analyzed in Section 3.4. (III) The estimation error of the lazy VI–fitted linearized deep ReLU neural network, given by 
+
+∥∥∥˜hθf +∆ θS − f0
+
+∥∥∥, which is investigated in Section 3.5. (II) and (III) will be combined to determine the order of 
+
+∥∥∥hθf +∆ θS − f0
+
+∥∥∥.
+
+Figure 1: Graphical illustration of the three essential quantities in the main result. (I) =
+
+∥∥∥f0 − hθf
+
+∥∥∥.(II) =
+
+∥∥∥hθf +∆ θS − ˜hθf +∆ θS
+
+∥∥∥. (III) =
+
+∥∥∥∥h˜hθf +∆ θS
+
+− f0
+
+∥∥∥∥.To bound the quantities shown in Figure 1, we will frequently use the relationship between the 
+
+L2(P ) norm and the empirical L2(Pn) norm. So we first state a theorem that demonstrates their relationships. In short, with high probability, either norm can be bounded by the other with some additional factor depending on the complexity of the function class F.9Theorem 9. Let F be a class of functions with ranges in [−M, M ] and f ∗ be a fixed function (not necessarily in F) with bounded range. Let ˜M = sup f ∈F sup x |f (x)| + sup x |f ∗(x)|. In addition, suppose that ˆψn(r) is a sub-root function (possibly data-dependent) and let ˆr∗ be the fixed point of 
+
+ˆψn(r) (i.e. ˆψn(r∗) = r∗). Fix δ > 0 and assume that ˆψn satisfies for any r ≥ ˆr∗,
+
+ˆψn(r) ≥ 20 Eξ 
+
+> 
+
+sup      
+
+> f∈star (F,f ∗),∥f−f∗∥2
+> n≤2 ˜M2r
+
+1
+
+n
+
+> n∑
+> i=1
+
+ξi
+
+f (Xi)˜M 
+
+> ∣∣∣∣∣∣
+
+X1, . . . , Xn 
+
+> 
+
++ 62 3n log 1
+
+δ . (12) 
+
+Then with probability at least 1 − 3δ,
+
+∥f − f ∗∥ ≤ √2 ∥f − f ∗∥n +
+
+> √
+
+2 ˜M 2c1 ˆr∗ +
+
+> √
+
+˜M 2(11 + 2 c2)
+
+n log 1
+
+δ , ∀f ∈ F , (13) 
+
+∥f − f ∗∥n ≤ 
+
+> √
+
+32 ∥f − f ∗∥ +
+
+> √
+
+2 ˜M 2c1 ˆr∗ +
+
+> √
+
+˜M 2(11 + 2 c2)
+
+n log 1
+
+δ , ∀f ∈ F , (14) 
+
+where c1 and c2 are universal constants. 
+
+3.2 Assumptions 
+
+(A1) (Regularity Conditions on Kernel Functions) Let μ1 ≥ μ2 ≥ · · · ≥ μn > 0 be the eigenvalues of 1 
+
+> n
+
+K−S . There exists some constant N0 > 1 such that μj ≤ cj −α for all j ≥ N0
+
+and some α > 1.(A2) (Regularity Conditions on Regularization Parameter λ) λ =
+
+> (
+
+1 ∨ ∥K−S ∥op 
+
+> 4
+> )
+
+ςn where 
+
+ςn = ω
+
+> (
+
+n− α−12( α+1) ∨ n− 14
+
+> )
+
+is a deterministic sequence and α is the same as in Assumption (A1). In Gao et al. (2022), the Rademacher complexity of the RKHS spanned by neural tangent features is used to derive the convergence rate, which, from our perspective, is one reason why only an error rate of order Op(n−1/2) is obtained. As discussed in Section 2.2, local Rademacher complexity can, in general, yield faster rate of convergence. As shown in Lemma 28 in Section 3.5, the local Rademacher complexity depends on the eigenvalue decay rate of the NTK. Accordingly, Assumption (A1) is imposed to ensure that the NTK exhibits the desired spectral behavior, which enables a faster convergence rate. We emphasize that Assumption (A1) is not overly restrictive. In fact, prior work has established that the eigenvalues of the NTK decay at a rate of j−(p+1) /p (Bietti and Mairal, 2019; Bietti and Bach, 2020; Li et al., 2024). Existing results on eigenvalue decay are derived for the NTK evaluated at initialization, whereas in our setting, the NTK is evaluated at the fitted parameters. Intuitively, for large overparameterized neural networks, the parameters obtained via gradient descent remain close to their initializations (Du et al., 2018; Oymak and Soltanolkotabi, 2020). Consequently, it is reasonable to expect that the NTK evaluated at the fitted parameters exhibits a similar eigenvalue decay behavior. Although we are currently unable to provide a theoretical proof that Assumption (A1) holds for the class of deep ReLU neural networks, we empirically assess this assumption through simulation studies in Section 4.2. Assumption (A2), on the other hand, requires that the regularization parameter in the penalized logistic regression lies within an appropriate range to ensure the accuracy of the linear approximation to the fitted deep ReLU neural network. 10 3.3 Convergence Rate of hθf
+
+To begin with, we need to ensure that the neural network classifiers perform well by providing an upper bound for 
+
+> ∥∥∥
+
+hθf − f0
+
+> ∥∥∥
+
+. For binary classification problems, there are many generalization bounds available for the loss 0-1 ℓ(a, y ) = I{a̸=y} or the logistic loss for large-margin classifiers 
+
+ℓ(z) = log (1 + ez ) where z = yf (x) is known as the margin of a classifier taking values ±1. Although the 0-1 logistic loss function defined in (7) can be considered as a shifted version of the logistic loss, for completeness, we provide a detailed derivation of the generalization error bound based on the 0-1 logistic loss. Here are some basic facts about the 0-1 logistic loss function. 
+
+Proposition 10. Let ℓ(a, y ) = −ay + log(1 + ea) be the 0-1 logistic loss function. Then 1. ℓ is a convex function with respect to a.2. ℓ is a 1-Lipschitz function with respect to a, that is, 
+
+|ℓ(a1, y ) − ℓ(a2, y )| ≤ | a1 − a2| , ∀a1, a 2 ∈ R.
+
+3. Suppose that a ∈ [−M, M ] for some M > 0, then a lower bound for the modulus of convexity for ℓ with respect to a is given by 
+
+δ(η) := inf 
+
+> |a1−a2|≥ η
+
+ℓ(a1, y ) + ℓ(a2, y )2 − ℓ 
+
+> (
+
+a1 + a2
+
+2 , y 
+
+> )
+
+≥ 18 σ(M )[1 − σ(M )] η2. (15) As a result of the modulus of convexity of the 0-1 logistic function given in Proposition 10, the L2
+
+metric between any f ∈ F and f0 can be upper bounded via the risk function R(f ) = E[ℓ(f (X), Y )] 
+
+as demonstrated in the corollary below. 
+
+Corollary 11. Suppose that sup x |f (x)| ≤ M for all f ∈ F , then 
+
+∥f − f0∥2 ≤ 4(1 + eM )2
+
+eM [R(f ) − R(f0)] .
+
+In view of Corollary 11, to provide an upper bound for 
+
+> ∥∥∥
+
+hθf − f0
+
+> ∥∥∥
+
+, it suffices to provide a good bound for R(hθf ) − R(f0). As have been mentioned in Section 2.2, local Rademacher complexity usually provides a better convergence rate for an estimator. So we utilized local Rademacher complexity and some techniques described in Bartlett et al. (2005) to provide upper bound for 
+
+R(hθf ) − R(f0). The following theorem is a simple generalization to relax the assumption on the range of functions in Theorem 5.4 in Bartlett et al. (2005). 
+
+Theorem 12. Let F be a class of functions with ranges in [−M, M ] and let ℓ(·, ·) be a loss function satisfying the following conditions: 1. For every probability distribution P , there is an f ∗ ∈ F satisfying R(f ∗) = inf f ∈F R(f ).2. There is a constant L such that ℓ is L-Lipschitz in its first argument, that is, for all y, ˆy1, ˆy2,
+
+|ℓ(ˆ y1, y ) − ℓ(ˆ y2, y )| ≤ L |ˆy1 − ˆy2| .
+
+3. There is a constant B∗ ≥ 1 such that for every probability distribution and every f ∈ F ,
+
+∥f − f ∗∥2 ≤ B∗[R(f ) − R(f ∗)] .
+
+11 Let ˆf be any element of F satisfying Rn( ˆf ) = inf f ∈F Rn(f ). For any δ > 0, suppose that ˆψn(r) is a subroot function satisfying 
+
+ˆψn(r) ≥ ˜c1Eξ
+
+ sup   
+
+> f∈star (F,f ∗),
+
+∥ ˆf −f ∥2
+
+> n≤˜c3r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+ + ˜c2
+
+n log 1
+
+δ ,
+
+where ˜c1 = 40 M L 2, ˜c2 = 44 M 2L2 + 2 M ˜c1 and ˜c3 = 2 /L 2. Then for any δ > 0, with probability at least 1 − 3δ,
+
+R( ˆf ) − R(f ∗) ≤ c1CB∗L2 ˆr∗ + 11 ¯U + c2B∗L2Cn log 1
+
+δ ,
+
+where ¯U = sup f ∈F ∥ℓf − ℓf ∗ ∥∞ and ˆr∗ is the fixed point of ˆψn(r).
+
+We now focus on the properties of the class of deep ReLU neural networks described in (8). To begin with, we note that all functions in F are uniformly bounded. 
+
+Lemma 13. Let F be the class of deep neural networks as defined in (8). Then 
+
+sup  
+
+> hθf∈F
+
+sup 
+
+> ∥x∥≤ κ
+
+∣∣∣hθf (x)
+
+∣∣∣ ≤ κ
+
+( L∏
+
+> i=1
+
+κi
+
+)
+
+.
+
+For simplicity, we denote M = κ ∏Li=1 κi, pmax = max {p0, p 1, . . . , p L}. According to Theorem 12, we need a subroot function that upper bounds the local Rademacher complexity of the star hull of the class of deep neural networks in (8) and a choice of such subroot function is given by the following lemma. 
+
+Lemma 14 (Local Rademacher Complexity of DNN) .
+
+Eξ
+
+ sup  
+
+> hθf∈star (F,f 0),
+
+∥∥∥hθf −f0
+
+∥∥∥2
+
+> n
+> ≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξihθf (Xi)
+
+ ≤ 12 √2
+
+√n
+
+√W √r
+
+1 + log 1/2
+
+5M
+
+(∑Li=1 
+
+( bi
+
+> κi
+
+)1/2)2
+
+√r
+
+ ,
+
+where W is the total number of parameters in the deep neural network. Denote 
+
+ˆψn(r) = 12 √2
+
+√n
+
+√W √r
+
+1 + log 1/2
+
+5M
+
+(∑Li=1 
+
+( bi
+
+> κi
+
+)1/2)2
+
+√r
+
+ .
+
+Then ˆψn(r) is a sub-root function with fixed point 
+
+ˆr∗ ≲ Wn log 
+
+M
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ .
+
+By combining all the above results together, we obtain the rate of convergence for hθf .
+
+Theorem 15 (Rate of Convergence of DNN) . For any δ > 0, with probability at least 1 − 3δ,
+
+R(hθf ) − R(f0) ≲ Wn log 
+
+M
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + M + B∗
+
+n log 1
+
+δ ,
+
+12 and ∥∥∥hθf − f0
+
+∥∥∥ ≲
+
+√W
+
+√n log 1/2
+
+M
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ +
+
+√
+
+M + B∗
+
+n log 1
+
+δ ,
+
+where B∗ = 4(1+ eM )2 
+
+> eM
+
+.
+
+As a corollary, we can also get the convergence rate of a deep ReLU neural network in terms of the empirical norm by applying Theorem 9, which also results in a bound for ∥e∥, where 
+
+e = hθf − f 0 = [ hθf (X1) − f0(X1), . . . , h θf (Xn) − f0(Xn)] T .
+
+Corollary 16. For any δ > 0, with probability at least 1 − 6δ,
+
+∥∥∥hθf − f0
+
+∥∥∥n ≲ (1 ∨ M )√W
+
+√n log 1/2
+
+(1 ∨ M )
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + ( M + √M + B∗)
+
+√ 1
+
+n log 1
+
+δ ,
+
+and 
+
+∥e∥ ≲ (1 ∨ M )√W log 1/2
+
+(1 ∨ M )
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + ( M + √M + B∗)
+
+√
+
+log 1
+
+δ .
+
+For notation simplicity, throughout the remainder of the manuscript, we will assume κ, κ l, b l,
+
+l = 1 , . . . , L are fixed constants. As mentioned in Section 2.3, one of the assumptions needed for the VI framework is to ensure that the convergence rate of the estimated function is not too slow (see assumption (R1)). Based on the above results, we can know that when 
+
+W = o(√n/ log( n)) , (16) with probability at least 1 − e−o(n1/2),
+
+∥∥∥hθf − f0
+
+∥∥∥ = o(n−1/4). Similar conditions as (16) also appeared in existing literature studying the consistency and rate of convergence of neural networks (Schmidt-Hieber, 2020; Farrell et al., 2021; Shen et al., 2023; Shen and Espinoza, 2025). 
+
+3.4 Bounding ∥∥∥˜hθf +∆ θS − hθf +∆ θS
+
+∥∥∥
+
+In this section, we bound the L2 norm between ˜hθf +∆ θS and hθf +∆ θS . Note that 
+
+∣∣∣hθf +∆ θS (x) − ˜hθf +∆ θS (x)
+
+∣∣∣ =
+
+∣∣∣hθf +∆ θS (x) − hθf (x) − [∇θhθf (x)] T ∆θS
+
+∣∣∣
+
+=
+
+∣∣∣∣∫ 10
+
+[
+
+∇θh(1 −t)θf +t(θf +∆ θS )(x) − ∇ θhθf (x)
+
+]T
+
+∆θS dt 
+
+∣∣∣∣
+
+=
+
+∣∣∣∣∫ 10
+
+[
+
+∇θhθf +t∆θS (x) − ∇ θhθf (x)
+
+]T
+
+∆θS dt 
+
+∣∣∣∣
+
+≤ ∥ ∆θS ∥
+
+∫ 10
+
+∥∥∥∇θhθf +t∆θS (x) − ∇ θhθf (x)
+
+∥∥∥ dt. (17) where the second equality follows from applying Taylor’s theorem, similar to equation (1.3.2) in Misiakiewicz and Montanari (2024), and the last inequality follows from the Cauchy-Schwarz inequality and the triangle inequality. As we can see from (17), it suffices to bound the norm of the difference in gradients. If the activation φ is smooth, it is reasonable to assume that the gradient of the weights is Lipschitz continuous. However, since our focus is on the ReLU activation function, 13 it is not differentiable. Instead, we bound the norm of the gradient vector immediately. Such an approach has been applied to study the convergence properties of shallow neural networks trained through (stochastic) gradient descent as in Oymak and Soltanolkotabi (2020). To do so, we follow the idea in Zou et al. (2018). Note that given an input x, the output of the neural network after the l-th layer is 
+
+zl = σ (W lσ(W l−1 · · · σ(W 1x))) =
+
+
+
+> l
+
+∏
+
+> j=1
+
+Σj W j
+
+ x,
+
+where l2∏
+
+> j=l1
+
+W l =
+
+{
+
+W l2 W l2−1 · · · W l1 , if l1 ≤ l2
+
+I, otherwise ,
+
+and 
+
+Σ1 = Diag 
+
+(
+
+I{wT
+
+> 1,1x>0
+
+}, . . . , I{wT 
+
+> 1,p 1x>0
+
+})
+
+,
+
+Σj = Diag 
+
+I{wTj, 1
+
+(∏ j−1  
+
+> i=1 ΣiWi
+
+)x>0}, . . . , I{
+
+> wTj,p j
+
+(∏ j−1  
+
+> i=1 ΣiWi
+
+)x>0
+
+} , j = 1 , . . . , L − 1.
+
+Then the gradients of hθf (x) with respect to W l, l = 1 , . . . , L are 
+
+∇W L hθf (x) = 
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ x
+
+
+
+> T
+
+∇W l hθf (x) = ∇W l W L
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ x
+
+= ∇W l W L
+
+
+
+> L−1
+
+∏
+
+> j=l
+
+Σj W j
+
+ zl−1
+
+= Σl
+
+
+
+> L−1
+
+∏
+
+> j=l+1
+
+Σj W j
+
+
+
+> T
+
+W TL zTl−1, l = 1 , . . . , L − 1,
+
+where z0 = x.
+
+Lemma 17. For any hθf ∈ F and ∥x∥ ≤ κ,
+
+∥∥∥∇θhθf (x)
+
+∥∥∥ ≤ κ
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+κj
+
+1 + bL
+
+√√√√L−1∑
+
+> l=1
+
+1
+
+κ2
+
+> l
+
+ .
+
+Consequently, tr (K−S ) ≤ nκ 2
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+κ2
+
+> j
+
+(
+
+1 + b2
+
+> LL−1
+
+∑
+
+> l=1
+
+1
+
+κ2
+
+> l
+
+)
+
+Proposition 18. For n sufficiently large and any δ > 0, with probability at least 1 − 7δ,
+
+max {∥ ∆θS ∥ , ∥Φ−S ∆θS ∥} = o(n− 14 ) + o(n− α+3 2( α+1) )
+
+(√W log 1/2 n +
+
+√
+
+log 1
+
+δ
+
+)
+
+.
+
+14 Consequently, we have the bound for the L2 distance between ˜hθf +∆ θS and hθf +∆ θS .
+
+Theorem 19. For any x satisfying ∥x∥ ≤ κ,
+
+∣∣∣hθf +∆ θS (x) − ˜hθf +∆ θS (x)
+
+∣∣∣ ≤ 2 ∥∆θS ∥ κ
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+κj
+
+1 + bL
+
+√√√√L−1∑
+
+> l=1
+
+1
+
+κ2
+
+> l
+
+ .
+
+Consequently, ∥∥∥hθf +∆ θS − ˜hθf +∆ θS
+
+∥∥∥ ≲ o(n− 14 ) + o(n− α+3 2( α+1) )√W log 1/2 n. (18) 
+
+3.5 Estimation Error of ˜hθf +∆ θS
+
+Since ˜hθf +∆ θS is the estimated function under the lazy regime for logistic regression under the null hypothesis, it is natural to look at the estimation error between ˜hθf +∆ θS and the underlying truth 
+
+f0,−S . To begin with, we quantify the estimation error with respect to the L2(Pn)-norm. 
+
+Lemma 20. Under the assumptions (A1) and (A2), for any δ > 0 and n suffciently large, there exists ¯K > 0, such that with probability at least 1 − 7δ,
+
+√n
+
+∥∥∥˜h(k+1)   
+
+> θf+∆ θS
+
+− f0,−S
+
+∥∥∥n ≲
+
+∥∥∥Φ−S w(k)∥∥∥ + √W log 1/2 n +
+
+√
+
+log 1
+
+δ + o(n α−14( α+1) ), ∀k ≥ ¯K. (19) 
+
+In addition, denote ˜hθf +∆ θS = lim k→∞ ˜h(k) 
+
+> θ+∆ θS
+
+. Then under the assumptions (A1) and (A2), with probability at least 1 − 14 δ,
+
+√n
+
+∥∥∥˜hθf +∆ θS − f0,−S
+
+∥∥∥n ≲ √W log 1/2 n +
+
+√
+
+log 1
+
+δ + o(n− 14 ) + op(n α−14( α+1) ). (20) Lemma 20 shows that when the Newton-Raphson algorithm converges, the estimation error of the linearized neural network is op(n−1/4) with high probability under the empirical L2-norm. We now turn to bound the estimation error of the linearized neural network with respect to the L2-norm. The idea is to use the local Rademacher complexity to bridge the estimation error in 
+
+L2(Pn)-norm and the estimation error in L2(P )-norm. Note that 
+
+˜h(k+1)   
+
+> θf+∆ θS
+
+(x) = hθf ,−S (x) + 
+
+[
+
+∇θhθf (x)
+
+]T
+
+w(k+1) 
+
+= hθf ,−S (x) + 
+
+[
+
+∇θhθf (x)
+
+]T
+
+ΦT 
+
+> −S
+
+Π(k)
+
+> −S
+
+[
+
+Φ−S ΦT 
+
+> −S
+
+Π(k) 
+
+> −S
+
++ nλ In
+
+]−1
+
+[
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+[
+
+Y − σ
+
+(˜h(k) 
+
+> θf+∆ θS
+
+)]] 
+
+= hθf ,−S (x) + K−S (x, X−S )T α(k) 
+
+> −S
+
+,
+
+where 
+
+K−S (x, X−S )T =
+
+[
+
+∇θhθf (x)
+
+]T
+
+ΦT 
+
+> −S
+
+∈ R1×n
+
+α(k) 
+
+> −S
+
+= Π(k)
+
+> −S
+
+[
+
+Φ−S ΦT 
+
+> −S
+
+Π(k) 
+
+> −S
+
++ nλ In
+
+]−1 [
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+[
+
+Y − σ
+
+(˜h(k) 
+
+> θf+∆ θS
+
+)]] 
+
+∈ Rn
+
+=
+
+[
+
+K−S + nλ Π(k)−1
+
+> −S
+
+]−1 [
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+[
+
+Y − σ
+
+(˜h(k) 
+
+> θf+∆ θS
+
+)]] 
+
+15 As a result, ˜h(k+1)   
+
+> θf+∆ θS
+
+− hθf ,−S is a linear combination of neural tangent kernel. Define 
+
+HB =
+
+{
+
+f (x) = αT K−S (x, X−S ) : ∥f ∥H =
+
+√
+
+αT K−S α ≤ B
+
+}
+
+.
+
+Lemma 21 shows that ˜h(k+1)   
+
+> θf+∆ θS
+
+− hθf ,−S ∈ H B .
+
+Lemma 21. Under the Assumptions (A1) and (A2), for any δ > 0, with probability at least 1 − 7δ,
+
+∥∥∥˜h(k+1)   
+
+> θf+∆ θS
+
+− hθf ,−S
+
+∥∥∥H ≲ o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√n + √W log 1/2 n +
+
+∥∥∥Φ−S w(k)∥∥∥ +
+
+√
+
+log 1
+
+δ
+
+)
+
+. (21) 
+
+In addition, with probability at least 1 − 14 δ,
+
+∥∥∥˜hθf +∆ θS − hθf ,−S
+
+∥∥∥H ≲ o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√n + √W log 1/2 n +
+
+√
+
+log 1
+
+δ
+
+)
+
+. (22) In Gao et al. (2022), the estimation error of the linearized deep ReLU network was obtained by using the upper bound for the Rademacher complexity of HB , which we believe is the main reason that Op(n−1/2) error rate can only be obtained. Instead, we use the upper bound for the local Rademacher complexity for HB (see Lemma 28 in Appendix F). Additionally, it is also important to note that functions in HB are uniformly bounded provided the kernel function is uniformly bounded (see Lemma 30 in Appendix F). Since f0,−S and hθf ,−S are uniformly bounded based on the definition of F, then under the kernel regularity conditions in the assumption (A1), we can assume that there exists ˜M > 0, such that sup x |f (x)| + sup x
+
+∣∣∣f0,−S (x) − hθf ,−S (x)
+
+∣∣∣ ≤ ˜M for all f ∈ H B . We also define 
+
+¯HB =
+
+{ f
+
+˜M : f ∈ H B
+
+}
+
+(23) 
+
+Lemma 22 (Upper Bound for L2-norm of Functions in ˜HB ). Let ρ =
+
+∥∥∥f0,−S − hθf ,−S
+
+∥∥∥2
+
+/ ˜M 2 and let ˆψn(r) be a (possibly data-dependent) sub-root function and let ˆr∗ be the fixed point of ˆψn (i.e., 
+
+ˆψn(ˆ r∗) = ˆ r∗). Fix δ > 0 and assume that ˆψn satisfies for any r ≥ ˆr∗,
+
+ˆψn(r) ≥ 20 Eξ
+
+ sup   
+
+> h∈¯HB,∥h∥2
+> n≤4( r+ρ)
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξih(Xi, −S )
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+ + 62 3n log 1
+
+δ . (24) 
+
+Then with probability at least 1 − 3δ,
+
+∥∥∥f − (f0,−S − hθf ,−S )
+
+∥∥∥ ≤ √2
+
+∥∥∥f − (f0,−S − hθf ,−S )
+
+∥∥∥n+
+
+√
+
+2 ˜M 2c1 ˆr∗+
+
+√
+
+˜M 2(11 + 2 c2)
+
+n log 1
+
+δ , ∀f ∈ H B
+
+(25) 
+
+where c1 and c2 are universal constants. 
+
+As one can tell from (25) in Lemma 22, bounding the L2(P )-norm via the L2(Pn)-norm relies heavily on the fixed point of the sub-root function ˆψ(r). Lemma 23 below provides the rate of r∗,the fixed point of a sub-root function for the local Rademacher complexity of HB .16 Lemma 23. Let ρ =
+
+∥∥∥f0,−S − hθf ,−S
+
+∥∥∥2
+
+/ ˜M 2 and ˆψn(r) := 20 
+
+√ 2
+
+> n
+
+√
+
+cα(8( r ∨ ρ)) 1− 1 
+
+> α
+
++ 62 3n log 1 
+
+> δ
+
+. Then 
+
+ˆψn(r) is a sub-root function and it satisfies (24) in Lemma 22. Moreover, under the kernel regularity assumptions (A1), 
+
+ˆr∗ ≤ max 
+
+{
+
+˜cαn−1/2ρ 12 (1− 1 
+
+> α
+
+), ˜c 
+
+> 2αα+1
+> α
+
+n− αα+1 
+
+}
+
++ 124 3n log 1
+
+δ ,
+
+where ˆr∗ is the fixed point of the sub-root function ˆψn(r) and ˜cα = 20 
+
+√
+
+2cα · 81− 1 
+
+> α
+
+.
+
+Combining Lemma 20, Lemma 21, Lemma 22 and Lemma 23, we obtain the following main result on the error rate of the estimated function. 
+
+Theorem 24. Under assumptions (A1) and (A2), with probability at least 1 − 17 e−n 1 
+
+> α+1
+
+,
+
+∥∥∥h(k+1)   
+
+> θf+∆ θS
+
+− f0,−S
+
+∥∥∥ ≲α
+
+1
+
+√n
+
+∥∥∥Φ−S w(k)∥∥∥ + n−1/2√W log 1/2 n + o(n−1/4)+ 
+
+[
+
+o
+
+(
+
+n− 14 (1− α−12α ))
+
++ o
+
+(
+
+n− 14 (1+ α+3 2α )) [ √W log 1/2 n
+
+] α+1 2α
+
+] ∥∥∥f0,−S − hθf ,−S
+
+∥∥∥ 
+
+> α−12α
+
+.
+
+(26) 
+
+At convergence, with probability at least 1 − 31 e−n 1 
+
+> α+1
+
+,
+
+∥∥∥˜hθf +∆ θS − f0,−S
+
+∥∥∥ ≲α n−1/2√W log 1/2 n + o(n−1/4)+ 
+
+[
+
+o
+
+(
+
+n− 14 (1− α−12α ))
+
++ o
+
+(
+
+n− 14 (1+ α+3 2α )) [ √W log 1/2 n
+
+] α+1 2α
+
+] ∥∥∥f0,−S − hθf ,−S
+
+∥∥∥ 
+
+> α−12α
+
+.
+
+(27) 
+
+3.6 Lazy VI for Binary Classification 
+
+Now we are going to formulate the variable importance as a hypothesis testing problem. If features with indices in S are not important, whether including them to train a model should not change the value of ψ0,S . Therefore, the null and alternative hypotheses are 
+
+H0 : ψ0,S = 0 vs H1 : ψ0,S > 0. (28) Under our setting, the predictiveness measure can be defined as 
+
+V (f, P 0) = −EP0
+
+[
+
+−Y f (X) + log 
+
+(
+
+1 + ef (X))] 
+
+.
+
+Therefore, its Gâteaux derivative at P0 along the direction H ∈ S can be calculated directly: Let 
+
+ℓ(f (X), Y ) = −Y f (X) + log 
+
+(
+
+1 + ef (X))
+
+, then for any f ∈ F and H ∈ S ,
+
+V (f, P 0 + ηH ) − V (f, P 0)
+
+η = − EP0+ηH j [ℓ(f (X), Y )] − EP0 [ℓ(f (X), Y )] 
+
+η
+
+= − EP0 [ℓ(f (X), Y )] + ηEH [ℓ(f (X), Y )] − EP0 [ℓ(f (X), Y )] 
+
+η
+
+= −EH [ℓ(f (X), Y )] . (29) 17 Therefore, 
+
+gn(Z) = ˙V ( ˆfn, P 0; δZ − P0) − ˙V (f0, P 0; δZ − P0)= −
+
+(
+
+EδZ −P0
+
+[
+
+ℓ( ˆfn(X), Y )
+
+]
+
+− EδZ −P0 [ℓ(f0(X), Y )] 
+
+)
+
+= EP0
+
+[
+
+ℓ( ˆfn(X), Y ) − ℓ(f0(X), Y )
+
+]
+
+− [ℓ( ˆfn(X), Y ) − ℓ(f0(X), Y )] (30) We are now ready to state the main theorem to conduct hypothesis testing based on the Lazy VI. 
+
+Theorem 25. Suppose that 
+
+W = o(√n/ log n).
+
+Then for any S ⊂ [p], under H0, with probability at least 1 − 31 e−n 1 
+
+> α+1
+
+,
+
+ˆψn,S − ψ0,S = V (hθf , Pn) − V (hθf +∆ θS , Pn) − [V (f0, P 0) − V (f0,−S , P 0)] = 1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+[ ˙V (f0, P 0; δZi−P0 ) − ˙V (f0,−S , P 0; δZi − P0)
+
+]
+
++ op(n−1/2).
+
+An important consequence of Theorem 25 is that under H0, ˆψn,S follows an asymptotic normal distribution with meann 0 and variance Var [ ˙V (f0, P 0; δZ−P0 ) − ˙V (f0,−S , P 0; δZ − P0)] , which can be estimated by 
+
+τ 2 
+
+> n, −S
+
+= 1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+[ti, −S − ¯t]2 ,
+
+where ti, −S = ˙V (f0, Pn; δZi−Pn ) − ˙V (f0,−S , Pn; δZi − Pn). This suggests that testing the importance of a set of features is the same as performing a Z-test in classical statistical inference. Following the idea in Williamson et al. (2023), we divide the entire dataset into two parts (say training and test sets), estimating f0 using the training data, and then evaluating the predictiveness measure on the test data. Algorithm 1 provides the lazy VI framework for testing the importance of each feature in the dataset, i.e. S = {j}, j = 1 , . . . , p .
+
+# 4 Simulations and Experiments 
+
+To evaluate the proposed LazyVI method for binary classification, we conducted extensive simulations and empirical experiments. In particular, the first simulation study investigated the empirical power of the proposed method and its ability to control the Type I error rate. The second simulation study examined whether the assumed eigenvalue decay rate of the neural tangent kernel holds for the simulated data generated in the first study. Finally, we applied our method to identify important subregions in images from the Modified National Institute of Standards and Technology (MNIST) database (LeCun et al., 2002). 
+
+4.1 Empirical Type I Error and Empirical Power 
+
+4.1.1 Data Generation 
+
+We conducted simulations to evaluate the performance of the Lazy Variable Importance framework in controlling the empirical Type I error rate and achieving high empirical power for detecting important variables. To begin, we generated p = 10 feature variables independently from the standard normal distribution, 
+
+X1, ..., X 10 i.i.d. 
+
+∼ N (0 , 1) .
+
+18 Algorithm 1 Lazy VI for binary classification 
+
+Require: : Data: {(Xi, Y i)}ni=1 ; λ > 0; training size: 0 < n 1 < n ; n2 ← n − n1; DNN structure: 
+
+θ ∈ RW 7 → hθ(·); initial value w(0) for Newton-Raphson algorithm 
+
+θf ← argmin θ∈RW 1
+
+> n1
+
+∑n1
+
+> i=1
+
+[
+
+−Yihθ(Xi) + log 
+
+(
+
+1 + ehθ (Xi))] 
+
+V (hθf , Pn) ← − 1
+
+> n2
+
+∑ni=n1+1 
+
+[
+
+−Yihθ(Xi) + log 
+
+(
+
+1 + ehθ (Xi))] 
+
+for j ∈ [p] do 
+
+Xi, −j ← Xi; [Xi, −j ]j ← 1
+
+> n1
+
+∑ni=1 [Xi]j
+
+[Φ−j ]:,i ← ∇ θhθ(Xi, −j )|θ=θf , i = 1 , . . . , n 1
+
+∆θj ← argmin w∈RW 1
+
+> n
+> ∑ni=1
+> [
+
+−Yi(hθf (Xi, −j ) + [ Φ−j ]T
+
+> :,i
+
+w) + log 
+
+> (
+
+1 + ehθf (Xi, −j )+[ Φ−j ]T
+
+> :,i w)
+> )]
+
++ λ 
+
+> 2
+
+∥w∥2
+
+V (hθf +∆ θj , Pn) ← − 1
+
+> n2
+> ∑ni=n1+1
+> [
+
+−Yihθf +∆ θj (Xi, −j ) + log 
+
+> (
+
+1 + ehθf +∆ θj (Xi, −j ))] 
+
+ˆψn,j ← V (hθf , Pn) − V (hθf +∆ θj , Pn)
+
+ti,j ←
+
+> [
+
+−Yihθ+∆ θj (Xi, −j ) + log 
+
+> (
+
+1 + ehθ+∆ θj (Xi, −j ))] 
+
+−
+
+> [
+
+−Yihθf (Xi) + log 
+
+> (
+
+1 + ehθf (Xi))] 
+
+ˆτj ← 1
+
+> n2
+
+∑n2
+
+> i=1
+
+(ti,j − ¯tj )2
+
+end for Ensure: : ˆψn,j , j = 1 , . . . , p .The binary response variable Y ∈ { 0, 1} was generated according to 
+
+Y ∼ Ber (σ(f (X1, ..., X 9)) ),
+
+where σ(x) denotes the sigmoid function. That is, Y follows a Bernoulli distribution with success probability σ(f (X1, . . . , X 9)). In this simulation study, we consider two types of signal functions f :a linear function and a nonlinear function, defined below: (Linear Signal) f (X1, . . . , X 9) = 2 .2X1 − 1.9X2 + 1 .8X3 + 2 .3X4
+
+− 1.9X5 + 2 .4X6 − 1.7X7 + 1 .9X8 + 2 .1X9
+
+(Nonlinear Signal) f (X1, .., X 9) = 4 .6X1 − 2.1X22 + 3 .3X3 + 1 .3X34 − 6.5 sin( X5)+ 2 .6 exp( |X6|) − 3.7X7 + 5 .8 cos( X8) + 2 .1X7X8 + 3 .1X29 .
+
+In both settings, we generated a sample size of n = 5,000. 
+
+4.1.2 Implementation 
+
+The purpose of this simulation study is to determine which of the ten variables are important, or statistically significantly associated with the response variable Y . To this end, we conduct a sequence of hypothesis tests. The null and alternative hypotheses are stated as follows: 
+
+H0i : The variable Xi is not significantly related to Y, H1i : The variable Xi is significantly related to Y, i = 1 , . . . , 10 .
+
+It is important to note that the variable X10 is not involved in generating the response variable Y ;therefore, it is used to assess whether the proposed LazyVI method controls the empirical Type I error rate at the nominal significance level α = 0 .05 . The remaining nine variables, X1, . . . , X 9,are used to generate Y , and each is truly associated with the response. Testing the hypotheses H0i
+
+versus H1i for i = 1 , . . . , 9 allows us to evaluate the empirical power of the proposed framework. 19 For the linear signal case, we implemented a feedforward deep neural network with two hidden layers, each consisting of 50 neurons with ReLU activation functions, and a sigmoid output layer for binary classification. The model was trained using the binary cross-entropy loss and the Limited-memory BFGS optimizer with a learning rate of η = 0 .0005 . Training employed early stopping with a patience of 10 epochs and a minimum improvement threshold of 10 −4 to prevent overfitting. The ridge penalty parameter λ was selected using 3-fold cross-validation from a logarithmically spaced grid of 10 values ranging from 10 −4 to 10 −2.25 , choosing the value that minimized the validation loss. Similarly, in the nonlinear signal case, we trained a feedforward deep neural network with two hidden layers of 50 neurons each using ReLU activation functions and a sigmoid output layer. The model was trained using the binary cross-entropy loss and the Limited-memory BFGS optimizer with a learning rate of η = 0 .0005 . Training employed early stopping with a patience of 10 epochs and a minimum improvement threshold of 10 −4 to prevent overfitting. The ridge penalty parameter 
+
+λ was selected using 3-fold cross-validation from a logarithmically spaced grid of 10 values ranging from 10 −4 to 10 −2.25 , with the optimal value chosen according to the validation loss. After training the neural network, we applied the LazyVI framework to assess the importance of each feature variable X1, . . . , X 10 . For each feature, we computed a test statistic and its corresponding standard error under the LazyVI framework, and then calculated a one-sided p-value using the standard normal cumulative distribution function (CDF): 
+
+P V i = 1 − Φ 
+
+> (
+
+VI i
+
+SE i
+
+> )
+
+,
+
+where Φ( ·) is the standard normal CDF and VI i and SE i denote the variable importance estimate and its standard error for feature Xi, respectively. For each feature Xi, we tested the null hypothesis 
+
+H0i that the variable is not important, and the null hypothesis H0i was rejected if its corresponding p-value P V i < α for our chosen significance level α = 0 .05 . For Xi ∈ { X1, .., X 9}, the empirical power is the proportion of the time that our algorithm claims that Xi is important. Since all of these features are important in determining our label Y , these should be close to 1. For X10 , the empirical Type I error is the proportion of the time that our algorithm incorrectly claims that X10 
+
+is important. 
+
+4.1.3 Results 
+
+To benchmark the performance of LazyVI against existing methods for inference in deep neural networks, we compare our results with the dnn-inference framework developed by Dai et al. (2022). The dnn-inference package implements statistical inference for deep neural networks using asymptotic approximations and influence-function-based methods designed for variable importance and hypothesis testing in high-dimensional settings. In our experiments, we apply dnn-inference to the same simulated datasets used in the LazyVI experiments under both the linear and nonlinear signals. We then compare empirical power and Type I error rates across all variables. While dnn-inference performs comparatively well in the linear setting, its empirical power decreases substantially for several variables in the nonlinear setting. In contrast, LazyVI maintains consistently high power while preserving appropriate Type I error control. We also compare computational efficiency. The dnn-inference procedure required 83,324 seconds in the linear setting and 166,551 seconds in the nonlinear setting, whereas LazyVInonlinear required approximately 21,534 seconds in the linear setting and 33,766 seconds in the linear setting. 20 These results suggest that LazyVI provides a favorable balance between statistical performance and computational scalability for variable importance inference in deep neural networks. Table 1: Empirical rejection rates for LazyVI, Logistic Regression, and DNN-Inference under linear and nonlinear signal settings. 
+
+Linear Signal Nonlinear Signal Variable LazyVI Logistic Reg. DNN-Inf. LazyVI Logistic Reg. DNN-Inf. 
+
+X1 1.000 1.000 0.882 1.000 1.000 0.846 
+
+X2 1.000 1.000 0.864 0.960 0.039 0.103 
+
+X3 1.000 1.000 0.865 0.996 0.999 0.420 
+
+X4 1.000 1.000 0.920 0.996 0.996 0.426 
+
+X5 1.000 1.000 0.979 1.000 1.000 0.780 
+
+X6 1.000 1.000 0.941 1.000 0.032 0.183 
+
+X7 1.000 1.000 0.740 1.000 0.999 0.603 
+
+X8 1.000 1.000 0.882 1.000 0.999 0.024 
+
+X9 1.000 1.000 0.906 0.990 0.044 0.141 
+
+X10 0.059 0.041 0.020 0.047 0.037 0.020 
+
+4.2 Decay Rate of NTK Eigenvalues 
+
+To demonstrate the empirical validity of Assumption (A1), we use the same neural network architecture, training procedure, and nonlinear data generated in 4.1. We use a dataset of size 
+
+n = 5000 observations, with 1650 of these held out as the test set to compute the NTK matrix. Assumption (A1) requires that the eigenvalues satisfy the power-law decay μj ≤ cj −α for α > 1.Taking the natural logarithm implies log( μj ) ≤ log( c) − α log( j).In Figure 2, we plot the natural logarithm of the sorted eigenvalues against the natural logarithm of their indices. The results show that the eigenvalues decay significantly faster than a reference line with slope −1, confirming that the decay rate α is strictly greater than 1. 
+
+4.3 Classification on MNIST 
+
+4.3.1 Problem Formulation and Region Definition 
+
+We evaluated the efficacy of Mean Imputation (Dropout), Lazy Training, and Retraining methods for Variable Importance (VI) estimation using the MNIST dataset. The classification task was restricted to the digits ‘8’ and ‘9’, resulting in a training set size of approximately 11,800 images, with 20% of this used as validation, and a test set of approximately 1,983 images. As illustrated in Figure 3, the primary structural distinction between these digits lies in the central-bottom region: the digit ‘8’ contains a closed loop crossing the midline, whereas the ‘9’ features a straight stroke or a curve that typically remains open in the center. Consequently, we hypothesized that the localized 
+
+7 × 7 regions in the central-bottom area of the image (regions 10, 11, 14, and 15) would exhibit the highest variable importance. Conversely, we expected pixels in the upper regions (shared loop feature) and the far-left and far-right edges (typically empty background padding) to demonstrate negligible importance. To mitigate the issue of high pixel-to-pixel correlation, where a single pixel’s value is highly predictive of its neighbors, we computed VI for groups of pixels rather than individual inputs. We analyzed the 28 × 28 pixel images at three levels of granularity: 21 Figure 2: Log-log plot of the sorted NTK eigenvalues. The spectrum decays faster than the red reference line with slope −1, supporting the regularity condition α > 1.1. Halves: Top vs. Bottom ( 14 × 28 pixels). 2. Quadrants: Four disjoint regions ( 14 × 14 pixels). 3. Fine-Grained Grid: Sixteen disjoint regions ( 7 × 7 pixels). 
+
+4.3.2 Model Architecture and Implementation 
+
+We reused the same setup and architecture that controlled the Type I error in the Empirical Power study above. We implemented a feedforward neural network with two hidden layers, each containing 50 neurons with ReLU activation functions, and a final output layer producing logits for binary classification. The model was trained using the L-BFGS optimizer with a learning rate of η = 5 ·10 −4.We used early stopping with a patience of 10 epochs to prevent overfitting, and the ridge penalty parameter λ was selected from a logarithmic path of 10 values ranging from 10 −4 to 10 −2.25 via 3-fold cross-validation. For the VI comparisons, we defined the “Dropout” baseline as mean imputation, where pixels in a target region are replaced by their global mean intensity across the training set. After training, we applied the LazyVI framework to assess the importance of each pixel region. We computed a one-sided p-value for each region i using the standard normal cumulative distribution function ( Φ): 
+
+P V i = 1 − Φ 
+
+> (
+
+VI i
+
+SE i
+
+> )
+
+,
+
+where VI i and SE i denote the variable importance estimate and its standard error, respectively. 22 Figure 3: Representative samples of digits ‘8’ and ‘9’ from the test set. The overlay illustrates the 
+
+7 × 7 pixel grid boundaries used for the fine-grained analysis. Regions are labeled from 1 to 16. 
+
+4.3.3 Results and Analysis 
+
+The comparative variable results are visualized in Figure 4. It is important to note that the color scale in the figure is normalized throughout the columns of a given row (granularity level) to facilitate comparison between methods, but not normalized across distinct rows. Figure 5 shows a heatmap of the Lazy Training p-values for each region, adjusted with the Bonferroni correction. Each p-value was multiplied by 2, 4, or 16 for regions in the Top vs Bottom, Quadrant, and 16-Region granularities respectively, with the maximum adjusted p-value capped to 1. The plotted values are computed as −log 10 (max {.0001 , p-value }). Note all p-values for the remainder of this section are reported with respect to the Bonferroni correction. The results strongly support our central-bottom hypothesis and illustrate the value of fine-grained analysis. In the coarse-grained experiment, both halves were significant with p < 0.001 , though the bottom half of the image was overwhelmingly dominant with a Lazy VI score of 0.1291 compared to 0.0338 for the top half. Once we moved to quadrants, we found the the three regions other than the Top-Left (TL) were significant, showing the significance of the top half was likely attributed to the Top-Right corner. In fact, this region had the largest VI estimate of the quadrants, unlike in Dropout and Retraining which had the Bottom-Left (BL) as the largest, which we attribute to randomness. The fine-grained analysis of the 7 × 7 pixels revealed that the most important region was region 10 ( p < 0.001 ), which physically corresponds to the closure of the bottom loop of the ‘8’ and its connection to the top loop, supporting our hypothesis. The results strongly confirm our central-bottom hypothesis and illustrate the value of fine-grained analysis. In the coarse-grained experiments, the bottom half of the image was overwhelmingly dominant, yielding a Lazy VI score of 0.1291 ( p < 0.001 ) compared to 0.0046 ( p ≈ 0.388 ) for the top half. Similarly, the quadrant analysis identified the Bottom-Left (BL) quadrant as the most critical, with a Lazy VI of 0.0360 ( p < 0.001 ) while the other quadrants were not statistically significant. Finally, the fine-grained 7 × 7 analysis revealed that this high "Bottom-Left" importance is likely driven almost entirely by the digit’s internal structure, as Region 10 was had variable importance of .0307 ( p < 0.001 ) while each other region in the Bottom-Left quadrant had p-values of 1. Physically, this region corresponds to the closure of the bottom loop of the ‘8’ and its connection to the top loop, which is absent in the typical ‘9’. Furthermore, all regions on an edge demonstrated p-values of 1, with the exception of region 15 ( p = .567 ), correctly identifying the empty background padding 23 Figure 4: Heatmaps of Variable Importance (VI) across three granularity levels. Columns compare the estimation methods: Lazy Training, Dropout, and Retraining. Warmer colors indicate higher importance. 
+
+Figure 5: Heatmaps of Lazy Training p-values across three levels of granularity. The p-values are multiplied by 2, 4, or 16 for the Top vs Bottom, Quadrant, and 16-Region respectively for the Bonferroni correction with values capped at 1, then are transformed using − log 10 ( max {0.0001 , p })
+
+to enhance visual contrast and highlight significance. A score at approximately 1.3 and above corresponds to p ≤ .05 .24 as uninformative. Comparing the three estimation methodologies, we observed two key trends regarding magnitude and consistency: 1. Magnitude Estimation and Overestimation: While the LazyVI framework closely matched the relative regional rankings predicted by Mean Imputation (Dropout), the magni-tudes of LazyVI tracked the “ground truth” established by Retraining much more accurately. Dropout consistently overestimated Variable Importance, particularly when the dropped region was important. In the “Top vs Bottom” experiment, Dropout estimated the Bottom region’s importance at 1.050, which is approximately 14 times the “ground-truth” Retraining value of 0.075. Meanwhile, the Lazy Training estimate was 0.129, only 1.72 times the Retraining baseline. For the smaller, less important Region 10 subset of the bottom half, we observed an overestimation factor of times 4.10 for Dropout and 1.07 for Lazy Training of Retraining’s VI estimate of .029. In general, we noted that both Lazy Training and Dropout’s overestimation increases for more significant regions, but inflates disproportionately for Dropout while Lazy Training is minimally affected. 2. Consistency Across Granularity: As the subset size decreased (from halves to 7 × 7
+
+squares), the estimated VI magnitudes decreased across all methods, as expected. However, the relative ranking between the regions remained consistent, and LazyVI successfully identified the main discriminative features with high fidelity—achieving results comparable to Retraining. 
+
+4.3.4 Runtime 
+
+In Table 2, we show the runtimes of training the full model, as well as Retraining and Lazy Training (not including the full model training time) for each region. Most of the time taken by Lazy Training is from the 30 trainings needed to choose a ridge penalty value, so for a more fair comparison, we showed the time taken for Lazy Training to run the final fitting. We found that the final fitting time for Lazy Training is consistently around 2 to 4 times faster than Retraining. Because the runtime is dependent on the optimization techniques used, we expect the total runtime of Lazy Training could be optimized further. Warm starts for the final fitting using the solution from the cross-validation of the selected ridge penalty could speed up the final fitting time, but was excluded to make the comparison with Retraining fair. Warm starts during the cross-validation section and different optimizers such as Stochastic L-BFGS would also likely significantly improve runtime for the penalty selection process. 
+
+4.4 Application to Detect Genes Associated with Alzheimer’s Disease (AD) 
+
+Alzheimer’s disease (AD) is one of the most common neurodegenerative diseases, and it is influenced heavily through genetic components (Karch et al., 2014; Sims et al., 2020). Therefore, it is essential to detect genes significantly related to AD for targeted treatments. As an application of the proposed method, we performed a genetic association study based on the gene expression data from the Alzheimer’s Disease Neuroimaging Initiative (ADNI). The disease status in the ADNI data has three categories: cognitive model, mild cognitive impairment, and Alzheimer’s disease. To apply our LazyVI for binary classification to the ADNI dataset, we combined mild cognitive impairment and Alzheimer’s disease into one group so that the classifier can detect genes that potentially relate to any potential neural degeneration. We then 25 Table 2: Runtime Comparisons For Training Methods 
+
+Configuration Region Final Fitting Lazy Time (s) Retrain Time (s) Full Model Time (s) 16 Regions 
+
+1 4.78 11.41 13.10 2 4.48 14.82 3 4.56 15.10 4 4.48 14.97 5 4.55 12.03 6 4.58 17.32 7 4.55 15.31 8 4.24 15.83 9 4.54 12.38 10 4.48 15.64 11 4.55 14.82 12 4.50 13.28 13 4.53 12.01 14 4.50 14.78 15 4.51 17.23 16 4.51 14.00 
+
+4 Regions 
+
+TL 4.64 18.84 12.81 TR 4.56 17.43 BL 4.51 14.33 BR 4.56 25.32 
+
+2 Regions Top 4.62 19.37 13.08 Bottom 4.52 21.57 
+
+26 merged data from individuals having both gene expression information and disease status. A total of 521 individuals and 15,837 gene expressions were obtained. We then performed a variable importance test for each of the 15,837 gene expression variables. In other words, we conducted 15,837 hypothesis tests, where the null hypothesis states that the gene is not important and the alternative hypothesis states that the gene is important. To fit the model under the alternative hypothesis, we included age, gender, years of education, the number of 
+
+APOE4 alleles, and the expression level of the gene of interest as input features. Under the null hypothesis, we replaced the gene expression level with its sample mean and applied our LazyVI algorithm. Following the simulation setup, we fitted the data using a deep ReLU network (two hidden layers, 50 neurons per layer). The regularization parameter λ and the hyperparameters in the L-BFGS algorithm were kept identical to those used in the simulation studies. After obtaining the p-values for all genes, we ranked them from smallest to largest. Table 3 summarizes the 10 most significant genes identified by logistic regression and the LazyVI algorithm. Table 3: The top 10 significant genes detected from the logistic regression and LazyVI for choosing the regularization parameter λ and hyperparameters in the L-BFGS algorithm as described in the simulation studies 
+
+Logistic Regression LazyVI 
+
+ORC6 MT1H SPATA7 COMMD6 GPAT2 LRFN3 OR52B2 GLRX5 KRTAP6-3 SGCB TAS2R10 TCF19 SLITRK6 NKX2-6 ZNF503 PIGC KCTD8 PSTPIP1 OR52A5 MAPK11 
+
+It is not surprising that deep neural network-based methods identify different genes from those identified by classical statistical methods. For instance, Shen and Wang (2024) applied a goodness-of-fit test based on deep ReLU neural networks to detect genes associated with quantitative traits related to AD, and the genes identified by the deep neural network-based methods differed substantially from those identified by linear models. On the other hand, it is worth noting that the most significant genes identified by each method have biological relevance supported by previous studies. The origin recognition complex (ORC), which controls the initiation of DNA replication, consists of six subunits, one of which is ORC6 . Arendt and Brückner (2007) showed that ORC subunits are involved in AD pathology. Among the significant genes identified by the LazyVI algorithm, MT1H , which belongs to the metallothionein family, has been uncovered as a hub gene through a network analysis and is suspected to be related to AD development for long time (Liang et al., 2018). In addition, MAPK11 is a member of the mitogen-activated protein kinase (MAPK) family. As mentioned in Zhao et al. (2002), the MAPK family regulates phosphorylation of the microtubule-associated protein tau and processing of the amyloid protein β, and both events are critical to the pathophysiology of AD. These findings suggest that our method successfully identifies genes involved in biological pathways known to contribute to AD pathogenesis while also revealing potentially novel candidate genes for future investigation. 27 5 Discussions and Conclusions 
+
+In this paper, we propose a framework for detecting important input features using lazy-trained deep neural network features in binary classification problems. We rigorously establish the asymptotic normality of the proposed test statistics. Through simulation studies and experiments on the MNIST dataset, the LazyVI framework successfully identifies important features. Moreover, compared with dropout-based methods, LazyVI generally does not overestimate variable importance scores. At the same time, the variable importance scores estimated by LazyVI are approximately the same as those obtained from retraining-based methods. Nevertheless, LazyVI is computationally more efficient than retraining-based approaches. The universal approximation property of neural networks (Hornik et al., 1989; Cybenko, 1989; Yarotsky, 2017; Yarotsky and Zhevnerchuk, 2020; Schmidt-Hieber, 2020) provides a powerful alter-native for function estimation in nonparametric statistical models (e.g., nonparametric regression). However, conducting statistical inference based on a fitted neural network for the purpose of de-tecting important input features remains a challenging problem. Although the proposed LazyVI framework primarily focuses on binary classification, we believe it has the potential to be extended to other types of outcome variables. A natural generalization is to replace the binary cross-entropy loss with the multiclass cross-entropy loss, thereby accommodating multiclass classification problems. Indeed, we formulate the problem using a Bernoulli distribution in Section 3.1 to connect our framework with the classical formulation of generalized linear models (GLMs) (McCullagh and Nelder, 1999), where the conditional distribution of Y | X is typically assumed to belong to the exponential dispersion family: 
+
+Y |X ∼ exp  
+
+> {
+
+yθ − b(θ)
+
+a(ϕ) + c(y, ϕ )
+
+> }
+
+,
+
+where ϕ is the dispersion parameter and a(·), b(·), and c(·, ·) are known functions. The relationship between Y and X is specified through a link function g such that 
+
+g(b′(θ)) = X⊤β. (31) The linear predictor X⊤β can be naturally generalized to a nonlinear function f (X) by replacing it in (31). Consequently, within the framework described in Section 3.1, we may define the loss function as the negative log-likelihood 
+
+ℓ(·, y ) = 1
+
+a(ϕ)
+
+> [
+
+−y(g ◦ b′)−1(·) + b(( g ◦ b′)−1(·)) + c(y, ϕ )
+
+> ]
+
+.
+
+If this loss function satisfies Conditions 1–3 in Proposition 10, then the LazyVI framework can be applied in this more general setting. We would also like to highlight several limitations of the current method. (1) In this paper, we focus primarily on the function class of fully connected deep neural networks. It would be worthwhile to investigate whether the framework can be extended to more sophisticated architectures, including convolutional neural networks (LeCun, 1989), long short-term memory networks (Hochreiter and Schmidhuber, 1997), and transformers with attention mechanisms (Vaswani et al., 2017). (2) As indicated by Assumption (16), our analysis primarily considers the regime in which the number of network parameters does not grow too rapidly relative to the sample size. However, due to the empirical success of large-scale deep learning models, overparameterized neural networks have attracted substantial attention in recent years. It is therefore important to investigate whether the LazyVI framework can be extended to the overparameterized setting. For the framework developed 28 in this paper, the main technical bottleneck underlying these two limitations concerns whether a sufficiently tight upper bound on the entropy numbers of the function class can be established and how this bound scales with the covering radius ε. The volume-based argument we employ yields a growth rate of order O
+
+> (
+
+log 1
+
+> ε
+> )
+
+, but at the cost of dependence on the total number of network parameters. This dependence ultimately affects the convergence rate derived via local Rademacher complexity arguments. In contrast, applying Maurey’s sparsification lemma (Pisier, 1981) yields size-independent upper bounds on entropy numbers; however, the resulting growth rate is of order O (ε−2), as shown in Zhang (2004) and Bartlett et al. (2017). Moreover, Golowich et al. (2018) demonstrate that the Rademacher complexity of neural networks with parameter matrices of bounded Schatten norm is lower bounded by Ω( n−1/2), which makes it challenging to derive faster convergence rates even when using local Rademacher complexity. (3) Although, in theory, Newton’s method can be used to compute the estimators arising from the lazy training procedure, this becomes computationally prohibitive for very large sample sizes, since the neural tangent kernel matrix has dimension n × n. For example, the UK Biobank dataset (Bycroft et al., 2018) contains over 500,000 participants. Storing such large matrices requires substantial memory, and inverting the corresponding Hessian matrices further increases the computational burden. In our implementation, we therefore adopt a quasi-Newton method to reduce computational cost. Nevertheless, applying the LazyVI framework to large-scale datasets such as UK Biobank requires the development of more scalable algorithms. Addressing these limitations will be the focus of future work. To conclude, our work demonstrates that statistically valid inference for feature importance can be carried out in deep neural networks by leveraging the lazy training regime and likelihood-based formulations. By connecting neural tangent kernel approximations with classical tools from empirical process theory and generalized linear models, our framework provides a principled bridge between deep neural networks and traditional statistical inference. We hope this perspective encourages further research on scalable and theoretically grounded inference procedures for deep learning models beyond predictive performance alone. 
+
+# Software and Appendices 
+
+The proposed LazyVI framework for detecting important features for binary classification was implemented using Python packages. The codes and simulated data are available at https: //github.com/SxxMichael/DNN-LazyVI-Binary-Classification . Additional technical details are available in the Appendices. 
+
+# Acknowledgements 
+
+This research is supported in part by NSF Grant DMS-2447229. 
+
+# References 
+
+Thomas Arendt and Martina K Brückner. Linking cell-cycle dysfunction in alzheimer’s disease to a failure of synaptic plasticity. Biochimica et Biophysica Acta (BBA)-Molecular Basis of Disease, 1772(4):413–421, 2007. Nachman Aronszajn. Theory of reproducing kernels. Transactions of the American mathematical society, 68(3):337–404, 1950. 29 Peter L Bartlett and Shahar Mendelson. Rademacher and gaussian complexities: Risk bounds and structural results. Journal of machine learning research, 3(Nov):463–482, 2002. Peter L. Bartlett, Olivier Bousquet, and Shahar Mendelson. Local Rademacher complexities. The Annals of Statistics, 33(4):1497 – 1537, 2005. Peter L Bartlett, Dylan J Foster, and Matus J Telgarsky. Spectrally-normalized margin bounds for neural networks. Advances in neural information processing systems, 30, 2017. Alberto Bietti and Francis Bach. Deep equals shallow for relu networks in kernel regimes. arXiv preprint arXiv:2009.14397, 2020. Alberto Bietti and Julien Mairal. On the inductive bias of neural tangent kernels. Advances in Neural Information Processing Systems, 32, 2019. Clare Bycroft, Colin Freeman, Desislava Petkova, Gavin Band, Lloyd T Elliott, Kevin Sharp, Allan Motyer, Damjan Vukcevic, Olivier Delaneau, Jared O’Connell, et al. The uk biobank resource with deep phenotyping and genomic data. Nature, 562(7726):203–209, 2018. Lenaic Chizat, Edouard Oyallon, and Francis Bach. On lazy training in differentiable programming. Advances in neural information processing systems, 32, 2019. George Cybenko. Approximation by superpositions of a sigmoidal function. Mathematics of control, signals and systems, 2(4):303–314, 1989. Ben Dai, Xiaotong Shen, and Wei Pan. Significance tests of feature relevance for a black-box learner. IEEE transactions on neural networks and learning systems, 35(2):1898–1911, 2022. Simon S Du, Xiyu Zhai, Barnabas Poczos, and Aarti Singh. Gradient descent provably optimizes over-parameterized neural networks. arXiv preprint arXiv:1810.02054, 2018. Max H Farrell, Tengyuan Liang, and Sanjog Misra. Deep neural networks for estimation and inference. Econometrica, 89(1):181–213, 2021. Yue Gao, Abby Stevens, Garvesh Raskutti, and Rebecca Willett. Lazy estimation of variable importance for large neural networks. In International Conference on Machine Learning, pages 7122–7143. PMLR, 2022. Noah Golowich, Alexander Rakhlin, and Ohad Shamir. Size-independent sample complexity of neural networks. In Conference on learning theory, pages 297–299. PMLR, 2018. Sepp Hochreiter and Jürgen Schmidhuber. Long short-term memory. Neural computation, 9(8): 1735–1780, 1997. Wassily Hoeffding. Probability inequalities for sums of bounded random variables. The collected works of Wassily Hoeffding, pages 409–426, 1994. Enguerrand Horel and Kay Giesecke. Significance tests for neural networks. Journal of Machine Learning Research, 21(227):1–29, 2020. Kurt Hornik, Maxwell Stinchcombe, and Halbert White. Multilayer feedforward networks are universal approximators. Neural networks, 2(5):359–366, 1989. 30 Daniel Hsu, Sham Kakade, and Tong Zhang. A tail inequality for quadratic forms of subgaussian random vectors. Electronic Communications in Probability, 17:1–6, 2012. Arthur Jacot, Franck Gabriel, and Clément Hongler. Neural tangent kernel: Convergence and generalization in neural networks. Advances in neural information processing systems, 31, 2018. Celeste M Karch, Carlos Cruchaga, and Alison M Goate. Alzheimer’s disease genetics: from the bench to the clinic. Neuron, 83(1):11–26, 2014. Yann LeCun. Generalization and network design strategies. Connectionism in perspective, pages 143–155, 1989. Yann LeCun, Léon Bottou, Yoshua Bengio, and Patrick Haffner. Gradient-based learning applied to document recognition. Proceedings of the IEEE, 86(11):2278–2324, 2002. Michel Ledoux and Michel Talagrand. Probability in Banach Spaces: isoperimetry and processes. Springer Science & Business Media, 2013. Yicheng Li, Zixiong Yu, Guhan Chen, and Qian Lin. On the eigenvalue decay rates of a class of neural-network related kernel functions defined on general domains. Journal of Machine Learning Research, 25(82):1–47, 2024. Jia-Wei Liang, Zheng-Yu Fang, Yong Huang, Zhen-yu Liuyang, Xiao-Lin Zhang, Jing-Lin Wang, Hui Wei, Jian-Zhi Wang, Xiao-Chuan Wang, Ji Zeng, et al. Application of weighted gene co-expression network analysis to explore the key genes in alzheimer’s disease. Journal of Alzheimer’s Disease, 65(4):1353–1364, 2018. Scott M Lundberg and Su-In Lee. A unified approach to interpreting model predictions. Advances in neural information processing systems, 30, 2017. Tengyu Ma. Lecture notes for machine learning theory (cs229m/stats214), 2022. Francesca Mandel and Ian Barnett. Permutation-based hypothesis testing for neural networks. In Proceedings of the AAAI Conference on Artificial Intelligence , volume 38, pages 14306–14314, 2024. Peter McCullagh and John A. Nelder. Generalized linear models. Chapman & Hall/CRC, 1999. Shahar Mendelson. Improving the sample complexity using global data. IEEE transactions on Information Theory, 48(7):1977–1991, 2002. Leon Mirsky. A trace inequality of john von neumann. Monatshefte für mathematik, 79(4):303–306, 1975. Theodor Misiakiewicz and Andrea Montanari. Six lectures on linearized neural networks. Journal of Statistical Mechanics: Theory and Experiment, 2024(10):104006, 2024. Mehryar Mohri, Afshin Rostamizadeh, and Ameet Talwalkar. Foundations of machine learning. MIT press, 2018. Vinod Nair and Geoffrey E Hinton. Rectified linear units improve restricted boltzmann machines. In Proceedings of the 27th international conference on machine learning (ICML-10) , pages 807–814, 2010. 31 Jorge Nocedal and Stephen J. Wright. Numerical Optimization . Springer Series in Operations Research, 2006. Mina Ossiander. A central limit theorem under metric entropy with l 2 bracketing. The Annals of Probability, pages 897–919, 1987. Samet Oymak and Mahdi Soltanolkotabi. Toward moderate overparameterization: Global con-vergence guarantees for training shallow neural networks. IEEE Journal on Selected Areas in Information Theory, 1(1):84–105, 2020. Vitali Petsiuk, Abir Das, and Kate Saenko. Rise: Randomized input sampling for explanation of black-box models. arXiv preprint arXiv:1806.07421, 2018. Gilles Pisier. Remarques sur un résultat non publié de b. maurey. Séminaire d’Analyse fonctionnelle (dit" Maurey-Schwartz"), pages 1–12, 1981. Johannes Schmidt-Hieber. Nonparametric regression using deep neural networks with relu activation function. The Annals of Statistics, 48(4), 2020. Xiaoxi Shen and Jesus Espinoza. Consistency and rate of convergence for deep relu neural networks. Journal of Statistical Theory and Practice, 19(2):33, 2025. Xiaoxi Shen and Xiaoming Wang. An exploration of testing genetic associations using goodness-of-fit statistics based on deep relu neural networks. Frontiers in Systems Biology, 4:1460369, 2024. Xiaoxi Shen, Chang Jiang, Lyudmila Sakhanenko, and Qing Lu. A goodness-of-fit test based on neural network sieve estimators. Statistics & probability letters, 174:109100, 2021. Xiaoxi Shen, Chang Jiang, Lyudmila Sakhanenko, and Qing Lu. A sieve quasi-likelihood ratio test for neural networks with applications to genetic association studies. arXiv preprint arXiv:2212.08255, 2022. Xiaoxi Shen, Chang Jiang, Lyudmila Sakhanenko, and Qing Lu. Asymptotic properties of neural network sieve estimators. Journal of nonparametric statistics, 35(4):839–868, 2023. Karen Simonyan, Andrea Vedaldi, and Andrew Zisserman. Deep inside convolutional networks: Visualising image classification models and saliency maps. arXiv preprint arXiv:1312.6034, 2013. Rebecca Sims, Matthew Hill, and Julie Williams. The multiplex model of the genetics of alzheimer’s disease. Nature neuroscience, 23(3):311–322, 2020. Daniel Smilkov, Nikhil Thorat, Been Kim, Fernanda Viégas, and Martin Wattenberg. Smoothgrad: removing noise by adding noise. arXiv preprint arXiv:1706.03825, 2017. Aad W Van Der Vaart and Jon A Wellner. Weak convergence. Springer, 1996. Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. Advances in neural information processing systems, 30, 2017. Roman Vershynin. High-Dimensional Probability: An Introduction with Applications in Data Science. Cambridge University Press, 2018. 32 Brian D Williamson, Peter B Gilbert, Noah R Simon, and Marco Carone. A general framework for inference on algorithm-agnostic variable importance. Journal of the American Statistical Association, 118(543):1645–1658, 2023. Dmitry Yarotsky. Error bounds for approximations with deep relu networks. Neural networks, 94: 103–114, 2017. Dmitry Yarotsky and Anton Zhevnerchuk. The phase diagram of approximation rates for deep neural networks. Advances in neural information processing systems, 33:13005–13015, 2020. Shichang Zhang, Tessa Han, Usha Bhalla, and Himabindu Lakkaraju. Towards unified attribution in explainable ai, data-centric ai, and mechanistic interpretability, 2025. URL https://arxiv. org/abs/2501.18887 .Tong Zhang. Statistical analysis of some multi-category large margin classification methods. Journal of Machine Learning Research, 5(Oct):1225–1251, 2004. Wei-Qin Zhao, Lakshmi Ravindranath, Ali S Mohamed, Ofer Zohar, Gina H Chen, Constantine G Lyketsos, René Etcheberrigaray, and Daniel L Alkon. Map kinase signaling cascade dysfunction specific to alzheimer’s disease in fibroblasts. Neurobiology of disease, 11(1):166–183, 2002. Difan Zou, Yuan Cao, Dongruo Zhou, and Quanquan Gu. Stochastic gradient descent optimizes over-parameterized deep relu networks. arXiv preprint arXiv:1811.08888, 2018. 33 Appendix 
+
+In this appendix, we provide detailed proofs of the results in the main text. We organize the appendix as follows: 
+
+• Appendix A contains the proofs of the results related to the 0-1 logistic loss. 
+
+• Appendix B includes all the theoretical results, mainly in Section 3.3, regarding the class of deep ReLU neural networks. 
+
+• Appendix C consists of the technical details about the distance between the linearized deep ReLU network ˜hθf +∆ θS and the deep ReLU network hθf +∆ θS as discussed in Section 3.4. 
+
+• Appendix D includes the detailed proofs of the results in Section 3.5 regarding the convergence rate of linearized ReLU network ˜hθf +∆ θS .
+
+• Appendix F contains the proofs of some auxiliary results that are used in the theorems and lemmas of the main text. 
+
+# A Properties for 0-1 Logistic Loss 
+
+A.1 Proof of Proposition 8 
+
+Proof. Let PY |X = Ber (π(X)) and ˆPY |X = Ber (σ(f (X))) with σ(·) being the sigmoid function. Here PY |X represents the underlying conditional distribution of Y |X and ˆPY |X represents the estimated conditional distribution of Y |X based on our model. Then the KL divergence between these two distributions is 
+
+KL (PY |X ∥ ˆPY |X ) = π(X) log π(X)
+
+σ(f (X)) + (1 − π(X)) log 1 − π(X)1 − σ(f (X)) = −π(X) log σ(f (X)) 1 − σ(f (X)) + log 11 − σ(f (X)) + S(π(X)) = E
+
+[
+
+−Y f (X) + log 
+
+(
+
+1 + ef (X))∣ ∣∣ X
+
+]
+
++ S(π(X)) ,
+
+where S(π(X)) = π(X) log π(X) + (1 − π(X)) log(1 − π(X)) does not depend on f . Therefore, 
+
+f0 ∈ argmin f ∈F EP0
+
+[
+
+−Y f (X) + log 
+
+(
+
+1 + ef (X))] 
+
+= argmin f ∈F EX E
+
+[
+
+−Y f (X) + log 
+
+(
+
+1 + ef (X))∣ ∣∣ X
+
+]
+
+= argmin f ∈F EX
+
+[
+
+KL (PY |X ∥ ˆPY |X )
+
+]
+
+.
+
+Since EX
+
+[
+
+KL (PY |X ∥ ˆPY |X )
+
+]
+
+≥ 0, then under the assumption that logit (π(X)) ∈ F , the minimum is attained when KL (PY |X ∥ ˆPY |X ) = 0 , PX -almost surely. Consequently, the minimum is attained when 
+
+PY |X = ˆPY |X and hence if f0 is a minimizer, then π(X) = EPY |X [Y |X] = E ˆPY |X [Y |X] = σ(f0(X)) ,
+
+PX -almost surely. 34 A.2 Proof of Proposition 10 
+
+Proof. 1. Note that 
+
+∂ℓ ∂a = −y + σ(a)
+
+∂2ℓ∂a 2 = σ′(a) = σ(a)[1 − σ(a)] ,
+
+and since ∂2ℓ∂a 2 is non-negative for all a ∈ R, it follows that ℓ is convex with respect to a.2. Since y ∈ { 0, 1} and σ(a) ∈ [0 , 1] for all a ∈ R, it then follows that ∂ℓ (a,y ) 
+
+> ∂a
+
+= −y + σ(a) ∈ [−1, 1] 
+
+for all a ∈ R. Based on the mean value theorem, for any a1, a 2 ∈ R, there exists ν between a1
+
+and a2 such that 
+
+ℓ(a1, y ) − ℓ(a2, y ) = ∂ℓ (ν, y )
+
+∂a (a1 − a2).
+
+As a result, for any a1, a 2 ∈ R,
+
+|ℓ(a1, y ) − ℓ(a2, y )| =
+
+∣∣∣∣
+
+∂ℓ (ν, y )
+
+∂a 
+
+∣∣∣∣ · | a1 − a2| ≤ | a1 − a2| .
+
+3. Let a1, a 2 ∈ [−M, M ] be arbitrary such that |a1 − a2| ≥ η. Now consider the Taylor expansion of ℓ(a1, y ) and ℓ(a2, y ) around the mid-point (a1 + a2)/2.
+
+ℓ(a1, y ) = ℓ
+
+( a1 + a2
+
+2 , y 
+
+)
+
++ ∂ℓ ( a1+a2 
+
+> 2
+
+, y )
+
+∂a 
+
+(
+
+a1 − a1 + a2
+
+2
+
+)
+
++ 12
+
+∂2ℓ (ν1, y )
+
+∂a 2
+
+(
+
+a1 − a1 + a2
+
+2
+
+)2
+
+ℓ(a2, y ) = ℓ
+
+( a1 + a2
+
+2 , y 
+
+)
+
++ ∂ℓ ( a1+a2 
+
+> 2
+
+, y )
+
+∂a 
+
+(
+
+a2 − a1 + a2
+
+2
+
+)
+
++ 12
+
+∂2ℓ (ν2, y )
+
+∂a 2
+
+(
+
+a2 − a1 + a2
+
+2
+
+)2
+
+,
+
+where ν1 is between a1 and (a1 + a2)/2 and ν2 is between a2 and (a1 + a2)/2. Then 
+
+ℓ(a1, y ) + ℓ(a2, y )2 − ℓ
+
+( a1 + a2
+
+2 , y 
+
+)
+
+= 14
+
+[ ∂2ℓ (ν1, y )
+
+∂a 2 + ∂2ℓ (ν2, y )
+
+∂a 2
+
+] (a1 − a2)2
+
+4
+
+≥ η2
+
+8 min  
+
+> a∈[−M,M ]
+
+∂2ℓ (a, y )
+
+∂a 2 .
+
+Since a ∈ [−M, M ] and ∂2ℓ(a,y ) 
+
+> ∂a 2
+
+= σ(a)[1 − σ(a)] is an even function that is monotonically decreasing when a ≥ 0, it then follows that 
+
+min  
+
+> a∈[−M,M ]
+
+∂2ℓ (a, y )
+
+∂a 2 = ∂2ℓ (−M, y )
+
+∂a 2 = ∂2ℓ (M, y )
+
+∂a 2 = σ(M )[1 − σ(M )] .
+
+Hence 
+
+δ(η) = inf 
+
+> |a1−a2|≥ η
+
+ℓ(a1, y ) + ℓ(a2, y )2 − ℓ
+
+( a1 + a2
+
+2 , y 
+
+)
+
+≥ η2
+
+8 min  
+
+> a∈[−M,M ]
+
+∂2ℓ (a, y )
+
+∂a 2
+
+= η2
+
+8 σ(M )[1 − σ(M )] .
+
+35 A.3 Proof of Corollary 11 
+
+Proof. For any η > 0 and f1, f 2 ∈ F satisfying ∥f1 − f2∥2 ≥ η2, we have 
+
+R(f1) + R(f2)2 − R
+
+( f1 + f2
+
+2
+
+)
+
+=E
+
+[ ℓ(f1(X), Y ) + ℓ(f2(X), Y )2 − ℓ
+
+( f1(X) + f2(X)2 , Y 
+
+)] 
+
+> (∗)
+
+≥ E[δ(|f1(X) − f2(X)|)] 
+
+> (∗∗ )
+
+≥ eM
+
+8(1 + eM )2 ∥f1 − f2∥2
+
+≥ eM
+
+8(1 + eM )2 η2,
+
+where (*) and (**) follow from the definition and the lower bound of the modulus of convexity in (15). Therefore, we obtain a lower bound for the modulus of convexity for R(f ):
+
+˜δ(η) := inf 
+
+> ∥f1−f2∥2≥η2
+
+R(f1) + R(f2)2 − R
+
+( f1 + f2
+
+2
+
+)
+
+≥ eM
+
+8(1 + eM )2 η2,
+
+which implies that 
+
+˜δ(∥f − f0∥) ≤ R(f ) + R(f0)2 − R
+
+( f + f0
+
+2
+
+)
+
+≤ R(f ) + R(f0)2 − R(f0)= R(f ) − R(f0)2 ,
+
+where the 2nd inequality follows from the fact that f0 minimizes R(f ). Hence, 
+
+R(f ) − R(f0) ≥ 2˜δ(∥f − f0∥) ≥ eM
+
+4(1 + eM )2 ∥f − f0∥2 .
+
+Rearranging the above display yields the desired result. 
+
+# B Technical Results for Deep ReLU Neural Networks 
+
+B.1 Proof of Lemma 13 
+
+Proof. It is easy to see that φ is a 1-Lipschitz function so that for any m ∈ N and u, v ∈ Rm,
+
+∥φ(u) − φ(v)∥ =
+
+√√√√ m∑
+
+> i=1
+
+[φ(ui) − φ(vi)] 2 ≤
+
+√√√√ m∑
+
+> i=1
+
+[ui − vi]2 = ∥u − v∥ .
+
+36 Consequently, for any hθf ∈ F ,
+
+sup 
+
+> x∈[−1,1] p,∥x∥≤ κ
+
+∣∣∣hθf (x)
+
+∣∣∣ = sup 
+
+> x∈[−1,1] p,∥x∥≤ κ
+
+|W Lφ(W L−1φ(· · · W 2φ(W 1x))) |≤ sup 
+
+> x∈[−1,1] p,∥x∥≤ κ
+
+∥W L∥op ∥φ(W L−1φ(· · · W 2φ(W 1x))) − φ(0)∥≤ κL sup 
+
+> x∈[−1,1] p,∥x∥≤ κ
+
+∥W L−1φ(· · · W 2φ(W 1x)) ∥≤ · · · ≤ κL · · · κ2 sup 
+
+> x∈[−1,1] p,∥x∥≤ κ
+
+∥φ(W 1x) − φ(0)∥≤ κL · · · κ2 sup 
+
+> x∈[−1,1] p,∥x∥≤ κ
+
+∥W 1x∥≤ κL · · · κ2 sup 
+
+> x∈[−1,1] p,∥x∥≤ κ
+
+∥W 1∥op ∥x∥≤ κ
+
+> L
+
+∏
+
+> i=1
+
+κi.
+
+B.2 Proof of Lemma 14 
+
+The proof relies on bounding the covering number of F. To do this, we applied the following result (Lemma 5.23) from Ma (2022). 
+
+Lemma 26. Let F be a function class such that 
+
+F = FL ◦ F L−1 ◦ · · · ◦ F 1 = {fL ◦ fL−1 ◦ · · · ◦ f1 : fi ∈ F i}.
+
+Assume 1. fi ∈ F i is κi-Lipschitz, that is 
+
+∥fi(x) − fi(y)∥ ≤ κi ∥x − y∥ .
+
+2. The Euclidean norm of every input to fi is bounded by ci−1.3. The metric entropy of Fi is bounded as follow: 
+
+log N (εi, Fi, ∥·∥ n) ≤ g(εi, c i−1).
+
+Then there exists an ε-cover C of Fr ◦ F r−1 ◦ · · · ◦ F 1 for ε = εL + κLεL−1 + · · · + κLκL−1 · · · κ2ε1
+
+such that 
+
+log |C| ≤ 
+
+> L
+
+∑
+
+> i=1
+
+g(εi, c i−1).
+
+For the class of deep ReLU neural network as described in (8), we can set 
+
+F1 = {φ(W 1x) : ∥W 1∥op ≤ κ1,
+
+∥∥∥W T
+
+> 1
+
+∥∥∥2,1 ≤ b1}Fi = {φ(W izi−1) : zi−1 ∈ F i−1, ∥W i∥op ≤ κi,
+
+∥∥∥W Ti
+
+∥∥∥2,1 ≤ bi}, i = 2 , . . . , L − 1
+
+FL = {W LzL−1 : zL−1 ∈ F L−1, ∥W i∥op ≤ κL,
+
+∥∥∥W Ti
+
+∥∥∥2,1 ≤ bL}
+
+37 It is obvious that each fi ∈ F i, i ∈ [L] is a κi-Lipschitz function. In terms of the Euclidean norm of the inputs, we have 
+
+∥zi−1∥ = ∥φ(W i−1φ(W i−2 · · · φ(W 1x))) ∥ ≤ κ
+
+> i−1
+
+∏
+
+> l=1
+
+κl, i = 1 , . . . , L, (32) where z0 = x. In addition, let Wi = {W i ∈ Rpi×pi−1 : ∥W i∥op ≤ κi,
+
+∥∥∥W Ti
+
+∥∥∥2,1 ≤ bi}. Suppose that 
+
+{W (1)  
+
+> i
+
+, . . . , W (N ) 
+
+> i
+
+} is a minimal εi cover of Wi with respect to ∥·∥ F . Then for any fi ∈ F i, we have 
+
+fi(z) = σ(W iz) for some W i ∈ W i and there exists j ∈ [N ] such that 
+
+∥∥∥W i − W (j)
+
+> i
+
+∥∥∥F < ε i.
+
+Then set f (j) 
+
+> i
+
+(z) = σ(W (j) 
+
+> i
+
+z), we have 
+
+∥∥∥fi − f (j)
+
+> i
+
+∥∥∥n =
+
+√√√√ 1
+
+n
+
+> n
+
+∑
+
+> k=1
+
+∥∥∥fi(z(k)
+
+> i−1
+
+) − f (j) 
+
+> i
+
+(z(k)
+
+> i−1
+
+)
+
+∥∥∥2
+
+=
+
+√√√√ 1
+
+n
+
+> n
+
+∑
+
+> k=1
+
+∥∥∥σ(W iz(k)
+
+> i−1
+
+) − σ(W (j) 
+
+> i
+
+z(k)
+
+> i−1
+
+)
+
+∥∥∥2
+
+≤
+
+√√√√ 1
+
+n
+
+> n
+
+∑
+
+> k=1
+
+∥∥∥(W i − W (j) 
+
+> i
+
+)z(k)
+
+> i−1
+
+∥∥∥2
+
+≤
+
+∥∥∥W i − W (j)
+
+> i
+
+∥∥∥F
+
+√√√√ 1
+
+n
+
+> n
+
+∑
+
+> k=1
+
+∥∥∥z(k)
+
+> i−1
+
+∥∥∥2
+
+≤ κ
+
+(i−1∏
+
+> l=1
+
+κl
+
+)
+
+εi,
+
+where z(k) 
+
+> i−1
+
+is the input of the ithe layer in the network for the kth sample. Then 
+
+N (εi, Fi, ∥·∥ n) ≤ N
+
+( εi
+
+κ ∏i−1 
+
+> l=1
+
+κl
+
+, Wi, ∥·∥ F
+
+)
+
+Now note that for any W i ∈ W i,
+
+∥W i∥2 
+
+> F
+
+=
+
+∥∥∥W Ti
+
+∥∥∥2 
+
+> F
+
+= ∑
+
+> j
+
+∥∥∥[W Ti ]j, :
+
+∥∥∥2
+
+≤
+
+∑
+
+> j
+
+∥∥∥[W Ti ]j, :
+
+∥∥∥
+
+> 2
+
+=
+
+∥∥∥W Ti
+
+∥∥∥22,1 ≤ b2 
+
+> i
+
+.
+
+Then by Proposition 4.2.12 in Vershynin (2018), we have 
+
+N
+
+( εi
+
+κ ∏i−1 
+
+> l=1
+
+κl
+
+, Wi, ∥·∥ F
+
+)
+
+≤
+
+(
+
+1 + 2biκ ∏i−1 
+
+> l=1
+
+κl
+
+εi
+
+)pipi−1
+
+,
+
+38 and hence 
+
+log N (εi, Fi, ∥·∥ n) ≤ pipi−1 log 
+
+(
+
+1 + 2biκ ∏i−1 
+
+> l=1
+
+κl
+
+εi
+
+)
+
+(33) Based on these observations, we are now ready to prove Lemma 14. 
+
+Proof. Denote ci−1 = κ ∏i−1 
+
+> l=1
+
+κl and take 
+
+εi =
+
+( ci−1bi
+
+κi+1 · · · κL
+
+)1/2 εκ1/2 ∑Ll=1 
+
+( bl
+
+> κl
+
+)1/2 ∏Ll=1 κ1/2
+
+> l
+
+. (34) Then 
+
+> L
+
+∑
+
+> i=1
+
+εiκi+1 · · · κL =
+
+( L∑
+
+> i=1
+
+c1/2
+
+> i−1
+
+b1/2 
+
+> i
+
+κ1/2 
+
+> i+1
+
+· · · κ1/2
+
+> L
+
+) εκ1/2 ∑Ll=1 
+
+( bl
+
+> κl
+
+)1/2 ∏Ll=1 κ1/2
+
+> l
+
+=
+
+( L∑
+
+> i=1
+
+κ1/2b1/2 
+
+> i
+
+κ1/21 · · · κ1/2
+
+> i−1
+
+κ1/2 
+
+> i+1
+
+· · · κ1/2
+
+> L
+
+) εκ1/2 ∑Ll=1 
+
+( bl
+
+> κl
+
+)1/2 ∏Ll=1 κ1/2
+
+> l
+
+=
+
+(
+
+κ1/2
+
+> L
+
+∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2 L∏
+
+> i=1
+
+κ1/2
+
+> i
+
+) εκ1/2 ∑Ll=1 
+
+( bl
+
+> κl
+
+)1/2 ∏Ll=1 κ1/2
+
+> l
+
+= ε. 
+
+In addition, 
+
+ci−1bi
+
+εi
+
+=
+
+∑Ll=1 
+
+( bl
+
+> κl
+
+)1/2 ∏Ll=1 κ1/2
+
+> l
+
+εκκ 1 · · · κi−1bi
+
+(κ1 · · · κi−1bi)1/2 (κi+1 · · · κL)1/2
+
+= κε
+
+[ L∑
+
+> l=1
+
+( bl
+
+κl
+
+)1/2 L∏
+
+> l=1
+
+κ1/2
+
+> l
+
+]2
+
+.
+
+It then follows from Lemma 26 and (33) that 
+
+log N (ε, F, ∥·∥ n) ≤
+
+> L
+
+∑
+
+> i=1
+
+pipi−1 log 
+
+1 + 2κε
+
+[ L∑
+
+> l=1
+
+( bl
+
+κl
+
+)1/2 L∏
+
+> l=1
+
+κ1/2
+
+> l
+
+]2
+
+≤ W log 
+
+1 + 2κε
+
+[ L∑
+
+> l=1
+
+( bl
+
+κl
+
+)1/2 L∏
+
+> l=1
+
+κ1/2
+
+> l
+
+]2 .
+
+Recall that M = κ ∏Li=1 κi. Now based on Lemma 32, it follows that 
+
+log N (ε, star (F, f 0), ∥·∥ n) ≤ log 4Mε + log N
+
+( ε
+
+2 , F, ∥·∥ n
+
+)
+
+≤ log 4Mε + W log 
+
+1 + 4Mε
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 .
+
+39 For any f ∈ star (F, f 0), we have f = (1 − γ)f0 + γh θf for some γ ∈ [0 , 1] and hθf ∈ F , it then follows that 
+
+sup 
+
+> ∥x∥≤ κ
+
+|f (x)| ≤ (1 − γ) sup 
+
+> ∥x∥≤ κ
+
+|f0(x)| + γ sup 
+
+> ∥x∥≤ κ
+
+∣∣∣hθf (x)
+
+∣∣∣ ≤ M. 
+
+Therefore, it suffices to consider ε ≤ M . In this case, since bi ≥ κi for all i ∈ [L], we have 
+
+4Mε
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2
+
+≥ 4
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2
+
+≥ 4,
+
+which implies that 
+
+log N (ε, star (F, f 0), ∥·∥ n) ≤ log 4Mε + M log 5M
+
+(∑Li=1 
+
+( bi
+
+> κi
+
+)1/2)2
+
+ε
+
+≤ 2M log 5M
+
+(∑Li=1 
+
+( bi
+
+> κi
+
+)1/2)2
+
+ε . (35) Next, by the Dudley’s chaining technique (see for example, Lemma 3 in Farrell et al. (2021)) that 
+
+Eξ
+
+ sup  
+
+> hθf∈star (F,f 0),
+
+∥∥∥hθf −f0
+
+∥∥∥2
+
+> n
+> ≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξihθf (Xi)
+
+
+
+=Eξ
+
+ sup  
+
+> hθf∈star (F,f 0),
+
+∥∥∥hθf −f0
+
+∥∥∥2
+
+> n
+> ≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi(hθf (Xi) − f0(Xi)) 
+
+
+
+≤ 12 
+
+√n
+
+∫ √r
+
+> 0
+
+√
+
+log N (ε, star (F, f 0) − { f0}, ∥·∥ n)dε 
+
+≤ 12 
+
+√n
+
+∫ √r
+
+> 0
+
+√
+
+log N (ε, star (F, f 0), ∥·∥ n)dε 
+
+For notation simplicity, denote ˘M = 5 M
+
+(∑Li=1 
+
+( bi
+
+> κi
+
+)1/2)2
+
+. According to (35), we have 
+
+∫ √r
+
+> 0
+
+√
+
+log N (ε, star (F, f 0), ∥·∥ n)dε ≤ √2W
+
+∫ √r
+
+> 0
+
+√
+
+log ˘Mε dε 
+
+≤ √2W √r
+
+(
+
+1 + log 1/2 ˘M
+
+√r
+
+)
+
+,
+
+40 where the last inequality follows since √r ≤ 2M so that log ˘M√r ≥ log 
+
+> 5M
+
+(∑Li=1 
+
+( biκi
+
+)1/2)2 
+
+> 2M
+
+≥ log (5 /2) .
+
+∫ √r
+
+> 0
+
+√
+
+log ˘Mε dε = ε log 1/2 ˘Mε
+
+∣∣∣∣∣
+
+> √r
+> 0
+
++
+
+∫ √r
+
+> 0
+
+12 log −1/2 ˘Mε dε 
+
+≤ √r log 1/2 ˘M
+
+√r +
+
+√r
+
+2 log −1/2 ˘M
+
+√r
+
+≤ √r log 1/2 ˘M
+
+√r + log −1/2(5 /2) 2
+
+√r
+
+≤ √r
+
+(
+
+1 + log 1/2 ˘M
+
+√r
+
+)
+
+.
+
+As a result, 
+
+Eξ
+
+ sup  
+
+> hθf∈star (F,f 0),
+
+∥∥∥hθf −f0
+
+∥∥∥2
+
+> n
+> ≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξihθf (Xi)
+
+ ≤ 12 √2
+
+√n
+
+√W √r
+
+(
+
+1 + log 1/2 ˘M
+
+√r
+
+)
+
+.
+
+We now show that ˆψn(r) is a sub-root function. To do so, we check the three conditions required for a function to be sub-root. 1. First note that √r ≤ 2M , then log ˘M√r ≥ log (5 /2) , which immediately shows that ˆψn(r) is nonnegative. 2. Note that 
+
+ˆψ′
+
+> n
+
+(r) = 12 √2
+
+√n
+
+√W
+
+ 12√r
+
+(
+
+1 + log 1/2 ˘M
+
+√r
+
+)
+
+− 14√r log 1/2 ˘M√r
+
+
+
+= 6√2
+
+√n√r
+
+√W
+
+1 + log 1/2 ˘M
+
+√r − 12 log 1/2 ˜M√r
+
+
+
+≥ 0,
+
+where the last inequality follows since log ˘M√r ≥ log (5 /2) and hence 1 − 12 log 1/2 ˘M√r
+
+≥ 1 − 
+
+> 12 log 1/2(5 /2)
+
+≥ 0. Hence, ˆψn(r) is a nondecreasing function. 3. Since ˆψn(r)/√r = 12 √2√n
+
+√W
+
+(
+
+1 + log 1/2 ˘M√r
+
+)
+
+, it is obvious that ˆψn(r)/√r is nonincreasing. We now provide an upper bound for the fixed point of ˆψn(r). Note that 
+
+ˆψn(ˆ r∗) = ˆ r∗ ⇔ 12 √2
+
+√n
+
+√W √ˆr∗
+
+(
+
+1 + log 1/2 ˘M
+
+√ˆr∗
+
+)
+
+= ˆ r∗
+
+⇔ 12 √2
+
+√n
+
+√W
+
+(
+
+1 + log 1/2 ˘M
+
+√ˆr∗
+
+)
+
+= √ˆr∗,
+
+41 which implies that √ˆr∗ ≥ 1√n and hence, 
+
+√ˆr∗ ≤ 12 √2
+
+√n
+
+√W
+
+(
+
+1 + log 1/2( ˘M √n)
+
+)
+
+.
+
+Therefore, 
+
+ˆr∗ ≲ Wn
+
+(
+
+1 + log 1/2( ˘M √n)
+
+)2
+
+≲ Wn log( ˘M √n).
+
+B.3 Proof of Theorem 15 
+
+Proof. To start with, we check the conditions required in Theorem 12. Condition 1 holds immediately based on our assumption f0 ∈ argmin f ∈F R(f ). Conditions 2 and 3 follow from Proposition 10 with 
+
+L = 1 and B∗ = 4(1+ eM )2 
+
+> eM
+
+. In addition, note that 
+
+sup  
+
+> f∈F
+
+∥ℓf − ℓf0 ∥∞ ≤ sup  
+
+> f∈F
+
+sup 
+
+> ∥x∥≤ κ
+
+|ℓ(f (x), y ) − ℓ(f0(x), y )|≤ sup  
+
+> f∈F
+
+sup 
+
+> ∥x∥≤ κ
+
+|f (x) − f0(x)|≤ 2M. 
+
+Therefore, it follows from Theorem 12 by taking C = 2 that with probability at least 1 − 3δ,
+
+R(hθf ) − R(f0) ≲ WB∗n log 
+
+M
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + M + B∗
+
+n log 1
+
+δ
+
+≲ Wn log 
+
+M
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + M + B∗
+
+n log 1
+
+δ ,
+
+where the 2nd inequality follows since 1/B ∗ = σ(M )[1 − σ(M )] ≤ 14 and 
+
+∥∥∥hθf − f0
+
+∥∥∥ ≲
+
+√W
+
+√n log 1/2
+
+M
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ +
+
+√
+
+M + B∗
+
+n log 1
+
+δ
+
+42 B.4 Proof of Corollary 16 
+
+Proof. Using the notations in Theorem 9, it is easy to see that ˜M = 2 M . It then follows from Lemma 14 that 
+
+Eξ
+
+ sup    
+
+> f∈star (F,f 0),∥f−f0∥2
+> n≤2 ˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+
+
+≤ 24 ˜M
+
+√W
+
+√n
+
+√ ˜M 2r
+
+1 + log 1/2
+
+5M
+
+(∑Li=1 
+
+( bi
+
+> κi
+
+)1/2)2
+
+√2 ˜M 2r
+
+
+
+= 24 √W
+
+√n
+
+√r
+
+1 + log 1/2
+
+5
+
+(∑Li=1 
+
+( bi
+
+> κi
+
+)1/2)2
+
+2√2r
+
+ .
+
+Let ˜ψn(r) = 24 √W√n
+
+√r
+
+1 + 
+
+> 5
+
+(∑Li=1 
+
+( biκi
+
+)1/2)2
+
+> 2√2r
+
+ and ˆψn(r) = ˜ψn(r) + 62 3n log 1 
+
+> δ
+
+. Note that for any 
+
+f ∈ F , ∥f − f0∥2 
+
+> n
+
+≤ 2 ∥f ∥2 
+
+> n
+
++ 2 ∥f0∥2 
+
+> n
+
+≤ 4M 2 = ˜M 2, so without loss of generality, we may assume 
+
+r ≤ 1/2 and it follows from the same reasoning as in the proof of Lemma 14 that ˜ψn(r) is a sub-root function with fixed point 
+
+˜r∗ ≲ Wn log 
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ .
+
+In view of Lemma 33, we can know that the fixed point of ˆψn(r) is bounded by 
+
+ˆr∗ ≲ ˜r∗ + 1
+
+n log 1
+
+δ ≲ Wn log 
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + 1
+
+n log 1
+
+δ .
+
+Therefore, by Theorem 9, with probability at least 1 − 6δ,
+
+∥∥∥hθf − f0
+
+∥∥∥n ≲
+
+∥∥∥hθf − f0
+
+∥∥∥ + M
+
+(√ˆr∗ +
+
+√ 1
+
+n log 1
+
+δ
+
+)
+
+≲
+
+√W
+
+√n log 1/2
+
+M
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ +
+
+√
+
+M + B∗
+
+n log 1
+
+δ +
+
+M
+
+
+
+√W
+
+√n log 1/2
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ +
+
+√ 1
+
+n log 1
+
+δ
+
+
+
+≲ (1 ∨ M )√W
+
+√n log 1/2
+
+(1 ∨ M )
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + ( M + √M + B∗)
+
+√ 1
+
+n log 1
+
+δ .
+
+43 Consequently, 
+
+∥e∥ =
+
+∥∥∥hθf − f 0
+
+∥∥∥ = √n
+
+∥∥∥hθf − f0
+
+∥∥∥n
+
+≲ √n
+
+
+
+(1 ∨ M )√W
+
+√n log 1/2
+
+(1 ∨ M )
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + ( M + √M + B∗)
+
+√ 1
+
+n log 1
+
+δ
+
+
+
+≲ (1 ∨ M )√W log 1/2
+
+(1 ∨ M )
+
+( L∑
+
+> i=1
+
+( bi
+
+κi
+
+)1/2)2 √n
+
+ + ( M + √M + B∗)
+
+√
+
+log 1
+
+δ .
+
+# C Distance Between Linearized Deep ReLU Network ˜hθf +∆ θS and the Deep ReLU Network hθf +∆ θS
+
+C.1 Proof of Lemma 17 
+
+Proof. Note that 
+
+∥∥∥∇W L hθf (x)
+
+∥∥∥2 
+
+> F
+
+=
+
+∥∥∥∥∥∥∥
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ x
+
+ 
+
+> T
+
+∥∥∥∥∥∥∥
+
+> 2
+> F
+
+= tr 
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ x
+
+ 
+
+> T
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ x
+
+
+
+= xT
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ 
+
+> T
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ x
+
+≤
+
+∥∥∥∥∥∥∥
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ 
+
+> T
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+∥∥∥∥∥∥∥op 
+
+∥x∥2
+
+≤ κ2
+
+> L−1
+
+∏
+
+> j=1
+
+∥Σj ∥2 
+
+> op
+
+∥W j ∥2
+
+> op
+
+≤ κ2
+
+> L−1
+
+∏
+
+> j=1
+
+κ2 
+
+> j
+
+,
+
+44 where the last inequality follows since ∥Σj ∥op ≤ 1 based on the definition of Σj . Similarly, for 
+
+l = 1 , . . . , L − 1,
+
+∥∥∥∥∥∥∥
+
+Σl
+
+
+
+> L−1
+
+∏
+
+> j=l+1
+
+Σj W j
+
+
+
+> T
+
+W TL zTl−1
+
+∥∥∥∥∥∥∥
+
+> 2
+> F
+
+= ∥zl−1∥2 tr 
+
+W L
+
+
+
+> L−1
+
+∏
+
+> j=l+1
+
+Σj W j
+
+ ΣTl Σl
+
+
+
+> L−1
+
+∏
+
+> j=l+1
+
+Σj W j
+
+
+
+> T
+
+W TL
+
+
+
+≤ ∥ zl−1∥2
+
+∥∥∥∥∥∥∥
+
+> L−1
+
+∏
+
+> j=l+1
+
+Σj W j
+
+ ΣTl Σl
+
+
+
+> L−1
+
+∏
+
+> j=l+1
+
+Σj W j
+
+ 
+
+> T
+
+∥∥∥∥∥∥∥op 
+
+tr 
+
+(
+
+W TL W L
+
+)
+
+≤ ∥ zl−1∥2 ∥W L∥2
+
+> FL−1
+
+∏
+
+> j=l+1
+
+∥Σj ∥2 ∥W j ∥2
+
+> op
+
+∥∥∥ΣTl
+
+∥∥∥2
+
+> op
+> (∗)
+
+≤
+
+κ
+
+> l−1
+
+∏
+
+> j=1
+
+κj
+
+
+
+> 2
+
+b2
+
+> L
+
+
+
+> L−1
+
+∏
+
+> j=l+1
+
+κ2
+
+> j
+
+
+
+= κ2b2
+
+> L
+
+κ2
+
+> lL−1
+
+∏
+
+> j=1
+
+κ2 
+
+> j
+
+,
+
+where the inequality (*) follows from (32) and ∥W L∥F =
+
+√∑ 
+
+> j
+
+∥[W L]j, :∥2 ≤ ∑ 
+
+> j
+
+∥[W L]j, :∥ =
+
+∥W L∥2,1. Consequently, 
+
+∥∥∥∇θhθf (x)
+
+∥∥∥2
+
+= sup 
+
+> ∥x∥≤ κL
+
+∑
+
+> l=1
+
+∥∥∥∇W l hθf
+
+∥∥∥2
+
+> F
+
+=
+
+∥∥∥∥∥∥∥
+
+> L−1
+
+∏
+
+> j=1
+
+Σj W j
+
+ x
+
+ 
+
+> T
+
+∥∥∥∥∥∥∥
+
+> 2
+> F
+
++
+
+> L−1
+
+∑
+
+> l=1
+
+∥∥∥∥∥∥∥
+
+Σl
+
+
+
+> L−1
+
+∏
+
+> j=l+1
+
+Σj W j
+
+
+
+> T
+
+W TL zl
+
+∥∥∥∥∥∥∥
+
+> 2
+> F
+
+≤ κ2
+
+> L−1
+
+∏
+
+> j=1
+
+κ2 
+
+> j
+
++
+
+> L−1
+
+∑
+
+> l=1
+
+κ2b2
+
+> L
+
+κ2
+
+> lL−1
+
+∏
+
+> j=1
+
+κ2
+
+> j
+
+= κ2
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+κ2
+
+> j
+
+(
+
+1 + b2
+
+> LL−1
+
+∑
+
+> l=1
+
+1
+
+κ2
+
+> l
+
+)
+
+.
+
+The desired result then follows by applying the inequality √x + y ≤ √x + √y for positive x, y .For the bound on tr (K−S ), note that tr (K−S ) = 
+
+> n
+
+∑
+
+> i=1
+
+∥∥∥∇θhθf (Xi, −S )
+
+∥∥∥2
+
+≤ nκ 2
+
+
+
+> L−1
+
+∏
+
+> j=1
+
+κ2
+
+> j
+
+(
+
+1 + b2
+
+> LL−1
+
+∑
+
+> l=1
+
+1
+
+κ2
+
+> l
+
+)
+
+.
+
+C.2 Proof of Proposition 18 
+
+Proof. We first prove the result for ∥∆θS ∥. Since Lλ(w) is a convex function, the Newton-Raphson algorithm is guaranteed to converge to its minimum. Therefore, ∆θS needs to satisfy 
+
+0 = ∂∂w Lλ(∆ θS ) = ΦT
+
+> −S
+
+[
+
+Y − σ(hθf ,−S + Φ−S ∆θS )
+
+]
+
+− nλ ∆θS , (36) 45 which implies that ∆θS needs to satisfy 
+
+∆θS = 1
+
+nλ ΦT
+
+> −S
+
+[
+
+Y − σ(hθf ,−S + Φ−S ∆θS )
+
+]
+
+. (37) Therefore, by the triangle inequality, 
+
+∥∆θS ∥ = 1
+
+nλ 
+
+∥∥∥ΦT
+
+> −S
+
+[
+
+Y − σ(hθf ,−S + Φ−S ∆θS )
+
+]∥ ∥∥
+
+≤ 1
+
+nλ 
+
+∥∥∥ΦT 
+
+> −S
+
+ϵ
+
+∥∥∥ + 1
+
+nλ 
+
+∥∥∥ΦT
+
+> −S
+
+[
+
+σ(f 0,−S ) − σ(hθf ,−S + ΦT 
+
+> −S
+
+∆θS )
+
+]∥ ∥∥ .
+
+Since elements in ϵ are independent, mean-zero sub-Gaussian random variables, it follows from Theorem 1 in Hsu et al. (2012) that with probability at least 1 − δ,
+
+∥∥∥ΦT 
+
+> −S
+
+ϵ
+
+∥∥∥2
+
+≤ tr (K−S ) + 2 
+
+√
+
+tr (K2 
+
+> −S
+
+) log 1
+
+δ + 2 ∥K−S ∥op log 1
+
+δ .
+
+Note that tr (K2 
+
+> −S
+
+) ≤ ∥ K−S ∥op tr (K−S ), then with probability at least 1 − δ,
+
+∥∥∥ΦT 
+
+> −S
+
+ϵ
+
+∥∥∥2
+
+≤ tr (K−S ) + 2 
+
+√
+
+∥K−S ∥op tr (K−S ) log 1
+
+δ + 2 ∥K−S ∥op log 1
+
+δ
+
+[√
+
+tr (K−S ) + 
+
+√
+
+2 ∥K−S ∥op log 1
+
+δ
+
+]2
+
+.
+
+Hence, with probability at least 1 − δ,
+
+∥∥∥ΦT 
+
+> −S
+
+ϵ
+
+∥∥∥ ≤
+
+√
+
+tr (K−S ) + 
+
+√
+
+2 ∥K−S ∥op log 1
+
+δ .
+
+For the second term, note that by the mean value theorem, 
+
+σ(f 0,−S ) − σ(hθf ,−S + Φ−S ∆θS ) = T (f 0,−S − hθf ,−S − Φ−S ∆θS )= T (−e−S − Φ−S ∆θS ), (38) where T = Diag 
+
+{
+
+σ′(γf 0,−S + (1 − γ)hθf ,−S )
+
+}
+
+with some γ ∈ [0 , 1] . Since ∥T ∥op ≤ 14 , we have with probability at least 1 − δ,
+
+∥∆θS ∥ ≤ 1
+
+nλ 
+
+[√
+
+tr (K−S ) + 
+
+√
+
+2 ∥K−S ∥op log 1
+
+δ
+
+]
+
++ 1
+
+nλ 
+
+∥∥∥ΦT 
+
+> −S
+
+T [e−S + Φ−S ∆θS ]
+
+∥∥∥
+
+≤ 1
+
+nλ 
+
+[√
+
+tr (K−S ) + 
+
+√
+
+2 ∥K−S ∥op log 1
+
+δ
+
+]
+
++ 14nλ ∥Φ−S ∥op 
+
+(
+
+∥e−S ∥ + ∥Φ−S ∥op ∥∆θS ∥
+
+)
+
+=
+
+√tr (K−S )
+
+nλ +
+
+√
+
+∥K−S ∥op 
+
+nλ 
+
+( 14 ∥e−S ∥ +
+
+√
+
+2 log 1
+
+δ
+
+)
+
++ ∥K−S ∥op 
+
+4nλ ∥∆θS ∥ , (39) where the last equality follows since ∥Φ−S ∥op =
+
+√
+
+λmax (ΦT 
+
+> −S
+
+Φ−S ) = ∥K−S ∥1/2 
+
+> op
+
+. Therefore, by rearranging (41), we have 
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)
+
+∥∆θS ∥ ≤ 
+
+√tr (K−S )
+
+nλ +
+
+√
+
+∥K−S ∥op 
+
+nλ 
+
+( 14 ∥e−S ∥ +
+
+√
+
+2 log 1
+
+δ
+
+)
+
+≲ 1
+
+√nλ +
+
+√
+
+∥K−S ∥op 
+
+nλ 
+
+( 14 ∥e−S ∥ +
+
+√
+
+2 log 1
+
+δ
+
+)
+
+46 Based on (A2), we have 
+
+∥K−S ∥op 
+
+4nλ = 1
+
+n
+
+∥K−S ∥op 
+
+4
+
+(
+
+1 ∧ 4
+
+∥K−S ∥op 
+
+)
+
+o
+
+(
+
+n α−12( α+1) ∧ n1/4
+
+)
+
+= o
+
+(
+
+n− α+3 2( α+1) ∧ n−3/4
+
+)
+
+∈ (0 , 1) ,
+
+(40) In addition, note that 1/(1 + O(1)) = O(1) , we have 
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)−1 1
+
+√nλ = O(1) o(n− 1 
+
+> α+1
+
+∧ n− 14 ) = o(n− 14 )
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)−1 √
+
+∥K−S ∥op 
+
+nλ = O(1) ·
+
+√ 1
+
+nλ 
+
+√
+
+∥K−S ∥op 
+
+nλ 
+
+= o(n− α+3 4( α+1) )o(n− α+3 4( α+1) )= o(n− α+3 2( α+1) ).
+
+Therefore, under assumption (A2), combined with Corollary 16, with probability at least 1 − 7δ,
+
+∥∆θS ∥ ≤ 
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)−1 1
+
+√nλ +
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)−1 √
+
+∥K−S ∥op 
+
+nλ 
+
+( 14 ∥e−S ∥ +
+
+√
+
+2 log 1
+
+δ
+
+)
+
+≤ o
+
+(
+
+n− 14
+
+)
+
++ o(n− α+3 2( α+1) )
+
+(√W log 1/2 n +
+
+√
+
+log 1
+
+δ
+
+)
+
+We now prove the result for ∥Φ−S ∆θS ∥. Based on (37) and triangle inequality, 
+
+∥Φ−S ∆θS ∥ = 1
+
+nλ 
+
+∥∥∥Φ−S ΦT
+
+> −S
+
+[
+
+Y − σ(hθf ,−S + Φ−S ∆θS )
+
+]∥ ∥∥
+
+= 1
+
+nλ 
+
+∥∥∥K−S
+
+[
+
+Y − σ(hθf ,−S + Φ−S ∆θS )
+
+]∥ ∥∥
+
+≤ 1
+
+nλ ∥K−S ϵ∥ + 1
+
+nλ 
+
+∥∥∥K−S
+
+[
+
+σ(f 0,−S ) − σ(hθf ,−S + Φ−S ∆θS )
+
+]∥ ∥∥ .
+
+Since elements in ϵ are independent, mean-zero sub-Gaussian random variables, it follows from Theorem 1 in Hsu et al. (2012) that with probability at least 1 − δ,
+
+∥K−S ϵ∥2 ≤ tr 
+
+(
+
+K2
+
+> −S
+
+)
+
++ 2 
+
+√
+
+tr 
+
+(
+
+K4
+
+> −S
+
+)
+
+log 1
+
+δ + 2 ∥K−S ∥2 
+
+> op
+
+log 1
+
+δ .
+
+Note that 
+
+∥K−S ∥2 
+
+> op
+
+= ∥K−S ∥2
+
+> op
+
+tr 
+
+(
+
+K2
+
+> −S
+
+)
+
+≤ ∥ K−S ∥op tr (K−S )
+
+tr 
+
+(
+
+K4
+
+> −S
+
+)
+
+≤
+
+∥∥∥K2
+
+> −S
+
+∥∥∥op tr 
+
+(
+
+K2
+
+> −S
+
+)
+
+≤ ∥ K−S ∥3 
+
+> op
+
+tr (K−S ),
+
+then with probability at least 1 − δ,
+
+∥K−S ϵ∥2 ≤ ∥ K−S ∥op tr (K−S ) + 2 ∥K−S ∥op 
+
+√
+
+∥K−S ∥op tr (K−S ) log 1
+
+δ + 2 ∥K−S ∥2 
+
+> op
+
+log 1
+
+δ
+
+= ∥K−S ∥op 
+
+[
+
+tr (K−S ) + 2 
+
+√
+
+∥K−S ∥op tr (K−S ) log 1
+
+δ + 2 ∥K−S ∥op log 1
+
+δ
+
+]
+
+≤ ∥ K−S ∥op 
+
+[√
+
+tr (K−S ) + 
+
+√
+
+2 ∥K−S ∥ log 1
+
+δ
+
+]2
+
+.
+
+47 Hence, with probability at least 1 − δ,
+
+∥K−S ϵ∥ ≤ 
+
+√
+
+∥K−S ∥op 
+
+[√
+
+tr (K−S ) + 
+
+√
+
+2 ∥K−S ∥ log 1
+
+δ
+
+]
+
+.
+
+For the second term, by (38) we have with probability at least 1 − δ,
+
+∥Φ−S ∆θS ∥ ≤ 1
+
+nλ 
+
+√
+
+∥K−S ∥op 
+
+[√
+
+tr (K−S ) + 
+
+√
+
+2 ∥K−S ∥ log 1
+
+δ
+
+]
+
++ 1
+
+nλ ∥K−S T [e−S + Φ−S ∆θS ]∥≤ 1
+
+nλ 
+
+√
+
+∥K−S ∥op 
+
+[√
+
+tr (K−S ) + 
+
+√
+
+2 ∥K−S ∥ log 1
+
+δ
+
+]
+
++ 14nλ ∥K−S ∥op (∥e−S ∥ + ∥Φ−S ∆θS ∥)
+
+≲
+
+√
+
+∥K−S ∥op 
+
+nλ 2 + ∥K−S ∥op 
+
+nλ 
+
+(√ 
+
+2 log 1
+
+δ + 14 ∥e−S ∥
+
+)
+
++ ∥K−S ∥op 
+
+4nλ ∥Φ−S ∆θS ∥ , (41) where the last inequality follows from Lemma 17. Therefore, by rearranging (41), we have 
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)
+
+∥Φ−S ∆θS ∥ ≲
+
+√
+
+∥K−S ∥op 
+
+nλ 2 + ∥K−S ∥op 
+
+nλ 
+
+(√ 
+
+2 log 1
+
+δ + 14 ∥e−S ∥
+
+)
+
+.
+
+Since x/ (1 − x) = O(x) and √x/ (1 − x) = O(√x) as x → 0, based on (40), we have 
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)−1 ∥K−S ∥op 
+
+4nλ = o(n− α+3 2( α+1) )
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)−1 √
+
+∥K−S ∥op 
+
+nλ 2 =
+
+(
+
+1 − ∥K−S ∥op 
+
+4nλ 
+
+)−1 √
+
+∥K−S ∥op 
+
+nλ 
+
+√ 1
+
+λ
+
+= O(o(n−3/8)) o(n1/8) = o(n−1/4).
+
+Combine everything together, we have under assumption (A2), with probability at least 1 − 7δ,
+
+∥Φ−S ∆θS ∥ ≲ o(n− 14 ) + o(n− α+3 2( α+1) )
+
+(√W log 1/2 n +
+
+√
+
+log 1
+
+δ
+
+)
+
+C.3 Proof of Theorem 19 
+
+Proof. Applying Taylor’s theorem similar to equation (1.3.2) in Misiakiewicz and Montanari (2024), we have 
+
+∣∣∣hθf +∆ θS (x) − ˜hθf +∆ θS (x)
+
+∣∣∣ =
+
+∣∣∣hθf +∆ θS (x) − hθf (x) − [∇θhθf (x)] T ∆θS
+
+∣∣∣
+
+=
+
+∣∣∣∣∫ 10
+
+[
+
+∇θhθf +t∆θS (x) − ∇ θhθf (x)
+
+]T
+
+∆θS dt 
+
+∣∣∣∣
+
+≤ ∥ ∆θS ∥
+
+∫ 10
+
+∥∥∥∇θhθf +t∆θS (x) − ∇ θhθf (x)
+
+∥∥∥ dt 
+
+≤ ∥ ∆θS ∥
+
+[∫ 10
+
+∥∥∥∇θhθf +t∆θS (x)
+
+∥∥∥ dt +
+
+∥∥∥∇θhθf (x)
+
+∥∥∥]
+
+48 where the last two inequalities follow from the Cauchy-Schwarz inequality and the triangle inequality. According to Lemma 17, the norms of the gradient are upper bounded by κ
+
+(∏L−1
+
+j=1 κj
+
+) (
+
+1 + bL
+
+√∑L−1
+
+l=1 1
+
+κ2
+
+> l
+
+)
+
+.Therefore, for any x satisfying ∥x∥ ≤ κ,
+
+∣∣∣hθf +∆ θS (x) − ˜hθf +∆ θS (x)
+
+∣∣∣ ≤ 2 ∥∆θS ∥ κ
+
+
+
+L−1∏
+
+j=1 
+
+κj
+
+1 + bL
+
+√√√√L−1∑
+
+l=1 
+
+1
+
+κ2
+
+l
+
+ .
+
+Denote Ω(1) 
+
+n = o(n− 14 ), Ω(2) 
+
+n = o(n− α+3 2( α+1) ) and b(e)
+
+n = √W log 1/2 n. Then from Proposition 18, we know that 
+
+P
+
+(
+
+∥∆θS ∥ ≳ Ω(1) 
+
+n + Ω (2) 
+
+n b(e)
+
+n + Ω (2) 
+
+n
+
+√
+
+log 1
+
+δ
+
+)
+
+≲ δ. 
+
+Let an = Ω (1) 
+
+n +Ω (2) 
+
+n b(e)
+
+n . Given u > a n, take δ = exp 
+
+{
+
+−
+
+(
+
+u−an
+
+Ω(2) 
+
+> n
+
+)2}
+
+, then δ ∈ (0 , 1) and Ω(2) 
+
+n
+
+√
+
+log 1
+
+δ =
+
+u − an. Therefore, for u > a n, P(∥∆θS ∥ > u ) ≲ e
+
+−
+
+(
+
+> u−an
+> Ω(2)
+> n
+
+)2
+
+, and hence 
+
+∥∥∥hθf +∆ θS − ˜hθf +∆ θS
+
+∥∥∥2
+
+= E
+
+[∣∣∣hθf +∆ θS (X) − ˜hθf +∆ θS (X)
+
+∣∣∣2]
+
+≲ E
+
+[
+
+∥∆θS ∥2]
+
+=
+
+(∫ an
+
+0
+
++
+
+∫ ∞
+
+an
+
+)
+
+2uP(∥∆θS ∥ > u )du 
+
+≲ a2
+
+n +
+
+∫ ∞
+
+0
+
+(v + an)e
+
+− v2Ω(2) 2 
+
+> n
+
+dv 
+
+= a2
+
+n + 12 Ω(2) 
+
+n
+
+(
+
+Ω(2) 
+
+n + an
+
+√2π
+
+)
+
+≲ Ω(1) 2
+
+n + Ω (2) 2
+
+n b(e)2
+
+n + Ω (2) 2
+
+n + Ω (1) 
+
+n Ω(2) 
+
+n + Ω (2) 2
+
+n b(e)
+
+n .
+
+Since Ω(1) 2
+
+n = o(n− 12 ), Ω(2) 2
+
+n = o(n− α+3  
+
+> α+1
+
+), Ω(1) 
+
+n Ω(2) 
+
+n = o(n−( 14 + α+3 2( α+1) 
+
+)
+
+) = o(n− 12 ), Ω(2) 2
+
+n b(e)
+
+n =
+
+o(n− α+3  
+
+> α+1
+
+)√W log 1/2 n and Ω(2) 2
+
+n b(e)2
+
+n = o(n− α+3  
+
+> α+1
+
+)W log n, we have 
+
+∥∥∥hθf +∆ θS − ˜hθf +∆ θS
+
+∥∥∥2
+
+≲ o(n− 12 ) + o(n− α+3  
+
+> α+1
+
+)W log n
+
+which implies that 
+
+∥∥∥hθf +∆ θS − ˜hθf +∆ θS
+
+∥∥∥ ≲ o(n− 14 ) + o(n− α+3 2( α+1) )√W log 1/2 n. 
+
+49 D Technical Details on the Convergence Rate of Linearized ReLU Network ˜hθf +∆ θS
+
+D.1 Proof of Lemma 20 
+
+Proof. Denote Q(k) 
+
+> −S
+
+= K−S
+
+[
+
+K−S + nλ Π(k)−1
+
+> −S
+
+]−1
+
+. First note that 
+
+√n
+
+∥∥∥˜h(k+1)   
+
+> θf+∆ θS
+
+− f0,−S
+
+∥∥∥n =
+
+∥∥∥˜h(k+1)   
+
+> θf+∆ θS
+
+− f 0,−S
+
+∥∥∥
+
+=
+
+∥∥∥Q(k)
+
+> −S
+
+[
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+(
+
+Y − σ
+
+(
+
+hθf ,−S + Φ−S w(k)))] 
+
++ hθf ,−S − f 0,−S
+
+∥∥∥
+
+=
+
+∥∥∥Q(k)
+
+> −S
+
+[
+
+Φ−S w(k) + Π(k)−1
+
+> −S
+
+(
+
+σ(f 0,−S ) + ϵ − σ
+
+(
+
+hθf ,−S + Φ−S w(k)))] 
+
++ hθf ,−S − f 0,−S
+
+∥∥∥
+
+> (1)
+
+≤
+
+∥∥∥Q(k) 
+
+> −S
+
+Φ−S w(k)∥∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1
+
+> −S
+
+(
+
+σ
+
+(
+
+f 0,−S
+
+)
+
++ ϵ − σ
+
+(
+
+hθf ,−S + Φ−S w(k)))∥ ∥∥ +
+
+∥∥∥Q(k)
+
+> −S
+
+(
+
+hθf ,−S − f 0,−S
+
+)∥ ∥∥
+
+> (2)
+
+≤
+
+∥∥∥Q(k) 
+
+> −S
+
+Φ−S w(k)∥∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1
+
+> −S
+
+(
+
+σ
+
+(
+
+f 0,−S
+
+)
+
+− σ
+
+(
+
+hθf ,−S + Φ−S w(k)))∥ ∥∥
+
++
+
+∥∥∥Q(k)
+
+> −S
+
+(
+
+hθf ,−S − f 0,−S
+
+)∥ ∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1 
+
+> −S
+
+ϵ
+
+∥∥∥
+
+> (3)
+
+≤
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op 
+
+∥∥∥Φ−S w(k)∥∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1
+
+> −S
+
+∥∥∥op 
+
+∥∥∥σ
+
+(
+
+f 0,−S
+
+)
+
+− σ
+
+(
+
+hθf ,−S + Φ−S w(k))∥ ∥∥
+
++
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op 
+
+∥∥∥hθf ,−S − f 0,−S
+
+∥∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1 
+
+> −S
+
+ϵ
+
+∥∥∥
+
+> (4)
+
+≤
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op 
+
+∥∥∥Φ−S w(k)∥∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1
+
+> −S
+
+∥∥∥op 
+
+14
+
+∥∥∥f 0,−S − hθf ,−S − Φ−S w(k)∥∥∥
+
++
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op 
+
+∥∥∥hθf ,−S − f 0,−S
+
+∥∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1 
+
+> −S
+
+ϵ
+
+∥∥∥
+
+> (5)
+
+≤
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op 
+
+∥∥∥Φ−S w(k)∥∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1
+
+> −S
+
+∥∥∥op 
+
+14
+
+( ∥ ∥∥f 0,−S − hθf ,−S
+
+∥∥∥ +
+
+∥∥∥Φ−S w(k)∥∥∥)
+
++
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op 
+
+∥∥∥hθf ,−S − f 0,−S
+
+∥∥∥ +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1 
+
+> −S
+
+ϵ
+
+∥∥∥
+
+=
+
+(∥∥∥Q(k)
+
+> −S
+
+∥∥∥op +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1
+
+> −S
+
+∥∥∥op 
+
+4
+
+) ∥∥∥Φ−S w(k)∥∥∥ +
+
+(∥∥∥Q(k)
+
+> −S
+
+∥∥∥op +
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1
+
+> −S
+
+∥∥∥op 
+
+4
+
+) ∥∥∥f 0,−S − hθf ,−S
+
+∥∥∥
+
++
+
+∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1 
+
+> −S
+
+ϵ
+
+∥∥∥
+
+=: I0I1 + I0I2 + I3,
+
+where (1), (2), and (5) hold from the triangle inequality, (3) comes from the definition of the operator norm, and (4) follows from Lemma 31. We now provide bounds for each term. 
+
+• Bound for 
+
+∥∥∥w(k)∥∥∥. We derive the bound for 
+
+∥∥∥w(k)∥∥∥ by iterating Newton’s updating equation k
+
+times. Nocedal and Wright (2006) 1 shows that when the target function is twice differentiable and the Hessian is Lipschitz continuous and positive definite, the rate of convergence of Newton’s method is quadratic. Since Lλ(w) is clearly twice differentiable and the Hess-sian ∇2Lλ(w) = ΦT 
+
+> −S
+
+Π−S Φ−S + nλ IW is positive definite due to ΦT 
+
+> −S
+
+Π−S Φ−S is positive 
+
+> 1
+
+Theorem (Nocedal and Wright, 2006) Suppose that f is twice differentiable, that the Hessian ∇2f (x) is Lipschitz continuous, and that ∇f (x∗) = 0 and ∇2f (x∗) is positive definite. Consider the iteration xk+1 =
+
+xk − ∇ 2f (xk )−1∇f (xk ). Then (1) if the starting point x0 is sufficiently close to x∗, the sequence of iterates con-verges to x∗ and (2) the rate of convergence of xk is quadratic, i.e., there exists some constant Λ > 0 such that 
+
+∥x∗ − xk+1 ∥ < Λ ∥x∗ − xk ∥2 for k ∈ N.
+
+50 semidefinite. On the other hand, the Hessian is also Lipschitz continuous by noting that 
+
+∥∥∥∇2Lλ(w) − ∇ 2Lλ( ˜ w)
+
+∥∥∥F =
+
+∥∥∥ΦT
+
+> −S
+
+(
+
+Π−S − ˜Π−S
+
+)
+
+Φ−S
+
+∥∥∥F
+
+=
+
+√
+
+tr 
+
+(( 
+
+Π−S − ˜Π−S
+
+)
+
+Φ−S ΦT
+
+> −S
+
+(
+
+Π−S − ˜Π−S
+
+)
+
+Φ−S ΦT
+
+> −S
+
+)
+
+≤
+
+√
+
+∥K−S ∥op tr 
+
+((
+
+Π−S − ˜Π−S
+
+)2
+
+K−S
+
+)
+
+≤ ∥ K−S ∥op 
+
+√
+
+tr 
+
+((
+
+Π−S − ˜Π−S
+
+)2)
+
+= ∥K−S ∥op 
+
+√√√√ n∑
+
+> i=1
+
+[
+
+σ′
+
+([
+
+∇θhθf (Xi, −S )
+
+]T
+
+w
+
+)
+
+− σ′
+
+([
+
+∇θhθf (Xi, −S )
+
+]T
+
+˜w
+
+)] 2(1) 
+
+≤ ∥ K−S ∥op 
+
+√√√√ n∑
+
+> i=1
+
+[ 14
+
+[
+
+∇θhθf (Xi, −S )
+
+]T
+
+(w − ˜w)
+
+]2
+
+≤ 14 ∥K−S ∥op 
+
+√√√√(w − ˜w)T
+
+( n∑
+
+> i=1
+
+∇θhθf (Xi, −S )∇θhθf (Xi, −S )T
+
+)
+
+(w − ˜w)
+
+> (2)
+
+≤ 14 ∥K−S ∥op 
+
+√√√√λmax 
+
+( n∑
+
+> i=1
+
+[
+
+∇θhθf (Xi, −S )
+
+] [ 
+
+∇θhθf (Xi, −S )
+
+]T
+
+)
+
+∥w − ˜w∥
+
+= 14 ∥K−S ∥3/2 
+
+> op
+
+∥w − ˜w∥ ,
+
+where (1) follows from the Lipschitz continuity of σ′ and (2) follows from the Rayleigh quotient property of symmetric matrices. Notice 14 ∥K−S ∥3/2 
+
+> op
+
+does not depend on w, proving the Hessian is Lipschitz. Thus, we know that 
+
+∥∥∥∆θS − w(k+1) ∥∥∥ < Λ
+
+∥∥∥∆θS − w(k)∥∥∥2
+
+. Since 
+
+w(k)) → ∆θS as k → ∞ , there exists ¯K > 0 such that 
+
+∥∥∥w(k) − ∆θS
+
+∥∥∥ < 1Λ . Therefore for all 
+
+k ≥ ¯K, combining the assumption (A2) with Proposition 18, we have 
+
+∥∥∥w(k)∥∥∥ ≤ ∥ ∆θS ∥ +
+
+∥∥∥w(k) − ∆θS
+
+∥∥∥
+
+≤ ∥ ∆θS ∥ + Λ 
+
+∥∥∥w(k−1) − ∆θS
+
+∥∥∥2
+
+≤ ∥ ∆θS ∥ + Λ 3 ∥∥∥w(k−2) − ∆θS
+
+∥∥∥4
+
+≤ · · · ≤ ∥ ∆θS ∥ + Λ 2k− ¯K −1 ∥∥∥w(K) − ∆θS
+
+∥∥∥2k− ¯K
+
+= O(1) .
+
+• Bound for 
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥op . Recall that 
+
+Π(k) 
+
+> −S
+
+= Diag 
+
+(
+
+σ(hθf ,−S + Φ−S w(k)) · (1 − σ(hθf ,−S + Φ−S w(k))) )
+
+,
+
+so then 
+
+Π(k)−1 
+
+> −S
+
+= Diag 
+
+([
+
+σ(hθf ,−S + Φ−S w(k)) · (1 − σ(hθf ,−S + Φ−S w(k))) ]−1)
+
+.
+
+51 Note that for any z ∈ R, we have 
+
+σ(z)(1 − σ(z)) = ez
+
+(1 + ez )2 ,
+
+so the reciprocal 
+
+[σ(z)(1 − σ(z)) ]−1 = (1 + ez )2
+
+ez = 1 + 2 ez + e2z
+
+ez = ez + e−z + 2 .
+
+Therefore, 
+
+∥Π(k)−1
+
+−S ∥op = max 
+
+1≤i≤n
+
+(
+
+1 + ehθf ,−S (Xi, −S )+[ ∇θ hθf (Xi, −S )] T w(k) )2
+
+ehθf ,−S (Xi, −S )+[ ∇θ hθf (Xi, −S )] T w(k)
+
+
+
+= max 
+
+1≤i≤n
+
+{eγi + e−γi + 2 } ,
+
+where 
+
+γi := hθf ,−S (Xi, −S ) + [ ∇θhθf (Xi, −S )] T w(k).
+
+Since functions in F are uniformly bounded by M , we have 
+
+∣∣∣hθf ,−S (X−S )
+
+∣∣∣ ≤ M. 
+
+Then 
+
+∣∣∣∇θhθf (Xi, −S )T w(k)∣∣∣
+
+(1) 
+
+≤
+
+∥∥∥∇θhθf (Xi, −S )
+
+∥∥∥∥∥∥w(k)∥∥∥
+
+=
+
+√[
+
+∇θhθf (Xi, −S )
+
+]T
+
+∇θhθf (Xi, −S )
+
+∥∥∥w(k)∥∥∥
+
+=
+
+√
+
+[K−S ]ii 
+
+∥∥∥w(k)∥∥∥
+
+≤
+
+√
+
+sup xK−S (x, x)
+
+∥∥∥w(k)∥∥∥
+
+(2) 
+
+= O(1) 
+
+where (1) holds by Cauchy–Schwarz and (2) holds from Lemma 17 and the bound for 
+
+∥∥∥w(k)∥∥∥.So, 
+
+max 
+
+1≤i≤n
+
+{eγi + e−γi + 2 } ≤ max 
+
+1≤i≤n {eγi } + max 
+
+1≤i≤n
+
+{e−γi } + 2 = max 
+
+1≤i≤n
+
+{
+
+ehθf ,−S (Xi, −S )+[ ∇θ hθf (Xi, −S )] T w(k) }
+
++ max 
+
+1≤i≤n
+
+{
+
+e−hθf ,−S (Xi, −S )−[∇θ hθf (Xi, −S )] T w(k) }
+
++ 2 
+
+≤ max 
+
+1≤i≤n
+
+{
+
+eM +√sup xK−S (x,x)∥w(k)∥}
+
++ max 
+
+1≤i≤n
+
+{
+
+eM +√sup xK−S (x,x)∥w(k)∥}
+
++ 2 
+
+≤ 2eM +√sup xK−S (x,x)∥w(k)∥ + 2 = O(1) 
+
+52 Therefore 
+
+∥Π(k)−1 
+
+> −S
+
+∥op = O(1) . (42) 
+
+• Bound for I0. We have the following bound on 
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op :
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op =
+
+∥∥∥∥K−S
+
+[
+
+K−S + nλ Π(k)−1
+
+> −S
+
+]−1∥∥∥∥op 
+
+=
+
+∥∥∥∥∥K−S Π(k)1/2
+
+> −S
+
+[
+
+Π(k)1/2 
+
+> −S
+
+K−S Π(k)1/2 
+
+> −S
+
++ nλ In
+
+]−1
+
+Π(k)1/2
+
+> −S
+
+∥∥∥∥∥op 
+
+=
+
+∥∥∥∥∥Π(k)1/2 
+
+> −S
+
+K−S Π(k)1/2
+
+> −S
+
+[
+
+Π(k)1/2 
+
+> −S
+
+K−S Π(k)1/2 
+
+> −S
+
++ nλ In
+
+]−1∥∥∥∥∥op 
+
+=
+
+∥∥∥∥Π(k)1/2 
+
+> −S
+
+K−S Π(k)1/2
+
+> −S
+
+∥∥∥∥op 
+
+∥∥∥Π(k)1/2 
+
+> −S
+
+K−S Π(k)1/2
+
+> −S
+
+∥∥∥op + nλ 
+
+≤ 1.
+
+Using the bound for 
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥op and the bound on 
+
+∥∥∥Q(k)
+
+> −S
+
+∥∥∥op , we have 
+
+I0 = O(1) .
+
+• Bound for I2. Since I2 =
+
+∥∥∥f 0,−S − hθf ,−S
+
+∥∥∥ = ∥e−S ∥, it then follows from the Corollary 16 that with probability at least 1 − 6δ, ∥e−S ∥ ≲ √W log 1/2 n +
+
+√
+
+log 1 
+
+> δ
+
+.
+
+• Bound for I3. Note that Y ∈ { 0, 1}n and σ(f 0,−S ) ∈ [0 , 1] n, it then follows that ϵ ∈ [−1, 1] n.By Hoeffding inequality (Hoeffding, 1994), 
+
+P( |ϵi| > t | X) ≤ exp 
+
+{
+
+− 2t2
+
+22
+
+}
+
+,
+
+which implies ϵi, i = 1 , . . . , n are sub-Gaussian random variables with sub-Gaussian parameter 1. Therefore, for any a ∈ Rn,
+
+E
+
+[
+
+eaT ϵ∣∣∣ X
+
+]
+
+= E
+
+[ n∏
+
+> i=1
+
+eaiϵi
+
+∣∣∣∣∣ X
+
+]
+
+=
+
+> n
+
+∏
+
+> i=1
+
+E [ eaiϵi | X]
+
+≤
+
+> n
+
+∏
+
+> i=1
+
+e a2 
+
+> i
+> 2
+
+= exp 
+
+{
+
+∥a∥2 /2
+
+}
+
+.
+
+By Theorem 1 in Hsu et al. (2012), for any t > 0,
+
+P
+
+( ∥∥∥Q(k) 
+
+> −S
+
+Π(k)−1 
+
+> −S
+
+ϵ
+
+∥∥∥2
+
+> tr 
+
+(
+
+Σ(k)
+
+> −S
+
+)
+
++ 2 
+
+√
+
+tr 
+
+(
+
+Σ(k)2
+
+> −S
+
+)
+
+t + 2 
+
+∥∥∥Σ(k)
+
+> −S
+
+∥∥∥op t
+
+∣∣∣∣∣ X
+
+)
+
+≤ e−t,
+
+53 where Σ(k)
+
+−S =
+
+(
+
+Q(k)
+
+−S Π(k)−1
+
+−S
+
+)T (
+
+Q(k)
+
+−S Π(k)−1
+
+−S
+
+)
+
+= Π(k)−1
+
+−S Q(k)T
+
+−S Q(k)
+
+−S Π(k)−1
+
+−S . Note that 
+
+∥∥∥Σ(k)
+
+−S
+
+∥∥∥op =
+
+∥∥∥Π(k)−1
+
+−S Q(k)T
+
+−S Q(k)
+
+−S Π(k)−1
+
+−S
+
+∥∥∥op 
+
+≤
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op 
+
+∥∥∥Q(k)T
+
+−S Q(k)
+
+−S
+
+∥∥∥op 
+
+=
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op 
+
+∥∥∥Q(k)
+
+−S
+
+∥∥∥2
+
+op 
+
+≤
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op .
+
+In addition, we have tr 
+
+(
+
+Σ(k)
+
+−S
+
+)
+
+= tr 
+
+(
+
+Π(k)−1
+
+−S Q(k)T
+
+−S Q(k)
+
+−S Π(k)−1
+
+−S
+
+)
+
+= tr 
+
+(
+
+Π(k)−1
+
+−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+K2
+
+−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+Π(k)−1
+
+−S
+
+)
+
+= tr 
+
+(
+
+Π(k)−1
+
+−S Π(k)1/2
+
+−S
+
+[
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S + nλ In
+
+]−1
+
+Π(k)1/2
+
+−S K2
+
+−S
+
+Π(k)1/2
+
+−S
+
+[
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S + nλ In
+
+]−1
+
+Π(k)1/2
+
+−S Π(k)−1
+
+−S
+
+)
+
+(a)
+
+≤
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥op tr 
+
+([
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S + nλ In
+
+]−2
+
+Π(k)1/2
+
+−S K2
+
+−S Π(k)1/2
+
+−S
+
+)
+
+=
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥op tr 
+
+([
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S + nλ In
+
+]−2
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+Π(k)−1
+
+−S Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+)
+
+(b)
+
+≤
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op tr 
+
+([
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S + nλ In
+
+]−2 [
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+]2)
+
+=
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op n∑
+
+j=1 
+
+
+
+λj
+
+(
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+)
+
+nλ + λj
+
+(
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+)
+
+2(c)
+
+≤
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op n∑
+
+j=1 
+
+λj
+
+(
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+)
+
+4nλ 
+
+=
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op 
+
+tr 
+
+(
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+)
+
+4nλ 
+
+(d)
+
+≤
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op 
+
+∥∥∥Π(k)
+
+−S
+
+∥∥∥op 
+
+tr (K−S )4nλ 
+
+(e)
+
+≤
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥2
+
+op 
+
+tr (K−S )4nλ 
+
+where (a), (b) and (d) follow from the von Neumann trace inequality (Mirsky, 1975); (c) follows from the AM-GM inequality nλ + λj
+
+(
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+)
+
+≥ 2
+
+√
+
+nλλ j
+
+(
+
+Π(k)1/2
+
+−S K−S Π(k)1/2
+
+−S
+
+)
+
+54 and (e) follows since Π(k) 
+
+> −S
+
+is a diagonal matrix and the largest diagonal element is bounded by 1. Combining these two observations together, we have tr 
+
+(
+
+Σ(k)2
+
+> −S
+
+)
+
+≤
+
+∥∥∥Σ(k)
+
+> −S
+
+∥∥∥op tr 
+
+(
+
+Σ(k)
+
+> −S
+
+)
+
+≤
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥2
+
+> op
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥2
+
+> op
+
+tr (K−S )4nλ 
+
+=
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥4
+
+> op
+
+tr (K−S )4nλ 
+
+Therefore, for any δ > 0, with probability at least 1 − δ,
+
+I3 ≤
+
+√√√√∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥2
+
+> op
+
+tr (K−S )4nλ + 2 
+
+√∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥4
+
+> op
+
+tr (K−S )4nλ log 1
+
+δ + 2 
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥2 
+
+> op
+
+log 1
+
+δ
+
+≤
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥op 
+
+√√√√√√
+
+tr (K−S )4nλ +
+
+√
+
+2 log 1
+
+δ
+
+
+
+> 2
+
+=
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥op 
+
+√
+
+tr (K−S )4nλ +
+
+√
+
+2 log 1
+
+δ
+
+ .
+
+> (∗)
+
+= O(1) 
+
+(
+
+O(λ− 12 ) + 
+
+√
+
+2 log 1
+
+δ
+
+)
+
+> (∗∗ )
+
+= o
+
+(
+
+n α−14( α+1) 
+
+)
+
++ O(1) 
+
+√
+
+2 log 1
+
+δ ,
+
+where (*) holds from the bound for 
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥op and Lemma 17; (**) holds from the Assumption (A2) that λ−1 = o(n α−12( α+1) ).Putting all the pieces together, we have with probability at least 1 − 7δ,
+
+√n
+
+∥∥∥˜h(k+1)   
+
+> θf+∆ θS
+
+− f0,−S
+
+∥∥∥n ≲
+
+∥∥∥Φ−S w(k)∥∥∥ + √W log 1/2 n +
+
+√
+
+log 1
+
+δ + o(n α−14( α+1) ),
+
+which proves (19). Equation (20) now follows immediately from Proposition 18. 55 D.2 Proof of Lemma 21 
+
+Proof. Recall that Y = σ(f 0,−S ) + ϵ and denote υ(k)
+
+−S = Φ−S w(k) + Π(k)−1
+
+−S σ(f 0,−S ) + Π(k)−1
+
+−S ϵ −
+
+Π(k)−1
+
+−S σ(˜h(k)
+
+θf +∆ θS ). Then α(k)
+
+−S =
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+υ(k)
+
+−S and 
+
+∥∥∥˜h(k+1) 
+
+θf +∆ θS − hθf ,−S
+
+∥∥∥H =
+
+√
+
+α(k)T
+
+−S K−S α(k)
+
+−S
+
+=
+
+√
+
+υ(k)T
+
+−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+K−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+υ(k)
+
+−S
+
+(∗)
+
+≤
+
+√
+
+υ(k)T
+
+−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+υ(k)
+
+−S
+
+=
+
+√(
+
+υ(k)T
+
+−S − Π(k)−1
+
+−S ϵ + Π(k)−1
+
+−S ϵ
+
+) [ 
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1 (
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ + Π(k)−1
+
+−S ϵ
+
+)
+
+(∗∗ )
+
+≤
+
+√(
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+)T [
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1 (
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+)
+
++
+
+√(
+
+Π(k)−1
+
+−S ϵ
+
+)T [
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1 (
+
+Π(k)−1
+
+−S ϵ
+
+)
+
+=: J1 + J2,
+
+where (*) follows by noting that 
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+−
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+K−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+=
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1 [
+
+In − K−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1]
+
+=nλ 
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+Π(k)−1
+
+−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+,
+
+and nλ 
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+Π(k)−1
+
+−S
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1
+
+is clearly a positive semidefinite matrix. Additionally, (**) follows from the triangle inequality based on the norm ∥x∥A := √xT Ax with A
+
+being a positive semidefinite matrix. We now bound J1 and J2.
+
+• Bound for J1. Note that 
+
+√(
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+)T [
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1 (
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+)
+
+=
+
+√([
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2 (
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+))T [
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2 (
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+)
+
+=
+
+∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2 (
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+)∥∥∥∥ .
+
+On the other hand, since 
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2 (
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+)
+
+=
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2 [
+
+Φ−S w(k) + Π(k)−1
+
+−S (σ(f 0,−S ) − σ(˜h(k)
+
+θf +∆ θS )
+
+]
+
+=
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2
+
+Φ−S w(k) +
+
+[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2
+
+Π(k)−1
+
+−S
+
+[
+
+σ(f 0,−S ) − σ(˜h(k)
+
+θf +∆ θS )
+
+]
+
+,
+
+56 it then follows that 
+
+∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2 (
+
+υ(k)
+
+−S − Π(k)−1
+
+−S ϵ
+
+)∥∥∥∥
+
+≤
+
+∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2
+
+Φ−S w(k)
+
+∥∥∥∥ +
+
+∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2
+
+Π(k)−1
+
+−S
+
+[
+
+σ(f 0,−S ) − σ(˜h(k)
+
+θf +∆ θS )
+
+]∥∥∥∥
+
+(∗)
+
+≤
+
+∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2∥∥∥∥op 
+
+[∥∥∥Φ−S w(k)∥∥∥ + 14
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥op 
+
+∥∥∥f 0,−S − hθf − Φ−S w(k)∥∥∥]
+
+≤ 14
+
+∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2∥∥∥∥op 
+
+[( 
+
+1 + 14
+
+∥∥∥Π(k)
+
+−S
+
+∥∥∥op 
+
+) ∥∥∥Φ−S w(k)∥∥∥ + 14
+
+∥∥∥Π(k)
+
+−S
+
+∥∥∥ ∥e−S ∥
+
+]
+
+,
+
+where (*) follows from the Lipshitz continuity of the sigmoid function as given in Lemma 31. Moreover, note that ∥∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]− 12
+
+∥∥∥∥∥op 
+
+=
+
+∥∥∥∥∥(
+
+Π(k) 12
+
+−S
+
+[
+
+Π(k) 12
+
+−S K−S Π(k) 12
+
+−S + nλ In
+
+]−1
+
+Π(k) 12
+
+−S
+
+) 12
+
+∥∥∥∥∥op 
+
+=
+
+√√√√∥∥∥∥∥(
+
+Π(k) 12
+
+−S
+
+[
+
+Π(k) 12
+
+−S K−S Π(k) 12
+
+−S + nλ In
+
+]−1
+
+Π(k) 12
+
+−S
+
+)∥∥∥∥∥op 
+
+≤
+
+√√√√∥∥∥Π(k)
+
+−S
+
+∥∥∥op 
+
+∥∥∥∥∥[
+
+Π(k) 12
+
+−S K−S Π(k) 12
+
+−S + nλ In
+
+]−1∥∥∥∥∥op 
+
+≤
+
+√√√√ 14
+
+∥∥∥∥∥[
+
+Π(k) 12
+
+−S K−S Π(k) 12
+
+−S + nλ In
+
+]−1∥∥∥∥∥op 
+
+≤
+
+√ 14nλ .
+
+Also recall that 
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥op = O(1) from (42), combined with the assumption (A2) and Corollary 16, we have with probability at least 1 − 6δ,
+
+J1 ≲ O
+
+( 1
+
+√nλ 
+
+) (
+
+∥e−S ∥ +
+
+∥∥∥Φ−S w(k)∥∥∥)
+
+= o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√W log 1/2 n +
+
+√
+
+log 1
+
+δ +
+
+∥∥∥Φ−S w(k)∥∥∥)
+
+.
+
+• Bound for J2. Note that 
+
+J2 =
+
+√(
+
+Π(k)−1
+
+−S ϵ
+
+)T [
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1 (
+
+Π(k)−1
+
+−S ϵ
+
+)
+
+=
+
+√(
+
+Π(k)−1
+
+−S ϵ
+
+)T [
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2 [
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2 (
+
+Π(k)−1
+
+−S ϵ
+
+)
+
+=
+
+∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2
+
+Π(k)−1
+
+−S ϵ
+
+∥∥∥∥
+
+≤
+
+∥∥∥∥[
+
+K−S + nλ Π(k)−1
+
+−S
+
+]−1/2∥∥∥∥op 
+
+∥∥∥Π(k)−1
+
+−S
+
+∥∥∥op ∥ϵ∥
+
+57 Now, using the proof method from Gao et al. (2022), we can use the concentration inequality again from Hsu et al. (2012) and the fact that the sub-Gaussian parameter of ϵ is 1 to get with probability at least 1 − δ,
+
+∥ϵ∥ = √ϵT ϵ
+
+≤ σ
+
+√
+
+n + 2 
+
+√
+
+n log 1
+
+δ + 2 log 1
+
+δ
+
+≤ σ
+
+(√n +
+
+√
+
+2 log 1
+
+δ
+
+)
+
+≤ √n +
+
+√
+
+2 log 1
+
+δ
+
+As a result, with probability at least 1 − δ,
+
+J2 ≤
+
+∥∥∥Π(k)−1
+
+> −S
+
+∥∥∥op 
+
+(√n +
+
+√
+
+2 log 1
+
+δ
+
+) √ 14nλ 
+
+≲ O
+
+( 1
+
+√nλ 
+
+) (√n +
+
+√
+
+log 1
+
+δ
+
+)
+
+= o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√n +
+
+√
+
+log 1
+
+δ
+
+)
+
+Putting all the pieces together with the assumption (A2), we have with probability at least 1 − 7δ,
+
+∥∥∥˜h(k+1)   
+
+> θf+∆ θS
+
+− hθf ,−S
+
+∥∥∥H ≤ J1 + J2
+
+≲ o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√W log 1/2 n +
+
+√
+
+log 1
+
+δ +
+
+∥∥∥Φ−S w(k)∥∥∥)
+
++ o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√n +
+
+√
+
+log 1
+
+δ
+
+)
+
+≲ o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√n + √W log 1/2 n +
+
+∥∥∥Φ−S w(k)∥∥∥ +
+
+√
+
+log 1
+
+δ
+
+)
+
+,
+
+which proves (21) and (22) follows by applying the upper bound for ∥Φ−S ∆θS ∥ given in Proposition 18. 
+
+D.3 Proof of Lemma 22 
+
+Proof. We prove this result by applying Theorem 9. Using the notation in Theorem 9, we let 
+
+F = HB and f ∗ = f0,−S − hθf ,−S . Then for any f ∈ star (F, f ∗) satisfying ∥f − f ∗∥2 
+
+> n
+
+≤ 2 ˜M 2r, we know that there exists γ ∈ [0 , 1] and h ∈ H B such that 
+
+f = f ∗ + γ[h − f ∗],
+
+which implies that 
+
+∥γh ∥2 
+
+> n
+
+= ∥f − f ∗ + γf ∗∥2
+
+> n
+
+≤ 2 ∥f − f ∗∥2 
+
+> n
+
++ 2 γ2 ∥f ∗∥2
+
+> n
+
+≤ 4 ˜M 2r + 2 ˜M 2ρ
+
+≤ 4 ˜M 2(r + ρ).
+
+58 On the other hand, note that HB is star-shaped around 0, we know that γh ∈ H B . Therefore, 
+
+{
+
+f ∈ star (F, f ∗) : ∥f − f ∗∥2 
+
+> n
+
+≤ 2 ˜M 2r
+
+}
+
+⊆
+
+{
+
+h ∈ H B : ∥h∥2 
+
+> n
+
+≤ 4 ˜M 2(r + ρ)
+
+}
+
+,
+
+which implies that 
+
+Eξ
+
+ sup      
+
+> f∈star (F,f ∗),∥f−f∗∥2
+> n≤2 ˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi, −S )˜M
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+
+
+≤Eξ
+
+ sup   
+
+> h∈H B,∥h∥2
+> n≤4 ˜M2(r+ρ)
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+h(Xi, −S )˜M
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+
+
+=Eξ
+
+ sup   
+
+> h∈¯HB,∥h∥2
+> n≤4( r+ρ)
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξih(Xi, −S )
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+ .
+
+Hence the desired result follows from Theorem 9. 
+
+D.4 Proof of Lemma 23 
+
+Proof. For notation simplicity, denote τ 2 = 4( r + ρ). Let N1 be such that τ 2 = cN −α 
+
+> 1
+
+and 
+
+N = max {N0, N 1}. Then μj ≤ τ 2 for all j ≥ N . Then 
+
+> n
+
+∑
+
+> j=1
+
+min {τ 2, μ j } = 
+
+> ⌊N⌋
+
+∑
+
+> j=1
+
+min {τ 2, μ j } +
+
+> n
+
+∑ 
+
+> j=⌊N⌋+1
+
+μj
+
+≤ 
+
+> ⌊N⌋
+
+∑
+
+> j=1
+
+τ 2 +
+
+> n
+
+∑ 
+
+> j=⌊N⌋+2
+
+μj + μ⌊N ⌋+1 
+
+≤ ⌊ N ⌋τ 2 + τ 2 +
+
+∫ ∞
+
+> N
+
+cj −α dj 
+
+= ⌊N ⌋τ 2 + τ 2 + cα − 1 N 1−α.
+
+Then since N −α ≤ τ 2 
+
+> c
+
+,
+
+⌊N ⌋τ 2 + τ 2 + cα − 1 N · N −α ≤ ⌊ N ⌋τ 2 + τ 2 + cα − 1 N · τ 2
+
+c
+
+≤ τ 2
+
+(
+
+N + 1 + Nα − 1
+
+)
+
+≤ τ 2
+
+(
+
+1 + 1
+
+N + 1
+
+α − 1
+
+)
+
+N
+
+≤
+
+(
+
+2 + 1
+
+α − 1
+
+)
+
+τ 2N
+
+=
+
+(
+
+2 + 1
+
+α − 1
+
+)
+
+τ 2
+
+( cτ 2
+
+)1/α 
+
+=
+
+(
+
+2 + 1
+
+α − 1
+
+)
+
+c1/α (τ 2)1−1/α .
+
+Let cα =
+
+(
+
+2 + 1
+
+> α−1
+
+)
+
+c 1 
+
+> α
+
+and we have shown that 
+
+ˆRn(τ 2, ¯HB ) ≤
+
+√ 2
+
+n
+
+√
+
+cα(τ 2)1− 1 
+
+> α
+
+.
+
+59 Now take 
+
+ˆψn(r) := 20 
+
+√ 2
+
+n
+
+√
+
+cα(8( r ∨ ρ)) 1− 1 
+
+> α
+
++ 62 3n log 1
+
+δ ≥ 20 
+
+√ 2
+
+n
+
+√
+
+cα(τ 2)1− 1 
+
+> α
+
++ 62 3n log 1
+
+δ
+
+Now let us claim that ˆψn(r) is a sub-root function. It is obvious that ˆψn(r) is nonnegative and nondecreasing since α > 1. So it suffices to show that ˆψn(r)/√r is nonincreasing. But note that 
+
+ˆψn(r)
+
+√r = 20 
+
+√ 2
+
+n
+
+√ cα
+
+r (8( r ∨ ρ)) 1− 1 
+
+> α
+
++ 62 3n log 1
+
+δ
+
+= 20 
+
+√ 2
+
+n
+
+√
+
+cα81− 1
+
+> α
+
+(
+
+r−1/α ∨ r−1ρ1− 1
+
+> α
+
+)
+
++ 62 3n log 1
+
+δ ,
+
+and since both r−1/α and r−1ρ1− 1 
+
+> α
+
+are decreasing functions in r, it follows that ˆψn(r)/√r is nonincreasing for r > 0. On the other hand, let ˜ψn(r) = 20 
+
+√ 2
+
+> n
+
+√
+
+cα(8( r ∨ ρ)) 1− 1 
+
+> α
+
+. In view of Lemma 33, we have ˆr∗ ≤ ˜r∗ + 124 3n log 1 
+
+> δ
+
+, where ˆr∗ and ˜r∗ represent the fixed points of ˆψn and ˜ψn respectively. Therefore, it suffices to find ˜r∗. Let ˜cα = 20 
+
+√
+
+2cα · 81− 1 
+
+> α
+
+and note that 
+
+˜ψn(r) = 
+
+{
+
+˜cαn− 12 ρ 12 (1− 1 
+
+> α
+
+) if r ≤ ρ
+
+˜cαn− 12 r 12 (1− 1 
+
+> α
+
+) if r ≥ ρ ,
+
+and solving ˜ψn(r) = r gives 
+
+˜r∗ =
+
+
+
+˜cαn− 12 ρ 12 (1− 1 
+
+> α
+
+) if ˜c 
+
+> αα+1
+> α
+
+n− αα+1 ≤ ρ
+
+˜c 
+
+> αα+1
+> α
+
+n− αα+1 if ˜c 
+
+> 2αα+1
+> α
+
+n− αα+1 ≥ ρ,
+
+which implies that ˜r∗ ≤ max 
+
+{
+
+˜cαn−1/2ρ 12 (1− 1 
+
+> α
+
+), ˜c 
+
+> 2αα+1
+> α
+
+n− αα+1 
+
+}
+
+. Putting all the pieces together, 
+
+ˆr∗ ≤ ˜r∗ + 124 3n log 1
+
+δ ≤ max 
+
+{
+
+˜cαn−1/2ρ 12 (1− 1 
+
+> α
+
+), ˜c 
+
+> 2αα+1
+> α
+
+n− αα+1 
+
+}
+
++ 124 3n log 1
+
+δ
+
+D.5 Proof of Theorem 24 
+
+Proof. We first prove (26). Recall that ˜M = sup x
+
+∣∣∣f0,−S (x) − hθf ,−S (x)
+
+∣∣∣ + sup f ∈H B sup x |f (x)|. By Lemma 30, 
+
+˜M ≤ sup 
+
+> x
+
+∣∣∣f0,−S (x) − hθf ,−S (x)
+
+∣∣∣ + B
+
+√
+
+sup 
+
+> x
+
+K−S (x, x).
+
+Based on Lemma 21, with probability at least 1 − 7e−n1/2
+
+,
+
+B ≲ o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√n + √W log 1/2 n +
+
+∥∥∥Φ−S w(k)∥∥∥)
+
+.
+
+On the other hand, based on Lemma 17, 
+
+∥∥∥Φ−S w(k)∥∥∥ ≤ ∥ Φ−S ∥op 
+
+∥∥∥w(k)∥∥∥
+
+=
+
+√
+
+λmax (K−S )
+
+∥∥∥w(k)∥∥∥
+
+≤
+
+√
+
+tr (K−S )
+
+∥∥∥w(k)∥∥∥
+
+≲ √nO(1) = O(n 12 ).
+
+60 Therefore, with probability at least 1 − 7e−n1/2
+
+,
+
+˜M ≲ 1+ B ≲ 1+ o
+
+(
+
+n− α+3 4( α+1) 
+
+) (√n + √W log 1/2 n
+
+)
+
+= o(n α−14( α+1) )+ o
+
+(
+
+n− α+3 4( α+1) 
+
+) √W log 1/2 n. (43) Then by combining Lemma 20, Lemma 22 and Lemma 23, we have with probability at least 
+
+1 − 10 e−n 1 
+
+> α+1
+
+,
+
+∥∥∥h(k+1) 
+
+θf +∆ θS − f0,−S
+
+∥∥∥ ≲ 1
+
+√n
+
+[∥∥∥Φ−S w(k)∥∥∥ + √W log 1/2 n + o(n α−14( α+1) )
+
+]
+
++ ˜M √ˆr∗ + ˜M n − α
+
+> 2( α+1)
+
+≲α
+
+1
+
+√n
+
+∥∥∥Φ−S w(k)∥∥∥ +
+
+√W
+
+√n log 1/2 n + o(n− α+3 4( α+1) )+ ˜M α+1 2α n−1/4 ∥∥∥f0,−S − hθf ,−S
+
+∥∥∥ 
+
+> α−12α
+
++ ˜M n − α
+
+> 2( α+1)
+
+(∗)
+
+≲ α
+
+1
+
+√n
+
+∥∥∥Φ−S w(k)∥∥∥ +
+
+[
+
+n−1/2 + o(n−3/4)
+
+] √W log 1/2 n + o(n−1/4)+ 
+
+[
+
+o
+
+(
+
+n− 14 (1− α−12α ))
+
++ o
+
+(
+
+n− 14 (1+ α+3 2α )) [ √W log 1/2 n
+
+] α+1 2α
+
+] ∥∥∥f0,−S − hθf ,−S
+
+∥∥∥
+
+> α−12α
+
+≲α
+
+1
+
+√n
+
+∥∥∥Φ−S w(k)∥∥∥ + n−1/2√W log 1/2 n + o(n−1/4)+ 
+
+[
+
+o
+
+(
+
+n− 14 (1− α−12α ))
+
++ o
+
+(
+
+n− 14 (1+ α+3 2α )) [ √W log 1/2 n
+
+] α+1 2α
+
+] ∥∥∥f0,−S − hθf ,−S
+
+∥∥∥
+
+> α−12α
+
+where the inequality (*) follows since 
+
+o
+
+(
+
+n− α+3 4( α+1) 
+
+)
+
+= o
+
+(
+
+n− 14 (1+ 2 
+
+> α+1
+
+))
+
+= o
+
+(
+
+n−1/4)
+
+˜M α+1 2α n−1/4 ≲
+
+[
+
+o
+
+(
+
+n α−18α
+
+)
+
++ o
+
+(
+
+n− α+3 8α
+
+) ( √W log 1/2 n
+
+) α+1 2α
+
+]
+
+n−1/4
+
+= o
+
+(
+
+n− 14 (1− α−12α ))
+
++ o
+
+(
+
+n− 14 (1+ α+3 2α )) ( √W log 1/2 n
+
+) α+1 2α (44) 
+
+˜M n − α 
+
+> 2( α+1)
+
+≲
+
+[
+
+o
+
+(
+
+n α−14( α+1) 
+
+)
+
++ o
+
+(
+
+n− α+3 4( α+1) 
+
+) √W log 1/2 n
+
+]
+
+n− α
+
+> 2( α+1)
+
+= o
+
+(
+
+n−1/4)
+
++ o(n−3/4)√W log 1/2 n. (45) We now prove (27). Based on Lemma 21, we know that for n sufficiently large, with probability at least 1 − 15 e−n 1 
+
+> α+1
+
+,
+
+˜M ≲ 1 + B ≲ 1 + o
+
+(
+
+n− α+3 4( α+1) 
+
+) [ √n + √W log 1/2 n + n 12( α+1) 
+
+]
+
+≲ o
+
+(
+
+n α−14( α+1) 
+
+)
+
++ o
+
+(
+
+n− α+3 4( α+1) 
+
+) √W log 1/2 n, 
+
+where the last inequality follows since n 12( α+1) = o(n1/2). Combined with Proposition 18 and Lemma 61 20, we know that with probability at least 1 − 32 e−n 1 
+
+> α+1
+
+,
+
+∥∥∥h∗  
+
+> θf+∆ θS
+
+− f0,−S
+
+∥∥∥ ≲α
+
+1
+
+√n
+
+[√W log 1/2 n + n 12( α+1) 
+
+]
+
++ o(n−1/4)+ ˜M α+1 2α n−1/4 ∥∥∥f0,−S − hθf ,−S
+
+∥∥∥ 
+
+> 12
+
+(1− 1 
+
+> α
+
+) + ˜M n − α 
+
+> 2( α+1)
+
++ ˜M n − α
+
+> 2( α+1)
+
+≲α n−1/2√W log 1/2 n + o(n−1/4)+ 
+
+[
+
+o
+
+(
+
+n− 14 (1− α−12α ))
+
++ o
+
+(
+
+n− 14 (1+ α+3 2α )) [ √W log 1/2 n
+
+] α+1 2α
+
+] ∥∥∥f0,−S − hθf ,−S
+
+∥∥∥
+
+> α−12α
+
+where the last inequality follows from (44), (45) and 
+
+n−1/2 · n 12( α+1) = n− 14 (1+ α−1 
+
+> α+1
+
+) = o(n−1/4)
+
+# E Proof of the Main Results 
+
+E.1 Proof of Theorem 9 
+
+Proof. Define 
+
+¯F0 =
+
+{ f − f ∗
+
+˜M : f ∈ F 
+
+}
+
+, ¯F =
+
+{ f
+
+˜M : f ∈ F 
+
+}
+
+. (46) Fix δ > 0. Let G0 = { ¯f 2 : f ∈ ¯F0} and G0 
+
+> r
+
+= {g ∈ G 0 : E[g(Xi)] ≤ r}. Additionally, let us define a functional T : G0 → R+ as 
+
+T (g) = E[g(X)] , ∀g ∈ G 0.
+
+Since functions in ¯F0 are uniformly bounded by 1, we have for any g = ¯f 2 ∈ G 0 
+
+> r
+
+,Var [g(X)] = Var [ ¯f 2(X)] ≤ E
+
+[ ¯f 4(X)
+
+]
+
+≤ E[ ¯f 2(X)] = E[g(X)] ≤ r. (47) According to (47), the property that the functional T needs to satisfy in order to apply Theorem 6 is satisfied with D = 1 . Therefore, with probability at least 1 − δ, for any g ∈ G 0,
+
+E[g(X)] ≤ 2
+
+n
+
+> n
+
+∑
+
+> i=1
+
+g(Xi) + 2 c1r∗ + 11 + 2 c2
+
+n log 1
+
+δ , (48) 
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+g(Xi) ≤ 32 E[g(X)] + 2 c1r∗ + 11 + 2 c2
+
+n log 1
+
+δ , , (49) where r∗ is the fixed point for some sub-root function ψ(r) ≥ E
+
+[
+
+sup g∈G 0
+
+> r
+> 1
+> n
+
+∑ni=1 ξig(Xi)
+
+]
+
+. In addition, note that 
+
+E
+
+[
+
+sup 
+
+> g∈G 0
+> r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξig(Xi)
+
+]
+
+= E
+
+ sup   
+
+> ¯f∈¯F0,
+
+∥ ¯f ∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi ¯f 2(Xi)
+
+
+
+≤ 2E
+
+ sup   
+
+> ¯f∈¯F0,
+
+∥ ¯f ∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi ¯f (Xi)
+
+ ,
+
+62 where the last inequality follows from the Ledoux-Talagrand contraction principle (Ledoux and Tala-grand, 2013). Therefore, it suffices to find a sub-root function that upper bounds 2E
+
+[
+
+sup ¯f ∈ ¯F0,∥ ¯f ∥2≤r
+
+> 1
+> n
+
+∑ni=1 ξi ¯f (Xi)
+
+]
+
+To do this, note that for ¯f ∈ ¯F0, there exists f ∈ F such that 
+
+¯f = f
+
+˜M − f ∗
+
+˜M .
+
+On the other hand, it follows from (47) and Theorem 2.1 in Bartlett et al. (2005) (with the choice of α = 1 /4) that with probability at least 1 − δ,
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+¯f 2(Xi) ≤ 52 E
+
+ sup   
+
+> ¯f∈¯F0,
+
+∥ ¯f ∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi ¯f 2(Xi)
+
+ +
+
+√ 2rn log 1
+
+δ + 13 3n log 1
+
+δ + r
+
+> (∗)
+
+≤ 52 E
+
+ sup   
+
+> ¯f∈¯F0,
+
+∥ ¯f ∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi ¯f 2(Xi)
+
+ + 16 3n log 1
+
+δ + 3r
+
+2
+
+> (∗∗ )
+
+≤ 5E
+
+ sup   
+
+> ¯f∈¯F0,
+
+∥ ¯f ∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi ¯f (Xi)
+
+ + 16 3n log 1
+
+δ + 3r
+
+2
+
+≤ 5E
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+ + 16 3n log 1
+
+δ + 3r
+
+2 ,
+
+where (*) follows from the AM-GM inequality: 
+
+√ 2rn log 1
+
+δ ≤ 2
+
+√ r
+
+2n log 1
+
+δ ≤ r
+
+2 + 1
+
+n log 1
+
+δ ,
+
+(**) follows from the Ledoux-Talagrand contraction principle (Ledoux and Talagrand, 2013) and the last inequality follows since 
+
+E
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f ∗(Xi)˜M
+
+ = E
+
+[ 1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f ∗(Xi)˜M
+
+]
+
+= 0 .
+
+Denote 
+
+ψ(r) = 10 E
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+ + 32 3n log 1
+
+δ .
+
+It then follows from Lemma 5 that ψ(r) is a sub-root function. Therefore, we have for all r ≥ 0,
+
+ψ(r) = 10 E
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+ + 32 3n log 1
+
+δ
+
+≥ 2E
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+
+
+≥ 2E
+
+ sup   
+
+> ¯f∈¯F0,
+
+∥ ¯f ∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi ¯f (Xi)
+
+
+
+≥ E
+
+[
+
+sup 
+
+> g∈G 0
+> r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξig(Xi)
+
+]
+
+.
+
+63 In addition, if r satisfies r ≥ ψ(r), then with probability at least 1 − δ,
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+¯f 2(Xi) ≤ r
+
+2 + 3r
+
+2 = 2 r. 
+
+Consequently, if r ≥ ψ(r), with probability at least 1 − δ,
+
+{
+
+f ∈ star (F, f ∗) : ∥f − f ∗∥2 ≤ ˜M 2r
+
+}
+
+⊆
+
+{
+
+f ∈ star (F, f ∗) : ∥f − f ∗∥2 
+
+> n
+
+≤ 2 ˜M 2r
+
+}
+
+.
+
+On the other hand, by Lemma A.4 in Bartlett et al. (2005), with probability at least 1 − δ,
+
+E
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+ ≤ 1
+
+n log 1
+
+δ +2Eξ
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+ .
+
+(50) Then if r ≥ ψ(r), with probability at least 1 − 2δ,
+
+ψ(r) = 10 E
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+ + 32 3n log 1
+
+δ
+
+≤ 10 
+
+2Eξ
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+ + 1
+
+n log 1
+
+δ
+
+ + 32 3n log 1
+
+δ
+
+= 20 Eξ
+
+ sup       
+
+> f∈star (F,f ∗),∥f−f∗∥2≤˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+ + 62 3n log 1
+
+δ
+
+≤ 20 Eξ
+
+ sup      
+
+> f∈star (F,f ∗),∥f−f∗∥2
+> n≤2 ˜M2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi
+
+f (Xi)˜M
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+ + 62 3n log 1
+
+δ .
+
+Based on our assumption, ˆψn(r) ≥ ψ(r), we have with probability at least 1 − 2δ,
+
+r∗ = ψ(r∗) ≤ ˆψn(r∗). (51) Then by Lemma 4.3 in Bartlett et al. (2005), with probability at least 1 − 2δ, r∗ ≤ ˆr∗. Putting (51) and (49), (48) together, with probability at least 1 − 3δ, for any g ∈ G 0,
+
+E[g(X)] ≤ 2
+
+n
+
+> n
+
+∑
+
+> i=1
+
+g(Xi) + 2 c1 ˆr∗ + 11 + 2 c2
+
+n log 1
+
+δ ,
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+g(Xi) ≤ 32 E[g(X)] + 2 c1 ˆr∗ + 11 + 2 c2
+
+n log 1
+
+δ ,
+
+which is equivalent to (recall that g = [ f − f ∗]2/ ˜M 2), 
+
+∥f − f ∗∥2 ≤ 2 ∥f − f ∗∥2 
+
+> n
+
++ 2 ˜M 2c1 ˆr∗ + ˜M 2(11 + 2 c2)
+
+n log 1
+
+δ , ∀f ∈ F ,
+
+∥f − f ∗∥2 
+
+> n
+
+≤ 32 ∥f − f ∗∥2 + 2 ˜M 2c1 ˆr∗ + ˜M 2(11 + 2 c2)
+
+n log 1
+
+δ , ∀f ∈ F .
+
+The desired result then follows by using the elementary inequality √a + b ≤ √a+√b for a, b ≥ 0.64 E.2 Proof of Theorem 12 
+
+To prove the theorem, we start by proving a preparatory lemma: 
+
+Lemma 27. Let F be a class of functions with ranges in [−M, M ] and let ℓ(·, ·) be a loss function satisfying the conditions in Theorem 12. Let ˆf be any element of F satisfying Rn( ˆf ) = inf f ∈F Rn(f ).Assume ψ is a sub-root function for which 
+
+ψ(r) ≥ B∗L3E
+
+ sup    
+
+> f∈F ,L 2∥f−f∗∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+ .
+
+Then for any δ > 0 and any r ≥ ψ(r), with probability at lease 1 − δ,
+
+R( ˆf ) − R(f ∗) ≤ c1CB∗L2 r∗ + 11 ¯U + c2B∗L2Cn log 1
+
+δ ,
+
+where ¯U = sup f ∈F ∥ℓf − ℓf ∗ ∥∞ and C, c1 and c2 are the same as those in Theorem 6. Proof. For simplicity, denote ℓf = ℓ(f (X), Y ) and let G = {ℓf −ℓf ∗ : f ∈ F} . For any g = ℓf −ℓf ∗ ∈G, define 
+
+T (g) = L2 ∥f − f ∗∥2 .
+
+Then by the condition 2 and 3 in the lemma, Var [g] ≤ E[g2] = E[( ℓf − ℓf ∗ )2] ≤ L2E[( f − f ∗)2] = T (g)
+
+T (g) = L2E[( f − f ∗)2] ≤ L2B∗[R(f ) − R(f ∗)] = L2B∗E[g].
+
+On the other hand, by the contraction principle (Ledoux and Talagrand, 2013), 
+
+E
+
+ sup    
+
+> f∈F ,L 2∥f−f∗∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi[ℓf (Xi) − ℓf ∗ (Xi)] 
+
+
+
+≤LE
+
+ sup    
+
+> f∈F ,L 2∥f−f∗∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi[f (Xi) − f ∗(Xi)] 
+
+
+
+=LE
+
+ sup    
+
+> f∈F ,L 2∥f−f∗∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+
+
+Hence, by the assumption on ψ,
+
+ψ(r) ≥ B∗L3E
+
+ sup    
+
+> f∈F ,L 2∥f−f∗∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+
+
+≥ B∗L2E
+
+ sup    
+
+> f∈F ,L 2∥f−f∗∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξi[ℓf (Xi) − ℓf ∗ (Xi)] 
+
+
+
+= B∗L2E
+
+[
+
+sup  
+
+> g∈G ,T (g)≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξig(Xi)
+
+]
+
+.
+
+65 Since 0 ≤ g ≤ sup f ∈F ∥ℓf − ℓf ∗ ∥∞ = ¯U , it then follows from Theorem 6 that for any δ > 0, with probability at least 1 − δ,
+
+E[g(X)] ≤ CC − 11
+
+n
+
+> n
+
+∑
+
+> i=1
+
+g(Xi) + c1CB∗L2 r∗ + 11 ¯U + c2B∗L2Cn log 1
+
+δ , ∀g ∈ G ,
+
+where r∗ is the fixed point of ψ(r). Replace g by ℓ ˆf − ℓf ∗ and note that Rn( ˆf ) − Rn(f ∗) ≤ 0 since 
+
+ˆf is the minimizer of Rn(f ). Hence, with probability at least 1 − δR( ˆf ) − R(f ∗) ≤ c1CB∗L2 r∗ + 11 ¯U + c2B∗L2Cn log 1
+
+δ .
+
+Finally, by Lemma 3.2 in Bartlett et al. (2005) that r ≥ ψ(r) is equivalent to r∗ ≤ r, which leads to the desired result. We are now ready to prove the theorem. 
+
+Proof. Define 
+
+ψ(r) = ˜c1
+
+2 E
+
+ sup     
+
+> f∈star (F,f ∗),L 2∥f−f∗∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+ + (˜ c2 − 2M ˜c1)
+
+n log 1
+
+δ
+
+= ˜c1
+
+2L E
+
+ sup 
+
+> g∈G ,∥g∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+ + (˜ c2 − 2M ˜c1)
+
+n log 1
+
+δ ,
+
+where G = Lstar (F, f ∗) − { Lf ∗}. It is easy to see that ∥g∥∞ = 2 M L for any g ∈ G . Since 
+
+F ⊆ star (F, f ∗), we have 
+
+ψ(r) ≥ B∗L3E
+
+ sup    
+
+> f∈F ,L 2∥f−f∗∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+ .
+
+In addition, according to Lemma 5 with the choice of T (g) = ∥g∥2 that ψ is subroot. Now for 
+
+r ≥ ψ(r), Lemma 27 and condition 3 on the loss function imply that for any δ > 0, with probability at least 1 − δ,
+
+L2 ∥∥∥ ˆf − f ∗∥∥∥2
+
+≤ B∗L2[R( ˆf ) − R(f ∗)] 
+
+≤ c1Cr + B∗L2(11 ¯U + c2B∗L2C)
+
+n log 1
+
+δ . (52) On the other hand, for r ≥ ψ(r), by the definition of ˜c1 and ˜c2, we have. 
+
+r ≥ ψ(r) ≥ 10 · (2 M L )E
+
+ sup  
+
+> f∈G ,∥g∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+ + 11 · (2 M L )2
+
+n log 1
+
+δ .
+
+Then by Corollary 2.2 in Bartlett et al. (2005), with probability at least 1 − δ,
+
+{g ∈ G : ∥g∥2 ≤ r} ⊆ { g ∈ G : ∥g∥2 
+
+> n
+
+≤ 2r}.
+
+66 Combined with Lemma A.4 in Bartlett and Mendelson (2002), with probability at least 1 − 2δ,
+
+ψ(r) ≤ ˜c1
+
+2L
+
+2Eξ
+
+ sup 
+
+> g∈G ,∥g∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξig(Xi)
+
+ + 4M L n log 1
+
+δ
+
+ + ˜c2 − 2M ˜c1
+
+n log 1
+
+δ
+
+= ˜c1
+
+L Eξ
+
+ sup 
+
+> g∈G ,∥g∥2≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξig(Xi)
+
+ + ˜c2
+
+n log 1
+
+δ
+
+≤ ˜c1
+
+L Eξ
+
+ sup 
+
+> g∈G ,∥g∥2
+> n≤2r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξig(Xi)
+
+ + ˜c2
+
+n log 1
+
+δ
+
+= ˜ c1Eξ
+
+ sup      
+
+> f∈star (F,f ∗),∥f−f∗∥2
+> n≤2rL2
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi)
+
+ + ˜c2
+
+n log 1
+
+δ
+
+≤ ˆψn(r).
+
+Setting r = r∗, the fixed point of ψ(r) in the above argument and applying Lemma 4.3 in Bartlett et al. (2005) shows that r∗ ≤ ˆr∗ = ˆψn(ˆ r∗), which together with (52) concludes the proof. 
+
+E.3 Proof of Theorem 25 
+
+Proof. In view of Theorem 7, it suffices to check the required conditions. 
+
+Condition (D1) . By the first order Taylor expansion of ℓ(a, y ) = −ya + log (1 + ea) with respect to a,
+
+|V (f, P 0) − V (f0, P 0)|
+
+=
+
+∣∣∣EP0
+
+[
+
+−Y f (X) + log 
+
+(
+
+1 + ef (X))] 
+
+− EP0
+
+[
+
+−Y f 0(X) + log 
+
+(
+
+1 + ef0(X))]∣ ∣∣
+
+=
+
+∣∣∣∣EP0
+
+[
+
+(−Y + σ(f0(X)))( f (X) − f0(X)) + 12 σ(τ (X))(1 − σ(τ (X)))( f (X) − f0(X)) 2
+
+]∣ ∣∣∣
+
+=
+
+∣∣∣∣EX
+
+[
+
+(f (X) − f0(X)) EY |X [−Y + σ(f0(X))] 
+
+]
+
++ 12 EP0
+
+[
+
+σ(τ (X))(1 − σ(τ (X)))( f (X) − f0(X)) 2]∣∣∣∣
+
+> (∗)
+
+= 12
+
+∣∣∣EP0
+
+[
+
+σ(τ (X))(1 − σ(τ (X)))( f (X) − f0(X)) 2]∣ ∣∣
+
+≤ 18 ∥f − f0∥2 ,
+
+where τ (X) = γf (X) + (1 − γ)f0(X) for some γ ∈ [0 , 1] and (*) follows since EY |X [Y ] = 
+
+σ(f0(X)) from Proposition 8. 
+
+Condition (D2) . For any η1, η 2, · · · ∈ R and H, H 1, H 2, · · · ∈ S satisfying ηj → 0 and 
+
+∥H − Hj ∥∞ → 0, by (29), 
+
+sup  
+
+> f∈F
+
+∣∣∣∣∣
+
+V (f, P 0 + ηj Hj ) − V (f, P 0)
+
+ηj
+
+− ˙V (f, P 0; Hj )
+
+∣∣∣∣∣
+
+= sup  
+
+> f∈F
+
+∣∣∣∣∣
+
+V (f, P 0 + ηj Hj ) − V (f, P 0)
+
+ηj
+
+− lim 
+
+> t→0
+
+V (f, P 0 + tH j ) − V (f, P 0)
+
+t
+
+∣∣∣∣∣
+
+= sup  
+
+> f∈F
+
+∣∣∣EHj [ℓ(f (X), Y )] − EHj [ℓ(f (X), Y )] 
+
+∣∣∣ = 0 .
+
+67 Condition (R1) . Under the assumption that W = o(√n/ log n), Theorem 15 shows that with probability at least 1 − e−o(n1/2),
+
+∥∥∥hθf − f0
+
+∥∥∥ = o(n−1/4),
+
+∥∥∥hθf ,−S − f0,−S
+
+∥∥∥ = o(n−1/4) (53) On the other hand, by combining Theorem 19 and Theorem 24, we have with probability at least 1 − 31 e−n 1 
+
+> α+1
+
+,
+
+∥∥∥hθf +∆ θS − f0,−S
+
+∥∥∥ ≤
+
+∥∥∥hθf +∆ θS − ˜hθf +∆ θS
+
+∥∥∥ +
+
+∥∥∥˜hθf +∆ θS − f0,−S
+
+∥∥∥
+
+≲α o
+
+(
+
+n− 14
+
+)
+
++ o
+
+(
+
+n− α+3 2( α+1) 
+
+) √W log 1/2 n + n−1/2√W log 1/2 n + o(n−1/4)+ 
+
+[
+
+o
+
+(
+
+n− 14 (1− α−12α ))
+
++ o
+
+(
+
+n− 14 (1+ α+3 2α )) [ √W log 1/2 n
+
+] α+1 2α
+
+] ∥∥∥f0,−S − hθf ,−S
+
+∥∥∥
+
+> α−12α
+
+≲α o
+
+(
+
+n− 14
+
+)
+
++ o
+
+(
+
+n− α+3 2( α+1) 
+
+)
+
+· o
+
+(
+
+n1/4)
+
++ o(n−1/4)+ 
+
+[
+
+o
+
+(
+
+n− 14 (1− α−12α ))
+
++ o
+
+(
+
+n− 14 (1+ α+3 2α ))
+
+o
+
+(
+
+n α+1 8α
+
+)] 
+
+o
+
+(
+
+n− α−18α
+
+)
+
+≲α o(n−1/4),
+
+where the last inequality follows since 
+
+o
+
+(
+
+n− α+3 2( α+1) 
+
+)
+
+· o
+
+(
+
+n1/4)
+
+= o
+
+(
+
+n− 14
+
+> α+2
+> α+1
+
+)
+
+= o(n−1/4)
+
+o
+
+(
+
+n− 14 (1− α−12α ))
+
+· o
+
+(
+
+n− α−18α
+
+)
+
+= o
+
+(
+
+n−1/4)
+
+o
+
+(
+
+n− 14 (1+ α+3 2α ))
+
+· o
+
+(
+
+n α+1 8α
+
+)
+
+· o
+
+(
+
+n− α−18α
+
+)
+
+= o
+
+(
+
+n− 14 − α+1 8α
+
+)
+
+= o(n−1/4). (54) 
+
+Condition (R2) . Let gn(z) := ˙V (hθf , P 0; δz − P0) − ˙V (f0, P 0; δz − P0). Then 
+
+∫
+
+[gn(z)] 2 dP 0(z) = 
+
+∫ [
+
+Eδz −P0 [ℓ(hθf (X), Y )] − Eδz −P0 [ℓ(f0(X), Y )] 
+
+]2
+
+dP 0(z)= EP0
+
+[(
+
+ℓ(hθf (X), Y ) − ℓ(f0(X), Y ) − EP0 [ℓ(hθf (X), Y ) − ℓ(f0(X), Y )] 
+
+)2]
+
+= Var P0 [ℓ(hθf (X), Y ) − ℓ(f0(X), Y )] 
+
+≤ EP0 [( ℓ(hθf (X), Y ) − ℓ(f0(X), Y )) 2]
+
+≤ ∥ hθf − f0∥2,
+
+where the last inequality follows from the Lipshitzness of ℓ. Therefore, it follows from (53) that with probability at least 1 − e−o(n1/2),
+
+∫
+
+[gn(z)] 2 dP 0(z) = o(1) .
+
+Similarly, let gn, −S (z) := ˙V (hθf +∆ θS , P 0; δz − P0) − ˙V (f0,−S , P 0; δz − P0) and by the same arguments as above, we have 
+
+∫
+
+[gn, −S (z)] 2 dP 0(z) ≤
+
+∥∥∥hθf +∆ θS − f0,−S
+
+∥∥∥2
+
+.
+
+Combined with (54), with probability at least 1 − 31 e−n 1 
+
+> α+1
+
+,
+
+∫
+
+[gn, −S (z)] 2 dP 0(z) = o(1) .
+
+68 Condition (R3) . As we have seen above, gn(Z) = ℓ(hθf (X), Y )−ℓ(f0(X), Y )−EP0 [ℓ(hθf (X), Y )−
+
+ℓ(f0(X), Y )] , let us define 
+
+D = {Z 7 → ℓ(f (X), Y ) − ℓ(f0(X), Y ) − EP0 [ℓ(f (X), Y ) − ℓ(f0(X), Y )] : f ∈ F} .
+
+So it is obvious that gn ∈ D , P0-a.s. In view of Theorem 3.1 in Ossiander (1987), to show that 
+
+D is a P0-Donsker class, it suffice to show that 
+
+∫ ∞
+
+> 0
+
+√
+
+log N[ ] (ε, D, ∥·∥ L2(P0))dε < ∞.
+
+On the other hand, since N[ ] (ε, D, ∥·∥ L2(P0)) ≤ N[ ] (ε, D, ∥·∥ sup ) = N
+
+( ε 
+
+> 2
+
+, D, ∥·∥ sup 
+
+)
+
+, where the last inequality follows from the relationship between covering number and bracketing number mentioned in Van Der Vaart and Wellner (1996), we have 
+
+∫ ∞
+
+> 0
+
+√
+
+log N[ ] (ε, D, ∥·∥ L2(P0))dε ≤
+
+∫ ∞
+
+> 0
+
+√
+
+log N
+
+( ε
+
+2 , D, ∥·∥ sup 
+
+)
+
+dε. 
+
+Now, let {f1, . . . , f N } be a minimal ε-cover of F with respect to the uniform norm ∥·∥ sup .Then N = N (ε, F, ∥·∥ sup ) and for any f ∈ F , there exists j ∈ [N ] such that ∥f − fj ∥sup < ε .Denote 
+
+g(j) 
+
+> n
+
+(Z) = ℓ(fj (X), Y ) − ℓ(f0(X), Y ) − EP0 [ℓ(fj (X), Y ) − ℓ(f0(X), Y )] .
+
+Then for any gn ∈ D , by the Lipschitz continuity of ℓ, we have 
+
+∥∥∥gn − g(j)
+
+> n
+
+∥∥∥sup = sup 
+
+> X,Y
+
+|ℓ(f (X), Y ) − EP0 [ℓ(f (X), Y )] − [ℓ(fj (X), Y ) − EP0 [ℓ(fj (X), Y )]] |≤ sup 
+
+> X,Y
+
+|ℓ(f (X), Y ) − ℓ(fj (X), Y )| + sup 
+
+> X,Y
+
+|EP0 [ℓ(f (X), Y ) − ℓ(fj (X), Y )] |≤ sup 
+
+> X
+
+|f (X) − fj (X)| + sup 
+
+> X
+
+EP0 [|f (X) − fj (X)|]
+
+≤ 2 sup 
+
+> X
+
+|f (X) − fj (X)|
+
+= 2 ∥f − fj ∥sup ,
+
+which implies that 
+
+N
+
+( ε
+
+2 , D, ∥·∥ sup 
+
+)
+
+≤ N
+
+( ε
+
+4 , F, ∥·∥ sup 
+
+)
+
+.
+
+It then follows from Theorem 36 that 
+
+∫ ∞
+
+> 0
+
+√
+
+log N
+
+( ε
+
+4 , F, ∥·∥ sup 
+
+)
+
+dε ≤
+
+∫ 4M
+
+> 0
+
+√W log 1/2
+
+1 + 8κε
+
+[ L∑
+
+> l=1
+
+( bl
+
+κl
+
+)1/2 L∏
+
+> l=1
+
+κ1/2
+
+> l
+
+]2 dε < ∞,
+
+where in the first inequality, we can change the upper bound of the entropy integral to 4M
+
+since functions in F are uniformly bounded by M and the finiteness of the entropy integral follows by a similar argument as in the proof of Lemma 14. Hence, D is a P0-Donsker class. 69 F Auxiliary Results 
+
+F.1 The RKHS Associated with the NTK 
+
+In this section, we provide the detailed proofs of the results on the RKHS generated by the NTK. 
+
+Lemma 28 (Local Rademacher Complexity of HB }).
+
+ˆRn(r, HB ) := Eξ
+
+ sup    
+
+> f∈H B,∥f∥2
+> n≤r
+
+1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+ξif (Xi,S )
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+
+
+≤ (1 ∨ B)
+
+√ 2
+
+n
+
+√√√√
+
+> n
+
+∑
+
+> j=1
+
+min {r, μ j },
+
+where μ1 ≥ μ2 ≥ · · · ≥ μn > 0 are the eigenvalues of 1 
+
+> n
+
+K−S arranged in a decreasing order. Proof. Note that 
+
+∥f ∥2 
+
+> n
+
+= 1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+f 2(Xi, −S ) = 1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+
+
+> n
+
+∑
+
+> j=1
+
+αj K−S (Xi, Xj )
+
+
+
+> 2
+
+= 1
+
+n
+
+> n
+
+∑
+
+> i=1
+
+[K−S α]2
+
+> i
+
+= 1
+
+n (K−S α)T (K−S α) = n
+
+( 1
+
+n K−S α
+
+)T ( 1
+
+n K−S α
+
+)
+
+.
+
+Let 1 
+
+> n
+
+K−S = U Λ−1U T be the spectral decomposition of 1 
+
+> n
+
+K−S with Λ = Diag {μ1, μ 2, . . . , μ n}
+
+and denote β = U T ( 1 
+
+> n
+
+K−S
+
+)
+
+α. Then 
+
+∥f ∥2 
+
+> n
+
+≤ r ⇔ n
+
+( 1
+
+n K−S α
+
+)T
+
+U U T
+
+( 1
+
+n K−S α
+
+)
+
+≤ r
+
+⇔ nβT β ≤ r
+
+⇔
+
+> n
+
+∑
+
+> i=1
+
+nβ 2
+
+> i
+
+r ≤ 1.
+
+∥f ∥2 
+
+> H
+
+≤ B2 ⇔ αT K−S α ≤ B2
+
+⇔ n
+
+( 1
+
+n K−S α
+
+)T
+
+U Λ−1U T
+
+( 1
+
+n K−S
+
+)
+
+α ≤ B2
+
+⇔ nβT Λ−1β ≤ B2
+
+⇔
+
+> n
+
+∑
+
+> i=1
+
+nβ 2
+
+> i
+
+B2μi
+
+≤ 1,
+
+Therefore, 
+
+{f ∈ H B : ∥f ∥2 
+
+> n
+
+≤ r} ⊆ D := 
+
+{
+
+β ∈ Rn :
+
+> n
+
+∑
+
+> i=1
+
+ηiβ2 
+
+> i
+
+≤ 2
+
+}
+
+,
+
+where ηi = max {nr −1, nB −2μ−1 
+
+> i
+
+}. Let ξT = [ ξ1, . . . , ξ n]T , it then follows from Cauchy-Schwarz 70 inequality that 
+
+ˆRn(r; HB ) = 1
+
+n Eξ
+
+ sup     
+
+> αTK−Sα≤B2,α TK2
+> −Sα≤rn
+
+∑
+
+> i=1
+
+ξi[K−S α]i
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+
+
+= Eξ
+
+ sup     
+
+> αTK−Sα≤B2,α TK2
+> −Sα≤r
+
+ξT U U T
+
+( 1
+
+n K−S α
+
+)∣∣∣∣∣∣ X1, . . . , Xn
+
+
+
+≤ Eξ
+
+[
+
+sup 
+
+> β∈D
+> n
+
+∑
+
+> i=1
+
+(ξT ui)βi
+
+∣∣∣∣∣ X1, . . . , Xn
+
+]
+
+= Eξ
+
+[
+
+sup 
+
+> β∈D
+> n
+
+∑
+
+> i=1
+
+(ξT ui)
+
+√ηi
+
+√ηiβi
+
+∣∣∣∣∣ X1, . . . , Xn
+
+]
+
+≤ Eξ
+
+ sup 
+
+> β∈D
+
+( n∑
+
+> i=1
+
+(ξT ui)2
+
+ηi
+
+)1/2 ( n∑
+
+> i=1
+
+ηiβ2
+
+> i
+
+)1/2∣∣∣∣∣∣ X1, . . . , Xn
+
+
+
+≤ √2Eξ
+
+√√√√ n∑
+
+> i=1
+
+(ξT ui)2
+
+ηi
+
+∣∣∣∣∣∣ X1, . . . , Xn
+
+
+
+> (∗)
+
+≤ √2
+
+√√√√ n∑
+
+> i=1
+
+1
+
+ηi
+
+=
+
+√ 2
+
+n
+
+√√√√ n∑
+
+> i=1
+
+min 
+
+{ rn , B2μi
+
+n
+
+}
+
+≤ (1 ∨ B)
+
+√ 2
+
+n
+
+√√√√
+
+> n
+
+∑
+
+> j=1
+
+min {r, μ j },
+
+where (*) follows from Jensen’s inequality and Eξ[( ξT ui)2|X1, . . . , Xn] = Eξ
+
+[
+
+uTi ξξ T ui|X1, . . . , Xn
+
+]
+
+=
+
+u1Eξ[ξξ T ]ui = uTi ui = 1 .
+
+Remark 29. It is well-known that the empirical Rademacher complexity of HB is ˆRn(HB ) ≤
+
+> Bn
+
+√tr (K−S ) (Bartlett and Mendelson, 2002). If one takes r = ∞ in the upper bound in Lemma 28, we get 
+
+ˆRn(∞, HB ) ≤√2(1 ∨ B)
+
+√n
+
+√√√√
+
+> n
+
+∑
+
+> j=1
+
+μj
+
+=
+
+√2(1 ∨ B)
+
+√n
+
+√
+
+tr 
+
+( 1
+
+n K−S
+
+)
+
+=
+
+√2(1 ∨ B)
+
+n
+
+√
+
+tr (K−S ).
+
+So the bound reproduces the bound for the empirical Rademacher complexity up to some constants. 
+
+Lemma 30 (Uniform Boundedness of Functions in HB ). For any f ∈ H B ,
+
+sup 
+
+> x
+
+|f (x)| ≤ B
+
+√
+
+sup 
+
+> x
+
+K−S (x, x).
+
+71 Proof. For any f ∈ H B , there exists α1, . . . , α n ∈ R such that f (x) = ∑nj=1 αj K−S (x, Xj, −S ).Then by Cauchy-Schwarz inequality, 
+
+|f (x)| =
+
+∣∣∣∣∣∣
+
+> n
+
+∑
+
+> j=1
+
+αj K−S (x, Xj, −S )
+
+∣∣∣∣∣∣ =
+
+∣∣∣∣∣∣
+
+> n
+
+∑
+
+> j=1
+
+αj ⟨K−S (·, Xj, −S ), K −S (·, x)⟩H
+
+∣∣∣∣∣∣
+
+=
+
+∣∣∣∣∣∣〈 n∑
+
+> j=1
+
+αj K−S (·, Xj, −S ), K −S (·, x)
+
+〉
+
+> H
+
+∣∣∣∣∣∣
+
+≤
+
+√√√√〈 n∑
+
+> j=1
+
+αj K−S (·, Xj, −S ),
+
+> n
+
+∑
+
+> i=1
+
+αj K−S (·, Xi, −S )
+
+〉
+
+> H
+
+√
+
+⟨K−S (·, x), K −S (·, x)⟩H
+
+=
+
+√√√√
+
+> n
+
+∑
+
+> i=1
+> n
+
+∑
+
+> j=1
+
+αiαj K−S (Xi, −S , Xj, −S )
+
+√
+
+K−S (x, x)
+
+≤ B
+
+√
+
+K−S (x, x ).
+
+Therefore, for any f ∈ H B
+
+sup 
+
+> x
+
+|f (x)| ≤ B sup 
+
+> x
+
+√
+
+K−S (x, x).
+
+F.2 Lipschitzness of Sigmoid Function 
+
+Lemma 31. For any two vectors v, w ∈ Rd, we have 
+
+∥σ(v) − σ(w)∥ ≤ 14 ∥v − w∥
+
+Proof. By Lipschitz continuity of the sigmoid function, we know that for any x1, x 2 ∈ R, the following is true: 
+
+|σ(x1) − σ(x2)| ≤ 14 |x1 − x2|
+
+Thus, for any 2 vectors v, w ∈ Rd,
+
+∥σ(v) − σ(w)∥2 =
+
+> d
+
+∑
+
+> i=1
+
+|σ(vi) − σ(wi)|2 ≤
+
+> d
+
+∑
+
+> i=1
+
+( 14 |vi − wi|
+
+)2
+
+≤ 116 
+
+> d
+
+∑
+
+> i=1
+
+(vi − wi)2 = 116 ∥v − w∥2
+
+Taking the square root yields 
+
+∥σ(v) − σ(w)∥ ≤ 14 ∥v − w∥
+
+F.3 Covering Number of the Star Hull of a Function Class 
+
+The following lemma is similar to Lemma 4.5 in Mendelson (2002), which shows that the covering number of the star hull of a function class F is almost the same as the covering number of F.
+
+Lemma 32. Suppose that F is a class of functions with ranges in [−M, M ] and f0 ∈ F be a fixed function. Then for any pseudo-norm ∥·∥ ,
+
+log N (2 ε, star (F, f 0), ∥·∥ ) ≤ log 2Mε + log N (ε, F, ∥·∥ ).
+
+72 Proof. Fix 0 < ε ≤ 2M . Let {f1, . . . , f N } be a minimal ε-cover of F. Then N = N (ε, F, ∥·∥ ). In addition, define star ({f1, . . . , f N }, f 0) = 
+
+> N
+
+⋃
+
+> j=1
+
+{f0 + α(fj − f0) : α ∈ [0 , 1] }.
+
+For any g ∈ star (F, f 0), there exists f ∈ F and ˜α ∈ [0 , 1] such that g = f0 + ˜α(f − f0). For such a function f , there exists j ∈ [N ] such that ∥f − fj ∥ < ε . Denote 
+
+hj = f0 + ˜ α(fj − f0) ∈ star ({f1, . . . , f N }, f 0)
+
+which implies that 
+
+∥g − hj ∥ = α ∥f − fj ∥ < ε. 
+
+On the other hand, let g1, . . . , g N ′ be a minimal ε-cover of star ({f1, . . . , f N }, f 0) so that N ′ =
+
+N (ε, star ({f1, . . . , f N }, f 0), ∥·∥ ) there exists k ∈ [N ′] such that 
+
+∥hj − gk∥ < ε. 
+
+As a result, we have 
+
+∥g − gk∥ ≤ ∥ g − hj ∥ + ∥hj − gk∥ < 2ε. 
+
+This shows that {g1, . . . , g N ′ } is a 2ε-cover of star (F, f 0) and hence 
+
+N (2 ε, star (F, f 0), ∥·∥ ) ≤ N (ε, star ({f1, . . . , f N }, f 0), ∥·∥ )= N · max  
+
+> 1≤j≤N
+
+N (ε, star ({fj }, f 0), ∥·∥ ).
+
+Note that for each j, we have ∥fj − f0∥ ≤ 2M . Now consider the partition of [0 , 1] with breakpoints 
+
+εi = iε/ (2 M ), i = 1 , . . . , ⌊2M/ε ⌋. For any ϕ ∈ star ({fj }, f 0), there exists α ∈ [0 , 1] such that 
+
+ϕ = f0 + α(fj − f0). Based on the construction of partition, there exists iϕ ∈ { 0, 1, . . . , ⌊2M/ε ⌋} 
+
+such that 
+
+∣∣∣α − εiϕ
+
+∣∣∣ ≤ ε 
+
+> 2M
+
+. As a result 
+
+∥ϕ − (f0 + εiϕ (fj − f0)) ∥ =
+
+∣∣∣α − εiϕ
+
+∣∣∣ ∥fj − f0∥ ≤ ε, 
+
+which implies that N (ε, star ({fj }, f 0), ∥·∥ ) ≤ 2Mε . Hence, 
+
+N (2 ε, star (F, f 0), ∥·∥ ) ≤ N (ε, star ({f1, . . . , f N }, f 0), ∥·∥ ) ≤ 2Mε N (ε, F, ∥·∥ ).
+
+Taking logarithm on both sides yields the desired result. 
+
+F.4 Fixed Points of Adding a Constant to Sub-root Functions 
+
+Lemma 33. Let ψ(r) be a sub-root function and let a > 0 be a constant. Define 
+
+ψa(r) = ψ(r) + a, 
+
+and let r∗, r ∗ 
+
+> a
+
+be the fixed points of ψ and ψa respectively. Then 
+
+r∗ 
+
+> a
+
+≤ r∗ + 2 a. 
+
+73 Proof. By the definition of ψa, we have 
+
+ψ(r∗
+
+> a
+
+) = ψa(r∗
+
+> a
+
+) − a = r∗ 
+
+> a
+
+− a ≤ r∗
+
+> a
+
+,
+
+it then follows from Lemma 3.2 in Bartlett et al. (2005) that r∗ ≤ r∗
+
+> a
+
+. On the other hand, since 
+
+ψ(r)/√r is non-increasing, we have 
+
+ψ(r∗
+
+> a
+
+)
+
+√r∗
+
+> a
+
+≤ ψ(r∗)
+
+√r∗ = √r∗,
+
+which implies that 
+
+r∗ 
+
+> a
+
+− a = ψa(r∗
+
+> a
+
+) − a = ψ(r∗
+
+> a
+
+) ≤ √r∗
+
+> a
+
+r∗.
+
+Squaring both sides of the above inequality yields 
+
+r∗ 
+
+> a
+
+− (2 a + r∗)r∗ 
+
+> a
+
++ a2 ≤ 0,
+
+and solving this inequality with respect to r∗
+
+> a
+
+, we have 
+
+r∗ 
+
+> a
+
+≤ (2 a + r∗) + √(2 a + r∗)2 − 4a2
+
+2 ≤ r∗ + 2 a. 
+
+F.5 Covering Number of Deep ReLU Network Under the L∞-norm 
+
+Lemma 34. Let Zζ = {z ∈ Rk : ∥z∥ ≤ ζ} for some ζ > 0 and let σ be a 1-Lipschitz function. Define 
+
+f : Zζ → Rm
+
+z 7 → σ(W z ) = 
+
+
+
+σ(wT 
+
+> 1
+
+z)
+
+σ(wT 
+
+> 2
+
+z)
+
+...
+
+σ(wTmz)
+
+ , (55) 
+
+where W [w1, . . . , wm]T ∈ Rm×k ∈ W and 
+
+W =
+
+{
+
+W : ∥W ∥op ≤ κ0,
+
+∥∥∥W T ∥∥∥2,1 ≤ b0
+
+}
+
+,
+
+for some κ0, b 0 > 0. Denote M = {f as defined in (55) : W ∈ W} . Then 
+
+N (ε, M, ∥·∥ sup ) ≤
+
+(
+
+1 + ζb 0
+
+ε
+
+)mk 
+
+.
+
+Here ∥f ∥sup = sup z∈Z ζ ∥f (z)∥.
+
+74 Proof. Note that for any f, f ′ ∈ M with f (z) = σ (W z ) and f ′(z) = σ (W ′z), we have 
+
+∥∥f − f ′∥∥sup = sup 
+
+> z∈Z ζ
+
+∥∥f (z) − f ′(z)∥∥
+
+= sup 
+
+> z∈Z ζ
+
+√√√√ m∑
+
+> t=1
+
+∣∣σ (wTt z) − σ (w′tT z)∣ ∣2
+
+≤ sup 
+
+> z∈Z ζ
+
+√√√√ m∑
+
+> t=1
+
+∣∣∣wTt z − w′Tt z
+
+∣∣∣2
+
+≤ sup 
+
+> z∈Z ζ
+
+√√√√ m∑
+
+> t=1
+
+∥wt − w′
+
+> t
+
+∥2 ∥z∥2
+
+≤ sup 
+
+> z∈Z ζ
+
+∥z∥
+
+√√√√ M∑
+
+> t=1
+
+∥wt − w′
+
+> t
+
+∥2
+
+≤ ζ ∥∥W − W ′∥∥F .
+
+Therefore if {W (1) , . . . , W (N )} is a minimal ε/ζ -cover of W with respect to ∥·∥ F , then {f (1) , . . . , f (N )},where f (j)(z) = σ
+
+(
+
+W (j)T
+
+z
+
+)
+
+, is an ε-cover for M. Hence, 
+
+N
+
+(
+
+ε, M, ∥·∥ sup 
+
+)
+
+≤ N
+
+( εζ , W, ∥·∥ F
+
+)
+
+,
+
+and the desired result then follows from the similar arguments as in the proof of Lemma 14 and Proposition 4.2.12 in Vershynin (2018). 
+
+Lemma 35. Let H = {h : Rd → Rd1 } be a class of functions and let G = {g : Rd1 → Rd2 } be a class of τ -Lipschitz function. Define 
+
+G ◦ H = {g ◦ h : g ∈ G , h ∈ H} .
+
+Then 
+
+N (ε1 + τ ε 2, G ◦ H , ∥·∥ sup ) ≤ N
+
+(
+
+ε1, G, ∥·∥ sup 
+
+)
+
+N (ε2, H, ∥·∥ sup ).
+
+Proof. For any f ∈ G ◦ H , there exists g ∈ G and h ∈ H such that f = g ◦ h. Let {g1, . . . , g N1 } be a minimal ε1-cover of G so that N1 = N (ε1, G, ∥·∥ sup ) and let {h1, . . . , h N2 } be a minimal ε2-cover of 
+
+H so that N2 = N (ε2, H, ∥·∥ sup ). Then there exists i ∈ [N1] such that 
+
+∥g − gi∥sup < ε 1,
+
+and there exists j ∈ [N2] such that 
+
+∥h − hj ∥ < ε 2.
+
+Consequently, 
+
+∥g ◦ h − gi ◦ hj ∥sup ≤ ∥ g ◦ h − g ◦ hj ∥sup + ∥g ◦ hj − gi ◦ hj ∥sup .
+
+For the first term, by the Lipschitz continuity of G,
+
+∥g ◦ h − g ◦ hj ∥sup ≤ sup 
+
+> x
+
+∥g(h(x)) − g(hj (x)) ∥≤ sup 
+
+> x
+
+τ ∥h(x) − hj (x)∥
+
+= τ ∥h − hj ∥sup 
+
+< τ ε 2.
+
+75 For the second term, we have 
+
+∥g ◦ hj − gi ◦ hj ∥sup = sup 
+
+> x
+
+∥g(hj (x)) − gi(hj (x)) ∥
+
+= sup  
+
+> y=hj(x)
+
+∥g(y) − gi(y)∥≤ ∥ g − gi∥sup < ε 1.
+
+Therefore, {gi ◦ hj : i ∈ [N1], j ∈ [N2]} forms an ε1 + τ ε 2-cover for G ◦ H and the desired result follows. 
+
+Theorem 36. Let F be the class of deep ReLU neural networks as defined in (8). Then 
+
+log N (ε, F, ∥·∥ sup ) ≤ W log 
+
+1 + 2κε
+
+[ L∑
+
+> l=1
+
+( bl
+
+κl
+
+)1/2 L∏
+
+> l=1
+
+κ1/2
+
+> l
+
+]2 .
+
+Proof. Let Fi and Wi, i = 1 , . . . , L be the same as defined in the proof of Lemma 14. It then follows from Lemma 34 that 
+
+N (εi, Fi, ∥·∥ sup ) ≤ N
+
+( εi
+
+κ ∏i−1 
+
+> l=1
+
+κl
+
+, Wi, ∥·∥ F
+
+)
+
+≤
+
+(
+
+1 + 2biκ ∏i−1 
+
+> l=1
+
+κl
+
+εi
+
+)pipi−1
+
+.
+
+Combined with Lemma 35, we have 
+
+N
+
+
+
+> L
+
+∑
+
+> i=1
+
+εiL∏
+
+> l=i+1
+
+κl, F, ∥·∥ sup 
+
+ ≤
+
+> L
+
+∏
+
+> i=1
+
+N (εi, Fi, ∥·∥ sup )
+
+≤
+
+> L
+
+∏
+
+> i=1
+
+(
+
+1 + 2biκ ∏i−1 
+
+> l=1
+
+κl
+
+εi
+
+)pipi−1
+
+By the same choice of εi as in (34) and the same argument as in Lemma 14, we have 
+
+log N (ε, F, ∥·∥ sup ) ≤ W log 
+
+1 + 2κε
+
+[ L∑
+
+> l=1
+
+( bl
+
+κl
+
+)1/2 L∏
+
+> l=1
+
+κ1/2
+
+> l
+
+]2 .
+
+76

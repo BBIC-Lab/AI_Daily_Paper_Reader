@@ -1,0 +1,410 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-29T21:06:55.002404+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 38,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 77,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 17,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 12,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 18
+  },
+  "deep_dive": [
+    {
+      "id": "2607.22979v1",
+      "source": "arxiv",
+      "title": "Variable Importance Identification Through Lazy Training for Binary Classification",
+      "abstract": "Deep neural networks have been widely used in many applications (e.g., computer vision and natural language processing); however, understanding their explainability remains a challenging task. Recently, substantial research has been devoted to improving the explainability of deep neural networks, with most of this work focusing on the regression framework. In this paper, we instead focus on the binary classification framework and adopt a variable-importance framework combined with the idea of lazy training to propose an efficient algorithm for identifying important features. From a theoretical perspective, our method relies on only a minimal set of assumptions and achieves well-controlled error rates. The validity of the proposed method and algorithm is examined through extensive simulation studies and real-data applications.",
+      "authors": [
+        "Anand Singh",
+        "Luke Pennella",
+        "Eshan Kabir",
+        "Xiaoxi Shen"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-07-25T01:28:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.22979v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "lazy training identifies important features for binary classification",
+      "llm_evidence_cn": "懒训练识别二分类中重要特征",
+      "llm_evidence": "懒训练识别二分类中重要特征",
+      "canonical_evidence": "懒训练识别二分类中重要特征",
+      "llm_tldr_en": "Proposes variable importance identification via lazy training for DNN explainability.",
+      "llm_tldr_cn": "提出通过懒训练识别变量重要性以增强深度网络可解释性。",
+      "llm_tldr": "提出通过懒训练识别变量重要性以增强深度网络可解释性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23146v1",
+      "source": "arxiv",
+      "title": "Foundation Models and Fine-Tuning: Toward a New Generation of Models for Time Series Forecasting",
+      "abstract": "Inspired by recent breakthroughs in large language models for natural language processing, foundation models have emerged as a promising paradigm for zero-shot time series forecasting, enabling accurate predictions on datasets never seen during pre-training. Ranging from tens to hundreds of millions of parameters, these models are pre-trained on vast and diverse collections of time series, learning generalizable representations that support both point and probabilistic forecasting. This approach alleviates the need for dataset-specific model design and manual tuning, offering a unified solution across forecasting problems. In this work, we review the main architectures, pre-training strategies, and optimization methods underpinning these models. We further investigate post-pre-training fine-tuning of selected foundation models to enhance their performance on specific datasets. Our empirical results demonstrate that this step consistently improves forecasting accuracy over the zero-shot baseline.",
+      "authors": [
+        "Morad Laglil",
+        "Bertrand Pracca",
+        "Emilie Devijver",
+        "Eric Gaussier"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-25T10:55:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.23146v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "foundation models for time series forecasting",
+      "llm_evidence_cn": "用于时间序列预测的基础模型",
+      "llm_evidence": "用于时间序列预测的基础模型",
+      "canonical_evidence": "用于时间序列预测的基础模型",
+      "llm_tldr_en": "Reviews foundation models and fine-tuning for zero-shot time series forecasting.",
+      "llm_tldr_cn": "综述面向零样本时间序列预测的基础模型与微调方法。",
+      "llm_tldr": "综述面向零样本时间序列预测的基础模型与微调方法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23232v1",
+      "source": "arxiv",
+      "title": "Learning Regularization Structure for Biosignal Template Estimation",
+      "abstract": "Estimating event-locked templates from bio-signal recordings via regularized least-squares requires choosing both the regularization structure and its magnitude, choices that are typically made heuristically. We develop a data-driven framework based on Stein's Unbiased Risk Estimate (SURE) that jointly optimizes both. By parameterizing the regularization operator as a convolution kernel, our method learns the penalty structure directly from the data, combining smoothness enforcement with ridge-like shrinkage in a way that cannot be achieved by scaling a fixed difference operator. While standard SURE assumes white noise, biosignal noise exhibits temporal autocorrelation. We therefore extend SURE to colored noise by replacing its scalar trace term with a structured correction based on the noise covariance matrix. For AR(1) noise, this correction requires only two parameters, the noise variance and the lag-1 autocorrelation, both estimable from pre-event baselines. Cross-modality validation on auditory event-related potentials, P300 brain--computer interface data, and ECG morphology demonstrates consistent gains compared to alternative methods, all at $K=5$ events per class - the regime most relevant for rapid calibration and personalization.",
+      "authors": [
+        "Yonathan Murin",
+        "Alexandre Gramfort"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-25T14:38:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.23232v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "biosignal template estimation via SURE regularization learning",
+      "llm_evidence_cn": "通过SURE正则化学习进行生物信号模板估计",
+      "llm_evidence": "通过SURE正则化学习进行生物信号模板估计",
+      "canonical_evidence": "通过SURE正则化学习进行生物信号模板估计",
+      "llm_tldr_en": "Learns regularization structure for biosignal template estimation using SURE",
+      "llm_tldr_cn": "利用SURE学习生物信号模板估计的正则化结构",
+      "llm_tldr": "利用SURE学习生物信号模板估计的正则化结构",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23258v1",
+      "source": "arxiv",
+      "title": "CAPT: A Multi-task Continuous Autoregressive Transformer enabling Cross-dataset and Cross-species Transfer for Calcium Population Dynamics",
+      "abstract": "Large-scale calcium imaging has created an opportunity to build foundation-style models for neural population dynamics, but a central question remains unresolved: \\textbf{whether a model pretrained on one collection of recordings can generalize to new datasets, experimental paradigms, and even species.} Existing approaches are often designed for specific tasks and evaluated on a single dataset, making it unclear whether their learned representations are reusable for new calcium trace datasets. To tackle this gap, we present \\textbf{CAPT}, a \\textbf{C}ontinuous \\textbf{A}utoregressive \\textbf{P}opulation \\textbf{T}ransformer for calcium population dynamics. CAPT models continuous calcium traces directly through a continuous patch tokenization strategy and is trained autoregressively, enabling end-to-end pretraining and adaptation to diverse downstream tasks. We first pretrain CAPT on a large-scale mouse calcium imaging dataset and evaluate its transferability across independent mouse, larval zebrafish, and \\textit{C. elegans} datasets collected by different laboratories. In these transfer settings, the pretrained backbone is frozen and only adaptation modules are updated. Across neural population forecasting and behavior decoding tasks, CAPT consistently outperforms specialized and general-purpose baselines. Alongside predictive performance, multimodal analyses using NeuroPAL annotations in \\textit{C. elegans} datasets show that CAPT embeddings form a shared functional space across datasets and capture anatomical cell-identity-related structure. These results suggest that the continuous autoregressive modeling opens up possibilities for a simple route towards general-purpose neural foundation models for calcium imaging, which can generalize across datasets, experimental paradigms, and species.",
+      "authors": [
+        "Xinhong Xu",
+        "Yimeng Zhang",
+        "Yuanlong Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-25T15:53:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.23258v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "continuous autoregressive transformer for neural population dynamics and cross-species transfer",
+      "llm_evidence_cn": "连续自回归Transformer用于神经群体动力学及跨物种迁移",
+      "llm_evidence": "连续自回归Transformer用于神经群体动力学及跨物种迁移",
+      "canonical_evidence": "连续自回归Transformer用于神经群体动力学及跨物种迁移",
+      "llm_tldr_en": "Pretrained autoregressive transformer for calcium imaging neural sequences with transfer across datasets and species",
+      "llm_tldr_cn": "预训练自回归Transformer处理钙成像神经序列，支持跨数据集和跨物种迁移",
+      "llm_tldr": "预训练自回归Transformer处理钙成像神经序列，支持跨数据集和跨物种迁移",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23554v1",
+      "source": "arxiv",
+      "title": "Neonatal Hypoxic-ischaemic Encephalopathy Classification from the EEG and HRV Signals Using a Conformer based Masked Autoencoder",
+      "abstract": "In this paper, we propose the MAEConformer, a novel self-supervised learning framework that combines the Conformer architecture with the Masked Autoencoder (MAE) paradigm for large-scale representation learning from unlabelled electroencephalography (EEG) and heart rate variability (HRV) signals. By integrating convolutional operations with Transformer-based self-attention, MAEConformer effectively captures both local temporal patterns and long-range contextual dependencies in physiological time series. To enhance reconstruction fidelity and representation quality, a multi-resolution short-time Fourier transform (MR-STFT) loss is incorporated alongside the reconstruction objective, enabling the model to jointly learn temporal and spectral characteristics across multiple scales. Modality-specific EEG and HRV MAEConformer models were pretrained on 6,030h and 4,868h of unlabelled recordings, respectively, and subsequently transferred to expert-annotated downstream tasks. Experimental results demonstrate that the learned representations provide strong transferability and data efficiency. In EEG-based hypoxic ischemic encephalopathy (HIE) severity classification, the pretrained MAE-EEG model achieved test AUCs of 97.19% and 96.56% for binary and four-class classification tasks, respectively, outperforming a range of state-of-the-art supervised and self-supervised baselines. On the HRV-based HIE severity classification task, MAE-HRV achieved a test AUC of 82.42%, surpassing both self-supervised Transformer-based and supervised convolutional baselines. These findings demonstrate the effectiveness of MAEConformer for learning robust and transferable representations across multiple physiological modalities.",
+      "authors": [
+        "Shuwen Yu",
+        "William P Marnane",
+        "Geraldine B. Boylan",
+        "Gordon Lightbody"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "eess.SP"
+      ],
+      "published": "2026-07-26T09:11:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.23554v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised representation learning from EEG/HRV sequences",
+      "llm_evidence_cn": "从EEG/HRV序列中进行自监督表示学习",
+      "llm_evidence": "从EEG/HRV序列中进行自监督表示学习",
+      "canonical_evidence": "从EEG/HRV序列中进行自监督表示学习",
+      "llm_tldr_en": "Proposes MAEConformer for self-supervised representation learning from EEG and HRV signals for neonatal hypoxic-ischaemic encephalopathy classification.",
+      "llm_tldr_cn": "提出MAEConformer从EEG和HRV信号中自监督表示学习用于新生儿缺氧缺血性脑病分类。",
+      "llm_tldr": "提出MAEConformer从EEG和HRV信号中自监督表示学习用于新生儿缺氧缺血性脑病分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.22962v1",
+      "source": "arxiv",
+      "title": "ConsistencyGate: Preventing Memory Contamination in LLM Agents via Self-Consistency Admission Control",
+      "abstract": "LLM agents that operate over many turns accumulate facts in an external memory store and reuse them as premises for downstream reasoning. A hallucinated fact written at one step therefore persists as a false premise for every subsequent step, a failure mode we call memory contamination. Existing memory management addresses retrieval and capacity but not write-time correctness; this admission problem cannot be solved by utility- or recency-based criteria, and uncontrolled contamination compounds across long trajectories. We propose ConsistencyGate, a write-time admission gate that, before committing a candidate fact m extracted from context c, queries the LLM K times for a soft support score and admits m only when the average exceeds a threshold. The mechanism is model-agnostic, requires no fine-tuning, and reduces to a single forward pass in a log-probability variant for latency-sensitive deployments. To measure the effect on natural data, we construct two real-conversation benchmarks (LoCoMo-Contam and MSC-Contam) by planting controlled single-detail corruptions in long-term conversations from LoCoMo and MSC, and complement them with a structured synthetic corpus (MemContam) that isolates a near-oracle upper bound. Across four LLM backbones, ConsistencyGate reduces contamination on every benchmark relative to a write-everything baseline, with the cost concentrated on facts that are stated only implicitly in the source context. We release all three benchmarks together with the gate implementation.",
+      "authors": [
+        "Yan Zhang",
+        "Shibo Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-25T00:08:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.22962v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "queries the LLM multiple times for a soft support score before admitting facts to memory",
+      "llm_evidence_cn": "在将事实写入内存前多次查询LLM获取软支持分数",
+      "llm_evidence": "在将事实写入内存前多次查询LLM获取软支持分数",
+      "canonical_evidence": "在将事实写入内存前多次查询LLM获取软支持分数",
+      "llm_tldr_en": "Gate that computes self-consistency scores to prevent fact contamination in agent memory.",
+      "llm_tldr_cn": "计算自一致性分数以防止智能体记忆事实污染的门控机制。",
+      "llm_tldr": "计算自一致性分数以防止智能体记忆事实污染的门控机制。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.22951v1",
+      "source": "arxiv",
+      "title": "Modeling Memory-Dependent Reliability of LLMs: A Hidden Markov Model",
+      "abstract": "Reliability assessment of large language models (LLMs) seeks to estimate the probability that a model produces correct responses under a specified operational profile. Conventional benchmark-based evaluation, often summarized by aggregate accuracy, provides a point estimate of performance but does not characterize the uncertainty associated with reliability claims. Currently, statistical inference methods for LLM reliability assessment are emerging. However, a key assumption underlying these models is that test outcomes can be treated as independent repeated trials. This assumption may be inappropriate in sequential settings, where later responses depend on earlier interactions through retained context, error propagation, or an evolving interaction state. We extend a hierarchical Bayesian framework for LLM reliability assessment by relaxing the assumption of independent task outcomes and introducing a Hidden Markov Model to capture sequential dependence in benchmark-constructed interaction sessions. In this formulation, outcomes are generated from a latent interaction state evolving according to a first-order Markov process, capturing changes in interaction context. Through experiments using Anthropic Claude and OpenAI on four datasets, we demonstrate the potential impact of sequential dependence on reliability assessment. The results suggest that ignoring sequential dependence may lead to overconfident reliability estimates.",
+      "authors": [
+        "Robab Aghazadeh Chakherlou",
+        "Siddartha Khastgir",
+        "Peter Popov",
+        "Xingyu Zhao"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-24T23:34:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.22951v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses HMM to model sequential dependencies in LLM responses",
+      "llm_evidence_cn": "使用HMM建模LLM响应序列中的时序依赖",
+      "llm_evidence": "使用HMM建模LLM响应序列中的时序依赖",
+      "canonical_evidence": "使用HMM建模LLM响应序列中的时序依赖",
+      "llm_tldr_en": "Applies HMM to assess LLM reliability by modeling memory-dependent response sequences.",
+      "llm_tldr_cn": "应用HMM通过建模记忆依赖的响应序列来评估LLM可靠性。",
+      "llm_tldr": "应用HMM通过建模记忆依赖的响应序列来评估LLM可靠性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.23077v1",
+      "source": "arxiv",
+      "title": "Structure over Depth: A Single-Block Spatio-Temporal Transformer for Multi-Entity Reasoning",
+      "abstract": "Modeling multi-entity temporal data requires capturing dependencies across entities, time, and their interactions. Transformer-based approaches perform well but often rely on deep stacks of layers to learn these heterogeneous dependencies implicitly, increasing computational cost. We revisit this problem from a structural perspective and decompose multi-entity temporal dynamics into three interaction types: spatial interactions among entities, temporal interactions across time, and cross interactions coupling the two domains. We propose a structured spatio-temporal transformer block that explicitly models all three within a single stage. It uses parallel spatial and temporal self-attention, followed by bidirectional cross-attention, and combines the outputs through learnable gated fusion. By directly encoding these complementary views, the model reduces the need for deep stacking. We evaluate the approach on video-based group activity recognition, skeleton-based human interaction analysis, and wearable sensor-based activity recognition. Despite its simplicity, the single structured Transformer block matches or outperforms deeper architectures with only 1.76M parameters. The results suggest that depth in prior models partly compensates for implicit and entangled interaction modeling, whereas explicit factorization offers a more efficient and transparent alternative. More broadly, this work supports a structure-first design principle: expressive multi-entity temporal reasoning can emerge by exposing interaction structure rather than relying on depth.",
+      "authors": [
+        "Narthana Sivalingam",
+        "Santhirarajah Sivasthigan",
+        "Buddhi Wijenayake",
+        "Roshan Godaliyadda",
+        "Vijitha Herath",
+        "Parakrama Ekanayake"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-25T07:02:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.23077v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Single-block spatio-temporal transformer explicitly models temporal interactions in multi-entity data",
+      "llm_evidence_cn": "单块时空Transformer显式建模多实体数据中的时间交互",
+      "llm_evidence": "单块时空Transformer显式建模多实体数据中的时间交互",
+      "canonical_evidence": "单块时空Transformer显式建模多实体数据中的时间交互",
+      "llm_tldr_en": "Presents a structured spatio-temporal transformer for efficient multi-entity temporal reasoning, advancing sequence modeling.",
+      "llm_tldr_cn": "提出结构化时空Transformer进行高效多实体时序推理，推进序列建模。",
+      "llm_tldr": "提出结构化时空Transformer进行高效多实体时序推理，推进序列建模。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23110v1",
+      "source": "arxiv",
+      "title": "Operator Neural Jump ODEs: $L^2$-optimal prediction in function spaces",
+      "abstract": "In this paper, we study the extension of Neural Jump ODEs to infinite-dimensional function spaces. In particular, the underlying process $X$ now takes values in $L^2(Ξ, \\mathbb{R}^{d_X})$ instead of $\\mathbb{R}^{d_X}$ and the Operator NJ-ODE approximates the optimal predictor of this process by producing a representative of the conditional expectation. The NJ-ODE model is a framework for online learning the optimal prediction of continuous-time stochastic processes, given discrete, possibly irregular and incomplete past observations. In a series of works, this model has been extended to deal with generic path-dependent processes, with observation noise and dependent observations, with long-term predictions, and with input-output systems. However, throughout all of these works, the underlying processes were restricted to be finite-dimensional. In particular, function-valued problems, like yield curve or volatility surface predictions, could only be handled through discretization, which inherently leads to a loss of information. In this work, we build on ideas from Neural Operator methods that allow us to extend the NJ-ODE framework to an infinite-dimensional output process. To prove convergence of the NJ-ODE to the optimal prediction process, we develop a new approximation strategy that also generalizes previous works in the finite-dimensional setting by considerably weakening the assumptions.",
+      "authors": [
+        "Florian Krach",
+        "Oliver Löthgren",
+        "Josef Teichmann"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-07-25T08:45:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.23110v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "optimal prediction of continuous-time stochastic processes from irregular observations",
+      "llm_evidence_cn": "从非规则观测对连续时间随机过程进行最优预测",
+      "llm_evidence": "从非规则观测对连续时间随机过程进行最优预测",
+      "canonical_evidence": "从非规则观测对连续时间随机过程进行最优预测",
+      "llm_tldr_en": "Extends Neural Jump ODEs to function spaces for optimal prediction of stochastic processes.",
+      "llm_tldr_cn": "将神经跳跃ODE扩展到函数空间以最优预测随机过程。",
+      "llm_tldr": "将神经跳跃ODE扩展到函数空间以最优预测随机过程。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23120v1",
+      "source": "arxiv",
+      "title": "A scalable online machine learning approach for Stock Recommendation",
+      "abstract": "Stock recommendation systems face the dual challenge of adapting to rapidly changing market conditions while maintaining low-latency predictions for end users. Traditional batch-trained models fail to capture concept drift, and monolithic architectures struggle to provide fault tolerance under load. This paper presents a scalable online deep learning-based stock recommendation system built on a distributed microservices architecture using Kubernetes, Docker, and RabbitMQ. The system employs a hybrid leader-follower architecture where a primary model continuously trains on streaming financial data, including EPS, MACD, and price, from the Alpha Vantage API while multiple replica models serve user-facing recommendations in parallel. A multilayer perceptron implemented with TensorFlow Recommenders generates content-based recommendations using explicit user ratings (1-5) and transfer learning. The architecture ensures high availability. The leader persists model weights to Google Cloud Object Storage, allowing replicas to recover seamlessly upon failure, while RabbitMQ provides message durability and replay. Results demonstrate that the system serves stock recommendations in 23 seconds per request and processes up to 500 portfolio addition requests per second per follower. Key limitations include data staleness (up to 150 minutes due to API rate limits) and the absence of a service mesh for inter-cluster security. This work contributes a production-ready reference architecture for online recommender systems that balances consistency, availability, and scalability in a financial domain context",
+      "authors": [
+        "Harsh Nagarkar"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE",
+        "cs.AI",
+        "cs.DC",
+        "cs.GT"
+      ],
+      "published": "2026-07-25T09:32:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.23120v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "online deep learning for sequential stock recommendation with concept drift",
+      "llm_evidence_cn": "在线深度学习用于序列股票推荐，处理概念漂移",
+      "llm_evidence": "在线深度学习用于序列股票推荐，处理概念漂移",
+      "canonical_evidence": "在线深度学习用于序列股票推荐，处理概念漂移",
+      "llm_tldr_en": "A scalable online ML system for stock recommendations adapts to streaming data in real time.",
+      "llm_tldr_cn": "一个可扩展的在线机器学习系统实时适应流式数据进行股票推荐。",
+      "llm_tldr": "一个可扩展的在线机器学习系统实时适应流式数据进行股票推荐。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
