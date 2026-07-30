@@ -1,0 +1,411 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-30T21:01:27.243871+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 45,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 85,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 15,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 10,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 16
+  },
+  "deep_dive": [
+    {
+      "id": "2607.26751v1",
+      "source": "arxiv",
+      "title": "Phoneme- vs. Character-Level Targets and Selective State-Space Models for Intracortical Brain-to-Text",
+      "abstract": "State-of-the-art intracortical brain-to-text systems pair a neural-sequence phone decoder with an external language model. Two design axes remain underexplored: whether selective state-space models (Mamba) improve on recurrent decoders, and how the output target (phonetic vs.\\ character) interacts with that choice. On the public Brain-to-Text '25 benchmark, we study a controlled 2x2 grid (GRU vs.\\ hybrid Mamba decoder; phonetic vs.\\ character targets) trained with a CTC objective under one reproducible protocol. The recurrent baseline remains strongest: the best phonetic GRU reaches 12.62\\% PER and 21.19\\% WER, while the best textual GRU after LM rescoring reaches 13.39\\% CER and 26.28\\% WER. The Mamba hybrid is competitive but does not surpass it. Ablations isolate architectural contributions, and error analysis shows representation-dependent failures: articulatory-like phoneme confusions vs.\\ lexical and word-boundary errors.",
+      "authors": [
+        "Lucas Zamora Vera",
+        "Jose A. Gonzalez-Lopez"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "eess.SP"
+      ],
+      "published": "2026-07-29T10:46:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.26751v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "intracortical brain-to-text decoding with state-space models",
+      "llm_evidence_cn": "使用状态空间模型进行脑内信号到文本的解码",
+      "llm_evidence": "使用状态空间模型进行脑内信号到文本的解码",
+      "canonical_evidence": "使用状态空间模型进行脑内信号到文本的解码",
+      "llm_tldr_en": "Compares GRU and Mamba decoders for intracortical brain-to-text, finding GRU still strongest",
+      "llm_tldr_cn": "比较GRU和Mamba解码器用于脑内信号到文本，发现GRU仍然最强",
+      "llm_tldr": "比较GRU和Mamba解码器用于脑内信号到文本，发现GRU仍然最强",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23522v1",
+      "source": "arxiv",
+      "title": "ATCNet-CIAM for Multi-Session Motor Imagery EEG Signal Classification",
+      "abstract": "Motor imagery (MI)-based electroencephalography is widely used in non-invasive brain--computer interfaces (BCIs), but robust decoding remains challenging due to inter-subject variability and cross-session non-stationarity. This work proposes ATCNet-CIAM, an enhanced attention temporal convolutional network that integrates a lightweight channel-integrated attention module (CIAM) into the ATCNet framework to improve channel-spatial feature representation for MI decoding. The proposed model is evaluated on BCI Competition IV-2a, BCI Competition IV-2b, and the multi-day WBCIC-MI dataset under standard, within-session, and cross-session protocols. Experimental results show that ATCNet-CIAM achieves 86.32% accuracy on BCI IV-2a and 87.96% on BCI IV-2b under the standard protocol, while reaching 89.46% and 83.64% in the within-session WBCIC-MI on 2C and 3C, respectively. The proposed framework consistently improves classification stability and robustness under session-varying conditions, and ablation study confirms the complementary contribution of the proposed architectural components.",
+      "authors": [
+        "Le Huu Son Hai",
+        "Nguyen Chi Hai",
+        "Truong Viet Vu",
+        "Nguyen Phuc Nguyen",
+        "Nguyen Thai Anh",
+        "Ngo Hoang Tu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-26T07:42:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.23522v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes motor imagery EEG to control BCI",
+      "llm_evidence_cn": "解码运动想象脑电信号控制脑机接口",
+      "llm_evidence": "解码运动想象脑电信号控制脑机接口",
+      "canonical_evidence": "解码运动想象脑电信号控制脑机接口",
+      "llm_tldr_en": "ATCNet-CIAM enhances EEG decoding with attention and channel integration for multi-session BCI",
+      "llm_tldr_cn": "增强注意力时间卷积网络提升多会话脑电解码",
+      "llm_tldr": "增强注意力时间卷积网络提升多会话脑电解码",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23556v1",
+      "source": "arxiv",
+      "title": "GTIN: A Unified Framework for Joint Event and Time Prediction in Temporal Graphs",
+      "abstract": "Temporal graphs are increasingly used to model dynamic systems in diverse domains such as social networks, financial networks, and traffic networks. Predicting both what the next event will be and when it will occur in these systems is crucial for understanding and anticipating complex behaviors, but has not been studied much. To address this gap, we propose a unified mathematical framework capable of capturing varying degrees of complexity across temporal graphs. Our framework is flexible and expressive enough to accommodate a wide range of network structures and temporal dynamics. Building upon this analysis, we introduce our novel approach for jointly predicting the next event and its occurrence time. Empirical evaluations across multiple datasets demonstrate that our method consistently outperforms existing techniques, particularly in scenarios involving irregular event patterns and complex temporal dependencies. These findings highlight the potential of our framework as a robust foundation for future research in temporal event prediction.",
+      "authors": [
+        "Mohammad Ostadmohammadi",
+        "Sepehr Kazemi",
+        "Hamid R. Rabiee"
+      ],
+      "primary_category": "cs.SI",
+      "categories": [
+        "cs.SI",
+        "cs.AI"
+      ],
+      "published": "2026-07-26T09:15:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.23556v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "jointly predicts next event and time in temporal graphs",
+      "llm_evidence_cn": "联合预测时序图中的下一个事件及其时间",
+      "llm_evidence": "联合预测时序图中的下一个事件及其时间",
+      "canonical_evidence": "联合预测时序图中的下一个事件及其时间",
+      "llm_tldr_en": "GTIN provides a unified framework for event and time prediction in temporal graphs.",
+      "llm_tldr_cn": "GTIN提供时序图中事件与时间预测的统一框架。",
+      "llm_tldr": "GTIN提供时序图中事件与时间预测的统一框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23917v1",
+      "source": "arxiv",
+      "title": "Gaze-to-text Generation: Beyond Categorical Decoding of Human Attention",
+      "abstract": "We introduce a novel learning problem: decoding gaze into natural language descriptions of human goals across diverse visual tasks. Unlike prior work, which frames gaze decoding as a discriminative task over predefined categories, we formulate it as a generative learning problem: training a model to produce free-form descriptions that capture the rich nuances and open-ended nature of human intentions beyond fixed labels. To this end, we introduce Gazette, the first gaze-to-text decoding framework. Based on multimodal large language models (MLLMs), Gazette learns to decode gaze scanpaths into natural language for goals that may extend beyond categorical labels and require articulation in natural language. To help Gazette filter out individual differences in gaze behavior and learn the goal-specific spatiotemporal dynamics crucial for generating accurate natural language goal descriptions, we propose a novel strategy that leverages the encyclopedic knowledge and reasoning abilities of a large language model to synthesize natural language explanations of goal-directed attentional behavior called think-aloud transcripts. Instruction tuning on these synthetic narratives allows Gazette to achieve state-of-the-art performance in gaze decoding across multiple tasks, demonstrating its generalizability and versatility, thereby enabling gaze to serve as a powerful, non-intrusive cue for inferring human goals and intentions in diverse scenarios.",
+      "authors": [
+        "Sounak Mondal",
+        "Dimitris Samaras",
+        "Gregory Zelinsky",
+        "Minh Hoai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T01:13:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.23917v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Decodes gaze scanpaths into natural language descriptions",
+      "llm_evidence_cn": "将注视扫描路径解码为自然语言描述",
+      "llm_evidence": "将注视扫描路径解码为自然语言描述",
+      "canonical_evidence": "将注视扫描路径解码为自然语言描述",
+      "llm_tldr_en": "First framework to generate free-form text from gaze signals",
+      "llm_tldr_cn": "首个从注视信号生成自由文本的框架",
+      "llm_tldr": "首个从注视信号生成自由文本的框架",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24023v1",
+      "source": "arxiv",
+      "title": "Self-Supervised Consistency Enhanced Disentangled Learning for Neural Decoding Generalization in Brain-Machine Interface",
+      "abstract": "Brain-Machine Interfaces (BMIs) provide a direct communication pathway between the brain and external devices, enabling humans to control assistive and robotic technologies, with potential applications in rehabilitation, human motor augmentation, and human-centered robotics. However, due to neural drift, the performance of BMIs decreases over time, posing challenges for long-term viability, particularly for invasive BMIs (iBMIs). Existing solutions suffer from two main drawbacks: (i) difficulty in learning robust neural representations, and (ii) neglecting that neural drift varies across motor parameters (e.g., velocity, direction, and speed). To overcome these limitations, we propose Self-Supervised Consistency enhanced Disentangled Learning (SSCDL), a neural decoding generalization framework built on two key innovations. We first design a backbone model named Consistency enhanced Neural Decoder (CND), using a novel teacher-student consistency constraint with simulated neural signal perturbations to learn robust representations invariant to neural drift. Then, we employ three dedicated CNDs under the Complementary-Disentangled Generalization (CDG) mechanism, which disentangles motor signals into velocity, direction, and speed with inspiration from neural preference theory. This disentangled learning enables SSCDL to capture invariant neural representations from diverse neural preference perspectives, significantly enhancing cross-day generalization. Extensive experimental results show that SSCDL delivers state-of-the-art decoding performance, exhibiting high robustness and cross-day stability. These capabilities underscore its strong potential for long-term interaction in human-centric robotic and fine-grained assistive applications.",
+      "authors": [
+        "Jiyu Wei",
+        "Di Hong",
+        "Zhanjie Zhang",
+        "Dazhong Rong",
+        "Qinming He",
+        "Yueming Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.HC",
+        "cs.RO",
+        "eess.SP"
+      ],
+      "published": "2026-07-27T05:40:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.24023v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "directly decodes neural signals into motor actions for BMI",
+      "llm_evidence_cn": "直接解码神经信号为运动动作，用于脑机接口",
+      "llm_evidence": "直接解码神经信号为运动动作，用于脑机接口",
+      "canonical_evidence": "直接解码神经信号为运动动作，用于脑机接口",
+      "llm_tldr_en": "Proposes self-supervised disentangled learning to generalize neural decoding in brain-machine interfaces despite neural drift.",
+      "llm_tldr_cn": "提出自监督解耦学习，在神经漂移下泛化脑机接口中的神经解码。",
+      "llm_tldr": "提出自监督解耦学习，在神经漂移下泛化脑机接口中的神经解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.23404v1",
+      "source": "arxiv",
+      "title": "Transfer Learning Architectures for Scalable Multi-Fidelity Bayesian Optimization",
+      "abstract": "Self-driving laboratories increasingly rely on multi-fidelity Bayesian optimization (MFBO) to balance cheap, approximate evaluations against scarce, expensive ones, with a predictive surrogate at its core. Gaussian processes (GPs) are the default choice, but they scale poorly as data accumulate and assume a smooth landscape that molecular and materials search spaces routinely violate. Transfer learning offers an alternative suited to this regime: it learns a representation from abundant cheap data and adapts it to sparse expensive data. Despite its use in property prediction, transfer learning has not been tested as the engine of a closed-loop optimization. Here we benchmark eleven transfer-learning surrogates against four GP methods under an identical selection rule, fidelity budget, and model size, across nine tasks spanning synthetic functions to real chemistry and materials problems. GPs win on smooth, low-dimensional functions but perform worst on molecular and materials problems, where transfer-learning surrogates reach substantially better solutions using far less computation. Because acquisition policy is held fixed across surrogates, this advantage is attributable to the surrogate itself. Uncertainty-driven exploration is not reliably beneficial, and calibration does not predict optimization performance, so greedy exploitation of the transfer-learned mean is the more robust default. Transfer learning is therefore the surrogate of choice for molecular and materials MFBO.",
+      "authors": [
+        "Jaewook Lee",
+        "Ethan Errington",
+        "Christian D. Lorenz",
+        "Miao Guo"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-26T01:23:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.23404v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "transfer learning from cheap to expensive data as pretrained knowledge",
+      "llm_evidence_cn": "从廉价数据到昂贵数据的迁移学习，利用预训练知识",
+      "llm_evidence": "从廉价数据到昂贵数据的迁移学习，利用预训练知识",
+      "canonical_evidence": "从廉价数据到昂贵数据的迁移学习，利用预训练知识",
+      "llm_tldr_en": "Benchmarks transfer learning surrogates for multi-fidelity Bayesian optimization, showing knowledge transfer from abundant cheap data.",
+      "llm_tldr_cn": "在多重保真度贝叶斯优化中基准测试迁移学习代理，展示从丰富廉价数据中迁移知识。",
+      "llm_tldr": "在多重保真度贝叶斯优化中基准测试迁移学习代理，展示从丰富廉价数据中迁移知识。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23396v1",
+      "source": "arxiv",
+      "title": "Distributed and recursive Bayesian inference for Big Data and complex spatio-temporal models",
+      "abstract": "The rapid growth of massive and complex datasets in fields such as econometrics, environmental sciences, risk management, and public policy has reshaped statistical modeling while introducing significant computational and methodological challenges. These challenges arise not only from data scale and model complexity, but also from the sequential or streaming nature of modern applications and from data-privacy constraints that prevent sharing raw data and thus limit joint analysis. To address these challenges, we introduce a novel and comprehensive Bayesian framework for distributed and recursive inference, grounded in the Integrated Nested Laplace Approximations (INLA) methodology and implemented using the R-INLA software. Our contributions include the partitioning both data and structured model components, reducing computational complexity while preserving accuracy relative to centralized full-data inference. We demonstrate the effectiveness of the proposed framework through case studies that highlight its applicability in large-scale, streaming, and privacy-sensitive settings. By integrating distributed, federated, and recursive paradigms, this work offers scalable, adaptive, and generalizable tools for modern Bayesian inference.",
+      "authors": [
+        "Mario Figueira",
+        "David Conesa",
+        "Antonio López-Quílez",
+        "Håvard Rue"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-07-25T23:44:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.23396v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "distributed Bayesian inference for spatio-temporal sequential data",
+      "llm_evidence_cn": "分布式贝叶斯推断用于时空序列数据",
+      "llm_evidence": "分布式贝叶斯推断用于时空序列数据",
+      "canonical_evidence": "分布式贝叶斯推断用于时空序列数据",
+      "llm_tldr_en": "Proposes distributed recursive Bayesian inference for big sequential spatio-temporal data.",
+      "llm_tldr_cn": "提出对大规模时空序列数据的分布式递归贝叶斯推断。",
+      "llm_tldr": "提出对大规模时空序列数据的分布式递归贝叶斯推断。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.23580v1",
+      "source": "arxiv",
+      "title": "SketchMamba: A Lightweight State-Space Model for Joint Progressive Sketch Classification and Stroke Auto-Completion",
+      "abstract": "Existing vector-sketch models treat recognition and generation as separate tasks, leaving a gap for streaming interfaces that must understand a drawing as it is being made. We present SketchMamba, a single causal sequence model that continuously classifies a sketch from any partial prefix while simultaneously generating its continuation. We achieve this by applying a dense per-step classification loss to a selective state-space backbone. Evaluated on a 58-class subset of the Quick, Draw! dataset, SketchMamba yields 94.93% final-step accuracy and a progressive-accuracy Area Under the Curve (AUC) of 0.706, crossing 90% of its final accuracy by the time 70% of the strokes are drawn. In a matched-budget comparison, the 1.55 million-parameter backbone ties a causal Transformer while outperforming recurrent and convolutional baselines. Ablations confirm that the dense supervision regime, rather than the architecture alone, drives the early-prediction capability. The results demonstrate that a single causal hidden state can unify progressive recognition and autoregressive generation without auxiliary encoders or task-specific branching.",
+      "authors": [
+        "Kavish Jhaveri",
+        "Arya Shah"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-26T10:05:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.23580v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "causal sequence model for sketches",
+      "llm_evidence_cn": "草图因果序列模型",
+      "llm_evidence": "草图因果序列模型",
+      "canonical_evidence": "草图因果序列模型",
+      "llm_tldr_en": "Lightweight state-space model for progressive sketch classification and stroke auto-completion.",
+      "llm_tldr_cn": "轻量级状态空间模型实现渐进草图分类和笔画自动补全。",
+      "llm_tldr": "轻量级状态空间模型实现渐进草图分类和笔画自动补全。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23735v1",
+      "source": "arxiv",
+      "title": "Source-Free Controlled Adaptation of Teachers for Continual Test-Time Adaptation",
+      "abstract": "In many real-world scenarios, encountering continual shifts in domain during inference is very common. Consequently, continual test-time adaptation (CTTA) techniques leveraging a teacher-student framework have gained prominence, allowing models to adapt continuously even after deployment. In such a framework, a weight-averaged mean teacher is used to produce pseudo-labels from test data for self-training. The mean teacher gets updated as an exponential moving average of the student parameters using a high value of momentum that is kept fixed even if different distributions of test data are encountered. To combat the resulting drift of the model, we propose a novel controlled teacher adaptation methodology that dynamically sets a proper momentum value depending on the quality of the incoming data. Additionally, we estimate class prototypes from the source pretrained model to help align the target data as they come in. Importantly, our method does not require access to source data or its statistics at any stage of the pipeline, making it truly source-free. We perform extensive experiments on benchmark datasets to demonstrate that our approach outperforms different state-of-the-art adaptation frameworks, many of which require access to source data.",
+      "authors": [
+        "Anurag Roy",
+        "Riddhiman Moulick",
+        "Vinay Kumar Verma",
+        "Saptarshi Ghosh",
+        "Abir Das"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-07-26T16:06:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.23735v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "continual test-time adaptation with controlled teacher to handle domain shifts",
+      "llm_evidence_cn": "连续测试时自适应，通过受控教师应对域偏移",
+      "llm_evidence": "连续测试时自适应，通过受控教师应对域偏移",
+      "canonical_evidence": "连续测试时自适应，通过受控教师应对域偏移",
+      "llm_tldr_en": "Proposes controlled teacher adaptation for CTTA to prevent drift under continual domain shifts",
+      "llm_tldr_cn": "提出受控教师自适应方法，防止连续域偏移下的模型漂移",
+      "llm_tldr": "提出受控教师自适应方法，防止连续域偏移下的模型漂移",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23762v1",
+      "source": "arxiv",
+      "title": "Escaping the Euclidean Void: Manifold-Informed Flow Matching for Sequential Recommendation",
+      "abstract": "Conventional recommenders capture users' preferences by optimizing observed user-item relations, whereas continuous generative recommendation additionally learns the trajectory of synthesizing a target item. Flow matching drives this process by gradually shaping initial noise into a definitive next-item representation through intermediate states in a continuous embedding space. However, item catalogs are discrete and sparsely supported, meaning even a straight Euclidean path can cross continuous regions that contain little evidence of valid item semantics. Formalizing this failure as the Euclidean void, we propose MIRAGE, a Manifold-Informed Rectification framework for Accelerated Generation of Embeddings in sequential recommendation, which rectifies the learned embedding geometry around an unchanged straight probability path. By leveraging an item co-occurrence graph as a proxy for the underlying semantic manifold, MIRAGE aligns interpolated path states with local anchors, reorganizing the embedding space to ground the trajectory in valid item support. MIRAGE retains the original probability path and uses the graph only during training, thereby enabling accurate and efficient one-step inference. Extensive experiments on four real-world datasets reveal that MIRAGE consistently outperforms state-of-the-art baselines, effectively boosting performance on sparsely observed targets while achieving robust overall accuracy. Our code will be made publicly available upon publication.",
+      "authors": [
+        "Dengzhao Fang",
+        "Jingtong Gao",
+        "Yu Li",
+        "Xiangyu Zhao",
+        "Yi Chang"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-07-26T17:17:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.23762v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sequential data prediction with flow matching",
+      "llm_evidence_cn": "使用流匹配进行序列数据预测",
+      "llm_evidence": "使用流匹配进行序列数据预测",
+      "canonical_evidence": "使用流匹配进行序列数据预测",
+      "llm_tldr_en": "Proposes MIRAGE, a manifold-informed flow matching method for sequential recommendation.",
+      "llm_tldr_cn": "提出MIRAGE，一种流形感知的流匹配方法用于序列推荐。",
+      "llm_tldr": "提出MIRAGE，一种流形感知的流匹配方法用于序列推荐。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

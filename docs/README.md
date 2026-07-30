@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-07-30
-- 运行时间：2026-07-30 05:09:35 北京时间
+- 最新运行日期：2026-07-31
+- 运行时间：2026-07-31 05:04:32 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读两篇高分论文，聚焦二分类中的变量重要性惰性训练机制与时间序列预测基础模型微调新范式。
-二分类可解释性和时间序列基础模型正处突破期，其中惰性训练简化了特征选择，微调策略则重塑了时序预测框架。
-若对模型决策透明性及时序预测前沿感兴趣，可优先延伸阅读这两篇9分论文。
-- 详情：[/202607/30/README](/202607/30/README)
+今日聚焦脑机接口与高效序列模型，精读一篇满分研究用音素级目标和状态空间模型实现颅内脑-文本解码，以及一种提升多会话运动想象分类的新架构。  
+速读中轻量级状态空间模型“素描曼巴”同时处理草图分类与笔画补全，还有无需源数据的教师网络适应方法值得关注。  
+建议开发者重点探索状态空间模型在实时神经解码和交互式AI中的落地，尝试在脑机或草图应用里用更少的参数获得序列建模增益。
+- 详情：[/202607/31/README](/202607/31/README)
 
 ### 精读区论文标签
-1. [Variable Importance Identification Through Lazy Training for Binary Classification](/202607/30/2607.22979v1-variable-importance-identification-through-lazy-training-for-binary-classification)  
+1. [Phoneme- vs. Character-Level Targets and Selective State-Space Models for Intracortical Brain-to-Text](/202607/31/2607.26751v1-phoneme--vs-character-level-targets-and-selective-state-space-models-for-intracortical-brain-to-text)  
+   标签：评分：10.0/10、query:ndai
+   evidence：使用状态空间模型进行脑内信号到文本的解码
+2. [ATCNet-CIAM for Multi-Session Motor Imagery EEG Signal Classification](/202607/31/2607.23522v1-atcnet-ciam-for-multi-session-motor-imagery-eeg-signal-classification)  
    标签：评分：9.0/10、query:ndai
-   evidence：懒训练识别二分类中重要特征
-2. [Foundation Models and Fine-Tuning: Toward a New Generation of Models for Time Series Forecasting](/202607/30/2607.23146v1-foundation-models-and-fine-tuning-toward-a-new-generation-of-models-for-time-series-forecasting)  
+   evidence：解码运动想象脑电信号控制脑机接口
+3. [GTIN: A Unified Framework for Joint Event and Time Prediction in Temporal Graphs](/202607/31/2607.23556v1-gtin-a-unified-framework-for-joint-event-and-time-prediction-in-temporal-graphs)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于时间序列预测的基础模型
-3. [Learning Regularization Structure for Biosignal Template Estimation](/202607/30/2607.23232v1-learning-regularization-structure-for-biosignal-template-estimation)  
+   evidence：联合预测时序图中的下一个事件及其时间
+4. [Gaze-to-text Generation: Beyond Categorical Decoding of Human Attention](/202607/31/2607.23917v1-gaze-to-text-generation-beyond-categorical-decoding-of-human-attention)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过SURE正则化学习进行生物信号模板估计
-4. [CAPT: A Multi-task Continuous Autoregressive Transformer enabling Cross-dataset and Cross-species Transfer for Calcium Population Dynamics](/202607/30/2607.23258v1-capt-a-multi-task-continuous-autoregressive-transformer-enabling-cross-dataset-and-cross-species-transfer-for-calcium-population-dynamics)  
+   evidence：将注视扫描路径解码为自然语言描述
+5. [Self-Supervised Consistency Enhanced Disentangled Learning for Neural Decoding Generalization in Brain-Machine Interface](/202607/31/2607.24023v1-self-supervised-consistency-enhanced-disentangled-learning-for-neural-decoding-generalization-in-brain-machine-interface)  
    标签：评分：9.0/10、query:ndai
-   evidence：连续自回归Transformer用于神经群体动力学及跨物种迁移
-5. [Neonatal Hypoxic-ischaemic Encephalopathy Classification from the EEG and HRV Signals Using a Conformer based Masked Autoencoder](/202607/30/2607.23554v1-neonatal-hypoxic-ischaemic-encephalopathy-classification-from-the-eeg-and-hrv-signals-using-a-conformer-based-masked-autoencoder)  
-   标签：评分：9.0/10、query:ndai
-   evidence：从EEG/HRV序列中进行自监督表示学习
+   evidence：直接解码神经信号为运动动作，用于脑机接口
 
 ### 速读区论文标签
-1. [ConsistencyGate: Preventing Memory Contamination in LLM Agents via Self-Consistency Admission Control](/202607/30/2607.22962v1-consistencygate-preventing-memory-contamination-in-llm-agents-via-self-consistency-admission-control)  
+1. [Transfer Learning Architectures for Scalable Multi-Fidelity Bayesian Optimization](/202607/31/2607.23404v1-transfer-learning-architectures-for-scalable-multi-fidelity-bayesian-optimization)  
    标签：评分：8.0/10、query:ndai
-   evidence：在将事实写入内存前多次查询LLM获取软支持分数
-2. [Structure over Depth: A Single-Block Spatio-Temporal Transformer for Multi-Entity Reasoning](/202607/30/2607.23077v1-structure-over-depth-a-single-block-spatio-temporal-transformer-for-multi-entity-reasoning)  
+   evidence：从廉价数据到昂贵数据的迁移学习，利用预训练知识
+2. [SketchMamba: A Lightweight State-Space Model for Joint Progressive Sketch Classification and Stroke Auto-Completion](/202607/31/2607.23580v1-sketchmamba-a-lightweight-state-space-model-for-joint-progressive-sketch-classification-and-stroke-auto-completion)  
    标签：评分：8.0/10、query:ndai
-   evidence：单块时空Transformer显式建模多实体数据中的时间交互
-3. [Operator Neural Jump ODEs: $L^2$-optimal prediction in function spaces](/202607/30/2607.23110v1-operator-neural-jump-odes-l2-optimal-prediction-in-function-spaces)  
+   evidence：草图因果序列模型
+3. [Source-Free Controlled Adaptation of Teachers for Continual Test-Time Adaptation](/202607/31/2607.23735v1-source-free-controlled-adaptation-of-teachers-for-continual-test-time-adaptation)  
    标签：评分：8.0/10、query:ndai
-   evidence：从非规则观测对连续时间随机过程进行最优预测
-4. [A scalable online machine learning approach for Stock Recommendation](/202607/30/2607.23120v1-a-scalable-online-machine-learning-approach-for-stock-recommendation)  
+   evidence：连续测试时自适应，通过受控教师应对域偏移
+4. [Escaping the Euclidean Void: Manifold-Informed Flow Matching for Sequential Recommendation](/202607/31/2607.23762v1-escaping-the-euclidean-void-manifold-informed-flow-matching-for-sequential-recommendation)  
    标签：评分：8.0/10、query:ndai
-   evidence：在线深度学习用于序列股票推荐，处理概念漂移
-5. [Modeling Memory-Dependent Reliability of LLMs: A Hidden Markov Model](/202607/30/2607.22951v1-modeling-memory-dependent-reliability-of-llms-a-hidden-markov-model)  
+   evidence：使用流匹配进行序列数据预测
+5. [Distributed and recursive Bayesian inference for Big Data and complex spatio-temporal models](/202607/31/2607.23396v1-distributed-and-recursive-bayesian-inference-for-big-data-and-complex-spatio-temporal-models)  
    标签：评分：7.0/10、query:ndai
-   evidence：使用HMM建模LLM响应序列中的时序依赖
+   evidence：分布式贝叶斯推断用于时空序列数据
 

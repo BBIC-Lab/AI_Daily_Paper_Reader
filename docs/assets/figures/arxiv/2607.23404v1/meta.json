@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.23404v1/fig-001.webp",
+      "caption": "Fig. 1 Overview of the surrogate comparison and headline results. a, in a self-driving laboratory, a shared candidate pool Xcand is queried through an abundant, cheap low-fidelity (LF) simulation (cost ρ ≪ 1) and a scarce, expensive high-fidelity (HF) experiment (cost 1). With the same selection rule (acquisition policy), the same mix of cheap and expensive evaluations, and all transfer-learning (TL) surrogates the same size, only the surrogate is varied: a four-member Gaussian-process family (the baseline MFGP, NARGP, a deep-kernel GP, and a sparse variational MFGP) against eleven TL surrogates, in which a network trained on the cheap LF data, g(L), is corrected by a second network, g(H), trained on the accurate HF data. b–k, final regret at the designated budget (mean ± s.e. over 20 seeds), surrogates sorted within each panel (lower is better); Gaussian-process family in salmon, TL surrogates in blue. The Gaussian-process family attains the lowest regret on the smooth, low-dimensional Branin functions (b,c) but the highest on the molecular-descriptor benchmarks (f–i); on the low-discrimination Matbench-gap task (j) the baseline MFGP is competitive. Panel k reports the average rank of all fifteen surrogates across the nine benchmarks; the dashed line marks the best average rank plus the Nemenyi critical difference (α = 0.05) [7], which no surrogate pair exceeds, so the ordering is descriptive (omnibus rank analysis in Supplementary Note 8). l–n, family-split anytime-advantage maps from the controlled fidelity-quality grid (Methods). Mean anytime advantage (area under the regret–budget curve) in bins of the global LF–HF R2 (horizontal) and the top-10 optimum agreement between fidelities (vertical), comparing TL against the baseline MFGP (l), TL against the MFGP variants (m), and the MFGP variants against the baseline MFGP (n); red favours the first-named family and asterisks mark bins significant under a per-bin stratified signed-rank test with Benjamini–Hochberg false-discovery-rate correction across each map (Methods). The TL advantage over the baseline is positive in every cell, grows as the top-10 agreement falls, and is nearly flat in R2; the complete grid, with the final-regret maps and marginal profiles, is Supplementary Fig. 2.",
+      "page": 2,
+      "index": 1,
+      "width": 1023,
+      "height": 1108
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23404v1/fig-005.webp",
+      "caption": "Fig. 2 Regret trajectories as a function of cumulative budget (mean ± s.e. over 20 seeds); Gaussian-process family in solid lines, transfer-learning surrogates in dashed lines, one panel per benchmark. On the Branin family (a,b) the baseline MFGP leads throughout; on the chemistry benchmarks COFs, FreeSolv, and polarizability (e–g) the Gaussian-process family remains in a high-regret regime while transfer-learning surrogates continue to improve as the budget grows. Insets report the low-/high-fidelity (LF/HF) top-k overlap of each benchmark.",
+      "page": 5,
+      "index": 5,
+      "width": 1019,
+      "height": 755
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23404v1/fig-002.webp",
+      "caption": "Fig. 3 Surrogate × acquisition comparison. Regret (mean ± s.e.) at the budget shown in each panel title, for the multi-fidelity Gaussian-process (MFGP) and transfer-learning (TL) surrogates under uncertainty-driven (expected improvement, EI) and greedy acquisition policies. The two Park functions (c,d) are solved by every condition at the full budget, so following Fig. 1 they are evaluated at the earlier budget B = 10, before every condition saturates. On the chemistry benchmarks the two baseline MFGP bars are nearly equal, showing that the acquisition policy does not explain the baseline MFGP’s poor performance there, whereas the transfer-learning surrogate degrades sharply when uncertainty-driven exploration replaces greedy exploitation of the transfer-learned mean.",
+      "page": 7,
+      "index": 2,
+      "width": 941,
+      "height": 295
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23404v1/fig-003.webp",
+      "caption": "Fig. 4 The value of uncertainty-driven exploration is case-dependent, and calibration does not predict optimization performance. a–d, a five-member acquisition portfolio spanning the standard taxonomy (expected improvement and probability of improvement; the Gaussian-process lower confidence bound; max-value entropy search; Thompson sampling), each using the transfer-learning surrogate’s Bayesian linear-regression (BLR) predictive standard deviation, compared against the greedy policy across all eleven transfer-learning surrogates and nine benchmarks. a, the fraction of the eleven surrogates on which each uncertainty-driven acquisition beats the greedy policy (red: rarely; blue: usually); averaged over benchmarks, Thompson sampling beats the greedy policy most often and the improvement-based acquisitions least often. b–d, final regret (mean over the eleven surrogates; error bars, s.e. across surrogates) on the three high-correlation chemistry benchmarks (LF–HF rank correlation ≥ 0.94): every uncertainty-driven acquisition is worse than the greedy policy on COFs, whereas Thompson sampling beats it on FreeSolv and polarizability. e–m, calibration versus regret: each point is one of the fifteen surrogates (Gaussian-process family in warm colours, transfer-learning surrogates in cool colours; legend); axes are the low-fidelity expected calibration error and the final regret, one panel per benchmark. The Pearson correlation is negative on every benchmark (from −0.88 on COFs to −0.08 on HOPV15), so the best-calibrated surrogates (the Gaussian-process family) are, if anything, the worst optimizers on the molecular-descriptor benchmarks. The two Park benchmarks (g,h) saturate to ≈ 0 regret by the full budget (Park-Fav additionally exhausts its 256-point candidate pool), so both are evaluated at the early decision budget B = 10, consistent with the regret figures (Figs. 1 and 2).",
+      "page": 8,
+      "index": 3,
+      "width": 1023,
+      "height": 924
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23404v1/fig-004.webp",
+      "caption": "Fig. 5 When a surrogate is needed, and what it costs. a,b, task difficulty and the need for a surrogate. Top-k overlap between the lowand high-fidelity rankings (a) and the resulting LF-only screening regret (b) for each benchmark. High global correlation does not guarantee top-k agreement, so a learned surrogate is required precisely where a low-fidelity screen fails (Regime B), while in Regime A the screen is already near-optimal. c, computational scaling law across the nine benchmarks. Each point is the median surrogate-fit compute (hardware-independent floating-point operations, FLOPs) of one surrogate on one benchmark at one budget fraction, placed at the training-set size N (high- plus low-fidelity points) it was fitted on; salmon, Gaussian-process family; blue, transfer-learning surrogates. A shared-slope power-law fit gives kN = 1.00 (R2 = 1.00, exactly O(N)) for the eleven transfer-learning surrogates and kN = 2.49 (R2 = 0.94) for the Gaussian-process family, which lies below pure cubic because it includes the scalable sparse variational MFGP, with the exact GPs (the baseline MFGP and NARGP) approaching the ideal O(N3) (faint dashed guides). The two family laws cross at a break-even size N ≈ 66 (vertical line): below it the Gaussian processes are cheaper to fit, above it the transfer-learning surrogates are cheaper by a margin that grows with N , reaching roughly 5× at N = 200 and 10× at N = 300. Absolute per-benchmark FLOPs and the average compute ranking are in Supplementary Fig. 1 (Supplementary Note 6).",
+      "page": 9,
+      "index": 4,
+      "width": 856,
+      "height": 503
+    }
+  ]
+}
