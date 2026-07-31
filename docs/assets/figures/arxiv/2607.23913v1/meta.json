@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-006.webp",
+      "caption": "Figure 1: Overview of the proposed Greedy Orthogonal Token Selection. The input image is encoded by a Vision Transformer (ViT); token selection is performed using the resulting vision-encoder features to retain informative visual tokens. In each iteration t = 0, . . . ,K − 1, the selection process performs three key steps: (1) selecting the token with the maximum residual energy, (2) computing a normalized basis vector, and (3) updating the residuals of all remaining candidate vectors via orthogonal projection.",
+      "page": 3,
+      "index": 6,
+      "width": 1054,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-009.webp",
+      "caption": "Table 1: Comparison on Qwen2.5-VL-7B under native dynamic resolution. All methods operate on identical candidate sequences with the same per-image output budgets. Avg.† is the mean benchmark-wise performance retention relative to the dynamic-resolution full-token result.",
+      "page": 5,
+      "index": 9,
+      "width": 772,
+      "height": 548
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-001.webp",
+      "caption": "Figure 2: Cross-backbone comparison between GOTS and MMTok. (a) Average performance retention across tokenretention ratios. (b)–(e) Benchmark-wise retention at 5%. InternVL3.5-8B uses its native dynamic-tiling protocol (Dyn.); the Qwen backbones use controlled fixed-resolution inputs (Fix.). For each backbone, both methods share identical candidate sequences and output budgets, normalized by the protocol-specific full-token reference.",
+      "page": 6,
+      "index": 1,
+      "width": 1052,
+      "height": 546
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-005.webp",
+      "caption": "Table 2: Controlled fixed-resolution comparison on four additional Qwen2.5-VL-7B benchmarks. MMTok and GOTS share identical candidate sequences and budgets at each retention ratio. Avg.† is mean benchmark-wise retention relative to the fixed-resolution full-token result.",
+      "page": 7,
+      "index": 5,
+      "width": 442,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-004.webp",
+      "caption": "Table 4: Controlled ablation of GOTS design choices. All variants use Qwen2.5-VL-7B-Instruct, identical fixedresolution candidate sequences, and a 5% token budget. Each row replaces one default component: redundancy removal, pivot rule, feature preprocessing, or initialization.",
+      "page": 7,
+      "index": 4,
+      "width": 494,
+      "height": 295
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-002.webp",
+      "caption": "Table 5: Results on InternVL3.5-8B. Token reduction is performed under the dynamic-resolution setting. Therefore, the dynamic-resolution full-token result is used as the reference for computing Avg.†. Avg.† is computed over all seven benchmarks, with MME measured by the sum of perception and cognition scores.",
+      "page": 11,
+      "index": 2,
+      "width": 1052,
+      "height": 444
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-003.webp",
+      "caption": "Table 6: Results on Qwen3-VL-8B. Token reduction is performed under the fixed-resolution setting. Therefore, the fixedresolution full-token result is used as the reference for computing Avg.†. The dynamic-resolution full-token result is reported only as an auxiliary comparison. Avg.† is computed over all seven benchmarks, with MME measured by the sum of perception and cognition scores.",
+      "page": 11,
+      "index": 3,
+      "width": 1054,
+      "height": 500
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-007.webp",
+      "caption": "Table 7: Results on Qwen3-VL-32B. Token reduction is performed under the fixed-resolution setting. Therefore, the fixedresolution full-token result is used as the reference for computing Avg.†. The dynamic-resolution full-token result is reported only as an auxiliary comparison. Avg.† is computed over all listed benchmarks, with MME measured by the sum of perception and cognition scores.",
+      "page": 12,
+      "index": 7,
+      "width": 1054,
+      "height": 492
+    },
+    {
+      "url": "assets/figures/arxiv/2607.23913v1/fig-008.webp",
+      "caption": "Table 8: Performance Comparison on Qwen2-VL-7B. Token reduction is performed under the fixed-resolution setting. Therefore, the fixed-resolution full-token result is used as the reference for computing Avg.†. The dynamic-resolution full-token result is reported only as an auxiliary comparison. Avg.† is computed over all seven benchmarks, with MME measured by the sum of perception and cognition scores. MMTok is used as a baseline, and GOTS denotes our method.",
+      "page": 12,
+      "index": 8,
+      "width": 1054,
+      "height": 500
+    }
+  ]
+}

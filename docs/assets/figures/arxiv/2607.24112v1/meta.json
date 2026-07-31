@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.24112v1/fig-003.webp",
+      "caption": "Figure 2: Examples of visual state transition data from three GUI control sources: AgentNet, AndroidControl, and GUIOdyssey. Each example consists of a transition tuple (st, at, st+1), where st and st+1 are two consecutive screenshots and at is the action executed between them. These transitions provide step-level supervision for STP without requiring task-level instruction annotations.",
+      "page": 3,
+      "index": 3,
+      "width": 970,
+      "height": 604
+    },
+    {
+      "url": "assets/figures/arxiv/2607.24112v1/fig-006.webp",
+      "caption": "Figure 3: Illustration of inverse and forward dynamics in STP. Forward dynamics models the transition (st, at) → st+1 by predicting the next state given the current state and action. Inverse dynamics models (st, st+1) → at by inferring the action that caused the transition.",
+      "page": 5,
+      "index": 6,
+      "width": 979,
+      "height": 533
+    },
+    {
+      "url": "assets/figures/arxiv/2607.24112v1/fig-001.webp",
+      "caption": "Table 1: Main results on AgentNetBench under different fine-tuning regimes. We compare trajectory finetuning with and without STP across three settings with varying data scales and domains. STP is performed on 320K AgentNet Win&Mac state transitions. For FT w/ STP, the colored values indicate the difference relative to FT w/o STP, where red denotes improvement and blue denotes decline.",
+      "page": 7,
+      "index": 1,
+      "width": 954,
+      "height": 210
+    },
+    {
+      "url": "assets/figures/arxiv/2607.24112v1/fig-004.webp",
+      "caption": "Table 2: Main results on AndroidControl and GUIOdyssey. For each benchmark, we compare trajectory fine-tuning with and without STP. For FT w/ STP, the colored values indicate the difference relative to FT w/o STP, where red denotes improvement and blue denotes decline.",
+      "page": 8,
+      "index": 4,
+      "width": 1002,
+      "height": 315
+    },
+    {
+      "url": "assets/figures/arxiv/2607.24112v1/fig-005.webp",
+      "caption": "Figure 4: Training dynamics under different STP conditions. Left: Cross-entropy loss during fine-tuning across the three datasets used in our experiments; mobile datasets (AndroidControl, GUIOdyssey) converge substantially faster than the desktop dataset (AgentNet), indicating lower task complexity and less headroom for STP to fill. Right: Trajectory-level vs. step-level transition sampling for STP under a shared 192Ktransition budget (fine-tuning on 2K trajectories); the two strategies yield comparable training dynamics and downstream performance.",
+      "page": 9,
+      "index": 5,
+      "width": 960,
+      "height": 319
+    },
+    {
+      "url": "assets/figures/arxiv/2607.24112v1/fig-002.webp",
+      "caption": "Figure 6: Ablation on visual understanding encoder tuning and pretraining scale. The left plot compares different pretraining strategies, including no STP, full-model STP, and STP with only the visual understanding encoder (ViT in BAGEL) being updated, with Cross-Entropy (CE) loss and average SR tracked over training steps. The right plot compares different pretraining data sizes, reporting CE loss after 3500 fine-tuning steps and the best average SR achieved under each setting.",
+      "page": 10,
+      "index": 2,
+      "width": 964,
+      "height": 306
+    }
+  ]
+}

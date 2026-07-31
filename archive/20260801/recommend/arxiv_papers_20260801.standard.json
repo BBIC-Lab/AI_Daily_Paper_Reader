@@ -1,0 +1,414 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-31T21:18:21.285232+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 58,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 85,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 16,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 11,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 17
+  },
+  "deep_dive": [
+    {
+      "id": "2607.27268v1",
+      "source": "arxiv",
+      "title": "Does EEG Foundation Models Transfer to Speech? A Benchmark on Overt and Imagined Speech Decoding",
+      "abstract": "EEG foundation models pretrained on thousands of hours have shown large gains over task-specific networks for motor imagery, seizure detection, sleep staging, and emotion recognition, but their transfer to speech decoding-arguably the most demanding non-invasive BCI application-remains untested. We present the first systematic benchmark of EEG foundation models against strong convolutional baselines for speech decoding, using two corpora: UGR-MINDVOICE (overt and covert Iberian Spanish) and BCI Competition 2020 Track 3 (imagined speech). We compare two foundation models (LaBraM, EEGMamba) against three established baselines (EEGNet, ShallowFBCSPNet, EEGConformer) under a unified preprocessing and fine-tuning protocol. Large-scale EEG pretraining yields no consistent advantage over a 16K-parameter CNN on speech tasks, indicating that current general-purpose EEG pretraining does not yet transfer to speech production and motivating speech-specific foundation models.",
+      "authors": [
+        "Owais Mujtaba Khanday",
+        "Mohamed Baha Ben Ticha",
+        "Sanae Belfrouh",
+        "Marc Ouellet",
+        "Jose A. Gonzalez-Lopez"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-07-29T10:06:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.27268v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Benchmarks EEG foundation models for overt and imagined speech decoding, mapping neural signals to language.",
+      "llm_evidence_cn": "在显性和想象言语解码任务上评测EEG基础模型，将神经信号映射为语言。",
+      "llm_evidence": "在显性和想象言语解码任务上评测EEG基础模型，将神经信号映射为语言。",
+      "canonical_evidence": "在显性和想象言语解码任务上评测EEG基础模型，将神经信号映射为语言。",
+      "llm_tldr_en": "Provides the first systematic benchmark of EEG foundation models for speech decoding, testing transfer to overt and imagined speech.",
+      "llm_tldr_cn": "首次系统评测EEG基础模型在言语解码中的表现，检验其迁移到显性和想象言语的能力。",
+      "llm_tldr": "首次系统评测EEG基础模型在言语解码中的表现，检验其迁移到显性和想象言语的能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24031v1",
+      "source": "arxiv",
+      "title": "A Cyclic Adaptation-Generalization Framework with Uncertainty-Guided Self-Paced Learning for Long-Term Brain-Machine Interfaces",
+      "abstract": "Brain-Machine Interfaces (BMIs), which link the brain to external devices, hold great potential in rehabilitation, human performance augmentation, and human-centered robotics. However, invasive BMIs face a critical challenge for long-term deployment due to neural drift, which degrades decoding performance over time and necessitates frequent recalibration. Existing methods designed to mitigate neural drift typically rely on either domain adaptation (DA) or domain generalization (DG) alone and often fail to capture fine-grained distribution shifts across neural subdomains, resulting in limited performance. To overcome these limitations, we propose Uncertainty-guided Self-paced Cycling (UnSPC), a robust framework that synergizes DA and DG for target domain refining under an Uncertainty-guided Self-paced Pseudo-labeling (UnSPL) mechanism. To handle subdomain neural drift across domains, UNSPL is proposed to iteratively mine reliable pseudo-labeled samples with a noise-robust ranking strategy for further fine-tuning. Leveraging these high-quality samples, we introduce a novel Cycling Adaptation and Generalization (CycAG) strategy, which integrates DA and DG within an iterative cycle to progressively mitigate both global and subdomain drift. This cyclic process enables effective alignment to evolving target distributions while preserving robust and transferable representations, thereby mitigating performance degradation under long-term neural drifts. Extensive experiments on multiple neural decoding datasets demonstrate the effectiveness and robustness of UnSPC. To our knowledge, our proposed UnSPC is the first to cyclically integrate DA and DG with pseudo-labeling, paving the way toward stable long-term BMI controls.",
+      "authors": [
+        "Jiyu Wei",
+        "Di Hong",
+        "Zhanjie Zhang",
+        "Dazhong Rong",
+        "Qinming He",
+        "Yueming Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.HC",
+        "cs.RO",
+        "eess.SP"
+      ],
+      "published": "2026-07-27T05:58:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.24031v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "cyclic adaptation-generalization framework with uncertainty-guided self-paced learning for long-term BMIs, directly addresses transfer learning for brain-computer interfaces",
+      "llm_evidence_cn": "面向长期脑机接口的循环适应-泛化框架，结合不确定性引导的自步学习，直接对应脑机接口迁移学习",
+      "llm_evidence": "面向长期脑机接口的循环适应-泛化框架，结合不确定性引导的自步学习，直接对应脑机接口迁移学习",
+      "canonical_evidence": "面向长期脑机接口的循环适应-泛化框架，结合不确定性引导的自步学习，直接对应脑机接口迁移学习",
+      "llm_tldr_en": "Proposes an uncertainty-guided self-paced cycling framework that adapts and generalizes across neural drift for long-term BMI decoding.",
+      "llm_tldr_cn": "提出不确定性引导的自步循环框架，在神经漂移下自适应与泛化，用于长期脑机接口解码。",
+      "llm_tldr": "提出不确定性引导的自步循环框架，在神经漂移下自适应与泛化，用于长期脑机接口解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24081v2",
+      "source": "arxiv",
+      "title": "Towards simultaneous decoding of kinetic and kinematic movement parameters during grasp and lift task by noninvasive brain imaging",
+      "abstract": "Brain-machine interfaces (BMIs) can assist individuals with limited mobility, such as stroke survivors or amputees. One of the key challenges in developing BMIs is expanding their usability and control, which can be achieved by accurately decoding multiple kinematic and kinetic parameters. To address this, we propose three regression models: partial least squares regressor, multilayered perceptron, and attention based regressor, to decode multiple movement parameters from EEG signals. We evaluated these models on the WAY EEG GAL dataset, focusing on their performance under subject specific and subject independent conditions with two strategies: a single model for all parameters and a baseline with separate models for each parameter. Among all regressors, the attention based regressor achieved the best performance, with an $R^2$ of 0.8 and a latency of 29.2 milliseconds, demonstrating significant improvement in simultaneous multi parameter decoding. However, its performance dropped for single parameter decoding. The multi layered perceptron showed more consistent but lower accuracy across both decoding types ($R^2$ = 0.49). These findings highlight the potential of attention based models for real time multi command BMI systems and contribute to the development of more intuitive control devices.",
+      "authors": [
+        "Parth G. Dangi",
+        "Yogesh Kumar Meena"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.AI",
+        "cs.ET"
+      ],
+      "published": "2026-07-27T07:22:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.24081v2",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decoding multiple kinematic and kinetic movement parameters from EEG signals for brain-machine interfaces",
+      "llm_evidence_cn": "从EEG信号解码多种运动和动力学参数，用于脑机接口",
+      "llm_evidence": "从EEG信号解码多种运动和动力学参数，用于脑机接口",
+      "canonical_evidence": "从EEG信号解码多种运动和动力学参数，用于脑机接口",
+      "llm_tldr_en": "Proposes three regression models to decode movement parameters from EEG, advancing BMI control.",
+      "llm_tldr_cn": "提出三种回归模型从EEG解码运动参数，推动脑机接口控制。",
+      "llm_tldr": "提出三种回归模型从EEG解码运动参数，推动脑机接口控制。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24126v1",
+      "source": "arxiv",
+      "title": "EEGForceFusion: Joint Tokenised-Continuous Representation Learning for Subject-Independent Grasp Force Decoding",
+      "abstract": "Brain-machine interfaces provide a link between neural activity and external devices, enabling restoration of motor function and advancing human-machine interaction using non-invasive electroencephalography (EEG). However, continuous grasp force decoding remains challenging due to complex temporal dynamics, high inter-subject variability, and limited generalisation of existing approaches. To address this, we propose a hybrid EEG decoding framework that jointly models continuous and tokenised representations, enabling capture of both fine-grained neural structure and long-range temporal dependencies. The proposed approach integrates convolutional-recurrent representation learning, quantisation-based tokenisation, and transformer-based temporal modelling within a unified fusion-based regression architecture. Experimental evaluation on the WAY-EEG-GAL dataset under strict leave-one-subject-out conditions achieves $R^2$ = 0.817 in offline settings and $R^2$ = 0.793 in simulated real-time evaluation, with latency suitable for real-time deployment. These results demonstrate strong cross-subject generalisation and highlight the practicality of hybrid continuous-tokenised representations for real-time EEG-based force decoding in assistive robotics, neuro-rehabilitation, and human-machine interaction.",
+      "authors": [
+        "Sankalp Sunil Turankar",
+        "Yogesh Kumar Meena"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.AI",
+        "cs.ET"
+      ],
+      "published": "2026-07-27T08:08:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.24126v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG-based grasp force decoding with tokenised-continuous representation learning",
+      "llm_evidence_cn": "基于EEG的抓握力解码，结合token化-连续表示学习",
+      "llm_evidence": "基于EEG的抓握力解码，结合token化-连续表示学习",
+      "canonical_evidence": "基于EEG的抓握力解码，结合token化-连续表示学习",
+      "llm_tldr_en": "Proposes a hybrid EEG decoding framework that jointly models continuous and tokenised representations to decode grasp force subject-independently.",
+      "llm_tldr_cn": "提出混合EEG解码框架，联合建模连续和token化表示，以实现受试者无关的抓握力解码。",
+      "llm_tldr": "提出混合EEG解码框架，联合建模连续和token化表示，以实现受试者无关的抓握力解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24145v1",
+      "source": "arxiv",
+      "title": "An Empirical Study of Feature Selection Granularity",
+      "abstract": "Feature selection aims to identify the most informative and relevant features for a given dataset, either in terms of capturing the underlying data structure and distribution better, or with respect to the performance on a downstream task. Existing research in this area has largely focused on developing novel algorithms (in both supervised and unsupervised settings), proposing new evaluation metrics and frameworks, or benchmarking the performance of existing methods. In this work, we examine feature selection through an algorithmic design perspective. Conventional feature selection algorithms typically compute feature importance scores globally across the entire feature set and then select the top-ranked features in a single step. However, this approach raises a critical question: Can the presence of less informative (or noisy) features mask or obscure the true importance of other, more relevant features? In other words, would a recursive strategy, where features are removed one by one while re-evaluating importance at each step, yield different and potentially better results than the standard global ranking approach? To answer this question, we conduct an extensive empirical study using five diverse feature selection algorithms. We implement each algorithm under both the conventional global selection design and the greedy recursive elimination design. We then analyze the impact of this algorithmic choice, both individually for each method and collectively across all methods, on a range of standard feature selection evaluation metrics. The empirical evaluation results show that the greedy approach improves the overall feature selection quality almost consistently, albeit on the expense of higher computational cost, supporting our initial expectation that the curse of dimensionality also obscures the ways of mitigating it.",
+      "authors": [
+        "Muhammad Rajabinasab",
+        "Arthur Zimek"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-27T08:24:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.24145v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Empirical study of feature selection granularity focusing on feature importance scoring",
+      "llm_evidence_cn": "关于特征选择粒度的实证研究，聚焦于特征重要性评分",
+      "llm_evidence": "关于特征选择粒度的实证研究，聚焦于特征重要性评分",
+      "canonical_evidence": "关于特征选择粒度的实证研究，聚焦于特征重要性评分",
+      "llm_tldr_en": "Examines feature selection granularity and its effect on computing informative feature importance scores.",
+      "llm_tldr_cn": "研究特征选择粒度对计算信息性特征重要性分数的影响。",
+      "llm_tldr": "研究特征选择粒度对计算信息性特征重要性分数的影响。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.23865v1",
+      "source": "arxiv",
+      "title": "XMix: Combating Extremely Noisy Labels via Local Smoothness in Self-Supervised Feature Space",
+      "abstract": "Supervised deep learning models rely on large, accurately labeled datasets, yet noisy annotations are often unavoidable and can severely degrade performance under high noise levels. Recent state-of-the-art methods tackle this by using sample selection strategies that exploit the memorization effect to filter out clean data for semi-supervised learning. However, these methods struggle with extreme noise, class imbalance, and require careful tuning or prior noise knowledge. To address these limitations, we propose XMix, a novel framework that leverages local smoothness in the self-supervised feature space to systematically enhance all stages of the sample selection process, without dependence on potentially corrupted labels. First, XMix estimates the noise rate using maximum likelihood among self-supervised feature neighbors. Second, these neighbors then help identify additional clean samples and ensure balanced selection across classes during sample selection. Finally, in the semi-supervised learning phase, XMix uses neighboring samples to generate more reliable pseudo-labels. Our empirical results show that XMix substantially outperforms existing methods in extremely noisy environments and maintains superior performance in standard LNL benchmarks.",
+      "authors": [
+        "Chengqi Li",
+        "Yangdi Lu",
+        "Zhihao Shi",
+        "Wenbo He",
+        "Chamseddine Talhi",
+        "Nadjia Kara"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-26T22:15:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.23865v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised feature space learning for robust representations from raw data",
+      "llm_evidence_cn": "自监督特征空间学习以从原始数据中学习鲁棒表示",
+      "llm_evidence": "自监督特征空间学习以从原始数据中学习鲁棒表示",
+      "canonical_evidence": "自监督特征空间学习以从原始数据中学习鲁棒表示",
+      "llm_tldr_en": "XMix combines local smoothness in self-supervised feature space with sample selection to fight extreme label noise.",
+      "llm_tldr_cn": "XMix利用自监督特征空间的局部平滑性结合样本选择应对极端标签噪声。",
+      "llm_tldr": "XMix利用自监督特征空间的局部平滑性结合样本选择应对极端标签噪声。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23913v1",
+      "source": "arxiv",
+      "title": "GOTS: Greedy Orthogonal Token Selection for High-Resolution Vision-Language Models",
+      "abstract": "Modern vision-language models (VLMs) increasingly rely on dynamic or high-resolution visual encoding, producing thousands of visual tokens that substantially increase downstream language-model inference cost. Existing token-reduction methods assess token utility through token-wise importance, query relevance, coverage, pairwise diversity, or subset-level objectives. Our key insight is to view visual token reduction through selected-span complementarity: instead of scoring a token in isolation or through pairwise relations, we assess how much of its feature is orthogonal to the span of the already retained subset. Based on this perspective, we propose Greedy Orthogonal Token Selection (GOTS), a training-free and query-agnostic method. At each step, GOTS selects the token with the largest residual energy orthogonal to the current retained span. This rule exactly maximizes the one-step augmented Gram determinant among candidate additions, giving each greedy step a precise local geometric guarantee for subset expansion. Across five high-resolution VLM backbones from the Qwen-VL and InternVL families and eleven diverse benchmarks, GOTS achieves higher average performance retention than the strongest evaluated baselines, and a controlled OCRBench study shows that it reduces model-side time-to-first-token after accounting for selection overhead. Code is available at https://github.com/newLLing/GOTS.",
+      "authors": [
+        "Jun Ling",
+        "Tao Huang",
+        "Junzhuo Liu",
+        "Bowen Tang",
+        "Peng Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-27T01:06:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.23913v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "selects tokens by computing orthogonal complementarity as importance for visual features",
+      "llm_evidence_cn": "通过计算正交互补性作为视觉特征重要性来选择令牌",
+      "llm_evidence": "通过计算正交互补性作为视觉特征重要性来选择令牌",
+      "canonical_evidence": "通过计算正交互补性作为视觉特征重要性来选择令牌",
+      "llm_tldr_en": "Greedy orthogonal token selection reduces visual tokens by measuring complementary importance.",
+      "llm_tldr_cn": "贪婪正交令牌选择通过衡量互补重要性减少视觉令牌",
+      "llm_tldr": "贪婪正交令牌选择通过衡量互补重要性减少视觉令牌",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.24112v1",
+      "source": "arxiv",
+      "title": "Scaling GUI Agents with Visual State Transitions",
+      "abstract": "We introduce State Transition Pretraining (STP) as a new scaling axis for GUI agents. During the STP stage, we continually pretrain a unified multimodal model on visual state transitions by jointly optimizing inverse dynamics (predicting actions from state changes) and forward dynamics (predicting next states from current states and actions). This optimization equips the model with better action-grounded visual representations and an internal world model of GUI dynamics. When subsequently fine-tuned on trajectories with task instructions, our STP-trained models consistently outperform baselines trained solely via direct trajectory fine-tuning across agent benchmarks in both desktop and mobile GUI scenarios (AgentNetBench, AndroidControl, and GUIOdyssey). Further empirical studies show that joint dynamics optimization yields stable improvements over single-objective training, and downstream performance scales steadily with the volume of transition data.",
+      "authors": [
+        "Xiangyan Liu",
+        "Kaixin Li",
+        "Haonan Wang",
+        "Biao Wu",
+        "Meng Fang",
+        "Longxu Dou",
+        "Chao Du",
+        "Michael Qizhe Shieh",
+        "Tianyu Pang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-27T07:54:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.24112v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Learns visual representations from raw states via inverse and forward dynamics pretraining",
+      "llm_evidence_cn": "通过逆动力学和正动力学预训练从原始状态学习视觉表征",
+      "llm_evidence": "通过逆动力学和正动力学预训练从原始状态学习视觉表征",
+      "canonical_evidence": "通过逆动力学和正动力学预训练从原始状态学习视觉表征",
+      "llm_tldr_en": "Introduces State Transition Pretraining to learn action-grounded visual representations for GUI agents, improving downstream task performance.",
+      "llm_tldr_cn": "提出状态转换预训练，为GUI智能体学习基于动作的视觉表征，提升下游任务性能。",
+      "llm_tldr": "提出状态转换预训练，为GUI智能体学习基于动作的视觉表征，提升下游任务性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.24269v1",
+      "source": "arxiv",
+      "title": "Dynamic sampling of non-stationary spontaneous activity in dissociated neuronal networks",
+      "abstract": "Objective. To develop and evaluate an adaptive electrode-selection method for tracking non-stationary spontaneous activity during long-term high-density microelectrode array (HD-MEA) recordings under a fixed channel budget.   Approach. We formulated electrode allocation as a sequential subset-selection problem and used a discounted Poisson-Gamma model with Thompson sampling. The method updated electrode-specific activity estimates from observed spike counts and reallocated a fixed channel budget over time. We evaluated it by offline replay of nine 34 h HD-MEA recordings, selecting 100 electrodes from 529 densely routed candidates, and in a representative online recording using 1,024 routed electrodes.   Main results. Across offline recordings, the top 100 active-electrode set changed substantially, reaching 47.8% turnover at 34 h. The Bayesian method captured the largest fraction of the spikes available to an oracle selector among the tested strategies and exceeded static selection by 17.2 percentage points at the final time point. In the online recording, adaptive selection captured the first synchronized burst and supported center-of-activity trajectory analysis.   Significance. Uncertainty-aware exploration and temporal discounting can improve HD-MEA recording efficiency under fixed readout constraints, providing a basis for adaptive sensing of evolving neural activity.",
+      "authors": [
+        "Kazushi Takehana",
+        "Dai Akita",
+        "Hirokazu Takahashi"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC"
+      ],
+      "published": "2026-07-27T11:05:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.24269v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Sequential subset-selection with discounted Poisson-Gamma model for non-stationary spike count time series",
+      "llm_evidence_cn": "使用折扣Poisson-Gamma模型进行非平稳尖峰计数时间序列的序列子集选择",
+      "llm_evidence": "使用折扣Poisson-Gamma模型进行非平稳尖峰计数时间序列的序列子集选择",
+      "canonical_evidence": "使用折扣Poisson-Gamma模型进行非平稳尖峰计数时间序列的序列子集选择",
+      "llm_tldr_en": "Develops an adaptive electrode-selection method using Thompson sampling over time-varying spike activity for high-density neuronal recordings.",
+      "llm_tldr_cn": "开发了一种自适应电极选择方法，利用Thompson采样跟踪随时间变化的高密度神经元放电活动。",
+      "llm_tldr": "开发了一种自适应电极选择方法，利用Thompson采样跟踪随时间变化的高密度神经元放电活动。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.24338v1",
+      "source": "arxiv",
+      "title": "Unsupervised Graph Representation Learning with Complementary View Alignment",
+      "abstract": "Unsupervised graph representation learning aims to derive meaningful node embeddings by capturing both structural and attribute information without relying on labeled data. Existing methods, such as GAEs, have demonstrated effectiveness but typically rely on message-passing mechanisms that assume homophily, leading to performance degradation on heterophilous graphs, where connected nodes exhibit dissimilar features. This homophily bias results in the loss of critical high-frequency components that are essential for identifying heterophilous patterns. To address these challenges, we propose \\textsc{AlignGAE}, a novel extension of \\textit{MaskGAE} that preserves the full frequency spectrum through complementary view alignment. Our framework introduces a dual-encoder architecture that separately processes structural and attribute information, incorporates node positional encoding to approximate Neighborhood Identity Distribution (NID), and employs dual reconstruction tasks for both edges and node attributes. We further propose theoretically grounded NID alignment strategies that ensure semantic consistency across views while preserving their distinct characteristics. Through comprehensive spectral analysis, we demonstrate that \\textsc{AlignGAE} achieves optimal representation properties when the alignment loss converges. Extensive experiments across 12 benchmark datasets validate our approach, showing that \\textsc{AlignGAE} outperforms state-of-the-art methods by up to 18.7\\% on heterophilous graphs in node classification, while maintaining competitive performance on homophilous graphs. Our results establish a new paradigm for frequency-aware graph representation learning.",
+      "authors": [
+        "Zengyi Wo",
+        "Shiyu Zhang",
+        "Qiyao Peng",
+        "Tianpeng Li",
+        "Xuan Guo"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-27T12:15:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.24338v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unsupervised graph representation learning that produces compact node embeddings from raw graph data",
+      "llm_evidence_cn": "无监督图表示学习，从原始图数据中学习紧凑节点嵌入",
+      "llm_evidence": "无监督图表示学习，从原始图数据中学习紧凑节点嵌入",
+      "canonical_evidence": "无监督图表示学习，从原始图数据中学习紧凑节点嵌入",
+      "llm_tldr_en": "AlignGAE extends MaskGAE to preserve full frequency spectrum via complementary view alignment for unsupervised graph representation learning.",
+      "llm_tldr_cn": "AlignGAE通过互补视图对齐保留全频谱，实现无监督图表示学习。",
+      "llm_tldr": "AlignGAE通过互补视图对齐保留全频谱，实现无监督图表示学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

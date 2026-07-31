@@ -1,0 +1,898 @@
+Title: An Empirical Study of Feature Selection Granularity
+
+URL Source: https://arxiv.org/pdf/2607.24145v1
+
+Published Time: Tue, 28 Jul 2026 01:41:45 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+## An Empirical Study of Feature Selection Granularity 
+
+Muhammad Rajabinasab 1[0009 −0006 −7045 −3998] and Arthur Zimek 1[0000 −0001 −7713 −4208] 
+
+Department of Mahematics and Computer Science University of Southern Denmark, Odense, Denmark 
+
+{rajabinasab, zimek}@imada.sdu.dk 
+
+Abstract. Feature selection aims to identify the most informative and relevant features for a given dataset, either in terms of capturing the underlying data structure and distribution better, or with respect to the performance on a downstream task. Existing research in this area has largely focused on developing novel algorithms (in both supervised and unsupervised settings), proposing new evaluation metrics and frame-works, or benchmarking the performance of existing methods. In this work, we examine feature selection through an algorithmic design per-spective. Conventional feature selection algorithms typically compute feature importance scores globally across the entire feature set and then select the top-ranked features in a single step. However, this approach raises a critical question: Can the presence of less informative (or noisy) features mask or obscure the true importance of other, more relevant features? In other words, would a recursive strategy, where features are removed one by one while re-evaluating importance at each step, yield different and potentially better results than the standard global ranking approach? To answer this question, we conduct an extensive empirical study using five diverse feature selection algorithms. We implement each algorithm under both the conventional global selection design and the greedy recursive elimination design. We then analyze the impact of this algorithmic choice, both individually for each method and collectively across all methods, on a range of standard feature selection evaluation metrics. The empirical evaluation results show that the greedy approach improves the overall feature selection quality almost consistently, albeit on the expense of higher computational cost, supporting our initial ex-pectation that the curse of dimensionality also obscures the ways of mit-igating it. 
+
+Keywords: Feature Selection · Algorithmic Design · Granularity · Eval-uation 
+
+1 Introduction 
+
+The curse of dimensionality represents one of the most fundamental challenges in machine learning and data mining. It posits that, as dimensionality increases, arXiv:2607.24145v1 [cs.LG] 27 Jul 2026 2 M. Rajabinasab & A. Zimek 
+
+we encounter both increased computational complexity inflicted by the exces-sive number of dimensions and a degradation in the performance of downstream tasks. For instance, the distances become less discriminative as dimensionality grows [10], leading to the obscuration of various tasks such as Nearest Neigh-bors search [26], classification [2], clustering [19], outlier detection [3,22,25], and beyond. To address the curse of dimensionality, dimensionality reduction tech-niques are employed. These techniques encompass several distinct families based on the target application. For instance, in image processing applications such as face recognition, feature extraction is often used, as using the raw pixel data does not yield satisfactory recognition accuracy [4]. One prominent family of dimensionality reduction is Feature Selection, which is particularly significant as it preserves the original meaning of each dimension and, consequently, maintains explainability [11]. Feature Selection is the identification of the most informative features, whether with respect to the ability of capturing the underlying data structure and dis-tribution or with regards to the performance of a downstream task [11]. Feature selection is done in both supervised and unsupervised fashion. In the supervised settings, feature selection is based on some properties of features directly (infor-mation w.r.t. class labels) or indirectly (assessing the performance of a classifier on selected features), while in the unsupervised setting, individual feature prop-erties (e.g., variance) or pairwise feature relations (e.g., correlation) are used to calculate feature importance values. While much research has been done in the field of feature selection, the focus was mostly on proposing feature selection methods [6,7,14,28], evaluation frameworks and metrics [21,23], or comparative surveys and benchmark studies [16]. Feature selection methods typically operate through the following sequential steps: i) A dataset consisting of n instances and d dimensions is provided to the feature selection algorithm. ii) A feature importance value is calculated based on a specific criterion that reflects the underlying philosophy of the method (e.g., the magnitude of Mutual Information between a feature and the labels). iii) These importance values are subsequently utilized to rank the features. iv) The top d′ features are selected, while the remaining features, deemed redundant or irrelevant, are discarded. This process yields a lower-dimensional, explainable subspace where d′ ≪ d, thereby addressing the curse of dimensionality. In some cases [4, 12], redundant features are eliminated one by one, and the criterion is reevaluated until the desired dimensionality is reached. A feature selection algorithm is considered effective if it significantly reduces dimensionality while preserving the performance of the downstream task. However, in many scenarios, particularly those involving high-dimensional data where d is very large, remov-ing features can actually lead to an improvement in the quality of downstream tasks. This occurs because redundant or irrelevant features often introduce mask-ing effects, such as noise, which can obscure the underlying data structure and hinder model performance [11]. An important question arises: if redundant features are potent enough to obscure an entire dataset and degrade downstream task performance despite the An Empirical Study of Feature Selection Granularity 3
+
+presence of informative features, can they not also obscure the underlying logic of feature selection algorithms? Consider the execution of a feature selection algorithm using two distinct strategies: a standard global feature importance calculation versus an iterative greedy strategy where the least important, or most redundant, features are iteratively removed and the feature importance values are re-evaluated. A critical inquiry is whether these two approaches, applying the same feature selection criterion, yield divergent results and, if so, which strategy demonstrates superior performance. In this paper, we provide an extensive empirical study to address this crit-ical question. We select and evaluate five distinct feature selection algorithms, implemented using both, the global and the greedy [9, 13] strategy. To ensure a robust analysis, we conduct extensive experiments across 38 datasets, utilizing a comprehensive suite of evaluation metrics to elucidate the similarities and differ-ences between both approaches. The evaluation metrics employed in this study reflect feature subset similarity, predictive performance (across both supervised and unsupervised tasks), model-agnostic quality assessment, and the scalability of the respective approaches. The remainder of this paper is structured as follows: Given the absence of prior studies investigating the granularity of the feature selection process, Sec-tion 2 formally discusses the feature selection process and provides a review of the specific algorithms utilized in our study. Section 3 details the formal prob-lem definition and the methodology underlying our empirical study to compare the standard global feature selection process with the iterative greedy approach. Section 4 outlines the experimental setup, including descriptions of the datasets, evaluation metrics, and the overall evaluation procedure. Section 5 presents the experimental results, accompanied by detailed analyses, investigations, and dis-cussions designed to address the primary research question of this work. Finally, Section 6 provides concluding remarks and final discussions. 
+
+2 Feature Selection 
+
+Feature selection is a dimensionality reduction technique which aims to re-duce the dimensionality by removing redundant and irrelevant features. Let 
+
+F = {f1, f 2, . . . , f d} denote the complete set of d input features. The objec-tive of feature selection is to identify a subset S ⊂ F that maximizes a scoring criterion J(S), such as predictive power or information gain, while minimizing the cardinality of S. Formally, we seek: 
+
+S∗ = arg max  
+
+> S⊂F
+
+{J(S) − λ|S|} (1) where λ is a penalty term for model complexity. 
+
+2.1 Selected Feature Selection Methods 
+
+Several methodologies exist within the domain of feature selection to mitigate the curse of dimensionality. For this empirical investigation, we employ five dis-tinct feature selection techniques, curated based on several criteria. The selected 4 M. Rajabinasab & A. Zimek 
+
+machine learning methods are well-established within the literature and share specific architectural traits. While their standard implementations operate in a non-iterative state without utilizing iterative greedy feature selection or prun-ing, they are inherently compatible with iterative frameworks. Unlike static fil-ters such as Mutual Information [15] or variance thresholding [11] where feature importance remains constant—these methods produce importance scores sensi-tive to the evolving feature space, sensibly allowing for iterative re-evaluation. Furthermore, to maintain invariance to distance concentration, we explicitly ex-clude methods reliant on distance calculations. This avoids the high-dimensional loss of contrast phenomenon, where the relative difference between nearest and farthest neighbor distances vanishes [5], ensuring the selection process is not compromised by the instability of distance metrics in high-dimensional spaces. In the following, we provide a formal description of the feature selection methods utilized in this study: 
+
+Embedded Tree-Based Importance We utilize Tree-based estimators, specif-ically Random Forests [6] and XGBoost [7]. These two methods compute feature importance through Mean Decrease in Impurity (MDI). For a node τ and a fea-ture f , the importance is calculated as the sum of weighted impurity decreases 
+
+p(τ )∆i (τ ) across all trees in the ensemble. 
+
+ReliefF ReliefF [14] is a non-parametric filter method that evaluates features based on their ability to distinguish between neighboring instances. It updates a weight vector by comparing an instance with its k-nearest neighbors from the same class (hits) and different classes (misses). 
+
+LASSO Regularization The Least Absolute Shrinkage and Selection Operator (LASSO) [28] introduces an L1 penalty to the loss function: 
+
+min 
+
+> β
+
+ ∥Y − Xβ ∥2 + α∥β∥1
+
+ (2) The sparsity-inducing nature of the L1 norm performs feature selection by shrink-ing the coefficients of non-informative features to zero. 
+
+Permutation Importance Permutation importance [1] is a model-agnostic approach that measures the drop in model performance when the values of a single feature are randomly shuffled. This breaks the association between the feature and the outcome, providing a direct measure of feature dependence. 
+
+3 Methodology 
+
+Traditional feature ranking methodologies typically evaluate the importance of a feature fi based on the complete feature set F. However, such static rankings An Empirical Study of Feature Selection Granularity 5
+
+often fail to account for feature multi-collinearity and complex interaction effects. In scenarios where redundant features are present, the individual contribution of a variable may be artificially diluted or masked. If high dimensionality obscures the data and notions like distance [5], it is also possible that the feature selection process might be effected by the excessive number of dimensions. To address this, we implement an iterative greedy strategy, conceptually grounded in Recursive Feature Elimination. By iteratively removing the least significant feature and re-evaluating the feature importance scores, we ensure that the importance scores are consistently computed relative to the evolving feature manifold. This process continues until the search space is exhausted, providing a robust ranking that captures the persistence of a feature’s predictive power. Let A be a feature importance estimator (e.g., Random Forest, XGBoost, or LASSO) that maps a dataset (X, y) (or (X) if unsupervised) to a weight vector 
+
+w ∈ Rd, where d is the number of active features. We define the iterative pruning process as a sequence of subsets S0, S 1, . . . , S n, where S0 = {1, . . . , n }. At each step t, the least important feature f ∗ is identified and removed: 
+
+f ∗ = arg min 
+
+> j∈St
+
+{A (XSt , y)j } (3) The elimination order is stored in a sequence ϵ, which eventually defines the final global ranking. Features that survive the pruning process longest (i.e., those appearing late in π) are considered the most significant. This approach is agnostic to the underlying base estimator, provided the estimator yields a reliable feature importance measurement. In Fig. 1, we can see the projection of the COIL-20 [18] dataset using t-SNE [17] with the full feature set, and the selection of the top 10% of the features using both the normal and the iterative approach based on the Random Forest [6]. It is evident that there is a discrepancy between these figures. The t-SNE projection for each case is different, with the iterative approach seemingly offering a better discrimination between the classes. This observation is in con-sensus with our assumptions: i) The curse of dimensionality obscures the feature selection process as well, with different results observed from the normal and the iterative approach. ii) The iterative approach seemingly yields better inter-class discrimination on COIL-20 dataset. This highlights the possibility that by gradually reducing the dimensionality and re-evaluating the feature importance values, we are likely to get better feature selection results. These observations and claims however, need to be verified using an extensive empirical evaluation. 
+
+4 Experimental Setup 
+
+The empirical evaluation is conducted using the FSEVAL benchmarking suite [27], a specialized framework designed for the extensive and comprehensive evalua-tion of feature selection algorithms. The framework automates the life-cycle of the experiment, generating nested feature subsets based on the computed im-portance rankings. For each dataset, performance is evaluated across a granular 6 M. Rajabinasab & A. Zimek 60 40 20 0 20 40 60          
+
+> t-SNE 1
+> 40
+> 20
+> 0
+> 20
+> 40
+> 60
+> t-SNE 2
+> Full Features
+> (1024)
+> 40 20 020 40
+> t-SNE 1
+> 60
+> 40
+> 20
+> 0
+> 20
+> 40
+> 60
+> t-SNE 2
+> RF Batch 10%
+> (102)
+> 40 20 020 40 60
+> t-SNE 1
+> 40
+> 20
+> 0
+> 20
+> 40
+> 60
+> t-SNE 2
+> RF iterative Greedy 10%
+> (102)
+> C1
+> C2
+> C3
+> C4
+> C5
+> C6
+> C7
+> C8
+> C9
+> C10
+> C11
+> C12
+> C13
+> C14
+> C15
+> C16
+> C17
+> C18
+> C19
+> C20
+
+Fig. 1. The projection of the COIL-20 dataset using t-SNE, presented for the full feature set, and the top 10%, selected by both the normal and the iterative greedy approach. 
+
+scale ranging from 5% to 100% of the total feature count, with increments of 5% .To ensure the generalizability of the results and mitigate the risk of overfitting, we employ a 5-fold cross-validation (CV) scheme. Within each fold, we calculate the Accuracy (ACC) and Area Under the Curve (AUC) for the selected subsets. Unsupervised measures such as Clustering Accuracy (CLSACC) and Normal-ized Mutual Information (NMI) are also calculated. Average Angle Difference 
+
+(AAD) [21] is calculated as a model-agnostic evaluation metric. FSDEM [23] is also used on top of these measures to provide overall overview of the experimen-tal results and facilitate the measurement of feature selection stability. We also provide a scalability analysis to show how much additional computational cost the iterative approach introduces. 
+
+4.1 Algorithmic Configurations 
+
+Five base estimators were selected to provide a diverse representation of fea-ture selection strategies. Each estimator is configured to balance computational efficiency with robust importance estimation: 
+
+– Random Forest (RF) & XGBoost: Both ensemble methods utilize 50 estimators to ensure stable impurity-based (MDI) rankings. 
+
+– ReliefF: Configured with k = 10 neighbors to evaluate the local manifold structure and capture feature dependencies. 
+
+– LASSO: Implemented via Logistic Regression with an L1 penalty ( C = 0 .5). To accommodate multiclass datasets, the model is wrapped in a One-Vs-Rest 
+
+(OvR) architecture. 
+
+– Permutation Importance: Evaluated using a Random Forest backbone with 20 estimators and 3 shuffle iterations per feature. An Empirical Study of Feature Selection Granularity 7                                                                                      
+
+> Table 1. Summary of datasets used in this study. Dataset Name Instances Features Classes agaricus_lepiota 8145 22 2allbp 3772 29 3analcatdata_authorship 841 70 4ann_thyroid 7200 21 3backache 180 32 2calendarDOW 399 32 5churn 5000 20 2clean1 476 168 2clean2 6598 168 2collins 485 23 13 dermatology 366 34 6dna 3186 180 3flags 178 43 5hypothyroid 3163 25 2ionosphere 351 34 2led24 3200 24 10 mfeat_fourier 2000 76 10 mfeat_pixel 2000 240 10 molecular_biology_promoters 106 57 2movement_libras 360 90 15 mushroom 8124 22 2ring 7400 20 2satimage 6435 36 6soybean 675 35 18 spect 267 22 2spectf 349 44 2splice 3188 60 3tokyo1 959 44 2
+
+4.2 Dataset Characteristics 
+
+The benchmark is performed on a diverse collection of datasets from Penn Ma-chine Learning Benchmarks [20]. The characteristics of these datasets, including the number of instances, features, and classes, are summarized in Table 1. The datasets are selected to be diverse, constituting a different number of instances, features, and classes. We keep the maximum dimensionality of the datasets included in this study relatively small (240). This is because that we believe going to very high-dimensional spaces, which in real-world datasets usu-ally results in sparse datasets (very small number of instances compared to the dimensionality). We believe that sparse datasets are not suitable for this study. In these datasets, many different combinations of features can constitute the same level of effectiveness, which might make a granular comparison very difficult. 8 M. Rajabinasab & A. Zimek 
+
+5 Experimental Results 
+
+Our experimental design leverages a diverse benchmark consisting of 28 datasets of varying dimensionality and complexity, ensuring the generalizability of our findings. To provide a holistic view of performance, we utilize five distinct eval-uation metrics: Accuracy (ACC), Area Under the ROC Curve (AUC), Class-Weighted Accuracy (CLSACC), Normalized Mutual Information (NMI), and Average Angle Difference (AAD). By comparing the iterative variants against their static counterparts across these metrics, we aim to quantify the impact of recursive feature elimination on the feature selection performance. 
+
+5.1 Feature Ranking Similarity 
+
+To study whether the iterative implementation of the feature selection algorithms identify the same features as important, we analyze the Feature Selection Simi-larity , which measures the similarity between the rankings produced by different selectors. Let M1 and M2 be two feature selection methods. For a given selection budget 
+
+k features to be selected, let S1 ⊆ F and S2 ⊆ F represent the sets of the top-k
+
+features selected by M1 and M2, respectively, where F is the total set of features. The similarity RS at cardinality k is defined as the normalized cardinality of the intersection: 
+
+RS (S1, S 2, k ) = |S1 ∩ S2|
+
+k (4) where RS ∈ [0 , 1] . A value of 1 indicates identical feature preferences, while a value of 0 indicates completely different selections. In our analysis, we express 
+
+k as a percentage of the total feature count ( p ∈ { 5% , 10% , 15% , 20% , 25% })to observe how similar to their iterative implementation the feature selection algorithms perform. Figure 2 illustrates the mean overlap across all benchmark datasets for var-ious selection budgets. The heatmap clearly shows that there is a significant difference in the features selected by a feature selection method compared to its iterative implementation. This difference becomes lower as more features are selected, and it is higher in top ranking features set. This motivates a more in-depth study on both, two show if there is a performance difference, and if there is, which one is performing better. 
+
+5.2 Performance Analysis 
+
+Predictive performance is evaluated through five distinct lenses, ranging from classification performance to clustering and model-agnostic evaluation. This multi-faceted approach allows us to determine if the iterative implementation of the feature selection methods consistently improves the quality of the selected fea-tures across diverse data topologies. An Empirical Study of Feature Selection Granularity 9RF 
+
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+RF 
+
+RF_iter 
+
+XGB 
+
+XGB_iter 
+
+ReliefF 
+
+ReliefF_iter 
+
+Lasso 
+
+Lasso_iter 
+
+Perm 
+
+Perm_iter 
+
+1.00 0.69 0.49 0.50 0.56 0.38 0.34 0.31 0.52 0.62 
+
+0.69 1.00 0.40 0.44 0.50 0.37 0.28 0.28 0.42 0.57 
+
+0.49 0.40 1.00 0.60 0.30 0.21 0.40 0.38 0.37 0.43 
+
+0.50 0.44 0.60 1.00 0.34 0.24 0.38 0.40 0.32 0.47 
+
+0.56 0.50 0.30 0.34 1.00 0.51 0.38 0.30 0.45 0.50 
+
+0.38 0.37 0.21 0.24 0.51 1.00 0.25 0.15 0.36 0.42 
+
+0.34 0.28 0.40 0.38 0.38 0.25 1.00 0.67 0.36 0.40 
+
+0.31 0.28 0.38 0.40 0.30 0.15 0.67 1.00 0.24 0.29 
+
+0.52 0.42 0.37 0.32 0.45 0.36 0.36 0.24 1.00 0.64 
+
+0.62 0.57 0.43 0.47 0.50 0.42 0.40 0.29 0.64 1.00 
+
+Top 5% 
+
+0.2 
+
+0.3 
+
+0.4 
+
+0.5 
+
+0.6 
+
+0.7 
+
+0.8 
+
+0.9 
+
+1.0 RF 
+
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+RF 
+
+RF_iter 
+
+XGB 
+
+XGB_iter 
+
+ReliefF 
+
+ReliefF_iter 
+
+Lasso 
+
+Lasso_iter 
+
+Perm 
+
+Perm_iter 
+
+1.00 0.84 0.57 0.61 0.73 0.59 0.46 0.39 0.69 0.64 
+
+0.84 1.00 0.57 0.59 0.67 0.64 0.39 0.33 0.64 0.60 
+
+0.57 0.57 1.00 0.75 0.48 0.37 0.45 0.36 0.53 0.45 
+
+0.61 0.59 0.75 1.00 0.51 0.41 0.49 0.45 0.55 0.54 
+
+0.73 0.67 0.48 0.51 1.00 0.70 0.46 0.39 0.61 0.60 
+
+0.59 0.64 0.37 0.41 0.70 1.00 0.36 0.36 0.54 0.55 
+
+0.46 0.39 0.45 0.49 0.46 0.36 1.00 0.69 0.41 0.41 
+
+0.39 0.33 0.36 0.45 0.39 0.36 0.69 1.00 0.35 0.38 
+
+0.69 0.64 0.53 0.55 0.61 0.54 0.41 0.35 1.00 0.67 
+
+0.64 0.60 0.45 0.54 0.60 0.55 0.41 0.38 0.67 1.00 
+
+Top 10% RF 
+
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+RF 
+
+RF_iter 
+
+XGB 
+
+XGB_iter 
+
+ReliefF 
+
+ReliefF_iter 
+
+Lasso 
+
+Lasso_iter 
+
+Perm 
+
+Perm_iter 
+
+1.00 0.81 0.61 0.63 0.73 0.68 0.49 0.51 0.68 0.74 
+
+0.81 1.00 0.56 0.60 0.67 0.66 0.44 0.48 0.61 0.70 
+
+0.61 0.56 1.00 0.82 0.51 0.50 0.50 0.53 0.57 0.56 
+
+0.63 0.60 0.82 1.00 0.52 0.52 0.58 0.60 0.63 0.60 
+
+0.73 0.67 0.51 0.52 1.00 0.78 0.47 0.48 0.62 0.66 
+
+0.68 0.66 0.50 0.52 0.78 1.00 0.45 0.49 0.58 0.63 
+
+0.49 0.44 0.50 0.58 0.47 0.45 1.00 0.76 0.47 0.46 
+
+0.51 0.48 0.53 0.60 0.48 0.49 0.76 1.00 0.52 0.49 
+
+0.68 0.61 0.57 0.63 0.62 0.58 0.47 0.52 1.00 0.67 
+
+0.74 0.70 0.56 0.60 0.66 0.63 0.46 0.49 0.67 1.00 
+
+Top 15% RF 
+
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+RF 
+
+RF_iter 
+
+XGB 
+
+XGB_iter 
+
+ReliefF 
+
+ReliefF_iter 
+
+Lasso 
+
+Lasso_iter 
+
+Perm 
+
+Perm_iter 
+
+1.00 0.82 0.61 0.66 0.72 0.70 0.52 0.53 0.68 0.70 
+
+0.82 1.00 0.58 0.61 0.71 0.71 0.48 0.49 0.65 0.67 
+
+0.61 0.58 1.00 0.80 0.52 0.54 0.55 0.55 0.59 0.56 
+
+0.66 0.61 0.80 1.00 0.54 0.55 0.59 0.60 0.62 0.59 
+
+0.72 0.71 0.52 0.54 1.00 0.77 0.47 0.49 0.60 0.63 
+
+0.70 0.71 0.54 0.55 0.77 1.00 0.48 0.49 0.61 0.59 
+
+0.52 0.48 0.55 0.59 0.47 0.48 1.00 0.81 0.47 0.50 
+
+0.53 0.49 0.55 0.60 0.49 0.49 0.81 1.00 0.50 0.51 
+
+0.68 0.65 0.59 0.62 0.60 0.61 0.47 0.50 1.00 0.70 
+
+0.70 0.67 0.56 0.59 0.63 0.59 0.50 0.51 0.70 1.00 
+
+Top 20% RF 
+
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+RF 
+
+RF_iter 
+
+XGB 
+
+XGB_iter 
+
+ReliefF 
+
+ReliefF_iter 
+
+Lasso 
+
+Lasso_iter 
+
+Perm 
+
+Perm_iter 
+
+1.00 0.86 0.59 0.63 0.73 0.70 0.53 0.53 0.65 0.67 
+
+0.86 1.00 0.55 0.60 0.72 0.68 0.49 0.49 0.61 0.66 
+
+0.59 0.55 1.00 0.82 0.53 0.54 0.57 0.55 0.57 0.54 
+
+0.63 0.60 0.82 1.00 0.54 0.55 0.60 0.57 0.60 0.58 
+
+0.73 0.72 0.53 0.54 1.00 0.79 0.47 0.50 0.61 0.63 
+
+0.70 0.68 0.54 0.55 0.79 1.00 0.47 0.49 0.59 0.60 
+
+0.53 0.49 0.57 0.60 0.47 0.47 1.00 0.83 0.47 0.50 
+
+0.53 0.49 0.55 0.57 0.50 0.49 0.83 1.00 0.48 0.50 
+
+0.65 0.61 0.57 0.60 0.61 0.59 0.47 0.48 1.00 0.69 
+
+0.67 0.66 0.54 0.58 0.63 0.60 0.50 0.50 0.69 1.00 
+
+Top 25% 
+
+Fig. 2. Feature Ranking Similarity heatmaps for selection budgets of 5% (top), and 10%–25% (bottom row), reflecting a high amount of discrepancy between the normal approaches and their greedy counterpart. 
+
+Analysis of Accuracy (ACC) Accuracy serves as the primary indicator of overall classification success. Alongside with AUC, it is the most important eval-uation metric we use, as the feature selection methods we selected for this study are all supervised. In this analysis, we study how different sizes of selected feature subsets perform based on different feature selection methods compared to their iterative counterpart. We present the performance plot of the movement_libras 
+
+dataset as an example of the extensive set of datasets we use. We also provide the rank analysis based on the standard rank [8] and Magnitude-Aware Rank Statistics (MARS) [24] and the corresponding critical difference diagrams over the average performance of the methods on all datasets. The performance plot and the Critical Difference diagrams based on ACC are presented in Fig. 3. We observe that, almost consistently, the iterative approach works better than the standard one, confirming our expectations about the effect of high-10 M. Rajabinasab & A. Zimek 20% 40% 60% 80% 100% 
+
+> Selected Features (%)
+> 0.55
+> 0.60
+> 0.65
+> 0.70
+> 0.75
+> 0.80
+> ACC
+> RF
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+Standard 3.50 5.29 7.07 
+
+> RF_iter
+> Rank: 3.50
+> Perm_iter
+> Rank: 4.41
+> XGB_iter
+> Rank: 4.79
+> RF
+> Rank: 5.29
+> XGB
+> Rank: 5.29
+> Perm
+> Rank: 5.66
+> ReliefF_iter
+> Rank: 6.11
+> Lasso_iter
+> Rank: 6.25
+> Lasso
+> Rank: 6.64
+> ReliefF
+> Rank: 7.07
+
+MARS 5.18 34.38 63.58 
+
+> RF_iter
+> Rank Score: 5.18
+> Perm_iter
+> Rank Score: 10.62
+> Perm
+> Rank Score: 11.07
+> XGB_iter
+> Rank Score: 15.18
+> XGB
+> Rank Score: 16.64
+> RF
+> Rank Score: 30.00
+> Lasso_iter
+> Rank Score: 30.98
+> ReliefF_iter
+> Rank Score: 35.54
+> ReliefF
+> Rank Score: 58.83
+> Lasso
+> Rank Score: 63.58
+
+Fig. 3. Comparative performance based on Accuracy (ACC). The line plot tracks the 
+
+movement_libras dataset as a case study, followed by a Critical Difference diagrams over all datasets and average performance of the methods. Both MARS and Standard rank statistics agree on the superiority of the iterative approach. Only minor changes of positions observed with the inclusion of metric values in MARS. 
+
+dimensionality in degrading the feature selection performance. The Critical Dif-ference diagrams show that the iterative approaches consistently improve the feature selection performance and provide superior results compared to the cor-responding standard implementation. 
+
+Analysis of Area Under the ROC Curve (AUC) The Area Under the ROC Curve (AUC) serves as a threshold-independent measure of the model’s discriminative power. Given that our study focuses on supervised feature selec-tion, AUC is also considered as a cornerstone metric for evaluating the class separability of the chosen subsets. We analyze how different selection budgets impact this discriminative ability, comparing standard implementations against our proposed iterative framework. Fig. 4 presents the methods’ behavior on the 
+
+movement_libras dataset alongside the rank analyses across all 28 datasets. The results indicate that the iterative approach almost consistently outper-forms the static one, validating our hypothesis that this approach mitigates the performance loss typically caused by high-dimensional noise. As shown in the Critical Difference diagrams, the iterative variants occupy superior rank posi-tions, demonstrating that they provide more reliable and robust feature rankings compared to the standard one-pass selection methods. An Empirical Study of Feature Selection Granularity 11 20% 40% 60% 80% 100% 
+
+> Selected Features (%)
+> 0.93
+> 0.94
+> 0.95
+> 0.96
+> 0.97
+> 0.98
+> AUC
+> RF
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+Standard 3.80 5.29 6.77 
+
+> RF_iter
+> Rank: 3.80
+> Perm_iter
+> Rank: 4.39
+> XGB_iter
+> Rank: 4.41
+> RF
+> Rank: 5.32
+> XGB
+> Rank: 5.46
+> Perm
+> Rank: 5.64
+> ReliefF_iter
+> Rank: 6.20
+> Lasso_iter
+> Rank: 6.34
+> Lasso
+> Rank: 6.66
+> ReliefF
+> Rank: 6.77
+
+MARS 9.24 231.39 453.53 
+
+> XGB
+> Rank Score: 9.24
+> Perm
+> Rank Score: 9.97
+> RF_iter
+> Rank Score: 11.42
+> Perm_iter
+> Rank Score: 12.64
+> RF
+> Rank Score: 13.40
+> Lasso_iter
+> Rank Score: 24.01
+> Lasso
+> Rank Score: 101.25
+> ReliefF
+> Rank Score: 285.02
+> ReliefF_iter
+> Rank Score: 299.52
+> XGB_iter
+> Rank Score: 453.53
+
+Fig. 4. Comparative performance based on AUC. The line plot tracks the move-ment_libras dataset as a case study, followed by Critical Difference diagrams over all datasets and average performance of the methods. Both MARS and Standard rank statistics agree on the superiority of the iterative approach. Only minor changes of positions observed with the inclusion of metric values in MARS. 
+
+Analysis of Clustering Accuracy (CLSACC) To also include the unsuper-vised downstream tasks, we also present the performance based on the Clustering Accuracy. This metric aims to map the clustering results labels to ground-truth labels, and hence, is very unstable compared to the supervised metrics. Fig. 5 presents the methods behavior on the movement_libras dataset alongside the rank analyses across all 28 datasets. Evidently, the performance of iterative im-plementation is not as consistently superior as for the supervised measure. 
+
+Analysis of Normalized Mutual Information (NMI) We also report unsu-pervised performance using the Normalized Mutual Information (NMI). Unlike clustering accuracy, NMI evaluates the agreement between predicted clusters and ground-truth labels without requiring an explicit label mapping, making it more stable and less sensitive to permutation effects. Fig. 6 shows the behavior of the methods on the movement_libras dataset together with the global rank analysis across all 28 datasets. As expected, the iterative implementation exhibits greater variability under this unsupervised cri-terion compared to the supervised metrics. Nevertheless, it shows an almost consistent improvement over the standard implementation, highlighting the ef-fectiveness of this approach, also for unsupervised downstream tasks. 12 M. Rajabinasab & A. Zimek 20% 40% 60% 80% 100% 
+
+> Selected Features (%)
+> 0.34
+> 0.36
+> 0.38
+> 0.40
+> 0.42
+> 0.44
+> 0.46
+> 0.48
+> CLSACC
+> RF
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+Standard 4.04 5.73 7.43 
+
+> Lasso
+> Rank: 4.04
+> Lasso_iter
+> Rank: 4.36
+> XGB
+> Rank: 4.84
+> XGB_iter
+> Rank: 5.32
+> RF
+> Rank: 5.39
+> RF_iter
+> Rank: 5.45
+> ReliefF
+> Rank: 5.75
+> ReliefF_iter
+> Rank: 6.18
+> Perm
+> Rank: 6.25
+> Perm_iter
+> Rank: 7.43
+
+MARS 8.15 133.44 258.72 
+
+> Lasso
+> Rank Score: 8.15
+> Lasso_iter
+> Rank Score: 12.76
+> XGB_iter
+> Rank Score: 23.89
+> XGB
+> Rank Score: 24.38
+> ReliefF
+> Rank Score: 64.61
+> ReliefF_iter
+> Rank Score: 142.01
+> Perm_iter
+> Rank Score: 157.35
+> RF_iter
+> Rank Score: 163.80
+> Perm
+> Rank Score: 181.19
+> RF
+> Rank Score: 258.72
+
+Fig. 5. Comparative performance based on Clustering Accuracy (CLSACC). The line plot tracks the movement_libras dataset as a case study, followed by Critical Difference diagrams over all datasets and average performance of the methods. Both MARS and Standard rank statistics agree on the superiority of the iterative approach. MARS emphasizes on the superiority of metric values in iterative implementations. 
+
+Analysis of Average Angle Difference (AAD) AAD [21] quantifies the Average Angle Difference based on the first principal components, where lower values indicate better performance. It is a model-agnostic metric which favors the geometrical alignment based on Principal Component Analysis (PCA). In 
+
+movement_libras , as shown in Fig. 7, iterative methods demonstrate a sharp decline in the AAD value, however, it is still not as consistent as for supervised metrics. These findings make sense, as the supervised feature selection methods are expected to favor the improvement based on a supervised task. Showing somewhat competitive performance based on AAD, while improving based on both supervised and unsupervised metrics, overall shows the effectiveness of the proposed iterative approach. 
+
+5.3 Scalability Analysis 
+
+While the iterative framework consistently yields superior predictive perfor-mance, it is inherently more time-consuming than static methods. For a dataset with dimensionality d, the iterative approach requires repeating the feature se-lection process d − 1 times to produce a full ranking. However, it should be noted that as the dimensionality is reduced at each recursive step, the execution time for the base selector also decreases, partially offsetting the overhead of the repetitions. An Empirical Study of Feature Selection Granularity 13 20% 40% 60% 80% 100% 
+
+> Selected Features (%)
+> 0.425
+> 0.450
+> 0.475
+> 0.500
+> 0.525
+> 0.550
+> 0.575
+> 0.600
+> NMI
+> RF
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+Standard 4.46 5.80 7.14 
+
+> Lasso_iter
+> Rank: 4.46
+> XGB_iter
+> Rank: 4.64
+> Lasso
+> Rank: 4.75
+> RF
+> Rank: 5.11
+> XGB
+> Rank: 5.16
+> RF_iter
+> Rank: 5.30
+> ReliefF_iter
+> Rank: 5.86
+> ReliefF
+> Rank: 6.14
+> Perm_iter
+> Rank: 6.43
+> Perm
+> Rank: 7.14
+
+MARS 11.02 29.07 47.13 
+
+> Lasso
+> Rank Score: 11.02
+> Lasso_iter
+> Rank Score: 11.74
+> XGB_iter
+> Rank Score: 20.90
+> XGB
+> Rank Score: 23.42
+> ReliefF_iter
+> Rank Score: 31.08
+> ReliefF
+> Rank Score: 35.42
+> RF
+> Rank Score: 38.74
+> Perm_iter
+> Rank Score: 40.36
+> RF_iter
+> Rank Score: 42.01
+> Perm
+> Rank Score: 47.13
+
+Fig. 6. Comparative performance based on Normalized Mutual Information (NMI). The line plot tracks the movement_libras dataset as a case study, followed by Critical Difference diagrams over all datasets and average performance of the methods. Both MARS and Standard rank statistics agree on the superiority of the iterative approach. Only minor changes observed with the inclusion of metric values in MARS. 
+
+Figure 8 illustrates the scalability of the methods. Despite the increased com-putational requirement, as the feature selection is most of the times, a one-time step, it can be considered feasible for high-dimensional datasets if the algorithm’s computational complexity is not too high. 
+
+6 Conclusion, Limitations, and Future Works 
+
+This paper investigated whether high dimensionality degrades the performance of feature selection methods in a manner similar to its well-known adverse ef-fects on other concepts, such as distance measures. To address this question, we conducted a comparative study across a diverse and extensive collection of datasets, feature selection algorithms, and evaluation metrics. Our empirical re-sults demonstrate that iteratively removing the least important feature and re-calculating feature importance values consistently leads to superior performance when compared to applying the same feature selection algorithm only once. This finding suggests that feature importance estimates can be sensitive to the pres-ence of less informative or redundant features, and that progressively refining the feature space allows the algorithm to better identify truly relevant variables. Our analysis indicates that the primary limitation of this iterative approach lies in the number of times the feature selection process must be repeated. This requirement can become computationally expensive, particularly for high-14 M. Rajabinasab & A. Zimek 20% 40% 60% 80% 100% 
+
+> Selected Features (%)
+> 0.00
+> 0.02
+> 0.04
+> 0.06
+> 0.08
+> 0.10
+> 0.12
+> AAD
+> RF
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Perm
+> Perm_iter
+
+Standard 2.86 5.04 7.21 
+
+> ReliefF_iter
+> Rank: 2.86
+> ReliefF
+> Rank: 2.93
+> RF
+> Rank: 4.18
+> RF_iter
+> Rank: 4.75
+> Perm
+> Rank: 6.30
+> XGB
+> Rank: 6.38
+> Perm_iter
+> Rank: 6.55
+> XGB_iter
+> Rank: 6.73
+> Lasso_iter
+> Rank: 7.11
+> Lasso
+> Rank: 7.21
+
+MARS 6.09 133.67 261.25 
+
+> ReliefF
+> Rank Score: 6.09
+> ReliefF_iter
+> Rank Score: 11.03
+> RF
+> Rank Score: 14.29
+> RF_iter
+> Rank Score: 16.62
+> Perm_iter
+> Rank Score: 45.25
+> XGB_iter
+> Rank Score: 59.57
+> Perm
+> Rank Score: 70.16
+> XGB
+> Rank Score: 91.44
+> Lasso_iter
+> Rank Score: 148.32
+> Lasso
+> Rank Score: 261.25
+
+Fig. 7. Comparative performance based on Average Angle Difference (AAD). The line plot tracks the movement_libras dataset as a case study, followed by Critical Difference diagrams over all datasets and average performance of the methods. Both MARS and Standard rank statistics agree on the superiority of the iterative approach. Only minor changes observed with the inclusion of AAD values in MARS. 
+
+dimensional datasets and for feature selection algorithms with substantial com-putational complexity. Therefore, the scalability of the method becomes the main challenge that must be addressed before the approach can be widely adopted. Addressing this computational limitation should therefore be a central focus of future research. Several possible strategies may help mitigate this issue. One straightforward modification is to remove the r least important and potentially redundant features at each iteration, instead of eliminating only a single feature. This adjustment would reduce the total number of repetitions required while preserving the iterative refinement principle. Another potential approach is to partition the feature space into p random subspaces and perform feature selection independently within each subspace. The least important feature, or the r least important features, can then be removed from each subspace simultaneously. Such a strategy could reduce the number of sequential runs of the algorithm while also lowering the dimensionality handled in each run, thereby improving computational efficiency. The investigation of these extensions, including their effectiveness, stability, and potential trade-offs, is beyond the scope of the present study. We leave a systematic evaluation of these strategies, along with other possible optimizations, as an important direction for future work. An Empirical Study of Feature Selection Granularity 15 100 200 300 400 500         
+
+> Features
+> 10 2
+> 10 1
+> 10 0
+> 10 1
+> 10 2
+> 10 3
+> Execution Time (s)
+> Scalability: Number of Features
+> 100 200 300 400 500
+> Instances
+> 10 2
+> 10 1
+> 10 0
+> 10 1
+> Execution Time (s)
+> Scalability: Number of Instances
+> RF
+> RF_iter
+> XGB
+> XGB_iter
+> ReliefF
+> ReliefF_iter
+> Lasso
+> Lasso_iter
+> Permutation
+> Permutation_iter
+
+Fig. 8. Scalability of the standard and greedy approaches. 
+
+References 
+
+1. Altmann, A., Toloşi, L., Sander, O., Lengauer, T.: Permutation importance: a corrected feature importance measure. Bioinformatics 26 (10), 1340–1347 (2010) 2. Amsaleg, L., Bailey, J., Barbe, A., Erfani, S.M., Furon, T., Houle, M.E., Radovanovic, M., Nguyen, X.V.: High intrinsic dimensionality facilitates adver-sarial attack: Theoretical evidence. IEEE Trans. Inf. Forensics Secur. 16 (2021) 3. Anderberg, A., Bailey, J., Campello, R.J.G.B., Houle, M.E., Marques, H.O., Radovanovic, M., Zimek, A.: Dimensionality-aware outlier detection. In: SDM. pp. 652–660. SIAM (2024) 4. Asadi Amiri, S., Rajabinasab, M.: Face recognition using color and edge orientation difference histogram. Journal of AI and Data Mining 9(1), 31–38 (2021). https: //doi.org/10.22044/jadm.2020.9376.2072 
+
+5. Beyer, K., Goldstein, J., Ramakrishnan, R., Shaft, U.: When is “nearest neighbor” meaningful? pp. 217–235 (1999) 6. Breiman, L.: Random forests. Machine learning 45 , 5–32 (2001) 7. Chen, T., Guestrin, C.: Xgboost: A scalable tree boosting system. In: Proceedings of the 22nd acm sigkdd international conference on knowledge discovery and data mining. pp. 785–794 (2016) 8. Demšar, J.: Statistical comparisons of classifiers over multiple data sets. JMLR 7,1–30 (2006) 9. Escanilla, N.S., Hellerstein, L., Kleiman, R., Kuang, Z., Shull, J.D., Page, D.: Recursive feature elimination by sensitivity testing. In: 17th IEEE International Conference on Machine Learning and Applications, ICMLA 2018, Orlando, FL, USA, December 17-20, 2018. pp. 40–47. IEEE (2018). https://doi.org/10.1109/ ICMLA.2018.00014 , https://doi.org/10.1109/ICMLA.2018.00014 
+
+10. François, D., Wertz, V., Verleysen, M.: The concentration of fractional distances. IEEE Trans. Knowl. Data Eng. 19 (7), 873–886 (2007) 11. Guyon, I., Elisseeff, A.: An introduction to variable and feature selection. Journal of machine learning research 3(Mar), 1157–1182 (2003) 12. Guyon, I., Weston, J., Barnhill, S., Vapnik, V.: Gene selection for cancer classifi-cation using support vector machines. Machine learning 46 , 389–422 (2002) 16 M. Rajabinasab & A. Zimek 13. Kohavi, R., John, G.H.: Wrappers for feature subset selection. Artificial In-telligence 97 (1-2), 273–324 (1997). https://doi.org/10.1016/S0004-3702(97) 00043-X , https://doi.org/10.1016/S0004-3702(97)00043-X 
+
+14. Kononenko, I.: Estimating attributes: Analysis and extensions of relief. In: Euro-pean conference on machine learning. pp. 171–182. Springer (1994) 15. Kraskov, A., Stögbauer, H., Grassberger, P.: Estimating mutual information. Phys-ical review E 69 (6), 066138 (2004) 16. Li, J., Cheng, K., Wang, S., Morstatter, F., Trevino, R.P., Tang, J., Liu, H.: Feature selection: A data perspective. ACM computing surveys (CSUR) 50 (6), 1–45 (2017) 17. van der Maaten, L., Hinton, G.: Visualizing data using t-sne. Journal of Machine Learning Research 9(86), 2579–2605 (2008), https://www.jmlr.org/papers/v9/ vandermaaten08a.html 
+
+18. Nene, S.A., Nayar, S.K., Murase, H.: Columbia object image library (coil-20). Tech. Rep. CUCS-005-96, Columbia University (1996) 19. Okkels, C.B., Thordsen, E., Aumüller, M., Zimek, A., Schubert, E.: Approximate single-linkage clustering using graph-based indexes: Mst-based approaches and in-cremental searchers. In: SISAP. pp. 233–247. Lecture Notes in Computer Science 20. Olson, R.S., La Cava, W., Orzechowski, P., Urbanowicz, R.J., Moore, J.H.: Pmlb: a large benchmark suite for machine learning evaluation and comparison. BioData Mining 10 (36), 1–13 (Dec 2017) 21. Rajabinasab, M., Lautrup, A., Zimek, A.: Metrics for inter-dataset similarity with example applications in synthetic data and feature selection evaluation. In: Pro-ceedings of the 2025 SIAM International Conference on Data Mining (SDM). pp. 527–537. https://doi.org/10.1137/1.9781611978520.57 
+
+22. Rajabinasab, M., Lautrup, A.D., Schneider-Kamp, P., Zimek, A.: Towards semi-supervised subspace learning for outlier detection in big data. In: Similarity Search and Applications. pp. 330–344. Springer Nature Switzerland, Cham (2026) 23. Rajabinasab, M., Lautrup, A.D., Hyrup, T., Zimek, A.: A dynamic evaluation metric for feature selection. In: Similarity Search and Applications - 17th In-ternational Conference, SISAP 2024, Providence, RI, USA, November 4-6, 2024, Proceedings. Lecture Notes in Computer Science, vol. 15268, pp. 65–72. Springer (2024). https://doi.org/10.1007/978-3-031-75823-2_6 , https://doi.org/10. 1007/978-3-031-75823-2_6 
+
+24. Rajabinasab, M., Nejad, A.M., Zimek, A.: MARS: magnitude-aware rank statistics. CoRR abs/2605.23563 (2026). https://doi.org/10.48550/ARXIV.2605.23563 ,
+
+https://doi.org/10.48550/arXiv.2605.23563 
+
+25. Rajabinasab, M., Pakdaman, F., Gabbouj, M., Schneider-Kamp, P., Zimek, A.: Randomized PCA forest for unsupervised outlier detection. CoRR 
+
+abs/2508.12776 (2025). https://doi.org/10.48550/ARXIV.2508.12776 ,
+
+https://doi.org/10.48550/arXiv.2508.12776 
+
+26. Rajabinasab, M., Pakdaman, F., Zimek, A., Gabbouj, M.: Randomized pca for-est for approximate k-nearest neighbor search. Expert Systems with Applications 
+
+281 , 126254 (2025). https://doi.org/https://doi.org/10.1016/j.eswa.2024. 126254 
+
+27. Rajabinasab, M., Zimek, A.: FSEVAL: feature selection evaluation toolbox and dashboard. CoRR abs/2604.18227 (2026). https://doi.org/10.48550/ARXIV. 2604.18227 , https://doi.org/10.48550/arXiv.2604.18227 
+
+28. Tibshirani, R.: Regression shrinkage and selection via the lasso. Journal of the Royal Statistical Society: Series B (Methodological) 58 (1), 267–288 (1996)
