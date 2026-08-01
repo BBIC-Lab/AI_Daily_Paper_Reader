@@ -1,50 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-08-01
-- 运行时间：2026-08-01 05:21:37 北京时间
+- 最新运行日期：2026-08-02
+- 运行时间：2026-08-02 04:28:09 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-探索脑机接口与语音解码新突破，今日深入研读10篇前沿论文，重点关注基础模型迁移与长期自适应学习。
-
-最值得关注的是脑电基础模型向语音解码的迁移能力，以及一种用不确定性引导自步长学习实现长期脑机接口稳定性的新框架。
-
-对普通读者来说，可以重点关注噪声标签处理和GUI智能体扩展这两项技术，它们正在让AI在真实嘈杂环境中变得更实用。
-- 详情：[/202608/01/README](/202608/01/README)
+1) 今日精读5篇论文，重点关注时空数据补全与超紧凑多语言检索。
+2) 时序卷积网络可高效推断缺失轨迹，Bekko嵌入用极小体积实现多语言检索高性能，值得跟进。
+3) 如果你关注音频和医学影像，速读中有用文本提示增强音频表示和器官特异性CT基础模型的新思路。
+- 详情：[/202608/02/README](/202608/02/README)
 
 ### 精读区论文标签
-1. [Does EEG Foundation Models Transfer to Speech? A Benchmark on Overt and Imagined Speech Decoding](/202608/01/2607.27268v1-does-eeg-foundation-models-transfer-to-speech-a-benchmark-on-overt-and-imagined-speech-decoding)  
-   标签：评分：10.0/10、query:ndai
-   evidence：在显性和想象言语解码任务上评测EEG基础模型，将神经信号映射为语言。
-2. [A Cyclic Adaptation-Generalization Framework with Uncertainty-Guided Self-Paced Learning for Long-Term Brain-Machine Interfaces](/202608/01/2607.24031v1-a-cyclic-adaptation-generalization-framework-with-uncertainty-guided-self-paced-learning-for-long-term-brain-machine-interfaces)  
+1. [Inferring Missing Trajectory Data with Temporal Convolutional Networks](/202608/02/2607.25147v1-inferring-missing-trajectory-data-with-temporal-convolutional-networks)  
    标签：评分：9.0/10、query:ndai
-   evidence：面向长期脑机接口的循环适应-泛化框架，结合不确定性引导的自步学习，直接对应脑机接口迁移学习
-3. [Towards simultaneous decoding of kinetic and kinematic movement parameters during grasp and lift task by noninvasive brain imaging](/202608/01/2607.24081v2-towards-simultaneous-decoding-of-kinetic-and-kinematic-movement-parameters-during-grasp-and-lift-task-by-noninvasive-brain-imaging)  
+   evidence：基于时间卷积网络的缺失轨迹序列补全
+2. [Bekko Embedding: Parameter-Efficient Multilingual Retrieval with Ultra-Compact Encoders](/202608/02/2607.25180v1-bekko-embedding-parameter-efficient-multilingual-retrieval-with-ultra-compact-encoders)  
    标签：评分：9.0/10、query:ndai
-   evidence：从EEG信号解码多种运动和动力学参数，用于脑机接口
-4. [EEGForceFusion: Joint Tokenised-Continuous Representation Learning for Subject-Independent Grasp Force Decoding](/202608/01/2607.24126v1-eegforcefusion-joint-tokenised-continuous-representation-learning-for-subject-independent-grasp-force-decoding)  
+   evidence：超紧凑多语言检索编码器从原始文本学习紧凑且有意义的嵌入
+3. [LGFNet: A CTC-Guided Local-Global Fusion Framework for Single-Channel Sleep Staging](/202608/02/2607.25197v1-lgfnet-a-ctc-guided-local-global-fusion-framework-for-single-channel-sleep-staging)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于EEG的抓握力解码，结合token化-连续表示学习
-5. [An Empirical Study of Feature Selection Granularity](/202608/01/2607.24145v1-an-empirical-study-of-feature-selection-granularity)  
+   evidence：基于CTC的序列到序列框架用于单通道EEG睡眠分期；建模神经时间序列的时序动态与长程结构。
+4. [Self-Supervised Audio Representation Learning for Pediatric Asthma Detection in Emergency Care Using Digital Stethoscope Recordings](/202608/02/2607.25286v1-self-supervised-audio-representation-learning-for-pediatric-asthma-detection-in-emergency-care-using-digital-stethoscope-recordings)  
    标签：评分：9.0/10、query:ndai
-   evidence：关于特征选择粒度的实证研究，聚焦于特征重要性评分
+   evidence：使用自监督音频表征学习提取听诊录音特征
+5. [Joint Text-Audio Alignment for EEG-to-Text Decoding in Chinese Speech Production and Perception](/202608/02/2607.25626v1-joint-text-audio-alignment-for-eeg-to-text-decoding-in-chinese-speech-production-and-perception)  
+   标签：评分：9.0/10、query:ndai
+   evidence：直接解码脑电神经信号为中文文本。
 
 ### 速读区论文标签
-1. [XMix: Combating Extremely Noisy Labels via Local Smoothness in Self-Supervised Feature Space](/202608/01/2607.23865v1-xmix-combating-extremely-noisy-labels-via-local-smoothness-in-self-supervised-feature-space)  
+1. [Text-Prompted CLAP: Learning Query-Conditioned Audio Representations via Contrastive Learning](/202608/02/2607.25085v1-text-prompted-clap-learning-query-conditioned-audio-representations-via-contrastive-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：自监督特征空间学习以从原始数据中学习鲁棒表示
-2. [Scaling GUI Agents with Visual State Transitions](/202608/01/2607.24112v1-scaling-gui-agents-with-visual-state-transitions)  
+   evidence：通过对比学习学习查询条件的音频表示
+2. [OrganLens: Organ-Specific Representation Learning for CT Foundation Models](/202608/02/2607.25164v1-organlens-organ-specific-representation-learning-for-ct-foundation-models)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过逆动力学和正动力学预训练从原始状态学习视觉表征
-3. [Dynamic sampling of non-stationary spontaneous activity in dissociated neuronal networks](/202608/01/2607.24269v1-dynamic-sampling-of-non-stationary-spontaneous-activity-in-dissociated-neuronal-networks)  
+   evidence：通过自监督从原始CT体数据学习器官级表示
+3. [A Cross-lingual Comparison of Human and Classification Model Entrainment Behavior in Code-switched Speech Settings](/202608/02/2607.25202v1-a-cross-lingual-comparison-of-human-and-classification-model-entrainment-behavior-in-code-switched-speech-settings)  
    标签：评分：8.0/10、query:ndai
-   evidence：使用折扣Poisson-Gamma模型进行非平稳尖峰计数时间序列的序列子集选择
-4. [Unsupervised Graph Representation Learning with Complementary View Alignment](/202608/01/2607.24338v1-unsupervised-graph-representation-learning-with-complementary-view-alignment)  
+   evidence：对分类器进行特征重要性和消融分析
+4. [VaLiDRec: Variable-Length LLM-Aligned Semantic IDs for Generative Recommendation](/202608/02/2607.25209v1-validrec-variable-length-llm-aligned-semantic-ids-for-generative-recommendation)  
    标签：评分：8.0/10、query:ndai
-   evidence：无监督图表示学习，从原始图数据中学习紧凑节点嵌入
-5. [GOTS: Greedy Orthogonal Token Selection for High-Resolution Vision-Language Models](/202608/01/2607.23913v1-gots-greedy-orthogonal-token-selection-for-high-resolution-vision-language-models)  
+   evidence：从原始物品特征学习紧凑的语义ID表示，并估计token重要性
+5. [CogEEGAgent: Toward Autonomous Cognitive EEG Analysis with Grounded Execution and Selection-Aware Verification](/202608/02/2607.25045v1-cogeegagent-toward-autonomous-cognitive-eeg-analysis-with-grounded-execution-and-selection-aware-verification)  
    标签：评分：7.0/10、query:ndai
-   evidence：通过计算正交互补性作为视觉特征重要性来选择令牌
+   evidence：基于MNE-Python的自主认知脑电分析智能体
 

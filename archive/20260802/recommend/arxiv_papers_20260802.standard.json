@@ -1,0 +1,408 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-01T20:25:15.517195+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 86,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 138,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 24,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 19,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 25
+  },
+  "deep_dive": [
+    {
+      "id": "2607.25147v1",
+      "source": "arxiv",
+      "title": "Inferring Missing Trajectory Data with Temporal Convolutional Networks",
+      "abstract": "Trajectory data collected in real-world settings is frequently incomplete due to sensor failure, communication loss, or occlusion. We address the task of \\emph{trajectory inpainting}: reconstructing contiguous missing segments from observed context. We propose a Temporal Convolutional Network (TCN) with symmetric dilation that relaxes the standard causality constraint, allowing each time step to draw on both past and future observations, a property that is essential for inpainting, but absent from forecasting-oriented architectures. The model is trained with a composite loss that combines weighted mean squared error, boundary--continuity penalties, and a smoothness regularizer. Trained on a synthetic dataset of $1,000$ (train), $200$ (validation), and $300$ (test) two-dimensional trajectories with randomly placed 20% masked segments, the model achieves good R$^{2}$, MSE and MAE metrics.",
+      "authors": [
+        "Ilinca Tiriblecea",
+        "Gabriel Turinici"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-27T23:46:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.25147v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Temporal convolutional network for missing trajectory sequence inpainting",
+      "llm_evidence_cn": "基于时间卷积网络的缺失轨迹序列补全",
+      "llm_evidence": "基于时间卷积网络的缺失轨迹序列补全",
+      "canonical_evidence": "基于时间卷积网络的缺失轨迹序列补全",
+      "llm_tldr_en": "Proposes a TCN with symmetric dilation to reconstruct missing trajectory segments from past and future context.",
+      "llm_tldr_cn": "提出对称膨胀的TCN，利用过去和未来上下文重建缺失轨迹段。",
+      "llm_tldr": "提出对称膨胀的TCN，利用过去和未来上下文重建缺失轨迹段。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25180v1",
+      "source": "arxiv",
+      "title": "Bekko Embedding: Parameter-Efficient Multilingual Retrieval with Ultra-Compact Encoders",
+      "abstract": "How small can a competitive multilingual retrieval model be? We present Bekko Embedding: its smallest model, bekko-embedding-v1-a8m, has just under 8M Active Parameters (AP) -- the non-embedding parameters that dominate inference compute -- yet on official MMTEB Multilingual v2 Retrieval (nDCG@10) it scores 56.2, above the multilingual-e5 family and BGE-M3 (40x the AP) in our comparison. The higher-quality bekko-embedding-v1-a25m (just under 25M AP) reaches 57.5, on par with gte-multilingual-base, and Multilingual NanoBEIR (14 languages) confirms the trend. Both models handle inputs of up to 8192 tokens, and on long-input retrieval (NanoLongEmbed) a25m is the strongest dense model in our comparison. The recipe is deliberately simple. We prune the 22-layer multilingual encoder mmBERT-small to 4 / 13 layers and train the pruned models in two stages -- large-scale contrastive learning on about 1.1 billion multilingual pairs from our public corpus, followed by hard-negative fine-tuning with 8192-token long-document negatives -- with a masked contrastive loss whose direction depends on pair type, plus the Matryoshka objective. No teacher distillation is used, and all training completes on a single GPU in about 3 days for a8m. Small AP pays off directly in speed: among the compared models measured under identical conditions, a8m is the fastest on both CPU and GPU -- 1.6x multilingual-e5-small on x86 CPU -- and the fastest on a Raspberry Pi 5. The 384-dimensional output (truncatable to 256/128/64) keeps similarity search and indexing cheap, and row-wise int8 quantization of the vocabulary embedding shrinks the a8m ONNX / OpenVINO build to 124 MiB, which runs in the browser via Transformers.js. To support reproducible research, we release the model weights, the complete stage-1 corpus, and the independently mined stage-2 hard negatives.",
+      "authors": [
+        "Yuichi Tateno"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-28T01:13:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.25180v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "ultra-compact multilingual retrieval encoders learn compact and meaningful embeddings from raw text",
+      "llm_evidence_cn": "超紧凑多语言检索编码器从原始文本学习紧凑且有意义的嵌入",
+      "llm_evidence": "超紧凑多语言检索编码器从原始文本学习紧凑且有意义的嵌入",
+      "canonical_evidence": "超紧凑多语言检索编码器从原始文本学习紧凑且有意义的嵌入",
+      "llm_tldr_en": "Bekko Embedding achieves competitive multilingual retrieval with models having only a few million active parameters.",
+      "llm_tldr_cn": "Bekko Embedding以极少的激活参数实现有竞争力的多语言检索性能。",
+      "llm_tldr": "Bekko Embedding以极少的激活参数实现有竞争力的多语言检索性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25197v1",
+      "source": "arxiv",
+      "title": "LGFNet: A CTC-Guided Local-Global Fusion Framework for Single-Channel Sleep Staging",
+      "abstract": "Sleep staging remains challenging due to long-range temporal dependencies, ambiguous stage transitions-particularly in N1-and substantial distribution shifts across subjects, sampling rates, and EEG montages. These difficulties are further amplified in single-channel, low-latency scenarios required by wearable and real-world applications. To address these issues, we propose LGFNet, a CTC-guided sequence-to-sequence framework for robust sleep staging. LGFNet introduces a Local-Global Fusion encoder that jointly models fine-grained temporal dynamics and long-range sleep structure, overcoming the limitations of conventional serial hybrid architectures. A CTC-Attention joint training paradigm is adopted to unify temporal alignment with context-dependent modeling, enabling more accurate recognition of stage boundaries and transitions. Furthermore, a three-stage decoding strategy is devised, leveraging CTC-guided decoding and Viterbi-based smoothing to reduce error accumulation and enforce physiological consistency. Extensive cross-dataset evaluations on five public benchmarks demonstrate that LGFNet consistently outperforms state-of-the-art single-channel methods. In particular, on Sleep-EDF-78, LGFNet surpasses DMIN by +1.27% accuracy, +1.74% macro-F1, and +1.93% kappa, with pronounced gains on N1 and transition segments, highlighting its robustness and strong generalization across diverse sampling rates, montages, and recording environments.",
+      "authors": [
+        "Chongjian Wang",
+        "Zhenghang Hou",
+        "Junjie Gao",
+        "Xiaofang Zhong",
+        "Shiyuan Han",
+        "Tong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-28T02:04:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.25197v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Sequence-to-sequence CTC framework for sleep staging from single-channel EEG; models temporal dynamics and long-range structure in neural time series.",
+      "llm_evidence_cn": "基于CTC的序列到序列框架用于单通道EEG睡眠分期；建模神经时间序列的时序动态与长程结构。",
+      "llm_evidence": "基于CTC的序列到序列框架用于单通道EEG睡眠分期；建模神经时间序列的时序动态与长程结构。",
+      "canonical_evidence": "基于CTC的序列到序列框架用于单通道EEG睡眠分期；建模神经时间序列的时序动态与长程结构。",
+      "llm_tldr_en": "LGFNet combines local-global fusion and CTC attention to robustly stage sleep from single-channel EEG sequences.",
+      "llm_tldr_cn": "LGFNet融合局部-全局特征与CTC注意力，对单通道EEG序列进行稳健的睡眠分期。",
+      "llm_tldr": "LGFNet融合局部-全局特征与CTC注意力，对单通道EEG序列进行稳健的睡眠分期。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25286v1",
+      "source": "arxiv",
+      "title": "Self-Supervised Audio Representation Learning for Pediatric Asthma Detection in Emergency Care Using Digital Stethoscope Recordings",
+      "abstract": "Accurate diagnosis of pediatric asthma in emergency departments remains challenging due to overlapping respiratory symptoms, time constraints, and the limited feasibility of pulmonary function testing in young children. This study investigates the feasibility of pediatric asthma detection in the emergency department using breath sound recordings and machine learning. Thirty-second breath sounds were collected from six chest locations in 31 pediatric patients (10 asthmatic, 21 non-asthmatic) and analyzed using pretrained self-supervised speech representation models (HuBERT, WavLM, and Wav2Vec 2.0) for feature extraction, with patient age and sex incorporated into the feature representations. Conventional machine learning classifiers were trained and evaluated using patient-level stratified group 5-fold cross-validation and leave-one-patient-out validation to ensure the generalizability of the findings. Among the evaluated approaches, Wav2Vec 2.0 combined with histogram-based gradient boosting achieved the strongest and most consistent performance, yielding an accuracy of 0.84, sensitivity of 0.80, specificity of 0.86, and F1-score of 0.76 under both evaluation protocols. The consistency of performance across validation strategies suggests promising generalization to unseen patients. These findings suggest that pretrained self-supervised audio representations offer a promising, non-invasive approach for pediatric asthma detection in real-world emergency department settings, where objective respiratory assessment is often limited.",
+      "authors": [
+        "Fatemeh Bagheri",
+        "Thalia Pandolfi",
+        "Ervin Sejdic",
+        "Rohit Mohindra"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-07-28T04:42:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.25286v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised audio representation learning from stethoscope recordings",
+      "llm_evidence_cn": "使用自监督音频表征学习提取听诊录音特征",
+      "llm_evidence": "使用自监督音频表征学习提取听诊录音特征",
+      "canonical_evidence": "使用自监督音频表征学习提取听诊录音特征",
+      "llm_tldr_en": "Applies pretrained self-supervised speech models to learn representations for pediatric asthma detection.",
+      "llm_tldr_cn": "利用预训练自监督语音模型学习表征以检测小儿哮喘。",
+      "llm_tldr": "利用预训练自监督语音模型学习表征以检测小儿哮喘。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25626v1",
+      "source": "arxiv",
+      "title": "Joint Text-Audio Alignment for EEG-to-Text Decoding in Chinese Speech Production and Perception",
+      "abstract": "Decoding speech information directly from scalp electroencephalography (EEG) into text provides a potential non-invasive neural communication pathway for individuals with severe speech and motor impairments. Compared with invasive approaches such as electrocorticography, EEG is safer and more widely deployable, yet substantially more challenging to decode.This challenge is exacerbated for Chinese sentence decoding, which must handle a high-dimensional output space with thousands of characters, severe inter-subject variability, and low signal-to-noise ratios for text alignment.Existing methods commit to a single supervisory axis---either text semantics or audio acoustic features---yet neither can simultaneously satisfy the demands of sentence-level discriminability and fine-grained temporal resolution required for large-vocabulary Chinese decoding. We introduce EEGAlign, a novel parameter-efficient framework that jointly aligns EEG with two axes---text alignment with BGE-M3 text embeddings and audio alignment with wav2vec~2.0 speech features via contrastive learning followed by CTC character-sequence decoding. On ChineseEEG-2 data, EEGAlign yields state-of-the-art closed-set sentence classification performance, reaching up to 82.37% Top-1 accuracy on Reading Aloud EEG and 41.43% on Passive Listening EEG out of 101 candidates. Ablation studies show that the two alignment axes are highly complementary: combining them yields consistently better performance than either alone. To the best of our knowledge, this is the first study on decoding large-vocabulary Chinese sentences from non-invasive EEG during overt speech production, and achieving strong classification performance with relatively large closed-set candidate-sentence setting.",
+      "authors": [
+        "Tian Zheng",
+        "Xurong Xie",
+        "Xinxin Zhu",
+        "Xiaolan Peng",
+        "Feng Tian"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-28T12:06:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.25626v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Decodes EEG neural signals directly into Chinese text.",
+      "llm_evidence_cn": "直接解码脑电神经信号为中文文本。",
+      "llm_evidence": "直接解码脑电神经信号为中文文本。",
+      "canonical_evidence": "直接解码脑电神经信号为中文文本。",
+      "llm_tldr_en": "Joint text-audio alignment improves EEG-to-text decoding for Chinese speech production and perception.",
+      "llm_tldr_cn": "联合文本-音频对齐改进了中文言语产生与感知的脑电解码。",
+      "llm_tldr": "联合文本-音频对齐改进了中文言语产生与感知的脑电解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.25085v1",
+      "source": "arxiv",
+      "title": "Text-Prompted CLAP: Learning Query-Conditioned Audio Representations via Contrastive Learning",
+      "abstract": "Contrastive Language-Audio Pretraining (CLAP) learns aligned text and audio representations in a shared embedding space. However, independent encoding of each modality limits its ability to model cross-modal semantics in complex audio understanding and retrieval tasks. To address this limitation, this paper proposes Text-Prompted CLAP (TP-CLAP), a parameter-efficient extension of CLAP that introduces a cross-attention-based fusion module to incorporate textual prompts into audio features. TP-CLAP is trained using an audio multiple-choice question (audio-MCQ) framework, where it learns to align query-conditioned audio representations with text embeddings of correct answer choices via contrastive learning. Experiments demonstrate that TP-CLAP achieves competitive performance on audio question answering (audio-QA) with substantially larger audio-LLMs, while also improving the base CLAP model on audio-text retrieval and zero-shot classification benchmarks. The learned representations are further fine-tuned for attribute-focused audio-to-audio retrieval, showing that TP-CLAP consistently outperforms the standard CLAP baseline in music retrieval tasks.",
+      "authors": [
+        "Mohan Li",
+        "Rama Doddipatla",
+        "Philip C. Woodland"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS"
+      ],
+      "published": "2026-07-27T21:22:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.25085v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Learning query-conditioned audio representations via contrastive learning",
+      "llm_evidence_cn": "通过对比学习学习查询条件的音频表示",
+      "llm_evidence": "通过对比学习学习查询条件的音频表示",
+      "canonical_evidence": "通过对比学习学习查询条件的音频表示",
+      "llm_tldr_en": "Extends CLAP with cross-attention fusion to learn query-conditioned audio representations.",
+      "llm_tldr_cn": "提出TP-CLAP，用跨注意力融合增强对比学习，学习查询条件下的音频表示。",
+      "llm_tldr": "提出TP-CLAP，用跨注意力融合增强对比学习，学习查询条件下的音频表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.25045v1",
+      "source": "arxiv",
+      "title": "CogEEGAgent: Toward Autonomous Cognitive EEG Analysis with Grounded Execution and Selection-Aware Verification",
+      "abstract": "Electroencephalography (EEG) analysis in cognitive studies requires specialized expertise and involves many defensible choices over contrasts, channels, time windows, and statistical tests. LLM agents can translate varied natural-language questions into analysis choices, offering a flexible interface for automation. Yet fluent reports alone cannot establish that an agent selected the requested analysis or evaluated a confirmatory claim independently of adaptive search. We present CogEEGAgent, a cognitive-EEG analysis agent grounded in MNE-Python. Its EEG-specific scientific harness separates semantic from scientific authority. The LLM interprets intent and proposes registered analyses, while deterministic components validate typed contracts, control confirmation access, and authorize evidence-bound release. On a prespecified routing benchmark, CogEEGAgent maps language to registered analyses more accurately than a matched deterministic router, while matched preflight makes both systems abstain whenever required. In an externally model-authored, outcome-blind campaign, the complete system releases supported analyses with participant-disjoint confirmation and blocks prespecified capability hazards and lifecycle-reuse requests. Policy stress testing shows that held-out confirmation curbs false positives from uncorrected adaptive search. Together, these studies establish bounded autonomy and an auditable automation framework for cognitive-EEG workflows. More broadly, they show how scientific agents can combine flexible language understanding with fail-closed control over inference and release.",
+      "authors": [
+        "Dengzhe Hou",
+        "Lingyu Jiang",
+        "Fangzhou Lin",
+        "Kazunori D Yamada"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "eess.SP",
+        "q-bio.NC"
+      ],
+      "published": "2026-07-27T20:09:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.25045v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "LLM agent grounded in MNE-Python for autonomous cognitive EEG analysis",
+      "llm_evidence_cn": "基于MNE-Python的自主认知脑电分析智能体",
+      "llm_evidence": "基于MNE-Python的自主认知脑电分析智能体",
+      "canonical_evidence": "基于MNE-Python的自主认知脑电分析智能体",
+      "llm_tldr_en": "CogEEGAgent automates cognitive EEG analysis with an LLM interface, grounded execution, and verification.",
+      "llm_tldr_cn": "CogEEGAgent用LLM自动化认知脑电分析，具备执行落地与验证.",
+      "llm_tldr": "CogEEGAgent用LLM自动化认知脑电分析，具备执行落地与验证.",
+      "llm_tags": [
+        "query:ndai:composite"
+      ],
+      "matched_query_tag": "query:ndai:composite",
+      "matched_query_text": "Papers central to AI启发神经解码方法, especially work that connects or combines: methods for analyzing and predicting sequential data over time; learning compact and meaningful representations from raw data; algorithms for converting model outputs into sequences; techniques for adapting models to new domains with limited labeled data; leveraging knowledge from pretrained models for downstream tasks; methods that compute importance weights for input features; decoding neural signals into language or actions; transfer learning for brain computer interfaces; sequence modeling for neural data; representation learning for neural activity.",
+      "matched_requirement_id": "req-composite-ndai",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.25164v1",
+      "source": "arxiv",
+      "title": "OrganLens: Organ-Specific Representation Learning for CT Foundation Models",
+      "abstract": "A CT examination captures multiple organs, but many biomedical questions concern abnormalities, prognosis, or longitudinal change in a specific organ. These questions require a separate representation for each organ within the same CT volume. Existing CT foundation models commonly produce a single volume-level representation, while recent anatomy-aware methods either encode pre-separated organ volumes or explicitly disentangle images into organ token groups. The former may remove clinically relevant surrounding context, while the latter does not condition a shared encoder on a selected organ before its features are formed. We introduce OrganLens for organ-specific representation learning through self-supervision. An organ identity conditions a shared CT encoder, while organ-specific distillation and anatomy-mask supervision shape features for anatomy-weighted pooling into organ-specific representations. At inference, the shared model produces 11 organ-specific representations without external segmentation masks. We evaluate OrganLens on CT-RATE, RAD-ChestCT, INSPECT, and NLST across diverse acquisitions and downstream evaluations. Relative to CT-pretrained DINOv2, heart representations raise CT-RATE cardiomegaly AUROC from 0.910 to 0.953, while lung representations improve the Harrell C-index for NLST lung-cancer mortality by 14.2\\%. The global representation reaches INSPECT Recall@10 of 33.09\\% and 32.04\\% for text-to-image and image-to-text retrieval, respectively. Across organ-related tasks, anatomically matched representations provide stronger task-relevant signal, while the global representation retains broad utility. OrganLens offers a scalable approach to organ-specific CT representation learning with a shared encoder. More broadly, it provides the medical research community with a reusable framework for studying organ-specific disease across cohorts and clinical endpoints.",
+      "authors": [
+        "Zhixuan Ge",
+        "Anqi Li",
+        "Sadeer Al-Kindi",
+        "Hanwen Xu",
+        "Wei Qiu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-28T00:25:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.25164v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "organ-specific representation learning from raw CT volumes via self-supervision",
+      "llm_evidence_cn": "通过自监督从原始CT体数据学习器官级表示",
+      "llm_evidence": "通过自监督从原始CT体数据学习器官级表示",
+      "canonical_evidence": "通过自监督从原始CT体数据学习器官级表示",
+      "llm_tldr_en": "OrganLens learns organ-specific representations from CT volumes via self-supervision.",
+      "llm_tldr_cn": "OrganLens通过自监督从CT体数据学习器官级表示。",
+      "llm_tldr": "OrganLens通过自监督从CT体数据学习器官级表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.25202v1",
+      "source": "arxiv",
+      "title": "A Cross-lingual Comparison of Human and Classification Model Entrainment Behavior in Code-switched Speech Settings",
+      "abstract": "Conversational entrainment is well-studied in monolingual and written contexts, but remains underexplored in spoken code-switching (CSW). We present a novel cross-lingual analysis of entrainment in Mandarin-English, Hindi-English, and Spanish-English dialogue and show that, while lexical entrainment generalizes across language pairs, entrainment over acoustic-prosodic and CSW style aspects exhibits context-specific variation. We build on these findings by asking whether classification models capture these human behavioral patterns. Applying feature importance and ablation analyses, we find that classical and Transformer-based classifiers detect entrainment reasonably well but consistently prioritize features other than those most salient to human entraining behavior. Our approach introduces a human-grounded framework for evaluating model decision-making in multilingual stylistic contexts, and suggests future challenges for developing conversational agents capable of producing naturalistic code-switched speech.",
+      "authors": [
+        "Debasmita Bhattacharya",
+        "Siying Ding",
+        "Alayna Nguyen",
+        "Julia Hirschberg"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-28T02:16:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.25202v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "applies feature importance and ablation analyses to classifiers",
+      "llm_evidence_cn": "对分类器进行特征重要性和消融分析",
+      "llm_evidence": "对分类器进行特征重要性和消融分析",
+      "canonical_evidence": "对分类器进行特征重要性和消融分析",
+      "llm_tldr_en": "Compares human and model entrainment in code-switched speech, using feature importance to understand classification behavior.",
+      "llm_tldr_cn": "比较代码切换语音中人类和模型的交互同步行为，并利用特征重要性理解分类行为。",
+      "llm_tldr": "比较代码切换语音中人类和模型的交互同步行为，并利用特征重要性理解分类行为。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.25209v1",
+      "source": "arxiv",
+      "title": "VaLiDRec: Variable-Length LLM-Aligned Semantic IDs for Generative Recommendation",
+      "abstract": "Generative recommendation commonly represents items using fixed-length semantic identifiers (SIDs) constructed through clustering and quantization. However, these artificial codes may overcompress item semantics, remain misaligned with pretrained LLM vocabularies, and require costly autoregressive decoding. In light of this, we propose VaLiDRec, a generative recommendation framework based on variable-length, LLM-aligned semantic identifiers. VaLiDRec constructs SIDs directly from informative native LLM vocabulary tokens via token importance estimation, semantic-quality-aware pruning, and collision-aware refinement, allowing identifier lengths to adapt to item semantic complexity. To model user preferences, VaLiDRec incorporates graph-aware soft prompts and reformulates recommendation as token-set prediction with token-level item scoring, eliminating autoregressive SID generation and beam search. Experiments on four real-world datasets show that VaLiDRec consistently outperforms strong sequential and generative recommendation baselines across all evaluation metrics. It further achieves superior zero-shot item cold-start performance and 87.49$\\times$ faster inference than LC-Rec. These results demonstrate that LLM-native variable-length semantic identifiers provide a more expressive and efficient paradigm for generative recommendation.",
+      "authors": [
+        "Shutong Qiao",
+        "Wei Yuan",
+        "Tong Chen",
+        "Hao Wang",
+        "Quoc Viet Hung Nguyen",
+        "Hongzhi Yin"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-07-28T02:29:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.25209v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "semantic IDs as compact representations from raw item features with token importance estimation",
+      "llm_evidence_cn": "从原始物品特征学习紧凑的语义ID表示，并估计token重要性",
+      "llm_evidence": "从原始物品特征学习紧凑的语义ID表示，并估计token重要性",
+      "canonical_evidence": "从原始物品特征学习紧凑的语义ID表示，并估计token重要性",
+      "llm_tldr_en": "Proposes VaLiDRec, a generative recommendation framework that learns variable-length LLM-aligned semantic IDs via token importance estimation, pruning, and refinement.",
+      "llm_tldr_cn": "提出VaLiDRec，通过学习可变长度的LLM对齐语义ID进行生成式推荐，结合token重要性估计、剪枝和优化。",
+      "llm_tldr": "提出VaLiDRec，通过学习可变长度的LLM对齐语义ID进行生成式推荐，结合token重要性估计、剪枝和优化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

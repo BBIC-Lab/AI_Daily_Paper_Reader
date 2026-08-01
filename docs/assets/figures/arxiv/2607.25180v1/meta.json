@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-004.webp",
+      "caption": "Figure 1: Parameter efficiency of multilingual embedding models: retrieval quality (HAKARI-Bench Overall, a lightweight benchmark created by the author; §4.1) versus Active Parameters (log scale). The staircase shows the best observed score attainable under a given AP budget; it does not interpolate between measured models. a8m and a25m extend the efficiency frontier of the unified comparison set (§4.2) into a band one to two orders of magnitude smaller in AP. The same picture is confirmed on the primary evaluation, official MMTEB Multilingual v2 (§5.1, Figure 4).",
+      "page": 3,
+      "index": 4,
+      "width": 800,
+      "height": 536
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-003.webp",
+      "caption": "Table 1: Positioning among major multilingual embedding models (AP = non-embedding parameters). This table illustrates design positioning (distillation, openness) with representative examples; the unified model set for performance comparison (multilingual dense models with AP ≤ 350M + BM25, 13 models) is defined in §4.2.",
+      "page": 7,
+      "index": 3,
+      "width": 837,
+      "height": 284
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-008.webp",
+      "caption": "Figure 2: Bekko’s construction pipeline. Without distillation, the pruned model serves as the base for two-stage contrastive training completed on a single GPU (a8m about 3 days / a25m about 8 days), and the ONNX / OpenVINO distributions achieve 124 / 190 MiB via int8 quantization of the vocabulary embedding (§3.2–§3.5, §7.1).",
+      "page": 8,
+      "index": 8,
+      "width": 869,
+      "height": 277
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-011.webp",
+      "caption": "Figure 3: Structural layer pruning. We adopt designs that add the deep Global layer (18), not the final layer (21) (layer-selection comparison in §6.1).",
+      "page": 9,
+      "index": 11,
+      "width": 869,
+      "height": 352
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-013.webp",
+      "caption": "Table 2: Official MMTEB Multilingual v2 per-task-type scores (all ×100; ascending AP). Mean = mean of 131 tasks (Mean(Task)); Ret = Retrieval (task-macro, nDCG@10); Rerank = Reranking; Bitext = BitextMining; STS = Semantic Textual Similarity; PairCls = PairClassification; Class = Classification; Clust = Clustering; MultiLbl = MultilabelClassification. InstructionReranking is omitted (centered scores near 0 for all models). The -pt rows are stage-1-only reference values. Bold marks scores where Bekko is strong, not column bests (see the highlights and body text).",
+      "page": 16,
+      "index": 13,
+      "width": 825,
+      "height": 408
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-009.webp",
+      "caption": "Figure 4: Retrieval quality versus AP (log scale; the 12 dense models of the unified set; 2×2 panels)—the central evidence for the AP axis (§1.2). (a) On MMTEB Retrieval, a8m (7.7M AP) beats bge-m3 and the mE5 family, and a25m approaches arctic (12× AP). (b) On the MMTEB overall mean, a25m also exceeds arctic and ties gte-m-base (Table 2). (c) On Multilingual NanoBEIR (§5.2), a25m lands within 0.02 of the 300M-class bge-m3 and mE5-large, and every dense model beats BM25 (dashed). (d) HAKARI-Bench Overall shows broadly the same picture.",
+      "page": 17,
+      "index": 9,
+      "width": 869,
+      "height": 627
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-005.webp",
+      "caption": "Table 3: Multilingual NanoBEIR (primary evaluation 2) and HAKARI-Bench task sets (nDCG@10; ascending AP). The MNanoBEIR column is primary evaluation 2; the other columns (Overall, NanoMMTEB-v2, NanoRTEB, NanoCoIR) are auxiliary comparisons on the author-released HAKARI-Bench. The -pt rows are stage-1-only (pretrained) reference values. The released Bekko rows are bold for visibility, not to mark column bests. Long-input task sets appear in §5.3 (Figure 5) and Appendix G.",
+      "page": 18,
+      "index": 5,
+      "width": 841,
+      "height": 433
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-012.webp",
+      "caption": "Figure 5: Long-input retrieval (NanoLongEmbed) and long-document retrieval (NanoMLDR). BM25 (hatched) beats every dense model on both benchmarks; among dense models a25m is 1st on NanoLongEmbed and 3rd on NanoMLDR. Full per-task and per-language numbers are in Appendix G.",
+      "page": 20,
+      "index": 12,
+      "width": 869,
+      "height": 367
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-006.webp",
+      "caption": "Table 4: Deployment artifacts and configurations by environment, as measured in this paper (evidence in the respective sections).",
+      "page": 23,
+      "index": 6,
+      "width": 873,
+      "height": 333
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-010.webp",
+      "caption": "Figure 6: Distribution-size breakdown and the effect of embedding int8. The compression target is the static embedding table, which does not participate in matrix-multiply compute; the AP (Transformer) part is untouched (source: file layout of the public model cards).",
+      "page": 24,
+      "index": 10,
+      "width": 739,
+      "height": 419
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-002.webp",
+      "caption": "Figure 7: Retrieval quality versus CPU inference speed (GPU-less setting; the models of the unified set with CPU measurements). a8m (364 docs/s) is faster and higher-quality than mE5-small (226); a25m (134) delivers mE5-large-class (21) quality at about 6× the speed; the two form the quality–speed frontier—the main efficiency claim of this work.",
+      "page": 26,
+      "index": 2,
+      "width": 783,
+      "height": 481
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-007.webp",
+      "caption": "Figure 8: Output-vector compression (dimensionality reduction × quantization; HAKARI-Bench Overall). Within each dimension group, the int8+rescore bar reaches nearly the fp32 height—the loss converges to the truncation-induced share. Quantization without rescoring loses much more, and binary amplifies the loss at low dimensions.",
+      "page": 28,
+      "index": 7,
+      "width": 869,
+      "height": 331
+    },
+    {
+      "url": "assets/figures/arxiv/2607.25180v1/fig-001.webp",
+      "caption": "Figure 9: MNanoBEIR per-language scores (6 selected models; all models in the table above). a25m varies relatively little across languages, running broadly alongside bge-m3 and mE5-large, whose AP is about 12× (max gap to bge-m3: 0.026).",
+      "page": 43,
+      "index": 1,
+      "width": 796,
+      "height": 736
+    }
+  ]
+}
