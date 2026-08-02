@@ -1,0 +1,713 @@
+Title: Learning from the Future: Privileged Self-Distillation for Sequential Recommendation
+
+URL Source: https://arxiv.org/pdf/2607.27055v1
+
+Published Time: Thu, 30 Jul 2026 01:07:07 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Learning from the Future: Privileged Self-Distillation for Sequential Recommendation 
+
+# Jiakai Tang 1,3, Yang Zhang 2, See-Kiong Ng 2, Xu Chen 1 B, Wen Chen 3 B, Jian Wu 3, Han Zhu 3
+
+> 1
+
+Gaoling School of Artificial Intelligence, Renmin University of China, Beijing, China 
+
+> 2
+
+National University of Singapore, Singapore 
+
+> 3
+
+Alibaba Group, Beijing, China tangjiakai5704@ruc.edu.cn 
+
+## Abstract 
+
+Sequential recommenders are commonly trained with one-hot next-item labels under a causal ( i.e., prefix-only) objective aligned with inference. Although deployment-compatible, this supervision pro-vides little information about the relative preferences among non-target items. Yet logged interaction sequences contain an additional source of supervision: interactions following the target often reveal how the user’s intent evolves and make the target easier to inter-pret. We view these future interactions as training-only privileged information—available during learning but unavailable at inference. This raises a natural question: can future interactions serve as a richer supervisory signal while keeping training aligned with how the model makes predictions at inference? We propose Privileged Self-Distillation (PSD) , a simple frame-work that separates the information used for learning from the information available at inference. PSD applies two attention masks to the same sequential backbone: a future-aware view produces a privileged teacher distribution conditioned on past and future interactions, while a prefix-only view produces the student distri-bution used for deployment. Distilling the privileged distribution converts future interactions into training-only supervision rather than inference-time inputs. Because the two views share a backbone, the teacher’s advantage is informational rather than architectural, eliminating the need for a separately pretrained teacher and allow-ing its supervision to adapt as the student evolves. PSD further employs an advantage-reachability gate to focus distillation on teacher signals more likely to be supported by the observed prefix, together with a momentum-averaged teacher that stabilizes dis-tillation targets. The entire framework is optimized end-to-end in a single stage, leaving the deployed model and its inference cost unchanged. Extensive experiments across public benchmarks and diverse sequential backbones demonstrate consistent and substan-tial improvements over strong baselines. 
+
+## CCS Concepts 
+
+• Information systems → Recommender systems ; Personaliza-tion ; • Computing methodologies → Machine learning .
+
+## Keywords 
+
+Sequential Recommendation, Privileged Information, Self-Distillation 
+
+## 1 Introduction 
+
+Sequential recommendation predicts a user’s next interaction from her historical behavior [ 2, 18 , 31 ]. In deployment, the recommender  
+
+> BCo-corresponding authors.
+
+only observes the user’s past interactions and ranks candidate items for the next step. To match this deployment condition, modern sequential recommenders commonly adopt next-item prediction, where a causal model estimates the next-item distribution from the observed prefix and is optimized by cross-entropy on the observed item. This hard-label supervision is serving-compatible but low-information [ 24 ]: it over-confidently assigns all probability mass to the observed target, while leaving the relative preferences among non-target candidates largely under-constrained. As a result, each training position provides only a one-hot target, and the rest of the logged trajectory is left unused as supervision during training. This unused portion of the trajectory, however, carries exploitable signal in its own right. At training time, the future suffix of the same sequence is also observed, and these future interactions often reflect the underlying evolving user intent that makes the current target easier to interpret, thereby reducing uncertainty about the observed next item and providing supervision beyond the one-hot label. In this sense, future interactions act as training-only privileged information [ 16 , 30 ]: informative during learning but unavailable during serving. This creates a useful but delicate opportunity: fu-ture interactions can enrich the training signal, yet the deployed recommender must remain strictly causal. The central question is 
+
+how to learn from the future without serving with the future .A seemingly direct solution is to let the model attend to both past and future interactions during training. Bidirectional objec-tives such as masked-item prediction in BERT4Rec [ 23 ] follow this intuition and can expose richer context than purely causal next-item prediction. Yet this changes the intrinsic learning problem from causal next-item prediction to reconstruction with unavail-able context. The resulting model may learn useful correlations, but the prediction path no longer matches the one used at inference. Figure 1 provides a diagnostic view of this tension: future visibility can improve ranking quality, but it also opens a gap between what a privileged model can infer and what a causal model can access. This calls for a mechanism that extracts training signal from future context while keeping the deployed predictor strictly causal. Knowledge distillation [ 5 , 17 , 37 ] provides a natural way to sep-arate these two roles: a privileged teacher can learn from richer training information and transfer soft-label supervision to a deploy-able student. However, conventional distillation does not directly address the constraints introduced by future-context privileged information. Some methods rely on separately trained teachers or compact-model transfer pipelines [ 28 ]; others draw supervision from additional label sources, side information, or privileged fea-tures collected outside the interaction sequence itself [ 33 , 34 , 36 ]. arXiv:2607.27055v1 [cs.IR] 29 Jul 2026 Jiakai Tang et al. 0 20 40 60 80 100             
+
+> Future Visibility (%)
+> 0
+> 20
+> 40
+> Improvement (%)  HR@20
+> 020 40 60 80 100
+> Future Visibility (%)
+> 0
+> 20
+> 40
+> Improvement (%)  NDCG@20
+> 020 40 60 80 100
+> Future Visibility (%)
+> 0
+> 10
+> 20
+> Improvement (%)  Mean Rank
+> Video Games Yelp CDs & Vinyl
+
+Figure 1: Relative improvement in HR@20, NDCG@20, and the mean rank of the target item as the visible fraction of future interactions increases (0% → 100%). Even partial fu-ture visibility yields substantial gains, indicating that future interactions carry predictive signal well beyond what the causal model extracts from the prefix alone. 
+
+These choices often introduce additional parameters, auxiliary fea-tures, or multi-stage training pipelines, and may create a mismatch between a static teacher and an evolving student: the teacher is frozen or optimized independently, while the student continues to update. Recent studies also suggest that an initially strong but fixed teacher is not always the best supervisor for a weaker student [ 1 , 6]. These limitations suggest an alternative approach: rather than importing a stronger teacher, the same model can be exposed to two views of each logged sequence. One view uses the future suffix to form a privileged training signal, while the other remains causal and matches the information path used at inference. This keeps the teacher’s advantage within the sequence itself and avoids ex-tra parameters, side features, or a separate teacher-training stage. Coupling the two views, however, raises two nontrivial issues. (1) 
+
+The privileged teacher encodes much of its extra insight as soft preferences over non-target items, a form of dark knowledge for the student, yet not all of it is transferable to the causal student: some preferences are justified only by the future suffix, and forcing the causal student to imitate this unreachable part asks it to explain choices with evidence it will never observe at serving time. (2) The teacher is not an independent source of supervision: it shares its still-learning parameters with the student, so its soft targets are re-generated at every step from an immature model, and its errors are written back into the shared weights through distillation, only to reshape the next round of targets. Without a stable reference, mis-takes are self-confirmed rather than corrected, and the privileged signal can be drowned in this feedback loop. To address these issues, we propose Privileged Self-Distillation (PSD) , a dual-role in one model framework built on a single Trans-former. PSD evaluates the same backbone under two attention masks: a bidirectional mask produces a privileged teacher distri-bution conditioned on both past and future interactions, while a causal mask produces the student distribution used at inference. The privileged distribution is transferred to the causal student through teacher-to-student KL distillation, but not all teacher signals are treated equally. PSD applies an advantage-reachability gate that dis-cards high-discrepancy distillation terms within each mini-batch, focusing learning on privileged signals that are more likely to be reachable from the causal prefix. To stabilize this self-referential supervision, PSD further maintains a momentum-averaged teacher ,whose slowly evolving parameters average out transient errors instead of reinforcing them. Our main contributions are summarized as follows: 
+
+• We identify future interactions as training-only privileged in-formation for sequential recommenders, revealing supervision beyond low-information one-hot next-item labels while preserv-ing the causal deployment costraint. 
+
+• We propose Privileged Self-Distillation, a simple yet effective framework that constructs a privileged teacher and a causal student through attention-mask control, without requiring extra parameters, auxiliary features, or multi-stage training. 
+
+• We provide extensive empirical evidence across public bench-marks, diverse sequential backbones, and diagnostic analyses, showing that PSD delivers consistent and substantial gains. 
+
+## 2 Preliminary 2.1 Task Formulation 
+
+In sequential recommendation, each user leaves a chronologically ordered interaction sequence S = (𝑖 1, 𝑖 2, . . . , 𝑖 𝐿 ), where each item 𝑖 𝑡 
+
+belongs to the item set I. Given the prefix S<𝑡 = (𝑖 1, . . . , 𝑖 𝑡 −1), the task is to identify the item that the user interacts with at position 𝑡 .A recommender with parameters 𝜃 accordingly ranks all candidates through a softmax over the item set I:
+
+𝑝 𝜃 (· | S <𝑡 ) = softmax  z𝜃,𝑡 
+
+, (1) where the logits z𝜃,𝑡 are produced under a causal attention mask, which restricts every position to attend only to itself and its pre-decessors, so that z𝜃,𝑡 is a function of the prefix S<𝑡 alone. The standard learning objective is the next-item cross-entropy over the corpus D of logged sequences, which is defined as: 
+
+LCE (𝜃 ) = − 1
+
+|D| ∑︁ S ∈ D | S | ∑︁  
+
+> 𝑡 =1
+
+log 𝑝 𝜃 (𝑖 𝑡 | S <𝑡 ) . (2) Minimizing Eq. (2) keeps training aligned with practical serving, since the deployed model likewise ranks candidates from the prefix alone. The price of this alignment lies in the supervision itself: a one-hot label speaks only for the observed item and is silent on all others, so each training position sharpens the likelihood of a single target while leaving the ordering of the remaining catalog essentially unconstrained. The model is thus asked to produce a full ranking at serving time, yet never told during training what a good ranking beyond the observed item looks like. 
+
+## 2.2 Future as Privileged Information 
+
+A richer signal, however, is already present in the training data but discarded by the causal objective. For a target at position 𝑡 , the suf-fix S>𝑡 = (𝑖 𝑡 +1, . . . , 𝑖 𝐿 ) is fully observed during training, yet never available at serving time. This is precisely the setting of privileged information [ 16 , 30 ]: an auxiliary view that may inform learning but must not enter the deployed predictor. The suffix is informative because user behavior is temporally coherent: the interactions that follow 𝑖 𝑡 record how the user’s interests unfold, offering retrospec-tive context that narrows down the plausible targets beyond what the prefix reveals. Formally, the uncertainty it removes about the target is the conditional mutual information 
+
+𝐼 (𝑖 𝑡 ; S>𝑡 | S <𝑡 ) = 𝐻 (𝑖 𝑡 | S <𝑡 ) − 𝐻 (𝑖 𝑡 | S <𝑡 , S>𝑡 ) ≥ 0, (3) Learning from the Future: Privileged Self-Distillation for Sequential Recommendation ?
+
+> Prefix
+> 𝒮 !"
+> Suffix
+> 𝒮 #"
+> Target
+
+Transformer -based 
+
+Recommender 
+
+(Prefix Only )
+
+Student 
+
+Teacher Teacher 
+
+(Privileged Enhancement )         
+
+> 𝜃 ̅(%)=𝛼 𝜃 ̅%'(+1−𝛼 𝜃 %
+
+Causal Mask 
+
+Privileged Mask 
+
+> Parameter
+> Sharing
+> (Co -Evolving )
+
+Student 𝑝 !
+
+Teacher 𝑝 "  
+
+> Momentum -Averaged
+> Teacher 𝑝 ̅)
+
+ℒ#$  
+
+> !
+
+= 𝐷 #% sg 𝑝 ̅ " ‖𝑝 !
+
+Gated Privileged 
+
+Distillation 
+
+> Dark
+> Knowledge
+
+ℒ&'  
+
+> "
+
+= log 𝑝 " 𝑖 ∗
+
+⊕    
+
+> ✘
+> ⇒
+> ℒ*+, =ℒ-.
+> )+ℒ/,
+> 0
+> ✓
+
+Figure 2: Overview of PSD. The same Transformer backbone is evaluated under two attention masks: the causal mask restricts the student to the prefix S<𝑡 , while the privileged mask additionally exposes the suffix S>𝑡 to the teacher, with all parameters shared and co-evolving. The teacher is grounded on the observed target through L𝑇 
+
+> CE
+
+, and its momentum-averaged distribution 
+
+¯𝑝 𝑇 supervises the student through the gated distillation loss L𝑆 
+
+> KD
+
+, which withholds the high-discrepancy dark knowledge that the causal prefix cannot support. Only the causal student is used at inference time. 
+
+which is strictly positive whenever the future is predictive of the target given the past. A predictor conditioned on both sides there-fore attains a lower-entropy, and hence lower Bayes-risk, view of the label than any predictor restricted to the prefix. This asymmetry cannot be closed at inference, since S>𝑡 does not exist once the model is deployed. It can nonetheless be ex-ploited during training, provided the future is used to shape the learning target rather than to feed the prediction path. We formalize this through two conditional distributions produced by the same recommender under different information sets: a privileged teacher 
+
+𝑝 𝑇 𝜃 (· | S <𝑡 , S>𝑡 ), (4) which reads both the prefix and the suffix, and a causal student 
+
+𝑝 𝑆 𝜃 (· | S <𝑡 ), (5) which is restricted to the prefix and is the only distribution used at serving time. The teacher’s advantage over the student is ex-actly the information quantified in Eq. (3) . This gap, however, is a double-edged signal: part of the teacher’s confidence is grounded in patterns the student can recover from the prefix, while part rests solely on the future suffix and is inherently unreachable at infer-ence. The central question, addressed in the next section, is how to transfer the reachable part of this privileged signal to the causal student while suppressing the part that the prefix can never justify. 
+
+## 3 Methodology 
+
+The architecture of PSD is summarized in Figure 2. PSD builds on a simple observation: a privileged teacher need not be a second model. Evaluated under two attention masks, a single sequential backbone serves both roles, where a privileged mask exposes the future suffix to the teacher during training, while a causal mask restricts the student to the information path used at serving. Since the two views share all embeddings, Transformer layers, and the prediction head, the teacher’s advantage stems purely from richer information access rather than from extra capacity. Upon this construction, two mechanisms address the issues identified in the introduction: an advantage-reachability gate confines distillation to signals the causal prefix can support (Section 3.2), and a momentum-averaged teacher keeps the self-referential supervision stable (Section 3.3). 
+
+## 3.1 Dual-Mask Teacher and Student 
+
+The teacher and the student are distinguished solely by their at-tention scope. At a training position 𝑡 , the student mirrors the deployment condition and attends only to the prefix: 
+
+A𝑆 𝑡 = {𝑘 | 𝑘 < 𝑡 }. (6) The teacher adopts a training-time receptive field that additionally covers the suffix: 
+
+A𝑇 𝑡 = R𝑡 ∪ { 𝑘 | 𝑘 > 𝑡 }, (7) where R𝑡 ⊆ A 𝑆 𝑡 is the visibility pattern inside the prefix inherited from the backbone: it remains causal for autoregressive backbones such as SASRec, and could be fully bidirectional for backbones such as BERT4Rec. In either case, the target item 𝑖 𝑡 is excluded from its own receptive field to prevent label leakage, and the student never observes the suffix S>𝑡 , so that the deployed model remains strictly causal. The two receptive fields translate into binary attention masks M𝑆 , M𝑇 ∈ { 0, 1}𝐿 ×𝐿 , where M𝑡,𝑘 = 1 if and only if position 𝑡 
+
+may attend to position 𝑘 , i.e. , 𝑘 ∈ A 𝑡 .Let 𝑓 𝜃 (S ; M) denote the backbone evaluated under attention mask M. One forward pass per mask yields 
+
+h𝑆 𝑡 = 𝑓 𝜃 (S ; M𝑆 )𝑡 , 𝑝 𝑆 𝑡 = softmax (Wh 𝑆 𝑡 ),
+
+h𝑇 𝑡 = 𝑓 𝜃 (S ; M𝑇 )𝑡 , 𝑝 𝑇 𝑡 = softmax (Wh 𝑇 𝑡 ), (8) with a shared output projection W. The two views are supervised asymmetrically. The teacher, which observes the target from both sides, is grounded on the observed item through the next-item cross-entropy objective, which is formally defined as: 
+
+L𝑇  
+
+> CE
+
+= − 1
+
+|B| ∑︁ ( S ,𝑡 ) ∈ B 
+
+log 𝑝 𝑇 𝑡 (𝑖 𝑡 ), (9) Jiakai Tang et al. 
+
+over a mini-batch B of sequence-position pairs. The student, in contrast, receives no direct one-hot supervision: rather than fitting the same hard label from a strictly weaker information set, it is trained to match the teacher’s predictive distribution. Specifically, its objective at position 𝑡 is the teacher-to-student KL divergence 
+
+𝑑 𝑡 = 𝐷 KL 
+
+
+
+sg (𝑝 𝑇 𝑡 ) 𝑝 𝑆 𝑡 
+
+
+
+, (10) where sg (·) stops gradients from flowing into the teacher target, so privileged knowledge is transferred in one direction only. This division of labor allows the privileged view to absorb the observed target, while the causal view acquires the softened preference struc-ture that the target alone cannot convey. 
+
+## 3.2 Gated Privileged Distillation 
+
+Through Eq. (10) , the student inherits from the teacher a preference structure over the entire item set, a strictly richer supervisory sig-nal than the one-hot label. Not every position, however, warrants this transfer. The divergence 𝑑 𝑡 itself provides a natural selection criterion, as it measures the discrepancy between the student’s causal prediction and the teacher’s privileged one at each posi-tion. If every teacher preference were recoverable from the prefix, uniformly averaging 𝑑 𝑡 over the batch would suffice. In practice, however, a large 𝑑 𝑡 may arise for two reasons: ❶ the teacher may rely on evidence available only in the suffix, or ❷ the pattern may exceed what the student can absorb at its current stage of training. In either case, enforcing an immediate match imposes supervision that the student cannot yet justify, turning the privileged signal into a source of interference rather than guidance. To address the above problem, PSD introduces an advantage-reachability gate that restricts distillation to positions whose privileged signals are transferable. Given a mini-batch B, let 
+
+𝛾 𝛿 = Percentile 𝛿 ({ 𝑑 𝑡 | (S , 𝑡 ) ∈ B}) (11) denote the 𝛿 -th percentile of the discrepancies within the batch, and define the gating indicator of each position as 
+
+𝑔 𝑡 = I(𝑑 𝑡 ≤ 𝛾 𝛿 ). (12) The distillation loss is computed over the admitted positions only: 
+
+L𝑆  
+
+> KD
+
+=
+
+Í( S ,𝑡 ) ∈ B 𝑔 𝑡 𝑑 𝑡 
+
+Í( S ,𝑡 ) ∈ B 𝑔 𝑡 
+
+. (13) Positions rejected by the gate are not discarded from learning: they still ground the teacher through L𝑇 
+
+> CE
+
+, but their soft targets are withheld from the student. The gate is named accordingly: a small 
+
+𝑑 𝑡 indicates a teacher advantage that is already reachable from the prefix, whereas a large 𝑑 𝑡 corresponds to an advantage that is not yet transferable, either because it is grounded solely in the suffix or because it exceeds the student’s current capability. Moreover, the rejection is not permanent: the percentile 𝛿 controls the fraction of positions distilled in each batch, and since 𝛾 𝛿 is recomputed within every batch, positions withheld early in training may re-enter distillation as the student improves. The criterion thus adapts jointly to the evolving scale of the discrepancies and to the student’s growing capability, without relying on a fixed absolute threshold. 
+
+Algorithm 1 Training procedure of PSD 
+
+Require: training corpus D; backbone 𝑓 𝜃 ; gate percentile 𝛿 ; EMA rate 𝛼  
+
+> 1:
+
+initialize parameters 𝜃 ; EMA parameters ¯𝜃 ← 𝜃  
+
+> 2:
+
+while not converged do  
+
+> 3:
+
+sample a mini-batch B of sequence-position pairs (S , 𝑡 ) 
+
+> 4:
+
+𝑝 𝑆 𝑡 ← forward pass of 𝑓 𝜃 under causal mask M𝑆 ⊲ Eq. (8)  
+
+> 5:
+
+𝑝 𝑇 𝑡 ← forward pass of 𝑓 𝜃 under privileged mask M𝑇  
+
+> 6:
+
+¯𝑝 𝑇 𝑡 ← forward pass of 𝑓 ¯𝜃 under M𝑇 , no gradient ⊲ Eq. (15)  
+
+> 7:
+
+𝑑 𝑡 ← 𝐷 KL 
+
+  ¯𝑝 𝑇 𝑡 ∥ 𝑝 𝑆 𝑡 
+
+ for each (S , 𝑡 ) ∈ B  
+
+> 8:
+
+𝛾 𝛿 ← 𝛿 -th percentile of {𝑑 𝑡 }; 𝑔 𝑡 ← I(𝑑 𝑡 ≤ 𝛾 𝛿 ) ⊲ Eq. (12)  
+
+> 9:
+
+L𝑆  
+
+> KD
+
+←   Í 𝑡 𝑔 𝑡 𝑑 𝑡 
+
+/Í𝑡 𝑔 𝑡  
+
+> 10:
+
+LPSD ← L 𝑇  
+
+> CE
+
++ L 𝑆  
+
+> KD
+> 11:
+
+update 𝜃 by descending ∇𝜃 LPSD  
+
+> 12:
+
+¯𝜃 ← 𝛼 ¯𝜃 + ( 1 − 𝛼 )𝜃 ⊲ Eq. (14)  
+
+> 13:
+
+end while  
+
+> 14:
+
+return causal student 𝑝 𝑆 𝑡 under mask M𝑆 for serving 
+
+## 3.3 Momentum-Averaged Teacher 
+
+The teacher in PSD is not a fixed oracle: it is produced by the same parameters that are still being updated, so its prediction at a single step may encode transient errors of the current model state. To stabilize this self-referential supervision, following prior works [ 3, 7, 29 ], PSD maintains an Exponential Moving Average (EMA) of the model parameters 𝜃 as ¯𝜃 . At each training step, the EMA is updated by the following recursive formula: 
+
+¯𝜃 (𝑟 ) = 𝛼 ¯𝜃 (𝑟 −1) + ( 1 − 𝛼 ) 𝜃 (𝑟 ) , (14) where 𝑟 indexes training steps and 𝛼 ∈ [ 0, 1) controls the degree of smoothing, with ¯𝜃 (0) initialized to 𝜃 (0) . The distillation target is then produced by this averaged model under the privileged mask, 
+
+¯𝑝 𝑇 𝑡 = softmax   ¯W 𝑓 ¯𝜃 (S ; M𝑇 )𝑡 
+
+, (15) so Eq. (10) is always computed against ¯𝑝 𝑇 𝑡 rather than the instan-taneous 𝑝 𝑇 𝑡 . Since ¯𝜃 aggregates the whole optimization trajectory, momentary errors of any single step are averaged out over time instead of being written back into the shared weights. The aver-aged parameters are updated without gradients, exist only during training, and leave the inference graph untouched. 
+
+## 3.4 Optimization Objective 
+
+In this subsection, we introduce the overall training objective and describe how PSD behaves at inference. The model is optimized end-to-end by a single objective that grounds the teacher on the observed target and guides the student through gated distillation: 
+
+LPSD = L𝑇  
+
+> CE
+
++ L 𝑆 
+
+> KD
+
+. (16) Notably, the objective contains NO student cross-entropy term: the causal view is shaped entirely by the teacher’s softened distribution rather than by the one-hot target. Since both terms act on one set of shared parameters, the teacher and the student are co-evolving dur-ing training: each update refines the teacher’s privileged view, and the refinement is delivered to the student in the next round of dis-tillation, so the guidance keeps pace with the student’s competence rather than growing stale as with a frozen teacher. Learning from the Future: Privileged Self-Distillation for Sequential Recommendation 
+
+Table 1: Comparison between PSD and the representative distillation-based training strategies for recommendation. Method w/o Extra Parameters w/o Auxiliary Features One-Stage Training RD [28] ✗ ✓ ✗
+
+PFD [36] ✗ ✗ ✓
+
+CSRec [34] ✗ ✓ ✗
+
+S4Rec [33] ✗ ✓ ✓
+
+PSD (Ours) ✓ ✓ ✓
+
+The whole model is trained in a single stage without any pre-training or teacher-warmup phase; Algorithm 1 summarizes the complete procedure. At inference, recommendations are produced solely from the student distribution 𝑝 𝑆 𝑡 under the causal mask. The deployed model and its serving cost are therefore identical to the original backbone, with no extra parameters or additional passes. 
+
+## 3.5 Discussion 
+
+In this section, we discuss the differences between PSD and repre-sentative distillation-based methods for recommendation, with the comparison summarized in Table 1. The essential distinction lies in where the teacher’s advantage originates. Existing methods import it from outside the deployed model: RD [28] relies on a separately pre-trained ranking model, PFD [ 36 ] on scenario-specific privileged features whose availability hardly generalizes across different sce-narios, and CSRec [ 34 ] and S 4Rec [ 33 ] on auxiliary teacher modules attached to the backbone. Such an external teacher, however, comes at a price in at least one of the following three aspects: 
+
+• Extra parameters: all compared methods maintain teacher com-ponents that the deployed model never uses, whereas the teacher of PSD is induced from the deployed backbone by an attention mask alone, so our self-distillation framework requires no extra parameters beyond the original backbone. 
+
+• Auxiliary features: PFD requires privileged features to be col-lected and maintained in production, whereas the privileged signal of our proposed method, the future suffix of the user se-quence, is already present in every logged sequence. 
+
+• Training pipeline: RD pre-trains its teacher before distillation and CSRec involves multi-stage optimization, whereas PSD opti-mizes its two loss terms jointly in a single stage. These properties amount to more than engineering economy. Since the teacher of PSD shares the parameter space of the student, its guidance is renewed at every update, yielding the co-evolving super-vision analyzed above; and since the construction requires nothing beyond an attention mask, PSD applies to any sequential backbone without modification or extra features, making it a general-purpose training strategy for Transformer-based sequential recommenders. 
+
+## 4 Experiments 4.1 Experimental Setup 
+
+4.1.1 Datasets. We conduct experiments on three widely used benchmarks: two subsets of the Amazon review corpus [ 10 ], Video Games and CDs & Vinyl , and the Yelp business-review dataset. On the Amazon subsets, we discard users with fewer than five interactions; on Yelp, we apply the standard 5-core preprocessing 
+
+Table 2: Statistics of the benchmark datasets.                     
+
+> Dataset #Users #Items #Inter. Avg. Len. Sparsity Video Games 54,001 22,735 562,193 10.41 99.95% CDs & Vinyl 89,590 88,462 1,347,178 15.04 99.98% Yelp 120,827 71,819 1,880,704 15.57 99.98%
+
+so that every user and every item retains at least five interactions. Across all datasets, an interaction is regarded as positive only if its rating exceeds 3, and the remaining interactions are removed. To avoid temporal leakage, all splits follow absolute timestamps: the Amazon subsets adopt the officially released train/validation/test partition 0, and Yelp is split chronologically with a ratio of 8:1:1. For text-based recommenders, we retain the title, price, and description of each Amazon item, and the name, category, city, and state of each Yelp business, and encode the text with Qwen3-Embedding-8B [ 40 ]. Table 2 summarizes the statistics of the processed datasets. 
+
+4.1.2 Baseline Methods. To examine the generality of PSD across architectures, we instantiate it on three representative sequential recommendation backbones: SASRec [ 14 ], a unidirectional Trans-former trained with next-item prediction; BERT4Rec [ 23 ], a bidi-rectional Transformer trained with masked-item prediction; and UniSRec [ 11 ], a text-enhanced recommender built on pre-trained language representations. On each backbone, PSD is compared with the vanilla training recipe (denoted Base ) and several closely related training strategies: Ranking Distillation ( RD ) [ 28 ], which distills from a separately trained ranking teacher; TCE and RCE [32 ], which truncate or reweight the training loss to resist noisy interac-tions; S4Rec [ 33 ], an online self-distillation strategy for sequential recommendation; and three variants of CSRec [ 34 ], denoted CS-D ,
+
+CS-M , and CS-T . All strategies are applied to the same backbone as PSD for a fair comparison, and the hyperparameters of each method are tuned to its best performance on the validation set. 
+
+4.1.3 Evaluation Metrics. Following prior works [ 25 , 26 , 38 ], we evaluate top-𝐾 recommendation quality with two standard metrics, Hit Ratio ( HR@ 𝑲 ) and Normalized Discounted Cumulative Gain (NDCG@ 𝑲 ), reported at 𝐾 = 10 and 𝐾 = 20 . HR@ 𝐾 measures whether the ground-truth item appears in the top-𝐾 list, while NDCG@ 𝐾 further rewards placing it at a higher position. We rank the target item against the full item corpus to avoid sampling bias. 
+
+4.1.4 Implementation Details. We implement all methods in Py-Torch framework. For a fair comparison, the learning rate, batch size, and embedding dimension are fixed to 1×10 −3, 2048, and 256, respec-tively, for all methods. The dropout ratio and the weight decay are tuned over {0, 0.1, 0.2, 0.3, 0.4, 0.5} and {0, 10 −5, 10 −4, 10 −3 }, respec-tively. For PSD, the EMA rate 𝛼 is searched over {0.6, 0.7, 0.8, 0.9, 0.99 },and the gate percentile 𝛿 over {0.6, 0.7, 0.8, 0.9, 0.99 , 1.0}, where 
+
+𝛿 = 1.0 disables the gate and distills every position. We adopt an early stopping strategy that monitors NDCG@20 on the valida-tion set with a patience of 10 epochs. Note that when applying PSD, the student always performs causal inference regardless of the backbone, while the visibility pattern R𝑡 within the teacher’s prefix follows the backbone’s own convention, e.g. , unidirectional for SASRec and bidirectional for BERT4Rec. 
+
+> 0https://amazon-reviews-2023.github.io/data_processing/5core.html Jiakai Tang et al.
+
+Table 3: Overall performance on three recommendation benchmarks with different backbone models. The best and second-best results are highlighted in bold and underlined, respectively. 
+
+Dataset Backbone Metric Base RD TCE RCE S4Rec CS-D CS-M CS-T PSD Video Games SASRec HR@10 0.0455 0.0509 0.0479 0.0455 0.0464 0.0485 0.0497 0.0458 0.0538 
+
+HR@20 0.0747 0.0785 0.0741 0.0678 0.0720 0.0735 0.0711 0.0758 0.0818 
+
+NDCG@10 0.0203 0.0230 0.0212 0.0227 0.0222 0.0214 0.0222 0.0209 0.0238 
+
+NDCG@20 0.0276 0.0299 0.0278 0.0283 0.0287 0.0277 0.0276 0.0284 0.0308 
+
+Bert4Rec HR@10 0.0390 0.0416 0.0360 0.0348 0.0402 0.0396 0.0402 0.0407 0.0476 
+
+HR@20 0.0601 0.0631 0.0577 0.0500 0.0619 0.0645 0.0634 0.0634 0.0690 
+
+NDCG@10 0.0211 0.0218 0.0184 0.0184 0.0219 0.0222 0.0215 0.0221 0.0250 
+
+NDCG@20 0.0264 0.0271 0.0239 0.0222 0.0273 0.0285 0.0273 0.0277 0.0304 
+
+UniSRec HR@10 0.0693 0.0595 0.0654 0.0574 0.0675 0.0699 0.0696 0.0660 0.0753 
+
+HR@20 0.1044 0.0964 0.1014 0.0925 0.0996 0.1068 0.1032 0.1020 0.1112 
+
+NDCG@10 0.0330 0.0288 0.0308 0.0284 0.0316 0.0335 0.0330 0.0307 0.0350 
+
+NDCG@20 0.0419 0.0380 0.0398 0.0372 0.0397 0.0427 0.0415 0.0397 0.0440 
+
+CDs & Vinyl SASRec HR@10 0.0415 0.0463 0.0431 0.0418 0.0411 0.0438 0.0464 0.0454 0.0485 
+
+HR@20 0.0582 0.0649 0.0580 0.0560 0.0646 0.0628 0.0631 0.0639 0.0697 
+
+NDCG@10 0.0189 0.0211 0.0196 0.0212 0.0189 0.0208 0.0214 0.0212 0.0226 
+
+NDCG@20 0.0231 0.0258 0.0234 0.0248 0.0249 0.0256 0.0256 0.0259 0.0280 
+
+Bert4Rec HR@10 0.0242 0.0253 0.0238 0.0296 0.0293 0.0261 0.0251 0.0232 0.0406 
+
+HR@20 0.0380 0.0376 0.0379 0.0448 0.0446 0.0395 0.0392 0.0398 0.0566 
+
+NDCG@10 0.0134 0.0132 0.0127 0.0154 0.0157 0.0141 0.0131 0.0114 0.0235 
+
+NDCG@20 0.0168 0.0163 0.0163 0.0192 0.0196 0.0174 0.0167 0.0156 0.0275 
+
+UniSRec HR@10 0.0386 0.0392 0.0386 0.0373 0.0398 0.0424 0.0405 0.0405 0.0438 
+
+HR@20 0.0633 0.0607 0.0643 0.0588 0.0652 0.0649 0.0637 0.0631 0.0666 
+
+NDCG@10 0.0188 0.0190 0.0194 0.0183 0.0191 0.0202 0.0199 0.0197 0.0207 
+
+NDCG@20 0.0250 0.0245 0.0259 0.0237 0.0255 0.0258 0.0258 0.0255 0.0264 
+
+Yelp SASRec HR@10 0.0556 0.0565 0.0550 0.0551 0.0570 0.0574 0.0574 0.0573 0.0608 
+
+HR@20 0.0853 0.0870 0.0849 0.0850 0.0902 0.0877 0.0892 0.0885 0.0931 
+
+NDCG@10 0.0311 0.0307 0.0307 0.0303 0.0307 0.0316 0.0312 0.0317 0.0338 
+
+NDCG@20 0.0386 0.0383 0.0382 0.0378 0.0390 0.0392 0.0392 0.0395 0.0419 
+
+Bert4Rec HR@10 0.0474 0.0465 0.0457 0.0460 0.0554 0.0483 0.0468 0.0487 0.0578 
+
+HR@20 0.0769 0.0765 0.0754 0.0755 0.0882 0.0804 0.0788 0.0812 0.0917 
+
+NDCG@10 0.0233 0.0232 0.0224 0.0227 0.0276 0.0241 0.0232 0.0249 0.0311 
+
+NDCG@20 0.0306 0.0307 0.0298 0.0301 0.0358 0.0321 0.0312 0.0330 0.0396 
+
+UniSRec HR@10 0.0596 0.0595 0.0595 0.0600 0.0625 0.0615 0.0620 0.0590 0.0679 
+
+HR@20 0.0971 0.0951 0.0956 0.0956 0.0982 0.0971 0.0982 0.0968 0.1049 
+
+NDCG@10 0.0300 0.0299 0.0304 0.0306 0.0317 0.0311 0.0314 0.0297 0.0352 
+
+NDCG@20 0.0394 0.0388 0.0395 0.0396 0.0407 0.0401 0.0405 0.0392 0.0445 
+
+## 4.2 Overall Performance 
+
+The overall performance comparison is reported in Table 3. From the table, we could observe several key findings as follows: 
+
+• Among the three backbones, BERT4Rec generally underperforms SASRec despite observing richer bidirectional context during training, trailing by nearly 20% on average and by up to 41.7% for HR@10 on CDs & Vinyl. The reason is that its masked-item objective conditions each prediction on both sides of the target, a context that never exists at serving; future information consumed as input thus fails to translate into causal ranking ability, and leaked future signals help little unless they align with the serving mode. On the other hand, UniSRec delivers the strongest base performance among the three backbones, benefiting from the rich semantics carried by pre-trained textual representations. 
+
+• No baseline strategy is consistently competitive. RD, whose su-pervision comes from a separately pre-trained static teacher, raises the HR@10 of SASRec from 0.0455 to 0.0509 on Video Games yet drags UniSRec down from 0.0693 to 0.0595, since a frozen teacher offers little headroom once the backbone itself grows stronger. The denoising objectives TCE and RCE rely on fixed loss-reshaping heuristics, and accordingly help only occa-sionally while often falling below the backbone. S 4Rec, equipped with auxiliary self-distillation modules, ranks second mainly on Learning from the Future: Privileged Self-Distillation for Sequential Recommendation 0 20 40 60 80 100 
+
+> -3.2
+> 3.3
+> 9.9
+> 16.5
+> 23.1
+> HR@20
+> Rel. Improv. (%)
+
+Video Games  
+
+> Student Teacher
+
+0 20 40 60 80 100  
+
+> 0.0
+> 4.5
+> 9.1
+> 13.6
+> 18.1
+
+Yelp 
+
+0 20 40 60 80 100 
+
+Future Visibility (%)  
+
+> 0.0
+> 6.1
+> 12.3
+> 18.4
+> 24.6
+> NDCG@20
+> Rel. Improv. (%)
+> Student Teacher
+
+0 20 40 60 80 100 
+
+Future Visibility (%) 
+
+> 0.0
+> 5.0
+> 9.9
+> 14.9
+> 19.8
+
+Figure 3: Relative improvement of the teacher and student over the SASRec backbone under varying future visibility. 
+
+Yelp, where it lifts the NDCG@20 of BERT4Rec from 0.0306 to 0.0358, but this advantage does not extend across the other set-tings; likewise, none of the three CSRec variants shows a stable advantage over the others. Their benefits thus transfer unreliably across backbones and datasets, not to mention the extra parame-ters, auxiliary features, or multi-stage pipelines these strategies additionally require, as discussed in Section 3.5. 
+
+• PSD achieves the superior performance across all backbones and datasets, improving over the corresponding backbone by 19.8% on average and over the strongest baseline in each setting by 9.9%; unlike the static supervision above, its co-evolving teacher keeps the guidance matched to the student throughout training. The improvements are the largest on BERT4Rec, averaging 35.9% and peaking at 75.4% for NDCG@10 on CDs & Vinyl, where the serving-aligned supervision corrects the most severe mismatch, while on the text-enhanced UniSRec, whose base performance is already strong, PSD still brings average gains from 6.6% to 13.1%, indicating that the privileged future signal is complementary to rich item semantics. Notably, PSD shows no single case of regres-sion, since the advantage-reachability gate withholds transfers that the causal view cannot yet absorb, and the momentum-averaged teacher keeps the self-referential supervision stable, so the student is not misled by untransferable guidance. 
+
+## 4.3 Impact of Future Visibility 
+
+We first examine how much the privileged teacher actually benefits from the future, and how much of this benefit reaches the causal student. On the SASRec backbone, we vary the fraction of the suffix visible to the teacher during training from 0% to 100%, and Figure 3 presents the relative improvement of the two views over the back-bone. The teacher’s improvement grows steadily with visibility, reaching roughly 20% in HR@20 on Video Games at full visibility, which confirms that the suffix carries substantial predictive signal. The student improves in tandem with the teacher, capturing about half of the teacher’s gain, and its curve rises and dips at the same visibility levels as the teacher’s; this co-movement indicates that the student’s gains are indeed inherited from the privileged knowl-edge. Nevertheless, a clear gap persists at every visibility level and All Future 
+
+> absent
+> Future
+> available
+> 0.0461
+> 0.0707
+> 0.0953
+> 0.1198
+> 0.1444
+> HR@20
+
+Video Games  
+
+> Base
+> Oracle (Base)
+> PSD
+> Oracle (PSD)
+> All Future
+> absent
+> Future
+> available
+> 0.0708
+> 0.0826
+> 0.0944
+> 0.1062
+> 0.1179
+
+Yelp   
+
+> All Future
+> absent
+> Future
+> available
+> 0.0168
+> 0.0260
+> 0.0352
+> 0.0443
+> 0.0535
+> NDCG@20  Base
+> Oracle (Base)
+> PSD
+> Oracle (PSD)
+> All Future
+> absent
+> Future
+> available
+> 0.0338
+> 0.0385
+> 0.0431
+> 0.0478
+> 0.0524
+
+Figure 4: Oracle analysis comparing PSD with its backbone under different future-information settings. 
+
+widens as more future context is exposed, indicating that part of the privileged advantage is grounded solely in the suffix and can never be reproduced from the prefix, which is exactly the portion our advantage-reachability gate is designed to withhold. 
+
+## 4.4 Oracle Analysis 
+
+In this section, we further quantify how much privileged knowledge PSD internalizes into the causal view. For each trained model, we additionally evaluate an oracle variant that is granted the privileged mask at test time, and we partition the test cases by whether the target has future interactions recorded in the log. Figure 4 presents the results on Video Games and Yelp with the SASRec backbone, from which three observations emerge as follows: 
+
+(i) The oracle evaluation lifts the backbone substantially only on the future-available group and leaves the future-absent group un-changed, verifying that the oracle advantage indeed originates from future context rather than from the extra mask itself. 
+
+(ii) The causal PSD model closes much of this gap without ac-cessing any future input: its performance approaches that of the oracle-evaluated backbone, and it outperforms the backbone even on the future-absent group where no future context exists for any model to exploit, so the distilled preference structure generalizes rather than depending on the availability of the future at test time. 
+
+(iii) The oracle variant of PSD also surpasses the oracle-evaluated backbone, revealing that the benefit of co-evolution flows in both directions: distillation not only equips the student with privileged knowledge, but the improved student, through the shared parame-ters, in turn strengthens the privileged view beyond what a sepa-rately trained teacher would attain, so the two views reinforce each other through our proposed dual-mode distillation in one model. 
+
+## 4.5 Further Analysis 
+
+4.5.1 Training Dynamics. To inspect how the teacher-student interplay evolves, we track the win rate of the two views during training, i.e. , the fraction of validation positions on which one view ranks the target higher than the other. As shown in Figure 5, the teacher rises above the 50% parity line within the first few hundred steps, so the privileged advantage emerges early and the distillation Jiakai Tang et al. 0 325 650 
+
+> Training Step
+> 18
+> 28
+> 38
+> 48
+> 58
+> Win Rate (%)
+
+Video Games   
+
+> Teacher
+> Student
+> 02050 4100
+> Training Step
+> 15
+> 29
+> 42
+> 56
+> 70
+> Win Rate (%)
+
+Yelp   
+
+> 0900 1800
+> Training Step
+> 29
+> 39
+> 50
+> 60
+> 70
+> Win Rate (%)
+
+CDs & Vinyl 
+
+Figure 5: Win-rate dynamics of the privileged teacher and causal student during training. 
+
+signal is informative from the beginning. As training proceeds, the student gradually narrows the margin on Video Games and Yelp, reflecting the reachable part of the privileged knowledge being progressively absorbed; on CDs & Vinyl, the teacher maintains a clear lead throughout, in line with the largest overall gains of PSD on this dataset, where more privileged signal remains to be exploited. We also observe that the teacher’s win rate fluctuates sharply in the early stage, e.g. , spiking close to 70% on Yelp before settling down, which corroborates the necessity of the momentum-averaged teacher for smoothing such transient behavior. 
+
+4.5.2 Parameter Sensitivity. Figure 6 reports the sensitivity of PSD to its two hyperparameters. (i) For the gate percentile 𝛿 , Video Games peaks at 𝛿 = 0.8, where HR@20 exceeds the ungated variant (𝛿 = 1.0) by about 7%, whereas Yelp varies only mildly across the whole range. This contrast is consistent with Figure 3: the teacher-student gap is wider on Video Games, so filtering unreachable signals pays off more there. (ii) For the EMA rate 𝛼 , moderate to high momentum performs best, with the optimum at 0.8 on Video Games and 0.99 on Yelp; pushing 𝛼 to either extreme is harmful, since a small 𝛼 lets the target inherit the noise of the instantaneous teacher, while 𝛼 = 1.0 freezes the teacher at its initialization. Across the entire grid, PSD remains superior to the backbone, indicating that both hyperparameters are easy to tune in practice. 
+
+## 5 Related Work 5.1 Sequential Recommendation 
+
+Sequential recommendation infers a user’s next interaction from the chronological order of her past behaviors. Early studies model item transitions with Markov chains, where FPMC combines ma-trix factorization with personalized transition matrices [ 21 ]. Deep architectures then took over: GRU4Rec models sessions with re-current networks [ 8 ], Caser treats recent behaviors as images for convolution [ 27 ], and self-attention eventually became the dom-inant choice, with SASRec performing autoregressive next-item prediction [ 14 ] and BERT4Rec reconstructing masked items from bidirectional context [ 23 ]. Subsequent efforts enrich this paradigm from different angles: S 3-Rec [ 42 ], CL4SRec [ 35 ], and DuoRec [ 19 ]introduce self-supervised or contrastive objectives, FMLP-Rec sim-plifies the architecture with filter-enhanced MLPs [ 43 ], UniSRec learns transferable representations from item text [ 11 ], and TIGER performs generative retrieval over semantic identifiers [ 20 ]. Despite this architectural diversity, these models share the same supervi-sion: a one-hot next-item label conditioned on the prefix, with the logged future left unused. Our work is orthogonal to this line, as it upgrades the supervision itself with training-only future context and applies on top of these backbones without modifying them. 0.6 0.7 0.8 0.9 0.99 1.0 
+
+> 0.0721
+> 0.0748
+> 0.0775
+> 0.0802
+> 0.0829
+> HR@20
+
+Video Games      
+
+> 0.6 0.7 0.8 0.9 0.99 1.0
+> 0.0870
+> 0.0882
+> 0.0893
+> 0.0904
+> 0.0916
+
+Yelp         
+
+> 0.6 0.7 0.8 0.9 0.99 1.0
+> 0.0682
+> 0.0720
+> 0.0758
+> 0.0796
+> 0.0834
+> HR@20
+> 0.6 0.7 0.8 0.9 0.99 1.0
+> 0.0841
+> 0.0866
+> 0.0891
+> 0.0916
+> 0.0942
+> 0.0280
+> 0.0291
+> 0.0302
+> 0.0313
+> 0.0324
+> 0.0404
+> 0.0409
+> 0.0413
+> 0.0418
+> 0.0423
+> NDCG@20
+> 0.0276
+> 0.0288
+> 0.0301
+> 0.0314
+> 0.0327
+> 0.0399
+> 0.0407
+> 0.0415
+> 0.0423
+> 0.0431
+> NDCG@20
+
+Figure 6: Sensitivity of PSD to the gate percentile 𝛿 and the EMA rate 𝛼 on Video Games and Yelp with the SASRec. 
+
+## 5.2 Knowledge Distillation 
+
+Knowledge distillation transfers the softened predictions of a teacher into a student [ 9 ], later extended to intermediate representations [ 22 ]. Follow-up studies move beyond model compression: born-again networks show that a student of identical capacity can surpass its teacher [ 4 ], deep mutual learning trains peer models to teach one another [ 41 ], and self-distillation turns a single network into its own teacher [ 39 ]. Another line stabilizes a continually updated teacher through parameter averaging, as in Mean Teacher [ 29 ], MoCo [ 7], and DINO [ 3], and recent distillation for large language models further reveals that a static teacher poorly serves an evolv-ing student [ 1, 6]. In recommendation, distillation has mainly served ranker compression, from Ranking Distillation [ 28 ] to collaborative and relational variants [ 12 , 13 , 15 ], while PFD [ 36 ] transfers priv-ileged features available only during training and S 4Rec [ 33 ] and CSRec [ 34 ] adopt auxiliary self-distillation to strengthen same-size models. Different from all of them, the teacher in PSD is distin-guished by its information set rather than by capacity or extra features: it shares the same parameter with the student, draws its advantage from the future suffix, and transfers only the reachable portion using advantage-reachability privileged information. 
+
+## 6 Conclusion 
+
+In this paper, we identify the future interactions in logged sequences as training-only privileged information for sequential recommenda-tion, and propose PSD to exploit them without violating the causal serving constraint. PSD evaluates a single backbone under a privi-leged mask and a causal mask, grounds the teacher on the observed target, and guides the student through gated distillation, where an advantage-reachability gate withholds unreachable dark knowledge and a momentum-averaged teacher stabilizes the self-referential supervision. The whole framework introduces no extra parameters, auxiliary features, or multi-stage training, and leaves the serving cost of the backbone unchanged. Extensive experiments show con-sistent and substantial gains, and diagnostic analyses verify that the privileged knowledge is genuinely transferred into the causal view. We believe this simple yet effective idea of learning from the future is general enough to benefit a broad range of sequential prediction and decision-making tasks beyond recommendation. Learning from the Future: Privileged Self-Distillation for Sequential Recommendation 
+
+## References 
+
+[1] Rishabh Agarwal, Nino Vieillard, Yongchao Zhou, Piotr Stanczyk, Sabela Ramos, Matthieu Geist, and Olivier Bachem. 2024. On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes. In International Conference on Learning Representations (ICLR) .[2] Tesfaye Fenta Boka, Zhendong Niu, and Rama Bastola Neupane. 2024. A sur-vey of sequential recommendation systems: Techniques, evaluation, and future directions. Information Systems 125 (2024), 102427. [3] Mathilde Caron, Hugo Touvron, Ishan Misra, Hervé Jégou, Julien Mairal, Piotr Bojanowski, and Armand Joulin. 2021. Emerging properties in self-supervised vision transformers. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) . 9650–9660. [4] Tommaso Furlanello, Zachary Lipton, Michael Tschannen, Laurent Itti, and An-ima Anandkumar. 2018. Born again neural networks. In International Conference on Machine Learning (ICML) . PMLR, 1607–1616. [5] Jianping Gou, Baosheng Yu, Stephen J Maybank, and Dacheng Tao. 2021. Knowl-edge distillation: A survey. International Journal of Computer Vision (IJCV) 129, 6 (2021), 1789–1819. [6] Yuxian Gu, Li Dong, Furu Wei, and Minlie Huang. 2024. MiniLLM: Knowledge Distillation of Large Language Models. In International Conference on Learning Representations (ICLR) .[7] Kaiming He, Haoqi Fan, Yuxin Wu, Saining Xie, and Ross Girshick. 2020. Mo-mentum contrast for unsupervised visual representation learning. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .9729–9738. [8] Balázs Hidasi, Alexandros Karatzoglou, Linas Baltrunas, and Domonkos Tikk. 2016. Session-based recommendations with recurrent neural networks. In Inter-national Conference on Learning Representations (ICLR) .[9] Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. 2015. Distilling the knowledge in a neural network. arXiv preprint arXiv:1503.02531 (2015). [10] Yupeng Hou, Jiacheng Li, Xiangjun Fu, Zhankui He, An Yan, Xiusi Chen, and Julian McAuley. 2026. Bridging language and items for retrieval and recommenda-tion: Benchmarking LLMs as semantic encoders. In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (ACL) . 3251–3265. [11] Yupeng Hou, Shanlei Mu, Wayne Xin Zhao, Yaliang Li, Bolin Ding, and Ji-Rong Wen. 2022. Towards universal sequence representation learning for recommender systems. In Proceedings of the 28th ACM SIGKDD Conference on Knowledge Dis-covery and Data Mining (KDD) . 585–593. [12] SeongKu Kang, Junyoung Hwang, Wonbin Kweon, and Hwanjo Yu. 2020. DE-RRD: A knowledge distillation framework for recommender system. In Proceed-ings of the 29th ACM International Conference on Information and Knowledge Management (CIKM) . 605–614. [13] SeongKu Kang, Junyoung Hwang, Wonbin Kweon, and Hwanjo Yu. 2021. Topol-ogy distillation for recommender system. In Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD) . 829–839. [14] Wang-Cheng Kang and Julian McAuley. 2018. Self-Attentive Sequential Rec-ommendation. In 2018 IEEE International Conference on Data Mining (ICDM) .197–206. [15] Jae-woong Lee, Minjin Choi, Jongwuk Lee, and Hyunjung Shim. 2019. Collabora-tive distillation for top-N recommendation. In 2019 IEEE International Conference on Data Mining (ICDM) . IEEE, 369–378. [16] David Lopez-Paz, Léon Bottou, Bernhard Schölkopf, and Vladimir Vapnik. 2016. Unifying Distillation and Privileged Information. In International Conference on Learning Representations (ICLR) .[17] Amir M Mansourian, Rozhan Ahmadi, Masoud Ghafouri, Amir Mohammad Babaei, Elaheh Badali Golezani, Zeynab Yasamani Ghamchi, Vida Ramezanian, Alireza Taherian, Kimia Dinashi, Amirali Miri, et al . 2025. A comprehensive survey on knowledge distillation. arXiv preprint arXiv:2503.12067 (2025). [18] Li-Wei Pan, Wei-Ke Pan, Mei-Yan Wei, Hong-Zhi Yin, and Zhong Ming. 2026. A survey on sequential recommendation. Frontiers of Computer Science 20, 3 (2026), 2003606. [19] Ruihong Qiu, Zi Huang, Hongzhi Yin, and Zijian Wang. 2022. Contrastive Learn-ing for Representation Degeneration Problem in Sequential Recommendation. In Proceedings of the 15th ACM International Conference on Web Search and Data Mining (WSDM) . 813–823. [20] Shashank Rajput, Nikhil Mehta, Anima Singh, Raghunandan Hulikal Keshavan, Trung Vu, Lukasz Heldt, Lichan Hong, Yi Tay, Vinh Q. Tran, Jonah Samost, Maciej Kula, Ed H. Chi, and Maheswaran Sathiamoorthy. 2023. Recommender Systems with Generative Retrieval. In Advances in Neural Information Processing Systems (NeurIPS) .[21] Steffen Rendle, Christoph Freudenthaler, and Lars Schmidt-Thieme. 2010. Factor-izing personalized Markov chains for next-basket recommendation. In Proceed-ings of the 19th International Conference on World Wide Web (WWW) . 811–820. [22] Adriana Romero, Nicolas Ballas, Samira Ebrahimi Kahou, Antoine Chassang, Carlo Gatta, and Yoshua Bengio. 2015. FitNets: Hints for thin deep nets. In 
+
+International Conference on Learning Representations (ICLR) .[23] Fei Sun, Jun Liu, Jian Wu, Changhua Pei, Xiao Lin, Wenwu Ou, and Peng Jiang. 2019. BERT4Rec: Sequential Recommendation with Bidirectional Encoder Rep-resentations from Transformer. In Proceedings of the 28th ACM International Conference on Information and Knowledge Management (CIKM) . 1441–1450. [24] Christian Szegedy, Vincent Vanhoucke, Sergey Ioffe, Jon Shlens, and Zbigniew Wojna. 2016. Rethinking the inception architecture for computer vision. In 
+
+Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) . 2818–2826. [25] Jiakai Tang, Xu Chen, Wen Chen, Jian Wu, Yuning Jiang, and Bo Zheng. 2026. Parallel Latent Reasoning for Sequential Recommendation. arXiv preprint arXiv:2601.03153 (2026). [26] Jiakai Tang, Sunhao Dai, Teng Shi, Jun Xu, Xu Chen, Wen Chen, Jian Wu, and Yuning Jiang. 2026. Think before recommend: Unleashing the latent reasoning power for sequential recommendation. IEEE Transactions on Knowledge and Data Engineering (TKDE) (2026). [27] Jiaxi Tang and Ke Wang. 2018. Personalized top-N sequential recommendation via convolutional sequence embedding. In Proceedings of the 11th ACM International Conference on Web Search and Data Mining (WSDM) . 565–573. [28] Jiaxi Tang and Ke Wang. 2018. Ranking Distillation: Learning Compact Ranking Models With High Performance for Recommender System. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (KDD) . 2289–2298. doi:10.1145/3219819.3220021 [29] Antti Tarvainen and Harri Valpola. 2017. Mean teachers are better role models: Weight-averaged consistency targets improve semi-supervised deep learning results. In Advances in Neural Information Processing Systems (NeurIPS) .[30] Vladimir Vapnik and Akshay Vashist. 2009. A New Learning Paradigm: Learning Using Privileged Information. Neural Networks 22, 5–6 (2009), 544–557. [31] Shoujin Wang, Liang Hu, Yan Wang, Longbing Cao, Quan Z Sheng, and Mehmet Orgun. 2019. Sequential recommender systems: challenges, progress and prospects. arXiv preprint arXiv:2001.04830 (2019). [32] Wenjie Wang, Fuli Feng, Xiangnan He, Liqiang Nie, and Tat-Seng Chua. 2021. Denoising Implicit Feedback for Recommendation. In Proceedings of the 14th ACM International Conference on Web Search and Data Mining (WSDM) . 373–381. doi:10.1145/3437963.3441800 [33] Shaowei Wei, Zhengwei Wu, Xin Li, Qintong Wu, Zhiqiang Zhang, Jun Zhou, Lihong Gu, and Jinjie Gu. 2024. Leave No One Behind: Online Self-Supervised Self-Distillation for Sequential Recommendation. In Proceedings of the ACM Web Conference (WWW) . doi:10.1145/3589334.3645590 [34] Shiguang Wu, Xin Xin, Pengjie Ren, Zhumin Chen, Jun Ma, Maarten de Rijke, and Zhaochun Ren. 2024. Learning Robust Sequential Recommenders through Confident Soft Labels. ACM Transactions on Information Systems (TOIS) (2024). doi:10.1145/3700876 [35] Xu Xie, Fei Sun, Zhaoyang Liu, Shiwen Wu, Jinyang Gao, Jiandong Zhang, Bolin Ding, and Bin Cui. 2022. Contrastive Learning for Sequential Recommendation. In Proceedings of the 38th IEEE International Conference on Data Engineering (ICDE) . 1259–1273. [36] Chen Xu, Quan Li, Junfeng Ge, Jinyang Gao, Xiaoyong Yang, Changhua Pei, Fei Sun, Jian Wu, Hanxiao Sun, and Wenwu Ou. 2019. Privileged Features Distillation at Taobao Recommendations. arXiv preprint arXiv:1907.05171 (2019). doi:10.48550/arXiv.1907.05171 [37] Xiaohan Xu, Ming Li, Chongyang Tao, Tao Shen, Reynold Cheng, Jinyang Li, Can Xu, Dacheng Tao, and Tianyi Zhou. 2024. A survey on knowledge distillation of large language models. arXiv preprint arXiv:2402.13116 (2024). [38] Zheng Yuan, Fajie Yuan, Yu Song, Youhua Li, Junchen Fu, Fei Yang, Yunzhu Pan, and Yongxin Ni. 2023. Where to go next for recommender systems? id-vs. modality-based recommender models revisited. In Proceedings of the 46th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR) . 2639–2649. [39] Linfeng Zhang, Jiebo Song, Anni Gao, Jingwei Chen, Chenglong Bao, and Kaisheng Ma. 2019. Be your own teacher: Improve the performance of con-volutional neural networks via self distillation. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) . 3713–3722. [40] Yanzhao Zhang, Mingxin Li, Dingkun Long, Xin Zhang, Huan Lin, Baosong Yang, Pengjun Xie, An Yang, Dayiheng Liu, Junyang Lin, Fei Huang, and Jingren Zhou. 2025. Qwen3 Embedding: Advancing Text Embedding and Reranking Through Foundation Models. arXiv preprint arXiv:2506.05176 (2025). [41] Ying Zhang, Tao Xiang, Timothy M Hospedales, and Huchuan Lu. 2018. Deep mutual learning. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) . 4320–4328. [42] Kun Zhou, Hui Wang, Wayne Xin Zhao, Yutao Zhu, Sirui Wang, Fuzheng Zhang, Zhongyuan Wang, and Ji-Rong Wen. 2020. S3-Rec: Self-supervised learning for sequential recommendation with mutual information maximization. In Proceed-ings of the 29th ACM International Conference on Information and Knowledge Management (CIKM) . 1893–1902. [43] Kun Zhou, Hui Yu, Wayne Xin Zhao, and Ji-Rong Wen. 2022. Filter-enhanced MLP is all you need for sequential recommendation. In Proceedings of the ACM Web Conference (WWW) . 2388–2399.

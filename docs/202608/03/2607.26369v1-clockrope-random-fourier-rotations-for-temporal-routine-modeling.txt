@@ -1,0 +1,1566 @@
+Title: ClockRoPE: Random Fourier Rotations for Temporal Routine Modeling
+
+URL Source: https://arxiv.org/pdf/2607.26369v1
+
+Published Time: Thu, 30 Jul 2026 00:18:58 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# ClockRoPE: Random Fourier Rotations for Temporal Routine Modeling 
+
+# Yiwen Chen 
+
+YouTube ywenc@google.com 
+
+# Joshua Ainslie 
+
+Google DeepMind jainslie@google.com 
+
+# Krzysztof Choromanski 
+
+Google DeepMind kchoro@google.com 
+
+# Xiang Gao 
+
+YouTube xggao@google.com 
+
+# Su-Lin Wu 
+
+YouTube sulin@google.com 
+
+# Yiping Yuan 
+
+YouTube yipingyuan@google.com 
+
+# Qian Sun 
+
+YouTube qians@google.com 
+
+## Abstract 
+
+Rotary Position Embedding (RoPE) has been widely adopted in transformer-based large language models. However, its log-linear frequency schedule, originally designed to produce long-term at-tention decay, limits its adoption in domains with more complex distance-correlation patterns, such as temporal periodicity in se-quential recommendation. We investigate the expressiveness of general query/key rotations and find that any normalized contin-uous positive-definite attention modulation function can be ap-proximated by random rotations induced by its own Fourier trans-form, which we term Random Fourier Rotations. Building on this theory, we propose ClockRoPE for routine modeling in sequen-tial recommendation, where rotation frequencies are derived from periodic attention modulation functions. In online A/B tests, Clock-RoPE demonstrates consistent improvements in valued engagement metrics, and has been successfully deployed in production-scale generative retrieval system at a major video-sharing platform. 
+
+## 1 Introduction 
+
+As transformers[ 33 ] and the scaling law [ 11 , 16 ] have demonstrated great success in language modeling [ 2, 8] and image generation [25 ], the generative recommendation field is converging towards transformer-style architectures for sequence modeling [ 15 , 36 ]. However different from language modeling, time is a crucial and native signal in sequential recommendation. Various methods have been explored to incorporate temporal signals in transformer-based sequential recommendation, including time difference input fea-ture [ 3], additive temporal attention bias [ 36 ] and relative time embedding within attention [21]. On the other hand, RoPE [ 31 ] has shown superior performance in transformer-based language models, featuring properties such as translation-invariance and long-term attention decay. Despite being originally designed for 1D discrete token positions, RoPE has quickly seen adoption in domains with multi-dimensional continu-ous coordinates [9, 20, 29]. Naturally, several recent work have argued for extending RoPE to encode time in sequential recommendation [ 12 , 34 ]: [ 34 ] adopts similar log-linear frequency spacing as in standard RoPE and re-places position with timestamp delta from an anchor timestamp; ROTE [ 12 ] first computes log-scaled timestamp gaps and constructs rotation angles based on them to capture temporal proximity. Both work emphasize on using timestamp together with order to encode recency. However, an important characteristic of user behavior in recom-mender systems is periodicity. Interactions occurring at the same hour of the day or the same day of the week often exhibit high cor-relations. Yet, the log-linear frequency schedule in standard RoPE produces long-term attention decay and struggles to capture more complex distance-correlation patterns including periodicity. To address this limitation, we leverage Fourier analysis to inves-tigate the expressiveness of general query/key rotations. We prove that any continuous normalized positive-definite modulation func-tion can be unbiasedly approximated by sampling RoPE frequencies from their own Fourier transform distribution. In summary, the contributions of our work include: 
+
+• Random Fourier Rotations (RFR): a general sampling method for approximating arbitrary normalized positive-definite attention modulation functions using query/key rotations. 
+
+• ClockRoPE: A temporal periodicity encoding approach for user routine modeling, derived from applying Random Fourier Rotations to approximate periodic attention modu-lation functions. 
+
+• Production-Scale Evaluation: Empirical evidence of Clock-RoPE’s effectiveness in improving model’s routine-awareness and overall viewer value within a production-scale genera-tive retrieval system. 
+
+## 2 Related Work 2.1 Relative Positional Encoding 
+
+Relative Positional Encoding (RPE) techniques [ 6 , 14 , 22 , 26 , 30 ] is a powerful class of positional encoding methods used in Transformer models. In contrast to absolute positional encodings (APEs) [ 17 , 33 ]that add / concatenate sinusoidal-based embeddings of the tokens’ absolute positions with content embeddings, they more explicitly modulate attention matrix values via (learnable) functions of the relative positions / distances between the tokens in the correspond-ing metric space (e.g. 1D line as it is the case for language, 2D grids for images or 3D grids for videos). RPEs is a rich class of techniques arXiv:2607.26369v1 [cs.LG] 29 Jul 2026 Yiwen Chen, Joshua Ainslie, Krzysztof Choromanski, Xiang Gao, Su-Lin Wu, Yiping Yuan, and Qian Sun 
+
+and is often taxonomized via two branches: (1) the additive mech-anisms [5, 6, 22 ] that introduce additive terms in the logits space (numerically equivalent to Hadamard multiplication obtained af-ter element-wise logits exponentiation) and (2) the multiplicative mechanisms [4, 9, 29 , 31 ] that modulate query-key dot-products by introducing multiplicative terms (those two strategies can also be combined into hybrid methods). RPEs are used across different modalities: language [ 31 ], images [ 6, 9, 29 ] and more recently, even point clouds [18]. RPEs can be often efficiently implemented, in time near-linear in the input sequence length (rather than quadratic). For instance, it is well known [ 6, 24 ] that as long as the mask matrix M used in the Hadamard multiplication of the additive RPE mechanism supports sub-quadratic (in sequence length) matrix-vector mul-tiplication, the corresponding RPE mechanism can be applied to linear low-rank attention Transformers [ 7] in sub-quadratic time. Similarly, multiplicative RPE mechanisms often support efficient implementations (see: Sec. 2.2). 
+
+## 2.2 RoPE & STRING 
+
+Rotary Position Encodings , or: RoPE [ 9, 13 , 20 , 28 , 31 ], is an instanti-ation of the multiplicative RPE mechanism, where the queries and keys are post-processed by rotations matrices that depend on the positions of their corresponding tokens. More specifically, a rotation matrix corresponding to the token is defined as a product of disjoint two-dimensional ( Givens ) rotations with rotations angles defined as linear functions of tokens’s positions (1D or higher-dimensional) with potentially trainable parameters (different variations include axial-RoPe, mixed-RoPE and more). This particular design choice for the rotation matrices corresponding to the tokens is a gate-way to re-writing the modulated attention scores as: q⊤R(𝛿 r)k,where R(𝛿 r) is a rotation matrix defined as a product of disjoint 
+
+2-dimensional rotations with angles given as linear functions of the relative positions. The rigid structure of the rotations matrices used to rotate queries and keys in the RoPE mechanism leads to translation invariance 
+
+(the mechanism depends only on the relative positions), but in practice can be significantly relaxed without sacrificing this prop-erty. The recently introduced STRING method [ 29 ] is a super-set of RoPEs, where the rotation matrix is obtained by exponentiating (in the matrix-exponentiation rather than element-wise sense) skew-symmetric (anti-symmetric) matrices. Each skew-symmetric matrix is defined as a linear combination of the skew-symmetric generators 
+
+(often learnable) with coefficients given by the coordinates of the tokens corresponding to queries/keys. As it is shown in [ 29 ], as long as the generators commute, the resulting mechanism remains translation-invariant, with RoPE providing its special instantiation. Furthermore, it is the most general extension of the RoPE mecha-nism in the setting, where queries and keys are post-processed via rotation matrices and that keeps translation-invariance. Both STRING and RoPE trivially support fast computations with efficient attention methods, since they do not require the explicit materialization of the logits matrix, acting independently on the set of queries and keys. 
+
+Figure 1: Long-term decay of RoPE 
+
+## 2.3 Fourier Methods in Sequence Modeling 
+
+Fourier methods are a common tool in sequence modeling. One early example for Transformer models in particular is FNet [ 19 ], which replaced the self-attention mechanism in Transformer layers with the discrete Fourier transform. Despite lacking learnable pa-rameters, the discrete Fourier transform served as an efficient token "mixing" mechanism to replace attention while retaining much of the quality in BERT [8] models. Fourier analysis has also been used to improve RoPE itself. FoPE [ 13 ] leverages Discrete Signal Processing theory to improve length generalization, while nD-RoPE [ 20 ] derives a spectral isotropy con-dition to generalize RoPE to higher-dimensional spaces. Both refine RoPE’s existing frequency structure, whereas ClockRoPE derives a new frequency-sampling distribution targeting periodic attention modulation. 
+
+## 2.4 Fourier Features 
+
+Fourier features have a broad history in kernel approximation and function representation. Random Fourier Features (RFF) [ 27 ] ap-proximate shift-invariant kernels via random sinusoidal projections sampled from the kernel’s Fourier transform. These features have since been shown to help networks learn high-frequency func-tions [ 32 ], encode continuous time in self-attention [ 35 ], and sup-port learnable frequency bases for spatial positional encoding [ 23 ]. Unlike these methods, which construct Fourier-based input fea-tures, our Random Fourier Rotations builds on RFF and extend from feature maps to rotation operators on queries and keys, preserving RoPE’s multiplicative structure and efficient implementation. 
+
+## 3 Methodology 3.1 Motivation 
+
+RoPE [ 31 ] is built with 2d rotation per feature pair, which is inher-ently periodic. However as proved in the original paper [ 31 ] , when combining these 2d rotations with the standard log-linear spaced frequency schedule : 𝜃 𝑖 = 10000 −2𝑖 /𝑑 , 𝑖 ∈ [ 0, 2, . . . , 𝑑 /2 − 1], RoPE enforces attention score upper bound decay with relative distance, exhibiting a monotonically decreasing trend with random oscilla-tions as shown in Figure 1. This property is termed as long-term ClockRoPE: Random Fourier Rotations for Temporal Routine Modeling 
+
+decay in the original paper. Although the long-term decay property suits the nature of language modeling, it risks oversimplifying how distances affects correlation in domains with natural periodicity, such as generative recommendation. We empirically confirm this effect in §4.4.1 Figure 2, where standard RoPE is shown to con-centrate attention on recent interactions while obscuring the daily periodicity pattern. In sequential generative recommendation, interactions at similar hour of the day or day of the week exhibit high correlations. An ideal frequency schedule for periodicity modeling provides higher attention score upper bound for interaction pairs at similar hour-of-the-day or day-of-the-week than others. 
+
+## 3.2 Modulating Attention Logits via Random Fourier Rotations 
+
+Before jumping into our specific approach for periodic attention modulation, we first introduce the theoretic foundation for modu-lating attention scores based on continuous token positions. Suppose we want to modulate the standard attention logits such that the similarity between a query 𝒒 𝑚 at position 𝑝 𝑚 and a key 𝒌 𝑛 
+
+at position 𝑝 𝑛 is weighted by a positive definite kernel 𝑓 : R → R
+
+with 𝑓 (0) = 1:
+
+𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 { 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) (1) where 𝑝 𝑚 , 𝑝 𝑛 ∈ R. For example, 𝑓 could be Gaussian: 𝑓 (𝑥 ) = 𝑒 −𝑥 2
+
+,Laplace: 𝑓 (𝑥 ) = 𝑒 − | 𝑥 | or trigonometric 𝑓 (𝑥 ) = cos (𝑥 ).We claim in the following proposition that any normalized con-tinuous positive-definite modulation function can be unbiasedly approximated by sampling RoPE frequencies from their own Fourier transform distribution. 
+
+Proposition 3.1 (Random Fourier Rotation Estimator). Let 
+
+𝜉 0, 𝜉 1, . . . , 𝜉 𝑑 /2−1 i.i.d.
+
+∼ 𝜏 (𝜉 ), where 𝜏 (𝜉 ) is the Fourier transform of a continuous positive definite kernel 𝑓 : R → R with 𝑓 (0) = 1 1. Let 
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+= [𝒒 𝑚, 2𝑗 , 𝒒 𝑚, 2𝑗 +1]⊤ ∈ R2 and 𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+= [𝒌 𝑛, 2𝑗 , 𝒌 𝑛, 2𝑗 +1]⊤ ∈ R2
+
+denote the 𝑗 -th consecutive feature pair of query 𝒒 𝑚 ∈ R𝑑 and key 
+
+𝒌 𝑛 ∈ R𝑑 respectively, for 𝑗 = 0, . . . , 𝑑 /2 − 1. Then the Random Fourier Rotation estimator: 
+
+ˆ𝑔 (𝒒 𝑚 , 𝒌 𝑛 , 𝑝 𝑚 , 𝑝 𝑛 ) =
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+) (2) 
+
+where 
+
+𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+=
+
+cos (2𝜋𝜉 𝑗 𝑝 𝑚 ) − sin (2𝜋𝜉 𝑗 𝑝 𝑚 )
+
+sin (2𝜋𝜉 𝑗 𝑝 𝑚 ) cos (2𝜋𝜉 𝑗 𝑝 𝑚 )
+
+
+
+(3) 
+
+𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+=
+
+cos (2𝜋𝜉 𝑗 𝑝 𝑛 ) − sin (2𝜋𝜉 𝑗 𝑝 𝑛 )
+
+sin (2𝜋𝜉 𝑗 𝑝 𝑛 ) cos (2𝜋𝜉 𝑗 𝑝 𝑛 )
+
+
+
+(4) 
+
+is an unbiased estimator of 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ), i.e.: 
+
+E𝜉 0,...,𝜉 𝑑 /2−1∼𝜏 (𝜉 )
+
+"𝑑 /2−1∑︁ 
+
+> 𝑗 =0
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)
+
+#
+
+= 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 )
+
+(5)      
+
+> 1𝑓 (0)=1is required to satisfy the normalized condition in Bochner’s theorem [1]
+
+Proof. By Bochner’s theorem [ 1], since 𝑓 is continuous positive definite with 𝑓 (0) = 1, its Fourier transform 𝜏 (𝜉 ) = ∫ 
+
+> R
+
+𝑓 (𝑥 )𝑒 −𝑖 2𝜋𝜉𝑥 𝑑𝑥 
+
+is a proper probability density function satisfying 𝜏 (𝜉 ) ≥ 0 and ∫ 
+
+> R
+
+𝜏 (𝜉 )𝑑𝜉 = 𝑓 (0) = 1. This allows us to express 𝑓 as an expectation over 𝜉 similar to the derivation in RFF [27]: 
+
+𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) =
+
+∫
+
+> R
+
+𝑒 𝑖 2𝜋𝜉 (𝑝 𝑚 −𝑝 𝑛 )𝜏 (𝜉 )𝑑𝜉 
+
+= E𝜉 ∼𝜏 (𝜉 )
+
+𝑒 𝑖 2𝜋𝜉 (𝑝 𝑚 −𝑝 𝑛 )  (6) Grouping query and key features into 𝑑 /2 pairs 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+= [𝒒 𝑚, 2𝑗 , 𝒒 𝑚, 2𝑗 +1]⊤
+
+and 𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+= [𝒌 𝑛, 2𝑗 , 𝒌 𝑛, 2𝑗 +1]⊤, we have: 
+
+𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) =
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+
+
+𝒒 ( 𝑗 )
+
+> 𝑚
+
+⊤
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) (7) Using the complex representation of 2d vector 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+↦ → 𝒒 𝑚, 2𝑗 +
+
+𝑖 𝒒 𝑚, 2𝑗 +1, 𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+↦ → 𝒌 𝑛, 2𝑗 + 𝑖 𝒌 𝑛, 2𝑗 +1, and the property 
+
+𝒒 ( 𝑗 )⊤  
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+= Re [𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+] (8) , where 𝒌 ( 𝑗 ) 
+
+> 𝑛
+> ∗
+
+is the complex conjugate of 𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+, we arrive at: 
+
+𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) = Re 
+
+"𝑑 /2−1∑︁ 
+
+> 𝑗 =0
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+> ∗
+
+𝑓 (𝑝 𝑚 − 𝑝 𝑛 )
+
+#
+
+= Re 
+
+"𝑑 /2−1∑︁ 
+
+> 𝑗 =0
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+E𝜉 ∼𝜏 (𝜉 )
+
+𝑒 𝑖 2𝜋𝜉 (𝑝 𝑚 −𝑝 𝑛 )  #
+
+(9) On the other hand, 
+
+E𝜉 0,...,𝜉 𝑑 /2−1∼𝜏 (𝜉 )
+
+"𝑑 /2−1∑︁ 
+
+> 𝑗 =0
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)
+
+#
+
+= E𝜉 0,...,𝜉 𝑑 /2−1∼𝜏 (𝜉 )
+
+"𝑑 /2−1∑︁ 
+
+> 𝑗 =0
+
+Re 
+
+h 
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝑒 𝑖 2𝜋𝜉 𝑗 𝑝 𝑚 
+
+  
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+𝑒 𝑖 2𝜋𝜉 𝑗 𝑝 𝑛 
+
+∗ i #
+
+= E𝜉 0,...,𝜉 𝑑 /2−1∼𝜏 (𝜉 ) Re 
+
+"𝑑 /2−1∑︁ 
+
+> 𝑗 =0
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+𝑒 𝑖 2𝜋𝜉 𝑗 𝑝 𝑚 𝑒 −𝑖 2𝜋𝜉 𝑗 𝑝 𝑛 
+
+#
+
+(10) 
+
+= Re 
+
+"𝑑 /2−1∑︁ 
+
+> 𝑗 =0
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+E𝜉 ∼𝜏 (𝜉 )
+
+𝑒 𝑖 2𝜋𝜉 𝑗 𝑝 𝑚 𝑒 −𝑖 2𝜋𝜉 𝑗 𝑝 𝑛  #
+
+(11) 
+
+= 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) (12) which completes the proof. □
+
+Next, we investigate how fast Random Fourier Rotations con-verges as the number of feature pairs increases . 
+
+Proposition 3.2 (Convergence of Random Fourier Rotation Estimator). Under the same setting as Proposition 3.1, for any 𝜖 > 0:Yiwen Chen, Joshua Ainslie, Krzysztof Choromanski, Xiang Gao, Su-Lin Wu, Yiping Yuan, and Qian Sun 
+
+𝑃 1
+
+𝑑 /2
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+) − 1
+
+𝑑 /2 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) ≥ 𝜖 
+
+!
+
+≤ 2 exp ©«
+
+− 𝜖 2𝑑 2
+
+8 Í𝑑 /2−1 
+
+> 𝑗 =0
+
+( 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)2
+
+ª®®¬
+
+(13) The proof of Proposition 3.2 can be found in Appendix A.1 In particular, when Í𝑑 /2−1 
+
+> 𝑗 =0
+
+(( 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)2 scales linearly with 𝑑 ,e.g. at the beginning of training, Proposition 3.2 guarantees conver-gence of 
+
+1
+
+𝑑 /2
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)
+
+to 1
+
+𝑑 /2 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 )
+
+exponentially fast in 𝑑 , enforcing the attention modulation prior 𝑓 
+
+from the start of training. See Appendix A.2 for more details The Random Fourier Rotations algorithm is summarized in Al-gorithm 1. 
+
+3.2.1 Random Fourier Rotations for Periodic Functions. We high-light a special case for periodic functions here as their Fourier transform result in discrete fourier series, forming a probability mass function instead of a density function in the general case. 
+
+Corollary 3.3 (Periodic Case via Herglotz’s Theorem). Let 
+
+𝑓 be a periodic continuous positive definite kernel with period 𝑇 ,
+
+𝑓 (0) = 1. The complex Fourier series of 𝑓 is 
+
+> ∞
+
+∑︁ 
+
+> 𝑘 =−∞
+
+𝛼 𝑘 𝑒 𝑖 2𝜋𝑘𝑥 /𝑇 
+
+where 
+
+𝛼 𝑘 = 1
+
+𝑇 
+
+∫ 𝑇 
+
+> 0
+
+𝑓 (𝑥 )𝑒 −𝑖 2𝜋𝑘𝑥 /𝑇 𝑑𝑥 = 1
+
+𝑇 
+
+∫ 𝑇 
+
+> 0
+
+𝑓 (𝑥 ) cos (2𝜋𝑘𝑥 /𝑇 ) 𝑑𝑥 
+
+(14) 
+
+By Herglotz’s theorem [ 10 ], the Fourier coefficients {𝛼 𝑘 }∞ 
+
+> 𝑘 =−∞
+
+sat-isfy 𝛼 𝑘 ≥ 0 and Í∞ 
+
+> 𝑘 =−∞
+
+𝛼 𝑘 = 𝑓 (0) = 1, forming a valid probability mass function over the discrete harmonics {𝜉 𝑘 = 𝑘 /𝑇 }∞
+
+> 𝑘 =−∞
+
+. Conse-quently, Propositions 3.1 and 3.2 apply directly with frequencies sam-pled from {𝜉 𝑘 = 𝑘 /𝑇 }∞ 
+
+> 𝑘 =−∞
+
+with PMF 𝑃 (𝜉 ) = Í∞ 
+
+> 𝑘 =−∞
+
+𝛼 𝑘 𝛿 (𝜉 − 𝑘 /𝑇 ).
+
+## 3.3 ClockRoPE: Application in Capturing User Routines 
+
+To capture user routines with period T, we consider the following two attention modulation kernel: cosine prior and periodic gaussian prior. 
+
+3.3.1 Cosine Prior. The simplest symmetric periodic function we can come up with is cosine with period 𝑇 .
+
+𝑓 (𝑡 ) = 𝑐𝑜𝑠 ( 2𝜋𝑡 𝑇 ) (15) Appling Corollary 3.3 yields the binary distribution for RFR frequencies: 
+
+Algorithm 1 Random Fourier Rotations for Attention Modulation 
+
+Require: A continuous positive definite attention modulating prior 𝑓 with 𝑓 (0) = 1, embedding dimension 𝑑 , continuous positions 𝑝 𝑚 , 𝑝 𝑛 ∈ R
+
+Ensure: Rotation matrice 𝑹 𝑑 𝑚 and 𝑹 𝑑 𝑛 such that (𝑹 𝑑 𝑚 𝒒 𝑚 )⊤ (𝑹 𝑑 𝑛 𝒌 𝑛 ) ≈ 
+
+𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) 
+
+> 1:
+
+Compute the Fourier transform of 𝑓 :
+
+𝜏 (𝜉 ) =
+
+∫
+
+> R
+
+𝑓 (𝑥 )𝑒 −𝑖 2𝜋𝜉𝑥 𝑑𝑥  
+
+> 2:
+
+Draw 𝑑 /2 i.i.d. samples 𝜉 0, 𝜉 1, . . . , 𝜉 𝑑 /2−1 ∼ 𝜏 (𝜉 ) 
+
+> 3:
+
+For each feature pair 𝑗 = 0, . . . , 𝑑 /2 − 1, construct rotation matrices: 
+
+𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+=
+
+cos (2𝜋𝜉 𝑗 𝑝 𝑚 ) − sin (2𝜋𝜉 𝑗 𝑝 𝑚 )
+
+sin (2𝜋𝜉 𝑗 𝑝 𝑚 ) cos (2𝜋𝜉 𝑗 𝑝 𝑚 )
+
+
+
+𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+=
+
+cos (2𝜋𝜉 𝑗 𝑝 𝑛 ) − sin (2𝜋𝜉 𝑗 𝑝 𝑛 )
+
+sin (2𝜋𝜉 𝑗 𝑝 𝑛 ) cos (2𝜋𝜉 𝑗 𝑝 𝑛 )
+
+
+
+stack {𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+}𝑑 /2−1 
+
+> 𝑗 =0
+
+and {𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+}𝑑 /2−1 
+
+> 𝑗 =0
+
+in a block diagonal fashion to form 𝑹 𝑑 𝑚 and 𝑹 𝑑 𝑛 respectively. 
+
+𝑃 (𝜉 ) = 12𝛿 
+
+
+
+𝜉 − 1
+
+𝑇 
+
+
+
++ 12𝛿 
+
+
+
+𝜉 + 1
+
+𝑇 
+
+
+
+(16) where 𝛿 (·) denotes the Dirac delta function. 
+
+3.3.2 Periodic Gaussian Prior. To provide more control over the temporal receptive field, we consider a periodic gaussian prior. 
+
+𝑓 (𝑡 ) = 𝑒 − 12 ( 𝑡 𝜎 )2
+
+, 𝑡 ∈ [− 𝑇 
+
+2 , 𝑇 
+
+2 ]
+
+𝑓 (𝑡 ) = 𝑓 (𝑡 + 𝑇 )
+
+(17) A larger 𝜎 produces a broader attention peak, allowing interac-tions further apart in time to remain correlated, while a smaller 𝜎 
+
+enforces sharper, more localized attention. When 𝜎 ≪ 𝑇 /2, 𝑓 is positive definite and we can then apply Corollary 3.3 2. The Fourier Random Rotation matrices can be formed by sampling discrete harmonics {𝑘 /𝑇 }∞ 
+
+> 𝑘 =−∞
+
+as the rotation frequencies from probability mass function 𝑃 (𝜉 = 𝑘 /𝑇 ) = 𝛼 𝑘 , where 
+
+𝛼 𝑘 is the Fourier coefficient of harmonic 𝑘 /𝑇 :
+
+𝛼 𝑘 = 1
+
+𝑇 
+
+∫ 𝑇 /2 
+
+> −𝑇 /2
+
+𝑒 − 12 ( 𝑡 𝜎 )2
+
+cos (2𝜋𝑘𝑡 /𝑇 ) 𝑑𝑡 
+
+≈ 𝜎 √2𝜋 𝑇 𝑒 − 2𝜋 2𝜎 2𝑘 2  
+
+> 𝑇 2
+
+(18) 
+
+= 1
+
+𝜎 ∗√2𝜋 𝑒 − 12 
+
+> 𝑘 𝜎 ∗
+> 2
+
+, 𝜎 ∗ = 𝑇 
+
+2𝜋𝜎                                                    
+
+> 2The periodic Gaussian prior 𝑓 (𝑡 )=exp (− 𝑡 2/2𝜎 2)is positive definite when 𝜎 ≪
+> 𝑇 /2. Positive definiteness requires all Fourier coefficients 𝛼 𝑘 ≥0, which holds since
+> 𝛼 𝑘 =𝜎 √2𝜋 𝑇 exp (− 2𝜋 2𝜎 2𝑘 2/𝑇 2) ≥ 0for all 𝑘 ∈Z. The condition 𝜎 ≪𝑇 /2ensures the periodic extension of 𝑓 is smooth, i.e. 𝑓 (± 𝑇 /2)=exp (− 𝑇 2/8𝜎 2) ≈ 0, so that
+> 𝑓 behaves as a proper Gaussian on each period. For our choice 𝜎 ≤2hr and 𝑇 =
+> 24 hr, 𝑓 (± 12 hr )=exp (− 18 ) ≈ 10 −8, confirming positive definiteness to numerical precision. ClockRoPE: Random Fourier Rotations for Temporal Routine Modeling
+
+Table 1: ClockRoPE Sampling Distributions Distributions Form Parameters 
+
+cosine-sym 12 𝛿  𝜉 − 1
+
+> 𝑇
+
+ + 12 𝛿  𝜉 + 1
+
+> 𝑇
+
+ no parameter gaussian-sym Categorical 
+
+ 𝛼 𝑘 Í𝑠 𝑢 =−𝑠 𝛼 𝑢 
+
+𝑠 𝑘 =−𝑠 truncation size 𝑠 , gaussian std 𝜎 
+
+cosine-fold 𝛿  𝜉 − 1
+
+> 𝑇
+
+ no parameter gaussian-fold Categorical 
+
+ 𝛽 𝑘 Í𝑠 𝑢 =0 𝛽 𝑢 
+
+𝑠 𝑘 =0, 𝛽 𝑘 = 2𝛼 𝑘 when 𝑘 > 0; 𝛽 𝑘 = 𝛼 𝑘 when 𝑘 = 0 truncation size 𝑠 , gaussian std 𝜎 
+
+The approximation in (18) comes from extending the integration limits [− 𝑇 /2,𝑇 /2] to (−∞ , ∞) , valid when 𝜎 ≪ 𝑇 /2. 3 The coeffi-cients decay exponentially in 𝑘 2, guaranteeing rapid convergence of the truncated series and justifying the use of a small truncation size 𝑠 ≪ ∞ in practice. With truncation to {𝑘 /𝑇 }𝑠 𝑘 =−𝑠 , we re-normalize the probability mass function, sample: 
+
+𝑘 (ℓ ) 
+
+> 0
+
+, . . . , 𝑘 (ℓ ) 
+
+> 𝑑 /2−1
+
+∼ Categorical 
+
+ 𝛼 𝑘 
+
+Í𝑠 𝑢 =−𝑠 𝛼 𝑢 
+
+𝑠 𝑘 =−𝑠 
+
+, ℓ = 1, . . . , 𝐿 
+
+(19) and set 𝜉 (ℓ ) 
+
+> 𝑗
+
+← 𝑘 (ℓ ) 
+
+> 𝑗
+
+/𝑇 for 𝑗 = 0, . . . , 𝑑 /2 − 1 in each attention layer 
+
+𝑙 .We compare different truncation size 𝑠 and variance 𝜎 in ablation study §4.3.1. 
+
+3.3.3 Direction Awareness with Folded Frequency Distribution. The frequency distributions we have derived so far from cosine prior and periodic gaussian prior are all symmetric. In this section, we argue that sampling from folded frequency distributions maintains the modulation effect as their symmetric counterparts and has additional benefit of directional awareness. To fold a distribution, we perform 
+
+𝑃 fold (𝑥 ) =
+
+
+
+2𝑃 (𝑥 ) for 𝑥 > 0
+
+𝑃 (𝑥 ) for 𝑥 = 00 otherwise (20) Table 1 shows all the distributions we have discussed so far and their folded versions. We first show that folded distributions maintain the modulation effect of the symmetric ones. We have the following expression for attention logit modulation: 
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+) (21) 
+
+= (
+
+cos (2𝜋𝜉 𝑗 𝑝 𝑚 ) − sin (2𝜋𝜉 𝑗 𝑝 𝑚 )
+
+sin (2𝜋𝜉 𝑗 𝑝 𝑚 ) cos (2𝜋𝜉 𝑗 𝑝 𝑚 )
+
+  𝑞 𝑚, 2𝑗 
+
+𝑞 𝑚, 2𝑗 +1
+
+
+
+)𝑇 (22) 
+
+cos (2𝜋𝜉 𝑗 𝑝 𝑛 ) − sin (2𝜋𝜉 𝑗 𝑝 𝑛 )
+
+sin (2𝜋𝜉 𝑗 𝑝 𝑛 ) cos (2𝜋𝜉 𝑗 𝑝 𝑛 )
+
+  𝑘 𝑛, 2𝑗 
+
+𝑘 𝑛, 2𝑗 +1
+
+
+
+(23) 
+
+= (𝑞 𝑚, 2𝑗 𝑘 𝑛, 2𝑗 + 𝑞 𝑚, 2𝑗 +1𝑘 𝑛, 2𝑗 +1) cos (2𝜋𝜉 𝑗 (𝑝 𝑚 − 𝑝 𝑛 )) (24) 
+
++ ( 𝑞 𝑚, 2𝑗 𝑘 𝑛, 2𝑗 +1 − 𝑞 𝑚, 2𝑗 +1𝑘 𝑛, 2𝑗 ) sin (2𝜋𝜉 𝑗 (𝑝 𝑚 − 𝑝 𝑛 )) (25) Similar to RoPE, ClockRoPE is designed to modulate the upper bound of attention logits: lowering the attention logit upper bound at other times so that through softmax, more attention can be               
+
+> 3For 𝜎 =2hr and 𝑇 =24 hr, the boundary value 𝑓 (± 𝑇 /2)=exp (− 18 ) ≈ 10 −8
+> confirms this approximation is exact to numerical precision.
+
+concentrated to tokens during similar hour of the day or day of the week. Attention logits get close to the upper bound when query and key are roughly aligned. In this case, we have |𝑞 𝑚, 2𝑗 𝑘 𝑛, 2𝑗 +1 − 𝑞 𝑚, 2𝑗 +1𝑘 𝑛, 2𝑗 | ≪ | 𝑞 𝑚, 2𝑗 𝑘 𝑛, 2𝑗 +
+
+𝑞 𝑚, 2𝑗 +1𝑘 𝑛, 2𝑗 +1 | in (24), the dominating cosine term does not depend on the sign of the frequencies. We can thus replace all negative frequencies with its reverse and maintain the signal modulating effect. Sampling from folded non-negative frequencies has additional benefits of allowing the model to be directional aware and ensur-ing all feature pairs share a consistent rotational orientation. This consistency could help the projection matrices learn a unified rep-resentation of temporal causality. 
+
+Algorithm 2 ClockRoPE for Routine Modeling  
+
+> 1:
+
+// Network initialization: Sample per-layer frequencies  
+
+> 2:
+
+for each attention layer ℓ = 1, . . . , 𝐿 do  
+
+> 3:
+
+Set 𝑠𝑒𝑒𝑑 ℓ ← 𝑠𝑒𝑒𝑑 𝑏𝑎𝑠𝑒 + ℓ 
+
+> 4:
+
+Draw 𝑑 /2 i.i.d. samples with 𝑠𝑒𝑒𝑑 ℓ :
+
+𝜉 (ℓ ) 
+
+> 1
+
+, . . . , 𝜉 (ℓ ) 
+
+> 𝑑 /2
+
+∼ ClockRoPE Sampling Distribution  
+
+> 5:
+
+Form rotation frequency vector Θ(ℓ ) ←
+
+
+
+𝜉 (ℓ ) 
+
+> 1
+
+, 𝜉 (ℓ ) 
+
+> 2
+
+, . . . , 𝜉 (ℓ )
+
+> 𝑑 /2
+
+ 
+
+> 6:
+
+end for  
+
+> 7:
+
+// Forward pass: apply ClockRoPE rotation (RoPE-style efficient realization)  
+
+> 8:
+
+for each layer ℓ = 1, . . . , 𝐿 do  
+
+> 9:
+
+Compute rotation angles 2𝜋 Θ(ℓ ) 𝑝 𝑚 , 2𝜋 Θ(ℓ ) 𝑝 𝑛 and expand them to 𝑟 (ℓ ) 
+
+> 𝑚
+
+, 𝑟 (ℓ ) 
+
+> 𝑛
+
+∈ R𝑑 by repeating each element twice.  
+
+> 10:
+
+Define rotate_pair (𝒗 ) ← (− 𝑣 2, 𝑣 1, −𝑣 4, 𝑣 3, . . . , −𝑣 𝑑 , 𝑣 𝑑 −1) 
+
+> 11:
+
+𝒒 (ℓ ) 
+
+> 𝑚
+
+← 𝒒 (ℓ ) 
+
+> 𝑚
+
+⊗ cos 
+
+
+
+𝑟 (ℓ )
+
+> 𝑚
+
+
+
++ rotate_pair 
+
+
+
+𝒒 (ℓ )
+
+> 𝑚
+
+
+
+⊗ sin 
+
+
+
+𝑟 (ℓ )
+
+> 𝑚
+
+ 
+
+> 12:
+
+𝒌 (ℓ ) 
+
+> 𝑛
+
+← 𝒌 (ℓ ) 
+
+> 𝑛
+
+⊗ cos 
+
+
+
+𝑟 (ℓ )
+
+> 𝑛
+
+
+
++ rotate_pair 
+
+
+
+𝒌 (ℓ )
+
+> 𝑛
+
+
+
+⊗ sin 
+
+
+
+𝑟 (ℓ )
+
+> 𝑛
+
+ 
+
+> 13:
+
+end for 
+
+3.3.4 Combine Multiple Distributions. To capture multiple periods e.g. daily and weekly, we can (1) combine ClockRoPE sampling distributions with a weighted sum of respective pmf or (2) shard features based on the importance of each periodicity and apply corresponding sampling distribution to each feature group. For simplicity, we took the second approach in our experiments. The ClockRoPE algorithm is summarized in Algorithm 2. In practice, we sample ClockRoPE frequencies separately for each head in multi-head attention. Yiwen Chen, Joshua Ainslie, Krzysztof Choromanski, Xiang Gao, Su-Lin Wu, Yiping Yuan, and Qian Sun 
+
+## 4 Experiments 
+
+In this section, we evaluate ClockRoPE on production-scale genera-tive retrieval task at a major video-sharing platform. We experiment with ClockRoPE and other baseline methods on top of a transformer-style base model, which predicts users’ next interaction given their historic interaction sequences. This foundation model powers top-k retrieval from a massive video corpus on both watch page and home page, and serves as the upstream of the more fine-grained ranking model. We aim to answer the following questions through experiments: (1) How does ClockRoPE affect attention distribution ? (2) Does the attention distribution change benefit viewer satis-faction? (3) How does ClockRoPE interact with RoPE ? 
+
+## 4.1 Offline Evaluation 
+
+Table 2: Experiment group 1: no position embedding. Per-centage MAP improvement over control. Method MAP@1 MAP@50 
+
+Arm 1 (Fourier Features) +0.43% +0.29% Arm 2 (ClockRoPE-cosine-sym) +1.89% +1.25% Arm 3 (ClockRoPE-cosine-fold) +1.96% +1.37% Arm 4 (ClockRoPE-gaussian-sym) +3.19% +2.12% Arm 5 (ClockRoPE-gaussian-fold) +3.61% +2.25% 
+
+Table 3: Experiment group 2: combining with RoPE. Percent-age MAP improvement over RoPE only control. Method MAP@1 MAP@50 
+
+Arm 1 (ClockRoPE-cosine-fold) +1.02% +1.17% Arm 2 (ClockRoPE-gaussian-sym) +2.18% +1.91% Arm 3 (ClockRoPE-gaussian-fold) +2.39% +2.00% We conducted two groups of experiments to investigate Clock-RoPE’s effectiveness with and without RoPE. 
+
+4.1.1 Experiment Group 1 . All the variants in this group use absolute timestamp embedding and no position embedding. For ClockRoPE-gaussian methods, we used parameter sweep to select truncation size and variance. 
+
+• Control: Hour-of-the-day and day-of-the-week input fea-tures : [𝑡 mod 𝑇 𝑑 ,
+
+j 𝑡 𝑇 𝑑 
+
+k
+
+mod 𝑇 𝑤  
+
+> 𝑇 𝑑
+
+] . This is the production baseline. 
+
+• Arm 1 (Fourier Features): Daily and weekly Fourier input features 
+
+[cos ( 2𝜋𝑡 𝑇 𝑑 ), sin ( 2𝜋𝑡 𝑇 𝑑 ), cos ( 2𝜋𝑡 𝑇 𝑤 ), sin ( 2𝜋𝑡 𝑇 𝑤 )] . This periodic en-coding has the nice property of translation invariance as the cosine difference formula ensures that dot product be-tween two such feature vectors depends only on the relative temporal distance. 
+
+• Arm 2 (ClockRoPE-cosine-sym): We divide all features into two halves and apply ClockRoPE-cosine-sym with daily period and weekly period to each half respectively. 
+
+• Arm 3 (ClockRoPE-cosine-fold): Same as Arm 2 except for using cosine-fold sampling distribution. 
+
+• Arm 4 (ClockRoPE-gaussian-sym): Same as Arm 2 ex-cept for using gaussian-sym sampling distribution. 
+
+• Arm 5 (ClockRoPE-gaussian-fold): Same as Arm 2 ex-cept for using gaussian-fold sampling distribution. As shown in Table 2, ClockRoPE-gaussian variants consistently outperform ClockRoPE-cosine variants. A potential explanation lies in the range of the two priors: the gaussian prior is non-negative and decays smoothly toward 0 as temporal distance 𝑡 mod 𝑇 approaches 
+
+𝑇 /2. The cosine prior, in contrast, ranges over [− 1, 1] and reaches 
+
+−1 at 𝑡 = 𝑇 /2, actively inverting the sign of the attention logit for maximally out-of-phase pairs rather than merely suppressing it. This sign inversion can inject additional noise into the attention distribution. We selected the best performing variants from group 1 and ex-perimented with combining them with RoPE in the next section. 
+
+4.1.2 Experiment Group 2 . In the second group, we evaluated how ClockRoPE interacts with RoPE. All the variants in this group use both absolute timestamp embedding and standard RoPE for position embedding. We combined ClockRoPE with RoPE by applying RoPE to half of the hidden features and ClockRoPE to the other half. Other ways of combining RoPE and ClockRoPE are discussed in Ablation §4.3.1. 
+
+• Control: Hour-of-the-day and day-of-the-week input fea-tures : [𝑡 mod 𝑇 𝑑 ,
+
+j 𝑡 𝑇 𝑑 
+
+k
+
+mod 𝑇 𝑤  
+
+> 𝑇 𝑑
+
+] with standard RoPE . 
+
+• Arm 1 (ClockRoPE-cosine-fold): We divide all features into two halves and apply RoPE to the first half. We further divide the second half evenly into two feature groups and apply ClockRoPE-cosine-fold with daily period and weekly period to each group respectively. 
+
+• Arm 2 (ClockRoPE-gaussian-sym): Same as Arm 1 ex-cept for using gaussian-sym sampling distribution. 
+
+• Arm 3 (ClockRoPE-gaussian-fold): Same as Arm 1 ex-cept for using gaussian-fold sampling distribution. Table 2 and Table 3 show that ClockRoPE-gaussian-fold performs the best both with and without RoPE. 
+
+## 4.2 Online A/B Tests 
+
+Table 4: RoPE and ClockRoPE each independently improves sitewide valued engagement. The best result is achieved by combining RoPE and ClockRoPE. Method Engagement Valued Engagement 
+
+RoPE Only +0.04% +0.06% ClockRoPE Only +0.03% +0.05% RoPE + ClockRoPE +0.08% +0.08% We conducted an online A/B test for 14 days, assigning 1% total traffic to each variant. In this study, we used the best config from ClockRoPE: Random Fourier Rotations for Temporal Routine Modeling 
+
+offline evaluations: ClockRoPE-gaussian-fold, where ClockRoPE and RoPE are combined in the same way as in §4.1.2, each applying to half of the features. As shown in Table 4, RoPE and ClockRoPE are complementary to each other: 
+
+• Applying RoPE or ClockRoPE alone each helps improve sitewide valued engagement. 
+
+• The best result is achieved by combining RoPE and Clock-RoPE, leveraging both long-term attention decay of RoPE and periodicity-awareness of ClockRoPE. More analysis on how ClockRoPE interacts with RoPE in terms of attention distribution can be found in §4.4.1. 
+
+## 4.3 Ablation Studies 
+
+4.3.1 Truncation Size and Variance in ClockRoPE Gaussian. We ablated ClockRoPE-gaussian-fold with single period 𝑇 = 24 hr on both truncation size 𝑠 and variance. The results are shown in Table 5. We see that tuning variance has a larger impact than truncation size. When the truncation size is large enough e.g. 6 in our case, keep increasing it does not yield extra performance gain. 
+
+Table 5: Percentage MAP improvement over prod control with varying truncation size and variance. Method MAP@1 MAP@50 
+
+𝑠 = 6, 𝜎 = 1.0 hr +0.95% +0.65% 
+
+𝑠 = 6, 𝜎 = 1.5 hr +1.51% +0.85% 
+
+𝒔 = 6, 𝝈 = 2.0 hr +2.12% +2.05% 
+
+𝑠 = 6, 𝜎 = 2.5 hr +1.95% +1.84% 
+
+𝑠 = 3, 𝜎 = 2.0 hr +1.59% +1.12% 
+
+𝑠 = 9, 𝜎 = 2.0 hr +1.88% +1.41% 
+
+𝑠 = 12 , 𝜎 = 2.0 hr +2.01% +1.94% 
+
+4.3.2 Different Ways of Combining RoPE and ClockRoPE. We com-pared two approaches: 
+
+• Feature-wise division: rotate half hidden features with RoPE and the other half with ClockRoPE. 
+
+• Head-wise division: rotate all features in half heads with RoPE and features in the other half heads with ClockRoPE. Table 6 shows that combining RoPE and ClockRoPE feature-wise performs slightly better in offline evaluation. 
+
+Table 6: Percentage MAP improvement over RoPE only con-trol. Feature-wise division performs slightly better than Head-wise division. Method MAP@1 MAP@50 
+
+Feature-wise division +2.39% +2.00% Head-wise division +1.94% +1.87% 
+
+Figure 2: Visualization of average attention probability over a week. Key observations: (2) Standard RoPE allocates more attention to the most recent history and obscures daily pe-riod. (3) Applying ClockRoPE alone sharpens attention peak around every 24 hrs. (4) The combination of RoPE and Clock-RoPE retains both long-term decay and clear daily period. 
+
+## 4.4 Visualization of Temporal Attention Distribution 
+
+4.4.1 How ClockRoPE Interacts with RoPE. Figure 2 shows the attention distribution over temporal distances ranging from 0 to 168hr, averaging attention probabilities for every hour bucket. In this comparison, we used ClockRoPE-gaussian-fold with daily pe-riod only. Figure 2 subgraph 2 confirms the motivation in §3.1: the log-linear frequency schedule’s long-term decay dominates the atten-tion pattern, suppressing the periodic signal that ClockRoPE is designed to recover. Subgraph 4 visually verifies that both long-term decay and clear daily period are retained with the combina-tion of RoPE and ClockRoPE, which explains why the combination achieves the best online performance gain in §4.2. We do not highlight the difference between Gaussian-symmetric and Gaussian-fold here as they produce similar pattern at the hourly level. 
+
+4.4.2 Symmetric vs. Folded ClockRoPE Frequency Distribution. When averaging attention probabilities for every daily bucket as in Figure 3, we start to observe difference between folded frequency distri-bution and its symmetric counterpart. As discussed in §3.3.3, the folded frequency distribution allows the model to distinguish be-tween interactions one day before the weekly period mark and interactions one day after by performing ClockRoPE rotations in different directions. In contrast, interactions before and after the weekly period mark result in the same rotations with ClockRoPE-gaussian-symmetric as long as their temporal distance to the weekly period mark is the same. Figure 3 subgraph 2 suggests that with the advantage of being directional-aware, the model learns to allocate more attention to interactions before it than those after it when projecting all interactions onto the same weekly circle e.g. an inter-action on Monday distributes more attention to interactions on the Yiwen Chen, Joshua Ainslie, Krzysztof Choromanski, Xiang Gao, Su-Lin Wu, Yiping Yuan, and Qian Sun 
+
+Figure 3: Visualization of average attention probability over six weeks. Key observations: (1) ClockRoPE introduces weekly attention peak that is not explicit in the baseline. (2) With ClockRoPE-gaussian-fold, more attention is allo-cated to the day immediate before the weekly cycle mark than the day immediate after (3) The model with ClockRoPE-gaussian-symmetric allocates attention much more evenly between the two days surrounding the weekly cycle mark. 
+
+past Sunday (8 days ago) than those on the past Tuesday (6 days ago). This explains that a potential reason for the performance improve-ment of ClockRoPE-gaussian-fold over its symmetric counterpart is its capability of capturing routines with causal relationships. 
+
+## 4.5 Production Deployment Results 
+
+Table 7: Core Deployment Metrics Core Deployment Metrics Results 
+
+Valued Engagement Time +0.08% Homepage Triggered Engagement Time +0.11% Homepage Views -0.51% Daily Unique Impressed Videos -0.19% TPU Serving Cost -0.63% Serving Latency Neutral ClockRoPE has been successfully deployed together with RoPE across homepage and watch page at a major video-sharing plat-form with neutral serving latency impact. As shown in Table 7, we observe fewer daily unique impressed videos and homepage views, alongside more homepage triggered engagement time and overall valued engagement time, suggesting that it now takes users fewer scrolls and clicks to find satisfying contents, which in turn reduces serving volume and saves overall TPU serving cost by 0.63% .In addition to the core deployment metrics, Table 8 demonstrates evidence that ClockRoPE helps improve sitewide valued engage-ment of routine-related watch behavior, such as learning, gaming 
+
+Table 8: Routine-related Metrics Routine-related Metrics Online Lift 
+
+Engaged Vod Topics +0.05% Repeat Engaged Topics +0.03% Gaming-Related Content Valued Engagement +0.08% News Valued Engagement +0.17% Learning Content Valued Engagement +0.15% and news watching, tying back to our initial motivation of improv-ing routine-awareness in sequential recommendation. 
+
+## 5 Conclusion 
+
+In this work, we introduced ClockRoPE, a mathematically grounded periodic encoding for modeling user routines. By leveraging the framework of Random Fourier Rotations, ClockRoPE achieves per-formance gain without requiring additional input features or in-creasing model dimensionality. Crucially, ClockRoPE serves as a powerful complement to standard RoPE, enabling transformers to capture natural behavioral periodicity alongside monotonic recency decay. The successful deployment of ClockRoPE in a major video-sharing platform, yielding consistent valued engagement gains with resource savings, confirms its effectiveness and efficiency for large-scale industrial applications. ClockRoPE: Random Fourier Rotations for Temporal Routine Modeling 
+
+## References 
+
+[1] Salomon Bochner. 1933. Monotone Funktionen, Stieltjessche Integrale und har-monische Analyse . Springer. [2] Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et al . 2020. Language models are few-shot learners. Advances in neural information processing systems 33 (2020), 1877–1901. [3] Zheng Chai, Qin Ren, Xijun Xiao, Huizhi Yang, Bo Han, Sijun Zhang, Di Chen, Hui Lu, Wenlin Zhao, Lele Yu, et al . 2025. Longer: Scaling up long sequence modeling in industrial recommenders. In Proceedings of the Nineteenth ACM Conference on Recommender Systems . 247–256. [4] Hailing Cheng, Daqi Sun, and Xinyu Lu. 2026. Learning to Rotate: Tempo-ral and Semantic Rotary Encoding for Sequential Modeling. arXiv preprint arXiv:2604.24717 (2026). [5] Krzysztof Choromanski, Shanda Li, Valerii Likhosherstov, Kumar Avinava Dubey, Shengjie Luo, Di He, Yiming Yang, Tamás Sarlós, Thomas Weingarten, and Adrian Weller. 2024. Learning a Fourier Transform for Linear Relative Positional Encod-ings in Transformers. In International Conference on Artificial Intelligence and Sta-tistics, 2-4 May 2024, Palau de Congressos, Valencia, Spain (Proceedings of Machine Learning Research, Vol. 238) , Sanjoy Dasgupta, Stephan Mandt, and Yingzhen Li (Eds.). PMLR, 2278–2286. https://proceedings.mlr.press/v238/choromanski24a. html [6] Krzysztof Choromanski, Han Lin, Haoxian Chen, Tianyi Zhang, Arijit Se-hanobish, Valerii Likhosherstov, Jack Parker-Holder, Tamás Sarlós, Adrian Weller, and Thomas Weingarten. 2022. From block-Toeplitz matrices to differential equa-tions on graphs: towards a general theory for scalable masked Transformers. In International Conference on Machine Learning, ICML 2022, 17-23 July 2022, Baltimore, Maryland, USA (Proceedings of Machine Learning Research, Vol. 162) ,Kamalika Chaudhuri, Stefanie Jegelka, Le Song, Csaba Szepesvári, Gang Niu, and Sivan Sabato (Eds.). PMLR, 3962–3983. https://proceedings.mlr.press/v162/ choromanski22a.html [7] Krzysztof Marcin Choromanski, Valerii Likhosherstov, David Dohan, Xingyou Song, Andreea Gane, Tamás Sarlós, Peter Hawkins, Jared Quincy Davis, Afroz Mohiuddin, Lukasz Kaiser, David Benjamin Belanger, Lucy J. Colwell, and Adrian Weller. 2021. Rethinking Attention with Performers. In 9th International Confer-ence on Learning Representations, ICLR 2021, Virtual Event, Austria, May 3-7, 2021 .OpenReview.net. https://openreview.net/forum?id=Ua6zuk0WRH [8] Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. 
+
+arXiv preprint arXiv:1810.04805 (2018). [9] Byeongho Heo, Song Park, Dongyoon Han, and Sangdoo Yun. 2024. Rotary Position Embedding for Vision Transformer. In Computer Vision - ECCV 2024 -18th European Conference, Milan, Italy, September 29-October 4, 2024, Proceedings, Part X (Lecture Notes in Computer Science, Vol. 15068) , Ales Leonardis, Elisa Ricci, Stefan Roth, Olga Russakovsky, Torsten Sattler, and Gül Varol (Eds.). Springer, 289–305. doi:10.1007/978-3-031-72684-2_17 [10] Gustav Herglotz. 1911. Über Potenzreihen mit positivem, reellem Teil im Ein-heitskreis. Berichte über die Verhandlungen der Königlich Sächsischen Gesellschaft der Wissenschaften zu Leipzig 63 (1911), 501–511. [11] Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, Elena Buchatskaya, Trevor Cai, Eliza Rutherford, Diego de Las Casas, Lisa Anne Hendricks, Jo-hannes Welbl, Aidan Clark, et al . 2022. Training compute-optimal large language models. arXiv preprint arXiv:2203.15556 (2022). [12] Bojian Hou, Xiaolong Liu, Xiaoyi Liu, Jiaqi Xu, Yasmine Badr, Mengyue Hang, Sudhanshu Chanpuriya, Junqing Zhou, Yuhang Yang, Han Xu, et al . 2026. Kunlun: Establishing scaling laws for massive-scale recommendation systems through unified architecture design. arXiv preprint arXiv:2602.10016 (2026). [13] Ermo Hua, Che Jiang, Xingtai Lv, Kaiyan Zhang, Youbang Sun, Yuchen Fan, Xuekai Zhu, Biqing Qi, Ning Ding, and Bowen Zhou. 2024. Fourier Position Embedding: Enhancing Attention’s Periodic Extension for Length Generalization. 
+
+arXiv preprint arXiv:2412.17739 (2024). [14] Cheng-Zhi Anna Huang, Ashish Vaswani, Jakob Uszkoreit, Ian Simon, Cur-tis Hawthorne, Noam Shazeer, Andrew M. Dai, Matthew D. Hoffman, Monica Dinculescu, and Douglas Eck. 2019. Music Transformer: Generating Music with Long-Term Structure. In 7th International Conference on Learning Repre-sentations, ICLR 2019, New Orleans, LA, USA, May 6-9, 2019 . OpenReview.net. https://openreview.net/forum?id=rJe4ShAcF7 [15] Wang-Cheng Kang and Julian McAuley. 2018. Self-attentive sequential recom-mendation. In 2018 IEEE international conference on data mining (ICDM) . IEEE, 197–206. [16] Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. 2020. Scaling laws for neural language models. arXiv preprint arXiv:2001.08361 (2020). [17] Seyed Mehran Kazemi, Rishab Goel, Sepehr Eghbali, Janahan Ramanan, Jaspreet Sahota, Sanjay Thakur, Stella Wu, Cathal Smyth, Pascal Poupart, and Marcus Brubaker. 2019. Time2vec: Learning a vector representation of time. arXiv preprint arXiv:1907.05321 (2019). [18] Byeongchan Kim, Arijit Sehanobish, Avinava Dubey, Min-hwan Oh, and Krzysztof Choromanski. 2026. RelFlexformer: Efficient Attention 3D-Transformers for Integrable Relative Positional Encodings. CoRR abs/2605.10706 (2026). arXiv:2605.10706 doi:10.48550/ARXIV.2605.10706 [19] James Lee-Thorp, Joshua Ainslie, Ilya Eckstein, and Santiago Ontañón. 2021. FNet: Mixing Tokens with Fourier Transforms. arXiv preprint arXiv:2105.03824 
+
+(2021). [20] Boyang Li, Yulin Wu, Sizhe Xu, Nuoxian Huang, Zhonghang Yuan, Shangyi Guo, Shu Yang, and Takahiro Yabe. 2026. nD-RoPE: A Generalized RoPE for n-Dimensional Position Embedding. arXiv preprint arXiv:2606.12146 (2026). [21] Jiacheng Li, Yujie Wang, and Julian McAuley. 2020. Time interval aware self-attention for sequential recommendation. In Proceedings of the 13th international conference on web search and data mining . 322–330. [22] Shanda Li, Chong You, Guru Guruganesh, Joshua Ainslie, Santiago Ontañón, Manzil Zaheer, Sumit Sanghai, Yiming Yang, Sanjiv Kumar, and Srinadh Bho-janapalli. 2023. Functional Interpolation for Relative Positions Improves Long Context Transformers. CoRR abs/2310.04418 (2023). arXiv:2310.04418 doi:10.48550/ARXIV.2310.04418 [23] Yang Li, Si Si, Gang Li, Cho-Jui Hsieh, and Samy Bengio. 2021. Learnable fourier features for multi-dimensional spatial positional encoding. Advances in Neural Information Processing Systems 34 (2021), 15816–15829. [24] Shengjie Luo, Shanda Li, Tianle Cai, Di He, Dinglan Peng, Shuxin Zheng, Guolin Ke, Liwei Wang, and Tie-Yan Liu. 2021. Stable, Fast and Accurate: Kernelized Attention with Relative Positional Encoding. In Advances in Neural Informa-tion Processing Systems 34: Annual Conference on Neural Information Process-ing Systems 2021, NeurIPS 2021, December 6-14, 2021, virtual , Marc’Aurelio Ran-zato, Alina Beygelzimer, Yann N. Dauphin, Percy Liang, and Jennifer Wortman Vaughan (Eds.). 22795–22807. https://proceedings.neurips.cc/paper/2021/hash/ c0f168ce8900fa56e57789e2a2f2c9d0-Abstract.html [25] William Peebles and Saining Xie. 2023. Scalable diffusion models with transform-ers. In Proceedings of the IEEE/CVF international conference on computer vision .4195–4205. [26] Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J. Liu. 2020. Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer. J. Mach. Learn. Res. 21 (2020), 140:1–140:67. https://jmlr.org/papers/v21/20-074.html [27] Ali Rahimi and Benjamin Recht. 2007. Random features for large-scale kernel machines. Advances in neural information processing systems 20 (2007). [28] Isaac Reid, Arijit Sehanobish, Cederik Höfs, Bruno Mlodozeniec, Leonhard Vulpius, Federico Barbero, Adrian Weller, Krzysztof Choromanski, Richard E. Turner, and Petar Velickovic. 2026. Wavelet-Induced Rotary Encodings: RoPE Meets Graphs. ICML abs/2509.22259 (2026). arXiv:2509.22259 doi:10.48550/ ARXIV.2509.22259 [29] Connor Schenck, Isaac Reid, Mithun George Jacob, Alex Bewley, Joshua Ainslie, David Rendleman, Deepali Jain, Mohit Sharma, Kumar Avinava Dubey, Ayzaan Wahid, Sumeet Singh, René Wagner, Tianli Ding, Chuyuan Fu, Arunkumar Byra-van, Jake Varley, Alexey A. Gritsenko, Matthias Minderer, Dmitry Kalashnikov, Jonathan Tompson, Vikas Sindhwani, and Krzysztof Marcin Choromanski. 2025. Learning the RoPEs: Better 2D and 3D Position Encodings with STRING. In 
+
+Forty-second International Conference on Machine Learning, ICML 2025, Vancouver, BC, Canada, July 13-19, 2025 (Proceedings of Machine Learning Research, Vol. 267) ,Aarti Singh, Maryam Fazel, Daniel Hsu, Simon Lacoste-Julien, Felix Berkenkamp, Tegan Maharaj, Kiri Wagstaff, and Jerry Zhu (Eds.). PMLR / OpenReview.net. https://proceedings.mlr.press/v267/schenck25a.html [30] Peter Shaw, Jakob Uszkoreit, and Ashish Vaswani. 2018. Self-Attention with Relative Position Representations. In Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT, New Orleans, Louisiana, USA, June 1-6, 2018, Volume 2 (Short Papers) , Marilyn A. Walker, Heng Ji, and Amanda Stent (Eds.). Association for Computational Linguistics, 464–468. doi:10.18653/V1/N18-2074 [31] Jianlin Su, Yu Lu, Shengfeng Pan, Ahmed Murtadha, Bo Wen, and Yunfeng Liu. 2021. RoFormer: Enhanced Transformer with Rotary Position Embedding. arXiv preprint arXiv:2104.09864 (2021). [32] Matthew Tancik, Pratul Srinivasan, Ben Mildenhall, Sara Fridovich-Keil, Nithin Raghavan, Utkarsh Singhal, Ravi Ramamoorthi, Jonathan Barron, and Ren Ng. 2020. Fourier features let networks learn high frequency functions in low di-mensional domains. Advances in neural information processing systems 33 (2020), 7537–7547. [33] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. In Advances in Neural Information Processing Systems (NeurIPS) , Vol. 30. [34] Xiaokai Wei, Jiajun Wu, Daiyao Yi, Reza Shirkavand, and Michelle Gong. 2025. Rotate Both Ways: Time-and-Order RoPE for Generative Recommendation. arXiv preprint arXiv:2510.20455 (2025). [35] Da Xu, Chuanwei Ruan, Evren Korpeoglu, Sushant Kumar, and Kannan Achan. 2019. Self-attention with functional time representation learning. Advances in neural information processing systems 32 (2019). Yiwen Chen, Joshua Ainslie, Krzysztof Choromanski, Xiang Gao, Su-Lin Wu, Yiping Yuan, and Qian Sun      
+
+> [36] Jiaqi Zhai, Lucy Liao, Xing Liu, Yueming Wang, Rui Li, Xuan Cao, Leon Gao, Zhaojie Gong, Fangda Gu, Michael He, et al .2024. Actions speak louder than words: Trillion-parameter sequential transducers for generative recommenda-tions. arXiv preprint arXiv:2402.17152 (2024).
+
+## A Proofs A.1 Proof of Proposition 3.2 
+
+Proof. Define the real-valued function: 
+
+ℎ(𝜉 0, . . . , 𝜉 𝑑 /2−1) =
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)
+
+=
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+Re 
+
+h
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+𝑒 𝑖 2𝜋𝜉 𝑗 (𝑝 𝑚 −𝑝 𝑛 ) i
+
+(26) By Proposition 3.1, E[ℎ] = 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ).Changing 𝜉 𝑗 to 𝜉 ′
+
+> 𝑗
+
+while keeping all other frequencies fixed, the change in ℎ is bounded by: 
+
+|ℎ(. . . , 𝜉 𝑗 , . . . ) − ℎ(. . . , 𝜉 ′ 
+
+> 𝑗
+
+, . . . )| 
+
+= Re 
+
+h
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+𝑒 𝑖 2𝜋𝜉 𝑗 (𝑝 𝑚 −𝑝 𝑛 ) i
+
+− Re 
+
+h
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+𝑒 𝑖 2𝜋𝜉 ′    
+
+> 𝑗 (𝑝 𝑚 −𝑝 𝑛 )
+
+i
+
+≤ 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+> ∗
+
+· 𝑒 𝑖 2𝜋𝜉 𝑗 (𝑝 𝑚 −𝑝 𝑛 ) − 𝑒 𝑖 2𝜋𝜉 ′   
+
+> 𝑗 (𝑝 𝑚 −𝑝 𝑛 )
+
+≤ 2 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+= 2 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 )
+
+> 𝑛
+> ∗
+
+= 2 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+(27) The last inequality follows from the maximum distance between any two points on the unit circle is 2. The last equality comes from replacing complex norm with corresponding 2d vector norm. Denote bound 𝑐 𝑗 = 2 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+and apply McDiarmid’s in-equality to ℎ:
+
+𝑃 
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+) − 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 ) ≥ 𝜖 
+
+!
+
+≤ 2 exp ©«
+
+− 2𝜖 2
+
+Í𝑑 /2−1 
+
+> 𝑗 =0
+
+𝑐 2
+
+> 𝑗
+
+ª®¬
+
+= 2 exp ©«
+
+− 𝜖 2
+
+2 Í𝑑 /2−1 
+
+> 𝑗 =0
+
+( 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)2
+
+ª®®¬
+
+(28) replacing 𝜖 with 𝑑  
+
+> 2
+
+𝜖 ′ completes the proof. □
+
+## A.2 Proof of RFR Exponential Convergence with Feature Dimension at Initialization 
+
+Let 𝑋 𝑗 = 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+. When query and key projection matrices are initialized i.i.d. with variance independent of d, we have {𝑋 𝑗 }𝑑 /2−1
+
+> 𝑗 =0
+
+i.i.d. across 𝑗 at initialization and E[𝑋 2 
+
+> 𝑗
+
+] remains constant as d scales. Applying the law of large numbers to 𝑋 2 
+
+> 𝑗
+
+, we obtain 
+
+1
+
+𝑑 /2
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+𝑋 2 
+
+> 𝑗
+
+→ E[𝑋 2 
+
+> 𝑗
+
+],
+
+which implies Í𝑑 /2−1 
+
+> 𝑗 =0
+
+𝑋 2 
+
+> 𝑗
+
+= Θ(𝑑 ). In Proposition 3.2, substituting 
+
+Í𝑑 /2−1 
+
+> 𝑗 =0
+
+( 𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)2 with Θ(𝑑 ) yields that 
+
+1
+
+𝑑 /2
+
+> 𝑑 /2−1
+
+∑︁ 
+
+> 𝑗 =0
+
+(𝑹 ( 𝑗 ) 
+
+> 𝑚
+
+𝒒 ( 𝑗 ) 
+
+> 𝑚
+
+)⊤ (𝑹 ( 𝑗 ) 
+
+> 𝑛
+
+𝒌 ( 𝑗 ) 
+
+> 𝑛
+
+)
+
+converges to 1
+
+𝑑 /2 𝒒 ⊤ 
+
+> 𝑚
+
+𝒌 𝑛 𝑓 (𝑝 𝑚 − 𝑝 𝑛 )
+
+exponentially fast in 𝑑 .
+
+## B Can Rotation Frequencies Be Learnt? 
+
+We conducted experiments that jointly optimize rotation frequen-cies with network weights. In Table 9, we compare learnable fre-quencies with 0 initialization and ClockRoPE initializations. We also list ClockRoPE variants with fixed frequencies for reference. We find that (1) using ClockRoPE initialization improves perfor-mance over 0 initialization and (2) trainable frequencies initialized with ClockRoPE yields similar performance as fixed frequencies. 
+
+Table 9: Percentage MAP improvement over prod control. Learnable frequncies initialized with ClockRoPE achieve similar performance as fixed frequencies.

@@ -1,0 +1,434 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-02T21:05:43.424072+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 42,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 65,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 13,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 8,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 14
+  },
+  "deep_dive": [
+    {
+      "id": "2607.26346v1",
+      "source": "arxiv",
+      "title": "Toward a Unified Statistical Theory of Unsupervised Pretraining and Supervised Neural Knowledge Graph Learning",
+      "abstract": "Knowledge graph learning provides a powerful framework for representing and inferring structured knowledge, with broad practical applications. However, the scarcity of relation-specific labeled triples per entity hinders the training of expressive models, and the ad hoc design of scoring functions limits generalizability and lacks theoretical grounding. We address both issues with a theoretically grounded, end-to-end training framework that extends and subsumes existing methods. Our framework is a two-stage procedure: unsupervised pretraining over heterogeneous corpora followed by supervised learning with multiple relation types. We establish a nonasymptotic risk bound that disentangles pretraining representation error from labeled-sample complexity, formally quantifying the benefit of large-scale unlabeled data for downstream knowledge prediction. Synthetic experiments validate each theoretical component, and real-world experiments confirm the effectiveness of our approach on large-scale knowledge graph benchmarks.",
+      "authors": [
+        "Jifan Zhang",
+        "Miklos Racz",
+        "Suqi Liu"
+      ],
+      "primary_category": "math.ST",
+      "categories": [
+        "math.ST",
+        "cs.SI",
+        "stat.ME",
+        "stat.ML"
+      ],
+      "published": "2026-07-28T23:40:49+00:00",
+      "link": "https://arxiv.org/pdf/2607.26346v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "unsupervised pretraining followed by supervised learning leverages pretrained knowledge for downstream tasks",
+      "llm_evidence_cn": "无监督预训练后接监督学习，利用预训练知识用于下游任务",
+      "llm_evidence": "无监督预训练后接监督学习，利用预训练知识用于下游任务",
+      "canonical_evidence": "无监督预训练后接监督学习，利用预训练知识用于下游任务",
+      "llm_tldr_en": "Provides a unified statistical theory for two-stage pretraining and supervised learning with scarce labeled data.",
+      "llm_tldr_cn": "为两阶段预训练和监督学习提供统一统计理论，应对标签稀缺。",
+      "llm_tldr": "为两阶段预训练和监督学习提供统一统计理论，应对标签稀缺。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.26458v1",
+      "source": "arxiv",
+      "title": "Chaos Is a LADDER: Domain Generalization Beyond Invariance via Reweighting",
+      "abstract": "Domain generalization (DG) aims to learn from multiple source domains and generalize to unseen target domains. Most DG methods pursue invariance: they seek a causal representation whose prediction rule is invariant across domains. This principle is effective when the causal mechanism is stable, but becomes restrictive when the domain itself modulates how causal content maps to the response. In this case, directly feeding domain style into the predictor can create misleading shortcuts, since style does not by itself cause the response. Yet the apparent chaos of multiple styles can become a ladder: style can locate the unseen target domain among source domains and guide which domain-dependent prediction rules should be trusted. We propose \\emph{Latent Adaptive Domain Disentanglement and Environment Reweighting} (LADDER), a fixed-model DG pipeline that learns causal/style representations, freezes the encoders, fits source-specific classifiers, and uses an unlabeled target-domain covariate set only at inference to compute weights over these fixed classifiers, with no target labels or model-state updates. We establish theoretical guarantees for source reweighting and validate LADDER on simulations, FMoW, and a location-grouped iWildCam protocol, with gains in overall and group-averaged accuracy.",
+      "authors": [
+        "Yuhang Jiang",
+        "Fengchuan Zhang",
+        "Sanguo Zhang",
+        "Guojun Zhu"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "math.ST",
+        "stat.ME"
+      ],
+      "published": "2026-07-29T04:18:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.26458v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "domain generalization with reweighting adapts models to new target domains without labeled data",
+      "llm_evidence_cn": "通过重加权进行域泛化，使模型适应无标注的新目标域",
+      "llm_evidence": "通过重加权进行域泛化，使模型适应无标注的新目标域",
+      "canonical_evidence": "通过重加权进行域泛化，使模型适应无标注的新目标域",
+      "llm_tldr_en": "Proposes a reweighting-based domain generalization method that uses style to guide predictions for unseen domains.",
+      "llm_tldr_cn": "提出一种基于重加权的域泛化方法，利用风格指导未见域的预测。",
+      "llm_tldr": "提出一种基于重加权的域泛化方法，利用风格指导未见域的预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27055v1",
+      "source": "arxiv",
+      "title": "Learning from the Future: Privileged Self-Distillation for Sequential Recommendation",
+      "abstract": "Sequential recommenders are commonly trained with one-hot next-item labels under a causal (prefix-only) objective aligned with inference. While deployment-compatible, this supervision offers little insight into relative preferences among non-target items. Yet logged interaction sequences contain an additional supervisory source: interactions following the target often reveal how user intent evolves, making the target easier to interpret. We treat these future interactions as training-only privileged information, available during learning but not at inference. This raises a natural question: can future interactions provide richer supervision while keeping training aligned with inference-time prediction?   We propose Privileged Self-Distillation (PSD), a framework that separates learning-time information from inference-time information. PSD applies two attention masks to the same backbone: a future-aware view yields a privileged teacher distribution conditioned on past and future interactions, while a prefix-only view yields the student distribution used for deployment. Distilling the privileged distribution converts future interactions into training-only supervision rather than inference-time inputs. Since both views share a backbone, the teacher's advantage is purely informational, not architectural, removing the need for a separately pretrained teacher and letting its supervision adapt as the student evolves. PSD further uses an advantage-reachability gate to focus distillation on teacher signals likely supported by the observed prefix, along with a momentum-averaged teacher for stable targets. The framework is optimized end-to-end in a single stage, leaving the deployed model and inference cost unchanged. Experiments across public benchmarks and diverse backbones show consistent improvements.",
+      "authors": [
+        "Jiakai Tang",
+        "Yang Zhang",
+        "See-Kiong Ng",
+        "Xu Chen",
+        "Wen Chen",
+        "Jian Wu",
+        "Han Zhu"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-29T15:47:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.27055v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "method for predicting next item in user interaction sequences using privileged future information",
+      "llm_evidence_cn": "利用特权的未来信息预测用户交互序列中的下一项",
+      "llm_evidence": "利用特权的未来信息预测用户交互序列中的下一项",
+      "canonical_evidence": "利用特权的未来信息预测用户交互序列中的下一项",
+      "llm_tldr_en": "Privileged self-distillation for sequential recommendation trains with future interactions to improve next-item prediction.",
+      "llm_tldr_cn": "提出用于序列推荐的特权自蒸馏方法，利用未来交互作为训练信号改进下一项预测。",
+      "llm_tldr": "提出用于序列推荐的特权自蒸馏方法，利用未来交互作为训练信号改进下一项预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27274v1",
+      "source": "arxiv",
+      "title": "Rethinking EEG-Based Disease Diagnosis: Decoupling Instance Representation Learning from Subject-Level Supervision",
+      "abstract": "EEG-based disease diagnosis requires one prediction per subject, yet common pipelines segment recordings into short instances, inherit the subject label for every instance, and train instance-level classifiers. This assumes that all instances provide equally reliable diagnostic evidence. Multiple instance learning (MIL) avoids inherited labels by treating each subject as a bag. However, EEG datasets contain far fewer subjects than instances, which can limit the quality of the representations learned by end-to-end MIL. We propose BridgeMIL, a two-stage framework that decouples instance representation learning from subject-level supervision. Stage 1 pretrains the encoder without inherited instance labels by aligning temporally nearby windows and independently sampled within-subject sub-bags. Variance and covariance regularization prevent collapse and reduce redundancy without negative pairs. Stage 2 transfers the encoder to an attention-based MIL aggregator, applies supervision only to subject predictions, and limits representation drift through feature retention. Across three EEG disease datasets and five representative backbones, BridgeMIL attains the highest mean accuracy in 14 of 15 dataset-backbone settings and an overall mean accuracy of 76.57%, 4.28 percentage points higher than the strongest baseline. Further analyses reveal substantial variation in inherited-label reliability across instances, greater performance sensitivity to subject scarcity than to instance scarcity, and a more structured representation space with distinct subject-wise clusters and improved separation between diagnostic classes. Together, these findings underscore the importance of aligning supervision with the subject-level prediction objective while learning from abundant EEG instances without assigning disease labels to individual instances.",
+      "authors": [
+        "Zhiyuan Ma",
+        "Zeyuan Li",
+        "Zhiyi Lu",
+        "Jiacheng Hao",
+        "Youlang Du",
+        "Zhen Jiang",
+        "Xinche Zhang",
+        "Yuhao Sun",
+        "Sen Song"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-07-29T12:34:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.27274v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decoupled instance representation learning for EEG neural signals with MIL",
+      "llm_evidence_cn": "解耦实例表示学习用于脑电神经信号，结合多实例学习",
+      "llm_evidence": "解耦实例表示学习用于脑电神经信号，结合多实例学习",
+      "canonical_evidence": "解耦实例表示学习用于脑电神经信号，结合多实例学习",
+      "llm_tldr_en": "BridgeMIL pretrains an EEG encoder without inherited labels and uses MIL for robust subject-level disease diagnosis.",
+      "llm_tldr_cn": "BridgeMIL无需继承标签预训练EEG编码器，并用多实例学习实现稳健的受试者级疾病诊断。",
+      "llm_tldr": "BridgeMIL无需继承标签预训练EEG编码器，并用多实例学习实现稳健的受试者级疾病诊断。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27308v1",
+      "source": "arxiv",
+      "title": "ZUNA1.1: A more flexible EEG foundation model for Denoising and Super-resolution",
+      "abstract": "We introduce ZUNA1.1, a 380M-parameter diffusion autoencoder for flexible EEG signal reconstruction. ZUNA1.1 is capable of reconstructing variable length sequences of up to 30s, with an arbitrary number of EEG channels at arbitrary scalp locations, and can reconstruct arbitrary temporal intervals within channels in addition to reconstructing entire channels. We demonstrate that ZUNA1.1 performs at least on par with our earlier ZUNA1 model, while being far more flexible and capable of handling a wide range of reconstruction tasks. ZUNA1.1 continues to substantially outperform standard EEG denoising and reconstruction methods such as spherical spline interpolation, which is ubiquitously deployed in the MNE package. The ZUNA1.1 model is released open source under the permissive Apache 2.0 license.",
+      "authors": [
+        "Christopher Warner",
+        "Jonas Mago",
+        "JR Huml",
+        "Beren Millidge"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "q-bio.NC"
+      ],
+      "published": "2026-07-29T17:49:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.27308v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG diffusion autoencoder reconstructing variable-length sequences, directly applying sequence modeling to neural data",
+      "llm_evidence_cn": "面向EEG的扩散自编码器，可重建可变长度序列，直接对神经数据进行序列建模",
+      "llm_evidence": "面向EEG的扩散自编码器，可重建可变长度序列，直接对神经数据进行序列建模",
+      "canonical_evidence": "面向EEG的扩散自编码器，可重建可变长度序列，直接对神经数据进行序列建模",
+      "llm_tldr_en": "A flexible EEG diffusion autoencoder that denoises and super-resolves neural sequences across arbitrary channels and time intervals.",
+      "llm_tldr_cn": "一个灵活的EEG扩散自编码器，可对任意通道和时间段的神经序列进行去噪与超分辨率重建。",
+      "llm_tldr": "一个灵活的EEG扩散自编码器，可对任意通道和时间段的神经序列进行去噪与超分辨率重建。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.26369v1",
+      "source": "arxiv",
+      "title": "ClockRoPE: Random Fourier Rotations for Temporal Routine Modeling",
+      "abstract": "Rotary Position Embedding (RoPE) has been widely adopted in transformer-based large language models. However, its log-linear frequency schedule, originally designed to produce long-term attention decay, limits its adoption in domains with more complex distance-correlation patterns, such as temporal periodicity in sequential recommendation. We investigate the expressiveness of general query/key rotations and find that any normalized continuous positive-definite attention modulation function can be approximated by random rotations induced by its own Fourier transform, which we term Random Fourier Rotations. Building on this theory, we propose ClockRoPE for routine modeling in sequential recommendation, where rotation frequencies are derived from periodic attention modulation functions. In online A/B tests, ClockRoPE demonstrates consistent improvements in valued engagement metrics, and has been successfully deployed in production-scale generative retrieval system at a major video-sharing platform.",
+      "authors": [
+        "Yiwen Chen",
+        "Joshua Ainslie",
+        "Krzysztof Choromanski",
+        "Xiang Gao",
+        "Su-Lin Wu",
+        "Yiping Yuan",
+        "Qian Sun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-29T01:07:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.26369v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "random Fourier rotations for temporal routine modeling in sequential data",
+      "llm_evidence_cn": "用于序列数据时序周期建模的随机傅里叶旋转",
+      "llm_evidence": "用于序列数据时序周期建模的随机傅里叶旋转",
+      "canonical_evidence": "用于序列数据时序周期建模的随机傅里叶旋转",
+      "llm_tldr_en": "ClockRoPE adapts rotary position embeddings to capture temporal periodicity in sequential recommendation.",
+      "llm_tldr_cn": "ClockRoPE改进旋转位置编码以捕获序列推荐中的时间周期性。",
+      "llm_tldr": "ClockRoPE改进旋转位置编码以捕获序列推荐中的时间周期性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.26381v1",
+      "source": "arxiv",
+      "title": "Zero-Fi: Zero-Shot Wi-Fi-Based Human Activity Recognition via Contrastive Signal-Language Alignment",
+      "abstract": "Wi-Fi-based human activity recognition has advanced substantially, but most existing methods assume a closed set of activities and require labeled Wi-Fi samples for every target class, limiting their ability to recognize unseen activities. We present Zero-Fi, a contrastive signal-language alignment framework for zero-shot Wi-Fi-based human activity recognition. Zero-Fi learns unified representations from complementary Wi-Fi signal features and aligns them with the semantic representations of natural-language activity descriptions in a shared embedding space. This cross-modal alignment enables Zero-Fi to recognize new activity classes without requiring labeled Wi-Fi samples or model adaptation for those classes. Experiments on large-scale public benchmark datasets demonstrate effective zero-shot recognition of held-out activity classes, highlighting the potential of signal-language alignment to extend Wi-Fi sensing beyond predefined activity classes.",
+      "authors": [
+        "Yitong Shen",
+        "Cheng Guo",
+        "Peiliang Wang",
+        "Jingzhe Zhang",
+        "Yi Sheng",
+        "Haopeng Zhang",
+        "Hongfei Xue",
+        "Yili Ren"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-29T01:34:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.26381v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Zero-shot contrastive signal-language alignment recognizes unseen classes without labeled target samples",
+      "llm_evidence_cn": "零样本对比信号-语言对齐无需目标标记样本即可识别未见类别",
+      "llm_evidence": "零样本对比信号-语言对齐无需目标标记样本即可识别未见类别",
+      "canonical_evidence": "零样本对比信号-语言对齐无需目标标记样本即可识别未见类别",
+      "llm_tldr_en": "Contrastive signal-language alignment enables zero-shot Wi-Fi human activity recognition without target labels.",
+      "llm_tldr_cn": "对比信号-语言对齐实现了无需目标标签的零样本 Wi-Fi 人体活动识别。",
+      "llm_tldr": "对比信号-语言对齐实现了无需目标标签的零样本 Wi-Fi 人体活动识别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.26567v1",
+      "source": "arxiv",
+      "title": "Speech2Grasp: Data-Efficient Transfer of Text-Conditioned Grasp Detection to Speech in Humanoid Robots",
+      "abstract": "Humanoid robots increasingly require multi-modal understanding for natural interaction with humans. Despite the prominence of vision-language models, they generally assume textual rather than the more natural speech inputs. In this paper, we investigate whether a well-established text-conditioned model can be transferred to speech in a data-efficient manner. Using ALBEF as a case study, we conduct diagnostic analyses showing that a lightweight MLP-based projector effectively adapts it to speech, while preserving semantic discrimination and robustness. Motivated by these findings, we introduce Speech2Grasp, a framework for data-efficient transfer of text-conditioned grasp detection to speech. Real-world humanoid robot experiments show that Speech2Grasp outperforms cascaded ASR-based pipeline, while reducing inference latency. Our findings suggest a practical paradigm for extending established text-conditioned systems to speech.",
+      "authors": [
+        "Hung Nguyen",
+        "Kim Nhat Minh Nguyen",
+        "Van Duc Vu",
+        "Van-Danh Le",
+        "Hoang Huy Le",
+        "Dinh Tuan Nguyen",
+        "Pham Tuyen Le",
+        "Van-Truong Nguyen",
+        "Quan Nguyen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-07-29T07:40:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.26567v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "data-efficient transfer of a pretrained text-conditioned model to speech with limited labeled data",
+      "llm_evidence_cn": "以数据高效方式将预训练文本条件模型迁移到语音任务",
+      "llm_evidence": "以数据高效方式将预训练文本条件模型迁移到语音任务",
+      "canonical_evidence": "以数据高效方式将预训练文本条件模型迁移到语音任务",
+      "llm_tldr_en": "Transfers text-conditioned grasp detection to speech with a lightweight MLP projector, showing strong data efficiency.",
+      "llm_tldr_cn": "用轻量MLP投影器将文本条件抓取检测迁移到语音，数据效率高。",
+      "llm_tldr": "用轻量MLP投影器将文本条件抓取检测迁移到语音，数据效率高。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.26631v1",
+      "source": "arxiv",
+      "title": "RAG-HAR+: Towards Cost-Efficient LLM-Based Human Activity Recognition for Edge Deployment",
+      "abstract": "Human Activity Recognition (HAR) from wearable sensors supports applications in healthcare, rehabilitation, fitness tracking, and smart environments. Yet, existing deep learning approaches require dataset-specific training, large labeled corpora, and repeated adaptation to new sensor settings or activity taxonomies. Retrieval-Augmented Generation for Human Activity Recognition (RAG-HAR) addresses this by framing HAR as a training-free, retrieval-augmented task, in which statistical descriptions of sensor windows are used to retrieve similar labeled examples that guide LLM-based classification. We introduce RAG-HAR+, a retrieval-first and cost-optimized extension that strengthens retrieval while reducing dependence on LLM-based inference. RAG-HAR+ uses an offline Retrieval Designer Agent to design dataset-specific feature groups from a diverse pool of motion descriptors, enabling sensor windows to be compared using features better aligned with dataset-specific activity patterns. During inference, RAG-HAR+ uses majority voting over retrieved neighbors for samples with strong retrieval evidence and defers only uncertain cases to an LLM-based Ambiguity Resolver Agent. Across six HAR benchmarks, RAG-HAR+ maintains competitive or improved performance while reducing LLM usage, token consumption, and inference time. We further extend the RAG-HAR mobile prototype to demonstrate the practical feasibility of retrieval-first, LLM-assisted HAR in mobile sensing scenarios.",
+      "authors": [
+        "Hansi Karunarathna",
+        "Nirhoshan Sivaroopan",
+        "Chamara Madarasingha",
+        "Anura Jayasumana",
+        "Kanchana Thilakarathna"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.IR"
+      ],
+      "published": "2026-07-29T08:57:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.26631v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RAG-HAR+ addresses adaptation to new sensor settings with limited labeled data via retrieval-augmented training-free classification",
+      "llm_evidence_cn": "RAG-HAR+通过检索增强的无训练分类应对新传感器设置下标注数据有限的问题",
+      "llm_evidence": "RAG-HAR+通过检索增强的无训练分类应对新传感器设置下标注数据有限的问题",
+      "canonical_evidence": "RAG-HAR+通过检索增强的无训练分类应对新传感器设置下标注数据有限的问题",
+      "llm_tldr_en": "RAG-HAR+ uses retrieval-augmented generation to perform human activity recognition without dataset-specific training, easing adaptation to new settings.",
+      "llm_tldr_cn": "RAG-HAR+利用检索增强生成实现无需数据集专门训练的人类活动识别，便于适应新场景。",
+      "llm_tldr": "RAG-HAR+利用检索增强生成实现无需数据集专门训练的人类活动识别，便于适应新场景。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.26708v1",
+      "source": "arxiv",
+      "title": "Mixture-of-experts for handwriting trajectory reconstruction from IMU sensors",
+      "abstract": "The use of digital pens for online handwriting trajectory reconstruction is a prevalent method for human-computer interaction. In this study, we focus on a digital pen equipped with sensors where we aim at reconstructing the online handwriting trajectory. This pen enables writing on any surface and preserving the digital trace of handwriting. This type of pen could be used as an aid to learning to write in classroom. In this paper, we propose a new approach learning to finely reconstruct the touching trajectories while precisely analyzing the hovering part in order to position the next touching trace correctly. This relies on a Mixture-Of-Experts (MOE) approach. The first expert is dedicated for the pencil touch, and is named touching expert model. The second one is dedicated for the hovering pen trajectory, and is named hovering expert model. We improve on the learning of each of these experts based on additional context or specific examples. In addition we introduce a novel public benchmark dataset, to enable future research and comparisons in the field of handwriting reconstruction. The results demonstrates a significant enhancement compared to its primary competitors.",
+      "authors": [
+        "Florent Imbert",
+        "Eric Anquetil",
+        "Yann Soullard",
+        "Romain Tavenard"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-29T09:53:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.26708v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reconstructing online handwriting trajectories from IMU sensor streams as a sequence modeling task",
+      "llm_evidence_cn": "从IMU传感器流重建在线手写轨迹，属于序列建模任务",
+      "llm_evidence": "从IMU传感器流重建在线手写轨迹，属于序列建模任务",
+      "canonical_evidence": "从IMU传感器流重建在线手写轨迹，属于序列建模任务",
+      "llm_tldr_en": "A mixture-of-experts model reconstructs handwriting touch and hover trajectories from digital pen IMU sensors.",
+      "llm_tldr_cn": "一种混合专家模型利用数字笔IMU传感器重建书写触控和悬停轨迹。",
+      "llm_tldr": "一种混合专家模型利用数字笔IMU传感器重建书写触控和悬停轨迹。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

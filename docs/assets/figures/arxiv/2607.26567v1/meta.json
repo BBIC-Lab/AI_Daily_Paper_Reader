@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.26567v1/fig-003.webp",
+      "caption": "Fig. 2. ALBEF [9] fusion between image, text and speech modalities. The bottom two blocks show the frozen, teacher modules that perform imagetext fusion. Our diagnostic study analyzes the representation gap introduced when replacing text with the corresponding speech, as in the top two blocks.",
+      "page": 2,
+      "index": 3,
+      "width": 412,
+      "height": 308
+    },
+    {
+      "url": "assets/figures/arxiv/2607.26567v1/fig-006.webp",
+      "caption": "Fig. 3. Effects of the trained projector on text-speech representation gap. a) The projector enables the image-speech student to closely align with the image-text teacher while retaining semantic discrimination. b) t-SNE visualizations show the projected student embeddings closely overlap the teacher, while the unprojected embeddings remain separated.",
+      "page": 3,
+      "index": 6,
+      "width": 462,
+      "height": 670
+    },
+    {
+      "url": "assets/figures/arxiv/2607.26567v1/fig-005.webp",
+      "caption": "Fig. 4. Generalization of the trained projector to real-world conditions. a) The projector enables the student to closely align with the teacher, despite large acoustics and speaker variations. b) t-SNE visualizations show both corrupted and clean student embeddings closely overlap the teacher.",
+      "page": 3,
+      "index": 5,
+      "width": 462,
+      "height": 718
+    },
+    {
+      "url": "assets/figures/arxiv/2607.26567v1/fig-007.webp",
+      "caption": "Fig. 5. Overview of the Speech2Grasp framework for data-efficient transfer of text-conditioned grasp detection to speech. An MLP-based projector maps speech embeddings into the ALBEF [9] latent space. A knowledge distillation loss, LKD, encourages the student’s projected [CLS] image-speech embeddings to match the teacher’s image-text embeddings, enabling ALBEF’s reuse without large-scale paired speech annotations. The resulting [CLS] embedding is injected into the visual semantic bottleneck to guide grasp prediction, supervised by the task loss Lgrasp.",
+      "page": 5,
+      "index": 7,
+      "width": 948,
+      "height": 504
+    },
+    {
+      "url": "assets/figures/arxiv/2607.26567v1/fig-001.webp",
+      "caption": "Fig. 6. Speech encoding and projection. The augmented speech is converted into log-mel spectrograms before being encoded by Whisper [4]. Global or adaptive mean pooling is then applied to produce a token sequence similar to the text-based BERT [8] representation.",
+      "page": 6,
+      "index": 1,
+      "width": 462,
+      "height": 491
+    },
+    {
+      "url": "assets/figures/arxiv/2607.26567v1/fig-002.webp",
+      "caption": "Fig. 7. The DWT decomposes a noisy input image into four wavelet subbands (LL, LH, HL, HH). They capture coarse, horizontal, vertical and diagonal information, respectively. The LL is less noisy, the LH and HL capture object boundaries and the HH subband is dominated by noise.",
+      "page": 6,
+      "index": 2,
+      "width": 462,
+      "height": 304
+    },
+    {
+      "url": "assets/figures/arxiv/2607.26567v1/fig-004.webp",
+      "caption": "Fig. 8. Grasp sequence of the humanoid robot using Speech2Grasp.",
+      "page": 7,
+      "index": 4,
+      "width": 387,
+      "height": 381
+    }
+  ]
+}
