@@ -1,0 +1,102 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-002.webp",
+      "caption": "Figure 1: Two masked tokens must agree in number, and their correct completions are therefore correlated. (a) A factorized transition (Eq. 1) samples both positions independently from .5/.5 marginals. Its outer-product joint assigns probability 1 4 to each completion, and only half of its mass therefore lies on agreement outcomes. (b) An LKF transition (Eq. 2) with M=2 draws a shared latent k ∼ w(· | xt, t, s). Conditioned on k, the positions remain independent, but each component concentrates on a consistent completion. Marginalizing k preserves the same per-position marginals as in (a), while placing all joint mass on the agreement set. Thus, two rank-one components express the correlated completion in one transition.",
+      "page": 2,
+      "index": 2,
+      "width": 816,
+      "height": 323
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-007.webp",
+      "caption": "Figure 2: Illustration of training and inference in LKF with M=4 latent components. (a) Training. A clean x1 is corrupted to xt and to the target xs by the two-time reveal. The Diffusion Transformer (DiT) trunk reads xt with two-time conditioning (t, s)",
+      "page": 4,
+      "index": 7,
+      "width": 1047,
+      "height": 425
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-003.webp",
+      "caption": "Figure 4: Illustration of correlation and information captured by LKF on synthetic corpora. On hidden agreement, the captured information Îk and the effective total correlation T̂C rise monotonically withM , tracking their ceilings (logM and (L−1) logM , dashed), and held-out NLL falls accordingly. On parity, every captured-correlation metric stays at zero for all M .",
+      "page": 7,
+      "index": 3,
+      "width": 844,
+      "height": 256
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-009.webp",
+      "caption": "Table 2: Notations used throughout the paper.",
+      "page": 9,
+      "index": 9,
+      "width": 744,
+      "height": 384
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-012.webp",
+      "caption": "Figure 5: One LKF flow-map step. Blue is the shared computation, which is run once and is never conditioned on the latent, and orange is the per-component computation, which is repeated for k = 1, . . . ,M (stacked cards). The trunk output feeds a router, which scores how well each component fits the input, and a short stack of latent blocks plus token head, which produce the M candidate distributions P k. The step is their mixture, which draws k with probability wk and then decodes every position from component k. The step times t, s (dashed) condition every block, whereas k conditions only the orange stack. Exact marginalization over all M components therefore costs M light passes rather than M full forward passes.",
+      "page": 16,
+      "index": 12,
+      "width": 437,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-008.webp",
+      "caption": "Figure 6: Generation view of the same mechanism. Both panels start from an all-[MASK] sequence whose first and third positions are constrained to take the same value. (a) A factorized step (Eq. 1) samples every position from its own marginal, so the two constrained positions are decided independently and typically disagree, and coordinating them requires additional steps. (b) One LKF step first draws a single latent k ∼ w(xt) and then decodes every position from component k. Because the same k conditions both positions, the agreement is produced in one step. The middle position is unconstrained (‘?’) in both cases.",
+      "page": 17,
+      "index": 8,
+      "width": 1042,
+      "height": 251
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-005.webp",
+      "caption": "Figure 7: One LKF block, in the standard adaLN (DiT) layout. The residual stream runs through a pre-norm attention and MLP pair. The conditioning vector c, which carries the step times and, in the latent blocks, the latent k, is mapped by a small MLP to the scale and shift of each norm (γ, β) and the gate on each residual branch (g). This conditioning path is the only way t, s, k reach the computation. The shared blocks zero-initialize the map, which makes each block start as the identity, whereas the latent blocks initialize it small but nonzero. Hence, the M components differ from the first step of training.",
+      "page": 18,
+      "index": 5,
+      "width": 360,
+      "height": 731
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-011.webp",
+      "caption": "Table 6: Every decoding policy at J=32 on LM1B. The candidate pool and the selector are varied independently, and calls is the total number of network evaluations per delivered sample. Shared noise reuses one per-step random stream across the M rollouts so that only the component differs.",
+      "page": 20,
+      "index": 11,
+      "width": 802,
+      "height": 226
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-010.webp",
+      "caption": "Table 7: Removing the mixture at matched budget on LM1B. Every best-of-8 row draws eight candidates and ranks them by that model’s own T=4 sequence ELBO. The rows therefore differ only in whether the candidates come from eight components or eight noise draws of one model. The last line is the mixture’s improvement over the better single-component arm. Entries are gen-PPL with H in parentheses.",
+      "page": 20,
+      "index": 10,
+      "width": 898,
+      "height": 280
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-001.webp",
+      "caption": "Table 8: Single-chain commit-M against best-of-M over the step grid on both corpora. Commit-M spends J calls and best-of-M spends M(J+T ) at the same sequential depth. The M=1 base is repeated from Table 1.",
+      "page": 21,
+      "index": 1,
+      "width": 672,
+      "height": 294
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-004.webp",
+      "caption": "Table 10: Decoding policies over the full step grid on LM1B. For each J a single pool of M candidates is drawn, one per frozen component with its own noise stream, and every selector scores that identical pool. Successive halving prunes to max(2,M/4) candidates at J/4 and to one at J/2, using 8/16/32/64 calls at M=4 and 12/24/48/96 at M=8. Entries are gen-PPL with H in parentheses.",
+      "page": 22,
+      "index": 4,
+      "width": 902,
+      "height": 332
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27529v1/fig-006.webp",
+      "caption": "Figure 8: Diagnostics for the hidden-agreement corpus at M=16. (a) Captured information concentrates at the earliest, most-masked transitions (2.21 of 2.46 nats in t=0→ 0.25) and vanishes late, where little remains to decide. (b) Each frozen component is near deterministic (empirical TC 0.0–8.4 bits), while the routed mixture reconstructs 26.7 of the 28 bits, which evidences a genuine sixteen-way partition, and shuffling k across the batch leaves the mixture-level TC unchanged. (c) The in-support rate rises from 0.47 at J=1 to 0.95 at J=32, and support recall saturates at 1.0 from J=2 onward.",
+      "page": 23,
+      "index": 6,
+      "width": 1054,
+      "height": 315
+    }
+  ]
+}

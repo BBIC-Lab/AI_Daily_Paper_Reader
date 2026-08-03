@@ -1,0 +1,416 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-03T21:43:02.219453+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 50,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 86,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 11,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 6,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 12
+  },
+  "deep_dive": [
+    {
+      "id": "2607.27482v1",
+      "source": "arxiv",
+      "title": "Latent States in Neural Networks: Recovering the Temporal Structure of Drifting Data from Model Weights",
+      "abstract": "A temporally drifting data stream may pass through discrete regimes rather than changing continuously. We ask whether such regimes are recoverable from the weights of models trained on the stream, using a hidden Markov model (HMM) fit to the chronologically ordered trajectory of those weights. We study this question in two domains known to drift over time: multimodal misinformation detection, using the Fakeddit dataset; and sentiment analysis, using the Yelp dataset. We train classifiers on consecutive temporal windows and fit an HMM to the trajectory of their aligned weights, recovering latent states that partition each timeline into coherent phases. On both datasets, classifiers generalize better to data from windows sharing the state of their training window than to windows across state boundaries. This within-state transfer advantage survives a control for temporal proximity and modestly exceeds the advantage recovered by a naive partition into contiguous states of equal size. Although the states are estimated solely from model weights, they correlate more strongly with shifts in the data's class distribution than with the weight-space geometry used to estimate them. After class divergence and lag are residualized out, the within-state advantage exceeds its permutation null on both tasks, indicating that the states recover structure relevant to transfer beyond the data distribution. Every effect replicates on both tasks but is attenuated on Yelp, whose label distribution is more temporally stable.",
+      "authors": [
+        "Kevin Guan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-29T21:51:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.27482v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Fits an HMM to the chronological trajectory of model weights to recover temporal regimes in drifting data streams",
+      "llm_evidence_cn": "对模型权重的时序轨迹拟合隐马尔可夫模型，恢复漂移数据中的时间状态",
+      "llm_evidence": "对模型权重的时序轨迹拟合隐马尔可夫模型，恢复漂移数据中的时间状态",
+      "canonical_evidence": "对模型权重的时序轨迹拟合隐马尔可夫模型，恢复漂移数据中的时间状态",
+      "llm_tldr_en": "This paper uses HMMs on model-weight trajectories to discover latent temporal regimes in drifting data, improving generalization.",
+      "llm_tldr_cn": "对模型权重轨迹使用HMM发现漂移数据中的潜在时间状态，提升泛化能力。",
+      "llm_tldr": "对模型权重轨迹使用HMM发现漂移数据中的潜在时间状态，提升泛化能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27568v1",
+      "source": "arxiv",
+      "title": "Recognition and Label-Free Adaptation Across Recording Sessions in Surface-EMG Gesture Decoding",
+      "abstract": "Recognition accuracy obtained during a recording session does not persist when a user puts on the electrodes again after the electrodes had previously been removed. The electrodes may have moved slightly, the skin may be drier or wetter, or the elbow may be positioned differently; these factors all contribute to day-to-day variability and therefore represent a major obstacle to implementing successful pattern-recognition based myoelectric control systems in daily practice. However, simply recalibrating a user's hand for 20 min at every doff/don event is a clearly unrealistic expectation. A montage-agnostic encoder built for cross-user, cross-montage transfer is trained here using data collected during a particular recording session, and then applied to data collected later in a different recording session without adjusting anything, on the ten intact subjects of NinaPro DB6. The performance of this approach is compared to that of a per-user LDA classification pipeline, and to that of two published approaches that only rely on source data collected from the same recording session. Carried unchanged across recording sessions, the encoder retains 0.688 macro-F1 against 0.540 for the per-user pipeline, and, on the per-window metric the published baselines use, sits above both published source-only results, a band of two points that locates the encoder rather than ranking it. Of five label-free test-time adaptations, only feature-statistic alignment improves every subject; batch-normalisation re-estimation, a standard method in the domain-adaptation literature, collapses this architecture entirely. Aligning the encoder's feature statistics to the new session recovers about what a single labelled calibration repetition would.",
+      "authors": [
+        "Jethro Odeyemi",
+        "W. J. Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.HC"
+      ],
+      "published": "2026-07-30T01:21:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.27568v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "cross-session label-free transfer learning for EMG gesture decoding in brain-computer interfaces",
+      "llm_evidence_cn": "面向脑机接口EMG手势解码的跨会话无标签迁移学习",
+      "llm_evidence": "面向脑机接口EMG手势解码的跨会话无标签迁移学习",
+      "canonical_evidence": "面向脑机接口EMG手势解码的跨会话无标签迁移学习",
+      "llm_tldr_en": "Proposes a montage-agnostic encoder for cross-user, cross-montage label-free adaptation in surface-EMG gesture decoding.",
+      "llm_tldr_cn": "提出与电极配置无关的编码器，用于表面EMG手势解码的跨用户、跨配置无标签适应。",
+      "llm_tldr": "提出与电极配置无关的编码器，用于表面EMG手势解码的跨用户、跨配置无标签适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27581v1",
+      "source": "arxiv",
+      "title": "MUGEN: A Unified Framework for Efficient Motion Understanding and Generation",
+      "abstract": "Grounding human motion in language, and language in motion, is a central step toward physical AI systems that can understand, generate, and communicate human behavior. Unified motion--language systems first coupled the two directions through a shared discrete motion codebook, but quantization limits generation quality. The strongest generators buy quality back at growing cost: stacked residual codebooks enlarge the representation; masked decoding stages, long autoregressive rollouts, and denoising chains of tens to hundreds of steps stretch inference; even the continuous-latent designs among them reach their latent only through an iterative diffusion head; and none of this decoding machinery serves understanding. We therefore propose MUGEN, a unified motion--language framework that pays neither cost: no codebook, one draw. A single adaptive-length autoencoder compresses any-length motion into a few continuous latent slots, the system's only motion representation: the language model generates them for text-to-motion and reads them back for motion understanding. Depth-routed hidden states let each slot read from the transformer depth it needs, and a calibrated head predicts a joint distribution over the full latent set, so a single draw carries the text-conditional, cross-slot variation a description permits. At a decoding cost of K language-model steps, one draw, and one decoder pass, MUGEN leads language-model baselines on FID on HumanML3D while raising retrieval precision above the real-motion reference under the standard evaluator, achieves the best CIDEr and BLEU@4 scores, and surpasses the discrete-token state of the art on every retrieval and alignment metric on SnapMoGen.",
+      "authors": [
+        "Zhankai Ye",
+        "Yukai Jin",
+        "Bingyang Wei",
+        "Bofan Li",
+        "Yusen Wu",
+        "Fangyi Li",
+        "Shangqian Gao",
+        "Xin Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-30T01:55:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.27581v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Shared discrete motion codebook for compact representation and efficient sequence generation",
+      "llm_evidence_cn": "共享离散运动码本，用于紧凑表示和高效序列生成",
+      "llm_evidence": "共享离散运动码本，用于紧凑表示和高效序列生成",
+      "canonical_evidence": "共享离散运动码本，用于紧凑表示和高效序列生成",
+      "llm_tldr_en": "MUGEN unifies motion understanding and generation with a shared discrete codebook, improving efficiency without sacrificing quality.",
+      "llm_tldr_cn": "MUGEN 通过共享离散码本统一运动理解与生成，提升效率且保持质量。",
+      "llm_tldr": "MUGEN 通过共享离散码本统一运动理解与生成，提升效率且保持质量。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27797v1",
+      "source": "arxiv",
+      "title": "Revisiting Predictive Process Monitoring in the Age of Foundation Models: A Comparative Study of Sequence, Tabular, and LLM Approaches",
+      "abstract": "Predictive process monitoring (PPM) leverages event logs to forecast the future of running process instances, for instance, predicting the next activity, the remaining time until case completion, or the time to the next event. While PPM research in recent years has been dominated by deep sequence models trained from scratch, such as Long Short-Term Memory (LSTM) models, foundation-model approaches---particularly large language models (LLMs)---are increasingly explored for PPM. At the same time, tabular foundation models with in-context learning capabilities offer a promising alternative but have not yet been systematically benchmarked for PPM. Thus, it remains unclear whether classical sequence-based models remain competitive in this evolving landscape. This paper compares the three modeling paradigms both conceptually and empirically through a controlled benchmark across multiple datasets and prediction tasks. The results show that sequence models consistently perform best for next activity prediction, whereas tabular foundation models are competitive on temporal tasks, with LLMs usually lagging behind despite higher cost.",
+      "authors": [
+        "Lennart Fertig",
+        "Lukas Kirchdorfer",
+        "Tobias Sesterhenn"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-30T07:36:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.27797v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "forecasting next events and remaining time from event logs with LSTM, LLM, and tabular foundation models",
+      "llm_evidence_cn": "使用LSTM、LLM和表格基础模型从事件日志中预测下一事件和剩余时间",
+      "llm_evidence": "使用LSTM、LLM和表格基础模型从事件日志中预测下一事件和剩余时间",
+      "canonical_evidence": "使用LSTM、LLM和表格基础模型从事件日志中预测下一事件和剩余时间",
+      "llm_tldr_en": "Systematically benchmarks sequence, tabular, and LLM approaches for predictive process monitoring of event logs.",
+      "llm_tldr_cn": "系统比较序列、表格和LLM方法用于事件日志的预测过程监控。",
+      "llm_tldr": "系统比较序列、表格和LLM方法用于事件日志的预测过程监控。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27913v1",
+      "source": "arxiv",
+      "title": "S-CEReBrO: Breaking the Memory Barrier in Continuous EEG Monitoring",
+      "abstract": "Foundation models offer a promising paradigm for Electroencephalography (EEG) analysis, leveraging generalizable representations from vast unlabeled datasets. Yet, Transformer-based architectures face a critical bottleneck: global attention mechanisms couple the attention memory state to the signal duration, causing memory overflow during continuous monitoring. To address this, we introduce S-CEReBrO (Streaming CEReBrO), an evolution of the CEReBrO architecture designed for continuous monitoring. Our novel Windowed Alternating Attention mechanism factorizes attention computation into fixed-size spatiotemporal windows, guaranteeing constant KV cache memory as only the active window requires resident attention maps. Empirical scaling analysis confirms that windowed alternating attention can process signals 100X longer than full self-attention and 3X longer than low-rank linear attention. Compared to low-rank linear attention on long contexts, windowed alternating attention requires 55% of the memory while increasing inference throughput by 2.1X. Pre-trained on >25,000 hours of recordings from >12,000 subjects, S-CEReBrO achieves state-of-the-art performance on 7 of 11 downstream tasks, with up to 60% fewer parameters. This work represents a significant step toward the realization of efficient, generalizable, and continuous EEG monitoring. An accompanying code repository is available.",
+      "authors": [
+        "Glenn Anta Bucagu",
+        "Thorir Mar Ingolfsson",
+        "Yawei Li",
+        "Luca Benini"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-30T09:27:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.27913v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "continuous EEG monitoring, sequence modeling with windowed attention",
+      "llm_evidence_cn": "连续EEG监测，窗口注意力序列建模",
+      "llm_evidence": "连续EEG监测，窗口注意力序列建模",
+      "canonical_evidence": "连续EEG监测，窗口注意力序列建模",
+      "llm_tldr_en": "Introduces S-CEReBrO with windowed alternating attention for constant memory in continuous EEG monitoring.",
+      "llm_tldr_cn": "提出带窗口交替注意力的S-CEReBrO实现连续EEG监测的恒定内存。",
+      "llm_tldr": "提出带窗口交替注意力的S-CEReBrO实现连续EEG监测的恒定内存。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.27506v1",
+      "source": "arxiv",
+      "title": "Models for minimalist RAG: B1ade 335M Embedding and 1B Parameter Small Language Models",
+      "abstract": "Language and embedding models used in RAG systems are conventionally assumed to require large-scale pretraining and explicit grounding supervision. We present B1ade, an efficient RAG architecture comprising two purpose-built components: a compact embedding model and a purpose-built SLM. B1ade-embed, a 335M parameter retrieval model constructed via parameter-free fusion of five pretrained encoders achieves top MTEB scores among sub-500M models with zero additional training, and B1ade-1B, an SLM trained on low-cost GPUs using Group Relative Policy Optimization (GRPO) on 723M tokens (2.2M examples) of curated context-question pairs with rewards that optimize only answer similarity. Our central finding is emergent attribution: despite receiving no explicit supervision for source citation, B1ade-1B cites retrieved passages in 42.4% of responses, exceeding the attribution rate of its training distribution by 5.5 percentage points. This demonstrates that grounding behavior can emerge as an accuracy-maximizing strategy under RL training, without explicit reward engineering. On standard QA benchmarks, B1ade-1B achieves 81.82% on PopQA, 65.8% on PubMedQA, and 51.09% on FEVER. In end-to-end RAG evaluation, B1ade-1B achieves an average score of 0.654 across correctness, completeness, coherence, and faithfulness, a 10.8% improvement over the SFT, while closing the gap with models 1.5x its size. These results show that strategic model composition and reward design suffice for resource-efficient RAG, without large-scale pretraining.",
+      "authors": [
+        "Shreyas Subramanian",
+        "Mecit Gungor",
+        "Vikram Elango"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-29T22:41:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.27506v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "compact embedding model built by fusing pretrained encoders for representation learning",
+      "llm_evidence_cn": "通过融合预训练编码器构建紧凑嵌入模型，用于表示学习",
+      "llm_evidence": "通过融合预训练编码器构建紧凑嵌入模型，用于表示学习",
+      "canonical_evidence": "通过融合预训练编码器构建紧凑嵌入模型，用于表示学习",
+      "llm_tldr_en": "Introduces a compact embedding model and 1B SLM for RAG, using parameter-free fusion of pretrained encoders.",
+      "llm_tldr_cn": "提出了用于RAG的紧凑嵌入模型和1B小型语言模型，通过无参数融合预训练编码器实现。",
+      "llm_tldr": "提出了用于RAG的紧凑嵌入模型和1B小型语言模型，通过无参数融合预训练编码器实现。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.27549v1",
+      "source": "arxiv",
+      "title": "Cross-Embodiment Transfer via Behavior-Aligned Representations",
+      "abstract": "Recent progress in large-scale imitation learning for robot manipulation has been driven by leveraging datasets across a wide range of robot embodiments. However, achieving significant cross-embodiment transfer is often still challenging. In this work, we study the role of using behavior-aligned representations (e.g., object bounding boxes, language motions, end-effector traces of robot motion) in vision-language-action (VLA) models to promote cross-embodiment transfer. We hypothesize that by possessing invariances across embodiments while being predictive of robot actions, these representations can help unify large-scale cross-embodiment data to enhance transfer. To assess our hypothesis, we develop a simulation-based benchmark designed to assess transfer with diverse cross-embodiment data to new embodiments. Using this benchmark, we compare different representations and ways of incorporating them. We identify that end-effector traces can be particularly beneficial for transfer, representations are generally more useful with larger prior datasets, and can be used to benefit from action-free data. We also demonstrate that they can enhance sim-to-real cross-embodiment transfer, improving task completion progress of real robot policies pre-trained on simulation data by 28%. We provide videos of our evaluations at our website: https://ajaysridhar.com/barx/.",
+      "authors": [
+        "Ajay Sridhar",
+        "Jensen Gao",
+        "Jonathan Yang",
+        "Jean Mercat",
+        "Suneel Belkhale",
+        "Dorsa Sadigh"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-30T00:49:53+00:00",
+      "link": "https://arxiv.org/pdf/2607.27549v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Cross-embodiment transfer via behavior-aligned representations, adapting learned policies to new robot embodiments",
+      "llm_evidence_cn": "通过行为对齐表示实现跨本体迁移，将学到的策略适应到新的机器人本体",
+      "llm_evidence": "通过行为对齐表示实现跨本体迁移，将学到的策略适应到新的机器人本体",
+      "canonical_evidence": "通过行为对齐表示实现跨本体迁移，将学到的策略适应到新的机器人本体",
+      "llm_tldr_en": "Studies behavior-aligned representations such as bounding boxes and language motions to promote cross-embodiment transfer in VLA models.",
+      "llm_tldr_cn": "研究边界框和语言运动等行为对齐表示，促进VLA模型中的跨本体迁移。",
+      "llm_tldr": "研究边界框和语言运动等行为对齐表示，促进VLA模型中的跨本体迁移。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.27529v1",
+      "source": "arxiv",
+      "title": "Latent-Kernel Discrete Flow Maps for Few-Step Generation",
+      "abstract": "Discrete diffusion and flow-matching models denoise a sequence over many steps, but to keep each step cheap, they factorize the transition across positions and decide every token independently. This makes few-step generation challenging for text when the target couples two positions, such as a subject and a verb that must agree. An independent update commits to them separately, and many function evaluations are spent repairing the mismatch. Existing few-step methods buy back the lost correlation by distilling or rectifying a slow teacher, and so inherit the teacher's quality ceiling. We ask instead whether a model can express correlated steps natively, and answer with Latent-Kernel Discrete Flow Maps (LKF), a from-scratch flow-map kernel that is a mixture of M factorized components tied by a single shared latent. Conditioned on the latent, each component is cheap, and the mixture is summed over the latent in closed form for small M. We show that a single step places mass on correlated completions with the same sampling time complexity as a factorized model, since one latent is drawn per sequence and reused across the entire denoising trajectory. We also show that the Masked Diffusion Language Model (MDLM) is a special case of our LKF model at M=1. The experiments for unconditional text generation on the One-Billion-Word (LM1B) and WikiText-103 benchmarks show that our LKF model learns strongly heterogeneous components and improves generative perplexity by 2.1x to 3.3x over the likelihood baselines without losing diversity. The gain grows with M, and at M=8, it surpasses distilled and rectified few-step samplers. The source code is available at: https://github.com/mansoor181/lkf.git",
+      "authors": [
+        "Mansoor Ahmed",
+        "Yue-Tsz Fan",
+        "Hemanth Venkateswara",
+        "Murray Patterson"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-29T23:46:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.27529v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "models latent-to-sequence maps with correlated token updates",
+      "llm_evidence_cn": "用相关令牌更新的潜在到序列映射建模",
+      "llm_evidence": "用相关令牌更新的潜在到序列映射建模",
+      "canonical_evidence": "用相关令牌更新的潜在到序列映射建模",
+      "llm_tldr_en": "Presents Latent-Kernel Discrete Flow Maps for few-step text generation that natively captures correlated token updates.",
+      "llm_tldr_cn": "提出潜在核离散流映射，以少量步骤生成文本并原生捕捉令牌间的相关性。",
+      "llm_tldr": "提出潜在核离散流映射，以少量步骤生成文本并原生捕捉令牌间的相关性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.27537v1",
+      "source": "arxiv",
+      "title": "ProgFormer: Hierarchical Voxel Diffusion Transformer for Longitudinal Brain MRI Prediction",
+      "abstract": "Predicting future structural MRI of a brain is challenging because longitudinal changes are often subtle and confined to specific anatomical regions, while most subject-specific brain structure remains stable over time. An effective model should therefore preserve global brain structural consistency while remaining sensitive to fine-grained disease progression. Existing latent-space-based methods improve computational efficiency, but suffer from information loss during their compression-reconstruction procedure. In contrast, direct voxel-space methods avoid latent reconstruction but commonly use a unified prediction pathway to model brain structure and progression-related changes. Subtle local changes may therefore be overshadowed by the dominant stable brain structure. To address these challenges, we propose ProgFormer, a hierarchical voxel-space Diffusion Transformer for longitudinal brain MRI prediction. ProgFormer uses a coarse pathway to perform the primary volumetric prediction from 3D patch tokens. This pathway models overall brain structure and longitudinal context. The fine pathway then uses the coarse representations as spatio-temporal grounding for voxel-level refinement within individual patches. The two pathways jointly estimate a velocity field directly in voxel space through conditional flow matching, enabling end-to-end prediction without a separately learned image autoencoder. The predicted future scan is then generated from Gaussian noise by integrating the estimated velocity field over a sequence of Euler steps. Extensive experimental results on three widely used benchmarks, ADNI, AIBL, and OASIS, under both pairwise and trajectory settings demonstrate favourable performance compared against several state-of-the-art methods.",
+      "authors": [
+        "Dexuan Ding",
+        "Yuankai Qi",
+        "Luping Zhou",
+        "Jian Yang",
+        "Quan Z. Sheng",
+        "Ming-Hsuan Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T00:13:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.27537v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "predicting future brain MRI over time via diffusion transformer",
+      "llm_evidence_cn": "基于扩散Transformer预测脑MRI纵向变化",
+      "llm_evidence": "基于扩散Transformer预测脑MRI纵向变化",
+      "canonical_evidence": "基于扩散Transformer预测脑MRI纵向变化",
+      "llm_tldr_en": "ProgFormer predicts longitudinal brain MRI changes with a hierarchical voxel diffusion transformer preserving global structure.",
+      "llm_tldr_cn": "ProgFormer用分层体素扩散Transformer预测脑MRI纵向变化，保持全局结构。",
+      "llm_tldr": "ProgFormer用分层体素扩散Transformer预测脑MRI纵向变化，保持全局结构。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.27647v1",
+      "source": "arxiv",
+      "title": "LoopMemGR: From Behavior Logs to Evolving Memory for Generative Recommendation",
+      "abstract": "Generative recommendation formulates next-item prediction as conditional autoregressive generation over discrete Semantic IDs, enabling end-to-end recommendation over large-scale item spaces. However, most existing methods follow a history-as-context paradigm that repeatedly reconstructs user preference from behavior history while discarding system-side recommendation decisions after each request. This creates an asymmetric memory: the system remembers what the user has done, but not what it has previously recommended or learned from the resulting feedback. Consequently, useful preference-validation signals, potential negative evidence, and historical exploration information cannot be directly reused across requests. To address these limitations, we propose LoopMemGR, a closed-loop recommendation experience memory framework for generative recommendation. In addition to the conventional behavior log, LoopMemGR maintains a recommendation experience log that records past recommendation--feedback trajectories. It extracts request-relevant evidence through three complementary views: the recency view captures short-term interaction dynamics, the frequency view summarizes recurring recommendation patterns, and the global view distills transferable regularities shared across users. These signals are compressed into a fixed number of experience tokens to condition the generative backbone under a bounded input budget. Extensive experiments on an industrial Taobao dataset demonstrate the effectiveness of closed-loop experience accumulation and multi-view experience extraction.",
+      "authors": [
+        "Hui Qian",
+        "Changfa Wu",
+        "Chang Liu",
+        "Binbin Cao",
+        "Jian Wu",
+        "Yuliang Yan",
+        "Han Zhu",
+        "Bo Zheng"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-30T03:59:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.27647v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "addresses next-item prediction in recommender systems via conditional autoregressive generation over semantic IDs from behavior logs",
+      "llm_evidence_cn": "通过基于行为日志的语义ID条件自回归生成，解决推荐系统中的下一项预测",
+      "llm_evidence": "通过基于行为日志的语义ID条件自回归生成，解决推荐系统中的下一项预测",
+      "canonical_evidence": "通过基于行为日志的语义ID条件自回归生成，解决推荐系统中的下一项预测",
+      "llm_tldr_en": "LoopMemGR proposes evolving memory that reuses system-side feedback signals for sequential next-item prediction.",
+      "llm_tldr_cn": "LoopMemGR提出演化记忆，在序列下一项预测中复用系统侧反馈信号。",
+      "llm_tldr": "LoopMemGR提出演化记忆，在序列下一项预测中复用系统侧反馈信号。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

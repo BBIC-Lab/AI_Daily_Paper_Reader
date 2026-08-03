@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.27581v1/fig-005.webp",
+      "caption": "Figure 2: The shared motion–language interface of MUGEN; flames mark trainable modules and snowflakes frozen ones. Generation (top): a <MOT>-seeded K-step rollout keeps all L layer states H, a prompt-conditioned router assigns each latent slot its own depth mixture W, and the calibrated low-rank factor head draws the complete latent set in a single shot for the frozen ALAE decoder. Understanding (bottom): the frozen ALAE encoder maps an input motion to the same K slots, which a projector feeds to the same language model as caption context.",
+      "page": 5,
+      "index": 5,
+      "width": 756,
+      "height": 273
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27581v1/fig-001.webp",
+      "caption": "Table 1: Text-to-motion generation on HumanML3D. MUGEN has the best retrieval precision and matching distance in the table, both better than the real-motion reference, the best FID among language-model generators, and the Diversity closest to the real-motion reference (9.510 vs. 9.503). The masked-codebook pipelines keep the FID lead (0.045–0.080); the best of their R@1 values trails MUGEN by 0.051. Baseline numbers are quoted from their original papers; MoMask++ (Guo et al., 2025) appears as its in-context (in) and cross-attention (cra) conditioning variants.",
+      "page": 7,
+      "index": 1,
+      "width": 950,
+      "height": 227
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27581v1/fig-002.webp",
+      "caption": "Figure 4: Per-verb layer preference on HumanML3D: k0 (left) stays fixed on layer 10 for nearly every verb, whereas k1 (right) shifts its preferred layer with the semantics of the action—shallow for ballistic/contact verbs (crawl, punch, kick), mid-depth for locomotion (run, walk, jump), and deep for object/hand actions (pick, clap, wave).",
+      "page": 14,
+      "index": 2,
+      "width": 459,
+      "height": 461
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27581v1/fig-003.webp",
+      "caption": "Table 13: Motion generation case study on HumanML3D test (continued). On “walks forward and turns to the right” MotionGPT3 not only travels 3.82m against the reference 2.34m but also turns through 277◦ where the reference turns 91◦ and MUGEN through 104◦, so its final pose faces away from the camera.",
+      "page": 18,
+      "index": 3,
+      "width": 943,
+      "height": 848
+    },
+    {
+      "url": "assets/figures/arxiv/2607.27581v1/fig-004.webp",
+      "caption": "Table 14: Motion understanding case study on HumanML3D test. Each block shows the input motion (rendered light to dark over time), a reference caption, and both models’ captions; phrases where MUGEN agrees with the reference are marked in teal. The MotionGPT3 captions admit no such alignment: the action, the object, or the trajectory is replaced or lost.",
+      "page": 19,
+      "index": 4,
+      "width": 943,
+      "height": 940
+    }
+  ]
+}

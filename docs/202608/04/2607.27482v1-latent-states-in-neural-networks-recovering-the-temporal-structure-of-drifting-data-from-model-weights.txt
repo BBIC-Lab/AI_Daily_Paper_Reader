@@ -1,0 +1,403 @@
+Title: Latent States in Neural Networks: Recovering the Temporal Structure of Drifting Data from Model Weights
+
+URL Source: https://arxiv.org/pdf/2607.27482v1
+
+Published Time: Fri, 31 Jul 2026 00:19:50 GMT
+
+Number of Pages: 24
+
+Markdown Content:
+# Latent States in Neural Networks: Recovering the Temporal Structure of Drifting Data from Model Weights 
+
+Kevin Guan kevinguan@princeton.edu Department of Mathematics, Princeton University 
+
+# Abstract 
+
+A temporally drifting data stream may pass through discrete regimes rather than changing continuously. We ask whether such regimes are recoverable from the weights of models trained on the stream, using a hidden Markov model (HMM) fit to the chronologically ordered trajectory of those weights. We study this question in two domains known to drift over time: multimodal misinformation detection, using the Fakeddit dataset; and sentiment analysis, using the Yelp dataset. We train classifiers on consecutive temporal windows and fit an HMM to the trajectory of their aligned weights, recovering latent states that partition each timeline into coherent phases. On both datasets, classifiers generalize better to data from windows sharing the state of their training window than to windows across state boundaries. This within-state transfer advantage survives a control for temporal proximity and modestly exceeds the advantage recovered by a naive partition into contiguous states of equal size. Although the states are estimated solely from model weights, they correlate more strongly with shifts in the data’s class distribution than with the weight-space geometry used to estimate them. After class divergence and lag are residualized out, the within-state advantage exceeds its permutation null on both tasks, indicating that the states recover structure relevant to transfer beyond the data distribution. Every effect replicates on both tasks but is attenuated on Yelp, whose label distribution is more temporally stable. 
+
+# 1 Introduction 
+
+Training dynamics in learning systems are frequently characterized by phase transitions rather than continu-ous evolution. This same structure appears in biological learners: as humans perceive continuous experience, they spontaneously parse it into discrete events separated by boundaries. Baldassano et al. (2017) showed that this event structure is recoverable from cortical activity by fitting a hidden Markov model (HMM) that locates boundaries as transitions between latent states, without reference to the stimulus. These boundaries also have behavioral consequences: representations within an event cohere and transfer, while those across a boundary bind less readily (DuBrow & Davachi, 2013; Ezzyat & Davachi, 2014). Our study investigates whether the same event structure arises in an artificial neural network exposed to a stream of data that changes over time. 1 If the data distribution transitions through coherent regimes, then a series of models trained on successive slices of the stream should trace a trajectory through the models’ weight space that reorganizes at event boundaries. An HMM fit to that trajectory should then, by the same reasoning as Baldassano et al. (2017), recover the regimes as latent states. We would also expect the analogous relationship between latent states and functional behavior to hold: a neural network should generalize better, i.e., degrade less, when the time periods of its training data and its test data fall within the same latent state than when they straddle a boundary. Earlier work fitting an HMM to a network reads out either its activations during inference (Krakovna & Doshi-Velez, 2016) or scalar statistics of its weights during training (Hu et al., 2023). We instead index by the chronology of the data, where each emission is a model trained on a distinct slice of an evolving stream. To our knowledge, no prior work fits a latent-state model to the weights of models trained on a  
+
+> 1Code available at https://github.com/keverage-guan/latent_states .
+
+1arXiv:2607.27482v1 [cs.LG] 29 Jul 2026 temporally drifting dataset. Additionally, we show that models generalize better to periods sharing their latent state than to those across boundaries. This functional test, to our knowledge, has not been applied to the interpretation of artificial networks using latent-state models. We evaluate this framework in two domains in which content is known to drift temporally: misinformation detection and sentiment analysis. For each dataset, we train classifiers independently on consecutive win-dows, align and compress the resulting weight vectors so that they are comparable across runs, and fit an HMM to the chronologically ordered sequence. The recovered states divide the timeline into phases within which models generalize more reliably. This advantage withstands controls for temporal proximity and class distribution, and it holds compared against a naive equal-size partition of the same windows. 
+
+# 2 Related Work 
+
+2.1 Event Segmentation 
+
+Our approach is motivated by work in cognitive neuroscience, which finds that people spontaneously divide continuous experience into discrete events separated by boundaries. Baldassano et al. (2017) fit a hidden Markov model to fMRI activity recorded during naturalistic narrative perception and showed that cortical activity settles into stable patterns punctuated by abrupt transitions, recovering these event boundaries solely from neural activity without reference to any features of the stimulus. What makes this segmentation consequential is that the recovered boundaries shape how experience is later retrieved. Memory of the order of events is sharper within an event than across a boundary (DuBrow & Davachi, 2013). Ezzyat & Davachi (2014) tie this to a specific neural signal, showing that the stability of hippocampal activity patterns across a temporal gap predicts whether the items it bridges are later bound together in memory. 
+
+2.2 Temporal Shift in Machine Learning 
+
+A separate body of literature documents how machine learning models trained on data from one period lose accuracy as the world they were fit to moves on. Won et al. (2018) develop mechanisms for anticipat-ing temporal drift, predicting the movement of a classifier’s decision boundary over time. As Röttger & Pierrehumbert (2021) discuss, temporal shift has been documented across many tasks, including document classification (Huang & Paul, 2018), demographic prediction (Jaidka et al., 2018), and hate speech detection (Florio et al., 2020). Most relevant to the current work are Stepanova & Ross (2023), who study multimodal misinformation detection, and Lukes & Søgaard (2018), who study sentiment analysis. Stepanova & Ross (2023) show that models evaluated on chronologically later data degrade relative to a random split, with the loss falling disproportionately on minority classes. Similarly, Lukes & Søgaard (2018) show that lexical features shift in polarity over time, degrading the performance of sentiment classifiers trained on older data. 
+
+2.3 Phase Transitions and Latent-State Models in Learning 
+
+The notion that a learning process passes through discrete regimes rather than evolving smoothly has sub-stantial precedent in machine learning (Ziyin & Ueda, 2022; Rubin et al., 2024; Geiger et al., 2018). Aseparate line of work uses hidden Markov models and related latent-state models to interpret a neural net-work’s internal evolution. Krakovna & Doshi-Velez (2016) fit continuous-emission HMMs to the hidden-state sequences of an LSTM both as a post-hoc interpretation method and as a jointly trained hybrid, recover-ing discrete states that segment text into interpretable features such as punctuation, comment symbols, and indentation. Hu et al. (2023) fit an HMM to sequences of scalar training statistics—the norm, mean, and variance of a network’s weights during optimization—and recover latent states whose transitions mark significant changes during training, including “detour” states that slow convergence. 
+
+2.4 Misinformation Detection and Sentiment Analysis 
+
+For misinformation detection, we use Fakeddit (Nakamura et al., 2020), a multimodal benchmark of paired image-and-text Reddit posts. Stepanova & Ross (2023) show that classifiers trained on this data degrade when evaluated on chronologically later posts relative to a random split, with the loss concentrated in 2minority classes. The detection task itself remains an active area of research: Liu et al. (2024), for instance, note that the wide distributional spread of machine-generated multimodal misinformation demands detectors that generalize across domains, and augment large vision-language models with forgery-specific knowledge. For sentiment analysis, we use the Yelp review dataset (Yelp, 2024), a 5-class task over review text. While no prior work has documented temporal drift in Yelp specifically, Lukes & Søgaard (2018) establish a closely related effect in the Amazon review dataset (Ni et al., 2019), showing that the lexical features driving sentiment polarity shift over time, with the effect most pronounced in sparse models. We engage with these domains primarily as settings in which temporal drift is already established, although the framework we develop is in principle agnostic to the particular task. 
+
+# 3 Methodology 
+
+3.1 Datasets 
+
+For misinformation detection, we use Fakeddit (Nakamura et al., 2020), a multimodal benchmark for mis-information detection assembled from a curated set of Reddit subreddits. Each post consists of a short text title and an associated image. Labels are assigned at three granularities: 2-way, 3-way, and 6-way. The present work uses the 6-way scheme, in which posts are categorized as true content, satire/parody, false connection, imposter content, manipulated content, or misleading content. For sentiment analysis, we use the Yelp review dataset (Yelp, 2024), a text-only task consisting of user-submitted business reviews. Labels correspond to the star rating assigned by the reviewer, from one to five stars. 
+
+3.2 Temporal Windowing 
+
+We apply a windowing procedure to each dataset, parameterized by a calendar window duration and a per-window sample size. Each dataset’s samples are partitioned into non-overlapping, chronologically ordered windows of the dataset’s window duration, with each sample assigned to a window by its timestamp. For each dataset, we identify the longest contiguous run of windows whose sample counts meet a minimum-count threshold (9,000 for Fakeddit, 10,000 for Yelp), and restrict analysis to that range. Windows are then downsampled to the size of the smallest window in the range via stratified subsampling on the class labels. The window duration and the minimum-count threshold were chosen separately for each dataset. Table 1 summarizes the configuration for each dataset. Table 1: Temporal windowing configuration for each dataset. 
+
+Dataset Window # Windows Samples/Window Classes Date Range 
+
+Fakeddit 60 days 35 9,495 6 Jan 2013 – Oct 2018 Yelp 90 days 56 12,801 5 May 2008 – Feb 2022 For Fakeddit, we note that small minority-class counts in early windows may introduce noise into per-window model estimates: imposter content is absent before window 14, and satire is sparse in early windows, with as few as nine samples in some windows after downsampling. 
+
+3.3 Model Training 
+
+For each time window, a classifier is trained independently on that window’s downsampled data. Each window’s model is trained with 10 different seeds, so that the model weights are determined by the window’s training data and a random seed. Models are optimized with cross-entropy loss and the Adam optimizer, and are trained for 20 epochs without early stopping, at a batch size of 256. 
+
+Fakeddit For each of the 35 time windows, a 6-way multimodal multilayer perceptron (MLP) classifier is independently trained on concatenated RoBERTa (Sanh et al., 2019) and ResNet-50 (He et al., 2016) features, using the architecture of Stepanova & Ross (2023) (Appendix A). The hidden width is fixed at 3n = 1024 , and training uses a learning rate of 10 −4, the hyperparameters reported by Stepanova & Ross (2023) as optimal for 6-way temporal classification, so that all windows share a common capacity. 
+
+Yelp For each of the 56 time windows, a 5-way MLP classifier is independently trained on RoBERTa features of the review text, consisting of a single hidden layer and a 5-way output. Prior work does not supply an architecture for the Yelp dataset, so hyperparameters were selected by grid search. A held-out pool was drawn from the dataset by stratified sampling on the class labels, with train and validation set sizes matched to the sample size in the main experiments (12,801). We searched learning rates lr ∈ { 10 −2, 10 −3, 10 −4, 10 −5}
+
+and hidden widths n = 2 i for i ∈ { 5, 6, 7, . . . , 14 }. The best-performing configuration on the validation set was lr = 10 −3 with n = 256 , which was used for all 56 windows across the 10 training seeds. 
+
+3.4 Weight Extraction and Processing 
+
+We extract the weights of each trained model and convert them into a low-dimensional, cross-comparable vector suitable for HMM fitting. Our approach is conceptually inspired by the methods of Baldassano et al. (2017). For each window-seed pair, we extract the four weight tensors of the MLP classifier: the hidden weight matrix Wh ∈ Rn×d, hidden bias bh ∈ Rn, output weight matrix Wo ∈ Rc×n, and output bias bo ∈ Rc, where d is the input feature dimension, n the hidden width, and c the number of classes. We then concatenate them into a flat vector of dimension n(d + 1) + c(n + 1) . For Fakeddit, d = 2816 for the concatenated RoBERTa and ResNet-50 features, n = 1024 , and c = 6 . For Yelp, d = 768 for the RoBERTa features, n = 256 , and c = 5 .
+
+Permutation Alignment Hidden units in a feed-forward network are symmetric under permutation (En-tezari et al., 2022), hence weight vectors must be aligned across seeds before dimensionality reduction. The hidden units are summarized by an alignment “signature” formed by concatenating each unit’s incoming and outgoing weights. Within each window, all seeds’ models are aligned to a synthetic centroid by iter-ative Hungarian matching (Ainsworth et al., 2023). The recovered permutations are applied consistently across Wh, b h, and Wo. The output biases bo, which carry no hidden-unit indexing, are left unchanged. The signature construction and matching objective are given in Appendix B.1. 
+
+Dimensionality Reduction and Normalization Following alignment, the full set of flattened weight vectors for each dataset (35 windows × 10 seeds for Fakeddit; 56 windows × 10 seeds for Yelp) is subjected to principal component analysis (PCA). The number of components to retain was determined by inspecting the elbow of the scree plot for each dataset. The projected PCA coordinates are z-score normalized to zero mean and unit variance per component. The normalizer was fit on all aligned, projected weight vectors for the corresponding dataset. 
+
+3.5 HMM Fitting and Model Selection 
+
+The sequence of per-window weight representations is treated as an observable emission sequence, and an HMM is used to infer the underlying latent states. We constrain the HMM to a left-to-right topology: the transition matrix satisfies aij = 0 unless j ∈ { i, i + 1 }, so that at each step the chain either remains in its current state or advances to the next one, and the initial-state distribution places all mass on the first state. This encodes the event-segmentation assumption of Baldassano et al. (2017): the data stream is chronological and non-recurrent, hence a latent regime, once left, should not recur. 
+
+Model Selection The number of latent states K was selected using two criteria: the mean held-out log-likelihood under leave-one-seed-out cross-validation, and the Bayesian information criterion (BIC). For each candidate value of K—evaluated over the range from 2 to 12 for Fakeddit, and from 2 to 18 for Yelp—the HMM was trained on the concatenated per-seed weight sequences from 9 of the 10 seeds, and the per-observation log-likelihood of the held-out seed’s sequence was computed. This was repeated with each seed left out, and the mean held-out log-likelihood was recorded for each K. Multiple random initializations were fit for each K and for each fold, retaining the best-fitting solution by training log-likelihood to reduce 4sensitivity to initialization. We used BIC as the primary criterion and took its minimizing K, and then verified that this value fell at or near the elbow of the mean held-out log-likelihood curve. 
+
+Model Fitting For HMM fitting, the 10 per-seed PCA vectors within each window were averaged to produce a centroid for each window, yielding a sequence of centroid vectors in the z-scored PCA space. The final HMM was fit with the Baum-Welch algorithm on this sequence of per-window centroid vectors, subject to the left-to-right constraint above, using Gaussian emissions with a diagonal covariance. The model is parameterized by initial-state probabilities, a state-transition matrix, and the per-state Gaussian means and covariances, with the zero entries of the transition matrix and the initial distribution held fixed. Multiple random initializations were fit, and the highest-likelihood solution was kept. The Viterbi algorithm was then used to decode the most probable latent-state sequence, assigning each window to a single state. 
+
+3.6 Evaluation 
+
+We compare classifier generalization for window pairs lying within the same HMM state versus across a state boundary. The guiding prediction is that a model should generalize better when its training window and test window belong to the same latent phase than when they straddle an event boundary. For each window 
+
+i, the ten seed models trained on that window are evaluated on every other window j, recording the macro F1 of each i → j transfer per seed. 
+
+Column Centering Transfer F1 conflates the intrinsic difficulty of the target window and the compat-ibility between source and target. We therefore column-center the transfer matrix, subtracting from each entry the mean macro F1 achieved on test window j across all training windows i̸ = j. Writing Fij for the raw transfer macro F1 from window i to window j and W for the number of windows, the centered score is 
+
+˜Fij = Fij − 1
+
+W − 1
+
+> W
+
+∑ 
+
+> i′=1 ,i ′̸=j
+
+Fi′j . (1) All downstream statistics are computed on centered F1. From this point forward, “F1” refers to centered F1 unless explicitly stated otherwise. 
+
+Within/Across Comparison Off-diagonal entries of the matrix are partitioned into within-state pairs, in which the train and test windows share an HMM state, and across-state pairs, in which the train and test windows belong to different HMM states. The significance of the within- versus across-state performance difference is assessed by permutation testing. We stratify the state pairs by time lag and shuffle within each stratum. Each off-diagonal window pair i → j, evaluated per seed, is assigned a within/across indicator designating whether windows i and j belong to the same state, along with a lag d = |i − j|. The observations are then grouped into strata by lag. Within each stratum, the within/across indicators are permuted independently. For each permutation, a test statistic is computed, and the observed statistic is compared to this null distribution to form a one-sided p-value. We refer to this test statistic as the distance-conditioned gap statistic : it is a weighted average of the F1 gap between the within- and the across-group means at each lag, with each lag weighted by the harmonic mean of its within- and across-pair counts, so that lags sparsely populated in either group contribute proportionally less. The formal definition is given in Appendix B.2. 
+
+3.7 Comparison Against Equal-Size Segmentation 
+
+We compare the HMM segmentation against a naive baseline. Both segmentations divide a dataset’s W
+
+windows into the number of states K recovered by the HMM, not including unvisited states. The baseline segmentation partitions the windows into contiguous blocks of approximately equal size: each block receives 
+
+⌊W/K ⌋ windows, and the W mod K remainder windows are allocated to the blocks from left to right. The segmentations are compared with a permutation test on the difference D of their pooled gaps; the pooled gap of a segmentation is the difference between the mean within-group centered F1 and the mean across-group centered F1 over all off-diagonal pairs, which we denote Π. The aggregation weights, the statistics Π and D,and the construction of the null distribution for D are detailed formally in Appendix B.3. 53.8 Correlation Analyses 
+
+To interpret the information captured by the latent states, two dissimilarity measures were correlated with cross-window generalization, aggregated at the level of ordered state pairs. For each ordered pair of states, the mean cross-window centered macro F1 over the constituent pairs is related to (1) class distribution, measured by the Jensen-Shannon divergence (JSD) between the class distributions of the two states, and (2) weight-space, measured by the Euclidean distance between the states’ PCA centroids in the z-scored PCA space. Associations were quantified with Spearman’s rank correlation. Permutation p-values are obtained similarly to the analysis above: the dissimilarity values across state pairs were repeatedly permuted while holding the corresponding performance values fixed, and Spearman’s rank correlation was recomputed, yielding a null distribution against which the observed association was compared. 
+
+3.9 Class Distribution Stability Within and Across States 
+
+The correlation analysis above operates at the level of aggregated state pairs. As a more fine-grained analysis of whether the recovered states correspond to stability in the data distribution, we examine the pairwise class distribution dissimilarity between individual windows, grouped by whether they share a state. For each unordered pair of windows (i, j ), we compute the Jensen-Shannon divergence between their class distributions, JSD( ci ∥ cj ), and assign the pair to the within-group if windows i and j share an HMM state, 
+
+si = sj , and to the across-group otherwise. We compare the two groups on the mean and variance of their pairwise JSD, and assess the difference in group mean divergence, ∆JSD = ¯Da − ¯Dw, where ¯Dw and ¯Da are the mean pairwise JSD within and across states. Significance is assessed with a label-shuffle permutation test that holds the JSD values fixed and permutes the within/across labels across window pairs. The formal group-mean definitions and permutation procedure are detailed in Appendix B.4. 
+
+3.10 Controlling for Class Distribution 
+
+The analyses of Section 4.5 and Section 4.6 establish that state membership is tied to the class distribution. This raises the possibility that the within/across indicator is merely a proxy for class divergence, in which case the within-state advantage should vanish when divergence is held fixed. We test whether the within-state indicator continues to predict transfer between window pairs when controlling for class divergence and temporal lag. We use the per-pair divergence JSD( ci ∥ cj ) introduced in Section 3.9. The aggregated, state-level measure used in Section 3.8 is unsuitable for this control, as it is identically zero for every within-state pair. The per-window measure is continuous and varies both within and across states. 
+
+Combined Model For each off-diagonal window pair i → j, we record its centered transfer macro F1 ˜Fij ,the per-pair divergence JSD( ci ∥ cj ), the lag d = |i − j|, and the indicator 1{si=sj }. We fit the linear model 
+
+˜Fij = β0 + βjsd JSD( ci ∥ cj ) + βlag d + βstate 1{si=sj } + εij , (2) and interpret βstate as the within-state advantage in centered macro F1 units with divergence and lag held fixed. Its significance is assessed with a Freedman-Lane partial permutation test (Freedman & Lane, 1983), which extends the distance-conditioned shuffle in Section 3.6 to this partial-correlation setting. The permutation procedure is detailed in Appendix B.5. 
+
+Two-Stage Residualization As a complementary form of the same test, we residualize centered transfer F1 on divergence and lag and apply the harmonic-weighted, lag-stratified distance-conditioned gap statistic of Section 3.6 to the residuals. The residualization is detailed in Appendix B.5. 
+
+# 4 Results 
+
+4.1 Weight-Space Representation 
+
+We extracted and aligned the head weights from all trained models and applied PCA to the aligned vectors as described in Section 3.4. For the Fakeddit dataset, with 350 total models, three principal components were 6retained at the elbow of the scree curve (PC1: 7.35%, PC2: 2.66%, PC3: 1.45%), cumulatively capturing 11.47% of the total variance. For the Yelp dataset, with 560 total models, three principal components were retained (PC1: 7.74%, PC2: 2.07%, PC3: 1.29%), cumulatively capturing 11.10% of the total variance. The scree plots for both datasets are shown in Appendix D.2. Figure 1 shows PCA projections of the aligned weight vectors for both datasets. Before alignment, points cluster by seed as a consequence of permutation symmetry in the hidden layer (Figure 14, Appendix D.1). After alignment, the dominant source of clustering shifts to the temporal window, and the points trace a coherent trajectory through PC space.  
+
+> (a) Fakeddit (after alignment). (b) Yelp (after alignment).
+
+Figure 1: PCA projections of aligned MLP head weights (PC1 vs. PC2) for (a) Fakeddit and (b) Yelp. After alignment, clustering is organized by window, revealing coherent temporal drift in both datasets. 
+
+4.2 Latent State Discovery 
+
+An HMM was fit to the sequence of per-window weight centroids in the z-scored PCA space. For Fakeddit, the number of states was searched over K ∈ { 2, . . . , 12 }; BIC was minimized at K = 11 , and the leave-one-seed-out log-likelihood per observation plateaued around K = 10 –11 , so K = 11 was selected (Figure 16, Appendix D.3). For Yelp, K was searched over K ∈ { 2, . . . , 18 }; BIC was minimized at K = 16 , with the log-likelihood per observation climbing marginally past that point, so K = 16 was selected (Figure 17, Appendix D.3). The Viterbi algorithm was then used to decode the most probable state sequence (Figures 2a and 2b). Under the left-to-right decode, the Yelp sequence visits only 15 of the 16 states, as state 15 is never occupied. Subsequent analyses therefore effectively concern these 15 visited states.    
+
+> (a) Fakeddit ( K= 11 ), 35 windows. (b) Yelp ( K= 16 ), 56 windows. State 15 is unvisited.
+
+Figure 2: Viterbi-decoded HMM state sequences; color indicates the assigned state. 74.3 Within- vs. Across-State Generalization 
+
+To evaluate whether models generalize better within states than across boundaries, we computed the macro F1 of every window-to-window transfer and partitioned pairs by whether their windows share the same state. Pooled across all off-diagonal pairs without lag weighting, Fakeddit within-state transfers achieved a mean macro F1 of +0 .0929 , compared to −0.0162 for across-state transfers (114 within, 1,076 across pairs), a gap of 0.1092 . For Yelp, within-state transfers achieved +0 .0170 against −0.0014 for across-state transfers (228 within, 2,852 across pairs), a gap of 0.0184 . Figure 3 shows the within- and across-state means by temporal lag. To test the possibility that this difference is an artifact of temporal proximity, we applied  
+
+> (a) Fakeddit. (b) Yelp.
+
+Figure 3: Mean column-centered macro F1 for within- versus across-state window pairs as a function of temporal lag (windows between training and test windows). Error bars are 95% confidence intervals. a distance-conditioned label-shuffle test (Figure 7, Appendix C). Within each temporal-lag stratum, the within/across indicators were permuted independently while holding the per-lag F1 distributions fixed. The distance-conditioned gap statistic was +0 .0270 for Fakeddit ( p < 0.0001 ) and +0 .0056 for Yelp ( p = 0 .0001 ). 
+
+4.4 Comparison Against Equal-Size Segmentation 
+
+For each segmentation we compute the pooled F1 gap between the within- and across-groups over off-diagonal pairs, and assess the difference D between the pooled gaps with a direct permutation test (Figure 8, Appendix C). Because only 15 of the 16 decoded states were actually visited for Yelp, the equal-size baseline consists of 15 states. For Fakeddit, the HMM segmentation produced a pooled gap of 0.1092 , while the equal-size segmentation produced a pooled gap of 0.1041 ; the difference was significant ( D = +0 .0051 ,
+
+p < 0.0001 ). For Yelp, the HMM segmentation produced a pooled gap of 0.0184 against 0.0167 for the equal-size segmentation, and the difference was again significant ( D = +0 .0016 , p < 0.0001 ). The within-and across-group F1 are shown as a function of temporal lag in Figures 18 and 19 (Appendix D). 
+
+4.5 Correlation Analyses 
+
+To interpret the dimension of dissimilarity captured by HMM state membership, we correlate cross-window transfer performance with two complementary measures of state-pair dissimilarity (Section 3.8): a data-side measure, the Jensen-Shannon divergence between the two states’ class distributions; and a model-side measure, the Euclidean distance between the states’ centroids in the z-scored PCA space. For Fakeddit, we aggregate over the 110 ordered off-diagonal state pairs ( 11 × 10 ); for Yelp, over the 210 ordered off-diagonal state pairs ( 15 × 14 ). In each case i → j and j → i are treated separately because transfer F1 is asymmetric. Both measures correlate negatively with mean cross-window macro F1 on both datasets. For Fakeddit, the class distribution divergence was strongly and significantly associated with transfer performance (Spearman 
+
+ρ = −0.878 , permutation p < 0.0001 ; Figure 4), as was the weight-space centroid distance ( ρ = −0.617 ,permutation p < 0.0001 ). For Yelp, both associations were in the same direction and remained significant, though substantially weaker: class distribution divergence gave ρ = −0.407 (p < 0.0001 ; Figure 5) and weight-space centroid distance gave ρ = −0.285 (p < 0.0001 ). Permutation null distributions for all corre-8lations are provided in Appendix C (Figures 9 and 10). On both datasets, the data-side measure was the stronger predictor of generalization, despite the HMM states having been fit entirely in weight space.                 
+
+> (a) Class distribution divergence (JSD) vs. mean cross-window macro F1 (Spearman ρ=−0.878 ,p < 0.0001 ).
+> (b) Weight-space centroid distance vs. mean cross-window macro F1 (Spearman ρ=−0.617 ,p < 0.0001 ).
+
+Figure 4: Fakeddit: dissimilarity between state pairs versus mean cross-window macro F1. The data-side measure (left) is a stronger predictor of transfer performance than the weight-space measure (right).                 
+
+> (a) Class distribution divergence (JSD) vs. mean cross-window macro F1 (Spearman ρ=−0.407 ,p < 0.0001 ).
+> (b) Weight-space centroid distance vs. mean cross-window macro F1 (Spearman ρ=−0.285 ,p < 0.0001 ).
+
+Figure 5: Yelp: dissimilarity between state pairs versus mean cross-window macro F1. Both associations run in the same direction as Fakeddit but are substantially weaker. 
+
+4.6 Within-State Class Distribution Stability 
+
+The correlation analysis shows that more dissimilar states transfer less reliably, but does not establish how states correspond to the data distribution. To test this, we compared the pairwise class distribution divergence of same-state window pairs against pairs that span a boundary. For Fakeddit, within-state window pairs ( n = 57 ) had a mean pairwise JSD of 0.0119 , whereas across-state pairs ( n = 538 ) had a mean of 0.1053 .The two groups also differ in dispersion: the variance of within-state JSD ( 3.3 × 10 −4) is much smaller than that of across-state JSD ( 7.9 × 10 −3), indicating that within-state pairs are not only closer but also far more tightly concentrated. The difference in mean pairwise JSD ( +0 .0935 ) lies far outside the null distribution 9(p < 0.0001 ; Figure 11, Appendix C). The Yelp dataset shows the same pattern. Within-state window pairs (n = 114 ) had a mean pairwise JSD of 0.0004 against 0.0316 for across-state pairs ( n = 1 , 426 ), and the variance of within-state JSD ( 2.4 × 10 −7) was again far smaller than that of across-state JSD ( 1.1 × 10 −3). The difference in mean pairwise JSD ( +0 .0312 ) lies far outside the null distribution ( p < 0.0001 ). 
+
+4.7 State Membership Beyond Class Distribution 
+
+Sections 4.5 and 4.6 establish that the recovered states approximate regimes of stable class distribution. This invites the concern that the within-state generalization advantage of Section 4.3 merely restates that fact: if the within/across indicator is only a proxy for class divergence, the advantage should vanish once divergence is held fixed. We tested this by partialling per-pair class divergence and temporal lag out of transfer F1 and asking whether state membership retains predictive power (Section 3.10). The control holds on both datasets, though the effect is much larger on Fakeddit than on Yelp. For Fakeddit, over the ordered off-diagonal window pairs, the within-state indicator remained a strong predictor of transfer after divergence and lag were held fixed, with a coefficient of βstate = +0 .0375 (Freedman-Lane one-sided p < 0.0001 ; Figure 12, Appendix C). Class divergence was, as expected, a large negative predictor ( βjsd = −0.2870 ), while lag was small and negative ( βlag = −0.0041 ), indicating that the temporal-proximity benefit on transfer is itself largely mediated by class divergence. The two-stage residualization agreed: the gap between the within-group and the across-group on F1 residualized for divergence and lag was +0 .0272 under the lag-stratified harmonic statistic ( p < 0.0001 ; Figure 13, Appendix C). For Yelp, the effect is present but weaker. Under the two-stage residualization, the gap between the within-and across-groups on transfer F1 residualized for divergence and lag was +0 .0054 (p = 0 .0001 ). In the combined model, the within-state indicator remained predictive (Figure 12, Appendix C). Because divergence and lag are partly collinear with state membership, they absorb most of the within-state signal, and the Freedman-Lane null for βstate is thus centered below zero under this residualization. The observed coefficient (βstate = −0.0003 ) falls firmly in its upper tail (one-sided p = 0 .0234 ), hence state membership retains a small but significant association with transfer despite a slightly negative raw coefficient. Class divergence was again a negative predictor ( βjsd = −0.0773 ) and lag was negligible ( βlag = −0.0009 ). 
+
+# 5 Discussion 
+
+Our study tested whether the event-segmentation framework that describes human perception of naturalistic experience can be transposed to an artificial learner exposed to a temporally drifting data stream. Our results establish three key findings. First, after controlling for permutation symmetry across seeds, the per-window weight vectors trace a coherent trajectory through a low-dimensional subspace, and an HMM fit to that trajectory recovers a set of latent states that partition the timeline into coherent phases ( K = 11 for Fakeddit, K = 16 for Yelp, 15 visited). Second, models generalize better within states than across boundaries, an advantage that persists after controlling for temporal proximity. Third, the recovered states track the data’s class distribution, operationalized as Jensen-Shannon divergence, more tightly than they track the weight-space distances that defined them. These results support the claim that the temporal structure of a drifting data stream is recoverable from the weights of the models it gives rise to, and membership in that structure predicts generalization in a manner that parallels the within-event coherence of human memory. That every effect is attenuated on Yelp is informative about the differences between the datasets. On Fakeddit, the class distribution is highly unstable (Section 3.2), so there is large label-marginal drift for the states to latch onto. Yelp’s star-rating distribution is more stable over time, leaving less label-marginal movement to structure the segmentation, which would account for the weaker JSD correlation and smaller within-state generalization advantage. Moreover, the drift that Lukes & Søgaard (2018) document in review sentiment arises from lexical features shifting in polarity over time—a form of covariate shift that leaves the class distribution largely unchanged and would therefore be invisible to a JSD-based measure. While the difference between the HMM segmentation and the equal-size baseline was statistically significant at p < 0.0001 , the equal-size baseline was able to reproduce much of the within-state advantage on both datasets, with a difference of D = +0 .0051 and D = +0 .0016 on Fakeddit and Yelp respectively. We read 10 this as a description of the data: each timeline is dominated by a few large regime shifts that any contiguous partition is likely to catch, hence the HMM’s contribution is to refine where those few boundaries fall. 
+
+5.1 Latent State Interpretation 
+
+The states were estimated from the model weights, yet the partition they induce aligns more closely with the underlying class distribution than with the Euclidean distance in the PCA space in which the HMM was fit. This ordering holds on both datasets, though the class distribution signal is far stronger on Fakeddit. Figure 6 overlays the recovered states on the Fakeddit class distribution across the 35 windows (Yelp overlay given in Appendix D.5); the states appear to span stretches over which the class distribution holds comparatively steady, with boundaries falling at points of rapid shift. This is quantified in Section 4.6: on both datasets, same-state window pairs are closer and less dispersed in class distribution than pairs spanning a boundary. 
+
+Figure 6: The 6-way class distribution across the 35 temporal windows in the Fakeddit dataset (January 2013–October 2018), with the HMM-decoded state boundaries ( K = 11 ) overlaid. If the states were simply a regrouping of windows by class distribution, holding the distribution fixed would erase the within-state transfer advantage. However, the states predict transfer beyond class divergence and lag on both datasets, an effect that is substantial on Fakeddit and weak but statistically significant on Yelp (Section 4.7), which indicates that the states also encode structure relevant to transfer that the label marginal does not express. The dominance of label shift as a signal is thus largely specific to Fakeddit. In the Yelp dataset, where the class distribution is more stable, the segmentation does not depend on strong label drift to recover a within-state advantage. 
+
+5.2 Limitations 
+
+Our design fits a model to each non-overlapping window so that the weights are a function of a single period’s data. However, real systems rarely operate this way. A deployed model typically accumulates data over time, and its state reflects its entire history rather than the most recent interval. This design was adopted deliberately, as a cumulative scheme would cause the training set to grow in size from window to window and introduce a confound between the quantity of data and its content. The cost of this control is that our regimes describe the data of each period instead of the trajectory of an accumulating learner. Additionally, human segmentation draws on world knowledge that a fixed-encoder classifier lacks. Misinformation detection, for instance, presupposes knowledge of what is true, whereas our models only see frozen embeddings. Knowledge-rich backbones such as large vision-language models (Liu et al., 2024) or LLM-based sentiment classifiers (Krugmann & Hartmann, 2024) could supply this world knowledge and are a natural extension. The retained components capture only a small fraction of the total weight variance— 11 .47% for Fakeddit, 
+
+11 .10% for Yelp. Although the post-alignment projection demonstrates that this is largely sufficient to carry the temporal signal, most of the variation is left unmodeled. Additionally, the Hungarian alignment removes the permutation of the hidden layer, but not other symmetries of the network’s reparameterization, such as the positive-rescaling invariance of ReLU units. This could inflate the distances we compute in weight 11 space and offer a plausible explanation for why the weight-side correlation underperforms the data-side correlation. The left-to-right topology forbids a latent regime, once left, from recurring. This encodes the event-segmentation assumption of Baldassano et al. (2017), but it is a strong constraint. Seasonal effects in review sentiment or recurring content types on Reddit could cause the drifting stream to return to earlier regimes, which our topology would be forced to model as a new state. Forbidding recurrence also forces the segmentation to be contiguous, so the equal-size baseline differs from the HMM only in where boundaries fall, not in whether the partition is contiguous, limiting the comparison. Because label-distribution shift is directly measurable and a strong predictor of transfer, a natural objection is that one could segment the timeline from the class distributions alone and dispense with the weight extraction and HMM machinery. The partialling analysis in Section 4.7 is evidence that the weight-derived states are not reducible to a class distribution segmentation on either dataset. This applies especially to the Yelp dataset, where the JSD correlation is weaker. However, fully establishing the method’s distinctive value requires additional evaluation on datasets in which the relevant drift is not known in advance, or in which covariate shift invisible to the class distribution drives the change. In these settings, event segmentation acts as an annotation-free, model-derived probe that offers something beyond direct data statistics. 
+
+5.3 Future Work 
+
+The correlation analyses established that the recovered states track the class distribution more closely than the geometry of the weights. A natural next step is to separate the drift that boundaries respond to into label-marginal and feature covariate shift, and to relate states to other data characteristics, such as the volume, topical composition, or lexical content of each window. Additionally, our account is descriptive, locating boundaries without explaining what drives them. A mechanistic follow-up would tie transitions to changes in the world the stream reflects, such as new content types or external events. A segmentation that marks discontinuities in generalization is also a candidate signal for when a deployed model should be retrained, connecting our descriptive account to the predictive boundary-tracking of Won et al. (2018). The disjoint-window scheme could be replaced by a cumulative one, in which each model is trained on all data up to a given time, testing whether boundaries survive the integration of history. Allowing the encoders to train rather than freezing them would allow the representation itself to drift and test whether the segmentation sharpens. Our use of a hidden Markov model was motivated primarily by its close connection to the event segmentation literature (Baldassano et al., 2017), but future work could explore alternative approaches, such as constrained k-means clustering and change-point detection, which may recover different notions of event structure and make different assumptions about boundary formation. The dimensionality reduction also need not be linear; manifold-learning methods such as T-PHATE (Busch et al., 2023) could better capture nonlinear structure in the weight trajectory. Our framework is not tied to weights. Any sequence of model-internal representations elicited by an ordered input can serve as the HMM’s emissions, and richer choices may bring the setup closer to its neuroscientific source. Fitting the HMM to a model’s activations as it processes the same naturalistic stimuli used in human studies, one could compare the resulting boundaries to the event boundaries reported by Baldassano et al. (2017). This would test whether the recovered event structure reflects input properties that any capable learner must discover, or whether it is specific to human perception. 
+
+# 6 Conclusion 
+
+Our study investigates whether the event-segmentation account of human perception extends to an artificial learner, substituting a classifier’s weights for cortical activity. On both datasets, an HMM fit to the weight trajectory recovered coherent regimes ( K = 11 for Fakeddit, K = 16 for Yelp, 15 visited), models generalized better within states than across boundaries, and the advantage survived controls for temporal proximity and a naive equal-size partition. The recovered states align more closely with shifts in the data’s class distribution than with distances in the weight space that defined them, yet the within-state signal survives after class divergence and temporal proximity are partialled out—substantially on Fakeddit, and slightly but significantly on Yelp. We leave the method’s extension to more general settings to future work. 12 References 
+
+Samuel K. Ainsworth, Jonathan Hayase, and Siddhartha Srinivasa. Git re-basin: Merging models modulo permutation symmetries. arXiv preprint arXiv:2209.04836 , 2023. Christopher Baldassano, Jiayu Chen, Asieh Zadbood, Jonathan W Pillow, Uri Hasson, and Kenneth A Norman. Discovering event structure in continuous narrative perception and memory. Neuron , 95(3): 709–721, Aug 2017. doi: 10.1016/j.neuron.2017.06.041. Erica L. Busch, Jessie Huang, Andrew Benz, Tom Wallenstein, Guillaume Lajoie, Guy Wolf, Smita Krish-naswamy, and Nicholas B. Turk-Browne. Multi-view manifold learning of human brain-state trajectories. 
+
+Nature Computational Science , 3(3):240–253, 2023. Samuel DuBrow and Lila Davachi. The influence of context boundaries on memory for the sequential order of events. Journal of Experimental Psychology: General , 142(4):1277–1286, 2013. doi: 10.1037/a0034024. Rahim Entezari, Hanie Sedghi, Olga Saukh, and Behnam Neyshabur. The role of permutation invariance in linear mode connectivity of neural networks. arXiv preprint arXiv:2110.06296 , 2022. Youssef Ezzyat and Lila Davachi. Similarity breeds proximity: pattern similarity within and across contexts is related to later mnemonic judgments of temporal proximity. Neuron , 81(5):1179–1189, Mar 2014. doi: 10.1016/j.neuron.2014.01.042. Komal Florio, Valerio Basile, Marco Polignano, Pierpaolo Basile, and Viviana Patti. Time of your hate: The challenge of time in hate speech detection on social media. Applied Sciences , 10(12):4180, 2020. doi: 10.3390/app10124180. URL https://doi.org/10.3390/app10124180 .David Freedman and David Lane. A nonstochastic interpretation of reported significance levels. Journal of Business & Economic Statistics , 1(4):292–298, 1983. doi: 10.1080/07350015.1983.10509354. Mario Geiger, Stefano Spigler, Stéphane d’Ascoli, Levent Sagun, Marco Baity-Jesi, Giulio Biroli, and Matthieu Wyart. The jamming transition as a paradigm to understand the loss landscape of deep neural networks. arXiv preprint arXiv:1809.09349 , 2018. URL https://arxiv.org/abs/1809.09349 .Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image recognition. In 
+
+Proceedings of the IEEE conference on computer vision and pattern recognition , pp. 770–778, 2016. Mingyuan Hu, Annie Chen, Naomi Saphra, and Kyunghyun Cho. Latent state models of training dynamics. 
+
+arXiv preprint arXiv:2308.09543 , 2023. doi: 10.48550/arXiv.2308.09543. Xiaolei Huang and Michael J. Paul. Examining temporality in document classification. In Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers) , pp. 694–699, Melbourne, Australia, July 2018. Association for Computational Linguistics. doi: 10.18653/v1/ P18-2110. URL https://aclanthology.org/P18-2110/ .Kokil Jaidka, Niyati Chhaya, and Lyle Ungar. Diachronic degradation of language models: Insights from social media. In Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers) , pp. 195–200, Melbourne, Australia, July 2018. Association for Computational Linguistics. doi: 10.18653/v1/P18-2032. URL https://aclanthology.org/P18-2032/ .Viktoriya Krakovna and Finale Doshi-Velez. Increasing the interpretability of recurrent neural networks using hidden markov models. arXiv preprint arXiv:1606.05320 , 2016. URL https://arxiv.org/abs/ 1606.05320 .Jan Ole Krugmann and Jochen Hartmann. Sentiment analysis in the age of generative ai. Customer Needs and Solutions , 11(1):3, 2024. ISSN 2196-291X. doi: 10.1007/s40547-024-00143-4. URL https: //doi.org/10.1007/s40547-024-00143-4 .X. Liu, P. Li, H. Huang, Z. Li, X. Cui, J. Liang, and Z. He. Fka-owl: Advancing multimodal fake news detection through knowledge-augmented lvlms. In Proceedings of the 32nd ACM International Conference on Multimedia , pp. 10154–10163, October 2024. 13 Jan Lukes and Anders Søgaard. Sentiment analysis under temporal shift. In Alexandra Balahur, Saif M. Mohammad, Veronique Hoste, and Roman Klinger (eds.), Proceedings of the 9th Workshop on Com-putational Approaches to Subjectivity, Sentiment and Social Media Analysis , pp. 65–71, Brussels, Bel-gium, October 2018. Association for Computational Linguistics. doi: 10.18653/v1/W18-6210. URL 
+
+https://aclanthology.org/W18-6210/ .Kai Nakamura, Sharon Levy, and William Yang Wang. Fakeddit: A new multimodal benchmark dataset for fine-grained fake news detection. In Nicoletta Calzolari, Frédéric Béchet, Philippe Blache, Khalid Choukri, Christopher Cieri, Thierry Declerck, Sara Goggi, Hitoshi Isahara, Bente Maegaard, Joseph Mariani, Hélène Mazo, Asuncion Moreno, Jan Odijk, and Stelios Piperidis (eds.), Proceedings of the Twelfth Language Resources and Evaluation Conference , pp. 6149–6157, Marseille, France, May 2020. European Language Resources Association. ISBN 979-10-95546-34-4. URL https://aclanthology.org/2020.lrec-1.755/ .Jianmo Ni, Jiacheng Li, and Julian McAuley. Justifying recommendations using distantly-labeled reviews and fine-grained aspects. In Proceedings of the 2019 Conference on Empirical Methods in Natural Lan-guage Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP) , pp. 188–197, Hong Kong, China, November 2019. Association for Computational Linguistics. doi: 10.18653/v1/D19-1018. URL https://aclanthology.org/D19-1018/ .Paul Röttger and Janet Pierrehumbert. Temporal adaptation of BERT and performance on downstream document classification: Insights from social media. In Marie-Francine Moens, Xuanjing Huang, Lu-cia Specia, and Scott Wen-tau Yih (eds.), Findings of the Association for Computational Linguistics: EMNLP 2021 , pp. 2400–2412, Punta Cana, Dominican Republic, November 2021. Association for Com-putational Linguistics. doi: 10.18653/v1/2021.findings-emnlp.206. URL https://aclanthology.org/ 2021.findings-emnlp.206/ .Noa Rubin, Inbar Seroussi, and Zohar Ringel. Grokking as a first order phase transition in two layer networks. In International Conference on Learning Representations (ICLR) , 2024. Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. Distilbert, a distilled version of bert: smaller, faster, cheaper and lighter. arXiv preprint arXiv:1910.01108 , 2019. Nataliya Stepanova and Björn Ross. Temporal generalizability in multimodal misinformation detection. In Dieuwke Hupkes, Verna Dankers, Khuyagbaatar Batsuren, Koustuv Sinha, Amirhossein Kazemnejad, Christos Christodoulopoulos, Ryan Cotterell, and Elia Bruni (eds.), Proceedings of the 1st GenBench Workshop on (Benchmarking) Generalisation in NLP , pp. 76–88, Singapore, December 2023. Association for Computational Linguistics. doi: 10.18653/v1/2023.genbench-1.6. URL https://aclanthology.org/ 2023.genbench-1.6/ .Daegun Won, Peter J. Jansen, and Jaime G. Carbonell. Temporal transfer learning for drift adaptation. In 
+
+Proceedings of the 26th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning (ESANN) , pp. 673–678, 2018. Yelp. Yelp open dataset. https://www.yelp.com/dataset , 2024. Accessed: 2026-07-01. Liu Ziyin and Masahito Ueda. Exact phase transitions in deep learning. arXiv preprint arXiv:2205.12510 ,2022. doi: 10.48550/arXiv.2205.12510. 
+
+# A Replication of Stepanova and Ross (2023) 
+
+This appendix collects the architecture, training protocol, and full results of our replication of Stepanova & Ross (2023). Their study examined how the performance of multimodal misinformation classifiers degrades when evaluated on temporally out-of-domain data. 14 A.1 Classifier Architecture 
+
+The replication classifier follows the multimodal architecture of Stepanova & Ross (2023). Text titles are encoded with a RoBERTa-family model, all-distilroberta-v1 (Sanh et al., 2019), which outputs 768-dimensional embeddings. Images are encoded with the 2048-dimensional penultimate layer of a ResNet-50 backbone (He et al., 2016). These two embeddings are concatenated into a 2816-dimensional vector and passed to a one-hidden-layer feed-forward network with ReLU activation and a 6-way output layer. We freeze the modality encoders and precompute the embeddings so that only the MLP head is trained. 
+
+A.2 Training Protocol and Hyperparameter Search 
+
+The training protocol used for the replication of Stepanova & Ross (2023) differs from the regime used to train the per-window models in the main experiments. In particular, our replication follows the original study in using early stopping. The replication selects the hidden width n and learning rate by a grid search over n = 2 i for i ∈ { 5, . . . , 14 } and lr ∈ { 10 −2, . . . , 10 −5}, with the setting maximizing validation accuracy retained. Models are trained for a maximum of 20 epochs with early stopping if validation accuracy does not improve over 4 consecutive epochs. Models are trained under two regimes whose comparison isolates the performance gap attributable to tem-poral distribution shift. In the “original” (OG) split, train, validation, and test sets are drawn at random from the full time range. In the “temporal” split, the train, validation, and test sets cover non-overlapping, chronologically ordered time periods, so that the model is evaluated on a chronologically later test split. Following the data preprocessing conventions of Stepanova & Ross (2023), only posts that contain an image are retained, so every sample used is multimodal. 
+
+A.3 Results 
+
+Table 2: Experiment replication results on the held-out test set. 
+
+Condition Micro F1 Macro F1 
+
+OG 2-way 0.886 0.881 Temporal 2-way 0.853 0.820 OG 6-way 0.849 0.737 Temporal 6-way 0.830 0.673 The results of the replication are reported in Table 2. Moving from the original to the temporal split produced consistent degradation across both granularities. For 2-way classification, micro F1 fell by 3.3 percentage points (0.886 to 0.853) and macro F1 by 6.1 points (0.881 to 0.820). For the 6-way task, micro F1 dropped by 1.9 points (0.849 to 0.830) and macro F1 by 6.4 points (0.737 to 0.673). The larger decrease in macro F1 than micro F1 in both cases reflects disproportionate degradation on the minority classes, consistent with the findings of Stepanova & Ross (2023). Our replicated values exceed those reported in the original study (2-way temporal: micro 0.81, macro 0.78; 6-way temporal: micro 0.72, macro 0.52), although the direction and magnitude of the temporal performance gap are consistent with the original findings. 
+
+# B Methodological Formalism 
+
+This appendix collects the formal definitions deferred from Section 3. Each subsection expands a step summarized in the main text. 
+
+B.1 Permutation Alignment 
+
+This expands the alignment procedure of Section 3.4. Hidden units in a feed-forward network are symmetric under permutation (Entezari et al., 2022), so weight vectors must be aligned across seeds before they can be compared. Each hidden unit k is assigned an alignment signature formed by concatenating its incoming 15 weights (row of Wh) with its outgoing weights (column of Wo): 
+
+gk = [(Wh)k, : ∥ (Wo)⊤
+
+> :,k
+
+] ∈ Rd+c, (3) where d is the input feature dimension and c the number of classes, so that the signature has length d + c
+
+(2822 for Fakeddit, 773 for Yelp). For a given window, all seeds’ models are aligned to a synthetic centroid by repeated linear-assignment (Hungarian) matching (Ainsworth et al., 2023). A centroid {¯gk} is computed from the current set of all seeds’ weight matrices, and each seed s is then re-matched to that centroid by minimizing the total squared signature distance, 
+
+π(s) = arg min 
+
+> π∈S n
+> n
+
+∑
+
+> k=1
+
+∥∥g(s) 
+
+> k
+
+− ¯gπ(k)
+
+∥∥22, (4) with Sn the set of permutations on the n hidden units ( n = 1024 for Fakeddit, n = 256 for Yelp). The centroid is recomputed and the procedure iterates to convergence. Each recovered permutation π(s) is applied consistently across Wh, bh, and Wo; the output biases bo, which carry no hidden-unit indexing, are left unchanged. 
+
+B.2 The Distance-Conditioned Gap Statistic 
+
+This expands the test statistic of Section 3.6. Let Wd and Ad denote the within- and across-state pairs at lag d = |i − j|, with counts nwd = |W d| and nad = |A d|, and let ¯F wd , ¯F ad be the corresponding mean macro F1 scores. The per-lag gap is ∆d = ¯F wd − ¯F ad , and the test statistic is the harmonic-count-weighted average 
+
+T =
+
+∑ 
+
+> d
+
+wd ∆d
+
+∑ 
+
+> d
+
+wd
+
+, wd = 2 nwd nad
+
+nwd + nad
+
+. (5) The harmonic mean of the two counts is near zero whenever either count is small, hence a lag is down-weighted unless it is well populated in both groups, in which case ∆d is reliably estimated. 
+
+B.3 Pooled Gap Statistics for the Equal-Size Control 
+
+This expands the aggregation and difference statistics of Section 3.7. For the difference test, the pooled gap of a segmentation is 
+
+Π = ¯F w − ¯F a, (6) the mean within-group F1 minus the mean across-group F1 over all off-diagonal pairs, and the test statistic is the difference of pooled gaps between the two segmentations, 
+
+D = Π HMM − Πequal . (7) The null distribution for D is formed by freely permuting the per-window HMM state labels while preserving the number of windows per state, recomputing ΠHMM , and holding Πequal fixed. Note that this per-window permutation is different from the lag-stratified shuffle that was used to analyze the segmentations individually. A lag-stratified shuffle would only scramble the within/across labels of a fixed segmentation, reproducing the single-segmentation analysis. Permuting the per-window labels instead generates a null distribution of alternative segmentations, assessing whether the HMM boundaries produce a larger within-group advantage over the equal-size baseline than random regroupings of the same windows. 
+
+B.4 Pairwise Class Distribution Stability 
+
+This expands the within- versus across-state stability analysis of Section 3.9. For each unordered pair of windows (i, j ), we compute the Jensen-Shannon divergence between their class distributions, JSD( ci ∥ cj ),and assign the pair to the within-group if windows i and j share an HMM state and to the across-group otherwise. Let 
+
+W = {(i, j ) : i < j, s i = sj }, A = {(i, j ) : i < j, s i̸ = sj } (8) 16 denote the within- and across-state pairs respectively, where si is the HMM-decoded state of window i. The group mean divergences are 
+
+¯Dw = 1
+
+|W| 
+
+∑
+
+> (i,j )∈W
+
+JSD( ci ∥ cj ), ¯Da = 1
+
+|A| 
+
+∑
+
+> (i,j )∈A
+
+JSD( ci ∥ cj ). (9) We compare the two groups on the mean and variance of pairwise JSD and assess the difference in mean pairwise JSD, ∆JSD = ¯Da − ¯Dw, with a label-shuffle permutation test. The within/across labels are permuted across all (W
+
+> 2
+
+) window pairs over 10 , 000 iterations, holding the JSD values fixed, and the observed ∆JSD is compared to the resulting null distribution to form a one-sided empirical p-value. 
+
+B.5 Partial Permutation Tests for the Class Distribution Control 
+
+This expands the significance tests for the combined model of Section 3.10. The within-state coefficient βstate 
+
+is assessed with a Freedman-Lane partial permutation test (Freedman & Lane, 1983). We fit the reduced model ˜Fij ∼ JSD( ci ∥ cj )+ d, permute its residuals within each lag stratum to preserve the temporal-proximity control, rebuild the response from the reduced-model fit plus the permuted residuals, refit the full model, and collect βstate over permutations to form the null distribution. As a complementary test, we residualize transfer F1 on divergence and lag, taking rij = ˜Fij − ˆ˜Fij where 
+
+ˆ˜Fij is the fitted value of ˜Fij ∼ JSD( ci ∥ cj ) + d, and apply the harmonic-weighted, lag-stratified distance-conditioned gap statistic of Section 3.6 to the residuals rij , comparing the within-group and across-group residual means. 
+
+# C Permutation Null Distributions 
+
+All permutation null distributions referenced in the main text are collected here. In each figure, the grey histogram shows the distribution of the test statistic under the null hypothesis across 10,000 permutation iterations, and the red vertical line marks the observed statistic. 
+
+C.1 Within- vs. Across-State Generalization        
+
+> (a) Fakeddit: observed statistic +0 .0270 (p < 0.0001 ). (b) Yelp: observed statistic +0 .0056 (p= 0 .0001 ).
+
+Figure 7: Null distribution of the distance-conditioned gap statistic under 10,000 label-shuffle permutations. The observed statistic (red line) falls well outside the null distribution for both datasets. 17 C.2 Comparison Against Equal-Size Segmentation         
+
+> (a) Fakeddit: observed difference D= +0 .0051 ,p <
+> 0.0001 .
+> (b) Yelp: observed difference D= +0 .0016 ,p < 0.0001 .
+
+Figure 8: Null distribution of the HMM −equal-size gap difference under 10,000 per-window label permuta-tions. The observed difference falls outside the null distribution for both datasets. 
+
+C.3 Correlation Analyses 
+
+Figure 9: Fakeddit: permutation null distributions (10,000 iterations) for the two Spearman correlations between state-pair dissimilarity and mean cross-window macro F1. Left : class distribution (JSD). Right :weight-space centroid distance. Observed correlations ( ρ = −0.878 and ρ = −0.617 ) both fall well outside their respective nulls ( p < 0.0001 ). 18 Figure 10: Yelp: permutation null distributions (10,000 iterations) for the two Spearman correlations between state-pair dissimilarity and mean cross-window macro F1. Left : class distribution (JSD). Right : weight-space centroid distance. Observed correlations ( ρ = −0.407 and ρ = −0.285 ) both fall well outside their respective nulls ( p < 0.0001 ). 
+
+C.4 Within-State Class Distribution Stability           
+
+> (a) Fakeddit: observed difference δ=+0 .0935 ,p<
+> 0.0001 .
+> (b) Yelp: observed difference δ= +0 .0312 ,p < 0.0001 .
+
+Figure 11: Null distribution of the difference in mean pairwise JSD across- versus within-states under 10 , 000 
+
+label-shuffle permutations. The observed difference falls outside the null in both datasets. 19 C.5 State Membership Beyond Class Distribution        
+
+> (a) Fakeddit: observed coefficient +0 .0375 ,p < 0.0001 .(b) Yelp: observed coefficient −0.0003 ,p= 0 .0234 .
+
+Figure 12: Freedman-Lane null distribution for the same-state coefficient βstate in the combined model, under 
+
+10 , 000 lag-stratified residual permutations. The observed coefficient falls in the upper tail of the null on both datasets.        
+
+> (a) Fakeddit: observed gap +0 .0272 ,p < 0.0001 .(b) Yelp: observed gap +0 .0054 ,p= 0 .0001 .
+
+Figure 13: Null distribution of the lag-stratified, harmonic-weighted distance-conditioned gap statistic ap-plied to the divergence-and-lag-residualized transfer F1, under 10 , 000 permutations. The observed gap falls in the upper tail of the null on both datasets. 
+
+# D Supplementary Figures 
+
+This appendix collects figures that support choices and results stated numerically in the main text. Each is referenced from the relevant section. 20 D.1 Weight Space Before Permutation Alignment  
+
+> (a) Fakeddit. (b) Yelp.
+
+Figure 14: PCA projections of the flattened MLP head weights (PC1 vs. PC2) before permutation alignment, for (a) Fakeddit and (b) Yelp. Clustering is organized by seed rather than by temporal window, reflecting the permutation symmetry of the hidden layer. 
+
+D.2 Weight-Space Component Retention  
+
+> (a) Fakeddit. (b) Yelp.
+
+Figure 15: Per-component explained variance ratio for the first 50 principal components of the aligned weight matrix, for (a) Fakeddit and (b) Yelp. The vertical dashed line marks the retention cutoff at PC3, selected at the elbow of the scree curve; the three components to its left are retained. 21 D.3 HMM Model Selection 
+
+Figure 16: HMM model selection for the Fakeddit dataset ( K = 2 –12 ). Left : Bayesian information crite-rion, minimized at K = 11 (BIC ≈ − 425 .67 ). Right : leave-one-seed-out cross-validation log-likelihood per observation (mean ± 1 std across folds). K = 11 was selected. 
+
+Figure 17: HMM model selection for the Yelp dataset ( K = 2 –18 ). Left : Bayesian information criterion, minimized at K = 16 (BIC ≈ − 527 .11 ). Right : leave-one-seed-out cross-validation log-likelihood per obser-vation (mean ± 1 std across folds). K = 16 was selected. 22 D.4 Equal-Size Control 
+
+Figure 18: Fakeddit: within- and across-group macro F1 as a function of temporal lag for the HMM ( K = 11 ,left) and equal-size (right) segmentations. The HMM within-group advantage is visible across lags, whereas the advantage is weaker for the equal-size segmentation. 
+
+Figure 19: Yelp: within- and across-group macro F1 as a function of temporal lag for the HMM ( K = 16 ,left) and equal-size (right) segmentations. The HMM within-group advantage is visible across lags, whereas the advantage is weaker for the equal-size segmentation. 23 D.5 Class Distribution and State Boundaries for Yelp 
+
+Figure 20: The 5-way class distribution across the 56 temporal windows in the Yelp dataset (May 2008– February 2022), with the HMM-decoded state boundaries ( K = 16 , 15 visited) overlaid. The star-rating distribution is markedly more stable across windows than the Fakeddit class distribution (Figure 6), consis-tent with the attenuated class-divergence effects reported in Sections 4.5 and 4.6. 24
