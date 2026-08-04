@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-006.webp",
+      "caption": "Figure 1: SnapLGR Training pipeline. Stage 1: Tokenization (§2.1). We train an RQ-VAE on multimodal Qwen3-VL embeddings with PPR-based co-engagement supervision to produce the video-to-SID map. Stage 2: CPT (§2.2.1). We ground newly added SID embeddings in the LLM’s vocabulary using video text descriptions. Stage 3: SFT (§2.2.2). We fine-tune the full LLM to predict future engaged SIDs from users’ SID interaction histories.",
+      "page": 3,
+      "index": 6,
+      "width": 966,
+      "height": 398
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-010.webp",
+      "caption": "Figure 3: SID collision concentration. SIDs are ordered by decreasing bucket size. Lower curves indicate a more balanced assignment; dashed guides mark the largest 1% of SIDs and 50% video coverage.",
+      "page": 5,
+      "index": 10,
+      "width": 435,
+      "height": 306
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-001.webp",
+      "caption": "Table 3: Offline SID retrieval performance comparison over Qwen3-VL SIDs. SnapLGR yields a greater than 2× improvement across all top-𝑘 metrics relative to the T5 baseline.",
+      "page": 6,
+      "index": 1,
+      "width": 501,
+      "height": 332
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-003.webp",
+      "caption": "Table 9: Full performance comparison between the legacy T5 encoder-decoder baseline and the reference SnapLGR.",
+      "page": 11,
+      "index": 3,
+      "width": 364,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-004.webp",
+      "caption": "Table 10: Complete SID-level metric grid for the SID-type comparison of Table 5 (models trained with MM, MM+, and Qwen3-VL SIDs).",
+      "page": 11,
+      "index": 4,
+      "width": 488,
+      "height": 521
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-002.webp",
+      "caption": "Table 11: SFT (SID-only, from random initialization) retrieval eval across downscaled Qwen3 sizes. Sizes are backbone (non-embedding) params.",
+      "page": 11,
+      "index": 2,
+      "width": 444,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-005.webp",
+      "caption": "Table 12: Effect of training data scale. Below gives metrics across checkpoints of an SFT-only (no CPT) training run. Columns give training progress as a fraction of one epoch.",
+      "page": 11,
+      "index": 5,
+      "width": 490,
+      "height": 371
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-009.webp",
+      "caption": "Figure 6: Example SID-to-video mappings. Each row contains images from 10 randomly-selected videos with the same SID. Videos with the same SID are highly semanticallysimilar.",
+      "page": 12,
+      "index": 9,
+      "width": 486,
+      "height": 321
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-007.webp",
+      "caption": "Table 13: Completemetrics for the initialization comparison of Table 4 with both runs SFT-only, no CPT. Deltas are pretrained relative to random-init.",
+      "page": 12,
+      "index": 7,
+      "width": 410,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2607.28895v1/fig-008.webp",
+      "caption": "Table 14: Effect of beam width on SID-level metrics for baseline SFT-only checkpoint.",
+      "page": 12,
+      "index": 8,
+      "width": 426,
+      "height": 340
+    }
+  ]
+}

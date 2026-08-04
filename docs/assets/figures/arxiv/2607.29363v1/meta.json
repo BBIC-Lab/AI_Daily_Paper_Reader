@@ -1,0 +1,102 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-002.webp",
+      "caption": "Table 1 Area scale Karea(N, θ) = 1/µN (θ) for spherical caps on SN−1. This quantity is a lower bound on the number of θ-caps required to cover the sphere, and also indicates the exponential area scale associated with angular regions. Values are approximate.",
+      "page": 7,
+      "index": 2,
+      "width": 482,
+      "height": 251
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-010.webp",
+      "caption": "Figure 1 Illustration of the Locodec tokenizer architecture, consisting of MDCT coefficient extraction, a fully local encoder, a token-grid refiner, a coefficient-grid predictor, and an inverse-MDCT stage for waveform reconstruction.",
+      "page": 17,
+      "index": 10,
+      "width": 954,
+      "height": 389
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-004.webp",
+      "caption": "Figure 2 Illustration of the MP-ELD framework. Multiple local encoders map the same input token into distinct hidden spaces, whose functional roles are shaped by different AR information paths through training dynamics. A flow-matching decoder predicts pathwise next-token velocity fields conditioned on the corresponding path embeddings, which are combined by multi-path residual CFG during inference.",
+      "page": 22,
+      "index": 4,
+      "width": 960,
+      "height": 221
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-011.webp",
+      "caption": "Table 2 Full-dimensional token reconstruction quality of different Locodec configurations on Seed-TTS-eval. Reconstruction is performed using the native 768-dimensional high-dimensional token.",
+      "page": 27,
+      "index": 11,
+      "width": 964,
+      "height": 255
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-007.webp",
+      "caption": "Table 3 Reconstruction from restricted representations for PDD-enabled Locodec models. “Core” denotes reconstruction from the lifted low-dimensional token. “Prefix-K” denotes reconstruction after keeping only the first K dimensions of the native high-dimensional token and zeroing out the remaining dimensions.",
+      "page": 28,
+      "index": 7,
+      "width": 998,
+      "height": 434
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-008.webp",
+      "caption": "Figure 3 Coordinate-wise energy profiles of Locodec tokens. When combined with rotation noise injection, PDD automatically induces a stable prefix-to-postfix energy hierarchy, while models without postfix dropout keep an almost uniform energy distribution across dimensions.",
+      "page": 28,
+      "index": 8,
+      "width": 963,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-003.webp",
+      "caption": "Figure 4 Spectral visualization of Locodec reconstructions under angular token corruption and prefix restriction. Columns correspond to different rotation angles and rows correspond to different retained prefix dimensions.",
+      "page": 29,
+      "index": 3,
+      "width": 986,
+      "height": 548
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-001.webp",
+      "caption": "Figure 5 Training curves of the MP-ELD cosine direction loss for different Locodec configurations. The notation d/PDD denotes the core dimension and whether PDD is used. All MP-ELD models use the same architecture and training setup. Faster convergence and lower final loss indicate that the corresponding token representation is easier to predict under the fixed generator configuration.",
+      "page": 30,
+      "index": 1,
+      "width": 958,
+      "height": 548
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-012.webp",
+      "caption": "Figure 6 WER/SIM trade-off under different CFG configurations on the internal CFG-selection set. Each point corresponds to one setting from the sweep over (λmax",
+      "page": 31,
+      "index": 12,
+      "width": 962,
+      "height": 571
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-006.webp",
+      "caption": "Figure 7 Spectrograms of the same utterance generated under different CFG configurations. Each title reports (λmax",
+      "page": 33,
+      "index": 6,
+      "width": 976,
+      "height": 625
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-005.webp",
+      "caption": "Figure 8 Long-form segment-level SIM under representative CFG configurations. Each generated utterance is split into five non-overlapping 10-second segments. Each subplot fixes (λmax",
+      "page": 34,
+      "index": 5,
+      "width": 971,
+      "height": 484
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29363v1/fig-009.webp",
+      "caption": "Table 5 Generation results on Seed-TTS-eval. For MP-ELD, we report the result under its best CFG configuration from Table 4. All benchmark systems are AR models, and we select the version without post-training when applicable. The “Tok./LM rate” column denotes the native token frame rate and the effective frame rate seen by the LM, respectively.",
+      "page": 36,
+      "index": 9,
+      "width": 802,
+      "height": 388
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-001.webp",
+      "caption": "Figure 1: (a) Membrane potential distribution across the spiking blocks of the pre-trained SPM backbone on ModelNet40 with T = 4. (b) Comparison with representative SNN-based point cloud methods in terms of energy consumption (Energy), trainable parameters (#TP), and overall accuracy on ModelNet40 (MN40) and three ScanObjectNN variants: OBJ_BG (BG), OBJ_ONLY (ONLY), and PB_T50_RS (RS). A larger radius indicates better performance, with Energy and #TP inversely normalized.",
+      "page": 1,
+      "index": 1,
+      "width": 500,
+      "height": 287
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-006.webp",
+      "caption": "Figure 2: Overview of SpikePEFT. Raw point clouds are sampled by Farthest Point Sampling (FPS), grouped into local patches via K-nearest neighbors (KNN), and processed by a frozen hierarchy of spiking blocks for downstream tasks. During training, the backbone is frozen and only newly added parameters are fine-tuned. (a) The Spiking Patch Embedding module first maps lowdimensional point coordinates into a high-dimensional spiking feature space, which serves as the input to the first spiking block. (b) IDT performs bounded residual tuning of membrane decay and firing thresholds while keeping synaptic transformations frozen. (c) SSDA selects near-threshold silent states and processes only these activated positions through a lightweight spikedriven down-projection and up-projection to correct their pre-spike membrane potentials. The membrane trajectories illustrate the effects of IDT and SSDA on membrane potentials and subsequent spike firing.",
+      "page": 3,
+      "index": 6,
+      "width": 1052,
+      "height": 484
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-008.webp",
+      "caption": "Table 1: Classification results on ModelNet40 (Wu et al. 2015) and three variants of ScanObjectNN (Uy et al. 2019), including the number of trainable parameters, time steps, energy consumption and overall accuracy. #TP denotes the number of trainable parameters, T denotes the number of time steps. †, ‡, and ⋄ denote supervised learning, self-supervised learning, and PEFT methods, respectively. ∗ denotes results reproduced from the public source code. Among the SNN-based methods, the best two results are highlighted in bold and underlined, respectively.",
+      "page": 5,
+      "index": 8,
+      "width": 1044,
+      "height": 448
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-009.webp",
+      "caption": "Table 2: Part segmentation results on the ShapeNetPart (Yi et al. 2016) dataset. The mIoU for all classes (Cls.) and for all instances (Inst.) are reported.",
+      "page": 5,
+      "index": 9,
+      "width": 502,
+      "height": 271
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-007.webp",
+      "caption": "Table 3: Semantic segmentation results on S3DIS (Armeni et al. 2016), evaluated on Area 5. The mean class accuracy (mAcc) and mean IoU (mIoU) are reported.",
+      "page": 5,
+      "index": 7,
+      "width": 492,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-002.webp",
+      "caption": "Table 4: Ablation study on the settings of SpikePEFT. We report the number of trainable parameters and overall accuracy on ModelNet40 and three ScanObjectNN variants.",
+      "page": 6,
+      "index": 2,
+      "width": 492,
+      "height": 294
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-003.webp",
+      "caption": "Table 5: Ablation study of time step. We report overall accuracy and Energy on ModelNet40 and three ScanObjectNN variants. ANN refers to PointMamba, SNN refers to SPM.",
+      "page": 6,
+      "index": 3,
+      "width": 494,
+      "height": 309
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-004.webp",
+      "caption": "Figure 5: Normalized membrane potential distributions in the shallow, middle, and deep blocks of SPM under full fine-tuning and SpikePEFT on ModelNet40 with T = 4. For clearer visualization, the firing threshold is normalized to 1, and the shaded region denotes the sub-threshold interval considered by SSDA.",
+      "page": 7,
+      "index": 4,
+      "width": 1050,
+      "height": 504
+    },
+    {
+      "url": "assets/figures/arxiv/2607.29048v1/fig-005.webp",
+      "caption": "Table 6: Analysis of neuronal activity and computational efficiency on ModelNet40 with T = 4. AC and MAC denote the numbers of accumulation and multiply–accumulate operations, respectively, while FR denotes the average firing rate.",
+      "page": 7,
+      "index": 5,
+      "width": 508,
+      "height": 359
+    }
+  ]
+}

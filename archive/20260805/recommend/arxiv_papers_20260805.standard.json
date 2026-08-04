@@ -1,0 +1,439 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-04T21:05:54.586643+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 60,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 91,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 25,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 20,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 26
+  },
+  "deep_dive": [
+    {
+      "id": "2608.01481v1",
+      "source": "arxiv",
+      "title": "Interpretable MEG Decoding of Perceived Speech: Cortical Sources and the Stimulus Features That Drive Retrieval",
+      "abstract": "Short segments of perceived speech can be retrieved from non-invasive magnetoencephalographic (MEG) recordings by deep networks trained with a CLIP-style objective against wav2vec 2.0 audio embeddings. Yet their weights do not map onto electrophysiological quantities, and it remains unclear which speech properties drive retrieval.   We build on a high-performing MEG-to-audio retrieval architecture but redesign both its front end and decoder. Its spatial attention operates on a flattened sensor layout; we replace it with spherical harmonics defined on the three-dimensional MEG helmet geometry. We reduce the subject-specific representation from 270 to 25 branches, add a temporal filter to each branch to match it to a neuronal source in space and time, and make the convolutional decoder shallower. Ocular and cardiac components are removed before training to reduce the risk of stimulus-locked shortcuts.   On MEG-MASC, the model reaches 39.75 +/- 0.34% Top-1 accuracy among 1005 candidates across six trained solutions, with about 20 times fewer decoder parameters. Its weights map to source space, recovering generators consistent with the speech-perception network, while left-lateralized branches carry higher-frequency rhythmic components not evident on the right. Paired MEG occlusion shows that 15 of 19 stimulus features contribute, with the largest effects for silence, sound intensity, vowels, and acoustic onsets. Random word lists behave oppositely: substituting narrative MEG into them improves retrieval, indicating that activity without narrative structure carries less recoverable information than activity during coherent speech. The wav2vec target can be reduced to about twelve learned feature dimensions without loss of accuracy, whereas strong temporal compression causes a clear loss.   Together, source mapping and input interventions reveal what drives retrieval.",
+      "authors": [
+        "Ilia Semenkov",
+        "Daria Kleeva",
+        "Ivan Dakhtin",
+        "Zarina Maksudova",
+        "Alex Ossadtchi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.SD",
+        "q-bio.NC"
+      ],
+      "published": "2026-08-02T20:28:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.01481v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "decodes MEG neural recordings into speech embeddings to retrieve perceived speech",
+      "llm_evidence_cn": "将脑磁图神经记录解码为语音嵌入以检索感知语音",
+      "llm_evidence": "将脑磁图神经记录解码为语音嵌入以检索感知语音",
+      "canonical_evidence": "将脑磁图神经记录解码为语音嵌入以检索感知语音",
+      "llm_tldr_en": "Improves interpretable MEG decoding of perceived speech by redesigning front end and decoder to identify driving stimulus features.",
+      "llm_tldr_cn": "通过重新设计前端和解码器，改进感知语音的可解释脑磁图解码，识别驱动刺激特征。",
+      "llm_tldr": "通过重新设计前端和解码器，改进感知语音的可解释脑磁图解码，识别驱动刺激特征。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01773v1",
+      "source": "arxiv",
+      "title": "NeuroWorld: A Latent Brain World Model for Stimulus-Conditioned Human Brain Dynamics",
+      "abstract": "Forecasting human brain activity during naturalistic experience requires modeling how endogenous neural states evolve causally under continuous sensory drive. Existing brain encoding models instead frame this as stimulus-to-response regression without strict temporal constraints, allowing future stimuli to leak into current predictions. We introduce NeuroWorld, to our knowledge the first brain world model, which casts naturalistic brain functional dynamics prediction as stimulus-conditioned evolution in a learned latent brain-state space, separating endogenous states (measured via fMRI) from exogenous multimodal stimuli across two stages. Latent Dynamics Learning (LDL) jointly learns a transition-sufficient representation and causal dynamics through next-latent prediction, without reconstructing the observed fMRI signal. Latent Rollout Decoding (LRD) freezes LDL, autoregressively rolls latent states forward from an observed fMRI prefix, and decodes them into subject-specific whole-brain responses. Across three naturalistic movie-fMRI benchmarks spanning 30 participants, including our newly collected Singapore Multimodal Imaging & Naturalistic Dataset (SG-MIND; 20 participants, 8,519 paired stimulus-response clips, 140.7 person-hours of viewing), NeuroWorld achieves state-of-the-art multi-step rollout performance under strictly causal stimulus access, with greater robustness to long-horizon autoregressive drift, supporting reliable simulation of extended brain-state trajectories. Extensive interpretability analyses characterize the functional organization of the learned dynamics, establishing latent-space world modeling as a principled framework for causal forecasting of human brain activity.",
+      "authors": [
+        "Zijian Dong",
+        "Jianxiong Zhou",
+        "Kwun Kei Ng",
+        "Jan Paolo Macapinlac Balagtas",
+        "Zhizhou Li",
+        "Zijiao Chen",
+        "Juan Helen Zhou"
+      ],
+      "primary_category": "q-bio.NC",
+      "categories": [
+        "q-bio.NC"
+      ],
+      "published": "2026-08-03T06:46:56+00:00",
+      "link": "https://arxiv.org/pdf/2608.01773v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Learns a latent brain-state representation and dynamics from fMRI data for stimulus-conditioned forecasting",
+      "llm_evidence_cn": "从fMRI数据学习潜在脑状态表示和动态，用于刺激条件下的预测。",
+      "llm_evidence": "从fMRI数据学习潜在脑状态表示和动态，用于刺激条件下的预测。",
+      "canonical_evidence": "从fMRI数据学习潜在脑状态表示和动态，用于刺激条件下的预测。",
+      "llm_tldr_en": "NeuroWorld introduces a brain world model that learns latent brain dynamics for stimulus-conditioned forecasting of human brain activity.",
+      "llm_tldr_cn": "NeuroWorld提出脑世界模型，学习潜在脑动态以进行刺激条件下的人脑活动预测。",
+      "llm_tldr": "NeuroWorld提出脑世界模型，学习潜在脑动态以进行刺激条件下的人脑活动预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.02070v1",
+      "source": "arxiv",
+      "title": "STEAM:ASpatio-TEmporal Alignment Mixture-of-Experts Model with Hierarchical Pre-training for EEG Decoding",
+      "abstract": "Brain-computer interfaces (BCIs) have been widely used in motor rehabilitation, disease diagnosis, and other neural engineering scenarios. However, conventional neural signal decoding algorithms often suffer from limited generalizability and high adaptation costs, motivating recent interest in BCI foundation models. Existing approaches still struggle to jointly achieve general transferability, accurate decoding, and efficient downstream adaptation. We present STEAM, a hierarchical transfer framework that reconciles general-purpose representation learning with paradigm-specific specialization in EEG foundation models. The framework is instantiated as a dual-branch spatio-temporal encoder in which a shared soft mixture-of-experts (SSMoE) module aligns the spatial and temporal branches, allowing complementary representations to exchange information through a compact set of soft slots. Across seven downstream datasets and fourteen evaluation settings, STEAM attains the best average rank among the compared methods at a competitive inference cost measured in FLOPs. Building upon the Stage-I general initialization, the hierarchical pre-training strategy further specializes the model to a target paradigm without retraining from scratch, yielding consistent gains in paradigm-specific decoding accuracy.",
+      "authors": [
+        "Zhu Chen",
+        "Dingkun Liu",
+        "Yuheng Chen",
+        "Dongrui Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-03T11:15:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.02070v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "hierarchical transfer framework for EEG decoding in brain-computer interfaces",
+      "llm_evidence_cn": "面向脑机接口EEG解码的分层迁移框架",
+      "llm_evidence": "面向脑机接口EEG解码的分层迁移框架",
+      "canonical_evidence": "面向脑机接口EEG解码的分层迁移框架",
+      "llm_tldr_en": "STEAM jointly achieves general transferability, accurate decoding, and efficient downstream adaptation for EEG foundation models.",
+      "llm_tldr_cn": "STEAM在EEG基础模型中兼顾通用迁移、准确解码与高效下游适配。",
+      "llm_tldr": "STEAM在EEG基础模型中兼顾通用迁移、准确解码与高效下游适配。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.28967v1",
+      "source": "arxiv",
+      "title": "Visual Distribution Anchoring for Efficient Prompt Tuning",
+      "abstract": "Prompt tuning adapts vision--language models with few trainable parameters, but existing approaches trade off efficiency and adaptation: static textual prompts can overfit source classes, image-conditioned prompts add per-instance computation, and multimodal tuning modifies the visual branch. We propose VDA (Visual Distribution Anchoring), a training-free target adaptation framework that augments a frozen semantic classifier with class-level visual prototypes estimated offline from an unlabeled target pool. We first ask whether prototypes can be synthesized from class names. A text-to-centroid mapper reconstructs held-out source prototypes but fails under dataset shift because class names specify semantic identity, not target-domain appearance. An oracle analysis confirms that true target prototypes are highly discriminative. VDA therefore uses frozen semantic and domain-template classifiers to partition unlabeled target images into class-correlated groups. Confidence-ranked image features form normalized prototypes, fused with the semantic classifier using one global weight. Adaptation requires no target labels, target-side optimization, uniform class-prior assumption, iterative refinement, or test-query access, and yields a fixed, cacheable classifier. Controlled experiments show that class-specific partitioning drives gains and that visually local pseudo-label errors can remain useful despite being class-incorrect. Across ten ImageNet-to-target transfers, the same frozen design improves zero-shot CLIP, TCP, and MaPLe by 3.22, 3.39, and 3.35 points, respectively, improving nine of ten targets in every setting. Its visual correction further improves leakage-free PromptKD by 2.79 points, complementing zero-shot, source-prompted, multimodal-prompted, and target-distilled classifiers.",
+      "authors": [
+        "Pouya Parsa",
+        "Raoof Zare Moayedi",
+        "Seongjin Choi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-31T02:43:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.28967v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Training-free target adaptation for frozen vision-language models using unlabeled target prototypes, directly addressing limited labeled data",
+      "llm_evidence_cn": "利用未标注目标原型对冻结的视觉-语言模型进行免训练目标适应，直接解决有限标注数据问题",
+      "llm_evidence": "利用未标注目标原型对冻结的视觉-语言模型进行免训练目标适应，直接解决有限标注数据问题",
+      "canonical_evidence": "利用未标注目标原型对冻结的视觉-语言模型进行免训练目标适应，直接解决有限标注数据问题",
+      "llm_tldr_en": "VDA adapts frozen vision-language classifiers to new domains via offline visual prototypes without any training.",
+      "llm_tldr_cn": "VDA通过离线视觉原型在无需训练的情况下将冻结的视觉-语言分类器适应到新领域。",
+      "llm_tldr": "VDA通过离线视觉原型在无需训练的情况下将冻结的视觉-语言分类器适应到新领域。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.29202v1",
+      "source": "arxiv",
+      "title": "Domain-Division based Progressive Learning for Source-Free Domain Adaptation",
+      "abstract": "With growing privacy and portability concerns, source-free domain adaptation requires only a source pre-trained model and an unlabeled target domain, allowing for effective adaptation to the target data. Most existing self-training methods focus on selecting and exploiting samples with reliable predictions, often neglecting others. Inspired by the finding that deep models learn clean samples faster than noisy ones, we propose a domain-division based progressive learning method named DPL. Specifically, our approach consists of two alternating stages, each beginning with the division of the target domain into easy-to-adapt and hard-to-adapt subdomains based on adaptation difficulty, followed by neighborhood-based pseudo label assignment. In stage one, we enhance classification accuracy through uncertainty-aware self-training and alignment of corresponding classes between subdomains. Stage two then applies tailored learning strategies to each subdomain, starting with consistency learning on the easy-to-adapt samples and progressing to utilizing local structural information for the more challenging ones, thereby mining the intrinsic properties of the target data. Extensive experiments on several widely used benchmarks validate the effectiveness of our approach, demonstrating superior performance compared to state-of-the-art methods. Our code is available at https://github.com/iamjingli/DPL.",
+      "authors": [
+        "Pan Liu",
+        "Jing Li",
+        "Meng Zhao",
+        "Wanli Xue",
+        "Qinghua Hu",
+        "Shengyong Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T09:21:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.29202v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "source-free domain adaptation via progressive self-training with pseudo labels on unlabeled target data",
+      "llm_evidence_cn": "无源域自适应，通过对未标记目标数据的伪标签渐进自训练实现",
+      "llm_evidence": "无源域自适应，通过对未标记目标数据的伪标签渐进自训练实现",
+      "canonical_evidence": "无源域自适应，通过对未标记目标数据的伪标签渐进自训练实现",
+      "llm_tldr_en": "Proposes a domain-division progressive learning method for source-free domain adaptation using neighborhood pseudo labels.",
+      "llm_tldr_cn": "提出一种基于域划分的渐进学习方法，利用邻域伪标签进行无源域自适应。",
+      "llm_tldr": "提出一种基于域划分的渐进学习方法，利用邻域伪标签进行无源域自适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.29048v1",
+      "source": "arxiv",
+      "title": "Parameter-Efficient Fine-Tuning for Spiking Point Cloud Models",
+      "abstract": "Spiking Neural Networks (SNNs) offer energy-efficient solutions for point cloud analysis on resource-constrained devices through event-driven computation. However, existing pre-trained spiking point cloud models rely on full fine-tuning for downstream task adaptation, incurring substantial parameter and storage overhead. Furthermore, binary spike propagation suppresses task-relevant sub-threshold information. To address these issues, we propose SpikePEFT, the first parameter-efficient fine-tuning framework for spiking point cloud models. Specifically, Intrinsic Dynamics Tuning (IDT) adaptively modulates membrane decay and firing thresholds, enabling efficient neuron-intrinsic adaptation while keeping the pre-trained synaptic transformations frozen. Moreover, Silent-State Disambiguation Adaptation (SSDA) recovers task-relevant information from informative silent states, thereby providing richer evidence for downstream adaptation. Extensive experiments across multiple benchmarks demonstrate the effectiveness and efficiency of SpikePEFT. In particular, our method achieves 92.4% accuracy on ModelNet40 and 85.6\\% on the most challenging classification split ScanObjectNN(PB\\_T50\\_RS) while updating only about 5% of the trainable parameters and preserving the energy efficiency of SNNs. This work provides a promising step toward parameter-efficient adaptation of neuromorphic vision models.",
+      "authors": [
+        "Zihao Guo",
+        "Jihua Zhu",
+        "Yiding Sun",
+        "Lin Chen",
+        "Danwei Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T06:00:14+00:00",
+      "link": "https://arxiv.org/pdf/2607.29048v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Parameter-efficient fine-tuning framework for adapting pretrained spiking models to downstream tasks",
+      "llm_evidence_cn": "面向预训练脉冲模型下游任务适配的参数高效微调框架",
+      "llm_evidence": "面向预训练脉冲模型下游任务适配的参数高效微调框架",
+      "canonical_evidence": "面向预训练脉冲模型下游任务适配的参数高效微调框架",
+      "llm_tldr_en": "SpikePEFT introduces parameter-efficient fine-tuning for spiking point cloud models, enabling efficient downstream adaptation.",
+      "llm_tldr_cn": "SpikePEFT为脉冲点云模型提出参数高效微调，实现高效下游适配。",
+      "llm_tldr": "SpikePEFT为脉冲点云模型提出参数高效微调，实现高效下游适配。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.28895v1",
+      "source": "arxiv",
+      "title": "LLM-Based Generative Retrieval for Snapchat Content Recommendation",
+      "abstract": "Pretrained large language models (LLMs) are promising retrieval engines because they combine rich semantic priors, strong sequence modeling capabilities, and favorable scaling behavior. However, turning a pretrained LLM into a generative retriever in production deployment raises several challenges: the model must learn an internal item vocabulary that was absent from pretraining, and generate valid item identifiers under strict latency and cost constraints. We address these challenges through the design and launch of SnapLGR, an LLM-based generative retrieval system for short-video recommendation at Snapchat. The system is built around three main designs. First, we construct semantic identifiers (SIDs) from multimodal item embeddings and enhance them with Personalized PageRank (PPR)-based co-engagement contrastive learning, resulting in improved codebook utilization, reduced collisions, and infused collaborative signal. Second, we use continued pretraining (CPT) to ground the introduced SID tokens before supervised fine-tuning (SFT) on user interaction sequences. Third, we make SnapLGR serving practical through TensorRT-LLM CUDA-backed beam search and a decentralized worker-loop architecture. In a live A/B test, the launched system increased View Time by 0.37%, Time Spent by 0.09%, Deep Sessions by 0.18%, and Deep Sessions Unique User by 0.11% relative to the existing TIGER-style generative retrieval baseline. We then decompose this offline gap under a fixed tokenizer and quantify the gains due to model architecture, scaling, and pretraining. Overall, our deployment shows that successful production SnapLGR requires joint design across representation learning, vocabulary grounding, and efficient training and serving.",
+      "authors": [
+        "Liam Collins",
+        "Jiwen Ren",
+        "Donald Loveland",
+        "Bhuvesh Kumar",
+        "Clark Mingxuan Ju",
+        "Xuan Guo",
+        "Mo Li",
+        "Alvin Hou",
+        "Yi Cui",
+        "Peng Yang",
+        "Jian Wang",
+        "Saud Afzal Shafi",
+        "Nga Than",
+        "Ruiming Lu",
+        "Wenfeng Zhuo",
+        "Dongheng Li",
+        "Lili Zhang",
+        "Mingtao Zhang",
+        "Jinchao Ye",
+        "Vincent Xue",
+        "Chunhui Zhu",
+        "Neil Shah"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-07-30T23:27:14+00:00",
+      "link": "https://arxiv.org/pdf/2607.28895v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generates valid semantic identifier sequences from pretrained LLM outputs for generative retrieval",
+      "llm_evidence_cn": "从预训练LLM输出生成有效语义标识符序列用于生成式检索",
+      "llm_evidence": "从预训练LLM输出生成有效语义标识符序列用于生成式检索",
+      "canonical_evidence": "从预训练LLM输出生成有效语义标识符序列用于生成式检索",
+      "llm_tldr_en": "Presents SnapLGR, an LLM-based generative retrieval system that constructs semantic identifiers and generates item sequences for recommendation.",
+      "llm_tldr_cn": "提出SnapLGR，基于LLM的生成式检索系统，构建语义标识符并生成物品序列。",
+      "llm_tldr": "提出SnapLGR，基于LLM的生成式检索系统，构建语义标识符并生成物品序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.29222v1",
+      "source": "arxiv",
+      "title": "Is It Time for the Renaissance of Salient Object Detection in the Era of MLLMs?",
+      "abstract": "The zero-shot capabilities of multimodal large language models (MLLMs) are pushing salient object detection (SOD) beyond task-specific supervision. To disentangle MLLMs beyond conventional mask-based evaluation, we decompose SOD into localization and segmentation, and re-engineer datasets with phrases, boxes, and attributes, establishing a diagnostic benchmark for MLLM saliency perception (SaliLLM). SaliLLM uncovers a striking capability mismatch: MLLMs outperform state-of-the-art (SOTA) methods in localization, yet remain substantially weaker in segmentation. Further analyses attribute this gap primarily to mismatches between MLLMs and annotations over foreground cardinality, granularity, and extent. Motivated by this diagnosis, we recast zero-shot SOD as protocol-aligned Foreground Organization and introduce the first training-free framework that leverages Gestalt-inspired Collaborative attention for Unified SOD (FOCUS). FOCUS couples top-down Bayesian-surprise calibration of protocol-conditioned foreground granularity with bottom-up propagation of MLLMs evidence over entity-centric perceptual manifolds induced by self-supervised features, yielding coherent object extents as prompts for a general segmenter. Across 13 RGB, RGB-D, and RGB-T SOD benchmarks, FOCUS generally surpasses SOTA methods without training, reducing mean absolute error by 11\\%, 34\\%, and 48\\% compared with fully, weakly, and self-supervised methods, respectively. Our findings signal the renaissance of SOD: from task-specific supervision to zero-shot foreground organization. Code is available in the supplementary material.",
+      "authors": [
+        "Wenzhuo Zhao",
+        "Xiuzhi Li",
+        "Zhongkuan Mao",
+        "Ronghao Xian",
+        "Yao Jiang",
+        "Zhao Gao",
+        "Keren Fu",
+        "Qijun Zhao",
+        "Jian Cheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T09:54:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.29222v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Leverages zero-shot MLLM knowledge for salient object detection downstream task",
+      "llm_evidence_cn": "利用零样本MLLM知识完成显著目标检测下游任务",
+      "llm_evidence": "利用零样本MLLM知识完成显著目标检测下游任务",
+      "canonical_evidence": "利用零样本MLLM知识完成显著目标检测下游任务",
+      "llm_tldr_en": "Decomposes salient object detection into localization and segmentation to benchmark and improve MLLM zero-shot saliency perception.",
+      "llm_tldr_cn": "将显著目标检测分解为定位与分割，以基准测试并改进MLLM零样本显著性感知。",
+      "llm_tldr": "将显著目标检测分解为定位与分割，以基准测试并改进MLLM零样本显著性感知。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.29363v1",
+      "source": "arxiv",
+      "title": "Stable Autoregressive Speech Generation with Low-Frame-Rate High-Dimensional Continuous Tokens",
+      "abstract": "Balancing sequence length, representational capacity, and long-horizon stability is a central problem in autoregressive (AR) speech and audio generation. Representations with higher frame rates or greater capacity can preserve more signal detail, but they also make streaming generation more vulnerable to distribution drift and AR error accumulation. Conversely, shorter and more compressed representations simplify AR modeling, but their limited bandwidth may discard important components and constrain the upper bound of reconstruction fidelity and generation quality. We ask whether a low-frame-rate, high-dimensional, high-bandwidth continuous representation can be co-designed with a streaming generation framework to support robust high-fidelity reconstruction, strong single-token predictability, and superior long-horizon stability. We decompose this goal into two coupled problems: what geometric and statistical properties a high-dimensional representation space should have, and how an AR continuous-token generator should be structured to resist error accumulation. Accordingly, we propose Locodec, a locally encoded codec that shapes its representation space to improve the interpolatability of a lower-dimensional core manifold and the identifiability of the native high-dimensional coordinates, thereby improving the predictability of high-dimensional high-bandwidth tokens. We also propose MP-ELD, a single-token AR flow-matching framework that uses multi-path information routing and residual classifier-free guidance to mitigate error accumulation. Experiments with 8-Hz, 768-dimensional tokens show that our design preserves reconstruction quality, improves single-token predictability, achieves competitive WER, and maintains stable long-form synthesis, without using external SSL/ASR models, pretrained text language models, or post-training stages.",
+      "authors": [
+        "Yi Luo",
+        "Rongzhi Gu",
+        "Jixun Yao"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.AI",
+        "cs.LG",
+        "cs.SD"
+      ],
+      "published": "2026-07-31T12:51:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.29363v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "autoregressive generation of speech from continuous tokens",
+      "llm_evidence_cn": "从连续token自回归生成语音",
+      "llm_evidence": "从连续token自回归生成语音",
+      "canonical_evidence": "从连续token自回归生成语音",
+      "llm_tldr_en": "Stable autoregressive speech generation using low-frame-rate high-dimensional continuous tokens improves sequence generation.",
+      "llm_tldr_cn": "使用低帧率高维连续token实现稳定的自回归语音生成。",
+      "llm_tldr": "使用低帧率高维连续token实现稳定的自回归语音生成。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.29365v1",
+      "source": "arxiv",
+      "title": "Cross-Resolution Semantic Learning for Graph Domain Adaptation",
+      "abstract": "Graph Domain Adaptation (GDA) transfers predictive knowledge from labeled source graphs to unlabeled target graphs under distribution shift. Existing methods align representations or regularize graph structures, but do not explicitly model how class-discriminative knowledge learned at different source neighborhood ranges should be routed across target ranges. We call the neighborhood range encoded by a graph representation its propagation resolution and define semantic resolution shift as a cross-domain change in the propagation resolutions at which class-discriminative evidence is strongest. Such shifts can make fixed same-resolution pairing suboptimal and increase the risk of negative transfer. To address this issue, we propose Cross-Resolution Semantic Learning (CReSL), a GDA method that learns soft sourceto-target resolution correspondence from cross-domain class structure. First, CReSL constructs a multi-resolution representation bank using a shared Graph Neural Network and learnable resolution embeddings, with a resolution-indexed expert for each source resolution. Second, CReSL introduces Cross-Resolution Prototype Transport, which constructs class-resolution prototypes from source labels and soft target posteriors and converts cross-domain prototype discrepancies into expert-specific routing over target resolutions. Third, CReSL introduces Cross-Resolution Target Grafting, which constructs posterior-weighted target-to-source prototype displacements and enforces correspondence-weighted prediction consistency for instance-level adaptation under class uncertainty. Extensive experiments on graph benchmarks under diverse domain shifts show that CReSL outperforms strong representative baselines across most settings.",
+      "authors": [
+        "Yingxu Wang",
+        "Haoze Huang",
+        "Zhongkai Zheng",
+        "Shangsong Liang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-31T12:52:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.29365v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "graph domain adaptation transfers predictive knowledge across distribution shift to unlabeled target graphs",
+      "llm_evidence_cn": "图域自适应在分布偏移下将知识迁移到无标签目标图",
+      "llm_evidence": "图域自适应在分布偏移下将知识迁移到无标签目标图",
+      "canonical_evidence": "图域自适应在分布偏移下将知识迁移到无标签目标图",
+      "llm_tldr_en": "Improves graph domain adaptation by modeling semantic resolution shifts across source and target neighborhood ranges.",
+      "llm_tldr_cn": "通过建模源域和目标域邻域范围的语义分辨率偏移来改进图域自适应。",
+      "llm_tldr": "通过建模源域和目标域邻域范围的语义分辨率偏移来改进图域自适应。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
