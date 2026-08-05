@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.00311v1/fig-001.webp",
+      "caption": "Figure 1: Overview of SEDEM. The model stores long-context information in a compact memory bank, selects query-relevant blocks, selectively decompresses them into decoder-compatible hidden states, and injects the reconstructed states into the decoder for answer generation.",
+      "page": 2,
+      "index": 1,
+      "width": 935,
+      "height": 440
+    },
+    {
+      "url": "assets/figures/arxiv/2608.00311v1/fig-003.webp",
+      "caption": "Table 2: Main long-context QA results. We report token-level F1 and ROUGE-L; higher is better. Category labels denote full-context references (Ref.), hard prompt compression (Hard), soft memory compression (Soft), and KVcache or activation compression (KV/Act.). The cross-model row uses a 1B encoder and a 3B decoder. The learned SEDEM selector is trained with block-level evidence labels; these labels are not used at inference. — denotes a corrected evaluation for which the paired corrected ROUGE-L value was not available; we therefore report only the verified F1 value. Green shading identifies our method and does not denote the best result in every column.",
+      "page": 7,
+      "index": 3,
+      "width": 962,
+      "height": 523
+    },
+    {
+      "url": "assets/figures/arxiv/2608.00311v1/fig-002.webp",
+      "caption": "Table 3: Efficiency compared with ICAE. TTFT is in milliseconds and throughput is in tokens per second. Speedup shown in parentheses.",
+      "page": 7,
+      "index": 2,
+      "width": 763,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2608.00311v1/fig-004.webp",
+      "caption": "Table 7: Dataset sources, splits, and evidence-label mapping. Evidence labels are used only to supervise the selection loss during training and are not available at inference.",
+      "page": 13,
+      "index": 4,
+      "width": 900,
+      "height": 221
+    },
+    {
+      "url": "assets/figures/arxiv/2608.00311v1/fig-005.webp",
+      "caption": "Table 9: Method-specific inference-time parameter overhead, excluding LoRA adapters. The frozen Llama-3.2 backbones contain 1.236B and 3.213B parameters for the 1B and 3B settings, respectively. For HMT, instantiated MemoryMap parameters unused at inference are excluded. For Ours, the reported modules include the compressor, decompressor, and selector.",
+      "page": 16,
+      "index": 5,
+      "width": 425,
+      "height": 340
+    }
+  ]
+}

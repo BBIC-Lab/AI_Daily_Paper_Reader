@@ -1,0 +1,423 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-05T21:40:09.516078+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 68,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 88,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 22,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 17,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 23
+  },
+  "deep_dive": [
+    {
+      "id": "2608.00586v1",
+      "source": "arxiv",
+      "title": "Representation Transfer of Foundation Models for Ultra-Widefield Retinal Imaging",
+      "abstract": "Despite the widespread adoption of foundation models as feature extractors for medical imaging, relatively little is understood about how different pretraining strategies influence the transferability of learned representations to weakly supervised ophthalmic imaging tasks. We investigate this question in ultra-widefield (UWF) retinal imaging by evaluating foundation model representations within a patch-based multiple instance learning (MIL) framework for disease classification on UWF images. We compare Vision Transformer encoders pretrained with supervised, Masked Autoencoder (MAE), and self-distillation objectives, while keeping the downstream aggregation architecture unchanged. Within a controlled comparison of ViT-B encoders pretrained on ImageNet-1k, the choice of pretraining objective substantially influenced frozen representation transfer, with supervised and self-distillation-based models outperforming MAE. A contemporary DINOv3 model pretrained at a larger scale achieved the strongest overall performance, with a quadratic weighted kappa of 0.863 for five-class diabetic retinopathy grading, comparable with DINOv1. Attention analysis further revealed distinct patch-aggregation behaviours associated with the different pretrained representations, while partial fine-tuning substantially reduced the performance gap for MAE. These findings suggest that pretraining strategy influences both representation transferability and the subsequent aggregation of patch-level evidence within MIL, resulting in differences in downstream classification performance.",
+      "authors": [
+        "Mingya Alexa Gong",
+        "Da Ma",
+        "Lovre Antonio Budimir",
+        "Ivana Matovinovic",
+        "Sven Loncaric",
+        "Myeong Jin Ju",
+        "Yukun Zhou",
+        "Siegfried K. Wagner",
+        "Pearse A. Keane",
+        "Marinko V. Sarunic"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-01T10:53:26+00:00",
+      "link": "https://arxiv.org/pdf/2608.00586v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Evaluates transferability of pretrained foundation model representations for downstream ophthalmic classification",
+      "llm_evidence_cn": "评估预训练基础模型表征在下游眼科分类任务上的可迁移性",
+      "llm_evidence": "评估预训练基础模型表征在下游眼科分类任务上的可迁移性",
+      "canonical_evidence": "评估预训练基础模型表征在下游眼科分类任务上的可迁移性",
+      "llm_tldr_en": "Compares ViT encoders pretrained with different objectives for transferable representations in retinal imaging.",
+      "llm_tldr_cn": "比较不同预训练目标的ViT编码器在视网膜影像中的可迁移表征。",
+      "llm_tldr": "比较不同预训练目标的ViT编码器在视网膜影像中的可迁移表征。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.00693v1",
+      "source": "arxiv",
+      "title": "AttnLink: Turning Attention into Schema Links for Text-to-SQL",
+      "abstract": "Schema linking is a critical component of Text-to-SQL systems, but existing approaches often trade off contextual modeling capacity, score-based controllability, and inference efficiency. We introduce AttnLink, an attention-based framework that converts LLMs' internal attention into continuous relevance scores for schema items. AttnLink extracts the attention from the generation-start position to candidate schema spans, enabling all candidates to be ranked in a single prefill pass without autoregressive decoding. We develop two variants: AttnLink-U, which directly probes pretrained attention without parameter updates, and AttnLink-S, which aligns the attention distribution with gold schema items through direct supervision. To improve coverage of multiple relevant schema items, AttnLink-S combines a set-mass objective with an adaptive probability-floor regularizer. The resulting scores support post-hoc precision-recall control through temperature scaling and cumulative-mass selection. Experiments on Spider, BIRD, and Spider2-SQLite show that AttnLink-S achieves mAP scores of 99.22%, 95.95%, and 83.29%, respectively, with millisecond-scale schema-linking latency. It also yields the best or tied-best execution accuracy for downstream SQL generation in seven of nine generator-dataset settings.",
+      "authors": [
+        "Jinwang Song",
+        "Tao Liu",
+        "Haowen Zheng",
+        "Xiangheng Li",
+        "Yifan Li",
+        "Hongying Zan"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-08-01T14:44:25+00:00",
+      "link": "https://arxiv.org/pdf/2608.00693v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "converts LLM attention into relevance scores for schema items",
+      "llm_evidence_cn": "将LLM注意力转换为模式项的相关性分数",
+      "llm_evidence": "将LLM注意力转换为模式项的相关性分数",
+      "canonical_evidence": "将LLM注意力转换为模式项的相关性分数",
+      "llm_tldr_en": "Attention-based framework that turns LLM attention into schema-link relevance scores for Text-to-SQL.",
+      "llm_tldr_cn": "基于注意力的框架，将LLM注意力转化为Text-to-SQL的模式链接分数。",
+      "llm_tldr": "基于注意力的框架，将LLM注意力转化为Text-to-SQL的模式链接分数。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.00835v1",
+      "source": "arxiv",
+      "title": "Deep Learning CNN and Recurrence Analysis for Alpha Gamma EEG Biomarkers in Fragile X Syndrome",
+      "abstract": "Fragile X Syndrome (FXS) is a neurodevelopmental disorder caused by reduced expression of fragile X mental retardation protein (FMRP), leading to disrupted synaptic plasticity, cortical hyperexcitability, and impaired network synchronization. Electroencephalography (EEG) provides a noninvasive window into these mechanisms and consistently reveals abnormalities in alpha (8 to 12 Hz) and gamma (30 to 100 Hz) oscillations that relate to inhibitory control, sensory processing, and cognition. This paper proposes a multi representation deep learning framework for automated characterization of FXS EEG phenotypes by integrating convolutional neural networks (CNNs), long short-term memory (LSTM) networks, and recurrence plot (RP) analysis. Band limited EEG signals are decomposed into alpha and gamma components and transformed into complementary representations, including temporal feature sequences, time frequency maps, and RP images encoding the nonlinear recurrence structure. CNN modules learn discriminative spatial-spectral and dynamical textures from image based representations, while LSTM modules model temporal modulation of oscillatory activity; a hybrid CNN LSTM architecture jointly captures spatial, temporal, and nonlinear dependencies. Subject-independent evaluation demonstrates that the hybrid model outperforms single modality baselines, with gamma features providing strong discriminative power and alpha gamma integration yielding the best overall performance. These findings support deep learning with nonlinear representations as a scalable approach for EEG biomarker development in FXS, with potential utility for diagnosis, stratification, and treatment monitoring in translational settings.",
+      "authors": [
+        "Zag ElSayed",
+        "Payton Siekierski",
+        "Jack Yanchen Liu",
+        "Ernest Pedapati"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CV",
+        "physics.data-an",
+        "q-bio.NC"
+      ],
+      "published": "2026-08-01T19:27:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.00835v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "LSTM and recurrence analysis for EEG time-series sequence modeling",
+      "llm_evidence_cn": "利用LSTM和递归分析对EEG时间序列进行建模",
+      "llm_evidence": "利用LSTM和递归分析对EEG时间序列进行建模",
+      "canonical_evidence": "利用LSTM和递归分析对EEG时间序列进行建模",
+      "llm_tldr_en": "A multi-representation CNN-LSTM-recurrence framework classifies FXS EEG phenotypes from time-series signals.",
+      "llm_tldr_cn": "多表征CNN-LSTM-递归图框架对FXS脑电时间序列进行表型分类。",
+      "llm_tldr": "多表征CNN-LSTM-递归图框架对FXS脑电时间序列进行表型分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.00984v1",
+      "source": "arxiv",
+      "title": "Unsupervised Multidomain Approaches to Named Entity Recognition with Small Datasets",
+      "abstract": "This paper explores the challenges and the methodologies associated with learning quality representations in scenarios with unlabelled small or limited datasets for downstream information extraction task (Multidomain Named Entity Recognition (NER). The study adopts a Transfer Learning on small datasets. Traditional NER systems often rely on large, labelled data, which is impractical for many domains. This study, therefore, applies an unsupervised pre-training approach to precondition and identify entities without annotated datasets, then applies transfer learning models to different simulated limited datasets for a named entity recognition task. Entity Recognition (NER) is essential in natural language processing (NLP), it identifies and classifies related entities within the text. This study addresses the complexities of domain variability, data sparsity, and overfitting and investigates innovative approaches such as data augmentation, few-shot learning, and domain adversarial training. Integrating these techniques promises to enhance the performance and generalizability of NER systems across diverse and resource-constrained domains, paving the way for more efficient and adaptable NLP applications.",
+      "authors": [
+        "Israel Fianyi",
+        "James Montgomery",
+        "Soonja Yeom"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.NE"
+      ],
+      "published": "2026-08-02T04:33:21+00:00",
+      "link": "https://arxiv.org/pdf/2608.00984v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "unsupervised pretraining and transfer learning on small labeled datasets",
+      "llm_evidence_cn": "在小规模标注数据集上进行无监督预训练和迁移学习",
+      "llm_evidence": "在小规模标注数据集上进行无监督预训练和迁移学习",
+      "canonical_evidence": "在小规模标注数据集上进行无监督预训练和迁移学习",
+      "llm_tldr_en": "Explores unsupervised pretraining and transfer learning to perform NER with very small labeled datasets across domains.",
+      "llm_tldr_cn": "探索无监督预训练和迁移学习，以便在跨领域极小标注数据集上完成NER。",
+      "llm_tldr": "探索无监督预训练和迁移学习，以便在跨领域极小标注数据集上完成NER。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.00985v1",
+      "source": "arxiv",
+      "title": "Beyond Gene Reconstruction: Learning Cell Representations through Complementary Transcriptomic Views",
+      "abstract": "The rapid growth of single-cell transcriptomic data has enabled the development of foundation models pretrained primarily by reconstructing masked expression values. This objective encourages these models to learn gene dependencies but does not directly optimize whole-cell representations, which are essential for many downstream tasks. To bridge this gap, we propose a contrastive pretraining framework that learns cell representations through complementary transcriptomic views. Since standard contrastive learning is not readily applicable to single-cell pretraining, we introduce specific adaptations along three dimensions --- co-expression-guided gene partitioning, expression-aware contrast-set construction, and competence-gated contrastive onset. Specifically, we first construct two complementary views of each cell by partitioning its genes according to their co-expression structure. Then, to prevent the model from using gene-set identity as a shortcut, we construct hard negatives by permuting expression values while keeping gene identities unchanged. Finally, we introduce a competence-aware controller to determine how the contrastive objective is applied. Experiments on cell-type annotation and gene regulatory network inference demonstrate competitive transfer under the evaluated protocols. In the six-network GRN evaluation, our method records the highest mean AUROC and AUPRC point estimates among the compared variants, while the highest-scoring variant differs across individual networks. These results establish complementary-view contrastive learning as an effective direction for single-cell pretraining beyond gene reconstruction.",
+      "authors": [
+        "Jiaqi Xiong",
+        "Yuntao hu",
+        "Yu Zheng",
+        "Yifei Shi",
+        "Xinyue Guo",
+        "Jiaxin Qi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "q-bio.GN"
+      ],
+      "published": "2026-08-02T04:35:45+00:00",
+      "link": "https://arxiv.org/pdf/2608.00985v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Contrastive pretraining learns cell representations from transcriptomic data",
+      "llm_evidence_cn": "对比预训练从转录组数据学习细胞表示",
+      "llm_evidence": "对比预训练从转录组数据学习细胞表示",
+      "canonical_evidence": "对比预训练从转录组数据学习细胞表示",
+      "llm_tldr_en": "Proposes a contrastive pretraining framework to learn whole-cell representations beyond gene reconstruction",
+      "llm_tldr_cn": "提出对比预训练框架，学习超越基因重建的全细胞表示",
+      "llm_tldr": "提出对比预训练框架，学习超越基因重建的全细胞表示",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.00311v1",
+      "source": "arxiv",
+      "title": "SeDeM: Selective Decompression of Hidden-State Memories for Long-Context Question Answering",
+      "abstract": "Long-context inference with large language models (LLMs) is costly: self-attention during prefill scales quadratically with sequence length, and the key-value (KV) cache grows with the number of processed tokens. Larger context windows also do not ensure reliable evidence use. Context compression reduces this cost, but many soft-compression methods use LLMs as compressors and rely on compact memory tokens both to preserve information and to condition the decoder. We propose SeDeM, a selective decompression framework that decouples compact memory storage from decoder conditioning. An LLM extracts hidden states from a chosen intermediate Transformer layer, a lightweight compressor stores them as memory blocks, a query-conditioned selector selects relevant blocks, and a decompressor expands only the selected blocks into hidden states compatible with an intermediate decoder layer. Thus, the decoder avoids both full-context processing and direct generation from highly compressed memory slots. On four long-context QA benchmarks, SeDeM achieves higher QA scores than the evaluated compression baselines in both 1B and 3B same-backbone settings, and with the 3B backbone exceeds full-context fine-tuning on three datasets. The learned selector uses block-level evidence supervision during training. SeDeM also reduces online time-to-first-token and improves autoregressive decoding throughput relative to ICAE.",
+      "authors": [
+        "Maryam Haghifam",
+        "Jason Cong",
+        "Yizhou Sun"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-07-31T21:44:03+00:00",
+      "link": "https://arxiv.org/pdf/2608.00311v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "leveraging pretrained LLM hidden states for efficient long-context QA",
+      "llm_evidence_cn": "利用预训练LLM隐藏状态实现高效长上下文问答",
+      "llm_evidence": "利用预训练LLM隐藏状态实现高效长上下文问答",
+      "canonical_evidence": "利用预训练LLM隐藏状态实现高效长上下文问答",
+      "llm_tldr_en": "Selective decompression of hidden-state memory blocks for long-context question answering.",
+      "llm_tldr_cn": "选择性解压隐藏状态记忆块用于长上下文问答。",
+      "llm_tldr": "选择性解压隐藏状态记忆块用于长上下文问答。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.00452v1",
+      "source": "arxiv",
+      "title": "CeQe: Grounding Lexical Retrieval in Semantic Evidence",
+      "abstract": "Lexical retrieval (BM25) captures exact keyword matches and weights terms by corpus-wide significance, but it is blind to the semantic vocabulary gap: when a relevant document phrases an answer differently from the query, BM25 never retrieves it, and no amount of downstream reranking or fusion can recover a document that was never in the candidate set. We present Cross-Encoder Query Expansion (CE-QE), which reads the per-token relevance attributions of a cross-encoder applied to top semantic search results, selects the terms the cross-encoder treats as decisive, and appends them to the BM25 query. Unlike classical pseudo-relevance feedback, which reuses BM25's own (possibly wrong) top results, CE-QE seeds expansion from the semantic retriever's results, avoiding self-reinforcing query drift. Unlike recent generative query expansion (HyDE, Query2doc), which prompts a large language model to hallucinate text from its parametric knowledge, every CE-QE expansion term is copied verbatim from a retrieved passage, so it cannot introduce vocabulary the corpus does not contain, and its only added cost is attribution extraction on a cross-encoder a hybrid pipeline already runs for reranking. On seven BEIR datasets, CE-QE improves lexical recall substantially where query and answer vocabulary diverge (e.g., NQ Recall@100 from 0.32 to 0.47), and its score-fusion variant (SESF) beats cross-encoder score fusion by 2.5% on Recall@100 and beats SPLADEv2 and ColBERTv2 by 5.3% and 4.6% on nDCG@10, while leaving the underlying BM25 index completely unmodified.",
+      "authors": [
+        "Adam Kahirov",
+        "Umesh Deshpande",
+        "Swaminathan Sundararaman"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-08-01T05:27:20+00:00",
+      "link": "https://arxiv.org/pdf/2608.00452v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "per-token relevance attributions estimate importance weights of input terms",
+      "llm_evidence_cn": "逐token相关性归因估计输入词项的重要性权重",
+      "llm_evidence": "逐token相关性归因估计输入词项的重要性权重",
+      "canonical_evidence": "逐token相关性归因估计输入词项的重要性权重",
+      "llm_tldr_en": "Cross-encoder token attributions select decisive terms to expand lexical queries with semantic evidence.",
+      "llm_tldr_cn": "交叉编码器的token归因选择关键术语，为词汇检索补充语义证据。",
+      "llm_tldr": "交叉编码器的token归因选择关键术语，为词汇检索补充语义证据。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.00394v1",
+      "source": "arxiv",
+      "title": "Channel-Agnostic Semantic Compression for Bandwidth-Limited Visual Communication",
+      "abstract": "Bandwidth-limited visual communication systems require efficient transmission of high-dimensional data under dynamic wireless conditions. Existing approaches either rely on joint source-channel coding, which tightly couples representation learning with channel models and lacks flexibility across varying environments, or adopt generative reconstruction techniques that may introduce semantically inconsistent outputs. In this paper, we propose RQ-NAC, a channel-agnostic semantic compression framework for visual communication. The proposed method leverages residual quantization to produce scalable discrete semantic representations, enabling fine-grained and predictable control over the rate-distortion tradeoff. To further enhance compression efficiency, we integrate an n-gram-driven arithmetic coding module that exploits contextual dependencies among latent indices for lossless entropy coding. Extensive experiments demonstrate that RQ-NAC achieves over 600$\\times$ compression relative to uncompressed visual data while preserving high perceptual quality. The results show that our approach enables efficient, flexible, and reliable semantic transmission under bandwidth-constrained conditions.",
+      "authors": [
+        "Xuanhao Luo",
+        "Ruichen Gao",
+        "Zhizhen Li",
+        "Mingzhe Chen",
+        "Yuchen Liu"
+      ],
+      "primary_category": "cs.IT",
+      "categories": [
+        "cs.IT",
+        "cs.NI"
+      ],
+      "published": "2026-08-01T02:18:43+00:00",
+      "link": "https://arxiv.org/pdf/2608.00394v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Residual quantization produces compact discrete semantic representations from raw visual data",
+      "llm_evidence_cn": "通过残差量化从原始视觉数据中学习紧凑的离散语义表征",
+      "llm_evidence": "通过残差量化从原始视觉数据中学习紧凑的离散语义表征",
+      "canonical_evidence": "通过残差量化从原始视觉数据中学习紧凑的离散语义表征",
+      "llm_tldr_en": "RQ-NAC: channel-agnostic semantic compression via residual quantization with controllable rate-distortion tradeoff.",
+      "llm_tldr_cn": "提出RQ-NAC，利用残差量化实现信道无关的语义压缩，控制率失真权衡。",
+      "llm_tldr": "提出RQ-NAC，利用残差量化实现信道无关的语义压缩，控制率失真权衡。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.00442v1",
+      "source": "arxiv",
+      "title": "Beyond Static Anchors: Bounded Prototype Conditioning for Language-Free Medical Anomaly Detection",
+      "abstract": "Medical anomaly detection identifies abnormal images and localizes lesions under scarce supervision while generalizing across organs and modalities. Existing CLIP-based methods reduce annotation requirements through vision--language alignment, but their normal and abnormal references, whether text prompts or learned visual tokens, remain fixed across test images. Such static references may not transfer reliably to unseen targets in a cross-domain medical imaging scenario. To address this, we propose ReCAP, a language-free framework that replaces static anchors with input-conditioned visual prototypes. ReCAP re-centers separated normal and abnormal prototypes for each image through a bounded gated modulation, enabling query-adaptive anomaly scoring while constraining context-induced prototype drift. For the few-shot setting, we introduce a non-parametric normal-reference memory to preserve instance-level target-domain variation and complement the conditional prototype branch. Across six medical benchmarks, ReCAP achieves the best image-level AUROC on all zero-shot and 23 of 24 few-shot settings, and the best zero-shot pixel-level AUROC on all three segmentation datasets. Particularly, it reduces inference latency by over 70% compared to the fastest baseline, without text prompts or test-time gradient updates.",
+      "authors": [
+        "Yibo Wan",
+        "Jinyu Cai",
+        "Seekiong-Ng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-01T04:46:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.00442v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Cross-domain medical anomaly detection under scarce supervision; input-conditioned prototypes for adapting to new domains",
+      "llm_evidence_cn": "低监督下的跨域医学异常检测；输入条件化原型用于新域适配",
+      "llm_evidence": "低监督下的跨域医学异常检测；输入条件化原型用于新域适配",
+      "canonical_evidence": "低监督下的跨域医学异常检测；输入条件化原型用于新域适配",
+      "llm_tldr_en": "ReCAP replaces static CLIP references with input-conditioned prototypes to improve cross-domain medical anomaly detection with scarce supervision.",
+      "llm_tldr_cn": "ReCAP用输入条件化原型替代静态CLIP参考，提升低监督跨域医学异常检测。",
+      "llm_tldr": "ReCAP用输入条件化原型替代静态CLIP参考，提升低监督跨域医学异常检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.00444v1",
+      "source": "arxiv",
+      "title": "Reconstruction-Shift Discrimination via Mask-Guided Latent Diffusion for Medical Anomaly Detection",
+      "abstract": "Unsupervised medical anomaly detection learns normal anatomical patterns from healthy training images and identifies deviations at test time. Reconstruction-based and diffusion-based methods commonly use the difference between an input image and its reconstruction as anomaly evidence. However, this residual can be ambiguous. Expressive models may preserve pathological structures, while benign anatomical variation, imaging noise, and acquisition differences may also produce large reconstruction errors. We propose discriminative mask-guided diffusion (DMD), a medical anomaly detection framework that complements residual-based localization with reconstruction-shift discrimination. DMD first learns a compact quantized latent representation of normal images. Localized masks then perturb selected latent regions, and a latent diffusion model reconstructs the perturbed representations. The resulting reconstructions are paired with their original normal images to define a self-supervised classification task. At inference, the classifier provides a learned image-level anomaly score, while the residual between the input and its diffusion-based reconstruction yields a pixel-level anomaly map. Experiments on five datasets spanning brain MRI, breast ultrasound, and chest radiography show that DMD achieves the best overall performance among the state-of-the-art baseline methods.",
+      "authors": [
+        "Yibo Wan",
+        "Jinyu Cai",
+        "Yunhe Zhang",
+        "Yi Bin",
+        "See-kiong Ng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-01T04:56:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.00444v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns compact quantized latent representation from images",
+      "llm_evidence_cn": "从图像学习紧凑量化的潜在表示",
+      "llm_evidence": "从图像学习紧凑量化的潜在表示",
+      "canonical_evidence": "从图像学习紧凑量化的潜在表示",
+      "llm_tldr_en": "Mask-guided latent diffusion learns compact normal representations for medical anomaly detection.",
+      "llm_tldr_cn": "掩码引导的潜在扩散学习医学异常检测的紧凑正常表示。",
+      "llm_tldr": "掩码引导的潜在扩散学习医学异常检测的紧凑正常表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

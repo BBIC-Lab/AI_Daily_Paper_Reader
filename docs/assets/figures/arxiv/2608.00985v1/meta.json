@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.00985v1/fig-001.webp",
+      "caption": "Figure 1: Motivation for CoCoS. (a) Masked expressionvalue prediction directly supervises reconstruction through gene-level features but does not impose a metric objective on the whole-cell representation. (b) Naively transferring contrastive learning raises two transcriptome-specific challenges: unconstrained expression perturbations may alter the cellular state used to define a positive pair, while negatives with different retained genes may be separated by gene identity rather than gene–value correspondence.",
+      "page": 1,
+      "index": 1,
+      "width": 468,
+      "height": 601
+    },
+    {
+      "url": "assets/figures/arxiv/2608.00985v1/fig-003.webp",
+      "caption": "Figure 2: Overview of CoCoS-GPC. Co-expression-guided partitioning and expression-aware sampling form two disjoint views, which are masked and reconstructed by a shared Transformer. The paired same-cell views define the positive, while same-view and cross-view in-batch examples together with fixed-identity value derangements form the contrast set. A label-free sentinel tracks smoothed gene-program concordance, reconstruction error, and representation repertoire; once readiness persists, the controller activates the contrastive objective and ramps its weight, which remains zero beforehand.",
+      "page": 4,
+      "index": 3,
+      "width": 1024,
+      "height": 404
+    },
+    {
+      "url": "assets/figures/arxiv/2608.00985v1/fig-002.webp",
+      "caption": "Figure 3: Fixed-identity shortcut diagnostic. From a shared checkpoint at step 84,360, matched K = 0 and K = 4 branches run for 1,000 updates and differ only in fixedidentity negatives. (A) Paired-positive confidence against four value derangements. (B) Confidence gap between ordinary cross-view and fixed-identity pools. Both panels use fixed held-out five-way pools at τ = 0.07; this short-fork diagnostic does not estimate downstream performance or training-seed uncertainty.",
+      "page": 7,
+      "index": 2,
+      "width": 422,
+      "height": 538
+    }
+  ]
+}
