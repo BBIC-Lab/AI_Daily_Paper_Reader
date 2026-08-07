@@ -1,0 +1,438 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-07T20:57:25.338473+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 48,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 72,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 22,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 17,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 23
+  },
+  "deep_dive": [
+    {
+      "id": "2608.04389v1",
+      "source": "arxiv",
+      "title": "NeuroPB: Scaling Neural Decoding with Pretrained Behavioral Representations",
+      "abstract": "Decoding continuous motor trajectories from neural activity is essential for developing practical brain-computer interfaces (BCIs). However, current neural decoders are constrained by the limited scale and heterogeneity of neural recordings. In contrast, behavioral data can be collected more readily and at substantially larger scale from humans, animals, simulations, and robotic systems. Here, we introduce NeuroPB, a framework that scales neural decoding by transferring knowledge from pretrained behavioral representations. NeuroPB first pretrains a motor encoder on large-scale motor behavior data and then aligns neural activity with the resulting behavioral representation space using a limited set of paired neural-behavioral recordings. A neural encoder and lightweight motor decoder are subsequently optimized to reconstruct continuous movement from the aligned neural representations. Across multiple macaque motor datasets, behavioral pretraining improves trajectory decoding, including an 11% $R^2$ increase on center-out and 8% on random-target compared with training the motor encoder from scratch. Notably, pretraining on robotic trajectories achieves performance comparable to pretraining on macaque trajectories, demonstrating that transferable kinematic structure is shared across biological and artificial models. Moreover, decoding performance improves as the scale and diversity of robotic pretraining data increase, when the amount of neural data is fixed. Pretraining also enhances generalization across recording sessions, subjects, and motor tasks, with only 10% calibration needed to match training from scratch. Overall, these results establish behavioral pretraining as a scalable source for neural decoding and provide a promising route toward high-performance and calibration-efficient BCIs under limited neural data.",
+      "authors": [
+        "Luyao Jin",
+        "Yonghao Song",
+        "Huan Zhao",
+        "Vincent C. K. Cheung",
+        "Wei-Hsin Liao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-05T02:45:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.04389v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Decodes motor trajectories from neural activity using pretrained behavioral representations",
+      "llm_evidence_cn": "利用预训练行为表示从神经活动解码运动轨迹",
+      "llm_evidence": "利用预训练行为表示从神经活动解码运动轨迹",
+      "canonical_evidence": "利用预训练行为表示从神经活动解码运动轨迹",
+      "llm_tldr_en": "NeuroPB transfers knowledge from pretrained behavioral models to decode motor trajectories from neural activity for BCIs.",
+      "llm_tldr_cn": "NeuroPB利用预训练行为模型知识，从神经活动解码运动轨迹，用于脑机接口。",
+      "llm_tldr": "NeuroPB利用预训练行为模型知识，从神经活动解码运动轨迹，用于脑机接口。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01618v1",
+      "source": "arxiv",
+      "title": "SGAD: A State-Guided Adaptive Decision Framework for Robust EEG-Based Auditory Attention Switch Decoding",
+      "abstract": "Achieving robust EEG-based auditory attention switch decoding (AASD) is crucial for intelligent hearing aids. However, its application is limited as EEG non-stationarity complicates sequential decision-making, and insufficient control of potential confounding factors may overestimate performance. Therefore, we propose a state-guided adaptive decision (SGAD) framework that infers attention transition states via causal state detection and dynamically modulates temporal smoothing through state-guided adaptive gating. We further introduce six hierarchical evaluation protocols to assess generalization across audio, speaker, and subject dimensions. Experimental results show that SGAD improves decoding accuracy and stability while maintaining low response latency across evaluation scenarios. Performance variations across protocols further suggest data partition-related biases. Together, these findings advance robust AASD for neuro-steered hearing applications.",
+      "authors": [
+        "Yuting Ding",
+        "Xuefei Wang",
+        "Ximin Chen",
+        "Chunlin Li",
+        "Fei Chen"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.SD"
+      ],
+      "published": "2026-08-03T02:48:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.01618v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG-based auditory attention switch decoding with state-guided adaptive decision",
+      "llm_evidence_cn": "基于EEG的听觉注意力切换解码，采用状态引导自适应决策",
+      "llm_evidence": "基于EEG的听觉注意力切换解码，采用状态引导自适应决策",
+      "canonical_evidence": "基于EEG的听觉注意力切换解码，采用状态引导自适应决策",
+      "llm_tldr_en": "State-guided adaptive framework for robust EEG auditory attention switch decoding, improving accuracy and stability.",
+      "llm_tldr_cn": "提出状态引导自适应决策框架，提升EEG听觉注意力切换解码的准确性与稳定性。",
+      "llm_tldr": "提出状态引导自适应决策框架，提升EEG听觉注意力切换解码的准确性与稳定性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01623v1",
+      "source": "arxiv",
+      "title": "SAGE: Switch-Aware EEG-Guided Soft Gating for Target Speaker Extraction with In-Trial Switching",
+      "abstract": "EEG-guided target speaker extraction is challenging under in-trial auditory attention switching, where neural noise and intrinsic latency can delay or destabilize attention tracking. Conventional methods struggle with dynamic switches and often cause discontinuities at switching points. Therefore, we propose SAGE, a switch-aware EEG-guided soft gating framework that treats in-trial switching as dynamic selection. SAGE generates two candidate speech streams with a robust separator and uses an EEG-guided switch-aware gating module to produce smooth fusion weights and suppress transition artifacts. We further integrate latency-compensated alignment and an uncertainty-driven conservative strategy to handle latency discrepancies and fluctuating EEG reliability. SAGE outperforms baselines, achieving 8.67 dB SI-SDR and 88.24% STOI while reducing average switching latency to 2.04 s. By coupling neural decoding with speech separation, it enables robust target extraction in dynamic scenarios.",
+      "authors": [
+        "Xuefei Wang",
+        "Ximin Chen",
+        "Yuting Ding",
+        "Chunlin Li",
+        "Fei Chen"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.SD"
+      ],
+      "published": "2026-08-03T02:54:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.01623v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG-guided target speaker extraction decodes neural attention into speech streams",
+      "llm_evidence_cn": "EEG引导的目标说话人提取，将神经注意力解码为语音流",
+      "llm_evidence": "EEG引导的目标说话人提取，将神经注意力解码为语音流",
+      "canonical_evidence": "EEG引导的目标说话人提取，将神经注意力解码为语音流",
+      "llm_tldr_en": "SAGE uses EEG-guided soft gating to smoothly switch target speakers under attention switching, decoding neural signals into speech.",
+      "llm_tldr_cn": "SAGE使用EEG引导的软门控在注意力切换时平滑切换目标说话人，将神经信号解码为语音。",
+      "llm_tldr": "SAGE使用EEG引导的软门控在注意力切换时平滑切换目标说话人，将神经信号解码为语音。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01857v1",
+      "source": "arxiv",
+      "title": "Beyond Magnitude and Shape: A Direction-Aware Loss for Time Series Forecasting",
+      "abstract": "The direction of change --- whether a series will move up or down --- is often as important as its exact value in decisiondriven applications such as risk management and financial forecasting. However, most forecasting losses optimize either point magnitude or shape and frequency structure, and none explicitly targets the direction of change. In this paper, we find that MSE-trained forecasters fail on the direction of small moves. To address this, we propose CosDir, a simple yet effective direction-aware loss that aligns the difference vectors of the prediction and the target via cosine similarity. Being scale-invariant, CosDir keeps a directional gradient on small moves, re-injecting learning signal exactly where MSE neglects it. CosDir is a lightweight, plug-in term that attaches to any backbone without architectural modification. Since the best ratio for mixing the directional and magnitude terms differs across datasets, we further propose CosDir-UW, an extension that makes this ratio adaptive by learning it during training, matching a per-dataset tuned weight with no hyperparameter. We conduct over 100K experiments, demonstrating that our method consistently and significantly improves directional accuracy while preserving magnitude accuracy, and that it outperforms various loss functions. Code is available at: https://github.com/seunghan96/cosdir.",
+      "authors": [
+        "Seunghan Lee",
+        "Jaehoon Lee",
+        "Jun Seo",
+        "Junhyeok Kang",
+        "Sangjun Han",
+        "Sungdong Yoo",
+        "Minjae Kim",
+        "Tae Yoon Lim",
+        "Dongwan Kang",
+        "Hwanil Choi",
+        "Soonyoung Lee",
+        "Wonbin Ahn"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-03T08:06:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.01857v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Directly addresses time series forecasting by introducing a direction-aware loss that improves sequential prediction.",
+      "llm_evidence_cn": "直接针对时间序列预测，提出方向感知损失以改进时序预测。",
+      "llm_evidence": "直接针对时间序列预测，提出方向感知损失以改进时序预测。",
+      "canonical_evidence": "直接针对时间序列预测，提出方向感知损失以改进时序预测。",
+      "llm_tldr_en": "CosDir is a scale-invariant directional loss for time series forecasting that fixes MSE failure on small moves.",
+      "llm_tldr_cn": "CosDir是一种尺度不变的方向感知损失，用于时间序列预测，修复MSE对小变动预测失灵的问题。",
+      "llm_tldr": "CosDir是一种尺度不变的方向感知损失，用于时间序列预测，修复MSE对小变动预测失灵的问题。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01898v1",
+      "source": "arxiv",
+      "title": "Understanding and Correcting Low-Frequency Bias in EEG Foundation Model",
+      "abstract": "Increasing EEG pretraining data scale or model capacity does not consistently improve downstream performance. We identify a persistent low-frequency bias in representations learned by diverse EEG foundation models, which remains across dataset scales, model capacities, and pretraining objectives. Our analysis links this bias to the interaction between EEG's $1/f^α$-like spectral structure and neural networks' tendency to preferentially learn low-frequency components. In masked autoencoders, the $\\ell_2$ reconstruction objective further amplifies this imbalance: under comparable relative reconstruction errors, high-power low-frequency components contribute disproportionately to the loss. To address this issue, we introduce FAME, a frequency-balanced masked autoencoding framework that reconstructs time--frequency activity in predefined EEG bands from masked EEG inputs. FAME independently standardizes the reconstruction targets within each band and assigns equal weight to all band-specific losses, thereby balancing supervision across the EEG spectrum. Evaluated on 41 downstream tasks in OmniEEG-Bench, FAME learns more spectrally balanced representations and achieves state-of-the-art performance on 24 of them. These results underscore the importance of balanced spectral supervision for learning transferable EEG representations.",
+      "authors": [
+        "Junjie Yu",
+        "Zihan Deng",
+        "Jianyu Zhang",
+        "Junrong Mu",
+        "Jiahui An",
+        "Wenxiao Ma",
+        "Ziling Lu",
+        "Yue Wang",
+        "Yan Zhu",
+        "Kexin Lou",
+        "Quanying Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-03T08:36:10+00:00",
+      "link": "https://arxiv.org/pdf/2608.01898v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "representation learning for EEG neural activity via foundation models",
+      "llm_evidence_cn": "基于基础模型的EEG神经活动表征学习",
+      "llm_evidence": "基于基础模型的EEG神经活动表征学习",
+      "canonical_evidence": "基于基础模型的EEG神经活动表征学习",
+      "llm_tldr_en": "Diagnoses and corrects low-frequency bias in EEG foundation model representations to improve downstream decoding performance.",
+      "llm_tldr_cn": "诊断并修正EEG基础模型表征中的低频偏差，提升下游解码性能。",
+      "llm_tldr": "诊断并修正EEG基础模型表征中的低频偏差，提升下游解码性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.01587v1",
+      "source": "arxiv",
+      "title": "The Label Defines the Timescale: Trait-State Limits of Temporal-Aggregate Learning",
+      "abstract": "Machine-learning benchmarks often pair a label that aggregates a long temporal horizon with input observed through one or a few short windows. Their apparent performance ceiling may therefore be an acquisition-protocol ceiling rather than a model-capacity ceiling. We study labels of the form $Θ_{g,T}=T^{-1}\\int_0^T g\\{Z(t)\\}\\,\\mathrm{d}t$ when the latent Gaussian process contains both a stable individual trait and a correlated within-individual state. An exact protocol-conditioned Bayes-risk identity provides a common tool. First, we decompose label variance into an $O(1)$ trait component and an $O(T^{-1})$ state component, explaining why a snapshot can retain cross-sectional predictability while poorly tracking within-person change. Second, we derive task-dependent effective temporal spans: mean labels depend on the ordinary correlation time, whereas occupation-time labels depend on an entire spectrum of higher-order correlation times. Third, state-driven occupation-label variance is maximal when the stable trait lies at the threshold; window efficiency decays much more slowly away from that boundary. Under an equal segment budget, exact risks and Monte Carlo experiments show that repeated segments at one time rapidly saturate, whereas temporally dispersed observations continue to increase state explainability. The trait ceiling uses quantities available from ordinary test-retest data; only the state ceiling requires short-lag temporal calibration. The results distinguish architectural limits from protocol limits and show that the label, rather than duration or segment count alone, defines the relevant timescale.",
+      "authors": [
+        "Xizhe Zhang"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-08-03T01:44:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.01587v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Analyzes predictability limits when labels aggregate long temporal horizons from short windows",
+      "llm_evidence_cn": "分析标签聚合长时间跨度而输入来自短窗口时的可预测性极限",
+      "llm_evidence": "分析标签聚合长时间跨度而输入来自短窗口时的可预测性极限",
+      "canonical_evidence": "分析标签聚合长时间跨度而输入来自短窗口时的可预测性极限",
+      "llm_tldr_en": "Shows that temporal-aggregate learning performance ceilings are often protocol ceilings, not capacity limits.",
+      "llm_tldr_cn": "表明时间聚合学习性能上限常是协议上限而非模型容量上限。",
+      "llm_tldr": "表明时间聚合学习性能上限常是协议上限而非模型容量上限。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.01502v1",
+      "source": "arxiv",
+      "title": "Stochastic Sequential Search in Very-High-Dimensional Feature Selection",
+      "abstract": "Sequential subset search -- forward selection with floating backtracking and its descendants -- remains the quality reference in feature selection, but every member of the family sweeps the full pool of remaining candidate features at each step, which excludes it from very-high-dimensional problems; there, only individual-feature ranking remains practical, and it models feature interplay weakly or not at all. We introduce a budgeted sampled step operator pair that replaces the full sweeps by a fixed number of candidate evaluations per step. Candidates are drawn by temperature-controlled softmax sampling from dependency-aware per-feature statistics learned online from every criterion evaluation the search performs, guarded by a uniform exploration floor; per-step cost becomes independent of dimensionality. Substituting the operators turns any sequential method into its stochastic counterpart, defining the Stochastic Sequential Search (SSS) family; we study the stochastic counterpart of floating search, sSFFS. On 500-dimensional madelon, sSFFS retains at least 97% of the full-SFFS criterion value at every subset size at about a quarter of its evaluations, while uniform sampling at the same budget collapses on madelon's synergistic features. On 5,000-dimensional gisette, far beyond full-SFFS reach, sSFFS exceeds the saturated criterion level of DAF and BIF ranking at matched budgets; holdout validation shows that at 500 training samples the binding constraint beyond the sequential frontier becomes the criterion, not the search. On 10,105-dimensional reuters, under a trustworthy multinomial filter criterion, sSFFS dominates BIF and DAF on the search objective and on holdout accuracy at every subset size, in about two minutes of single-core evaluation work. A verified standalone implementation accompanies the paper.",
+      "authors": [
+        "Petr Somol",
+        "Jiří Grim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV",
+        "stat.ML"
+      ],
+      "published": "2026-08-02T21:20:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.01502v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "stochastic sequential search computes per-feature dependency-aware statistics for feature selection, a form of input feature importance weighting",
+      "llm_evidence_cn": "随机序列搜索通过依赖感知的逐特征统计进行特征选择，相当于对输入特征的重要性加权",
+      "llm_evidence": "随机序列搜索通过依赖感知的逐特征统计进行特征选择，相当于对输入特征的重要性加权",
+      "canonical_evidence": "随机序列搜索通过依赖感知的逐特征统计进行特征选择，相当于对输入特征的重要性加权",
+      "llm_tldr_en": "Introduces a budgeted stochastic search for very-high-dimensional feature selection using online per-feature importance statistics.",
+      "llm_tldr_cn": "提出一种高维特征选择的预算随机搜索，利用在线逐特征重要性统计。",
+      "llm_tldr": "提出一种高维特征选择的预算随机搜索，利用在线逐特征重要性统计。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.02050v1",
+      "source": "arxiv",
+      "title": "TextNCA: Neural Cellular Automata for Language Modeling via Hierarchical Local Attention",
+      "abstract": "Can a strictly local, iterated, weight-shared computation primitive support language modelling, and which of those three properties actually drives the model's behaviour? We define \\textsc{TextNCA}, a 1D causal windowed-attention realisation of the Neural Cellular Automaton primitive, and study a hierarchical variant that cascades three stages with windows $w \\in \\{8, 32, 128\\}$ and $T_s$ shared-weight iterations per stage, all on WikiText-103 at roughly 30M parameters and 60k training steps. The model does not match a parameter-matched Transformer at this scale (Hier-TextNCA $60.3$ vs.\\ Transformer-6L $52.8$ and Transformer-12L $44.7$ PPL), so we treat it as an analytical probe rather than a proposed alternative. The behaviour we observe is largely explained by the staged narrow-to-wide schedule: a non-iterating sliding-window Transformer that reuses the same schedule comes within $+4.1$ PPL of the iterated model, while reversing, flattening, or breaking the monotonic ordering of the schedule costs between $+16.7$ and $+70.8$ PPL. Iteration adds a smaller bounded benefit on top of the schedule, with a clear optimum at $T_s{=}4$ and a U-shaped degradation beyond it. The GRU gate and learned per-step embeddings are required for that benefit to appear, and training with random $T_s$ yields an inference-time iteration-count knob at the cost of substantially higher absolute PPL. We position the work as a controlled reading of which parts of NCA-style computation carry the weight in language modelling.",
+      "authors": [
+        "Avni Mittal",
+        "Avinash Anand",
+        "Ashutosh Kumar",
+        "Dikshant Kukreja",
+        "Kritarth Prasad",
+        "Sushane Dulloo",
+        "Erik Cambria",
+        "Timothy Liu",
+        "Zhengkui Wang",
+        "Rajiv Ratn Shah"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-08-03T10:47:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.02050v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Language modelling with hierarchical local attention",
+      "llm_evidence_cn": "用于语言建模的分层局部注意力序列模型",
+      "llm_evidence": "用于语言建模的分层局部注意力序列模型",
+      "canonical_evidence": "用于语言建模的分层局部注意力序列模型",
+      "llm_tldr_en": "Examines a hierarchical TextNCA architecture for language modeling, using shared-weight iterations and local attention.",
+      "llm_tldr_cn": "研究一种分层TextNCA架构用于语言建模，使用共享权重迭代和局部注意力。",
+      "llm_tldr": "研究一种分层TextNCA架构用于语言建模，使用共享权重迭代和局部注意力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.02326v2",
+      "source": "arxiv",
+      "title": "ChainVLA: Chaining Vision-Language-Action Queries through a Unified Execution State for Long-Horizon Manipulation",
+      "abstract": "Humans perform long-horizon manipulation by retaining knowledge of what earlier actions have established while continuously adapting the motion underway. By contrast, action-chunked vision-language-action (VLA) policies repeatedly replan from the current input at each query. Existing methods preserve either long-term task evidence through memory or short-term motion through action reuse and ensembling, leaving the cross-query handoff incomplete. We introduce ChainVLA, a 1.2B-parameter VLA policy that chains successive queries through a joint and revisable execution state. Progress Context combines a recurrent Working State with sparse event memory to carry observation-derived task progress, while Motion Tail feeds the preceding prediction's unexecuted continuation into state construction and action generation. Together, the two components condition a decoder that regenerates each action horizon under the latest observation, allowing the carried state to guide the next prediction without fixing it. ChainVLA reaches 62.8% average success on RMBench and 98.8% across four LIBERO suites, while removing Motion Tail or Progress Context reduces RMBench success to 11.2% and 3.0%, respectively. These asymmetric ablations are consistent with motion continuity helping preserve the observation stream from which task progress is inferred.",
+      "authors": [
+        "Yuzhi Huang",
+        "Weijue Bu",
+        "Ziyi Xiong",
+        "Jie Wu",
+        "Fanding Huang",
+        "Jingyan Jiang",
+        "Zhi Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-03T14:48:20+00:00",
+      "link": "https://arxiv.org/pdf/2608.02326v2",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Chaining vision-language-action queries into long-horizon action sequences via unified execution state",
+      "llm_evidence_cn": "通过统一执行状态将视觉-语言-动作查询链接为长时程动作序列",
+      "llm_evidence": "通过统一执行状态将视觉-语言-动作查询链接为长时程动作序列",
+      "canonical_evidence": "通过统一执行状态将视觉-语言-动作查询链接为长时程动作序列",
+      "llm_tldr_en": "Proposes ChainVLA, a VLA policy that chains successive queries through a joint execution state for long-horizon manipulation.",
+      "llm_tldr_cn": "提出ChainVLA，通过联合执行状态链接连续查询，实现长时程操作。",
+      "llm_tldr": "提出ChainVLA，通过联合执行状态链接连续查询，实现长时程操作。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.02347v2",
+      "source": "arxiv",
+      "title": "Mamba with Hierarchical Memory: Solving Representation Bottleneck in Long Sequence Modeling",
+      "abstract": "Recurrent linear attention models (RLAs) such as Mamba offer efficient linear-time sequence modeling as an alternative to Transformers, yet their fixed-capacity recurrent states limit long-sequence modeling. Drawing inspiration from hierarchical human memory, we propose Hierarchical Memory Mamba (HMM) to address this limitation. Building upon a pre-trained Mamba backbone, HMM integrates a lightweight working memory that extracts slow paragraph-level semantics (PLS) from the fast sensory memory embedded in the backbone's hidden states. The PLS is subsequently compressed into persistent long-term memory for task-relevant retrieval. The hierarchical processing of semantic information overcomes the representation bottleneck of RLAs and endows HMM cross-task generalization through parametric learning, which is not observed in other long-context enhanced Mamba variants. Evaluations on Passkey Retrieval and LongBench-E tasks demonstrate that HMM improves retrieval success by 34.3--37.1% and reasoning accuracy by 1.6--14.2% over strong Mamba-based models, while adding only 2% extra parameters and with minimal training overhead.",
+      "authors": [
+        "Qinwen Wang",
+        "Jieping Luo",
+        "Aoxiang Qin",
+        "Ruoyu Zhao",
+        "Jianxiong Tang",
+        "Wei Zhang",
+        "Zhichao Lu",
+        "Luziwei Leng"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-03T14:59:54+00:00",
+      "link": "https://arxiv.org/pdf/2608.02347v2",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "hierarchical memory for long sequence modeling with pretrained Mamba",
+      "llm_evidence_cn": "基于预训练Mamba的分层记忆长序列建模",
+      "llm_evidence": "基于预训练Mamba的分层记忆长序列建模",
+      "canonical_evidence": "基于预训练Mamba的分层记忆长序列建模",
+      "llm_tldr_en": "Enhances Mamba with hierarchical memory to overcome representation bottlenecks in long sequence modeling.",
+      "llm_tldr_cn": "通过分层记忆增强Mamba，解决长序列建模中的表征瓶颈。",
+      "llm_tldr": "通过分层记忆增强Mamba，解决长序列建模中的表征瓶颈。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

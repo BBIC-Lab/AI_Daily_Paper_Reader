@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.01502v1/fig-007.webp",
+      "caption": "Table 1: Evolution of sequential feature selection, one generation per row. Every method up to this work evaluates all available candidates at each step; the proposed budgeted step is the family’s first departure from the full sweep.",
+      "page": 5,
+      "index": 7,
+      "width": 968,
+      "height": 281
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01502v1/fig-004.webp",
+      "caption": "Figure 1: Anytime best-per-size criterion value on madelon (train-criterion axis: 1-NN-wrapper 3-fold-CV value on the training half — the optimization target): sSFFS (y = 100, ρu = 0.2, warm start 200@10) retains ≥ 98.2% of the full-SFFS value at every size (seed 1, identical data split) and exceeds it at every size above d = 130; the shaded band is the mean±std over 10 seeds (seeds ̸= 1 on independent splits).",
+      "page": 13,
+      "index": 4,
+      "width": 961,
+      "height": 318
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01502v1/fig-002.webp",
+      "caption": "Figure 2: Where the budget goes under forward-only capping: with forward steps capped at y = 100, the uncapped backward sweeps of the floating correction dominate total cost (57–62% across all ten seeds) once the search explores sizes up to d = 165 — the measured motivation for budgeting the backward direction as well (yb) and for bounded size ranges in the extreme-dimensionality regime.",
+      "page": 14,
+      "index": 2,
+      "width": 761,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01502v1/fig-001.webp",
+      "caption": "Figure 3: Budget spent uniformly vs. informed (madelon, d = 20, ten paired seeds, identical budget y = 100 per step; train-criterion axis — except where a value is explicitly marked as validated holdout accuracy): softmax sampling matches the full sweep on every seed (means 0.866 vs. 0.863), while uniform sampling never wins against either (vs. softmax: nine losses, one tie within 2 · 10−5) and collapses outright on two seeds (5 and 8: criterion 0.62/0.75, validated accuracy 0.52/0.73) — madelon’s synergistic features are found by the learned statistics, not by luck. At tighter budgets the uniform failure deepens to chance level (Discussion).",
+      "page": 15,
+      "index": 1,
+      "width": 957,
+      "height": 313
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01502v1/fig-008.webp",
+      "caption": "Figure 4: Budget-response of sSFFS on madelon (train-criterion axis: wrapper-1NN 3-fold CV value on the training half — the optimization target; validated holdout accuracies are quoted in the text). Each point: 10-seed mean (±std in the top row) of the best criterion value attained at size d, versus the compute invested up to that discovery (warm-up included); the per-step budget grows along each curve (y ∈ {10, 25, 50, 100, 200} softmax, {25, 100} controls). Top row: criterion evaluations. Bottom row: cost-model minutes — evaluations weighted by the measured size-dependent evaluation cost ms(d) ≈ 3.68 + 0.487 d, which penalizes evaluations spent at large subset sizes and widens the softmax lead (uniform reaches its best-at-20 not only later but at larger evaluated sizes). Horizontal references: full-SFFS anytime value (identical seed-1 split) and the DAF/BIF rankings at their own budgets (markers). Every sampled arm dominates both rankings on the criterion at both sizes; softmax reaches its quality with the least compute throughout and approaches (at d = 100: matches) the full-sweep asymptote.",
+      "page": 16,
+      "index": 8,
+      "width": 883,
+      "height": 808
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01502v1/fig-006.webp",
+      "caption": "Table 2: Gisette budget ladder (mean over seeds; three per cell, five at y = 100): criterion value J (3-fold CV wrapper on the training half — the search objective) and holdout accuracy of the same subsets, at subset sizes 100 and 300. DAF’s budget is its probe count; the sSFFS totals cover the whole anytime run (all sizes ≤ 320, warm-up included). Reference points: the all-features holdout accuracy is 0.894–0.902 across the three seeds; matched-budget DAF controls on both fairness axes — matched evaluations (138k–233k probes) and matched wall time (1.5–2.4M probes), five seeds each — validate at 0.89–0.95, on the same saturation plateau as the fixed-budget rows above.",
+      "page": 17,
+      "index": 6,
+      "width": 694,
+      "height": 362
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01502v1/fig-003.webp",
+      "caption": "Figure 5: The fixed-d slices of Figure 4 generalize to the whole per-size frontier (madelon, 10-seed mean anytime best-per-size, train-criterion axis): the softmax family closes monotonically towards the full-SFFS curve as the per-step budget y grows (the y = 200 mean overtakes it near the frontier, d ≥ 162), while at the matched tightest budget the uniform and top-k controls trail softmax y = 25 at 149/165 resp. 164/165 sizes.",
+      "page": 18,
+      "index": 3,
+      "width": 957,
+      "height": 318
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01502v1/fig-005.webp",
+      "caption": "Table 3: Reuters (D = 10,105, 33 classes, RR(1,50,40) split): criterion value J (multinomial Bhattacharyya, computed on the training part — the search objective) and MultinomNB holdout accuracy of the same subsets; means over five seeds. Budgets: BIF spends D singleton evaluations; DAF its probe count; the sSFFS totals cover the whole anytime run to the dmax = 500 frontier (warm-up included). DAF probes here use cardinality 500 (a CLI constraint pins probe size to the reported subset size for monotonic criteria); the protocol-conforming card-25 rerun trails or at best matches card-500 at every ladder budget (d=100 holdout .757/.818/.816 vs. .801/.831/.837 at 104/105/106 probes), so the table reports the stronger ranking baseline. “DAF matched” re-ranks with card-25 probes at each seed’s exact y=100 anytime total (0.77–0.90M evaluations, mean 0.81M); the same control at the y=25 totals (2.40–3.03M, mean 2.78M) reproduces the plateau (see text).",
+      "page": 19,
+      "index": 5,
+      "width": 736,
+      "height": 227
+    }
+  ]
+}

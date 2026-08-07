@@ -1,0 +1,142 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-005.webp",
+      "caption": "Figure 1: Hierarchical TextNCA (staged) architecture. (a) A single NCA cell: local attention with window wk, LayerNorm, FFN, and a GRU gate that combines the previous state ht−1 (dashed residual) with the transformed signal. A learned step embedding st is added at the input so the shared weights can still specialise across iterations. (b) The staged pipeline. Three stages with windows w ∈ {8, 32, 128} iterate Ts=4 times each (12 NCA steps total). Each stage has its own parameter set θk but shares these weights across its four iterations. Bold red/blue arrows mark the two-stage transitions, where the receptive field expands to the next scale. (c) Effective receptive field for a query near the end of a 15-token window. Stage 1 sees 8 nearby tokens (red); Stage 2 covers the local context (blue); Stage 3 reaches the full sequence (green). The receptive-field structure motivates the per-step loss decomposition: stage 3 is observed to carry essentially all of the next-token loss reduction.",
+      "page": 3,
+      "index": 5,
+      "width": 935,
+      "height": 294
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-006.webp",
+      "caption": "Table 1: NCA primitives mapped to TEXTNCA. The load-bearing NCA conjunction (locality, iterated weight sharing, gated in-place update) holds inside each stage; the full model is a hierarchical NCA with rule piecewiseconstant across stages.",
+      "page": 3,
+      "index": 6,
+      "width": 443,
+      "height": 280
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-016.webp",
+      "caption": "Table 2: Schedule and orchestration ablations at matched architecture and compute, 60k training steps, total NCA steps ≈ 12. The interleaved variant uses a single cell whose window is cycled per step (27.7M), versus the staged variant’s three per-stage cells with distinct weights (30.8M); the 3.1M gap is the cost of going from one shared cell to three. Matching is on training compute, total NCA-step applications, and tokenizer / data / optimizer, not on parameter count.",
+      "page": 5,
+      "index": 16,
+      "width": 439,
+      "height": 369
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-002.webp",
+      "caption": "Table 4: Hier-TextNCA is statistically tied with transformer baselines on classification, but underperforms on SQuAD. The QA gap tracks attention locality: global-attention models reach F1 27.4–33.2, while local-attention variants remain at F1 19.4–26.3.",
+      "page": 7,
+      "index": 2,
+      "width": 950,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-010.webp",
+      "caption": "Figure 4: Linear CKA between the embedding state and all 12 NCA steps (2,048 WikiText-103 tokens; randompair floor ≈ 0.20). White lines mark stage transitions. S1.1 and S3.4 are the only strong outliers; states S1.4– S3.1 form a continuous cluster with pairwise CKA > 0.85.",
+      "page": 8,
+      "index": 10,
+      "width": 461,
+      "height": 421
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-009.webp",
+      "caption": "Table 8: Model configurations. All TextNCA variants use d=512, dff=2048, H=8 heads, dh=64.",
+      "page": 13,
+      "index": 9,
+      "width": 591,
+      "height": 236
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-004.webp",
+      "caption": "Figure 7: WikiText-103 PPL (log scale) against training steps for the key TextNCA and Transformer variants. HierTextNCA GRU flagship (green diamond, PPL 60.3) and TF-12L (blue triangle, PPL 44.7) are final-step-only points; their continuous logs were not retained. TF-6L (blue) uses the full 120k-step log clipped to 60k. SWin-TF-Staged (orange, 64.5) tracks Hier-TextNCA closely, while Hier-TextNCA StochasticT (purple, 101) and Hier-TextNCA Reversed (red, 131) illustrate the cost of stochastic-Ts training and of reversing the window schedule.",
+      "page": 14,
+      "index": 4,
+      "width": 950,
+      "height": 579
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-003.webp",
+      "caption": "Figure 8: Per-step next-token loss of Hier-TextNCA. (a) Mean cross-entropy over 32,768 WikiText-103 tokens. The embedding loss is inflated by tied-embedding self-decoding; the first NCA step collapses loss near log V ; stages 1–2 plateau; the final stage-3 steps carry nearly all LM-loss reduction. (b) Per-step loss reduction. (c) Per-token loss heatmap, clipped at 12 nats.",
+      "page": 14,
+      "index": 3,
+      "width": 667,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-017.webp",
+      "caption": "Figure 10: GRU gate statistics per NCA step. Bars are means over hidden dimensions; error bars are ±1σ. Top: update gate z, a small U-shape in the w=8 stage (0.60, 0.39, 0.52), ∼ 0.30 through the w=32 stage, and rising to 0.62 by step 12. Bottom: reset gate r, falling monotonically from 0.98 at step 1 to about 0.30 in steps 9–12. The pair encodes an accumulate–consolidate– rewrite role across the three stages.",
+      "page": 16,
+      "index": 17,
+      "width": 461,
+      "height": 277
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-012.webp",
+      "caption": "Figure 11: Within-stage attention maps for the running prompt. Rows are stages (w=8, 32, 128); columns are iterations 1→4. Cell values are head-averaged attention weights shown as percentages (e.g. “27” means 0.27); only cells with weight > 0.20 are annotated. The cross-clause association “Germany” → “France” (7-token distance) is ≤ 9% throughout Stages 1–2 and jumps to 20–27% in Stage 3, becoming the argmax.",
+      "page": 17,
+      "index": 12,
+      "width": 950,
+      "height": 702
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-007.webp",
+      "caption": "Figure 12: Hidden-state dynamics across the 12 NCA steps. Top: update magnitude ∥∆h∥. Bottom: cosine similarity between consecutive states. States stabilize within stages but shift at stage boundaries; the final update remains nonzero.",
+      "page": 18,
+      "index": 7,
+      "width": 461,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-008.webp",
+      "caption": "Figure 17: WikiText-103 PPL (log scale) for the deterministic Hier-TextNCA flagship evaluated at different inference T ′ s (total NCA steps = 3T ′ s). PPL is U-shaped with the minimum at the training horizon (T ′ s=4, 12 steps).",
+      "page": 18,
+      "index": 8,
+      "width": 461,
+      "height": 286
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-011.webp",
+      "caption": "Figure 13: Logit lens across the 13 representations (embedding + 12 NCA steps) for three positions in the relativity prompt. Each bar is the top-5 distribution at that step; shading marks stages (red w=8, blue w=32, green w=128). Position 12: “constant”→“in”. Position 17: “.”→“This”. Position 22: “and”→“space”. Stages 1–2 mostly rearrange representations; Stage 3 produces the usable next-token distribution.",
+      "page": 19,
+      "index": 11,
+      "width": 950,
+      "height": 829
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-014.webp",
+      "caption": "Figure 14: Per-token logit-lens trajectories across 12 NCA iterations on the running prompt. Rows: embedding + 12 steps (stage-shaded). Columns: token positions. Each cell shows the top-1 decoded token from that position’s hidden state; red marks a change from the previous step. Stage 1 produces filler, Stage 2 produces relational connectives, Stage 3 produces content words that match the true completion.",
+      "page": 20,
+      "index": 14,
+      "width": 461,
+      "height": 335
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-013.webp",
+      "caption": "Figure 15: Per-position logit-lens prediction evolution. Top: top-1 probability. Bottom: whether the top-1 prediction matches the true next token. Correct predictions emerge primarily in stage 3.",
+      "page": 20,
+      "index": 13,
+      "width": 458,
+      "height": 431
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-015.webp",
+      "caption": "Figure 19: Compute–PPL Pareto frontier on WikiText-103 at 60k training steps. Standard transformers (blue) define the frontier; Hier-TextNCA (green) lies 7.5 PPL behind TF-6L at 1.9× the compute. Dashed line: lower-PPL convex hull. TextNCA is not on the compute–PPL frontier at this scale.",
+      "page": 20,
+      "index": 15,
+      "width": 461,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02050v1/fig-001.webp",
+      "caption": "Figure 16: Top-5 predicted tokens at the final position across the embedding state and 12 NCA steps. The correct continuation appears only at the final step in this illustrative example.",
+      "page": 21,
+      "index": 1,
+      "width": 461,
+      "height": 546
+    }
+  ]
+}

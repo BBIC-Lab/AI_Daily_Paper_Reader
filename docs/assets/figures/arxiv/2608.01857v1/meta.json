@@ -1,0 +1,358 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-009.webp",
+      "caption": "Figure 1: Same MSE, different decision values. Two forecasts share the same MSE, but the left one (high DA) predicts every change’s direction while the middle one (low DA) does not. The right panel plots the payoff of the predicted direction, and only the high-DA forecast accumulates it, so it is directional accuracy, not magnitude, that drives the decision.",
+      "page": 2,
+      "index": 9,
+      "width": 1047,
+      "height": 191
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-010.webp",
+      "caption": "Table 2: Various loss functions. Each augments MSE with a structural term, and only CosDir is directional and scale-invariant.",
+      "page": 2,
+      "index": 10,
+      "width": 998,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-021.webp",
+      "caption": "Figure 2: Overview of CosDir. (a) For each channel we take the step-to-step changes of the forecast and the target, which stack into the horizon-length difference vectors ∆ŷ and ∆y (written out for a five-step example). (b) We compare their directions through cosine similarity, which yields the angle θ between the two change vectors and depends only on direction, not magnitude. (c) The penalty 1− cos θ is added to the MSE, so it is 0 when the change directions align and grows toward 2 as they diverge.",
+      "page": 3,
+      "index": 21,
+      "width": 1016,
+      "height": 245
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-028.webp",
+      "caption": "Table 4: Forecasting models grouped by architecture family.",
+      "page": 4,
+      "index": 28,
+      "width": 470,
+      "height": 323
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-040.webp",
+      "caption": "Table 5: Comparison of MSE with MSE+CosDir and MSE+CosDir-UW. We report DA (%) at each H , averaged over the 15 backbones and 5 seeds, with each cell reading MSE / (MSE+CosDir) / (MSE+CosDir-UW). The best value is in bold and the second best is underlined, and ∗ marks p < 10−3 under a paired one-sided Wilcoxon test of that method against MSE.",
+      "page": 5,
+      "index": 40,
+      "width": 1048,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-041.webp",
+      "caption": "Table 6: Comparison with various loss functions.",
+      "page": 5,
+      "index": 41,
+      "width": 948,
+      "height": 223
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-039.webp",
+      "caption": "Table 7: Ablation with our non-scale-invariant direction-aware variants.",
+      "page": 5,
+      "index": 39,
+      "width": 994,
+      "height": 200
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-001.webp",
+      "caption": "Figure 4: Directional gain grows with move size and turns into payoff. (a) When predictions are sorted into ten deciles by the size of the true step-to-step change |∆y|, CosDir improves DA over the MSE baseline most on the largest moves, the ones that drive decisions. (b) Acting on the predicted direction, CosDir accumulates more cumulative payoff than MSE.",
+      "page": 6,
+      "index": 1,
+      "width": 996,
+      "height": 249
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-002.webp",
+      "caption": "Figure 5: Direction without sacrificing magnitude. On financial datasets, CosDir raises DA while keeping or slightly improving MSE, whereas other auxiliary losses worsen MSE.",
+      "page": 6,
+      "index": 2,
+      "width": 502,
+      "height": 402
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-012.webp",
+      "caption": "Figure 6: CosDir-UW learns a dataset property. (a) The learned balance λeff = e s1−s2 clusters tightly by dataset across the eight main backbones, with 96% of its variance lying between datasets. (b) The dataset-level median λeff tracks the tuned λ.",
+      "page": 7,
+      "index": 12,
+      "width": 1042,
+      "height": 291
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-013.webp",
+      "caption": "Figure 7: Robustness across backbones and datasets. For each backbone (B1–B15), one point is the DA gain of CosDir over MSE on one dataset, and the dash is the backbone mean.",
+      "page": 7,
+      "index": 13,
+      "width": 502,
+      "height": 392
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-011.webp",
+      "caption": "Table 8: Learned λ outperforms fixed λ. By balancing direction and magnitude, CosDir-UW (learned λ) reaches a higher DA and lower MSE than CosDir (fixed λ).",
+      "page": 7,
+      "index": 11,
+      "width": 496,
+      "height": 315
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-017.webp",
+      "caption": "Table 9: Per-backbone hyperparameters, all following default values of MM-TSFlib. Dropout is 0.1 throughout. d: model dimension; Ne/Nd: encoder/decoder layers; h: attention heads; dff : FFN dimension; w: moving-average window.",
+      "page": 10,
+      "index": 17,
+      "width": 458,
+      "height": 471
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-035.webp",
+      "caption": "Table 15: Per-dataset DA for the MSE baseline, CosDir (λ = 0.5), and the hyperparameter-free CosDir-UW, averaged over all 15 backbones and all horizons.",
+      "page": 12,
+      "index": 35,
+      "width": 502,
+      "height": 327
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-018.webp",
+      "caption": "Table 18: DA per dataset at each λ, averaged over the 15 backbones, horizons, and seeds, with the MSE baseline for reference.",
+      "page": 14,
+      "index": 18,
+      "width": 744,
+      "height": 347
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-019.webp",
+      "caption": "Table 19: Magnitude error (MSE, lower is better) per dataset at each λ, averaged over the 15 backbones, horizons, and seeds.",
+      "page": 14,
+      "index": 19,
+      "width": 744,
+      "height": 346
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-020.webp",
+      "caption": "Table 20: DA per backbone at each λ, averaged over datasets, horizons, and seeds.",
+      "page": 14,
+      "index": 20,
+      "width": 764,
+      "height": 387
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-004.webp",
+      "caption": "Table 21: Magnitude error per backbone at each λ.",
+      "page": 15,
+      "index": 4,
+      "width": 764,
+      "height": 390
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-005.webp",
+      "caption": "Table 22: Directional accuracy on ETTh1 for every backbone at each λ.",
+      "page": 15,
+      "index": 5,
+      "width": 764,
+      "height": 388
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-003.webp",
+      "caption": "Table 23: Directional accuracy on ETTh2 for every backbone at each λ.",
+      "page": 15,
+      "index": 3,
+      "width": 764,
+      "height": 389
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-044.webp",
+      "caption": "Table 24: Directional accuracy on ETTm1 for every backbone at each λ.",
+      "page": 16,
+      "index": 44,
+      "width": 764,
+      "height": 390
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-043.webp",
+      "caption": "Table 25: Directional accuracy on ETTm2 for every backbone at each λ.",
+      "page": 16,
+      "index": 43,
+      "width": 764,
+      "height": 388
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-042.webp",
+      "caption": "Table 26: Directional accuracy on Weather for every backbone at each λ.",
+      "page": 16,
+      "index": 42,
+      "width": 764,
+      "height": 389
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-033.webp",
+      "caption": "Table 27: Directional accuracy on Solar for every backbone at each λ.",
+      "page": 17,
+      "index": 33,
+      "width": 764,
+      "height": 388
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-032.webp",
+      "caption": "Table 28: Directional accuracy on Traffic for every backbone at each λ.",
+      "page": 17,
+      "index": 32,
+      "width": 764,
+      "height": 325
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-034.webp",
+      "caption": "Table 29: Directional accuracy on Electricity for every backbone at each λ.",
+      "page": 17,
+      "index": 34,
+      "width": 764,
+      "height": 366
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-024.webp",
+      "caption": "Table 30: Directional accuracy on RealVar for every backbone at each λ.",
+      "page": 18,
+      "index": 24,
+      "width": 764,
+      "height": 390
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-023.webp",
+      "caption": "Table 31: Directional accuracy on RealVol for every backbone at each λ.",
+      "page": 18,
+      "index": 23,
+      "width": 764,
+      "height": 388
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-022.webp",
+      "caption": "Table 32: Directional accuracy on RealVol60 for every backbone at each λ.",
+      "page": 18,
+      "index": 22,
+      "width": 764,
+      "height": 389
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-029.webp",
+      "caption": "Table 33: Directional accuracy on AbsRet for every backbone at each λ.",
+      "page": 19,
+      "index": 29,
+      "width": 764,
+      "height": 388
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-030.webp",
+      "caption": "Table 34: Directional accuracy on StockVol for every backbone at each λ.",
+      "page": 19,
+      "index": 30,
+      "width": 764,
+      "height": 390
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-031.webp",
+      "caption": "Table 35: Directional accuracy of MSE+CosDir on ETTh1 by horizon (H).",
+      "page": 19,
+      "index": 31,
+      "width": 502,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-037.webp",
+      "caption": "Table 36: Directional accuracy of MSE+CosDir on ETTh2 by horizon (H).",
+      "page": 20,
+      "index": 37,
+      "width": 502,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-036.webp",
+      "caption": "Table 37: Directional accuracy of MSE+CosDir on ETTm1 by horizon (H).",
+      "page": 20,
+      "index": 36,
+      "width": 502,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-038.webp",
+      "caption": "Table 38: Directional accuracy of MSE+CosDir on ETTm2 by horizon (H).",
+      "page": 20,
+      "index": 38,
+      "width": 502,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-007.webp",
+      "caption": "Table 39: Directional accuracy of MSE+CosDir on Weather by horizon (H).",
+      "page": 21,
+      "index": 7,
+      "width": 502,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-008.webp",
+      "caption": "Table 40: Directional accuracy of MSE+CosDir on Solar by horizon (H).",
+      "page": 21,
+      "index": 8,
+      "width": 502,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-006.webp",
+      "caption": "Table 41: Directional accuracy of MSE+CosDir on Traffic by horizon (H).",
+      "page": 21,
+      "index": 6,
+      "width": 502,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-015.webp",
+      "caption": "Table 42: Directional accuracy of MSE+CosDir on Electricity by horizon (H).",
+      "page": 22,
+      "index": 15,
+      "width": 502,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-016.webp",
+      "caption": "Table 43: Directional accuracy of MSE+CosDir on RealVar by horizon (H).",
+      "page": 22,
+      "index": 16,
+      "width": 698,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-014.webp",
+      "caption": "Table 44: Directional accuracy of MSE+CosDir on RealVol by horizon (H).",
+      "page": 22,
+      "index": 14,
+      "width": 698,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-025.webp",
+      "caption": "Table 45: Directional accuracy of MSE+CosDir on RealVol60 by horizon (H).",
+      "page": 23,
+      "index": 25,
+      "width": 698,
+      "height": 357
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-026.webp",
+      "caption": "Table 46: Directional accuracy of MSE+CosDir on StockVol by horizon (H).",
+      "page": 23,
+      "index": 26,
+      "width": 698,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.01857v1/fig-027.webp",
+      "caption": "Table 47: Directional accuracy of MSE+CosDir on AbsRet by horizon (H).",
+      "page": 23,
+      "index": 27,
+      "width": 698,
+      "height": 358
+    }
+  ]
+}
