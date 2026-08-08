@@ -1,0 +1,426 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-08T20:48:18.946272+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 56,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 82,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 19,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 14,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 20
+  },
+  "deep_dive": [
+    {
+      "id": "2608.02990v1",
+      "source": "arxiv",
+      "title": "EmbodiedVAE: Disentangled Video VAE for Efficient and Controllable Embodied Manipulation",
+      "abstract": "Latent diffusion models (LDMs) have recently significantly advanced embodied learning in constructing powerful embodied manipulation world models. However, despite the remarkable performance, existing LDMs predominantly rely on Variational Autoencoders (VAEs) optimized for natural scenes while failing to account for the unique characteristics of embodied manipulation scenarios, yielding latent representations that are neither compact nor controllable, thereby hindering efficient training of LDMs and precise robotic control. To solve this problem, we present EmbodiedVAE, a novel video VAE that provides compact yet controllable latent representations tailored for the robotic manipulation world models. Specifically, EmbodiedVAE adopts a dual-encoder, single-decoder architecture with an asymmetric spatio-temporal compression module, which automatically disentangles the robot arm's motion from background environment, resulting in overall compactness while providing explicit embodied latent to support fine-grained action control. To further preserve the temporal consistency of learned robotic motion latent, we introduce an optimal-transport-based consistency module that explicitly enforces motion fidelity and inter-frame coherence. Extensive experiments demonstrate that our proposed EmbodiedVAE achieves superior reconstruction quality with high compression rate, while enabling more precise action control in robotic manipulation scenarios with an average of 2dB PSNR improvement over state-of-the-art video VAEs.",
+      "authors": [
+        "Jiayi Luo",
+        "Hanxin Zhu",
+        "Chen Gao",
+        "Jiankun Wang",
+        "Cong Wang",
+        "Tianyu He",
+        "Jianxin Li",
+        "Zhibo Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-04T01:01:18+00:00",
+      "link": "https://arxiv.org/pdf/2608.02990v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "video VAE learning compact and controllable latent representations from raw video",
+      "llm_evidence_cn": "从原始视频学习紧凑可控潜在表示的视频VAE",
+      "llm_evidence": "从原始视频学习紧凑可控潜在表示的视频VAE",
+      "canonical_evidence": "从原始视频学习紧凑可控潜在表示的视频VAE",
+      "llm_tldr_en": "Introduces EmbodiedVAE, a disentangled video VAE producing compact controllable latent representations for embodied manipulation world models.",
+      "llm_tldr_cn": "提出EmbodiedVAE，一种解耦视频VAE，为具身操作世界模型提供紧凑可控的潜在表示。",
+      "llm_tldr": "提出EmbodiedVAE，一种解耦视频VAE，为具身操作世界模型提供紧凑可控的潜在表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.03120v1",
+      "source": "arxiv",
+      "title": "SeCo-SBIR: Semantically Consistent Prompt Learning for Zero-Shot Sketch-Based Image Retrieval",
+      "abstract": "Adapting CLIP for zero-shot sketch-based image retrieval (ZS-SBIR) via prompt learning faces a fundamental tension: the model must bridge the sketch-photo domain gap through task-specific adaptation, yet the added flexibility risks overfitting to seen training categories and eroding CLIP's zero-shot generalization. We present SeCo-SBIR, a semantically consistent prompt learning framework that resolves this tension from both sides. First, a text-guided multi-modal prompting strategy routes learnable prompt vectors through CLIP's text encoder and projects the resulting intermediate representations into the visual encoder at every layer via learnable coupling functions. Because the text encoder has already learned robust, abstract category-level semantics from large-scale language supervision, this mechanism injects transferable semantic knowledge directly into the visual pathway - adapting the model to the sketch-photo domain while inherently favoring generalization to unseen classes. Second, a perturbation-based consistency constraint addresses the residual overfitting risk from the learnable coupling functions by aligning the adapted model with a frozen CLIP reference branch using an asymmetric InfoNCE objective - augmented inputs feed the frozen branch while clean inputs feed the trainable branch - anchoring the learned representations to CLIP's generalizable feature space. Together with lightweight adapters and a multi-objective loss combining triplet, NT-Xent, and classification terms, SeCo-SBIR achieves state-of-the-art results on all three standard ZS-SBIR benchmarks across categorical, generalized, and across-dataset settings.",
+      "authors": [
+        "Long Hoang Dang",
+        "Tuan Nguyen Huu",
+        "Nguyen Minh Hieu",
+        "Tu Minh Phuong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T04:41:45+00:00",
+      "link": "https://arxiv.org/pdf/2608.03120v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Prompt learning to adapt pretrained CLIP for zero-shot sketch-based image retrieval",
+      "llm_evidence_cn": "通过提示学习适配预训练CLIP模型用于零样本草图图像检索",
+      "llm_evidence": "通过提示学习适配预训练CLIP模型用于零样本草图图像检索",
+      "canonical_evidence": "通过提示学习适配预训练CLIP模型用于零样本草图图像检索",
+      "llm_tldr_en": "Proposes a semantically consistent prompt learning framework that adapts CLIP for zero-shot sketch-based image retrieval while preserving generalization.",
+      "llm_tldr_cn": "提出语义一致的提示学习框架，适配CLIP用于零样本草图图像检索，同时保持泛化能力。",
+      "llm_tldr": "提出语义一致的提示学习框架，适配CLIP用于零样本草图图像检索，同时保持泛化能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.03176v1",
+      "source": "arxiv",
+      "title": "Frequency-Decorrelated Temporal Ensembles for EEG--fNIRS Imagined-Handwriting Decoding",
+      "abstract": "Imagined handwriting offers a temporally rich paradigm for non-invasive neural decoding, yet reliable recognition across unseen participants remains difficult because scalp EEG is noisy and internally generated stroke sequences vary across individuals. The Multimodal Brain-Computer Interface Grand Challenge provides synchronized EEG and fNIRS for four-class subject-independent handwriting-trajectory classification. We propose FRED, a task-adapted system that models imagined handwriting as a multi-second motor sequence and trains a compact multi-scale temporal network on three complementary EEG frequency views. With three seeds per view, cross-band members produce substantially less-correlated errors than same-band replicas, yielding a clean nine-member ensemble accuracy of 0.8076/0.7242/0.7492 on the public/private/overall test partitions without test-set adaptation or output constraints. The submitted pipeline further incorporates transductive pseudo-label training, three EEG-Conformer members, posterior aggregation, and a paradigm-aware decoder. Because every 12-trial randomization block contains three instances of each class, the final predictions are obtained by Hungarian assignment under the known block quota. On one fixed posterior pool, independent, session-constrained, and block-constrained decoding achieve 0.7600, 0.7758, and 0.7952 overall accuracy, respectively. The complete system reaches 0.8498/0.7718/0.7952, ranking fourth on the private split. A modality audit finds fNIRS-only decoding at chance (0.2511 overall), while adding fNIRS to EEG changes accuracy by only +0.0025. These results identify frequency-diverse temporal EEG modeling and protocol-matched structured inference as the principal sources of performance in this sparse-montage EEG--fNIRS setting. The source code is available at https://github.com/XiuFan719/EEG-fNIRS-fuse-method-for-MM-challenge.",
+      "authors": [
+        "Xiao Fan",
+        "Hongbin Guo",
+        "Yubo Han",
+        "Yi Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.HC"
+      ],
+      "published": "2026-08-04T06:08:11+00:00",
+      "link": "https://arxiv.org/pdf/2608.03176v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decodes imagined handwriting from EEG-fNIRS neural signals",
+      "llm_evidence_cn": "从EEG-fNIRS神经信号解码想象手写",
+      "llm_evidence": "从EEG-fNIRS神经信号解码想象手写",
+      "canonical_evidence": "从EEG-fNIRS神经信号解码想象手写",
+      "llm_tldr_en": "FRED decodes imagined handwriting from EEG-fNIRS using a compact multi-scale temporal network for subject-independent BCI.",
+      "llm_tldr_cn": "FRED利用紧凑多尺度时间网络从EEG-fNIRS解码想象手写，实现跨被试BCI。",
+      "llm_tldr": "FRED利用紧凑多尺度时间网络从EEG-fNIRS解码想象手写，实现跨被试BCI。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.03391v1",
+      "source": "arxiv",
+      "title": "TimeRLM: Recursive Language Models Enable Precise Anomaly Localization in Long-Context Time-Series",
+      "abstract": "Precise anomaly localization over long-context time series is a crucial task in monitoring applications across clinical care, industrial operations, financial services, and logistics, where brief evidence may hide inside long spans of high-frequency data. Time-Series Language Models (TSLMs) are able to ingest time series data and verbalize findings on anomalies in natural language; however, recent benchmarks report a decrease in retrieval performance at long contexts, mirroring failure modes in text, vision, and audio. In the text domain, Recursive Language Models (RLMs) can recover much of this lost performance by keeping context external to the large language model (LLM), allowing the model to query it through code. We present TimeRLM, an RLM formulation for time-series that sequentially manipulates the signal using code and vision capabilities. We further introduce AnomalyXL, a synthetic long-context anomaly localization benchmark with programmatically injected anomalies that require precise retrieval. We implement five different task categories and two variants: AnomalyXL-MCQ and AnomalyXL-Localize. TimeRLM outperforms every evaluated TSLM and single-pass baseline on four of the five AnomalyXL-Localize tasks, reaching 0.682 IoU on localization and 0.745 on classify-with-evidence, versus at most 0.329 and 0.072 across all baselines. We post-train TimeRLM using reinforcement learning. The resulting model further improves performance and requires approximately one-third as many agent interaction turns as its untrained base model to produce a final answer. On unseen real-world ECG, sleep and software observability recordings, the post-trained TimeRLM retains or improves performance, surpassing TSLMs despite being trained exclusively on synthetic data. Our findings suggest recursive interaction with time-series is an effective approach for long-horizon retrieval.",
+      "authors": [
+        "Nicolas Zumarraga",
+        "Lorenzo Steno",
+        "Ning Wang",
+        "Max Rosenblattl",
+        "Thomas Kaar",
+        "Maxwell A. Xu",
+        "Kevin O'Sullivan",
+        "Markus Kreft",
+        "Elgar Fleisch",
+        "Paul Schmiedmayer",
+        "Patrick Langer",
+        "Robert Jakob"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-04T09:40:45+00:00",
+      "link": "https://arxiv.org/pdf/2608.03391v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Time-series anomaly localization in long-context data with recursive language models",
+      "llm_evidence_cn": "基于递归语言模型的长上下文时间序列异常定位",
+      "llm_evidence": "基于递归语言模型的长上下文时间序列异常定位",
+      "canonical_evidence": "基于递归语言模型的长上下文时间序列异常定位",
+      "llm_tldr_en": "Proposes TimeRLM to use recursive language models for precise anomaly detection in long-context time series.",
+      "llm_tldr_cn": "提出TimeRLM，利用递归语言模型实现长上下文时间序列中的精确异常检测。",
+      "llm_tldr": "提出TimeRLM，利用递归语言模型实现长上下文时间序列中的精确异常检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.03425v1",
+      "source": "arxiv",
+      "title": "State Propagation Also Satisfies: A Complex-Valued State-Space Model for Deterministic State Tracking",
+      "abstract": "Transformer-based architectures have dominated sequence modeling, largely due to the expressive power of attention mechanisms. However, for a class of deterministic state tracking tasks---such as parity checking, modular counting, and parenthesis matching---attention may be overkill. In this paper, we show that \\textbf{state propagation alone is sufficient}.   We propose the \\textbf{Complex State Propagator (CSP)}, a minimalistic recurrent architecture that \\textbf{only propagates hidden states} across layers without output projections at intermediate steps. The state is represented as a complex-valued vector, updated via input-dependent rotations in the complex domain. To enable deep propagation without gradient vanishing or degradation, we introduce a \\textbf{block-level skip connection} alongside element-wise complex normalization and SiLU activation at sequence boundaries. Applied with Focal Loss, CSP achieves \\textbf{100\\% accuracy} with perfect F1 scores across canonical tasks.",
+      "authors": [
+        "Xiaohe Li",
+        "Yang Lu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-04T10:16:24+00:00",
+      "link": "https://arxiv.org/pdf/2608.03425v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Complex-valued recurrent state propagation for sequence modeling and state tracking",
+      "llm_evidence_cn": "复数值循环状态传播用于序列建模与状态跟踪",
+      "llm_evidence": "复数值循环状态传播用于序列建模与状态跟踪",
+      "canonical_evidence": "复数值循环状态传播用于序列建模与状态跟踪",
+      "llm_tldr_en": "A minimal recurrent architecture using complex state propagation achieves deterministic state tracking without attention.",
+      "llm_tldr_cn": "提出仅用复数值状态传播的极简循环架构，无需注意力即可完成确定性状态跟踪。",
+      "llm_tldr": "提出仅用复数值状态传播的极简循环架构，无需注意力即可完成确定性状态跟踪。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.02870v2",
+      "source": "arxiv",
+      "title": "Maglev: Sliding Recurrent Memory",
+      "abstract": "We introduce \\ours{}, a recurrent Transformer architecture with fixed-size memory that generalizes sliding-window attention while remaining parallelizable during training. \\ours{} consists of two coupled models: a prefiller $Q$, which leverages full attention\\footnote{In practice, we use interleaved full and sliding-window attention for $Q$, as this yields stronger performance. The essential requirement is that $Q$ be more expressive than $P$, with access to the full history.} to produce memory targets $m'_t$, and a decoder $P$, which uses only sliding-window attention and recurrent K/V injection to produce decoder memories $m_t$ for next-token prediction. We train \\ours{} with a memory consistency loss that aligns $m_t$ with $m'_t$, allowing inference to use $P$ alone. Empirically, \\ours{} improves validation loss and downstream pretraining benchmarks over sliding-window and latent recurrent transformer baselines. Moreover, sharing parameters between $P$ and $Q$ reduces parameter memory while preserving most of the gains.",
+      "authors": [
+        "Bo Liu",
+        "Qiang Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-03T20:40:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.02870v2",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "recurrent Transformer architecture for next-token prediction with fixed-size memory",
+      "llm_evidence_cn": "用于下一个词元预测的循环Transformer架构",
+      "llm_evidence": "用于下一个词元预测的循环Transformer架构",
+      "canonical_evidence": "用于下一个词元预测的循环Transformer架构",
+      "llm_tldr_en": "Introduces a recurrent Transformer with fixed-size memory for efficient sequential prediction.",
+      "llm_tldr_cn": "提出带有固定大小记忆的循环Transformer用于高效序列预测。",
+      "llm_tldr": "提出带有固定大小记忆的循环Transformer用于高效序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.02907v1",
+      "source": "arxiv",
+      "title": "Bayesian Data Reweighting Improves Multimodal Retrieval for Knowledge-Based Visual Question Answering",
+      "abstract": "Multimodal retrievers are essential for knowledge-based visual question answering, where they retrieve external evidence for image-question pairs. However, existing contrastive training methods typically treat all unmatched query-document pairs as equally informative negatives, which is problematic because many unmatched documents may still be semantically relevant or partially useful. We propose Bayesian Data Reweighting, a probabilistic framework that models query-document importance as latent variables and adaptively infers posterior weights to downweight likely false negatives. With closed-form posterior updates under conjugate priors and stochastic EM optimization, our method consistently improves retrieval accuracy across three retrievers and seven knowledge-based VQA benchmarks.",
+      "authors": [
+        "Jingchen Sun",
+        "Shaobo Han",
+        "Ruiyi Zhang",
+        "Naresh Kumar Devulapally",
+        "Ming Liu",
+        "Yitao Long",
+        "Vishnu Suresh Lokhande",
+        "Changyou Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-03T21:46:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.02907v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Bayesian reweighting computes posterior importance weights for query-document pairs",
+      "llm_evidence_cn": "贝叶斯重加权为查询-文档对计算后验重要性权重",
+      "llm_evidence": "贝叶斯重加权为查询-文档对计算后验重要性权重",
+      "canonical_evidence": "贝叶斯重加权为查询-文档对计算后验重要性权重",
+      "llm_tldr_en": "Presents a Bayesian data reweighting framework that adaptively downweights false negatives for multimodal retrieval.",
+      "llm_tldr_cn": "提出贝叶斯数据重加权框架，自适应降低假负例权重以改进多模态检索。",
+      "llm_tldr": "提出贝叶斯数据重加权框架，自适应降低假负例权重以改进多模态检索。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.02879v1",
+      "source": "arxiv",
+      "title": "Interpreting Black-Box Large Language Models with Sentence-Level Energy Landscapes",
+      "abstract": "The widespread adoption of proprietary Large Language Models (LLMs) accessed strictly through closed APIs has created a critical challenge for responsible deployment: a fundamental lack of interpretability. To address this, we propose a model-agnostic, post-hoc attribution interpreter operating at the sentence level. Our approach trains an Energy-Based Model (EBM) as a surrogate to capture the LLM's internal conceptual consistency between prompts and responses. This energy landscape guides the training of a lightweight interpreter network. Uniquely, our interpreter operates as a standalone tool; once trained, it quantifies the influence of prompt sentences on a user-specified target output without requiring further API queries to the LLM. By globally training a local interpreter across diverse inputs, our framework captures broader generation patterns and mitigates instance-specific biases. Experiments demonstrate that our EBM accurately simulates the target LLM, allowing the interpreter to effectively identify the prompt sentences most influential in generating specific target outputs.",
+      "authors": [
+        "Maryam Rezaee",
+        "Pooriya Safaei",
+        "Maryam Asgarinezhad",
+        "Fatemeh Seyyedsalehi"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-03T21:01:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.02879v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "quantifies influence of prompt sentences on target output via attribution interpreter",
+      "llm_evidence_cn": "通过归因解释器量化提示句子对目标输出的影响",
+      "llm_evidence": "通过归因解释器量化提示句子对目标输出的影响",
+      "canonical_evidence": "通过归因解释器量化提示句子对目标输出的影响",
+      "llm_tldr_en": "Trains an energy-based surrogate and lightweight interpreter to attribute LLM outputs to input sentences without further API queries.",
+      "llm_tldr_cn": "训练基于能量的替代模型和轻量解释器，将LLM输出归因于输入句子，无需额外API查询。",
+      "llm_tldr": "训练基于能量的替代模型和轻量解释器，将LLM输出归因于输入句子，无需额外API查询。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.02946v1",
+      "source": "arxiv",
+      "title": "Sedentary Behavior Classification for Wearable Sensors with a CNN-BiLSTM Model",
+      "abstract": "Accurate detection of sedentary behavior is important for studying health risks related to prolonged sitting, but posture-based classification remains challenging with wearable sensors, especially at the wrist. We study whether a deep learning model trained on hip-worn accelerometer data can transfer to wrist-worn accelerometer data for sitting versus non-sitting classification. We use CHAP, a CNN-BiLSTM model originally developed for hip accelerometers, and evaluate its zero-shot performance on wrist data as well as its adaptation through finetuning with varying amounts of labeled wrist data. Experiments are conducted on the iWatch dataset with ground-truth posture labels derived from wearable cameras. The hip-trained model performs strongly on hip data without retraining, but accuracy drops on wrist data due to sensor placement shift. Finetuning CHAP provides consistent advantages over transformer models trained from scratch. These findings suggest that hip-based pretraining provides a useful starting point for wrist deployment, while highlighting the need for wrist-specific adaptation to handle higher signal variability.",
+      "authors": [
+        "Yuliang Chen",
+        "Weiwei Shi",
+        "Jingjing Zou",
+        "Rong Zablocki",
+        "Animesh Kumar",
+        "Jordan A. Carlson",
+        "Sheri J. Hartman",
+        "Mikael Anne Greenwood-Hickman",
+        "Paul R. Hibbing",
+        "Marta Jankowska",
+        "Jay Yang",
+        "Arun Kumar",
+        "Loki Natarajan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-03T23:23:31+00:00",
+      "link": "https://arxiv.org/pdf/2608.02946v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Zero-shot and finetuning with limited labeled wrist data for cross-domain adaptation",
+      "llm_evidence_cn": "零样本和少量标注腕部数据微调实现跨域适应",
+      "llm_evidence": "零样本和少量标注腕部数据微调实现跨域适应",
+      "canonical_evidence": "零样本和少量标注腕部数据微调实现跨域适应",
+      "llm_tldr_en": "Transfers a hip-trained CNN-BiLSTM sedentary classifier to wrist sensors with limited labeled data.",
+      "llm_tldr_cn": "将臀部训练的CNN-BiLSTM久坐分类器迁移到腕部传感器，使用少量标注数据。",
+      "llm_tldr": "将臀部训练的CNN-BiLSTM久坐分类器迁移到腕部传感器，使用少量标注数据。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.03047v1",
+      "source": "arxiv",
+      "title": "AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching",
+      "abstract": "Generating natural-language coaching feedback on motor skills can accelerate learning, yet expert coaches are scarce and expensive. Existing reference-based methods require expert demonstrations at both training and inference time, limiting practical deployment. We propose AIDE (Automated Instruction via Distilled Expertise), a framework that exploits expert references only during training and generates feedback from a learner's pose sequence alone at inference. A teacher model first learns to generate feedback from paired learner-expert poses via a frozen language model, producing separate learner tokens and difference tokens that encode the learner-expert difference. A student model then inherits the teacher's encoder and weight initialization, replacing the explicit expert comparison with an auxiliary module that produces complementary tokens from the learner's pose alone. On the ExpertAF dataset, AIDE outperforms reference-free baselines on most metrics and performs comparably to methods requiring expert demonstrations at both training and inference, with LLM-based evaluation supporting these findings.",
+      "authors": [
+        "Yoshiki Ito"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.MM"
+      ],
+      "published": "2026-08-04T02:58:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.03047v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses a frozen pretrained language model to generate coaching feedback from pose sequences",
+      "llm_evidence_cn": "利用冻结的预训练语言模型从姿态序列生成教练反馈",
+      "llm_evidence": "利用冻结的预训练语言模型从姿态序列生成教练反馈",
+      "canonical_evidence": "利用冻结的预训练语言模型从姿态序列生成教练反馈",
+      "llm_tldr_en": "AIDE distills expert knowledge into a student model that provides reference-free motor skill coaching using a frozen language model.",
+      "llm_tldr_cn": "AIDE通过冻结语言模型蒸馏专家知识，实现无需参考的运动技能教练反馈。",
+      "llm_tldr": "AIDE通过冻结语言模型蒸馏专家知识，实现无需参考的运动技能教练反馈。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

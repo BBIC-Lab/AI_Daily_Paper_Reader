@@ -1,0 +1,142 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-007.webp",
+      "caption": "Figure 1: TimeRLM interacts with time-series through code. The orchestrator reasons in natural language and emits Python into a sandboxed REPL (right), where the signal is an environment variable. Sub-RLMs can be invoked.",
+      "page": 2,
+      "index": 7,
+      "width": 993,
+      "height": 435
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-011.webp",
+      "caption": "Figure 2: AnomalyXL: evidence-grounded anomaly localization. Five task families (localize, classify, measure magnitude, localize in all channels, lead-lag) in two formulations over the same signal: AnomalyXL-MCQ and AnomalyXL-Localize.",
+      "page": 3,
+      "index": 11,
+      "width": 990,
+      "height": 450
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-001.webp",
+      "caption": "Table 1: AnomalyXL results. For metrics see Table 9. Number of samples listed below each task. LLMs/RLMs are zero-shot, TSLMs are fine-tuned. Bold/underline marks best/second-best. MCQ: Pres = presence, ST = start time, Cat = categorization, Mag = magnitude, Id = identification, Ind = indicator. Localize: Loc = localize, C+E = classify + evidence, MMag = measure magnitude, LAC = localize all channels, LL = lead/lag + magnitude. * OOM: Out of Memory.",
+      "page": 6,
+      "index": 1,
+      "width": 1059,
+      "height": 542
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-002.webp",
+      "caption": "Table 2: ARFBench Tier 2 results. Accuracy and MacroF1 as defined in Table 9. Bold/underline: best/second.",
+      "page": 6,
+      "index": 2,
+      "width": 502,
+      "height": 409
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-008.webp",
+      "caption": "Table 3: Zero-shot results. Performance on unseen LTAF and Sleep sets. Bold/underline: best/second per column.",
+      "page": 7,
+      "index": 8,
+      "width": 524,
+      "height": 388
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-004.webp",
+      "caption": "Figure 3: GPT-5.5 precise reward by category and context length, for all four inference-time configurations (verified against Table 1 to three decimals). Each cell shows the mean reward (bold) and its change in percentage points relative to that category’s shortest sampled length; color encodes this delta (green = improves with length, red = degrades).",
+      "page": 11,
+      "index": 4,
+      "width": 1034,
+      "height": 310
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-003.webp",
+      "caption": "Figure 4: GPT-5.5 accuracy versus context length, averaged over the three length-swept precise categories (localize, classify-with-evidence, measure-magnitude) for each inference-time configuration.",
+      "page": 11,
+      "index": 3,
+      "width": 483,
+      "height": 365
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-014.webp",
+      "caption": "Table 6: The five AnomalyXL tasks, precise versus coarse. Precise answers are strict JSON, scored by the listed continuous metric in [0, 1]; coarse answers are scored by choice accuracy. Magnitude’s relative error is converted to a score via max(0, 1− rel err/0.5), a linear ramp from full credit at an exact match to zero at 50% relative error. The localize no-anomaly case is answered with {”present”: false}. See Fig. 2 for a schematic and Fig. 5 for worked examples drawn from the released data.",
+      "page": 13,
+      "index": 14,
+      "width": 982,
+      "height": 234
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-009.webp",
+      "caption": "Figure 5: Six worked AnomalyXL-Localize examples, sampled from the released dataset. Full-resolution signal in gray with the gold window shaded; zoomed insets show the injected transform up close. Questions and gold answers are given in the text above.",
+      "page": 14,
+      "index": 9,
+      "width": 1027,
+      "height": 568
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-010.webp",
+      "caption": "Table 7: AnomalyXL-Localize composition (released AnomalyXL-Localize shard, seed 42). Window widths are 8–256 samples throughout, independent of L; magnitude is in channel-σ units.",
+      "page": 14,
+      "index": 10,
+      "width": 814,
+      "height": 181
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-006.webp",
+      "caption": "Figure 6: AnomalyXL-Localize dataset composition.",
+      "page": 15,
+      "index": 6,
+      "width": 471,
+      "height": 339
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-005.webp",
+      "caption": "Table 8: Coarse projection rules (AnomalyXL-MCQ, projected from AnomalyXL-Localize with seed 42). Localize yields two coarse rows per sampled precise row (presence and start-time); every other category yields one.",
+      "page": 15,
+      "index": 5,
+      "width": 1010,
+      "height": 181
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-017.webp",
+      "caption": "Table 9: AnomalyXL metrics across both benchmark formulations. For each task, the output the model is required to produce, the quantity recovered from it by the parser, and the resulting score. Windows are half-open index intervals and IoU is defined in Section E.1, Eq. (1). Gold quantities are unhatted, predictions hatted; L is the recording length. The two regimes are posed over the same underlying recordings, so the only difference between them is the scoring function in the third column: continuous and evidence-grounded above, a {0, 1} choice indicator below. Per-category numbers are unweighted row means (Section E.8).",
+      "page": 16,
+      "index": 17,
+      "width": 1052,
+      "height": 880
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-016.webp",
+      "caption": "Figure 9: Generalization-set class and context-length distributions, computed directly from the released ltaf-anomaly-v2 and sleep-anomaly-v2 parquet files. Dashed line marks the median window length.",
+      "page": 17,
+      "index": 16,
+      "width": 485,
+      "height": 341
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-015.webp",
+      "caption": "Table 10: Generalization set composition. Window counts are given as (anomalous / anomaly-free). Both subsets are balanced across anomaly kinds; channels are z-normalized per channel.",
+      "page": 17,
+      "index": 15,
+      "width": 479,
+      "height": 254
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-013.webp",
+      "caption": "Figure 7: LTAF ECG examples (both channels, ECG 0/ECG 1, stacked): a PVC beat, an APC beat, and a no-anomaly window, sampled from the released ltaf-anomaly-v2 dataset. Gold windows and exact values are given in the text above.",
+      "page": 18,
+      "index": 13,
+      "width": 1024,
+      "height": 292
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03391v1/fig-012.webp",
+      "caption": "Figure 8: Sleep-PSG examples (four channels, AIRFLOW/CHEST/ABD/SaO2, stacked): one window per respiratory-arousal kind plus a no-anomaly window, sampled from the released sleep-anomaly-v2 dataset. Gold windows and exact values are given in the text above.",
+      "page": 18,
+      "index": 12,
+      "width": 1024,
+      "height": 588
+    }
+  ]
+}

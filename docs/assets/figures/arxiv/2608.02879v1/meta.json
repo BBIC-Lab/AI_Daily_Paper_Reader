@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.02879v1/fig-001.webp",
+      "caption": "Figure 1: Overview of the Proposed Framework. The prompt and response of a black-box LLM are split into sentences and embedded via a pre-trained model. An encoding module maps these embeddings to a concept space where proximity reflects relevance. Subsequently, an interaction module evaluates the consistency between input and output concepts to identify the most influential prompt sentences. These modules are trained using signals from an energy network that simulates the generation process of the target LLM.",
+      "page": 2,
+      "index": 1,
+      "width": 936,
+      "height": 339
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02879v1/fig-006.webp",
+      "caption": "Figure 2: Architectural Overview. Schematics for (a) the energy function ELM and (b) the interpreter network IN .",
+      "page": 4,
+      "index": 6,
+      "width": 752,
+      "height": 502
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02879v1/fig-002.webp",
+      "caption": "Figure 3: Confusion Matrices Evaluating Interpretation Plausibility. Each cell (i, j) represents how well the Interpreter in row i matches the scores of the Oracle in column j for interpreting our target LLM. Soft Top-1 (left) measures if the Interpreter’s top choice appears in the Oracle’s top-2. nDCG (right) measures ranking correlation. Our proposed ESCI model shows remarkable alignment with GPT-J and GPT-2, suggesting it captures the probabilistic dependencies of standard causal language modeling effectively despite its small size.",
+      "page": 7,
+      "index": 2,
+      "width": 950,
+      "height": 394
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02879v1/fig-005.webp",
+      "caption": "Figure 4: Qualitative Comparison of Attribution Scores. Left: Prompt snippets. Middle: Attribution scores from ESCI and oracles. Right: Target sentence from the LLM response. ID 6: ESCI correctly attributes the simple tone to the style instruction, while oracles focus on the subject. ID 33: ESCI over-focuses on the topic keyword, while oracles correctly identify the question. ID 94: A case of chaos where the target response is a broad analogy.",
+      "page": 8,
+      "index": 5,
+      "width": 950,
+      "height": 366
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02879v1/fig-004.webp",
+      "caption": "Table 3: Hyperparameters for theMHybrid EBM.",
+      "page": 14,
+      "index": 4,
+      "width": 458,
+      "height": 667
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02879v1/fig-003.webp",
+      "caption": "Figure 6: Pre-training Pipeline of the EBM. The architecture projects SentenceBERT embeddings into a dynamic concept space via self-attention, followed by a cross-attention mechanism to model input-output interactions. An MLP aggregates these features to compute a scalar energy score ELM(x,y; θ). The model is optimized using a dual-objective InfoNCE loss: fidelity contrasts authentic pairs (x,y) against global negatives inNi (e.g., human responses) to learn the target distribution, while local dependency contrasts partial sequences against batch negatives in Ni to enforce fine-grained causal precision. Thus, the weighted sum of InfoNCE losses minimizes the energy of authentic pairs while maximizing the energy of corrupted samples.",
+      "page": 14,
+      "index": 3,
+      "width": 367,
+      "height": 495
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02879v1/fig-007.webp",
+      "caption": "Table 4: Hyperparameters for the Interpreter.",
+      "page": 16,
+      "index": 7,
+      "width": 415,
+      "height": 490
+    },
+    {
+      "url": "assets/figures/arxiv/2608.02879v1/fig-008.webp",
+      "caption": "Figure 7: Overview of the Alternating Optimization Protocol. The framework employs a joint training strategy to prevent distribution shift. (Left) In the standard phase, the interpreter generates a binary mask over the prompt sentences; its parameters are updated to maximize the energy gap using the frozen EBM as a critic. (Right) Periodically, the EBM is fine-tuned to adapt to the interpreter’s evolving distribution. This involves querying the target LLM with the currently masked prompt to obtain a fresh, ground-truth response, thereby grounding the energy landscape in the model’s actual behavior under partial input.",
+      "page": 16,
+      "index": 8,
+      "width": 446,
+      "height": 406
+    }
+  ]
+}

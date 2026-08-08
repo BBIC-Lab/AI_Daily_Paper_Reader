@@ -1,0 +1,316 @@
+Title: Sedentary Behavior Classification for Wearable Sensors with a CNN-BiLSTM Model
+
+URL Source: https://arxiv.org/pdf/2608.02946v1
+
+Published Time: Wed, 05 Aug 2026 00:23:40 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+> IEEE TRANSACTIONS AND JOURNALS TEMPLATE 1
+
+# Sedentary Behavior Classification for Wearable Sensors with a CNN-BiLSTM Model 
+
+Yuliang Chen, Weiwei Shi, Jingjing Zou, Rong Zablocki, Animesh Kumar, Jordan A. Carlson, Sheri J. Hartman, Mikael Anne Greenwood-Hickman, Paul R. Hibbing, Marta Jankowska, Jay Yang, Arun Kumar ∗,and Loki Natarajan ∗
+
+Abstract — Accurate detection of sedentary behavior is important for studying health risks related to prolonged sit-ting, but posture-based classification remains challenging with wearable sensors, especially at the wrist. We study whether a deep learning model trained on hip-worn ac-celerometer data can transfer to wrist-worn accelerometer data for sitting versus non-sitting classification. We use CHAP, a CNN-BiLSTM model originally developed for hip accelerometers, and evaluate its zero-shot performance on wrist data as well as its adaptation through finetuning with varying amounts of labeled wrist data. Experiments are conducted on the iWatch dataset with ground-truth pos-ture labels derived from wearable cameras. The hip-trained model performs strongly on hip data without retraining, but accuracy drops on wrist data due to sensor placement shift. Finetuning CHAP provides consistent advantages over transformer models trained from scratch. These find-ings suggest that hip-based pretraining provides a useful starting point for wrist deployment, while highlighting the need for wrist-specific adaptation to handle higher signal variability. 
+
+Index Terms — Human Activity Recognition, Sedentary 
+
+This work was partially supported by funding from the National Insti-tute of Diabetes and Digestive and Kidney Diseases (R01DK114945) and the National Heart, Lung, and Blood Institute (1R01HL168535, R01HL130483, R01HL166802). Yuliang Chen is with the Halıcıo ˘ glu Data Science Institute, Uni-versity of California, San Diego, La Jolla, CA 92093, USA (Email: yuc204@ucsd.edu). Loki Natarajan, Jingjing Zou, Rong Zablocki, Sheri J. Hart-man, and Weiwei Shi, are with the Herbert Wertheim School of Public Health and Human Longevity Science, University of Cal-ifornia, San Diego, La Jolla, CA 92093, USA (Email: lnatara-jan@ucsd.edu; j2zou@health.ucsd.edu; rzablocki@health.ucsd.edu; sjhartman@health.ucsd.edu; w2shi@ucsd.edu). Animesh Kumar is with the Department of Computer Science and Engineering, University of California, San Diego, La Jolla, CA 92093, USA (Email: ank028@ucsd.edu). Jordan A. Carlson is with the Center for Children’s Healthy Lifestyles & Nutrition, Children’s Mercy Kansas City, University of Missouri-Kansas City, Kansas City, MO 64108, USA. (Email: jacarlson@cmh.edu). Mikael Anne Greenwood-Hickman is with the Kaiser Permanente Washington Health Research Institute, Seattle, WA 98101, USA (Email Mikael.Anne.Greenwood-Hickman@kp.org). Paul R. Hibbing is with the Department of Kinesiology and Nutrition, University of Illinois Chicago, Chicago, IL, 60612 USA (Email: paulhib-bing@gmail.com) Marta Jankowska and Jiue-An Yang are with the Beckman Re-search Institute, City of Hope Cancer Center, Department of Pop-ulation Sciences, Duarte, CA 91010 (Email: mjankowska@coh.org; jyang@coh.org). Arun Kumar is with the Department of Computer Science and Engi-neering and the Halıcıo ˘ glu Data Science Institute, University of Califor-nia, San Diego, La Jolla, CA 92093, USA (Email: akk018@ucsd.edu). *Arun Kumar and Loki Natarajan are co-senior authors 
+
+Behavior, Deep Learning Models, Transfer Learning 
+
+I. I NTRODUCTION 
+
+Sedentary behavior is a recognized risk factor for chronic disease [1]. Total sedentary time and prolonged sitting bouts are associated with adverse cardiometabolic profiles and in-creased morbidity and mortality risk, even after accounting for moderate-to-vigorous physical activity ( [2] and refer-ences therein). Frequent breaks from sitting, especially those that break up long sitting bouts, are associated with lower metabolic risk [3]. These clinical links motivate accurate mea-surement of sedentary bout duration and breaks in sedentary time in free-living settings. Wearable accelerometers are widely used to quantify phys-ical activity and inactivity because they enable objective, con-tinuous monitoring outside the laboratory and reduce biases inherent in self-report. In large behavioral and population studies, hip or wrist accelerometers are practical for long-term wear and can be deployed at scale. However, most studies quantify sedentary behavior using energy-expenditure-based cut points applied to hip-worn or wrist-worn acceleration signals [4]. This intensity-only approach does not explicitly capture posture, a defining component of sedentary behavior. As a result, low-movement activity (i.e., standing) can be misclassified as sedentary, and transitions can be miscounted, leading to overestimation of breaks in sedentary time and underestimation of sedentary bout durations [5]. Early wrist-based efforts applied traditional machine learning methods such as support vector machines with hand-crafted features [6], [7], but their reliance on manual feature engineering limited their capacity to model longer temporal structure. Recent work in human activity recognition has increasingly adopted deep learning models that learn representations directly from raw accelerometer signals along three axes [8]. To better capture posture, the CHAP model [8] was designed for hip-worn accelerometers, where the signal more directly reflects trunk orientation and whole-body posture. When compared to a gold-standard thigh-worn device, the CHAP model achieves over 90% balanced accuracy for sitting versus non-sitting classification using triaxial hip-worn accelerometers. The open question is whether this hip-trained model can be used in wrist-only settings without collecting new labels, since wrist-worn devices are already common in consumer and research wearables, are easier to wear continuously, and arXiv:2608.02946v1 [cs.LG] 3 Aug 2026 2 IEEE TRANSACTIONS AND JOURNALS TEMPLATE CHAP   
+
+> CNN BiLSTM Linear
+> Head
+> xyzACC
+> Wrist accelerometer input
+> Sitting / Non-Sitting
+> Sitting / Non-Sitting
+> Initialized
+> CHAP FT
+
+Fig. 1 : Overview of the study . We use CHAP weights pretrained on hip accelerometer data from a prior study, then finetune them on iWatch wrist / hip accelerometer data for the same sitting versus non-sitting classification task. often yield higher compliance in long-term monitoring. At the same time, cross-body position transfer is underexplored because wrist motion is more task-dependent and the sensor orientation and signal statistics differ from the hip, even when the underlying behavior is the same [9]. Evidence that activity recognition models can generalize across related domains, for example from adults to children [10], suggests that cross-device generalization may also be possible, motivating asystematic test of whether hip-to-wrist transfer can work and how much labeled wrist data is needed when it does not. In this work, we test cross-placement generalization by applying the hip-trained CHAP model to wrist accelerometer data with no retraining. We then quantify adaptation by finetuning CHAP with increasing amounts of labeled wrist data and tracking how performance changes as more labels are added. In parallel, we train transformer-based models from scratch on the same dataset to compare against transfer under matched data conditions and to provide wrist-specific baselines. 
+
+II. M ETHODS 
+
+A. Data 
+
+Study Sample and Data Collection. Our study sample comprised adult participants in the iWatch study, an obser-vational study that objectively measured sitting and physical activity patterns using wearable sensors. The study enrolled 148 adults aged 24 to 85 years, of whom 50% were female, 22% were non-White, and 20% were Hispanic. The study was approved by the Institutional Review Board (IRB) at the University of California, San Diego, IRB# 111160, date 07/12/2011. All participants provided their informed consent. 
+
+Data Collection and Processing. The study used a person-worn camera, SenseCam (Vicon Revue), which captured first-person images approximately every 20 seconds. Participants wore the camera on a lanyard around their necks for 7 days (excluding nighttime, when devices were charged). SenseCam images were imported into the Clarity SenseCam Browser [11]; a standardized annotation protocol was developed and inter-rater reliability was established [12]. Annotated images classified participant activity into the following categories: 
+
+Sedentary/Sitting, Standing Still, Standing Moving, Walk-ing/Running, Vehicle, Nonwear, Uncodable. For this study, these categories were collapsed into two binary classes: Sitting (Sedentary, Vehicle ) and Nonsitting ( Standing Still, Standing Moving, Walking/Running ); nonwear and uncodable intervals were excluded. Data collection also included hip- and wrist-worn ActiGraph GT3X+ accelerometers [13], [14], attached to a belt (hip/waist) or a wristband (non-dominant wrist). Participants typically wore the monitors for 7 days during waking hours (hip) or 24 hours (wrist). The devices recorded raw triaxial acceleration (x, y, z axes) in gravitational units at a 30 Hz sampling rate. Following the protocol described in [15], data from the GT3X+ and SenseCam devices were temporally aligned and merged to generate a single 30 Hz output file per participant. A few participants lacked concurrent wear of both devices, resulting in a final analytic sample of 141 participants for the hip sensor and 143 for the wrist sensor. Non-wear periods were identified by the Choi algorithm [16] based on consecutive zero counts of vector magnitude ( = px2 + y2 + z2) from GT3X+ minute-level count files and subsequently removed. The resulting files were segmented into non-overlapping 10-s windows, yielding 2,456,142 windows (6,822 h) for hip-worn data and 2,960,580 windows (8,223 h) for wrist-worn data. The dataset was randomly partitioned into training, validation, and test sets using a 60-15-25 split. Partitioning was performed at the participant level, ensuring that data from the same individual did not appear across subsets, thereby avoiding data leakage and supporting evaluation on unseen users. 
+
+Label Distribution. The dataset is highly imbalanced, with 1,176,336 sitting versus 403,032 non-sitting windows for the hip sensor, and 1,189,272 sitting versus 427,896 non-sitting windows for the wrist sensor. This skew can bias models toward predicting sitting more often, making balanced ac-curacy a more appropriate metric than overall accuracy. To address the imbalance, we used a weighted binary cross-entropy loss that upweights the minority non-sitting class (details in Section VI). 
+
+B. CHAP Model 
+
+Model Purpose and Training Context. CHAP [8] is a Convolutional Neural Network–Bidirectional Long Short-Term Memory (CNN-BiLSTM) sequence model developed for sitting versus non-sitting classification from hip-worn ActiGraph GT3X+ accelerometer data, trained on 1,397 adults using labels derived from concurrently worn thigh-mounted activPAL devices. Here, we test whether its architecture and pretrained weights transfer to the iWatch dataset, which in-cludes both hip and wrist placements. 
+
+Model Architecture. As shown in Figure 1, each prediction uses a 7-minute triaxial accelerometer segment resampled at 10 Hz. The segment is partitioned into T = 42 consecutive, non-overlapping 10-second windows, yielding an input tensor 
+
+X ∈ RT ×100 ×3, where the t-th window is Xt ∈ R100 ×3.A CNN encodes each window independently into a 128-dimensional feature vector, ht = fCNN (Xt) ∈ R128 . A BiLSTM then captures temporal dependencies across the full AUTHOR et al. : TITLE 3
+
+7-minute context, producing context-aware features ˜ht =
+
+fBiLSTM (h1: T )t. A shared linear classifier maps each repre-sentation to a scalar score ℓt = w⊤˜ht + b, and the sitting probability is pt = σ(ℓt), where σ(·) denotes the sigmoid function. 
+
+Transferability. We test whether a CHAP model pretrained on hip data generalizes to a new cohort and a different device placement by evaluating two settings on the iWatch hip and wrist datasets. (1) CHAP Zero-shot (CHAP ZS ) applies the hip-pretrained model to iWatch data with no parameter updates. (2) CHAP Finetuning (CHAP FT ) updates all model parameters on the iWatch training set and is evaluated on the corresponding iWatch hip or wrist test set. Comparing CHAP ZS and CHAP FT separates direct transfer from gains due to supervised adaptation. 
+
+C. Transformer-based Models 
+
+Given the strong performance of Transformer models [17] and their increasing adoption for sensor time series modeling [18], [19], we include a standard Transformer-based model as a baseline to compare to CHAP FT . Specifically, we tokenize the multichannel accelerometer signal into fixed length temporal patches and embed each patch as a token, following the generic patch embedding design popularized by ViT and PatcTST [19], [20]. We train the ViT Small model on the iWatch training set with supervised training and evaluate on the test set. 
+
+III. R ESULTS 
+
+We first examine the hip–wrist distribution gap, then evalu-ate the three model settings, CHAP ZS , CHAP FT , and ViT Small ,on the iWatch test set using SenseCam-derived labels as ground truth. Balanced accuracy is the primary metric; F1 score is supplementary. We also report subject-level perfor-mance, since the subject is typically the unit of analysis in clinical studies. 
+
+A. Hip-Wrist Distribution Gap 
+
+Figure 2 compares the joint distributions of window-level mean and standard deviation of acceleration for hip and wrist sensors using 10-second windows, with sitting in blue and non-sitting in red. For each window, we compute the per-axis mean and standard deviation and then average across axes. In both placements, sitting and non-sitting overlap strongly with no clear boundary. The hip distribution is compact and concentrated at low variance, while the wrist distribution is more spread due to incidental arm motion, including during sitting. This indicates that simple statistics cannot reliably separate the two classes, motivating the use of nonlinear models that exploit richer temporal structure. The figure also shows a clear shift between hip and wrist distributions. We quantify this via the Jensen–Shannon Dis-tance (JSD) [21] between the two joint histograms; the JSD = 0.486, indicating a large distribution gap. This gap suggests that transferring a hip-trained model to wrist data without adaptation will likely reduce performance and that wrist-specific finetuning is needed to handle the placement shift. 0.8 0.0 0.8 Mean acceleration 0.0 0.4 0.8 1.2 Standard deviation   
+
+> Hip sensor labels
+> 0.8 0.0 0.8 Mean acceleration
+> Wrist sensor labels
+> Sitting Non-sitting
+
+Fig. 2 : Scatter plots of mean acceleration versus standard deviation (gravitational units) within 10-sec windows for hip and wrist sensors, colored by activity labels . Blue denotes sitting and red denotes non-sitting. 
+
+TABLE I : Balanced accuracy (Bal acc) and F1-score (%) of CHAP ZS , CHAP FT , and ViT Small across hip and wrist placements.                                                   
+
+> Placement Metric CHAP ZS CHAP FT ViT Small
+> Train Validation Test Train Validation Test Train Validation Test
+> Hip Bal acc 90.43 92.34 88.74 90.36 92.29 88.71 86.62 87.41 85.22 F1 90.95 92.66 89.72 91.28 92.99 90.04 88.85 89.84 87.77 Wrist Bal acc 73.79 73.19 71.83 88.71 86.01 82.56 82.84 82.20 79.39 F1 69.83 69.72 69.40 89.26 88.02 84.97 86.27 86.38 83.45
+
+B. Input-level Performance 
+
+Table I summarizes cross-placement transfer learning re-sults. CHAP ZS achieves 88.74% test balanced accuracy on the hip dataset, and finetuning on iWatch hip yields minimal improvement, indicating that the hip-pretrained representation transfers well to hip data in this cohort. On the wrist dataset, CHAP ZS drops to 71.83%, but CHAP FT raises performance to 82.56%. Combined with the hip-to-wrist distribution shift in Figure 2, this indicates that the learned representations are not fully placement-agnostic and require wrist-specific adaptation for reliable transfer. A randomly initialized ViT Small trained on iWatch under-performs CHAP FT despite having more parameters. CHAP FT 
+
+benefits from initialization already trained for sitting vs. non-sitting on hip data, so finetuning mainly adjusts the model to the iWatch cohort and, for wrist, to the placement shift. In contrast, ViT Small must learn both useful representations and the decision boundary from scratch using only iWatch labels. Table II compares confusion matrices across placements and models. The results reveal a wrist-specific, asymmetric error pattern: CHAP FT labels 22.9% of non-sitting as sitting versus 12.0% of sitting as non-sitting. This likely reflects low-motion upright activities (i.e., standing) that produce wrist signals similar to sitting, inflating sitting predictions. The hip classifier shows fewer and more balanced errors (14.1% non-sitting →sitting; 8.5% sitting →non-sitting), consistent with hip motion being more directly coupled to posture. ViT Small am-plifies the same wrist bias (30.7% non-sitting →sitting) and slightly overpredicts sitting prevalence (72.3% vs. 70.8%), while CHAP FT remains closer to the true rate (69.0%). Overall, CHAP FT achieves higher balanced accuracy by improving non-sitting recall on wrist (77.1% vs. 69.3%), indicating more reliable separation of sitting from low-motion non-sitting. 4 IEEE TRANSACTIONS AND JOURNALS TEMPLATE 
+
+Predicted Actual Non-sit Sit 
+
+Non-sit 0.86 0.14 Sit 0.09 0.91 (a) CHAP FT , Hip 
+
+Predicted Actual Non-sit Sit 
+
+Non-sit 0.77 0.23 Sit 0.12 0.88 (b) CHAP FT , Wrist 
+
+Predicted Actual Non-sit Sit 
+
+Non-sit 0.79 0.21 Sit 0.09 0.91 (c) ViT small , Hip 
+
+Predicted Actual Non-sit Sit 
+
+Non-sit 0.69 0.31 Sit 0.11 0.89 (d) ViT small , Wrist 
+
+TABLE II : Confusion matrices for sitting versus non-sitting across 10-second windows. Top row: CHAP FT ; bottom row: ViT Small . Left: hip; right: wrist. Each entry represents the fraction of samples for a given actual class that are predicted as the corresponding class. 
+
+C. Subject-level Performance 
+
+We further examine subject-level performance to quantify participant heterogeneity and localize the errors observed above. Metrics were computed per subject and then averaged across subjects. We report sensitivity (proportion of true sitting correctly classified), specificity (proportion of true non-sitting correctly classified), positive predictive value (PPV), negative predictive value (NPV), balanced accuracy (mean of sensitivity and specificity), and F1 score (harmonic mean of sensitivity and PPV). True positives are defined as correctly identified sitting. Results are presented in Table III. For the hip placement, CHAP ZS and CHAP FT performed nearly identically (balanced accuracy 0.87 vs. 0.86; F1 0.91 vs. 0.91), indicating that finetuning provides limited additional benefit for hip data. ViT Small was consistently lower across all metrics. For the wrist placement, CHAP FT clearly outperformed both CHAP ZS and ViT Small . CHAP FT achieved the highest mean balanced accuracy (0.81) versus CHAP ZS (0.70) and ViT Small 
+
+(0.79). The largest gap was in sensitivity (CHAP FT : 0.88 vs. CHAP ZS : 0.68). Differences between CHAP FT and ViT Small 
+
+were much smaller ( ≤ 3 %), except for specificity and F1, where CHAP FT exceeded ViT Small by approximately 7%. Finally, we evaluated sedentary behavior accumulation pat-terns for each subject by computing four measures: (1) Total Sedentary Time (daily average minutes sedentary), (2) Sit-to-stand Transitions (daily average count), (3) Mean Seden-tary Bout Duration (total sedentary time divided by total transitions), and (4) Minutes in Sedentary Bouts ≥30 min. These were computed for each model (CHAP ZS , CHAP FT ,ViT Small ) and for traditional intensity-based cut-point methods: ActiGraph 100 cpm [22] (hip vertical axis counts per minute 
+
+< 100 ) and ActiGraph 1853 cpm [23] (wrist vector magnitude counts per minute < 1853 ). Table IV summarizes agreement between hip-based methods and SenseCam ground truth for subject-level sedentary pattern variables. In terms of mean absolute percentage error (MAPE), ViT Small performed best for total sedentary time (11.4%) 
+
+TABLE III : Test set performance metrics across participants.                                                                         
+
+> Loc. Metric CHAP ZS CHAP FT ViT Small
+> Mean(SD) Median(IQR) Mean(SD) Median(IQR) Mean(SD) Median(IQR)
+> Hip Bal acc 0.87(0.14) 0.91 (0.06) 0.86 (0.13) 0.91 (0.05) 0.83 (0.12) 0.88 (0.09) Sensitivity 0.90 (0.09) 0.94 (0.06) 0.91 (0.08) 0.94 (0.07) 0.90 (0.07) 0.91 (0.06) Specificity 0.83 (0.22) 0.91 (0.10) 0.82 (0.22) 0.90 (0.12) 0.77 (0.21) 0.83 (0.13) PPV 0.93 (0.14) 0.97 (0.05) 0.93 (0.14) 0.96 (0.06) 0.91 (0.13) 0.94 (0.09) NPV 0.72 (0.23) 0.79 (0.22) 0.74 (0.23) 0.81 (0.20) 0.71 (0.24) 0.77 (0.19) F1 0.91 (0.12) 0.95 (0.05) 0.91 (0.12) 0.95 (0.05) 0.90 (0.11) 0.93 (0.05) Wrist Bal acc 0.70 (0.12) 0.72 (0.10) 0.81 (0.13) 0.87 (0.10) 0.79 (0.13) 0.83 (0.12) Sensitivity 0.68 (0.08) 0.90 (0.08) 0.88 (0.08) 0.90 (0.08) 0.89 (0.06) 0.92 (0.08) Specificity 0.51 (0.23) 0.83 (0.16) 0.75 (0.23) 0.85 (0.16) 0.68 (0.23) 0.75 (0.26) PPV 0.88 (0.15) 0.93 (0.12) 0.90 (0.15) 0.93 (0.09) 0.87 (0.14) 0.90 (0.09) NPV 0.43 (0.20) 0.48 (0.25) 0.68 (0.21) 0.74 (0.21) 0.68 (0.23) 0.74 (0.14) F1 0.71 (0.13) 0.79 (0.08) 0.80 (0.12) 0.91 (0.07) 0.87 (0.12) 0.90 (0.07)
+
+and time in sedentary bouts ≥30 min/day (15.5%). For sit-to-stand transitions/day and mean bout duration, CHAP FT 
+
+yielded the lowest errors (26.8% and 29.2%, respectively), with CHAP ZS showing comparable performance (27.7% and 30.4%). The ActiGraph 100 cpm method had substantially higher MAPEs for sit-to-stand transitions (246.7%), time in bouts ≥30 min/day (53.5%), and mean bout duration (70.7%). Across all metrics, CHAP FT demonstrated consistently higher rank-based agreement with SenseCam than ViT Small , with Spearman correlations of 0.98, 0.85, 0.94, and 0.78, compared with 0.98, 0.79, 0.93, and 0.75 for ViT Small .Table V presents agreement results for wrist-based es-timates. Both CHAP FT and ViT Small exhibited substantially lower bias and error than CHAP ZS and the ActiGraph 1853 cpm cut point for wrist-based subject-level sedentary metrics. ViT Small showed the best overall performance, yielding the lowest mean absolute percentage error (MAPE) for total sedentary time (10.9%), sit-to-stand transitions/day (31.5%), time in sedentary bouts ≥30 min/day (15.0%), and mean bout duration (27.1%). CHAP FT generally showed the next lowest errors, although its MAPEs were consistently higher than those of ViT Small . Despite this, Spearman correlations for CHAP FT 
+
+and ViT Small were broadly similar across the four metrics, indicating comparable ability to preserve the relative ranking of participants. 
+
+IV. S ENSITIVITY ANALYSIS 
+
+A. Weight Transfer vs. Reinitialization 
+
+We compared finetuning from pretrained CHAP weights [8] with training the same architecture from random initialization. Random initialization requires the model to learn accelerom-eter features from scratch using only iWatch data, whereas pretrained weights provide a starting point that already cap-tures common signal statistics such as temporal patterns and cross-channel correlations. As shown in Figure 3, CHAP FT reaches strong valida-tion performance on iWatch hip almost immediately, whereas CHAP Random requires about 20 epochs to reach a similar level, consistent with the strong zero-shot hip performance in Table VI. For the wrist placement, CHAP FT starts higher during the first 10 epochs, but CHAP Random gradually closes the gap by around 20 epochs. This suggests that hip-pretrained weights provide a useful head start for wrist but the benefit diminishes with sufficient training. AUTHOR et al. : TITLE 5
+
+TABLE IV : Agreement of hip-worn CHAP ZS , CHAP FT , ViT Small , and ActiGraph 100 cpm cut point with SenseCam for sedentary behavior metrics across participants 
+
+Variable Total sedentary time (min/day) Sit-to-stand transitions/day Time in bouts 
+
+≥30 min (min/day) Mean bout du-ration (min) Descriptive statistics 
+
+SenseCam, Mean (SD) 318.68 (128.00) 13.78 (5.42) 220.58 (110.33) 24.67 (9.81) CHAP ZS , Mean (SD) 281.42 (115.55) 17.03 (6.22) 169.92 (97.16) 17.42 (6.46) CHAP FT , Mean (SD) 285.03 (117.80) 16.92 (5.76) 184.55 (104.26) 17.58 (6.51) CHAP-ViT, Mean (SD) 291.53 (116.60) 19.90 (7.26) 203.03 (108.71) 15.62 (6.44) ActiGraph 100 cpm, Mean (SD) 330.80 (126.96) 47.77 (17.27) 103.96 (82.04) 7.22 (2.57) 
+
+Agreement between CHAP ZS and SenseCam 
+
+Bias, Mean (SD) −37 .26 (32.78) 3.24 (3.93) −50 .66 (38.09) −7.25 (7.29) Mean absolute error 43.09 3.82 53.05 7.49 Mean absolute percent error 13.5% 27.7% 24.1% 30.4% Spearman correlation 0.98 0.92 0.78 0.74 Concordance correlation 0.92 0.83 0.67 0.44 
+
+Agreement between CHAP FT and SenseCam 
+
+Bias, Mean (SD) −33 .65 (32.86) 3.14 (3.19) −36 .03 (36.47) −7.10 (7.10) Mean absolute error 41.18 3.69 40.56 7.21 Mean absolute percent error 12.9% 26.8% 18.4% 29.2% Spearman correlation 0.98 0.85 0.94 0.78 Concordance correlation 0.93 0.72 0.89 0.46 
+
+Agreement between ViT and SenseCam 
+
+Bias, Mean (SD) −27 .15 (32.26) 6.12 (4.85) −17 .56 (38.85) −9.05 (8.14) Mean absolute error 36.32 6.32 34.10 9.32 Mean absolute percent error 11.4% 45.9% 15.5% 37.8% Spearman correlation 0.98 0.79 0.93 0.75 Concordance correlation 0.94 0.49 0.92 0.32 
+
+Agreement between ActiGraph 100 cpm and SenseCam 
+
+Bias, Mean (SD) 12.12 (47.55) 33.99 (13.23) −116 .62 (59.39) −17 .45 (8.10) Mean absolute error 37.78 33.99 117.95 17.45 Mean absolute percent error 11.9% 246.7% 53.5% 70.7% Spearman correlation 0.95 0.88 0.91 0.77 Concordance correlation 0.93 0.10 0.47 0.09 
+
+TABLE V : Agreement of wrist-worn CHAP ZS , CHAP FT , ViT Small , and ActiGraph 1853 cpm cut point with SenseCam for sedentary behavior metrics across participants 
+
+Variable Total sedentary time (min/day) Sit-to-stand transitions/day Time in bouts 
+
+≥30 min (min/day) Mean bout du-ration (min) Descriptive statistics 
+
+SenseCam, Mean (SD) 338.33 (128.41) 13.93 (5.27) 239.99 (116.20) 25.87 (10.69) CHAP ZS , Mean (SD) 220.71 (104.75) 83.03 (31.61) 39.45 (47.08) 2.72 (1.12) CHAP FT , Mean (SD) 310.46 (120.84) 22.45 (9.02) 207.76 (111.67) 15.41 (8.54) ViT, Mean (SD) 322.64 (120.81) 17.12 (7.00) 241.12 (113.28) 20.66 (9.55) ActiGraph 1853 cpm, Mean (SD) 300.62 (121.12) 51.91 (18.36) 73.79 (71.79) 5.96 (2.31) 
+
+Agreement between CHAP ZS and SenseCam 
+
+Bias, Mean (SD) −117 .62 (67.43) 69.10 (28.54) −200 .53 (97.48) −23 .15 (10.21) Mean absolute error 120.26 69.10 201.15 23.15 Mean absolute percent error 35.5% 496.1% 83.8% 89.5% Spearman correlation 0.87 0.64 0.60 0.48 Concordance correlation 0.55 0.04 0.11 0.02 
+
+Agreement between CHAP FT and SenseCam 
+
+Bias, Mean (SD) −27 .88 (46.69) 8.52 (6.13) −32 .23 (51.33) −10 .46 (7.24) Mean absolute error 48.14 8.54 49.35 11.00 Mean absolute percent error 14.2% 61.3% 20.6% 42.5% Spearman correlation 0.92 0.81 0.87 0.77 Concordance correlation 0.91 0.39 0.86 0.45 
+
+Agreement between ViT and SenseCam 
+
+Bias, Mean (SD) −15 .69 (43.37) 3.18 (4.50) 1.13 (46.98) −5.21 (7.38) Mean absolute error 36.74 4.39 35.89 7.02 Mean absolute percent error 10.9% 31.5% 15.0% 27.1% Spearman correlation 0.93 0.78 0.90 0.71 Concordance correlation 0.93 0.65 0.92 0.65 
+
+Agreement between ActiGraph 1853 cpm and SenseCam 
+
+Bias, Mean (SD) −37 .71 (55.07) 37.98 (14.48) −166 .20 (83.33) −19 .90 (9.17) Mean absolute error 53.10 37.98 166.84 19.90 Mean absolute percent error 15.7% 272.6% 69.5% 76.9% Spearman correlation 0.88 0.81 0.66 0.62 Concordance correlation 0.86 0.08 0.25 0.07 6 IEEE TRANSACTIONS AND JOURNALS TEMPLATE 
+
+TABLE VI : Balanced accuracy (Bal acc) and F1-score (%) of CHAP Random Init and CHAP FT across hip and wrist place-ments.                                       
+
+> Placement Metric CHAP Random Init. CHAP FT
+> Train Validation Test Train Validation Test
+> Hip Bal acc 89.86 91.22 88.38 90.36 92.29 88.71
+> F1 91.56 92.98 90.35 91.28 92.99 90.04 Wrist Bal acc 86.07 85.25 82.30 88.71 86.01 82.56
+> F1 87.67 87.80 85.09 89.26 88.02 84.97 015 30
+> Epoch
+> 64 72 80 88
+> Balanced accuracy  Hip accelerometer 015 30
+> Epoch
+> Wrist accelerometer
+
+CHAP Random CHAP FT 
+
+Fig. 3 : Validation balanced accuracy over training epochs for CHAP models with random initialization and finetun-ing, evaluated on hip (left) and wrist (right) accelerometer data. Finetuning improves early-epoch stability and conver-gence, especially for the wrist setting, while both models reach similar balanced accuracy after sufficient training. 
+
+B. Limited Labels 1 10 50 100   
+
+> Training size percent
+> 72 80 88
+> Balanced accuracy  Hip accelerometer 1 10 50 100
+> Training size percent
+> Wrist accelerometer
+
+CHAP Random CHAP FT ViT Small 
+
+Fig. 4 : Limited label analysis on (a) iWatch wrist and (b) hip placements. Validation accuracy is reported as a function of labeled training size 1%, 10%, 50%, and 100% for CHAP FT ,ViT Small , and CHAP Random .We further evaluated CHAP Random , CHAP FT , and ViT Small 
+
+under limited labeled data by subsampling the training set to 1%, 10%, 50%, and 100% for both hip and wrist. Figure 4 summarizes validation accuracy trends and Table VII reports full numerical results. This analysis targets a practical ques-tion: how many new labels are needed for finetuning to help, and does accuracy saturate early enough to reduce annotation costs? 
+
+For the hip placement (Figure 4a), CHAP FT is robust across all label budgets. CHAP Random is highly sensitive: while it matches CHAP FT at 100% labels, performance drops sharply to 85.70% at 10% and 72.34% at 1%, illustrating that without pretrained weights the model overfits in low-data regimes. ViT Small shows similarly poor data efficiency (73.55% and 78.59% at 1% and 10% labels, respectively). 
+
+TABLE VII : Model performance on hip and wrist place-ments when varying training size (%). Results are reported as validation and test accuracy.                                                          
+
+> CHAP Random Init CHAP FT ViT Small
+> Placement Training size (%) Valid acc. Test acc. Valid acc. Test acc. Valid acc. Test acc.
+> Hip 172.34 68.80 92.33 88.73 73.55 70.62 10 85.70 82.27 92.35 88.76 78.59 76.24 50 90.71 87.74 92.40 88.65 85.81 84.11 100 92.98 90.35 92.29 88.71 87.41 85.22 Wrist 178.61 76.88 80.77 78.53 72.81 71.16 10 81.29 77.91 83.12 80.33 79.69 77.40 50 84.34 80.90 84.82 81.74 81.31 78.80 100 85.25 82.30 86.01 82.56 82.20 79.39
+
+For the wrist placement (Figure 4b), the advantage of pretraining is markedly diminished. CHAP FT scales from 80.77% at 1% labels to 86.01% at 100%, but the gap over CHAP Random remains narrow throughout, consistent with a hip-to-wrist domain mismatch in motion dynamics (Figure 2). Wrist accuracy remains consistently lower than hip accuracy regardless of label budget. This ceiling likely reflects higher signal variability at the wrist: common upper-limb activities (i.e., writing, typing) occur during sedentary periods, intro-ducing intra-class noise that makes sitting harder to isolate than with the more stable trunk motions captured at the hip. ViT Small trained from scratch underperformed CHAP on both placements, even relative to CHAP Random , despite having more parameters. This likely reflects differences in inductive bias: CHAP encodes temporal structure through bidirectional LSTMs and local feature extraction, providing priors well suited to our setting where labels are temporally smooth and transitions are rare. A transformer relies primarily on attention with weaker assumptions about local temporal dynamics, making performance more sensitive to training set size [20], [24]. Future work could explore transformer pretraining on larger unlabeled accelerometer corpora to reduce this gap. 
+
+V. V ISUALIZATION 
+
+Figure 5 shows CHAP FT prediction heatmaps for an illustra-tive subject (i0167A), where balanced accuracy exceeded 96% for both placements. Predictions were generally consistent with SenseCam labels, with occasional mismatches during brief acceleration fluctuations. 
+
+VI. I MPLEMENTATION 
+
+Model Configurations. Table VIII provides the ViT Small 
+
+architecture; CHAP details are in [8]. 
+
+TABLE VIII : Architecture of the transformer classifier. 
+
+Layer Config Output size Depth 
+
+Input – 42 × 100 × 3 –Patch embedding MLP, embed dim 384 (42 × 3) × 384 1Encoder blocks MHSA + MLP (42 × 3) × 384 12 Encoder norm LayerNorm (42 × 3) × 384 1Mean pooling Mean over tokens 42 × 384 1Classifier Linear 42 × 1 1
+
+Loss Function. As noted in Section II-A, sitting occurs 2– 3 times more often than non-sitting. We use a class-weighted AUTHOR et al. : TITLE 717 : i0167A location: H 2014 −02 −19 2014 −02 −20 2014 −02 −21 2014 −02 −22 2014 −02 −23 2014 −02 −24 2014 −02 −25 2014 −02 −26 0 2 4 6 8 10 12 14 16 18 20 22 24 Activity truth.Sitting truth.Non_Sitting truth.notCodable/gap pred.Sitting pred.Non_Sitting             
+
+> 17 19 : i0167A location: W 2014 −02 −19 2014 −02 −20 2014 −02 −21 2014 −02 −22 2014 −02 −23 2014 −02 −24 2014 −02 −25 2014 −02 −26 0246810 12 14 16 18 20 22 24 Activity truth.Sitting truth.Non_Sitting truth.notCodable/gap pred.Sitting pred.Non_Sitting
+> 19
+
+Fig. 5 : CHAP FT prediction heatmaps for subject i067A with hip placement (top figure) and wrist placement (bottom figure). Yellow band: wear log. Hot Pink band: 
+
+non wear segments (extracted from ActiGraph via the Choi algorithm). Black: Vector Magnitude per minute from Acti-Graph. Solid bars: posture labels. Ground truth activities are shown in the upper half , and prediction results are shown in the lower half .binary cross-entropy loss with weight w = nsit /n non-sit applied to the minority class, giving w = 2 .80 for hip and w =2.82 for wrist. This weighting improved CHAP FT validation balanced accuracy from 92.15% to 92.29% on hip and from 84.23% to 86.01% on wrist. 
+
+Training Configuration. Both CHAP FT and ViT Small are trained for 40 epochs with 8-epoch warmup, using AdamW (learning rate 1e −3, weight decay 1e −3), cosine learning rate schedule, and batch size 128. 
+
+Data Augmentation. We applied jittering, scaling, channel permutation, and axis rotation during training [25] (Figure 6) to encourage invariance to sensor orientation and structural noise. 
+
+VII. D ISCUSSION 
+
+CHAP shows strong hip performance even in zero-shot settings, consistent with prior studies [8].This finding shows that pretrained models can maintain accuracy when applied within the same body placement, which makes them valuable in low-label setings. When the hip-trained model is applied directly to wrist sen-sors, accuracy drops significantly, but finetuning with as little as 10% of labeled wrist data yields substantial improvement, establishing hip-based pretraining as a practical strategy for rapid adaptation. The performance gap between hip versus wrist placements could reflect biomechanical differences: the hip provides a more stable posture signal, while the wrist exhibits higher variability from arm movements unrelated to posture. Despite this challenge, wrist placement remains important clinically because it is less intrusive, yields higher wear compliance, supports concurrent sleep assessment, and is already prevalent in commercial trackers such as Fitbits and Apple watches. These benefits make wrist-specific adaptation essential for translating sensor-based models into practice. 
+
+VIII. C ONCLUSION 
+
+In this work, we tested whether the hip-trained CNN-BiLSTM model (CHAP) can transfer to wrist accelerometer data for sitting versus non-sitting classification in the iWatch cohort. The hip model transfers well to unseen hip data without retraining, but wrist performance drops due to distributional differences. Finetuning on wrist data improves balanced ac-curacy and reduces the systematic error of predicting low-motion non-sitting as sitting. Under matched training condi-tions, finetuned CHAP is competitive with or better than a transformer trained from scratch. Sensitivity analyses show that hip-pretrained weights mainly benefit early training and data efficiency; with enough wrist labels and training time, random initialization reaches similar accuracy, highlighting the need for wrist-specific adaptation rather than assuming placement-agnostic features. Future work should explore pre-training with multiple placements and larger unlabeled wrist corpora, and consider complementary signals to reduce wrist ambiguity during posture inference in free-living settings. 
+
+CONFLICT OF INTEREST STATEMENT 
+
+Paul R. Hibbing received funding from Ametris LLC through a Digital Endpoint Accelerator Research grant. Other co-authors do not report any conflicts of interest. 
+
+ACKNOWLEDGMENT 
+
+The authors would like to thank the Cognitive Hardware and Software Ecosystem, Community Infrastructure (CHASE-CI) at the University of California San Diego for providing high performance computing cluster support (National Science Foundation grants 2100237 and 2120019). Also, we are grate-ful to the iWatch study team and participants who provided the data for this study. 8 IEEE TRANSACTIONS AND JOURNALS TEMPLATE 0 2 4 6
+
+> Time (minute)
+> 2
+> 1
+> 01
+> g
+
+Original    
+
+> 0246
+> Time (minute)
+
+Scaled    
+
+> 0246
+> Time (minute)
+
+Channel permuted    
+
+> 0246
+> Time (minute)
+
+Rotated    
+
+> 0246
+> Time (minute)
+
+Jittered 
+
+Fig. 6 : Data augmentation: a seven-minute sample of tri-axial accelerometer data is shown in its original form followed by four types of augmentations added step by step: scaling, channel permutation, axis rotation, and jittering. 
+
+REFERENCES 
+
+[1] A. Biswas, P. I. Oh, G. E. Faulkner, R. R. Bajaj, M. A. Silver, M. S. Mitchell, and D. A. Alter, “Sedentary time and its association with risk for disease incidence, mortality, and hospitalization in adults: A systematic review and meta-analysis,” Annals of Internal Medicine , vol. 162, no. 2, pp. 123–132, Jan. 2015, erratum in: Ann Intern Med. 2015 Sep 1;163(5):400. doi: 10.7326/L15-5134. [2] D. W. Dunstan, S. Dogra, S. E. Carter, and N. Owen, “Sit less and move more for cardiovascular health: emerging insights and opportunities,” 
+
+Nature Reviews Cardiology , vol. 18, no. 9, pp. 637–648, 2021, epub 2021 May 20. [3] G. N. Healy, D. W. Dunstan, J. Salmon, E. Cerin, J. E. Shaw, P. Z. Zimmet, and N. Owen, “Breaks in sedentary time: beneficial associations with metabolic risk,” Diabetes Care , vol. 31, no. 4, pp. 661–666, Apr. 2008, epub 2008 Feb 5. [4] V. T. van Hees, J. H. Migueles, S. Sabia, M. R. Patterson, Z. Fang, J. Heywood, J. C. Pujol, L. Kushleyeva, M. Chen, M. Yerramalla, P. Bos, T. Sanders, C. Zhao, I. M. Danilevicz, V. B. Mesquita, G. Segantin, Medical Research Council UK, Accelting, and French National Research Agency, GGIR: Raw Accelerometer Data Analysis , 2025, r package version 3.3-0. [Online]. Available: https://zenodo.org/records/1051064 [5] J. Bellettiere, F. Tuz Zahra, J. A. Carlson, N. D. Ridgers, S. Liles, M. A. Greenwood Hickman, R. L. Walker, A. Z. LaCroix, M. M. Jankowska, D. E. Rosenberg, and L. Natarajan, “Agreement of sedentary behaviour metrics derived from hip worn and thigh worn accelerometers among older adults with implications for studying physical and cognitive health,” Journal for the Measurement of Physical Behaviour , vol. 4, no. 1, pp. 79–88, 2021. [6] A. K. Chowdhury, D. Tjondronegoro, V. Chandran, and S. G. Trost, “Physical activity recognition using posterior-adapted class-based fusion of multiaccelerometer data,” IEEE Journal of Biomedical and Health Informatics , vol. 22, no. 3, pp. 678–685, May 2018. [7] A. Mannini, S. S. Intille, M. Rosenberger, A. M. Sabatini, and W. Haskell, “Activity recognition using a single accelerometer placed at the wrist or ankle,” Medicine and Science in Sports and Exercise ,vol. 45, no. 11, pp. 2193–2203, 2013. [8] M. A. Greenwood-Hickman, S. Nakandala, M. M. Jankowska, D. E. Rosenberg, F. Tuz-Zahra, J. Bellettiere, J. Carlson, P. R. Hibbing, J. Zou, A. Z. LaCroix, A. Kumar, and L. Natarajan, “The CNN Hip Accelerometer Posture (CHAP) method for classifying sitting patterns from hip accelerometers: A validation study,” Medicine & Science in Sports & Exercise , vol. 53, no. 11, pp. 2445–2454, Nov. 2021. [9] M. Karas, J. Bai, M. Str ˛ aczkiewicz, J. Harezlak, N. W. Glynn, T. Harris, V. Zipunnikov, C. Crainiceanu, and J. K. Urbanek, “Accelerometry data in health research: challenges and opportunities,” Statistical Biosciences ,vol. 11, no. 2, pp. 210–237, Jul. 2019, epub 2019 Jan 12. [10] J. Li, P. Kang, T. Tan, and P. Shull, “Transfer learning improves accelerometer-based child activity recognition via subject-independent adult-domain adaption,” IEEE Journal of Biomedical and Health Infor-matics , vol. PP, p. 1, 10 2021. [11] A. R. Doherty, C. J. A. Moulin, and A. F. Smeaton, “Automatically assisting human memory: a SenseCam browser,” Memory , vol. 19, no. 7, pp. 785–795, Oct. 2011. [12] J. Kerr, S. J. Marshall, S. Godbole, J. Chen, A. Legge, A. R. Doherty, P. Kelly, M. Oliver, H. M. Badland, and C. Foster, “Using the SenseCam to improve classifications of sedentary behavior in free-living settings,” 
+
+American Journal of Preventive Medicine , vol. 44, no. 3, pp. 290–296, Mar. 2013. [13] K. L. Cain, J. F. Sallis, T. L. Conway, D. Van Dyck, and L. Calhoon, “Using accelerometers in youth physical activity studies: a review of methods,” Journal of Physical Activity and Health , vol. 10, no. 3, pp. 437–450, Mar. 2013. [14] C. E. Matthews, M. Hagströmer, D. M. Pober, and H. R. Bowles, “Best practices for using physical activity monitors in population based research,” Medicine and Science in Sports and Exercise , vol. 44, no. 1 Suppl 1, pp. S68–S76, Jan. 2012. [15] S. Nakandala, M. M. Jankowska, F. Tuz-Zahra, J. Bellettiere, J. A. Carlson, A. Z. LaCroix, S. J. Hartman, D. E. Rosenberg, J. Zou, A. Kumar, and L. Natarajan, “Application of convolutional neural network algorithms for advancing sedentary and activity bout classification,” Journal for the Measurement of Physical Behaviour ,vol. 4, no. 2, pp. 102–110, 2021. [Online]. Available: https: //journals.humankinetics.com/view/journals/jmpb/4/2/article-p102.xml [16] L. Choi, Z. Liu, C. E. Matthews, and M. S. Buchowski, “Validation of accelerometer wear and nonwear time classification algorithm,” 
+
+Medicine and Science in Sports and Exercise , vol. 43, no. 2, pp. 357– 364, Feb 2011. [17] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser, and I. Polosukhin, “Attention Is All You Need,” CoRR , vol. abs/1706.03762, 2017. [Online]. Available: http://arxiv.org/abs/1706.03762 [18] Y. Liu, G. Qin, Z. Shi, Z. Chen, C. Yang, X. Huang, J. Wang, and M. Long, “Sundial: A family of highly capable time series foundation models,” 2025. [Online]. Available: https://arxiv.org/abs/2502.00816 [19] Y. Nie, N. H. Nguyen, P. Sinthong, and J. Kalagnanam, “A time series is worth 64 words: Long-term forecasting with Transformers,” 2023. [Online]. Available: https://arxiv.org/abs/2211.14730 [20] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, T. Unterthiner, M. Dehghani, M. Minderer, G. Heigold, S. Gelly, J. Uszkoreit, and N. Houlsby, “An image is worth 16x16 words: Transformers for Image Recognition at scale,” 2021. [Online]. Available: https://arxiv.org/abs/2010.11929 [21] J. Lin, “Divergence measures based on the Shannon entropy,” IEEE Transactions on Information Theory , vol. 37, no. 1, pp. 145–151, 1991. [22] C. Matthews, K. Chen, P. Freedson, M. Buchowski, B. Beech, R. Pate, and R. Troiano, “Amount of time spent in sedentary behaviors in the United States, 2003-2004.” Am J Epidemiol. , vol. 167, no. 7, pp. 875–81, Apr 2008. [23] A. Koster, E. Shiroma, P. Caserotti, C. Matthews, K. Chen, N. Glynn, and T. Harris, “Comparison of sedentary estimates between activPAL and hip- and wrist-worn ActiGraph,” Med Sci Sports Exerc. , vol. 48, no. 8, pp. 1514–1522, Aug 2016. [24] X. Zhai, A. Kolesnikov, N. Houlsby, and L. Beyer, “Scaling Vision Transformers,” 2022. [Online]. Available: https://arxiv.org/abs/2106. 04560 [25] H. Yuan, S. Chan, A. P. Creagh, C. Tong, A. Acquah, D. A. Clifton, and A. Doherty, “Self-supervised learning for human activity recognition using 700,000 person-days of wearable data,” 
+
+npj Digital Medicine , vol. 7, no. 1, Apr. 2024. [Online]. Available: http://dx.doi.org/10.1038/s41746-024-01062-3

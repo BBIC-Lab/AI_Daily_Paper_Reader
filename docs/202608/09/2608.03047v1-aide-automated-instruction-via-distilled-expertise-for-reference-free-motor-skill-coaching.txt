@@ -1,0 +1,512 @@
+Title: AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching
+
+URL Source: https://arxiv.org/pdf/2608.03047v1
+
+Published Time: Wed, 05 Aug 2026 00:25:23 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching 
+
+# Yoshiki Ito 
+
+Research & Development Group Hitachi, Ltd. Tokyo, Japan yoshiki.ito.xf@hitachi.com 
+
+## Abstract 
+
+Generating natural-language coaching feedback on motor skills can accelerate learning, yet expert coaches are scarce and expen-sive. Existing reference-based methods require expert demonstra-tions at both training and inference time, limiting practical de-ployment. We propose AIDE (Automated Instruction via Distilled Expertise), a framework that exploits expert references only during training and generates feedback from a learner’s pose sequence alone at inference. A teacher model first learns to generate feedback from paired learner–expert poses via a frozen language model, pro-ducing separate learner tokens and difference tokens that encode the learner–expert difference. A student model then inherits the teacher’s encoder and weight initialization, replacing the explicit expert comparison with an auxiliary module that produces com-plementary tokens from the learner’s pose alone. On the ExpertAF dataset, AIDE outperforms reference-free baselines on most metrics and performs comparably to methods requiring expert demonstra-tions at both training and inference, with LLM-based evaluation supporting these findings. 
+
+## CCS Concepts 
+
+• Computing methodologies → Activity recognition and un-derstanding ; • Applied computing → Computer-assisted in-struction .
+
+## Keywords 
+
+AI coaching, motor skill, feedback generation, reference-free, knowl-edge distillation, pose estimation, language model 
+
+ACM Reference Format: 
+
+Yoshiki Ito. 2026. AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching. In Proceedings of the 34th ACM Inter-national Conference on Multimedia (MM ’26), November 10–14, 2026, Rio de Janeiro, Brazil. ACM, New York, NY, USA, 10 pages. https://doi.org/10.1145/ 3767308.3835512 
+
+## 1 Introduction 
+
+Providing specific, actionable feedback on motor skills is essential for learning across domains ranging from youth sports to rehabili-tation and industrial training. However, expert coaches are scarce 
+
+> This work is licensed under a Creative Commons Attribution 4.0 International License.
+> MM ’26, Rio de Janeiro, Brazil
+> © 2026 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-2213-4/2026/11 https://doi.org/10.1145/3767308.3835512
+
+Feedback:  Lack of knee extension 
+
+results in an arm -dominant shot. 
+
+Needs Improvement:  Legs 
+
+Learner  Expert 
+
+Figure 1: AIDE generates coaching feedback from a learner’s pose sequence alone. Expert demonstrations (right) are lever-aged only during training; no expert input is required at inference. 
+
+and expensive: a single coach can observe only a handful of ath-letes at a time, creating a bottleneck that limits access to quality instruction, particularly in under-resourced communities and re-mote settings. Automated feedback generation from video or pose sequences offers a scalable alternative that could make coaching widely accessible. Recent advances in action quality assessment [32, 41, 45, 48] have enabled automatic scoring of athletic performance, and body-pose estimation [5, 39, 46] now provides reliable skeletal representations for movement analysis. However, assigning a score is fundamentally different from generating actionable feedback that tells a learner 
+
+what to fix and how , yet few works tackle this directly. T3Set [27] generates feedback for table tennis from learner sensor and pose data, but relies on classifying into predefined suggestion categories rather than producing open-ended text. ExpertAF [3] introduced a paired learner–expert video dataset with structured coaching annotations and a multimodal model that encodes both learner and expert video and pose tokens to generate feedback through a frozen language model. CoachMe [47] generates feedback by con-catenating learner and learner–expert difference features from pose sequences, and reports that this expert comparison improves feed-back quality over a reference-free variant. However, these reference-based approaches share a key limitation: they require expert demon-strations at both training and inference time, which constrains real-world deployment: obtaining a matched expert demonstration for arXiv:2608.03047v1 [cs.CV] 4 Aug 2026 MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yoshiki Ito 
+
+every learner attempt is impractical. A retrieval-based alternative, returning a similar learner’s stored feedback by nearest neighbor, avoids expert input at inference but reuses annotations and cannot generate learner-specific coaching. Rather than discarding expert knowledge entirely, we ask whether it can be distilled during train-ing so that inference requires only the learner’s input. We address this limitation through Learning Using Privileged Information (LUPI) [26, 43]. LUPI formalizes a setting where addi-tional information (in our case, expert reference poses) is available during training but absent at inference. This paradigm has been applied to vision tasks [8, 17] but, to our knowledge, not to mo-tor skill coaching. In our framework, a teacher model first learns from paired learner–expert poses, producing difference tokens that encode the learner–expert difference. A student model then inher-its the teacher’s encoder and weight initialization, replacing the explicit difference computation with a learned auxiliary module that operates from the learner’s pose alone. We call this framework AIDE (Automated Instruction via Distilled Expertise; Figure 1). A key design choice is the token-separated architecture : learner tokens and difference tokens are maintained as distinct sequences throughout the pipeline. Unlike CoachMe, which concatenates mo-tion and difference features along the feature dimension [47], this separation enables modular knowledge transfer: the student reuses the learner tokens intact while only the difference pathway is re-trained. Our central finding is that this implicit knowledge transfer, through shared encoder weights and initialization, without explicit distillation loss, is sufficient to perform comparably to the teacher. Since the teacher’s difference tokens are structurally constrained by the explicit learner–expert subtraction, forcing the student to replicate them would re-impose the limitation it should escape; the student instead learns a representation suited to the end task. We use a frozen large language model as the backbone, injecting pose-derived tokens via lightweight connectors inspired by the Perceiver Resampler [1]. Skeleton sequences provide a compact, view-invariant representation, reducing the input to tens of pose-derived tokens and enabling efficient inference without a vision encoder. We make the following contributions: (1) LUPI for coaching feedback : To our knowledge, the first application of LUPI to motor skill coaching. A framework that exploits expert references only during training and gen-erates feedback from the learner’s pose alone at inference, eliminating the practical barrier of requiring a matched ex-pert demonstration for every learner attempt. (2) Implicit knowledge transfer : Encoder sharing and weight initialization alone, without explicit distillation losses, are sufficient to perform comparably to reference-required meth-ods at inference; a capacity control indicates that this is not explained by increased model capacity. Experiments on ExpertAF [3] show that AIDE outperforms reference-free baselines on most metrics on basketball and performs compara-bly to reference-required methods. A capacity control experiment indicates that these results are not explained by increased model capacity. Text quality improvements generalize to soccer, and pair-wise LLM-based evaluation on basketball with two independent judges supports these findings. 
+
+## 2 Related Work 2.1 Coaching Feedback Generation 
+
+Action quality assessment (AQA) methods [32, 41, 45, 48] predict numerical scores rather than generating actionable feedback. Ex-pertAF [3] introduced a large-scale dataset pairing learner–expert sports videos with structured coaching annotations (summary, im-provement parts, good parts) and a multimodal model that gener-ates feedback by encoding both learner and expert video and pose tokens through a frozen language model. CoachMe [47] generates feedback by comparing learner and expert poses via a Hierarchical Pose Predictor pre-trained on HumanML3D [13] with T5-base [35]; it reports that incorporating expert references improves over a reference-free variant, but requires them at both training and in-ference. T3Set [27] provides fine-grained feedback for table tennis from learner sensor and pose data, but focuses on classifying into predefined suggestion categories rather than open-ended text gen-eration. Other work [37] combines video and motion features with a language model for skill-level-aware comment generation. Our work bridges reference-based quality and reference-free deploy-ment by exploiting expert poses only during training. 
+
+## 2.2 Knowledge Distillation and LUPI 
+
+Knowledge distillation (KD) [15] transfers knowledge from teacher to student through soft-label matching, feature hints [36], atten-tion transfer [49], relational knowledge [31], and contrastive align-ment [42]. Born-Again Networks [9] showed that students can match or surpass equally-sized teachers, and that explicit feature alignment does not always help [29], particularly when the teacher’s intermediate representations reflect structural constraints that the student should not inherit. While KD concerns how knowledge is transferred between models, Learning Using Privileged Infor-mation (LUPI) [26, 43] concerns what information is available: it formalizes using additional information only during training, with applications to object localization [8], modality transfer [10], noisy labels [6], and dropout regularization [17]. Recent analysis [33] warns that LUPI gains can be confounded with capacity differences; we address this by using matched architectures across all methods (Section 4). To our knowledge, AIDE is the first application of LUPI to motor skill coaching. 
+
+## 2.3 Multimodal Large Language Models 
+
+Multimodal LLMs (MLLMs) such as LLaVA [23, 24], BLIP-2 [19], InstructBLIP [7], MiniGPT-4 [53], and their video extensions [20, 28, 34, 40, 50] have enabled powerful multimodal understanding by bridging non-textual encoders with LLMs. A key enabler is the use of lightweight connectors that map non-textual representations into the LLM’s input space: Flamingo [1] introduced the Perceiver Resampler for this purpose, LLaVA [24] showed that a simple lin-ear projection suffices for image understanding, and subsequent work [18, 22, 23] has further scaled these architectures. Unlike these approaches that process raw visual frames, recent work injects pose or motion features into language models [16, 37, 47]. We follow this direction, injecting pose-derived tokens into a frozen language model via lightweight connectors while training only a small pose encoder. AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Pose Encoder   
+
+> ത𝒛 ∈ ℝ 𝐾×𝑑 LLM
+> 𝒛 ∈ ℝ 𝐾×𝑑 LLM 𝑉 (learner)
+> ത𝑉 (expert)
+> LLM
+
+Stage 1: Teacher 
+
+Stage 2: Student           
+
+> (No grad)
+> (Grad)
+> ො𝑦 GT
+> ℒgen
+> Pose
+> Estimator Pose Encoder
+> 𝒛 aux ∈ ℝ 𝐾×𝑑 LLM
+> 𝒛 ∈ ℝ 𝐾×𝑑 LLM 𝑉 (learner)
+> ത𝑉 (expert)
+> LLM
+> (Grad)
+> ො𝑦 GT
+> ℒgen Auxiliary Latent Module
+> (ALM)
+> *Same architecture as Pose Encoder
+
+Share & Frozen  Share 
+
+# - 𝒛 ∆ 
+
+> MLP Perceiver
+> Resampler
+> Pose Encoder
+> Shared weights
+> =
+> Pose
+> Estimator
+> Pose
+> Estimator
+
+Figure 2: Overview of the AIDE framework. Top (Stage 1): The teacher encodes both learner 𝑉 and expert ¯𝑉 through a shared encoder (MLP + Resampler), producing 𝐾 learner tokens z = Enc (𝑉 ) and 𝐾 difference tokens zΔ = Enc (𝑉 ) − Enc ( ¯𝑉 ). The expert branch is computed without gradients. Both token sequences are concatenated and fed to a frozen LLM. Bottom (Stage 2): The student reuses the teacher’s frozen encoder for z and a trainable Auxiliary Latent Module (same MLP + Resampler architecture) for zaux , requiring only 𝑉 at inference. Knowledge transfers via encoder sharing and weight initialization. The trainable module mainly acts as a training-time stabilizer; its inference-time output provides only auxiliary refinement. 
+
+## 3 Method 3.1 Overview 
+
+AIDE consists of two stages (Figure 2). Both stages use a frozen LLM as the text generation backbone. Pose-based methods inject tokens directly into the language model, bypassing any vision encoder. In 
+
+Stage 1 , the teacher model is trained on paired learner–expert poses, producing learner tokens z and difference tokens zΔ that encode the learner–expert difference. In Stage 2 , the student model inherits the teacher’s encoder and weight initialization, and learns to generate feedback from the learner’s pose alone by replacing the explicit difference computation with a learned Auxiliary Latent Module (ALM). At inference, only the student model and the learner’s pose are required. This two-stage design follows the Learning Using Privileged Information (LUPI) paradigm: expert references serve as privileged information that improves training but is unavailable at test time. 
+
+## 3.2 Problem Formulation 
+
+Given a learner’s pose sequence 𝑉 ∈ R𝑇 ×𝐽 ×𝐶 (𝑇 frames, 𝐽 =17 COCO joints, 𝐶 =6 channels for position and velocity) and an expert ref-erence ¯ 𝑉 available only during training, the goal is to generate coaching feedback text 𝑦 consisting of a one-sentence summary, body parts needing improvement, and well-executed parts. Dur-ing training, both 𝑉 and ¯ 𝑉 are available; at inference, only 𝑉 is given, so the model must internalize comparative knowledge from expert references during training. This asymmetry distinguishes our setting from standard knowledge distillation, where teacher and student observe the same inputs. 
+
+## 3.3 Pose Encoder 
+
+Both the teacher and student models use a shared pose encoder architecture Enc consisting of two components: 
+
+Per-frame MLP. Each frame’s 102-dimensional pose vector (17 ×
+
+6) is projected to 𝑑 dimensions by a two-layer MLP with GELU activation: 
+
+ℎ𝑡 = MLP (𝑣 𝑡 ) + PE (𝑡 ), 𝑡 = 1, . . . ,𝑇 (1) where PE (𝑡 ) is a sinusoidal positional encoding that provides tem-poral information. Following Flamingo [1], we process each frame independently and defer temporal aggregation to the Resampler. 
+
+Perceiver Resampler. The variable-length sequence 𝐻 = [ℎ1, . . . , ℎ 𝑇 ]
+
+is compressed to 𝐾 fixed-length tokens via a Perceiver Resampler: 
+
+z = CrossAttn (𝑄 latent , 𝐻, 𝐻 ) ∈ R𝐾 ×𝑑 (2) where 𝑄 latent ∈ R𝐾 ×𝑑 are learned latent queries. The Resampler compresses the variable-length sequence into 𝐾 =16 fixed-length tokens, providing a compact interface to the LLM regardless of video duration. Since pose sequences are far lower-dimensional than visual features, a single-layer Resampler suffices to capture the temporal structure. An up-projection layer and layer normalization then map the Re-sampler output from 𝑑 to 𝑑 LLM dimensions. In subsequent sections, 
+
+z denotes the final 𝑑 LLM -dimensional tokens after this projection. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yoshiki Ito 
+
+## 3.4 Stage 1: Learner+Expert Teacher 
+
+The teacher model processes both learner and expert poses through the shared encoder: 
+
+z = Enc (𝑉 ; 𝜃 enc ) (3) 
+
+zΔ = z − sg  Enc ( ¯𝑉 ; 𝜃 enc ) (4) ˆ𝑦 = LLM ([ z; zΔ]) (5) where z ∈ R𝐾 ×𝑑 LLM are 𝐾 learner tokens and zΔ ∈ R𝐾 ×𝑑 LLM are 
+
+𝐾 difference tokens. The LLM receives 2 𝐾 tokens in total. The same encoder (MLP + Resampler) is used for both 𝑉 and ¯ 𝑉 , ensur-ing that the subtraction operates in a shared representation space. We choose element-wise subtraction over cross-attention because it provides an explicit, interpretable difference signal without in-troducing additional parameters. The stop-gradient operator sg (·) 
+
+detaches the expert branch, so it is treated as a fixed reference in the backward pass: gradients from Lgen flow back to 𝜃 enc through both 
+
+z and zΔ via the learner branch, but not through the expert branch. This prevents the encoder from collapsing to a trivial solution that minimizes ∥zΔ ∥ rather than capturing the learner–expert gap. Training uses only the generation loss: L = Lgen ( ˆ𝑦, 𝑦 ), where 𝑦 
+
+is the ground-truth feedback; no auxiliary losses are needed since the LLM’s generation objective provides sufficient supervision for the encoder. All LLM parameters are frozen; only the pose encoder parameters 𝜃 enc are updated. 
+
+Token-separated design. The learner tokens z and difference tokens zΔ are injected into the LLM as separate token sequences via distinct special tokens ( <|video_conn|> and <|diff_conn|> ). This design differs from CoachMe [47], which concatenates motion and difference features along the feature dimension into a single token sequence. By maintaining z and zΔ as independent token groups, the LLM’s self-attention can learn to attend to each role separately. More importantly, zΔ becomes the sole pathway for expert information, structurally compelling the model to encode the learner–expert gap in these tokens. This separation is critical for the subsequent knowledge transfer: it allows the student model to inherit z unchanged while replacing only zΔ with a learned alternative, which would not be possible if the two signals were entangled in a single representation. 
+
+## 3.5 Stage 2: Reference-Free Student 
+
+In the second stage, the student model replaces the explicit dif-ference computation with a learned ALM that requires only the learner’s pose: 
+
+z = Enc (𝑉 ; 𝜃 ∗
+
+> enc
+
+) (frozen teacher encoder) (6) 
+
+zaux = ALM (𝑉 ; 𝜃 aux ) (7) ˆ𝑦 = LLM ([ z; zaux ]) (8) where 𝜃 ∗ 
+
+> enc
+
+denotes the teacher’s trained encoder weights, which are frozen during student training. 
+
+Auxiliary Latent Module architecture. The ALM uses the same architecture as the pose encoder (per-frame MLP + Perceiver Resam-pler), ensuring architectural parity across all methods. The output 
+
+zaux ∈ R𝐾 ×𝑑 LLM occupies the same token slot as the teacher’s zΔ,but its content is not constrained to match zΔ. Rather than recon-structing an explicit learner–expert difference, this module mainly serves as a training-time stabilizer that preserves the teacher’s two-pathway interface; its specific inference-time output yields only auxiliary refinements to the generated feedback, as analyzed in Section 5. 
+
+Implicit knowledge transfer. The teacher model contributes to the student model through two implicit mechanisms: (1) Encoder sharing : The learner tokens z are produced by the teacher’s frozen encoder 𝜃 ∗
+
+> enc
+
+, which was trained jointly with expert references. This encoder has learned to produce representations that are informative in the context of expert comparison, even when applied to learner poses alone. (2) Weight initialization : The ALM’s weights 𝜃 aux are initial-ized from the teacher’s encoder 𝜃 ∗
+
+> enc
+
+, providing a strong start-ing point that encodes knowledge about the learner–expert relationship. 
+
+Training objective. Only the generation loss L = Lgen ( ˆ𝑦, 𝑦 ) is used. No explicit distillation losses (e.g., ∥zaux − zΔ ∥22) are applied. Since zΔ is defined by subtraction from the expert encoding, which is unavailable to the student, exactly reproducing it is neither possible nor desirable. Instead, the ALM is free to learn any representation that helps the LLM generate accurate feedback, optimizing directly for the end task rather than mimicking the teacher’s structurally constrained intermediate representation. During training, gradients flow through the ALM 𝜃 aux but not through the frozen encoder 𝜃 ∗
+
+> enc
+
+.
+
+## 3.6 Prompt Design 
+
+Pose-derived tokens are prepended to the text prompt as learner tokens ( 𝐾 ) and, for dual-pathway methods, difference tokens ( 𝐾 ). The LLM is then prompted to generate a structured JSON object. The AIDE inference prompt is shown below (the full set of prompts for all methods is provided in the supplementary material): 
+
+This shows a learner performing {sport} .The following tokens encode the learner’s body movements extracted from pose estimation. Learner tokens: 〈|video_conn| 〉 × 𝐾 
+
+The following tokens encode the predicted technique analysis. Analysis tokens: 〈|diff_conn| 〉 × 𝐾 
+
+Output ONLY a valid JSON object with this schema: {"one_sentence_summary": string, "needs_improvement_parts": [string, ...], "good_execution_parts": [string, ...]} Guidelines: - one_sentence_summary: exactly one sentence of expert coaching feedback. - Describe what the athlete is doing and what they should change. - Be specific: refer to concrete body movements. - needs_improvement_parts: 0–6 unique items from [Head, Shoulder, Hands, Arms, Legs, Jump]. - good_execution_parts: 0–6 unique items from [Head, Shoulder, Hands, Arms, Legs, Jump]. Return JSON only. AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+The structured output format enables automatic extraction of body-part predictions for evaluation, while the free-text summary cap-tures the coaching advice. A key design choice is the distinction between AIDE’s “predicted technique analysis” tokens and the teacher’s “difference between learner and expert” tokens: although they occupy the same token slots, the prompt description reflects that the student model generates its analysis independently rather than computing an explicit comparison. 
+
+## 4 Experiments 4.1 Dataset 
+
+We evaluate on ExpertAF [3], the only publicly available dataset pro-viding paired learner–expert sports videos with structured coaching feedback. ExpertAF is built on top of Ego-Exo4D [12], a large-scale multi-view dataset capturing skilled and amateur performances across diverse physical activities. Each sample contains a learner video, a matched expert reference video, and a coaching annotation derived from expert coaches’ spoken commentary: voice recordings are transcribed via ASR and structured into a one-sentence sum-mary, a list of body parts needing improvement, and a list of well-executed parts using Llama 3 [11]. The evaluation set is manually verified. Body parts are drawn from six categories: Head, Shoul-der, Hands, Arms, Legs, and Jump. Pose sequences are extracted at 17 COCO keypoints with 6 channels per joint (3D position + 3D velocity) at 30 fps. Among the sports in ExpertAF, we use the two for which reliable pose sequences are available from Ego-Exo4D: 
+
+• Basketball (primary): 7,476 train / 258 val pairs. 
+
+• Soccer : 232 train / 71 val pairs. ExpertAF pairs each learner video with 5 different expert ref-erences, producing 5 samples that share the same learner video and ground-truth feedback. These duplicates would inflate eval-uation counts; all methods are therefore evaluated on the same deduplicated validation set (basketball: 190; soccer: 62), retaining one sample per unique learner video. Learner-Only, which discards the expert reference, is trained on the correspondingly deduplicated training set (basketball: 1,474; soccer: 59); all other trained models use the full training set. 
+
+## 4.2 Baselines and Evaluation 
+
+We compare against the following methods, all sharing the same frozen LLM backbone (except IV2-NN, which is retrieval-based): 
+
+• Zero-shot : The VLM processes raw video frames directly without any training, establishing a lower bound. 
+
+• IV2-NN (nearest-neighbor retrieval): A training-free base-line following the protocol in ExpertAF [3], using Intern-Video2-Stage2 6B [44] features (16 windows, 768-dim, 224p, 16 fps). Videos are represented by mean-pooled, centered, 
+
+ℓ2-normalized embeddings; the cosine-nearest training sam-ple’s feedback is returned. 
+
+• Learner-Only : A pose encoder (MLP + Perceiver Resam-pler) trained on learner poses only, with no expert reference at training or inference. This is the primary baseline for measuring AIDE’s improvement. 
+
+• CoachMe [47]: Re-implemented on Qwen3.5 with an MLP-based pose encoder and motion–difference concatenation. The original uses HPP pre-trained on HumanML3D [13] with T5-base (223 M); we replace HPP with a frame-level MLP for fair comparison under a common 9B VLM backbone. Requires reference at both training and inference. 
+
+• Learner+Expert : AIDE’s Stage 1 teacher with explicit dif-ference computation ( zΔ = z − Enc ( ¯𝑉 )). Requires reference at both training and inference. 
+
+• AIDE : Our proposed framework (Stage 2 student at infer-ence). Reference-free. We evaluate along three complementary axes. Text quality is measured by BLEU [30] (B1, B4), ROUGE-L [21] (R-L), METEOR [4] (M), and BERTScore [51] (BERT; DeBERTa-xlarge-mnli [14]). Part prediction accuracy measures whether the model correctly identifies body parts needing improvement, reported as frequency-weighted F1 (P-wF1), the per-category F1 averaged with weights proportional to each part’s support, and exact match (P-EM). P-wF1 is the primary metric as it accounts for the imbalanced part distribution. Part predictions are extracted by parsing the structured JSON output. 
+
+LLM-based pairwise evaluation uses two independent judges from different model families (Claude Sonnet 4.6 [2] and Qwen3.5-9B) to compare AIDE against each baseline on correctness and specificity (190 samples, position-randomized). 
+
+## 4.3 Implementation Details 
+
+We use Qwen3.5-9B [34] as the base VLM with all parameters frozen; only the pose encoders are trained. We choose a VLM so that the same model can serve as the zero-shot video baseline. The zero-shot baseline processes raw video frames at 10 fps (up to 50 frames) with 796 × 448 resolution, resulting in ∼7,000 vision tokens per sample. Training uses AdamW with learning rate 5 × 10 −5,weight decay 10 −4, gradient clipping at 1.0, linear warmup of 200 steps, dropout 0.1, and pose augmentation. All connector-based methods share a bottleneck dimension of 𝑑 =512, frame MLP hidden dimension of 1024, and 𝐾 =16 output tokens. Learner-Only, AIDE, and Learner+Expert use the same Perceiver Resampler (8 attention heads). CoachMe retains its original design with average-pooling instead of the Resampler, with 𝑑 matched for fair comparison. All models are trained for 5 epochs with batch size 1 and gradient ac-cumulation of 4. Inference uses nucleus sampling with temperature 0.5, top-𝑝 0.8, and repetition penalty 1.05. Results are reported as mean ±std over 3 random seeds. 
+
+## 4.4 Main Results 
+
+Table 1 presents the main comparison on basketball. Zero-shot VLM performance is low (R-L 14.7), confirming that raw video frames alone are insufficient and that pose-based connectors are essential. IV2-NN achieves high P-wF1 (39.7) by retrieving the most similar training sample’s feedback, but its text quality is limited (R-L 19.4) because it cannot generate novel, sample-specific coaching. Among trained models, AIDE achieves the highest R-L (22.3) and BERTScore (76.8) despite requiring no reference at inference. AIDE improves over Learner-Only across all seven metrics (e.g., R-L +1.6, P-wF1 +5.9) under matched architectural conditions. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yoshiki Ito 
+
+Table 1: Main comparison on basketball. Train/Infer: whether expert reference is used ( ✓= used). CoachMe is re-implemented under a common backbone and pose encoder; see Section 4.2 for details. Bold = best, underline = second best. 
+
+Method Train Infer BLEU-1 BLEU-4 ROUGE-L METEOR BERTScore P-wF1 P-EM 
+
+No expert reference 
+
+Zero-shot 22.4 0.3 14.7 14.3 75.5 30.4 6.3 IV2-NN 24.0 2.5 19.4 18.2 75.4 39.7 7.9 Learner-Only 26.2 ±1.0 2.7 ±0.3 20.7 ±0.9 19.0 ±1.4 76.1 ±0.3 37.6 ±5.7 12.3 ±3.0 
+
+Expert reference at training only (proposed) 
+
+AIDE ✓ 27.9 ±0.9 3.9 ±0.1 22.3 ±1.0 20.4 ±0.5 76.8 ±0.6 43.5 ±5.3 15.8 ±2.8 
+
+Expert reference at training and inference 
+
+CoachMe ✓ ✓ 26.6 ±2.2 2.9 ±1.4 21.8 ±1.6 20.6 ±1.4 76.5 ±0.5 45.1 ±2.4 14.2 ±0.5 
+
+Learner+Expert ✓ ✓ 27.1 ±0.4 3.4 ±0.4 21.7 ±1.2 20.1 ±1.4 76.5 ±0.1 41.8 ±3.6 16.7 ±2.7 
+
+Table 2: Results on soccer. Train/Infer: whether expert refer-ence is used ( ✓= used). Bold = best, underline = second best. 
+
+Method Train Infer B1 R-L BERT P-wF1 Learner-Only 21.3 ±0.5 17.6 ±0.8 75.5 ±0.4 46.0 ±2.5 
+
+AIDE ✓ 29.6 ±2.9 26.3 ±2.7 77.7 ±0.8 38.2 ±9.8 
+
+CoachMe ✓ ✓ 28.7 ±0.8 28.6 ±2.3 78.2 ±0.6 49.6 ±6.3 
+
+Learner+Expert ✓ ✓ 29.8 ±4.2 26.6 ±3.1 77.7 ±1.1 48.1 ±7.1 
+
+Notably, AIDE performs comparably to the Learner+Expert teacher (P-wF1 43.5 vs. 41.8, R-L 22.3 vs. 21.7) despite having no access to expert references at inference. The absence of explicit distillation losses (Section 3) lets the student optimize directly for feedback quality; in practice, Stage 2’s additional training yields an auxiliary improvement in text quality rather than reproducing the teacher’s intermediate representation. CoachMe achieves the highest P-wF1 (45.1) with direct access to expert references at inference; AIDE remains within 1.6 points of it without any expert input, suggesting that inference-time references can be largely replaced by implicit knowledge transfer. Table 2 evaluates on soccer, a different sport with distinct move-ment patterns. AIDE substantially outperforms Learner-Only on all text quality metrics (B1 29.6 vs. 21.3, R-L 26.3 vs. 17.6, BERT 77.7 vs. 75.5), approaching the teacher Learner+Expert (R-L 26.6) without requiring expert references at inference. P-wF1 is lower for AIDE (38.2) than for all other methods including Learner-Only (46.0), likely due to the small training set of 232 pairs and high cross-seed variance of ±9.8 in this low-data setting, where only 62 validation samples dominated by a single part category make part metrics unreliable; we note this weaker part prediction as a limitation. The text quality improvements, by contrast, extend to soccer. 
+
+## 4.5 LLM-Based and Qualitative Evaluation 
+
+Following the LLM-as-a-judge framework [25, 52], we conduct pairwise evaluation (Figure 3) using two independent judges from different model families: Claude Sonnet 4.6 [2] and Qwen3.5-9B. Since all methods share the same frozen Qwen3.5-9B backbone, any self-preference bias of the Qwen judge affects all methods equally. LO CM LE    
+
+> 40 45 50 55 60 65
+> AIDE win rate (%)  +3 -1 +2 +6 -1 +0
+> Correctness
+> LO CM LE
+> +2 -1 +1 +3 -4 +1
+> Specificity
+> Qwen3.5-9B Claude Sonnet 4.6
+
+Figure 3: Pairwise LLM-as-a-Judge evaluation: AIDE win rate (%) against each baseline (LO = Learner-Only, CM = CoachMe, LE = Learner+Expert). Dashed line = 50% (parity); error bars = std over 3 generation model seeds. Both judges prefer AIDE over LO, while AIDE achieves comparable win rates against CM and LE. 
+
+To mitigate position bias [38], the presentation order of candidates is randomized per sample. Each judge compares AIDE’s outputs against each baseline on two independent axes: correctness (are the identified body parts accurate relative to the ground truth?) and specificity (which feedback provides more concrete, actionable coaching advice?). Both judges prefer AIDE over Learner-Only on both axes, consistent with the automatic metric improvements in Table 1. Against Learner+Expert, both judges produce win rates near or slightly above 50%; against CoachMe, win rates are near or slightly below 50%. AIDE achieves comparable feedback qual-ity to methods that use expert references at inference despite not requiring them. Figure 4 illustrates representative cases. In Example 1 (basket-ball), the ground truth identifies Legs and Jump as needing improve-ment for the jump shot; AIDE correctly predicts both and notes the player is “not jumping,” while Learner-Only and CoachMe predict Hands/Arms, completely missing the lower-body issue. In Exam-ple 2 (basketball), the ground truth identifies Legs (the player is standing straight with no knee flexion); AIDE correctly predicts AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Example 1 (basketball): 
+
+Method  Predicted parts  Generated feedback 
+
+AIDE  Legs  The player needs to improve their  footwork  and positioning to 
+
+make the layup more efficient. 
+
+Learner -Only  Hands , Arms  The player’s  shooting form  needs improvement, particularly with 
+
+the  ball position and follow -through .
+
+Learner+Expert  Hands  The shooter’s  left hand  is not in the correct position, and he 
+
+needs to improve his  shooting form .
+
+CoachMe  Legs , Jump  The player’s shot is  off -balance and lacks power , but he’s 
+
+looking at the target, which is good. 
+
+Example 2 (basketball): 
+
+Method  Predicted parts  Generated feedback 
+
+AIDE  Legs  The player is using a  dribbling technique  that involves  bouncing 
+
+the ball with their feet , which is not an effective way to control 
+
+the ball in soccer. 
+
+Learner -Only  Arms , Shoulder  The athlete demonstrates a  strong head position  for balance but 
+
+needs to actively engage their  arms and shoulders .
+
+Learner+Expert  Jump  The player’s  jumping motion  is not smooth, and the  landing 
+
+needs improvement. 
+
+CoachMe  Head  The player’s  dribbling technique is good , but they should focus 
+
+on  keeping their head up  to improve their vision. 
+
+Example 3 (soccer): 
+
+The player needs to improve his jump shot by jumping higher to gain more momentum, arc, and 
+
+accuracy.  [Legs, Jump] 
+
+Standing straight up with no flexion while playing basketball can lead to disaster. [Legs] 
+
+The player’s body position and technique are affecting their ability to control and  move the ball effectively. 
+
+[Head, Legs] 
+
+> Learner Expert Learner Expert Learner Expert
+
+Method  Predicted parts  Generated feedback 
+
+AIDE  Legs , Jump  The player’s technique needs improvement in terms of  footwork ,
+
+as he is  not jumping  and not using his left hand to catch the ball. 
+
+Learner -Only  Hands , Arms  The player needs to improve his  shooting form  by keeping his 
+
+elbow in line  with the ball and not letting it go up too high. 
+
+Learner+Expert  Hands , Legs  He’s not getting his body under the  ball, and  needs to work on 
+
+his  footwork  and  hand placement .
+
+CoachMe  Hands , Arms  The shooter’s follow -through is good, but the  release point 
+
+needs to be higher and more consistent. 
+
+Figure 4: Qualitative comparison on validation samples (2 basketball, 1 soccer). Each example shows the ground-truth feedback with target body parts in brackets. Predicted parts: body parts each method identifies as needing improvement. Green = correct parts or relevant coaching, red = incorrect parts or misleading feedback. Images are cropped for clarity. 
+
+Legs with relevant coaching about footwork, while Learner-Only predicts Hands/Arms and Learner+Expert predicts Hands, both missing the fundamental stance problem. Example 3 (soccer) shows that the pattern extends beyond basketball: the ground truth identi-fies Head and Legs as needing improvement for ball control. AIDE correctly predicts Legs with relevant dribbling advice, though it misses Head (a rare category at 1% of annotations). Learner-Only predicts Arms/Shoulder and marks Head as “good execution,” di-rectly contradicting the ground truth. Learner+Expert describes “jumping motion” for a soccer dribbling drill. 
+
+## 5 Discussion 5.1 Analysis of Implicit Transfer 
+
+AIDE’s gain is not explained by increased capacity. Under matched architectures ( 𝑑 =512 bottleneck for all methods), AIDE outperforms Learner-Only on all seven metrics (Table 1). AIDE inputs 32 tokens (16 learner + 16 difference) vs. 16 for Learner-Only, but doubling Learner-Only’s tokens to 𝐾 =32 (Table 3) yields only marginal text quality gains (B1 +0.4, R-L +0.6) and does not improve P-wF1 (33.3 vs. 37.6), indicating that AIDE’s results are not attributable to increased capacity. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yoshiki Ito 
+
+The student model performs comparably to the teacher via implicit transfer. AIDE performs comparably to the Learner+Expert teacher (P-wF1 43.5 vs. 41.8) despite having no access to expert references at inference, indicating that implicit knowledge trans-fer through encoder sharing and weight initialization removes the need for inference-time references. To disentangle these two mech-anisms, we train AIDE with a randomly initialized ALM while keeping only the shared encoder (supplementary). Encoder sharing alone improves text quality over Learner-Only (R-L +1.2), but part prediction degrades (P-wF1 36.0 vs. 37.6): the randomly initialized ALM produces uninformative tokens that dilute the useful learner signal. Adding teacher initialization recovers both text quality and part prediction (P-wF1 +7.5), confirming that the two mechanisms play distinct roles: encoder sharing provides a common represen-tation space, while weight initialization provides a useful starting point for the ALM. 
+
+Implicit transfer suffices. Unlike standard distillation [15, 36] where the teacher is a larger model, our teacher and student share the same architecture; the teacher’s sole advantage is access to expert references, which produce zΔ via a fixed subtraction. Since the student cannot access the expert encoding at inference, forc-ing it to approximate zΔ would constrain it to a representation it cannot faithfully reproduce, rather than allowing it to discover one better suited to the downstream task. Empirically, adding an explicit feature-matching loss ( 𝜆 feat =1) degrades all metrics (supple-mentary), confirming that implicit transfer is more effective than explicit loss-based distillation. This echoes prior findings that ex-plicit feature alignment is not always beneficial [29]; here it fails because the teacher’s difference tokens encode a learner–expert subtraction that the student, without expert input, cannot repro-duce. Together with the capacity control and initialization analyses, these results indicate that AIDE’s improvement is not explained by increased capacity or explicit distillation. 
+
+## 5.2 Broader Impact 
+
+Pose-based input provides substantial computational savings over raw video: skeleton sequences reduce the VLM’s input from ∼7,000 vision tokens to just 16–32 pose-derived tokens (Table 4). AIDE goes further by eliminating expert references at inference, requiring only a single recording of the learner’s attempt with 3.5 M trainable pa-rameters at Stage 2. This has the potential to democratize access to coaching in settings where expert instruction is scarce or unafford-able, from community sports programs in under-resourced regions to factory floor training in manufacturing. The structured output format (summary, improvement parts, good parts) is designed to be directly actionable for learners without requiring interpretation by a domain expert. 
+
+## 5.3 Limitations and Future Directions 
+
+As shown in Section 4, on soccer where training data is limited (232 pairs), AIDE’s text quality gains generalize (R-L +8.7) but P-wF1 drops below all methods including Learner-Only (38.2 vs. 46.0–49.6). The ALM appears to require more training data for stable part predictions. Additionally, our evaluation is limited to the ExpertAF dataset, the only publicly available benchmark with paired learner– expert coaching feedback; generalization to other domains remains 
+
+Table 3: Capacity control: matching AIDE’s 32 tokens. LO = Learner-Only. 
+
+Method Tokens B1 R-L BERT P-wF1 LO ( 𝐾 =16) 16 26.2 ±1.0 20.7 ±0.9 76.1 ±0.3 37.6 ±5.7 
+
+LO ( 𝐾 =32) 32 26.6 ±0.6 21.3 ±0.8 76.4 ±0.6 33.3 ±4.8 
+
+AIDE (𝐾 =16) 32 27.9 ±0.9 22.3 ±1.0 76.8 ±0.6 43.5 ±5.3 
+
+Table 4: Computational cost per method. 
+
+Method Input tokens Params Speed ‡
+
+Zero-shot ∼7,000 (vision) – ∼110 s Learner-Only 16 (pose) 3.5M ∼1 s CoachMe 16 (pose) 3.3M ∼1 s Learner+Expert 32 (pose) 5.4M ∼1 s 
+
+AIDE 32 (pose) 8.9M † ∼1 s     
+
+> †5.4M (Stage 1, teacher) +3.5M (Stage 2, student). At inference, only Stage 2 is used.
+> ‡VLM inference only. Pose-based methods additionally require pose estimation.
+
+future work. All results use a single frozen LLM backbone; transfer to other language models is untested. Our experiments use the dataset-provided poses from Ego-Exo4D; a deployed system would instead rely on an off-the-shelf pose estimator [46], and the effect of estimation noise on feedback quality remains to be evaluated. Finally, our evaluation relies on automatic text metrics and LLM-based pairwise judgments; while such protocols have been shown to correlate with human ratings [25, 52], a human expert study would provide stronger evidence of practical coaching utility and remains future work. Future directions include extending AIDE to other motor skill domains (e.g., rehabilitation, industrial training), integrating end-to-end pose estimation for a fully automatic pipeline, incorporat-ing graph-based pose encoders that exploit joint connectivity, and exploring multimodal encoders that jointly process skeleton se-quences with video or sensor signals. 
+
+## 6 Conclusion 
+
+We presented AIDE, a LUPI-based framework that leverages expert references only during training and generates reference-free motor skill feedback at inference. AIDE outperforms reference-free base-lines on most metrics on basketball, and an ablation indicates that both implicit transfer mechanisms, encoder sharing and weight initialization, contribute to these gains. Text quality improvements generalize to soccer. Pairwise LLM-based evaluation with two inde-pendent judges further supports these findings. Our central finding is that implicit transfer, without explicit distillation losses, enables a reference-free method to perform comparably to reference-required methods, opening a practical path to scalable coaching from a single learner recording where expert access is limited. 
+
+## Acknowledgments 
+
+This work was supported by JST K Program, Japan Grant Number JPMJKP25V1. AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+## References 
+
+[1] Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch, Katherine Millican, Malcolm Reynolds, et al. 2022. Flamingo: A Visual Language Model for Few-Shot Learning. In Advances in Neural Information Processing Systems (NeurIPS) , Vol. 35. 23716–23736. [2] Anthropic. 2025. Claude. https://www.anthropic.com/claude. [3] Kumar Ashutosh, Tushar Nagarajan, Georgios Pavlakos, Kris Kitani, and Kristen Grauman. 2025. ExpertAF: Expert Actionable Feedback from Video. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[4] Satanjeev Banerjee and Alon Lavie. 2005. METEOR: An Automatic Metric for MT Evaluation with Improved Correlation with Human Judgments. In ACL Workshop on Intrinsic and Extrinsic Evaluation Measures .[5] Zhe Cao, Tomas Simon, Shih-En Wei, and Yaser Sheikh. 2017. Realtime Multi-Person 2D Pose Estimation Using Part Affinity Fields. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[6] Mark Collier, Rodolphe Jenatton, Effrosyni Kokiopoulou, and Jesse Berent. 2022. Transfer and Marginalize: Explaining Away Label Noise with Privileged Informa-tion. In International Conference on Machine Learning (ICML) .[7] Wenliang Dai, Junnan Li, Dongxu Li, Anthony Meng Huat Tiong, Junqi Zhao, Weisheng Wang, Boyang Li, Pascale Fung, and Steven Hoi. 2023. InstructBLIP: Towards General-purpose Vision-Language Models with Instruction Tuning. In 
+
+Advances in Neural Information Processing Systems (NeurIPS) .[8] Jan Feyereisl, Suha Kwak, Jeany Son, and Bohyung Han. 2014. Object Localization based on Structural SVM using Privileged Information. In Advances in Neural Information Processing Systems (NeurIPS) .[9] Tommaso Furlanello, Zachary C. Lipton, Michael Tschannen, Laurent Itti, and An-ima Anandkumar. 2018. Born Again Neural Networks. In International Conference on Machine Learning (ICML) . 1607–1616. [10] Nuno C. Garcia, Pietro Morerio, and Vittorio Murino. 2018. Modality Distillation with Multiple Stream Networks for Action Recognition. In European Conference on Computer Vision (ECCV) . 106–121. [11] Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri, et al. 2024. The Llama 3 Herd of Models. arXiv preprint arXiv:2407.21783 (2024). [12] Kristen Grauman, Andrew Westbury, Lorenzo Torresani, Kris Kitani, Jitendra Malik, Triantafyllos Afouras, Kumar Ashutosh, Vijay Baiyya, Siddhant Bansal, Bikram Boote, Eugene Byrne, et al. 2024. Ego-Exo4D: Understanding Skilled Hu-man Activity from First- and Third-Person Perspectives. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[13] Chuan Guo, Shihao Zou, Xinxin Zuo, Sen Wang, Wei Ji, Xingyu Li, and Li Cheng. 2022. Generating Diverse and Natural 3D Human Motions from Text. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 5142–5151. [14] Pengcheng He, Xiaodong Liu, Jianfeng Gao, and Weizhu Chen. 2021. DeBERTa: Decoding-enhanced BERT with Disentangled Attention. In International Confer-ence on Learning Representations (ICLR) .[15] Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. 2015. Distilling the Knowledge in a Neural Network. arXiv preprint arXiv:1503.02531 (2015). [16] Biao Jiang, Xin Chen, Wen Liu, Jingyi Yu, Gang Yu, and Tao Chen. 2023. Mo-tionGPT: Human Motion as a Foreign Language. In Advances in Neural Informa-tion Processing Systems (NeurIPS) .[17] John Lambert, Ozan Sener, and Silvio Savarese. 2018. Deep Learning under Privileged Information Using Heteroscedastic Dropout. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 8886–8895. [18] Bo Li, Yuanhan Zhang, Dong Guo, Renrui Zhang, Feng Li, Hao Zhang, Kaichen Zhang, Peiyuan Zhang, Yanwei Li, Ziwei Liu, and Chunyuan Li. 2024. LLaVA-OneVision: Easy Visual Task Transfer. arXiv preprint arXiv:2408.03326 (2024). [19] Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. 2023. BLIP-2: Boot-strapping Language-Image Pre-Training with Frozen Image Encoders and Large Language Models. In International Conference on Machine Learning (ICML) .[20] Bin Lin, Yang Ye, Bin Zhu, Jiaxi Cui, Munan Ning, Peng Jin, and Li Yuan. 2024. Video-LLaVA: Learning United Visual Representation by Alignment Before Pro-jection. In Conference on Empirical Methods in Natural Language Processing (EMNLP) . 5971–5984. [21] Chin-Yew Lin. 2004. ROUGE: A Package for Automatic Evaluation of Summaries. In Text Summarization Branches Out .[22] Ji Lin, Hongxu Yin, Wei Ping, Pavlo Molchanov, Mohammad Shoeybi, and Song Han. 2024. VILA: On Pre-Training for Visual Language Models. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[23] Haotian Liu, Chunyuan Li, Yuheng Li, Bo Li, Yuanhan Zhang, Sheng Shen, and Yong Jae Lee. 2024. LLaVA-NeXT: Improved Reasoning, OCR, and World Knowl-edge. https://llava-vl.github.io/blog/2024-01-30-llava-next/. [24] Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. 2023. Visual In-struction Tuning. In Advances in Neural Information Processing Systems (NeurIPS) ,Vol. 36. [25] Yang Liu, Dan Iter, Yichong Xu, Shuohang Wang, Ruochen Xu, and Chenguang Zhu. 2023. G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment. In Conference on Empirical Methods in Natural Language Processing (EMNLP) .2511–2522. [26] David Lopez-Paz, Léon Bottou, Bernhard Schölkopf, and Vladimir Vapnik. 2016. Unifying Distillation and Privileged Information. In International Conference on Learning Representations (ICLR) .[27] Ji Ma, Jiale Wu, Haoyu Wang, Yanze Zhang, Xiao Xie, Zheng Zhou, Hui Zhang, Jiachen Wang, and Yingcai Wu. 2025. T3Set: A Multimodal Dataset with Targeted Suggestions for LLM-based Virtual Coach in Table Tennis Training. In ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD) .5686–5697. [28] Muhammad Maaz, Hanoona Rasheed, Salman Khan, and Fahad Shahbaz Khan. 2024. Video-ChatGPT: Towards Detailed Video Understanding via Large Vision and Language Models. In Annual Meeting of the Association for Computational Linguistics (ACL) .[29] Utkarsh Ojha, Yuheng Li, Anirudh Sundara Rajan, Yingyu Liang, and Yong Jae Lee. 2023. What Knowledge Gets Distilled in Knowledge Distillation?. In Advances in Neural Information Processing Systems .[30] Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu. 2002. BLEU: A Method for Automatic Evaluation of Machine Translation. In Annual Meeting of the Association for Computational Linguistics (ACL) .[31] Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho. 2019. Relational Knowledge Distillation. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 3967–3976. [32] Paritosh Parmar and Brendan Tran Morris. 2019. Action Quality Assessment Across Multiple Actions. In IEEE Winter Conference on Applications of Computer Vision (WACV) . 1468–1476. [33] Danil Provodin, Bram van den Akker, Christina Katsimerou, Maurits Kaptein, and Mykola Pechenizkiy. 2025. Rethinking Knowledge Transfer in Learning Using Privileged Information. Transactions on Machine Learning Research (2025). [34] Qwen Team. 2026. Qwen3.5: Towards Native Multimodal Agents. https://qwen. ai/blog?id=qwen3.5 [35] Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. 2020. Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer. Journal of Machine Learning Research 21, 140 (2020), 1–67. [36] Adriana Romero, Nicolas Ballas, Samira Ebrahimi Kahou, Antoine Chassang, Carlo Gatta, and Yoshua Bengio. 2015. FitNets: Hints for Thin Deep Nets. In 
+
+International Conference on Learning Representations (ICLR) .[37] Tatsuki Seino, Naoki Saito, Takahiro Ogawa, Satoshi Asamizu, and Miki Haseyama. 2025. Expert Comment Generation Considering Sports Skill Level Us-ing a Large Multimodal Model with Video and Spatial-Temporal Motion Features. 
+
+Sensors 25, 2 (2025), 447. [38] Lin Shi, Chiyu Ma, Wenhua Liang, Xingjian Diao, Weicheng Ma, and Soroush Vosoughi. 2025. Judging the Judges: A Systematic Study of Position Bias in LLM-as-a-Judge. In International Joint Conference on Natural Language Processing and Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics (IJCNLP-AACL) . 292–314. [39] Ke Sun, Bin Xiao, Dong Liu, and Jingdong Wang. 2019. Deep High-Resolution Representation Learning for Human Pose Estimation. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[40] Yunlong Tang, Jing Bi, Siting Xu, Luchuan Song, Susan Liang, Teng Wang, Daoan Zhang, Jie An, Jingyang Lin, Rongyi Zhu, et al. 2026. Video Understanding with Large Language Models: A Survey. IEEE Transactions on Circuits and Systems for Video Technology 36, 2 (2026), 1355–1376. [41] Yansong Tang, Zanlin Ni, Jiahuan Zhou, Danyang Zhang, Jiwen Lu, Ying Wu, and Jie Zhou. 2020. Uncertainty-Aware Score Distribution Learning for Action Quality Assessment. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 9836–9845. [42] Yonglong Tian, Dilip Krishnan, and Phillip Isola. 2020. Contrastive Representation Distillation. In International Conference on Learning Representations (ICLR) .[43] Vladimir Vapnik and Akshay Vashist. 2009. A New Learning Paradigm: Learning Using Privileged Information. Neural Networks 22, 5–6 (2009), 544–557. [44] Yi Wang, Kunchang Li, Xinhao Li, Jiashuo Yu, Yinan He, Guo Chen, Baoqi Pei, Rongkun Zheng, Zun Wang, et al. 2024. InternVideo2: Scaling Foundation Models for Multimodal Video Understanding. In European Conference on Computer Vision (ECCV) .[45] Jinglin Xu, Yongming Rao, Xumin Yu, Guangyi Chen, Jie Zhou, and Jiwen Lu. 2022. FineDiving: A Fine-Grained Dataset for Procedure-Aware Action Quality Assessment. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 2939–2948. [46] Yufei Xu, Jing Zhang, Qiming Zhang, and Dacheng Tao. 2022. ViTPose: Simple Vision Transformer Baselines for Human Pose Estimation. In Advances in Neural Information Processing Systems (NeurIPS) .[47] Wei-Hsin Yeh, Yu-An Su, Chih-Ning Chen, Yi-Hsueh Lin, Calvin Ku, Wen-Hsin Chiu, Min-Chun Hu, and Lun-Wei Ku. 2025. CoachMe: Decoding Sport Elements with a Reference-Based Coaching Instruction Generation Model. In Annual Meet-ing of the Association for Computational Linguistics (ACL) . 29126–29151. [48] Xumin Yu, Yongming Rao, Wenliang Zhao, Jiwen Lu, and Jie Zhou. 2021. Group-Aware Contrastive Regression for Action Quality Assessment. In IEEE/CVF Inter-national Conference on Computer Vision (ICCV) . 7899–7908. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yoshiki Ito 
+
+[49] Sergey Zagoruyko and Nikos Komodakis. 2017. Paying More Attention to Atten-tion: Improving the Performance of Convolutional Neural Networks via Attention Transfer. In International Conference on Learning Representations (ICLR) .[50] Hang Zhang, Xin Li, and Lidong Bing. 2023. Video-LLaMA: An Instruction-tuned Audio-Visual Language Model for Video Understanding. In Conference on Empir-ical Methods in Natural Language Processing (EMNLP): System Demonstrations .543–553. [51] Tianyi Zhang, Varsha Kishore, Felix Wu, Kilian Q Weinberger, and Yoav Artzi. 2020. BERTScore: Evaluating Text Generation with BERT. In International Con-ference on Learning Representations (ICLR) .[52] Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao Zhuang, Zi Lin, Zhuohan Li, Dacheng Li, Eric P Xing, et al. 2023. Judg-ing LLM-as-a-Judge with MT-Bench and Chatbot Arena. In Advances in Neural Information Processing Systems (NeurIPS) , Vol. 36. [53] Deyao Zhu, Jun Chen, Xiaoqian Shen, Xiang Li, and Mohamed Elhoseiny. 2024. MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models. In International Conference on Learning Representations (ICLR) .AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+## Supplementary Material A Ablation Studies A.1 Token Count Ablation 
+
+Table A1 shows the effect of varying the number of pose tokens 𝐾 
+
+per pathway (learner and analysis) on AIDE. 𝐾 =8 degrades most metrics (B1 −1.3, R-L −1.4, P-wF1 −5.7, P-EM −4.9), though ME-TEOR slightly improves ( +0.6), indicating insufficient capacity for consistent performance. Doubling to 𝐾 =32 yields no improvement over 𝐾 =16, with slight declines in R-L ( −0.7) and P-wF1 ( −1.5), suggesting that additional tokens introduce redundancy without adding useful information. 𝐾 =16 provides the best overall trade-off, achieving the highest scores on five of six metrics. 
+
+## A.2 Teacher Initialization Ablation 
+
+Table A2 isolates the contributions of AIDE’s two implicit trans-fer mechanisms: encoder sharing and weight initialization. “AIDE (no init)” uses the same architecture but initializes the Auxiliary Latent Module (ALM) randomly, retaining only the shared encoder. Encoder sharing alone improves text quality over LO (R-L +1.2, M +2.2), but part prediction degrades (P-wF1 36.0 vs. 37.6 for LO): the randomly initialized ALM produces uninformative tokens that dilute the useful learner signal, leaving the model worse off than LO’s 16 focused tokens. Adding teacher initialization recovers both text quality (B1 +1.1, R-L +0.4) and part prediction (P-wF1 +7.5), confirming that the two mechanisms play distinct roles: encoder sharing provides a shared representation space, while weight ini-tialization provides a useful starting point for the ALM. 
+
+## A.3 Distillation Loss Ablation 
+
+Table A3 shows the effect of adding an explicit feature-matching loss ( Lfeat = ∥zaux − zΔ ∥22) to AIDE’s generation loss. Adding Lfeat 
+
+(𝜆 feat =1) degrades text quality (R-L −0.7, M −0.6) and part prediction (P-wF1 −1.2). Since the teacher’s zΔ is defined by subtraction from the expert encoding, which is unavailable to the student at inference, exactly reproducing it is neither possible nor desirable; the feature-matching loss constrains the ALM toward a structurally limited target rather than allowing it to discover a representation better suited to the generation task. This confirms that implicit transfer (encoder sharing and weight initialization) is more effective than explicit loss-based distillation. 
+
+## B Prompt Templates 
+
+All methods share the same output schema and guidelines (shared suffix below). We show the method-specific prefix for each variant; 
+
+𝐾 =16 in all prompts. 
+
+## B.1 Shared Output Schema and Guidelines 
+
+The following suffix is appended to all prompts: 
+
+Shared Suffix 
+
+Output ONLY a valid JSON object with this schema: {"one_sentence_summary": string, "needs_improvement_parts": [string, ...], "good_execution_parts": [string, ...]} 
+
+Table A1: Effect of the number of pose tokens 𝐾 per pathway on AIDE (basketball). 𝐾 =16 is used in all other experiments. 
+
+𝐾 B1 R-L M BERT P-wF1 P-EM 8 26.6 ±1.7 20.9 ±0.5 21.0 ±1.0 75.8 ±0.3 37.8 ±5.1 10.9 ±2.7 
+
+16 27.9 ±0.9 22.3 ±1.0 20.4 ±0.5 76.8 ±0.6 43.5 ±5.3 15.8 ±2.8 
+
+32 27.6 ±0.9 21.6 ±0.6 20.4 ±1.7 76.6 ±0.3 42.0 ±5.2 13.0 ±4.3 
+
+Table A2: Effect of teacher initialization on AIDE (basketball). LO = Learner-Only. “No init” initializes the Auxiliary Latent Module randomly instead of from the teacher’s weights, keep-ing only encoder sharing. 
+
+B1 R-L M BERT P-wF1 P-EM LO 26.2 ±1.0 20.7 ±0.9 19.0 ±1.4 76.1 ±0.3 37.6 ±5.7 12.3 ±3.0 
+
+AIDE (no init) 26.8 ±0.7 21.9 ±0.6 21.2 ±1.2 76.3 ±0.3 36.0 ±9.1 14.0 ±4.2 
+
+AIDE 27.9 ±0.9 22.3 ±1.0 20.4 ±0.5 76.8 ±0.6 43.5 ±5.3 15.8 ±2.8 
+
+Table A3: Effect of adding a feature-matching loss to AIDE. Adding Lfeat degrades both text quality and part prediction. 
+
+𝜆 feat B1 R-L M BERT P-wF1 P-EM 0 27.9 ±0.9 22.3 ±1.0 20.4 ±0.5 76.8 ±0.6 43.5 ±5.3 15.8 ±2.8 
+
+1 27.0 ±2.1 21.6 ±1.0 19.8 ±1.6 76.6 ±0.1 42.3 ±2.1 15.3 ±2.4 
+
+Guidelines: - one_sentence_summary: exactly one sentence of expert coaching feedback. - Describe what the athlete is doing and what they should change. - Be specific: refer to concrete body movements. - needs_improvement_parts: 0–6 unique items from [Head, Shoulder, Hands, Arms, Legs, Jump]. - good_execution_parts: 0–6 unique items from [Head, Shoulder, Hands, Arms, Legs, Jump]. Return JSON only. 
+
+## B.2 Zero-shot 
+
+This video has been sampled at 10 frames per second. [shared suffix] 
+
+## B.3 Learner-Only 
+
+This shows a learner performing {sport} .The following tokens encode the learner’s body movements extracted from pose estimation. Pose tokens: 〈|video_conn| 〉 × 𝐾 
+
+[shared suffix] 
+
+## B.4 AIDE 
+
+This shows a learner performing {sport} .The following tokens encode the learner’s body movements MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Yoshiki Ito 
+
+extracted from pose estimation. Learner tokens: 〈|video_conn| 〉 × 𝐾 
+
+The following tokens encode the predicted technique analysis. Analysis tokens: 〈|diff_conn| 〉 × 𝐾 
+
+[shared suffix] 
+
+## B.5 CoachMe 
+
+One shows a learner. Another shows an expert performing the same skill. The following tokens encode the learner’s motion and comparison with the expert’s technique. Motion-comparison tokens: 〈|diff_conn| 〉 × 𝐾 
+
+[shared suffix] 
+
+## B.6 Learner+Expert Teacher 
+
+This shows a learner performing {sport} .The following tokens encode the learner’s body movements extracted from pose estimation. Learner tokens: 〈|video_conn| 〉 × 𝐾 
+
+The following tokens encode the difference between the learner and an expert reference. Difference tokens: 〈|diff_conn| 〉 × 𝐾 
+
+[shared suffix] 
+
+## C LLM-as-a-Judge Protocol 
+
+We evaluate feedback quality via pairwise LLM judgments. Given a ground-truth reference and two candidate feedbacks, the judge evaluates two independent axes (correctness and specificity) and is forced to choose a winner on each axis (no ties). The system prompt provided to each judge is: 
+
+You are an expert sports coach evaluating automated coaching feedback. You will be given a ground-truth reference and two candidate feedbacks (A and B) for the same sports performance. Compare A and B on two INDEPENDENT axes. Judge each axis separately. You MUST choose either A or B for each axis. Do NOT output Tie. Axis definitions: 1. Correctness : Which feedback more accurately identifies the body parts and issues described in the ground-truth? Consider both the predicted body parts (Needs improvement / Good execution) and whether the summary text addresses the same problem as the ground truth. 2. Specificity : Which feedback provides more concrete, actionable coaching advice? For example, “keep your elbow aligned with your shoulder” is more specific than “improve your form”. Judge this INDEPENDENTLY of correctness. Output valid JSON with keys: “correctness”, “specificity” (each “A” or “B”), and “reasoning” (1–2 sentences). Output ONLY the JSON object. 
+
+The presentation order of A and B is randomized per sample to mitigate position bias.

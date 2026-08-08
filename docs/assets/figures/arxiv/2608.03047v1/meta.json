@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.03047v1/fig-001.webp",
+      "caption": "Figure 1: AIDE generates coaching feedback from a learner’s pose sequence alone. Expert demonstrations (right) are leveraged only during training; no expert input is required at inference.",
+      "page": 1,
+      "index": 1,
+      "width": 470,
+      "height": 325
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03047v1/fig-005.webp",
+      "caption": "Figure 2: Overview of the AIDE framework. Top (Stage 1): The teacher encodes both learner 𝑉 and expert 𝑉 through a shared encoder (MLP + Resampler), producing 𝐾 learner tokens z = Enc(𝑉 ) and 𝐾 difference tokens zΔ = Enc(𝑉 ) − Enc(𝑉 ). The expert branch is computed without gradients. Both token sequences are concatenated and fed to a frozen LLM. Bottom (Stage 2): The student reuses the teacher’s frozen encoder for z and a trainable Auxiliary Latent Module (same MLP + Resampler architecture) for zaux, requiring only𝑉 at inference. Knowledge transfers via encoder sharing and weight initialization. The trainable module mainly acts as a training-time stabilizer; its inference-time output provides only auxiliary refinement.",
+      "page": 3,
+      "index": 5,
+      "width": 1032,
+      "height": 460
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03047v1/fig-002.webp",
+      "caption": "Table 1: Main comparison on basketball. Train/Infer: whether expert reference is used (✓= used). CoachMe is re-implemented under a common backbone and pose encoder; see Section 4.2 for details. Bold = best, underline = second best.",
+      "page": 6,
+      "index": 2,
+      "width": 836,
+      "height": 298
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03047v1/fig-003.webp",
+      "caption": "Figure 3: Pairwise LLM-as-a-Judge evaluation: AIDE win rate (%) against each baseline (LO = Learner-Only, CM = CoachMe, LE = Learner+Expert). Dashed line = 50% (parity); error bars = std over 3 generation model seeds. Both judges prefer AIDE over LO, while AIDE achieves comparable win rates against CM and LE.",
+      "page": 6,
+      "index": 3,
+      "width": 492,
+      "height": 271
+    },
+    {
+      "url": "assets/figures/arxiv/2608.03047v1/fig-004.webp",
+      "caption": "Figure 4: Qualitative comparison on validation samples (2 basketball, 1 soccer). Each example shows the ground-truth feedback with target body parts in brackets. Predicted parts: body parts each method identifies as needing improvement. Green = correct parts or relevant coaching, red = incorrect parts or misleading feedback. Images are cropped for clarity.",
+      "page": 7,
+      "index": 4,
+      "width": 1048,
+      "height": 821
+    }
+  ]
+}

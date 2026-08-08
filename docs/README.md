@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-08-08
-- 运行时间：2026-08-08 05:00:33 北京时间
+- 最新运行日期：2026-08-09
+- 运行时间：2026-08-09 04:51:46 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日聚焦神经解码与长程任务执行，精读两篇高分论文，探索行为表征预训练和听觉注意力切换的稳健解码。
-最值得关注的是：预训练行为表征能大幅提升神经解码性能，而统一执行状态链可破解长时序机器人操控难题。
-若对脑机接口或具身智能感兴趣，建议优先阅读《NeuroPB》和《ChainVLA》，感受表征共享与执行链式规划的思路。
-- 详情：[/202608/08/README](/202608/08/README)
+今日精读10篇AI论文，重点研读了具身智能与跨模态检索的两项高分工作。  
+具身VAE实现高效可控的机器人动作视频生成，SeCo-SBIR用语义一致性突破零样本草图检索，均是表征学习落地的精彩范例。  
+建议先从EmbodiedVAE看起，理解机器人如何“脑内预演”操作，再结合SeCo-SBIR体验跨模态搜索的实用技巧。
+- 详情：[/202608/09/README](/202608/09/README)
 
 ### 精读区论文标签
-1. [NeuroPB: Scaling Neural Decoding with Pretrained Behavioral Representations](/202608/08/2608.04389v1-neuropb-scaling-neural-decoding-with-pretrained-behavioral-representations)  
-   标签：评分：10.0/10、query:ndai
-   evidence：利用预训练行为表示从神经活动解码运动轨迹
-2. [SGAD: A State-Guided Adaptive Decision Framework for Robust EEG-Based Auditory Attention Switch Decoding](/202608/08/2608.01618v1-sgad-a-state-guided-adaptive-decision-framework-for-robust-eeg-based-auditory-attention-switch-decoding)  
+1. [EmbodiedVAE: Disentangled Video VAE for Efficient and Controllable Embodied Manipulation](/202608/09/2608.02990v1-embodiedvae-disentangled-video-vae-for-efficient-and-controllable-embodied-manipulation)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于EEG的听觉注意力切换解码，采用状态引导自适应决策
-3. [SAGE: Switch-Aware EEG-Guided Soft Gating for Target Speaker Extraction with In-Trial Switching](/202608/08/2608.01623v1-sage-switch-aware-eeg-guided-soft-gating-for-target-speaker-extraction-with-in-trial-switching)  
+   evidence：从原始视频学习紧凑可控潜在表示的视频VAE
+2. [SeCo-SBIR: Semantically Consistent Prompt Learning for Zero-Shot Sketch-Based Image Retrieval](/202608/09/2608.03120v1-seco-sbir-semantically-consistent-prompt-learning-for-zero-shot-sketch-based-image-retrieval)  
    标签：评分：9.0/10、query:ndai
-   evidence：EEG引导的目标说话人提取，将神经注意力解码为语音流
-4. [Beyond Magnitude and Shape: A Direction-Aware Loss for Time Series Forecasting](/202608/08/2608.01857v1-beyond-magnitude-and-shape-a-direction-aware-loss-for-time-series-forecasting)  
+   evidence：通过提示学习适配预训练CLIP模型用于零样本草图图像检索
+3. [Frequency-Decorrelated Temporal Ensembles for EEG--fNIRS Imagined-Handwriting Decoding](/202608/09/2608.03176v1-frequency-decorrelated-temporal-ensembles-for-eeg--fnirs-imagined-handwriting-decoding)  
    标签：评分：9.0/10、query:ndai
-   evidence：直接针对时间序列预测，提出方向感知损失以改进时序预测。
-5. [Understanding and Correcting Low-Frequency Bias in EEG Foundation Model](/202608/08/2608.01898v1-understanding-and-correcting-low-frequency-bias-in-eeg-foundation-model)  
+   evidence：从EEG-fNIRS神经信号解码想象手写
+4. [TimeRLM: Recursive Language Models Enable Precise Anomaly Localization in Long-Context Time-Series](/202608/09/2608.03391v1-timerlm-recursive-language-models-enable-precise-anomaly-localization-in-long-context-time-series)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于基础模型的EEG神经活动表征学习
+   evidence：基于递归语言模型的长上下文时间序列异常定位
+5. [State Propagation Also Satisfies: A Complex-Valued State-Space Model for Deterministic State Tracking](/202608/09/2608.03425v1-state-propagation-also-satisfies-a-complex-valued-state-space-model-for-deterministic-state-tracking)  
+   标签：评分：9.0/10、query:ndai
+   evidence：复数值循环状态传播用于序列建模与状态跟踪
 
 ### 速读区论文标签
-1. [The Label Defines the Timescale: Trait-State Limits of Temporal-Aggregate Learning](/202608/08/2608.01587v1-the-label-defines-the-timescale-trait-state-limits-of-temporal-aggregate-learning)  
+1. [Maglev: Sliding Recurrent Memory](/202608/09/2608.02870v2-maglev-sliding-recurrent-memory)  
    标签：评分：8.0/10、query:ndai
-   evidence：分析标签聚合长时间跨度而输入来自短窗口时的可预测性极限
-2. [TextNCA: Neural Cellular Automata for Language Modeling via Hierarchical Local Attention](/202608/08/2608.02050v1-textnca-neural-cellular-automata-for-language-modeling-via-hierarchical-local-attention)  
+   evidence：用于下一个词元预测的循环Transformer架构
+2. [Interpreting Black-Box Large Language Models with Sentence-Level Energy Landscapes](/202608/09/2608.02879v1-interpreting-black-box-large-language-models-with-sentence-level-energy-landscapes)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于语言建模的分层局部注意力序列模型
-3. [ChainVLA: Chaining Vision-Language-Action Queries through a Unified Execution State for Long-Horizon Manipulation](/202608/08/2608.02326v2-chainvla-chaining-vision-language-action-queries-through-a-unified-execution-state-for-long-horizon-manipulation)  
+   evidence：通过归因解释器量化提示句子对目标输出的影响
+3. [Sedentary Behavior Classification for Wearable Sensors with a CNN-BiLSTM Model](/202608/09/2608.02946v1-sedentary-behavior-classification-for-wearable-sensors-with-a-cnn-bilstm-model)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过统一执行状态将视觉-语言-动作查询链接为长时程动作序列
-4. [Mamba with Hierarchical Memory: Solving Representation Bottleneck in Long Sequence Modeling](/202608/08/2608.02347v2-mamba-with-hierarchical-memory-solving-representation-bottleneck-in-long-sequence-modeling)  
+   evidence：零样本和少量标注腕部数据微调实现跨域适应
+4. [AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching](/202608/09/2608.03047v1-aide-automated-instruction-via-distilled-expertise-for-reference-free-motor-skill-coaching)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于预训练Mamba的分层记忆长序列建模
-5. [Stochastic Sequential Search in Very-High-Dimensional Feature Selection](/202608/08/2608.01502v1-stochastic-sequential-search-in-very-high-dimensional-feature-selection)  
+   evidence：利用冻结的预训练语言模型从姿态序列生成教练反馈
+5. [Bayesian Data Reweighting Improves Multimodal Retrieval for Knowledge-Based Visual Question Answering](/202608/09/2608.02907v1-bayesian-data-reweighting-improves-multimodal-retrieval-for-knowledge-based-visual-question-answering)  
    标签：评分：7.0/10、query:ndai
-   evidence：随机序列搜索通过依赖感知的逐特征统计进行特征选择，相当于对输入特征的重要性加权
+   evidence：贝叶斯重加权为查询-文档对计算后验重要性权重
 
