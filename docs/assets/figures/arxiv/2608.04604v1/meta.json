@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.04604v1/fig-001.webp",
+      "caption": "Figure 1: Conceptual comparison of VLM-guided SFDA. Ellipses summarize target-domain predictions; bars show an illustrative sample. (a) Cross-model guidance may overwrite valid source-derived evidence under expert conflict. (b) COSMO instead learns from an evolving shared consensus, retaining sourcederived evidence while integrating complementary VLM evidence.",
+      "page": 1,
+      "index": 1,
+      "width": 473,
+      "height": 267
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04604v1/fig-006.webp",
+      "caption": "Figure 2: Overview of COSMO. (a) For each target sample, the frozen source expert and initially prompted VLM form a cached consensus anchor, while the current target and prompt-adapted VLM branches form a dynamic consensus. CSM modulates its anchor-relative displacement, and the detached result supervises both branches. (b) Entropy-conditioned weighting yields a weighted product of experts that emphasizes more concentrated predictions and reinforces compatible evidence. (c) Consensus-entropy rank contracts, preserves, or extends the consensus shift, while temporal decay gradually removes the modulation.",
+      "page": 4,
+      "index": 6,
+      "width": 976,
+      "height": 533
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04604v1/fig-002.webp",
+      "caption": "Table 1: Closed-set adaptation results (%) on Office-Home and VisDA-C. “VLM” denotes the image-encoder backbone of the vision-language model, and “SF” indicates source-free adaptation. VLM-guided methods are compared only within matched-backbone groups; the best and second-best results in each group are shown in bold and underlined, respectively.",
+      "page": 6,
+      "index": 2,
+      "width": 990,
+      "height": 417
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04604v1/fig-003.webp",
+      "caption": "Table 2: Closed-set adaptation results (%) on DomainNet-126. The notation and matched-backbone comparison conventions follow Table 1.",
+      "page": 7,
+      "index": 3,
+      "width": 994,
+      "height": 402
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04604v1/fig-004.webp",
+      "caption": "Figure 4: Directional validation of CSM on OfficeHome A→C. Positive λ̃ follows the proposed entropyrank assignment, negative values reverse it, and zero disables modulation. Curves compare different decay schedules; the star marks the default setting.",
+      "page": 8,
+      "index": 4,
+      "width": 425,
+      "height": 307
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04604v1/fig-005.webp",
+      "caption": "Figure 5: Conflict-conditioned outcomes on OfficeHome. Samples are grouped by the initial correctness of the source expert (S) and VLM (V ). (a) Accuracy on the four subsets. (b) Source-only retention RSV̄ versus VLM-only absorption AS̄V . Results are averaged over 12 shifts; labels are used only for post-hoc analysis.",
+      "page": 8,
+      "index": 5,
+      "width": 425,
+      "height": 470
+    }
+  ]
+}

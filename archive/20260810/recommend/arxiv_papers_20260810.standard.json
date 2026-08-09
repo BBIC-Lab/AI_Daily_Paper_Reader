@@ -1,0 +1,419 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-09T20:43:18.207297+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 40,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 64,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 7,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 2,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2608.04593v1",
+      "source": "arxiv",
+      "title": "Rethinking Reservoir Pruning: A Dynamical Perspective for Echo State Networks",
+      "abstract": "Echo State Networks (ESNs) offer an efficient framework for temporal prediction, but their randomly initialized reservoirs are often over-parameterized and dynamically redundant. Existing pruning methods largely rely on static connectivity or activation statistics, which may overlook neurons that shape input-driven state transitions. We propose Dynamical Mode Pruning (DMP), a reservoir pruning method that ranks neurons by their contribution to dominant transition modes obtained from a trajectory-averaged Jacobian Gramian. DMP removes low-impact units and retrains only the readout. Experiments on chaotic and real-world time-series benchmarks show that DMP improves or preserves forecasting accuracy while reducing redundant reservoir components. Our results suggest that dynamical influence is a useful criterion for reservoir refinement beyond static structural importance alone.",
+      "authors": [
+        "Sudip Laudari",
+        "Puspa Raj Adhikari"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "math.DS"
+      ],
+      "published": "2026-08-05T08:56:17+00:00",
+      "link": "https://arxiv.org/pdf/2608.04593v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes Dynamical Mode Pruning for Echo State Networks to improve time-series forecasting",
+      "llm_evidence_cn": "提出回声状态网络动态模态剪枝方法，提升时间序列预测",
+      "llm_evidence": "提出回声状态网络动态模态剪枝方法，提升时间序列预测",
+      "canonical_evidence": "提出回声状态网络动态模态剪枝方法，提升时间序列预测",
+      "llm_tldr_en": "A dynamical pruning method ranks reservoir neurons by transition-mode contribution, improving ESN time-series prediction.",
+      "llm_tldr_cn": "基于动态模式贡献对储备池神经元剪枝，提升回声状态网络时间序列预测。",
+      "llm_tldr": "基于动态模式贡献对储备池神经元剪枝，提升回声状态网络时间序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.04604v1",
+      "source": "arxiv",
+      "title": "COSMO: Consensus-Driven Shift Modulation for Source-Free Domain Adaptation",
+      "abstract": "Source-free domain adaptation (SFDA) adapts a source-trained model to an unlabeled target domain without source data, a practical setting under privacy or storage constraints. Yet its self-generated supervision can reinforce source bias under substantial domain shifts. Pretrained vision-language models (VLMs) offer complementary semantic knowledge, but the relative reliability of the source model and VLM varies across target samples. Existing cross-model guidance does not explicitly account for this variation and may overwrite valid source-derived evidence under conflict, a failure we term source-derived evidence forgetting. We formulate VLM-guided SFDA as a sample-wise reliability-allocation problem and propose Consensus-Driven Shift Modulation (COSMO). COSMO replaces expert-to-expert guidance with co-adaptation through an anchored shared consensus. It first forms a sample-specific initial consensus that favors the more concentrated prediction. During adaptation, COSMO re-aggregates both branches' evolving evidence and regulates how far the resulting consensus moves from its initial anchor based on consensus uncertainty and training progress. This keeps the shared supervision anchored yet adaptive. Across four benchmarks, COSMO achieves state-of-the-art performance under matched VLM backbones. Further analyses indicate that it better balances the retention of valid source-derived evidence with the absorption of complementary VLM evidence.",
+      "authors": [
+        "Bo Li",
+        "Junjie Peng",
+        "Xiaohua Xie",
+        "Jianhuang Lai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T09:10:30+00:00",
+      "link": "https://arxiv.org/pdf/2608.04604v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Source-free domain adaptation adapts models to unlabeled target domains without source data using pretrained VLMs",
+      "llm_evidence_cn": "无源域适应利用预训练视觉语言模型将源训练模型适应到无标注目标域",
+      "llm_evidence": "无源域适应利用预训练视觉语言模型将源训练模型适应到无标注目标域",
+      "canonical_evidence": "无源域适应利用预训练视觉语言模型将源训练模型适应到无标注目标域",
+      "llm_tldr_en": "COSMO adapts source-trained models to unlabeled target domains via consensus-driven shift modulation using pretrained VLMs.",
+      "llm_tldr_cn": "COSMO通过共识驱动的偏移调制，利用预训练视觉语言模型将源训练模型适应到无标注目标域。",
+      "llm_tldr": "COSMO通过共识驱动的偏移调制，利用预训练视觉语言模型将源训练模型适应到无标注目标域。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.04917v1",
+      "source": "arxiv",
+      "title": "An active-learning framework for real-time depth perception from monocular vision streams",
+      "abstract": "Biological visual systems can perceive depth from monocular vision flow, continuously integrating temporal visual cues while maintaining a balance between stability and plasticity in dynamic environments. In contrast, artificial perception models deployed on resource-constrained edge devices are typically trained in a static offline manner and remain frozen after deployment, often suffering severe performance degradation under domain shifts. While large-scale models may encode broad knowledge through massive parameter redundancy, lightweight networks face a static optimization dilemma: forcing compact models to learn universal geometric representations is computationally inefficient and often leads to performance saturation. To resolve this issue, an Online Active Learning (OAL) mechanism is introduced to endow compact neural networks with the capability to adapt continuously during operation. A closed-loop Predict-Evaluate-Correct learning paradigm is established to actively select high-confidence, information-rich signals from streaming visual input. Crucially, Elastic Weight Consolidation (EWC) is employed not merely to prevent catastrophic forgetting, but to enforce Selective Plasticity, preserving parameters that encode globally relevant structural knowledge while allowing local alignment to newly observed environments. Built upon a MobileNetV3-Small backbone, the proposed system achieves approximately a 75% reduction in computational cost while maintaining competitive depth estimation accuracy. Experimental results demonstrate that adaptability is not solely determined by model size, but rather by how effectively parameter plasticity is regulated in dynamic environments.",
+      "authors": [
+        "Xiaorong Zeng",
+        "Weiqiang Chen",
+        "Peng Shi",
+        "Liang Su",
+        "Zirui Wang",
+        "Xuewu Ji",
+        "Shuiwen Shen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T14:45:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.04917v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "active learning framework for domain adaptation with limited labels",
+      "llm_evidence_cn": "用于有限标签域自适应的主动学习框架",
+      "llm_evidence": "用于有限标签域自适应的主动学习框架",
+      "canonical_evidence": "用于有限标签域自适应的主动学习框架",
+      "llm_tldr_en": "Active-learning adapts lightweight depth models to new domains with limited labels.",
+      "llm_tldr_cn": "主动学习框架利用有限标注数据使深度模型适应新域",
+      "llm_tldr": "主动学习框架利用有限标注数据使深度模型适应新域",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.05315v1",
+      "source": "arxiv",
+      "title": "Rectifying Geometric Misalignment: Online Source-Free Adaptation for Class-Imbalanced EEG",
+      "abstract": "Electroencephalography (EEG) based Brain-Computer Interfaces (BCIs) often require unsupervised domain adaptation (UDA) to generalize across subjects and sessions. While Riemannian alignment methods like the Riemannian Centering Transformation (RCT) are effective for handling covariate shifts, they implicitly assume balanced class priors. However, in realistic online BCI scenarios, the label distributions vary dynamically (label shift), causing standard alignment techniques to geometrically misalign the target data distributions. In this work, we propose OSPDIM (Online SPD manifold information maximization), a source-free online UDA framework designed to address label shifts on the Riemannian manifold. OSPDIM introduces a manifold-constrained bias parameter into the tangent space mapping, which is optimized via information maximization to correct the geometric skew caused by imbalanced data streams. Unlike offline methods relying on global batch statistics, OSPDIM estimates and corrects geometric bias on-the-fly. Simulations on 2D SPD matrices visually demonstrate that OSPDIM successfully rectifies the misalignment where standard centering fails. Extensive experiments on multiple motor imagery datasets show that OSPDIM significantly outperforms standard Riemannian baselines, particularly in challenging online adaptation scenarios with severe class imbalance, offering a robust solution for practical, plug-and-play BCI systems.",
+      "authors": [
+        "Shiwen Chu",
+        "Shanglin Li",
+        "Motoaki Kawanabe",
+        "Reinmar Kobler"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-05T18:17:59+00:00",
+      "link": "https://arxiv.org/pdf/2608.05315v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "source-free online domain adaptation for EEG-based brain-computer interfaces, handling class-imbalanced label shifts on the Riemannian manifold",
+      "llm_evidence_cn": "面向EEG脑机接口的无源在线域适应方法，处理黎曼流形上的类别不均衡标签偏移",
+      "llm_evidence": "面向EEG脑机接口的无源在线域适应方法，处理黎曼流形上的类别不均衡标签偏移",
+      "canonical_evidence": "面向EEG脑机接口的无源在线域适应方法，处理黎曼流形上的类别不均衡标签偏移",
+      "llm_tldr_en": "OSPDIM source-free online adaptation improves EEG BCI generalization under label shift without target labels.",
+      "llm_tldr_cn": "OSPDIM 在无标签目标域下在线适配EEG脑机接口，改善标签偏移时的分类性能。",
+      "llm_tldr": "OSPDIM 在无标签目标域下在线适配EEG脑机接口，改善标签偏移时的分类性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.05416v1",
+      "source": "arxiv",
+      "title": "Spectral Distillation: From Nonlinear Dynamics to Linear State-Space Models",
+      "abstract": "Can nonlinear dynamical systems be learned through a compact linear state-space representation, without directly solving a non-convex system-identification problem? We give a provable pipeline for doing so. Starting from observations of an unknown nonlinear dynamical system, we first learn an implicit spectral predictor using Observation Spectral Filtering (OSF), a convex method that competes with the best linear observer for the system. We then apply spectral-to-LDS distillation to convert this predictor into an explicit recurrent linear dynamical system. Our main theorem shows that the average prediction error of the distilled LDS decomposes into an exponentially-small distillation term and the OSF learning term governed by the Luenberger complexity of the best observer. The guarantee is dimension-free: it depends on observer complexity rather than on the latent dimension needed to represent the nonlinear system. To our knowledge, this yields the first end-to-end provable method for extracting a best-in-hindsight LDS representation of nonlinear dynamics through convex learning followed by provable distillation. Experiments on linear LDS benchmarks and MuJoCo behavior cloning show that the train-then-distill pipeline produces compact LDS predictors that match or outperform directly trained baselines.",
+      "authors": [
+        "Liane Galanti",
+        "Devan Shah",
+        "Shlomo Fortgang",
+        "Elad Hazan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-05T21:20:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.05416v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learns compact linear state-space representation from nonlinear dynamics to predict future observations",
+      "llm_evidence_cn": "从非线性动力学中学习紧凑线性状态空间表示以预测未来观测",
+      "llm_evidence": "从非线性动力学中学习紧凑线性状态空间表示以预测未来观测",
+      "canonical_evidence": "从非线性动力学中学习紧凑线性状态空间表示以预测未来观测",
+      "llm_tldr_en": "Proposes a spectral distillation method that converts nonlinear dynamical systems into compact linear state-space models for sequential prediction.",
+      "llm_tldr_cn": "提出一种谱蒸馏方法，将非线性动力系统转换为紧凑线性状态空间模型以进行序列预测。",
+      "llm_tldr": "提出一种谱蒸馏方法，将非线性动力系统转换为紧凑线性状态空间模型以进行序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.04234v1",
+      "source": "arxiv",
+      "title": "Multimodal Alignment Through Joint Kernel Entropic Gromov--Wasserstein Optimal Transport",
+      "abstract": "We study the problem of aligning data from multiple modalities into a shared representation space, focusing on settings where strong pretrained unimodal encoders are available but cross-modal paired data are scarce. We propose a structure-preserving alignment framework, joint kernel entropic Gromov--Wasserstein Optimal Transport (JK-EGW), which maps multiple modalities into a common latent space by minimizing a quadratic optimal transport objective. JK-EGW leverages fine-grained similarity relationships within and across modalities to construct a global affinity kernel instead of relying on raw feature-space distances. Our framework naturally provides explicit control over the geometry and distribution of the latent embedding. On the theory side, we establish parametric sample complexity rate of $n^{-1/2}$, matching the corresponding rates for standard, entropic and Gromov--Wasserstein optimal transport. On the algorithmic side, we derive a scalable alternating procedure to solve JK-EGW with entropic optimal transport (EOT) updates through a low-rank kernel approximation and a variational lifting. This lifting scheme effectively relieves the burden of a quadratic objective, and allowing us to take the advantage of existing EOT solvers. Empirically, we focus on post-hoc alignment of embeddings from pretrained encoders in data-scarce regimes, and show that our proposed method achieves improved multimodal retrieval performance compared to existing alignment baselines.",
+      "authors": [
+        "Yixuan Florence Wu",
+        "Yilun Zhu",
+        "Naichen Shi"
+      ],
+      "primary_category": "math.ST",
+      "categories": [
+        "math.ST",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-08-04T21:21:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.04234v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "joint kernel optimal transport for multimodal representation alignment",
+      "llm_evidence_cn": "联合核最优传输实现多模态表示对齐",
+      "llm_evidence": "联合核最优传输实现多模态表示对齐",
+      "canonical_evidence": "联合核最优传输实现多模态表示对齐",
+      "llm_tldr_en": "Aligns multiple modalities into a shared latent space using optimal transport with scarce paired data.",
+      "llm_tldr_cn": "使用最优传输将多种模态对齐到共享潜在空间，适用于配对数据稀缺场景。",
+      "llm_tldr": "使用最优传输将多种模态对齐到共享潜在空间，适用于配对数据稀缺场景。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.04210v1",
+      "source": "arxiv",
+      "title": "PADFormer: Pose-agnostic Anomaly Detection from Sparse View Images",
+      "abstract": "Pose-agnostic Anomaly Detection (PAD) remains challenging as anomalies can appear under arbitrary viewpoints, requiring methods to handle significant pose variations. Existing approaches rely on complex 3D reconstruction, which are computationally expensive and require extensive multi-view data. We propose PADFormer, a novel image-space approach that leverages Vision Transformer (ViT) to directly reconstruct anomaly-free versions of query images while preserving pose information. Our key insight is to adapt cross-view masked reconstruction for anomaly detection through training exclusively on normal data, combined with dynamic patch selection and spatial alignment mechanisms that enable effective learning from sparse reference views under significant pose variations. During inference, we perform multiple forward passes with different masking patterns to generate an ensemble of anomaly-free reconstructions, ensuring comprehensive coverage of the query image. Anomalies are detected by comparing these reconstructions with the query image. PADFormer achieves state-of-the-art results on the PAD benchmark while maintaining comparable performance on classic few-shot anomaly detection (FSAD) tasks, demonstrating superior efficiency and generalization without requiring 3D reconstruction.",
+      "authors": [
+        "Ruiqi Wang",
+        "Yiming Qian",
+        "Fenggen Yu",
+        "Yuxuan Lu",
+        "Dakuo Wang",
+        "Hao Zhang",
+        "Jing Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T20:23:34+00:00",
+      "link": "https://arxiv.org/pdf/2608.04210v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Learns anomaly-free representations from raw images via masked reconstruction and spatial alignment",
+      "llm_evidence_cn": "通过掩码重建和空间对齐从原始图像学习正常表征",
+      "llm_evidence": "通过掩码重建和空间对齐从原始图像学习正常表征",
+      "canonical_evidence": "通过掩码重建和空间对齐从原始图像学习正常表征",
+      "llm_tldr_en": "PADFormer uses cross-view masked reconstruction on normal data to learn pose-agnostic representations for anomaly detection from sparse views.",
+      "llm_tldr_cn": "PADFormer在正常数据上进行跨视角掩码重建，学习姿态无关表征以从稀疏视角检测异常。",
+      "llm_tldr": "PADFormer在正常数据上进行跨视角掩码重建，学习姿态无关表征以从稀疏视角检测异常。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.04348v1",
+      "source": "arxiv",
+      "title": "iStructTab: Structured Feature Sequencing for Multimodal Learning of Image and Tabular Data",
+      "abstract": "Multimodal learning of images and tabular data is often impaired by ineffective representations, resulting in redundancy, dispersion, and generalization problems. To tackle this challenge, we introduce Graph-Enhanced Descriptor Sequencing (GEDS), a structured feature sequencing algorithm grounded in principles from the Column Permutation Problem (CPP). GEDS refines statistical descriptors of the features through similarity graph-based computations, systematically determining an effective feature sequencing. We incorporate GEDS within an order-aware efficient transformer framework, utilizing order-aware memory tokens that explicitly adhere to the derived feature sequencing via a dedicated loss function. Experimental results across multimodal benchmarks demonstrate that iStructTab effectively minimizes feature dispersion, improving predictive performance and robustness, and highlighting the significance of structured feature sequencing in multimodal learning.",
+      "authors": [
+        "Al Zadid Sultan Bin Habib",
+        "Md Younus Ahamed",
+        "Prashnna Gyawali",
+        "Gianfranco Doretto",
+        "Donald A. Adjeroh"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-08-05T01:47:34+00:00",
+      "link": "https://arxiv.org/pdf/2608.04348v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "structured feature sequencing algorithm that converts features into ordered sequences",
+      "llm_evidence_cn": "将特征转换为有序序列的结构化特征排序算法",
+      "llm_evidence": "将特征转换为有序序列的结构化特征排序算法",
+      "canonical_evidence": "将特征转换为有序序列的结构化特征排序算法",
+      "llm_tldr_en": "Introduces Graph-Enhanced Descriptor Sequencing to order features into effective sequences for multimodal learning.",
+      "llm_tldr_cn": "提出图增强描述子排序算法，将特征排序为有效序列以改进多模态学习。",
+      "llm_tldr": "提出图增强描述子排序算法，将特征排序为有效序列以改进多模态学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.04368v1",
+      "source": "arxiv",
+      "title": "EvtGraph: Event-Adaptive Compression for Sparse Temporal Graph Learning in Multimodal Time Series",
+      "abstract": "Multimodal temporal data are inherently irregular and uneven in information density, yet most models rely on uniform discretization, leading to inefficient representations.   We propose \\textbf{EvtGraph}, a unified framework that aligns computation with temporal salience under explicit budget constraints. EvtGraph reparameterizes sequences into event-level tokens via event-adaptive compression (EAMC), selects a compact subset with a node budget (NBC), and performs temporally constrained sparse graph reasoning (T2SG). This transforms dense sequences into structured computation over salient events, reducing complexity while preserving critical transitions.   We show that this design provides a practical mechanism for allocating representational capacity under a fixed budget, yielding a consistent performance--efficiency trade-off, where a small budget is often sufficient in practice. Experiments on multimodal clinical (MIMIC-IV + CXR) and cross-domain benchmarks demonstrate that EvtGraph outperforms both Transformer-based and recurrent baselines while significantly improving efficiency.   These results suggest that budget-constrained event-centric representation provides a general paradigm for learning from high-redundancy temporal data.",
+      "authors": [
+        "Ziqian Wang",
+        "Tingxiong Xiao",
+        "Yuxiao Cheng",
+        "Jinli Suo"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-05T02:16:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.04368v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Event-adaptive compression and sparse temporal graph reasoning for multimodal time series analysis and sequence prediction.",
+      "llm_evidence_cn": "面向多模态时间序列的事件自适应压缩与稀疏时序图推理，用于序列分析与预测。",
+      "llm_evidence": "面向多模态时间序列的事件自适应压缩与稀疏时序图推理，用于序列分析与预测。",
+      "canonical_evidence": "面向多模态时间序列的事件自适应压缩与稀疏时序图推理，用于序列分析与预测。",
+      "llm_tldr_en": "Presents EvtGraph, an event-adaptive compression framework for efficient sparse temporal graph learning on irregular time series.",
+      "llm_tldr_cn": "提出EvtGraph，通过事件自适应压缩对不规则时间序列进行高效的稀疏时序图学习。",
+      "llm_tldr": "提出EvtGraph，通过事件自适应压缩对不规则时间序列进行高效的稀疏时序图学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.04381v1",
+      "source": "arxiv",
+      "title": "NodeJEPA: Structure-Conditioned Latent Prediction for Node-Level Graph Self-Supervised Learning",
+      "abstract": "Self-supervised learning on graphs is largely shaped by contrastive methods that depend on carefully designed augmentations, and by generative methods that reconstruct node attributes in the input space. Both paradigms can entangle representations with low-level input statistics rather than with relational structure. Joint-embedding predictive architectures (JEPA) instead learn by predicting latent targets rather than reconstructing inputs. Recent work has explored this idea for graph-level representation learning, but how to design JEPA-style objectives for node-level tasks, and which structural signals the predictor should condition on, remains less clear. We present NodeJEPA, a joint-embedding predictive architecture for node-level graph self-supervised learning. NodeJEPA masks structure-aware k-hop ego-subgraphs and trains a context encoder to predict the latent representations of the masked nodes. These targets come from an EMA-updated target encoder with stop-gradient. A structure-conditioned predictor integrates spectral and centrality descriptors through cross-attention. Variance, covariance, and Laplacian spectral regularizers help stabilize the embedding geometry, and an optional curriculum gradually increases masking difficulty during training. Because prediction occurs in latent space, NodeJEPA does not rely on input reconstruction or hand-crafted graph augmentations. We evaluate NodeJEPA on standard node classification benchmarks under linear probing and fine-tuning protocols, and conduct ablations on masking, prediction, and regularization design choices. Our study offers a practical recipe for node-level JEPA-style latent prediction on graphs, and clarifies when structural conditioning helps representation learning. Code, configurations, and evaluation scripts are publicly available at https://github.com/OliverZ-dot/Node-Jepa.",
+      "authors": [
+        "Tinghe Zhang",
+        "Jian Xu",
+        "Jiaheng Chen",
+        "Jiaxing Li",
+        "Yucheng Xiao",
+        "Qiang Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-05T02:39:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.04381v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised graph node representation learning via latent prediction",
+      "llm_evidence_cn": "基于潜在预测的图节点自监督表示学习",
+      "llm_evidence": "基于潜在预测的图节点自监督表示学习",
+      "canonical_evidence": "基于潜在预测的图节点自监督表示学习",
+      "llm_tldr_en": "Learns graph node representations by predicting latent targets conditioned on structure.",
+      "llm_tldr_cn": "通过结构条件潜在预测学习图节点表示。",
+      "llm_tldr": "通过结构条件潜在预测学习图节点表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-006.webp",
+      "caption": "Fig. 2: PADFormer model architecture – PADFormer first patchifies the reference images {Ri|i = 1, . . . , N} into tokens. The query image to be reconstructed Q is randomly masked and also tokenized. Both are processed through two weight-sharing ViT encoders to obtain query feature token fq and concatenated reference features token fref. A Spatial Transformation Network (STN) takes their concatenation to compute transformation θ, which is applied only to fref via bilinear sampling for alignment, producing f̃ref. A similarity computation module (SIM) then selects top-k most similar aligned reference patches {sj} for each query position. In the decoder, query features token fq attend to anomaly-agnostic tokens and selected reference patches {sj} through cross-attention across 8 ViT layers. A linear projection maps the output to pixel values, which are unpatchified to produce the reconstructed query image Q̃.",
+      "page": 3,
+      "index": 6,
+      "width": 717,
+      "height": 200
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-004.webp",
+      "caption": "Table 1: Anomaly detection; PAD task – Quantitative comparison of image-level AUROC, pixel-level AUROC, and AUPRO on MAD-SIM and PIAD datasets. Best results are in bold and second-best are underlined.",
+      "page": 10,
+      "index": 4,
+      "width": 714,
+      "height": 405
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-001.webp",
+      "caption": "Table 2: Anomaly detection; FSAD task – Quantitative comparison of image and pixel-level AUROC on MVTec-AD and VisA dataset.",
+      "page": 11,
+      "index": 1,
+      "width": 714,
+      "height": 334
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-008.webp",
+      "caption": "Fig. 4: Qualitative results on PAD benchmarks – On the left we visualize the results on MAD-SIM, with missing parts (row 1, 2), burrs (row 3) and stains (row 4). On the right we visualize results on PIAD. See supplementary materials for more qualitative comparisons.",
+      "page": 13,
+      "index": 8,
+      "width": 723,
+      "height": 321
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-005.webp",
+      "caption": "Fig. 5: Qualitative results on FSAD benchmarks: MVTec-AD (L) and VisA (R).",
+      "page": 14,
+      "index": 5,
+      "width": 725,
+      "height": 350
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-010.webp",
+      "caption": "Fig. 6: Qualitative results - 15 inference runs and their average error map on MADSim with 4-shot setup.",
+      "page": 24,
+      "index": 10,
+      "width": 725,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-002.webp",
+      "caption": "Fig. 7: Qualitative results - MAD-Sim 4-shot setup. Our method can detect anomaly including missing, stains, and burrs effectively.",
+      "page": 26,
+      "index": 2,
+      "width": 723,
+      "height": 821
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-009.webp",
+      "caption": "Fig. 8: Qualitative results - PIAD 4-shot setup. Our method can generalize on different lighting conditions.",
+      "page": 27,
+      "index": 9,
+      "width": 725,
+      "height": 1123
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-007.webp",
+      "caption": "Fig. 9: Qualitative results - MVTecAD 4-shot setup. On FSAD task, our method can perform fine-grained anomaly detection well.",
+      "page": 28,
+      "index": 7,
+      "width": 725,
+      "height": 771
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04210v1/fig-003.webp",
+      "caption": "Fig. 10: Qualitative results - VisA 4-shot setup. On some challenging cases (row 4), our method may include some noisy predictions due to the reconstruction errors. While it remains effective on very detailed anomalies (row 5, 6).",
+      "page": 29,
+      "index": 3,
+      "width": 725,
+      "height": 606
+    }
+  ]
+}

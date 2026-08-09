@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-08-09
-- 运行时间：2026-08-09 04:51:46 北京时间
+- 最新运行日期：2026-08-10
+- 运行时间：2026-08-10 04:46:41 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读10篇AI论文，重点研读了具身智能与跨模态检索的两项高分工作。  
-具身VAE实现高效可控的机器人动作视频生成，SeCo-SBIR用语义一致性突破零样本草图检索，均是表征学习落地的精彩范例。  
-建议先从EmbodiedVAE看起，理解机器人如何“脑内预演”操作，再结合SeCo-SBIR体验跨模态搜索的实用技巧。
-- 详情：[/202608/09/README](/202608/09/README)
+今日精读两篇高分研究，聚焦回声状态网络的动力学剪枝新视角和源域无关域适应的共识漂移调制，速读则涉猎多模态对齐、图学习压缩等前沿方向。  
+蓄水池剪枝的动力学分析和无源域适应共识机制最值得深挖，前者可能重塑网络压缩范式。  
+建议从《Rethinking Reservoir Pruning》切入，结合高效对齐方法，重新审视轻量时序建模的边界。
+- 详情：[/202608/10/README](/202608/10/README)
 
 ### 精读区论文标签
-1. [EmbodiedVAE: Disentangled Video VAE for Efficient and Controllable Embodied Manipulation](/202608/09/2608.02990v1-embodiedvae-disentangled-video-vae-for-efficient-and-controllable-embodied-manipulation)  
+1. [Rethinking Reservoir Pruning: A Dynamical Perspective for Echo State Networks](/202608/10/2608.04593v1-rethinking-reservoir-pruning-a-dynamical-perspective-for-echo-state-networks)  
    标签：评分：9.0/10、query:ndai
-   evidence：从原始视频学习紧凑可控潜在表示的视频VAE
-2. [SeCo-SBIR: Semantically Consistent Prompt Learning for Zero-Shot Sketch-Based Image Retrieval](/202608/09/2608.03120v1-seco-sbir-semantically-consistent-prompt-learning-for-zero-shot-sketch-based-image-retrieval)  
+   evidence：提出回声状态网络动态模态剪枝方法，提升时间序列预测
+2. [COSMO: Consensus-Driven Shift Modulation for Source-Free Domain Adaptation](/202608/10/2608.04604v1-cosmo-consensus-driven-shift-modulation-for-source-free-domain-adaptation)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过提示学习适配预训练CLIP模型用于零样本草图图像检索
-3. [Frequency-Decorrelated Temporal Ensembles for EEG--fNIRS Imagined-Handwriting Decoding](/202608/09/2608.03176v1-frequency-decorrelated-temporal-ensembles-for-eeg--fnirs-imagined-handwriting-decoding)  
+   evidence：无源域适应利用预训练视觉语言模型将源训练模型适应到无标注目标域
+3. [An active-learning framework for real-time depth perception from monocular vision streams](/202608/10/2608.04917v1-an-active-learning-framework-for-real-time-depth-perception-from-monocular-vision-streams)  
    标签：评分：9.0/10、query:ndai
-   evidence：从EEG-fNIRS神经信号解码想象手写
-4. [TimeRLM: Recursive Language Models Enable Precise Anomaly Localization in Long-Context Time-Series](/202608/09/2608.03391v1-timerlm-recursive-language-models-enable-precise-anomaly-localization-in-long-context-time-series)  
+   evidence：用于有限标签域自适应的主动学习框架
+4. [Rectifying Geometric Misalignment: Online Source-Free Adaptation for Class-Imbalanced EEG](/202608/10/2608.05315v1-rectifying-geometric-misalignment-online-source-free-adaptation-for-class-imbalanced-eeg)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于递归语言模型的长上下文时间序列异常定位
-5. [State Propagation Also Satisfies: A Complex-Valued State-Space Model for Deterministic State Tracking](/202608/09/2608.03425v1-state-propagation-also-satisfies-a-complex-valued-state-space-model-for-deterministic-state-tracking)  
+   evidence：面向EEG脑机接口的无源在线域适应方法，处理黎曼流形上的类别不均衡标签偏移
+5. [Spectral Distillation: From Nonlinear Dynamics to Linear State-Space Models](/202608/10/2608.05416v1-spectral-distillation-from-nonlinear-dynamics-to-linear-state-space-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：复数值循环状态传播用于序列建模与状态跟踪
+   evidence：从非线性动力学中学习紧凑线性状态空间表示以预测未来观测
 
 ### 速读区论文标签
-1. [Maglev: Sliding Recurrent Memory](/202608/09/2608.02870v2-maglev-sliding-recurrent-memory)  
+1. [Multimodal Alignment Through Joint Kernel Entropic Gromov--Wasserstein Optimal Transport](/202608/10/2608.04234v1-multimodal-alignment-through-joint-kernel-entropic-gromov--wasserstein-optimal-transport)  
    标签：评分：8.0/10、query:ndai
-   evidence：用于下一个词元预测的循环Transformer架构
-2. [Interpreting Black-Box Large Language Models with Sentence-Level Energy Landscapes](/202608/09/2608.02879v1-interpreting-black-box-large-language-models-with-sentence-level-energy-landscapes)  
+   evidence：联合核最优传输实现多模态表示对齐
+2. [iStructTab: Structured Feature Sequencing for Multimodal Learning of Image and Tabular Data](/202608/10/2608.04348v1-istructtab-structured-feature-sequencing-for-multimodal-learning-of-image-and-tabular-data)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过归因解释器量化提示句子对目标输出的影响
-3. [Sedentary Behavior Classification for Wearable Sensors with a CNN-BiLSTM Model](/202608/09/2608.02946v1-sedentary-behavior-classification-for-wearable-sensors-with-a-cnn-bilstm-model)  
+   evidence：将特征转换为有序序列的结构化特征排序算法
+3. [EvtGraph: Event-Adaptive Compression for Sparse Temporal Graph Learning in Multimodal Time Series](/202608/10/2608.04368v1-evtgraph-event-adaptive-compression-for-sparse-temporal-graph-learning-in-multimodal-time-series)  
    标签：评分：8.0/10、query:ndai
-   evidence：零样本和少量标注腕部数据微调实现跨域适应
-4. [AIDE: Automated Instruction via Distilled Expertise for Reference-Free Motor Skill Coaching](/202608/09/2608.03047v1-aide-automated-instruction-via-distilled-expertise-for-reference-free-motor-skill-coaching)  
+   evidence：面向多模态时间序列的事件自适应压缩与稀疏时序图推理，用于序列分析与预测。
+4. [NodeJEPA: Structure-Conditioned Latent Prediction for Node-Level Graph Self-Supervised Learning](/202608/10/2608.04381v1-nodejepa-structure-conditioned-latent-prediction-for-node-level-graph-self-supervised-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：利用冻结的预训练语言模型从姿态序列生成教练反馈
-5. [Bayesian Data Reweighting Improves Multimodal Retrieval for Knowledge-Based Visual Question Answering](/202608/09/2608.02907v1-bayesian-data-reweighting-improves-multimodal-retrieval-for-knowledge-based-visual-question-answering)  
+   evidence：基于潜在预测的图节点自监督表示学习
+5. [PADFormer: Pose-agnostic Anomaly Detection from Sparse View Images](/202608/10/2608.04210v1-padformer-pose-agnostic-anomaly-detection-from-sparse-view-images)  
    标签：评分：7.0/10、query:ndai
-   evidence：贝叶斯重加权为查询-文档对计算后验重要性权重
+   evidence：通过掩码重建和空间对齐从原始图像学习正常表征
 

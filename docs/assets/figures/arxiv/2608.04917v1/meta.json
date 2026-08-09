@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.04917v1/fig-004.webp",
+      "caption": "Fig. 1. Overall architecture of the proposed active learning monocular depth estimation framework.",
+      "page": 3,
+      "index": 4,
+      "width": 502,
+      "height": 400
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04917v1/fig-008.webp",
+      "caption": "Fig. 4. Detailed architecture of the proposed model incorporating the Gated Cross-scale Additive Fusion (GCAF). The GCAF modules are embedded within the skip connections, acting as dynamic filters to suppress high-frequency noise from the shallow encoder layers before fusion.",
+      "page": 5,
+      "index": 8,
+      "width": 522,
+      "height": 314
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04917v1/fig-001.webp",
+      "caption": "Fig. 6. Schematic overview of the proposed OAL research framework. The methodology proceeds in three stages. Stage 1 establishes the lightweight baseline model under self-supervised monocular depth learning. Stage 2 evaluates the static optimization dilemma of lightweight architectures and examines how the proposed GCAF mechanism improves representation efficiency under restricted model capacity. Stage 3 evaluates continuous online adaptation through confidencedriven sample filtering, replay-based updates, and EWC-constrained optimization to verify stable domain alignment during deployment.",
+      "page": 7,
+      "index": 1,
+      "width": 502,
+      "height": 625
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04917v1/fig-007.webp",
+      "caption": "Fig. 7. Training convergence and gradient telemetry illustrating the static optimization dilemma. (Top) The baseline model enhanced with CBAM exhibits unstable optimization behavior, characterized by larger oscillation in gradient norm during training. (Bottom) The proposed GCAF structure suppresses task-irrelevant noise in skip fusion, leading to smoother convergence and improved training stability.",
+      "page": 9,
+      "index": 7,
+      "width": 1068,
+      "height": 960
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04917v1/fig-006.webp",
+      "caption": "Fig. 8. Structural convergence dynamics in parameter phase-space. The 2D kernel density contours illustrate the transition of the GCAF model from random initialization toward a stable functional manifold. Early epochs show parameters concentrated near zero, whereas later epochs exhibit outward expansion and eventual stabilization, indicating progressive acquisition of structural representation.",
+      "page": 9,
+      "index": 6,
+      "width": 1068,
+      "height": 259
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04917v1/fig-002.webp",
+      "caption": "TABLE 1 Comparison with state-of-the-art lightweight and standard monocular depth estimation methods on the KITTI Eigen split. All methods are evaluated with an input resolution of 640× 192.",
+      "page": 10,
+      "index": 2,
+      "width": 1080,
+      "height": 315
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04917v1/fig-003.webp",
+      "caption": "TABLE 2 Static Optimization Dilemma in lightweight models. Conventional offline enhancement strategies often fail to improve performance, whereas GCAF provides a consistent gain.",
+      "page": 10,
+      "index": 3,
+      "width": 485,
+      "height": 281
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04917v1/fig-005.webp",
+      "caption": "Fig. 15. Comprehensive parameter phase-space analysis across varying environments and learning strategies. The left column (a, c, e, g) displays the macroscopic absolute weight distributions, demonstrating structural stability across all configurations. The right column (b, d, f, h) visualizes the corresponding microscopic parameter drift (∆W ) within the null space. Notably, the unconstrained baseline (d) exhibits uniform parameter diffusion under extreme weather, characterized by a generalized Gaussian-like broadening. In contrast, the proposed OAL mechanism (f) enforces selective plasticity, characterized by a heavy-tailed drift distribution where critical parameters remain strictly concentrated at the center while redundant parameters expand to accommodate environmental variations. This regulated adaptation scales effectively to significant crossdomain shifts, such as the NuScenes dataset (h).",
+      "page": 13,
+      "index": 5,
+      "width": 972,
+      "height": 1194
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-007.webp",
+      "caption": "Figure 1: Overview of the proposed iStructTab architecture. We first extract modality-specific representations from image and tabular encoders. These are concatenated and passed to the GEDS block, which computes statistical descriptors and similarity-aware structural relationships via graph convolution and cosine similarity. A combined ordering score is used to generate πGEDS for feature sequencing. The reordered input is processed by the OEMT backbone to produce the final prediction.",
+      "page": 3,
+      "index": 7,
+      "width": 971,
+      "height": 466
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-005.webp",
+      "caption": "Table 1: Test accuracy (%) across six datasets (higher is better). Baselines largely follow the STiL benchmark (CVPR 2025); we additionally include strong tabular-only baselines (LGBM, CatBoost, TabM, TabSeq) and an imageonly ViT baseline, and evaluate all methods on our test datasets. Avg. Rank is computed per dataset by ranking all 16 methods together (descending) with the standard “average tie” rule; we report mean ± std across datasets (lower is better). Avg. Regret (↓) is the mean gap to the per-dataset best score across the six datasets (mean ± std). Here, †denotes results taken from [17] and * denotes results taken from [10].",
+      "page": 7,
+      "index": 5,
+      "width": 962,
+      "height": 540
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-006.webp",
+      "caption": "Figure 2: Comparison of multimodal image-tabular methods on the DVM dataset: (a) Weighted efficiency ranking combining performance and resource usage; (b) Pareto frontier of accuracy vs. complexity (FLOPs× Params); (c) Trade-off between accuracy and composite complexity; (d) Normalized radar chart summarizing accuracy, computation, and inference latency. The reported accuracies are directly taken from the respective papers; for the TIME model, accuracy is unavailable (NaN). Peak memory usage, performance vs. FLOPs, performance vs. parameters, and parameter–FLOP relationships are included in the Supplementary Material.",
+      "page": 7,
+      "index": 6,
+      "width": 978,
+      "height": 242
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-009.webp",
+      "caption": "Figure 3: t-SNE visualization of fused embeddings produced by iStructTab on two representative medical imaging-based multimodal (image+tabular) datasets. Following STiL [17], we visualize the joint representation to assess emerging cluster structure and cross-modal alignment between image and tabular channels.",
+      "page": 8,
+      "index": 9,
+      "width": 945,
+      "height": 432
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-012.webp",
+      "caption": "Figure 4: Inference level ablations of iStructTab on HAM10000 in the style of STiL [17]: calibration (a), neighborhood consistency (b), confidence accuracy tradeoff (c), robustness to Gaussian blur (d) and tabular perturbations (e), and latency and memory versus tabular sequence length (f).",
+      "page": 9,
+      "index": 12,
+      "width": 980,
+      "height": 501
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-004.webp",
+      "caption": "Table B.1: Hyperparameters and training setup for the tabular classifier baselines.",
+      "page": 15,
+      "index": 4,
+      "width": 976,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-013.webp",
+      "caption": "Figure C.1: Supplementary resource-performance analysis of multimodal image-tabular methods on the DVM dataset. Panel (a) relates test accuracy to FLOPs per forward pass, while (b) plots accuracy against the number of trainable parameters. Panel (c) shows the joint scaling of parameters and FLOPs in log-log space, and (d) reports the peak inference-time GPU memory consumption. Accuracies are taken from the respective papers for the DVM dataset; for TIME, accuracy on DVM is not reported (NaN), so TIME only appears in the complexity and memory plots. These plots complement the composite efficiency and Pareto-style summaries in the main paper by exposing the underlying compute and memory budgets.",
+      "page": 16,
+      "index": 13,
+      "width": 1021,
+      "height": 205
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-010.webp",
+      "caption": "Figure C.2: Comparative efficiency analysis of multimodal image-tabular methods on the HAM dataset. Panel (a) shows the weighted EfficiencyScore that combines accuracy with FLOPs, parameter count, composite complexity, and peak memory. Panels (b) and (c) plot accuracy against FLOPs and parameter count, while panel (d) relates accuracy to the composite complexity metric. Panel (e) visualizes the Pareto frontier over accuracy and overall complexity (log10(FLOPs × Params)). Panel (f) presents a normalized radar profile summarizing accuracy, computation, and inference latency. Across all views, iStructTab* attains the most favorable trade-off, achieving the highest accuracy while remaining among the most efficient models in terms of compute, parameters, and latency.",
+      "page": 17,
+      "index": 10,
+      "width": 1025,
+      "height": 548
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-008.webp",
+      "caption": "Figure D.1: Average-rank comparison with Nemenyi critical difference over six datasets.",
+      "page": 18,
+      "index": 8,
+      "width": 958,
+      "height": 463
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-001.webp",
+      "caption": "Table B.3: Hyperparameters and training setup for the multimodal DAFT baseline.",
+      "page": 26,
+      "index": 1,
+      "width": 494,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-002.webp",
+      "caption": "Table B.5: Baselines and corresponding source implementations used in our experiments.",
+      "page": 26,
+      "index": 2,
+      "width": 744,
+      "height": 308
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-003.webp",
+      "caption": "Table B.2: Hyperparameters for the Interact-Fuse multimodal image-tabular model used in our experiments.",
+      "page": 26,
+      "index": 3,
+      "width": 918,
+      "height": 584
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04348v1/fig-011.webp",
+      "caption": "Table B.7: Hyperparameters and training setup for the multimodal STiL baseline.",
+      "page": 27,
+      "index": 11,
+      "width": 510,
+      "height": 321
+    }
+  ]
+}

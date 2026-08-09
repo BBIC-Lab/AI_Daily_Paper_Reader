@@ -1,0 +1,102 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-006.webp",
+      "caption": "Figure 1: Overview of EvtGraph. (a) Event-adaptive temporal reparameterization maps multimodal streams into event tokens via soft weights, concentrating representation on salient regions while merging redundant ones. (b) The selected tokens are organized into a budget-aware temporally constrained graph, where edges respect causal ordering and locality, enabling efficient downstream prediction.",
+      "page": 3,
+      "index": 6,
+      "width": 782,
+      "height": 238
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-002.webp",
+      "caption": "Table 1: Main results on MIMIC-IV + CXR. Results are AUROC over 3 seeds. Best results are in bold, and second best are underlined.",
+      "page": 7,
+      "index": 2,
+      "width": 830,
+      "height": 385
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-003.webp",
+      "caption": "Figure 2: Efficiency–information trade-off under budget-aware modeling. (a) Efficiency–accuracy Pareto frontier on MIMIC-IV + CXR, showing strong performance under reduced latency. (b) Performance and computational cost versus node budget B, with AUROC peaking at a small budget (B∗ = 8). (c) Compression ratio versus information retention, where IRR remains high under aggressive compression.",
+      "page": 7,
+      "index": 3,
+      "width": 808,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-007.webp",
+      "caption": "Table 2: Results on TimeMMD and UCI HAR. For TimeMMD, we report MSE and MAE (mean ± std), where lower is better. For UCI HAR, we report accuracy, where higher is better. Best results are in bold, and second best are underlined.",
+      "page": 8,
+      "index": 7,
+      "width": 826,
+      "height": 333
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-008.webp",
+      "caption": "Figure 3: Event-adaptive representation analysis. (a) Raw signal and activity patterns highlighting salient temporal regions. (b) Learned event-adaptive representations. The assignment heatmap ws,t shows highly concentrated temporal allocation, while segment importance scores αs indicate that only a few event tokens dominate the representation.",
+      "page": 8,
+      "index": 8,
+      "width": 742,
+      "height": 240
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-011.webp",
+      "caption": "Table 3: Ablation on MIMIC-IV + CXR.",
+      "page": 9,
+      "index": 11,
+      "width": 500,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-010.webp",
+      "caption": "Figure 4: Structural diagnostics of the budget-aware temporal graph. (a) Temporal admissibility mask under lag constraint ϵ, showing that edges are restricted to past nodes within a bounded window. (b) Edge count as a function of node count, demonstrating near-linear scaling (O(κB)) compared to quadratic growth in fully connected graphs. (c) Modality-wise allocation weights, indicating adaptive capacity distribution across time-series, image, and text modalities.",
+      "page": 9,
+      "index": 10,
+      "width": 807,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-009.webp",
+      "caption": "Table 4: Notation used in the proposed framework.",
+      "page": 12,
+      "index": 9,
+      "width": 714,
+      "height": 500
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-004.webp",
+      "caption": "Figure 5: Domain-level suitability analysis of Time-MMD. Multi-dimensional evaluation includes prediction performance, feature richness, stability, and overall ranking across nine domains. Energy and Climate emerge as top candidates.",
+      "page": 14,
+      "index": 4,
+      "width": 826,
+      "height": 498
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-005.webp",
+      "caption": "Figure 6: Cross-domain drift analysis of Time-MMD. Left: label distribution drift measured by KS statistic. Right: static feature drift averaged across features. Larger values indicate greater divergence between domains, highlighting challenges of generalization.",
+      "page": 14,
+      "index": 5,
+      "width": 826,
+      "height": 341
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-001.webp",
+      "caption": "Table 5: Training configurations for all models. All models are trained for 30 epochs using the Muon optimizer with weight decay 10−5, learning rate 1× 10−3, and batch size 64.",
+      "page": 15,
+      "index": 1,
+      "width": 818,
+      "height": 932
+    },
+    {
+      "url": "assets/figures/arxiv/2608.04368v1/fig-012.webp",
+      "caption": "Table 6: Performance comparison on the UCI HAR dataset. EvtGraph achieves the best performance across both accuracy and macro-F1, while maintaining a compact model size.",
+      "page": 16,
+      "index": 12,
+      "width": 448,
+      "height": 337
+    }
+  ]
+}

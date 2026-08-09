@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.05416v1/fig-003.webp",
+      "caption": "Figure 1: Test MSE versus epoch on the long-memory LDS task. Curves are geometric means over five seeds with geometric-standard-deviation bands, and the y-axis is log-scaled. STU → SpectraLDS is competitive under Adam and dominates when optimized with ONS, while Linear FIR fails despite having more than ten times as many parameters.",
+      "page": 7,
+      "index": 3,
+      "width": 790,
+      "height": 329
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05416v1/fig-004.webp",
+      "caption": "Figure 2: Test MSE versus epoch on linear LDS prediction at spectral radius 0.95. The top row shows the small scale (din = dout = 4, dstate = 8, m = 256), and the bottom row shows the large scale (din = dout = 64, dstate = 64, m = 512). Solid curves are +y variants and dashed curves are −y variants. Curves are geometric means over five seeds with geometric-standard-deviation bands, and the y-axis is log-scaled.",
+      "page": 8,
+      "index": 4,
+      "width": 790,
+      "height": 534
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05416v1/fig-006.webp",
+      "caption": "Figure 3: Evaluation reward during behavior cloning on six MuJoCo tasks. Curves show mean and standard deviation over five seeds. STU denotes the deployed SpectraLDS-distilled recurrent model.",
+      "page": 9,
+      "index": 6,
+      "width": 790,
+      "height": 377
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05416v1/fig-001.webp",
+      "caption": "Table 4: Learning-rate sweep at spectral radius ρ = 0.999 (din=dout=16, dstate=64, m=512, 100 epochs, seed 0). Final test MSE on symmetric and asymmetric tasks. For STU+ONS, we fixed η = 1 and tested α ∈ {1, 1−3}, choosing α = 1.",
+      "page": 15,
+      "index": 1,
+      "width": 632,
+      "height": 555
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05416v1/fig-007.webp",
+      "caption": "Table 5: Learning-rate sweep at the small scale (din=dout=4, dstate=8, m=256) and the large scale (din=dout=dstate=64, m=512). We report final test MSE after 100-epochs of training at seed 0 with Adam. Bold marks the best LR per model and scale.",
+      "page": 16,
+      "index": 7,
+      "width": 826,
+      "height": 674
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05416v1/fig-005.webp",
+      "caption": "Figure 4: Test MSE versus epoch for the STU predictor (dashed) and the SpectraLDS-distilled predictor (solid), at ρ = 0.999. Each curve is the geometric mean over five seeds with geometricstandard-deviation bands; the y-axis is log-scaled. The solid and dashed curves overlap almost exactly in every panel, confirming that SpectraLDS distillation introduces negligible error.",
+      "page": 19,
+      "index": 5,
+      "width": 826,
+      "height": 634
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05416v1/fig-002.webp",
+      "caption": "Figure 5: Test MSE versus epoch for STU (blue) and tensor-dot STU (red), both with k = 48, and each in +y (solid) and −y (dashed) variants, on the linear-LDS benchmark of Section 4.1. Top row: small scale (d = 4, dstate = 8, m = 256). Bottom row: large scale (d = 64, dstate = 64, m = 512). Curves are geometric means over five seeds with geometric-standard-deviation bands; the y-axis is log-scaled.",
+      "page": 21,
+      "index": 2,
+      "width": 829,
+      "height": 564
+    }
+  ]
+}
