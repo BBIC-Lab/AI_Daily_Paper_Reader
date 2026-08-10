@@ -1,0 +1,6546 @@
+Title: Inference for subgraph densities in noisy dynamic networks
+
+URL Source: https://arxiv.org/pdf/2608.05407v1
+
+Published Time: Fri, 07 Aug 2026 00:14:09 GMT
+
+Number of Pages: 78
+
+Markdown Content:
+# Inference for subgraph densities in noisy dynamic networks 
+
+Peter W. MacDonald 1 and Eric D. Kolaczyk 21University of Waterloo, pwmacdonald@uwaterloo.ca 
+
+> 2
+
+McGill University, eric.kolaczyk@mcgill.ca 
+
+August 5, 2026 
+
+Abstract 
+
+In this work we develop statistical methodology to estimate and perform inference on subgraph densities using time-indexed, or dynamic network sequences. These es-timates explicitly adjust for observation errors for the network edges, and have good theoretical properties as the size of the network grows. By specifying a stochasti-cally evolving hidden Markov network model, we address two important directions for further investigation identified by Chang et al. (2022): robustness to non-identical network replicates, and efficient aggregation of multiple available network snapshots. These new methods vastly expand the analysis of noisy networks to new data settings, as network replicates are commonly observed dynamically. The methodology is also extended to consider joint inference for subgraph densities at multiple time points, to facilitate formal statistical comparison of dynamic network snapshots. 
+
+Keywords: measurement error; network data; subgraph inference; temporal networks 1arXiv:2608.05407v1 [stat.ME] 5 Aug 2026 1 Introduction 
+
+Network data has become prevalent in many statistical applications, including neuroscience, economics, and sociology. However, network data is not always made up of ground truth edges, but instead proxies constructed from other data sources. This can lead to non-reporting biases, linkage errors, missingness, and other forms of measurement error on net-work edges, resulting in what we refer to as network noise (and a noisy network as the resulting data object). Unaccounted-for network noise can lead to systematic bias in down-stream inference tasks. In this work our focus is on noise-induced bias in network summaries, specifically subgraph densities. But network noise can affect other tasks like link prediction, or node ranking. In past work, Priebe et al. (2015) studied the effect of measurement error on estimation of the parameters of a stochastic block model. Balachandran et al. (2017) studied the exact distributions of subgraph count discrepancies between ground truth and noisy networks. Li et al. (2022) studied estimation of branching factors. Finally, Chang et al. (2022) considered estimation and inference for subgraph densities under network noise. Their fundamental model has also been used by Jiang et al. (2023) to model autoregressive dynamic networks, and as a mechanism to introduce noise in network differential privacy (Chang et al., 2024). Non-identifiability is a fundamental challenge of this noisy network model. Chang et al. (2022), Theorem 1 states that even with constant but unknown type I and type II error rates, one (noisy) observation of the network is insufficient to identify the subgraph densities of the underlying network. As a result, they develop an approach that requires three independent and identically distributed (iid) replicates. In some real-world settings, it is reasonable to expect network replicates. For instance gene co-expression networks are typically built by aggregating replicated samples. These samples can instead be aggregated into several smaller groups, which can be reasonably assumed to be iid, at the cost of statistical power to detect edges. In neuroimaging, networks may similarly be constructed by pooling several subjects from a larger sample, although this can cause issues if the underlying brain networks are heterogeneous. However, in social network analysis or in neuroimaging settings where we 2often want to infer about one social group or one individual, we may intrinsically have a sample size of one. Our work is based on the following simple but powerful premise: in the subgraph density estimation problem, dynamic network data can provide sufficient replicability for identifica-tion. This opens up a vastly larger realm of applications. For example, we frequently can observe replicates of a social group over several days, or of a brain network longitudinally across several sessions in a scanner. Subgraph density estimators can be used to globally summarize the network sequence, but exploiting the above premise is nontrivial. While the dynamic setting may lead to cases with more “replicates,” perhaps many more than three, these are unlikely to be exact replicates; both network dependence and heterogeneity across such “replicates” requires development of appropriate, novel methodology for inference, as we do here. In addition to improved, robust methods for the usual subgraph density estimation prob-lem, new and critical inferential questions are suggested when network replicates are not exchangeable, and when the data is collected with dynamics in mind. For instance, in Sec-tion 7, we consider neuroimaging data originally collected to understand changes in brain activation from the beginning to end of the study period. Dynamic network analysis has been a popular area of study in statistical network analysis and related fields, especially over the last decade; see for instance the reviews by Kim et al. (2018) and Kazemi et al. (2020). Classical statistical models for static networks are generalized to dynamic networks (observed in discrete time) in Krivitsky and Handcock (2014), Sewell and Chen (2015), Matias and Miele (2017), and Jiang et al. (2023), among others. All of the examples above are fundamentally based on an evolutionary mechanism for binary edges, to efficiently parameterize the distributions of the dynamically observed network edges, and induce dependence over time. Our work represents the same critical foundation for sequences of noisy networks, and we focus on the fundamental phenomena introduced by the interplay between stochastic evolution and error models. Our model still allows flexibility to fit real data though an arbitrary underlying network or networks (cf. Sections 2 and 5). In specific 3applications where additional heterogeneity or exogenous covariates are present, it is natural to define more complex stochastic evolution and error models, see for instance Chang et al. (2026), which generalizes the autoregressive network model of Jiang et al. (2023). In this paper we make many contributions to the estimation and inference of subgraph densities based on dynamically observed network snapshots, represented by their binary adjacency matrices 
+
+{Y (k)}Kk=1 ⊂ { 0, 1}n×n,
+
+where each Y (k) is a noisy version of an underlying network A(k). We consider two main settings: for global summarization, inference for subgraph densities at a fixed time (without loss of generality k = 1); and for dynamic comparison, joint inference for subgraph densities at two time points (without loss of generality k = 1 and k = K). In Section 5.3, we discuss analogous methodology for more complicated settings. We distinguish new methodology for two distinct types of unknown parameters: edge den-sity, and higher-order subgraph densities. We will see in Section 4 that inference in the higher-order setting can utilize a special form of bootstrap resampling. We defer some de-tails of higher-order subgraph density with unknown error and evolution rate parameters to the appendices. The locations in the manuscript of these methodological contributions are summarized in Table 1. We evaluate our new methodology on synthetic and noisy network sequences in Sections 6, apply it to neuroimaging data in Section 7, and discuss conclu-sions and directions for future work in Section 8. Technical proofs and additional detailed derivations are provided in the appendices. Target parameter Edge density Higher-order subgraph density (additional details) 
+
+A(1) Sec. 3 Sec. 4 (App. C) 
+
+A(1) , A(K) Sec. 5.1 Sec. 5.2 (App. D) Table 1: Road map of methodology developed in this manuscript. 42 Noisy dynamic network model 
+
+For a single binary, undirected network on n nodes, the noisy network model of Chang et al. (2022) specifies the distribution of a noisy observation Y ∈ { 0, 1}n×n of an underlying (de-terministic) network A ∈ { 0, 1}n×n, represented by their adjacency matrices. They assume a two-parameter error model (independent bit flipping) for each edge, where 
+
+P(Yij = 1 |Aij = 0) = α, P(Yij = 0 |Aij = 1) = β, α, β ∈ (0 , 1) ,
+
+independently over i < j , describing type I and type II edge error rates. Model identifiability requires at least three iid replicates denoted by ( Y , Y ∗, Y ∗∗ ), where Y ∗ ∈ { 0, 1}n×n and 
+
+Y ∗∗ ∈ { 0, 1}n×n are independent and have the same distribution as Y conditional on A.The development in Chang et al. (2022) assumes the three replicates are noisy observations of the exact same underlying network A, although their results will remain valid if instead 
+
+Y ∗ is a noisy observation of A∗, and Y ∗∗ is a noisy observation of A∗∗ , with max 
+
+(n
+
+2
+
+−1 X
+
+> i<j
+
+|Aij − A∗ 
+
+> ij
+
+|,
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+|Aij − A∗∗  
+
+> ij
+
+|
+
+)
+
+= o
+
+ 1
+
+n
+
+
+
+. (1) In this work, we are interested in relaxing this assumption to tap the rich discrete time dynamic network setting. Assume now that we observe an ordered sequence of noisy network snapshots {Y (k)}Kk=1 .Each snapshot represents a network on a common set of n nodes by a binary, symmetric ad-jacency matrix, with no self loops. For k = 1 , . . . , K , suppose that Y (k) is a noisy observation of an underlying network A(k) through an error model, 
+
+P(Y (k) 
+
+> ij
+
+= 1 |A(k) 
+
+> ij
+
+= 0) = α, P(Y (k) 
+
+> ij
+
+= 0 |A(k) 
+
+> ij
+
+= 1) = β, α, β ∈ (0 , 1) ,
+
+independently over i < j , and k = 1 , . . . , K . Furthermore, assume a stochastic evolution 
+
+model on the sequence of underlying networks {A(k)}Kk=1 :
+
+P(A(k+1)  
+
+> ij
+
+= 1 |A(k) 
+
+> ij
+
+= 0) = λ, P(A(k+1)  
+
+> ij
+
+= 0 |A(k) 
+
+> ij
+
+= 1) = μ, λ, μ ∈ (0 , 1) ,
+
+5for k = 1 , . . . , K − 1. Under this evolution model, we will have 
+
+E
+
+(n
+
+2
+
+−1 X
+
+> i<j
+
+|A(k) 
+
+> ij
+
+− A(1)  
+
+> ij
+
+| A(1) 
+
+)
+
+≥ min {λ, μ },
+
+for all k > 1, and we will not get the required rate in (1) for inference to remain valid under methods which assume iid replicates. In summary, we define a simple but practical model for the joint distribution of the noisy net-work snapshots {Y (k)}Kk=1 , treating the initial underlying network A(1) as a high-dimensional unknown parameter. Notice that if we treated all underlying networks as unknown param-eters, we would be back in the impossibility setting of Chang et al. (2022), Theorem 1. By replacing an iid (or near-iid) assumption with a simple stochastic evolution model, inference of subgraph densities (as well as both error and evolution rates) again becomes possible. Natural modifications and extensions include treating additional underlying snapshots as model parameters (cf. Section 5); relaxing the edgewise or temporal independence; or allow-ing the unknown error and evolution parameter vector θ = ( α, β, λ, μ ) ∈ (0 , 1) 4 to depend on i, j, and/or k.
+
+2.1 Model identifiability 
+
+In Section 3, we will always be concerned with identifiability of the 5-dimensional parameter of interest ( δ1, α, β, λ, μ ), where δ1 is the edge density of A(1) ,
+
+δ1 =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+A(1)  
+
+> ij
+
+;the configuration of the individual network edges remain as nuisance parameters. In Sec-tion 4, we may additionally add a higher-order subgraph density as an unknown parameter. For this reason, each entry of A(1) may not be fully identified. For edge density, the param-eters will be invariant to arbitrary relabelling of the node pairs. For higher-order subgraph densities, the parameters will be invariant to arbitrary relabelling of the nodes, and possible restricted relabellings of the edges, although these will depend on the subgraph density of interest, and the network structure. 6We require further restrictions on the parameter space to identify the error and evolution rate parameters. First, note that α+β = 1 will give a degenerate model in which all observed edges are identically distributed, regardless of their underlying status. Moreover, as noted by Zhu et al. (2023), for any ( δ1, α, β, λ, μ ), there is a “mirrored” model which produces equivalent marginal probabilities of observed edges with parameter (1 − δ1, 1 − α, 1 − β, μ, λ ), which swaps the roles of the underlying edge labels but then reverses the labelling in the error process. Based on these observations, we restrict α + β < 1. A similar phenomenon occurs when λ + μ = 1; in this case the evolution process on edges has no memory, and additional snapshots provide no information about the initial status of underlying edges. When λ + μ > 1, edges are more likely to change status than maintain status in consecutive snapshots, leading to alternating behavior. To preserve convexity of the parameter space, we restrict λ + μ < 1. This will produce models with realistic non-alternating evolution, which can be modelled coherently at different discrete time scales. In the remainder of the paper, we define our restricted parameter space by Ψ = {(δ1, α, β, λ, μ ) ∈ (0 , 1) 5 : α + β < 1, λ + μ < 1}.
+
+For technical reasons, we may also consider the compact restriction of this parameter space ¯Ψ = ¯Ψ( ξ) = {(δ1, α, β, λ, μ ) ∈ [ξ, 1 − ξ]5 : α + β ≤ 1 − ξ, λ + μ ≤ 1 − ξ}.
+
+for a small constant ξ > 0. In addition to these restrictions on the parameter space, we require a sufficient number of snapshots K to perform inference on the unknown model parameters. In Section 3, we find that in order to estimate and do inference on ( δ1, α, β, λ, μ ), we require K ≥ 3. In Section 5.1, we find that in order to estimate and do inference under a dynamic comparison model, we require K ≥ 5. 73 Generalized method of moments estimation of edge density 
+
+In this section, we detail a generalized method of moments (GMM) approach to estimation of edge density, and the nuisance parameter θ = ( α, β, λ, μ ) which governs the error and evolution of the noisy network. In general, our adoption of moment-based estimation is based on the following observation for so-called edge-averaged moments. For a mapping 
+
+m : {0, 1}K → Rp, define the corresponding edge-averaged empirical moment ˆm =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+m(⃗Yij ),
+
+where in general we use the notation ⃗ · to denote the length K-sequence observed over time, e.g. ⃗ Yij = ( Y (1)  
+
+> ij
+
+, . . . , Y (K) 
+
+> ij
+
+)⊺ ∈ { 0, 1}K . Also denote the edge-averaged expectation 
+
+m(δ1, θ ) = Eθ( ˆ m | A(1) ) = δ1m1(θ) + (1 − δ1)m0(θ),
+
+where 
+
+ms(θ) = Eθ
+
+n
+
+m
+
+⃗
+
+Y12 
+
+
+
+A(1) 12 = s
+
+o
+
+∈ Rp,
+
+and the node pair (1 , 2) is chosen without loss of generality. Moment-based estimation will seek estimators ˆδ1 and ˆθ such that ˆm ≈ m(ˆδ1, ˆθ). For efficient evaluation without estimating the individual entries of A(1) , note that although A(1) is an O(n2)-dimensional unknown parameter, m(θ, δ 1) depends on it only through δ1, for any choice of moments, and can be evaluated based on the joint probabilities from a finite state space hidden Markov model (Jaeger, 2000). Following the classical GMM approach to parametric estimation (Newey and McFadden, 1994; Hall, 2004), we define the 5-dimensional estimator ( ˆδ1, ˆθ) as the minimizer of 
+
+f (δ1, θ ) = { ˆm − m(δ1, θ )}⊺ W { ˆm − m(δ1, θ )} (2) where W is a positive-definite weight matrix. Note that Cov θ( ˆ m | A(1) ) = 
+
+n
+
+2
+
+−1
+
+{δ1Σ1(θ) + (1 − δ1)Σ0(θ)} ,
+
+8where 
+
+Σs(θ) = Cov θ
+
+n
+
+m
+
+⃗
+
+Y12 
+
+
+
+A(1) 12 = s
+
+o
+
+∈ Rp×p, (3) for s ∈ { 0, 1}, facilitating easy evaluation of covariance for arbitararily large n, again without estimating the individual entries of A(1) . To implement GMM estimation, all that remains is to specify m.
+
+3.1 Estimation of edge density 
+
+In order to estimate δ1 and θ jointly, the univariate components of m will come from one of two types. First the local densities , defined as Dk(y1, . . . , y K ) = yk for k = 1 , . . . , K , and second time-averaged triples 
+
+Te0e1e2 (y1, . . . , y K ) = 
+
+> K
+
+X
+
+> k=3
+
+I (yk = e0, y k−1 = e1, y k−2 = e2)for ( e0, e 1, e 2) ∈ { 0, 1}3, which are well-defined for K ≥ 3. The three binary indices e0, e1,and e2 encode the value of an edge at lag 0, 1, and 2 respectively; we require at least two lags to identify all the model parameters. The frequencies of these edge subsequences provide information to disentangle the error and evolution parameters in the noisy dynamic model. Similar relative frequencies of pairs and triples have been used to estimate the transition and error distributions of general finite-state hidden Markov models (Hsu et al., 2012). Our final estimation routine is based on a subset of these local densities and time-averaged triples, with some dropped due to linear dependencies: 
+
+m∗ = ( D1, . . . , D K−3, T 000 , T 001 , T 010 , T 100 , T 011 , T 101 , T 110 ) : {0, 1}K → RK+4 .
+
+The empirical edge-averaged moments in m∗ and their population counterparts are well-defined for K ≥ 3. Thus, even though we introduce two additional evolution parameters relative to the exact replicate model in Chang et al. (2022), we still require only 3 (or more) snapshots to estimate the unknown parameters. 9In order to estimate the unknown parameters efficiently, we implement a modification of a usual iterative approch to adaptively select an efficient W in (2). To initialize, we first evaluate (ˆδ(init) 1 , ˆθ(init) ) = argmin (δ1,θ )∈Ψ
+
+n
+
+ˆm(init) − m(init) (δ1, θ ) 22
+
+o
+
+where ˆ m(init) and m(init) (δ1, θ ) are the empirical and theoretical values for the edge-averaged moments 
+
+m(init) = ( D1, T 000 , T 001 , T 010 , T 100 , T 011 , T 101 , T 110 ) : {0, 1}K → R8.
+
+for K ≥ 4. If K = 3 we drop D1 to avoid linear dependence in the moments. We then use the initial estimate to choose an efficient weighting matrix in (2) using the edge-averaged moments m∗. In particular, we set 
+
+cW −1 = ˆδ(init) 1 Σ∗
+
+> 1
+
+(ˆθ(init) ) + 
+
+
+
+1 − ˆδ(init) 1
+
+
+
+Σ∗
+
+> 0
+
+(ˆθ(init) ), (4) where Σ∗ 
+
+> s
+
+(θ) is the covariance matrix of m∗(⃗ Yij ) conditional on A(1)  
+
+> ij
+
+= s. More iterations can be used, but one is sufficient to prove asymptotic efficiency. Implementation of this estimation procedure requires evaluation of 
+
+m(init) (δ1, θ ) ∈ R8, m∗(δ1, θ ) ∈ RK+4 , Σ∗ 
+
+> s
+
+(θ) ∈ R(K+4) ×(K+4) 
+
+for arbitrary δ1, θ and s = 0 , 1. Additional details are provided in Appendix A.1. Towards proving consistency and asymptotic normality of our GMM estimators, we assume that both m∗ and m(init) contain enough information to identify all the model parameters. 
+
+Assumption 1. The mapping m(init) (δ1, θ ) is an injective function on Ψ. Since the coordinate functions in m(init) are also contained in m∗, Assumption 1 implies that 
+
+m∗(δ1, θ ) is also injective. It also implies that the unknown parameters ( δ1, θ ) are generally identifiable. In order to prove asymptotic normality and asymptotic efficiency of our GMM estimator, we require three more technical assumptions. In this setting, we work in the compact parameter space ¯Ψ = ¯Ψ( ξ) defined in Section 2.1, for a small constant ξ > 0. 10 Assumption 2. The true parameters satisfy ( δ1(n), α, β, λ, μ ) ∈ ¯Ψ for all n, and the se-quence converges, that is δ1(n) → δ1(∞) ∈ (0 , 1). Throughout, we will explicitly note when the limiting value δ1(∞) is referred to. When δ1
+
+is written, it should be interpreted as δ1(n) for the appropriate choice of n.
+
+Assumption 3. The derivative matrix 
+
+Dm ∗(δ1, θ ) = 
+
+∂m∗
+
+> ∂δ 1
+> ∂m∗
+> ∂θ
+
+
+
+∈ R(K+4) ×5
+
+has full column rank for all ( δ1, θ ) ∈ ¯Ψ. 
+
+Assumption 4. The covariance matrix Σ∗(δ1, θ ) = δ1Σ∗
+
+> 1
+
+(θ) + (1 − δ1)Σ∗
+
+> 0
+
+(θ) satisfies 0 < c ≤
+
+λmin {Σ∗(δ1, θ )} ≤ λmax {Σ∗(δ1, θ )} ≤ C < ∞ uniformly over all ( δ1, θ ) ∈ ¯Ψ for constants c
+
+and C (which may depend on ξ). Assumption 3 assumes that the parameters are locally identified, and thus that the estimating equations have non-degenerate covariance, and Assumption 4 controls the conditioning of the adaptive weighting matrices cW as n → ∞ .
+
+Remark 1. Although we do not show analytically that Assumptions 1, 3, and 4 hold for our model, we can verify these assumptions numerically for K ≥ 3. For Assumptions 1 and 3, we verify that Dm (init) (δ1, θ )⊺Dm (init) (δ1, θ ) and Dm ∗(δ1, θ )⊺Dm ∗(δ1, θ ) are invertible, except at or very near the boundary of the full parameter space Ψ. Note that under regularity conditions which hold for our noisy dynamic network model, local identification is a sufficient condition for global identification. Hence it is reasonable to assume the assumptions hold on the compact restricted parameter space ¯Ψ( ξ). A similar numerical verification is used to check Assumption 4: Σ∗(δ1, θ ) is invertible away from the boundary of Ψ for K ≥ 3. We are now ready to state the main result of this section, the asymptotic normality and efficiency of our adaptive GMM estimator. 
+
+Proposition 1. Suppose Assumptions 1—4 hold. Define estimators (ˆδ1, ˆθ) = argmin (δ1,θ )∈ ¯Ψ { ˆm∗ − m∗(δ1, θ )}⊺ cW { ˆm∗ − m∗(δ1, θ )} ,
+
+11 where cW is defined in (4). Then 
+
+n
+
+2
+
+1/2
+
+ˆδ1
+
+ˆθ
+
+ −
+
+δ1
+
+θ
+
+
+
+> d
+
+→ N  0, Σ(GMM) (δ1(∞), θ ) ,
+
+where 
+
+Σ(GMM) (δ1(∞), θ ) = Dm ∗(δ1(∞), θ )⊺ {Σ∗(δ1(∞), θ )}−1 Dm ∗(δ1(∞), θ ) −1 .
+
+This estimator achieves the smallest possible asymptotic covariance among GMM estimators using the moments in m∗.
+
+Remark 2. After estimating δ1 and θ using the GMM approach of Section 3.1, the method-ology described in Appendix B.1 (assuming known θ) can be used to find an alternate estimator of the form w∗(ˆδ1, ˆθ)⊺ ˆδ1, where ˆδ1 =
+
+ˆδ(1) 1 · · · ˆδ(K)1
+
+⊺
+
+, ˆδ(k)1 =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+Y (k) 
+
+> ij
+
+− Eˆθ(Y (k) 
+
+> ij
+
+| A(1)  
+
+> ij
+
+= 0) 
+
+Eˆθ(Y (k) 
+
+> ij
+
+| A(1)  
+
+> ij
+
+= 1) − Eˆθ(Y (k) 
+
+> ij
+
+| A(1)  
+
+> ij
+
+= 0) is a vector of snapshot-specific adjusted edge densities, and w∗(ˆδ1, ˆθ) ∈ RK is a non-negative weight vector which sums to 1, chosen to minimize the estimator’s asymptotic variance. We find that this alternate estimator is empirically nearly identical to the one found using two-stage GMM. Moreover w∗(ˆδ1, ˆθ) is practically useful to interpret the contribution of each network snapshot to the final estimate of δ1, as in Section 6. 
+
+Remark 3. The likelihood function for A(1) , assuming known θ, is given by 
+
+L(A(1) ; Y (1) , . . . , Y (K), θ ) = Y
+
+> i<j
+
+Pθ, A(1) 
+
+> ij
+
+
+
+Y (1)  
+
+> ij
+
+, . . . , Y (K)
+
+> ij
+
+
+
+.
+
+Thus, for each node pair ( i, j ), the maximum likelihood estimator (MLE) of A(1)  
+
+> ij
+
+is given by ˆA(1)  
+
+> ij
+
+= argmax s∈{ 0,1} Pθ,s 
+
+
+
+Y (1)  
+
+> ij
+
+, . . . , Y (K)
+
+> ij
+
+
+
+, (5) and by MLE invariance, ˆδ(MLE) 1 =
+
+n
+
+2
+
+ X
+
+> i<j
+
+ˆA(1)  
+
+> ij
+
+. (6) 12 The bias of the MLE can be calulated exactly based on the conditional distributions of {0, 1}
+
+sequences as a function of K, δ1 and θ. Define 
+
+A = {(y1, . . . , y K ) ∈ { 0, 1}K : Pθ, 1(y1, . . . , y K ) > Pθ, 0(y1, . . . , y K )},
+
+the set of binary length-K edge sequences for which the most likely initial state is 1. Then 
+
+E
+
+ˆδ(MLE) 1
+
+
+
+= δ1Pθ, 1(A) + (1 − δ1)Pθ, 0(A). (7) Note that (7) is constant in n, and implies that the MLE will only be unbiased (even asymptotically) if Pθ, 1(A) = 1 and Pθ, 0(A) = 0. That is, only if it is possible to perfectly classify the initial state of each noisy edge sequence. 
+
+# 4 Higher-order subgraph density estimation 
+
+In this section, we introduce new notation to describe network summaries based on arbitrary subgraph densities. For clarity of presentation we assume that the error and evolution parameters in θ are known. In practical applications, we replace the true parameter θ by the GMM estimator ˆθ derived in Section 3.1; all technical proofs and additional details of inference are developed in Appendix C.2. We wish to estimate the density of an arbitrary subgraph H of fixed order |VH | ≥ 2. Let V
+
+denote the set of node pairs that can map onto the prespecified edges of VH , and τ1, . . . , τ L ∈{0, 1} denote the prescribed values of those edges. Note that a given v ∈ V will contain L
+
+distinct node pairs, v = ( v1, . . . , v L), and although some individual node indices may overlap, the pairs will be distinct. The subgraph H density in the first underlying network can be written as 
+
+CH = CH (A(1) ) = 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+(A(1)  
+
+> vℓ
+
+)τℓ (1 − A(1)  
+
+> vℓ
+
+)1−τℓ . (8) Note that vℓ is a node pair, so we use the subscript vℓ to index the edge variable which 13 connects said pair. Define xk(θ) and yk(θ) by 
+
+Eθ
+
+
+
+Y (k) 
+
+> ij
+
+| A(1) 
+
+
+
+=
+
+
+
+xk(θ), A(1)  
+
+> ij
+
+= 0 ,yk(θ), A(1)  
+
+> ij
+
+= 1 .
+
+Rearranging, we have 
+
+A(1)  
+
+> ij
+
+=
+
+Eθ
+
+
+
+Y (k)
+
+> ij
+
+
+
+− xk(θ)
+
+yk(θ) − xk(θ) .
+
+Thus (8) can be rewritten as 
+
+CH = 1
+
+|V| · 1
+
+{yk(θ) − xk(θ)}L · X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+Eθ
+
+n
+
+ϕ(k) 
+
+> ℓ,θ
+
+(Y (k) 
+
+> vℓ
+
+)
+
+o
+
+, (9) where 
+
+ϕ(k) 
+
+> ℓ,θ
+
+(z) = {z − xk(θ)}τℓ {yk(θ) − z}1−τℓ .
+
+Note that (9) provides K different representations of CH , each depending on adjusted edge expectations of snapshot k for k = 1 , . . . , K .Define a family of unbiased estimators of CH ,
+
+eC(k) 
+
+> H
+
+= 1
+
+|V| · 1
+
+{yk(θ) − xk(θ)}L · X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕ(k) 
+
+> ℓ,θ
+
+(Y (k) 
+
+> vℓ
+
+) (10) for k = 1 , . . . , K . Define 
+
+eCH = ( eC(1)  
+
+> H
+
+, . . . , eC(K) 
+
+> H
+
+)⊺.
+
+Our final estimator of CH will be w⊺ eCH for an adaptive weight vector w ∈ RK satisfying 
+
+w⊺1K = 1. Following Lavancier and Rochet (2016), the efficient weights are given by 
+
+w∗(θ) ∝ Cov −1 
+
+> θ
+
+( eCH )1K , (11) normalized to sum to 1. Towards asymptotically valid and efficient inference, we generalize Propositions 2 and 3 in Chang et al. (2022) to our dynamic setting as Corollaries 1 and 2, re-spectively. Their precise statements are given in Appendix C, and their proofs are analogous to those in Chang et al. (2022). 14 Corollary 2 relates the asymptotic behavior of each eC(k) 
+
+> H
+
+to that of a new centered and linearized quantity 
+
+S(k) 
+
+> H
+
+=
+
+n
+
+2
+
+1/2
+
+· 1
+
+|V| · 1
+
+{yk(θ) − xk(θ)}L ·
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+n
+
+Y (k) 
+
+> vj
+
+− EθY (k)
+
+> vj
+
+o Y 
+
+> ℓ̸=j
+
+Eθ
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+) .
+
+(12) Defining 
+
+SH = ( S(1)  
+
+> H
+
+, . . . , S (K) 
+
+> H
+
+)⊺,
+
+we can write 
+
+SH =
+
+n
+
+2
+
+−1/2 X
+
+> i<j
+
+Mij 
+
+⃗
+
+Yij − Eθ⃗ Yij 
+
+
+
+for a collection of diagonal, non-random K × K matrices Mij . Moreover, SH satisfies 
+
+n
+
+2
+
+1/2
+
+( eCH − CH 1K ) = SH + oP(1) . (13) Thus, the asymptotic behavior of eCH can be understood through the linearized and centered 
+
+SH , which has asymptotic covariance lim 
+
+> n→∞
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+Mij Cov( ⃗ Yij )Mij .
+
+To estimate the covariance matrix of SH , we develop a bootstrap sampler of edge sequences which exactly captures the conditional covariance structure: That is, ⃗ Y † 
+
+> ij
+
+is sampled condi-tional on ⃗ Yij ∈ { 0, 1}K such that 
+
+Eθ{Cov( ⃗ Y † 
+
+> ij
+
+|⃗Yij )} = Cov θ(⃗Yij ) ∈ RK×K . (14) The left-hand side Cov θ(⃗Yij ) is one of two matrices (depending on the status of A(1)  
+
+> ij
+
+), which can be calculated given the unknown parameters in θ. The following result shows that it is sufficient to define B(⃗Yij ) through a mixture of two normal distributions, depending on the status of Y (1)  
+
+> ij
+
+.
+
+Proposition 2. Without loss of generality, define Σ(s) = Cov( ⃗Y12 | A12 = s) for s = 0 , 1, and 
+
+Σ† 
+
+> 0
+
+= (1 − β)Σ(0) − αΣ(1) 
+
+1 − α − β , Σ† 
+
+> 1
+
+= (1 − α)Σ(1) − βΣ(0) 
+
+1 − α − β .
+
+15 ⃗Y † 
+
+> ij
+
+|⃗ Yij ∼ N 
+
+
+
+0K , Σ† 
+
+> Y(1)
+> ij
+
+
+
+,
+
+independently for i < j . Then {⃗Y † 
+
+> ij
+
+}i<j satisfies the covariance constraint (14). 
+
+Remark 4. Although the original edge sequence satisfies ⃗ Yij ∈ { 0, 1}K , for convenience of implementation we draw bootstrap replicates which are multivariate Gaussian with mean zero. For the purposes of Propositions 3 and 4, this difference in support does not matter as long as (14) is satisfied. In principle, one could instead compute bootstrap distributions supported on {0, 1}K , similar to Chang et al. (2022). Using the bootstrap sampled edge sequences, we can define, for each k = 1 , . . . , K ,
+
+S†,(k) 
+
+> H
+
+=
+
+n
+
+2
+
+1/2
+
+· 1
+
+|V| · 1
+
+{yk(θ) − xk(θ)}L ·
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+Y †,(k)
+
+> vj
+
+Y
+
+> ℓ̸=j
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+), (15) using S† 
+
+> H
+
+to denote the vector in RK . We theoretically justify the asymptotic bootstrap distribution with the following result, based on a Cramer-Wold type linear combination. Assumption 10 and the quantity ℵV enforce regularity conditions on the configuration of H,and are defined precisely in Appendix C. 
+
+Proposition 3. Suppose Assumption 10 holds, ℵV /|V| = OP (n−2), and yk(θ)̸ = xk(θ) for all k ∈ { 1, . . . , K }. Let a ∈ RK . Then sup 
+
+> z∈R
+
+P
+
+n
+
+2
+
+1/2
+
+a⊺( eCH − CH 1K ) > z 
+
+!
+
+− P
+
+
+
+a⊺S† 
+
+> H
+
+> z | Y
+
+
+
+→ 0as n → ∞ .The bootstrap samples can also be used to recover asymptotically optimal adaptive weights, given by 
+
+w†(Y ; θ) = Cov −1(S† 
+
+> H
+
+| Y )1K
+
+1⊺ 
+
+> K
+
+Cov −1(S† 
+
+> H
+
+| Y )1K
+
+,
+
+and to estimate the variance of the resulting unbiased estimator 
+
+bCH = w†(Y ; θ)⊺ eCH . (16) To prove this, we require the following regularity assumption on the covariance matrices of 
+
+eCH .16 Assumption 5. The normalized covariance matrices ΣC (n) = Cov θ
+
+(n
+
+2
+
+1/2
+
+( eCH − CH 1K )
+
+)
+
+(17) satisfy 0 < c ≤ λmin {ΣC (n)} ≤ λmax {ΣC (n)} ≤ C < ∞
+
+uniformly over n for constants c and C.
+
+Proposition 4. Under the conditions of Proposition 3, and Assumption 5, suppose that 
+
+n
+
+2
+
+1/2 n
+
+w∗(θ)⊺ eCH − CH
+
+o
+
+has a limiting distribution. Then 
+
+n
+
+2
+
+1/2  bCH − CH
+
+
+
+has the same limiting distribution, where bCH is defined in (16). In the prior result, we compare an adaptive estimator to the estimator with optimal weights 
+
+w∗(θ). Define the optimal asymptotic variance 
+
+σ2 
+
+> H
+
+= lim  
+
+> n→∞
+
+w∗(θ)⊺ΣC (n)w∗(θ) = lim 
+
+> n→∞
+
+1⊺ 
+
+> K
+
+Σ−1 
+
+> C
+
+(n)1K 
+
+> −1
+
+,
+
+assuming that this limit exists. Under these conditions, 
+
+n
+
+1⊺ 
+
+> K
+
+Cov −1
+
+> θ
+
+
+
+S† 
+
+> H
+
+| Y
+
+
+
+1K
+
+o−1 P
+
+→ σ2 
+
+> H
+
+.
+
+The inverse covariance matrix on the left-hand side can be estimated to arbitrary precision for any n by increasing the number of bootstrap replicates. 
+
+# 5 Dynamic comparison of subgraph densities 
+
+Applied network analysis in the dynamic setting often poses questions about network com-parison. Using a variant on the model developed in Section 2, we develop methodology to 17 perform network comparison through joint estimation and inference for edge densities, and more general higher-order subgraph densities of the first and last snapshot in an observed sequence. As in Section 2, we specify edgewise error and evolution behavior for the observed sequence network snapshots {Y (k)}Kk=1 through 
+
+P(Y (k) 
+
+> ij
+
+= 1 |A(k) 
+
+> ij
+
+= 0) = α, P(Y (k) 
+
+> ij
+
+= 0 |A(k) 
+
+> ij
+
+= 1) = β, 
+
+P(A(k+1)  
+
+> ij
+
+= 1 |A(k) 
+
+> ij
+
+= 0) = λ, P(A(k+1)  
+
+> ij
+
+= 0 |A(k) 
+
+> ij
+
+= 1) = μ
+
+for k = 1 , . . . , K , independently over i < j , and governed by parameters θ = ( α, β, λ, μ ). However, we now treat both the first underlying snapshot A(1) , and the final snapshot 
+
+A(K) as high-dimensional unknown parameters. Adding this flexibility in terms of the final snapshot requires a modified model. In Section 2, the joint distribution of the edge sequence for each vertex pair followed a hidden Markov model with deterministic initial state and homogeneous transition kernel. Now, edge sequences still follow hidden Markov models, but with inhomogeneous bridge distributions depending on the final state, but computable from the original homogeneous transition distributions. For instance, for k ∈ { 2, . . . , K − 1} and 
+
+s ∈ { 0, 1}, we can expand the transition probability from 0 to 1 in terms of the original homogeneous transitions as 
+
+P(A(k+1)  
+
+> ij
+
+= 1 | A(k) 
+
+> ij
+
+= 0 , A(K) 
+
+> ij
+
+= s) = P(A(K) 
+
+> ij
+
+= s | A(k+1)  
+
+> ij
+
+= 1) P(A(k+1)  
+
+> ij
+
+= 1 | A(k) 
+
+> ij
+
+= 0) 
+
+P(A(K) 
+
+> ij
+
+= s | A(k) 
+
+> ij
+
+= 0) .
+
+Analogous derivations can be used to compute other transition probabilities. This inhomo-geneous transition probability now depends on s ∈ { 0, 1}, the final state of the edge at time 
+
+K, as well as k, which determines the number of remaining time steps before it must reach its final state. In Section 5.1, we extend the GMM methodology to jointly estimate error, evolution and starting and ending edge density parameters 
+
+δ1 =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+A(1)  
+
+> ij
+
+, δK =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+A(K)
+
+> ij
+
+18 from the observed sequence of noisy, evolving networks. In Section 5.2 we provide an outline of the analogous methodology and bootstrapping algorithm for higher-order subgraph den-sities. Finally, in Section 5.3 we discuss generalizations to other more complex comparison problems. All detailed results for this section are given in Appendix D. 
+
+5.1 GMM estimation for edge density comparison 
+
+Recall the notation of Section 3, where m : {0, 1}K → Rp denotes a mapping on edge sequences. Now, in order to summarize the behavior of all edge sequences, we must track the underlying status of each edge jointly in snapshots 1 and K. Thus we will aim to estimate three edge densities 
+
+ρ1 =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+A(1)  
+
+> ij
+
+(1 − A(K) 
+
+> ij
+
+), ρK =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+(1 − A(1)  
+
+> ij
+
+)A(K) 
+
+> ij
+
+,ρ1K =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+A(1)  
+
+> ij
+
+A(K) 
+
+> ij
+
+,
+
+so that our snapshot density parameters of interest can be written as δ1 = ρ1 + ρ1K and 
+
+δK = ρK + ρ1K . The edge-averaged expectation is given by 
+
+m(ρ1, ρ K , ρ 1K , θ ) = ρ1K m11 (θ) + ρ1m10 (θ) + ρK m01 (θ) + (1 − ρ1 − ρK − ρ1K )m00 (θ),
+
+where 
+
+mst (θ) = Eθ
+
+n
+
+m
+
+⃗
+
+Y12 
+
+
+
+A(1) 12 = s, A(K)12 = t
+
+o
+
+∈ Rp.
+
+We specify two mappings for GMM estimation, one for initialization and another for the second-stage reweighted estimator. We can show empirically that these mappings lead to local and global identification (similar to Assumptions 1 and 3), as well as covariance non-degeneracy (similar to Assumption 4) when K ≥ 5. For initialization with K > 5, we use 
+
+m(init)  
+
+> C
+
+= ( D1, D K , T 000 , T 001 , T 010 , T 100 , T 011 , T 101 , T 110 , P K )19 where Dk and Te1e2e3 are defined as in Section 3, and 
+
+PK (y1, . . . , y K ) = y1yK
+
+is added to identify the joint densities for the starting and ending snapshots. For K = 5, we drop the mapping T110 from m(init)  
+
+> C
+
+to ensure linear independence of the moments. For the second-stage reweighted estimator, we keep additional local density information, and specify 
+
+m∗C = ( D1, . . . , D Kcent −1, D Kcent +1 , . . . , D K , T 000 , T 001 , T 010 , T 100 , T 101 , P K ),
+
+where Kcent is a central index ⌈(K+1) /2⌉. In Appendix D. of the supplementary materials, we sketch the analogous theoretical results and proofs to find an asymptotic normal distribution for the resulting GMM estimators. 
+
+5.2 Higher-order subgraph density comparison 
+
+In this section, for a subgraph H of arbitrary order, we consider subgraph density estimators for 
+
+C(1)  
+
+> H
+
+= 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+(A(1)  
+
+> vℓ
+
+)τℓ (1 − A(1)  
+
+> vℓ
+
+)1−τℓ , C(K) 
+
+> H
+
+= 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+(A(K) 
+
+> vℓ
+
+)τℓ (1 − A(K) 
+
+> vℓ
+
+)1−τℓ
+
+based on the initial and final network snapshots Y (1) and Y (K). In principle, the methods in Section 4 can be extended to produce reweighted estimators based on all observed network snapshots {Y (k)}Kk=1 , but we do not develop those details here. Instead we estimate C(k) 
+
+> H
+
+for 
+
+k = 1 , K using the corresponding Y (k) only. As in Section 4, subgraph density estimation requires plug-in of adjusted surrogate edges. Define a mapping 
+
+ϕθ(x) = x − α
+
+1 − β − α ,
+
+20 and note that 
+
+Eθ
+
+n
+
+ϕθ(Y (1) 12 ) | A(1) 12 = s, A(K)12 = t
+
+o
+
+= s, 
+
+Eθ
+
+n
+
+ϕθ(Y (K)12 ) | A(1) 12 = s, A(K)12 = t
+
+o
+
+= t, (18) for s, t ∈ { 0, 1}, since Y (1) 12 and Y (K)12 are independent when A(1) and A(K) are viewed as unknown parameters. Next, for ℓ = 1 , . . . , L , define 
+
+ϕℓ,θ (x) = {ϕθ(x)}τℓ {1 − ϕθ(x)}1−τℓ .
+
+It follows that 
+
+eC(1)  
+
+> H, C
+
+= 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕℓ,θ (Y (1)  
+
+> vℓ
+
+), eC(K) 
+
+> H, C
+
+= 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕℓ,θ (Y (K) 
+
+> vℓ
+
+)are unbiased estimators of C(1)  
+
+> H
+
+and C(K) 
+
+> H
+
+under the dynamic comparison model. Note that by construction, eC(1)  
+
+> H, C
+
+and eC(K) 
+
+> H, C
+
+are independent since we condition on A(1) and A(K).When θ is known, estimators of the asymptotic variances of eC(1)  
+
+> H, C
+
+and eC(K) 
+
+> H, C
+
+can be found by an application of the bootstrap methodology developed in Chang et al. (2022), or the related bootstrap developed in Section 4 (specified to K = 1). When θ is unknown, some non-negligible covariance is induced between the two plug-in estimators 
+
+bC(1)  
+
+> H, C
+
+= 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕℓ, ˆθ(Y (1)  
+
+> vℓ
+
+), bC(K) 
+
+> H, C
+
+= 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕℓ, ˆθ(Y (K) 
+
+> vℓ
+
+).
+
+We provide the details of this approach in Appendix D.3. 
+
+5.3 Other comparison problems 
+
+In principle, the methodology developed in this section can be extended to other subgraph density comparison problems. Suppose we observe a sequence of network snapshots {Yk}Kk=1 
+
+and wish to do (joint) inference on the subgraph densities at a collection of these snapshot times I ⊂ { 1, . . . , K }. To this end, assume the edgewise error and evolution model specified 21 in Section 2, but fix the subgraph densities of interest by treating the underlying network snapshots at all time indices in I as high-dimensional nuisance parameters. Put into this general framework, Sections 3 and 4 develop methodology for I = {1}, and Sections 5.1 and 5.2, develop methodology for I = {1, K }. Other choices of interest could be a regular grid of indices, or a sequence of consective snapshots at the beginning or end of the observation interval. To apply the GMM estimation and inference described in Sections 3 and 5.1, we require sufficiently many snapshots not in I for parameter identification: a subsequence of at least 2 at the beginning or end of the sequence, or at least 3 strictly between two snapshot indices in I. The higher-order estimation and inference methods developed in Sections 4 and 5.2 can be extended to accomodate arbitrary I, with suitable adjustments to the bootstrap sampler. 
+
+# 6 Simulations 
+
+In this section, we perform simulation studies to verify the performance of our proposed GMM estimators, and the nominal confidence interval (CI) coverage of the asymptotic and bootstrap approximations. All CI’s are constructed to have 90% nominal coverage rate. 
+
+6.1 Inference for edge density 
+
+In this section we verify the properties of our GMM estimators of edge density under the noisy dynamic model, through 3 simulation settings. In all settings, α = 0 .05, β = 0 .2. The initial snapshot A(1) is assigned edges uniformly at random to have edge density δ1 = 0 .4. We compare our GMM estimator of δ1 to a naive estimator, the empirical edge density of 
+
+Y (1) , as well as the estimator and asymptotic CI developed in Chang et al. (2022) (“C22”) which uses only the first 3 observed snapshots. 22 In setting 1, we consider sequences of noisy dynamic networks with K = 11, λ = 0 .12, 
+
+μ = 0 .08, and vary n. Results are reported in Figure 1. From the left panel of Figure 1, our GMM CI’s achieve the nominal coverage rate, while the C22 CI’s have decreasing coverage rate as n increases. As C22 assumes iid replicates, the addition of stochastic evolution biases the estimators of α, β, and δ1, seen in the right panel of Figure 1. 50 100 150 200 0.0  0.2  0.4  0.6  0.8  1.0 nEmpirical coverage 50 100 150 200 −0.06  −0.02  0.00  0.02  0.04  0.06 nBias( δ)Naive C22 GMM 
+
+Figure 1: Plots of 90% CI coverage and bias for estimators of edge density δ1.In setting 2, we consider sequences of noisy dynamic networks with n = 50, λ = 0 .12, 
+
+μ = 0 .08, and vary K. Results are reported in Figure 2. From the left panel of Figure 2, our GMM CI’s achieve the nominal coverage rate, while the C22 CI’s do not. In the right panel of Figure 2, our GMM estimator of δ1 achieves a smaller RMSE than the naive or C22 estimators. Moreover, our estimator has decreasing RMSE as we incorporate more network snapshots, until the edge sequences mix. In Figure 3, we show that this increased efficiency is due to the sharing of information through the reweighted snapshot estimators, by visualizing the optimal snapshot-wise weights (cf. Remark 2). In setting 3, we consider sequences of noisy dynamic networks with n = 50, K = 11, 
+
+λ = 0 .6(1 − γ), μ = 0 .4(1 − γ), and vary γ. As γ approaches 1, later underlying snapshots will more closely resemble A(1) . Results are similar to those in Figure 2, and our estimator has decreasing RMSE as γ approaches 1. The RMSE for the C22 estimator also decreases, as the smaller evolution rate leads to less bias in their estimates of α and β. In Figure 5, 23 5 10 15 20 0.0  0.2  0.4  0.6  0.8  1.0 KEmpirical coverage 5 10 15 20 0.00  0.01  0.02  0.03  0.04  0.05 KRMSE( δ)Naive C22 GMM Figure 2: Plots of 90% CI coverage and RMSE for estimators of edge density δ1.123
+
+> K=3
+> 12345
+> K=5
+> 123456
+> K=7
+> 123456
+> K=9
+
+Figure 3: Pie chart visualizing weighting of snapshot-wise edge density estimators, δ1 = 0 .4, 
+
+α = 0 .05, β = 0 .2, λ = 0 .12, μ = 0 .08, varying K. Weights for k ≥ 7 are negligible. Weights for K > 9 are visually identical to the weights for K = 9. we again visualize the optimal snapshot-wise weights, and see that indeed more information can be used from later snapshots when γ is close to 1. Results are similar to those in Figure 2, and our estimator has decreasing RMSE as γ
+
+approaches 1. The RMSE for the C22 estimator also decreases, as the smaller evolution rate leads to less bias in their estimates of α and β. In Figure 5, we again visualize the optimal snapshot-wise weights, and see that indeed more information can used from later snapshots when γ is close to 1. 24 0.5 0.6 0.7 0.8 0.9 0.0  0.2  0.4  0.6  0.8  1.0     
+
+> γ
+> Empirical coverage 0.5 0.6 0.7 0.8 0.9 0.00  0.02  0.04  0.06  0.08  0.10
+> γ
+> RMSE( δ)Naive C22 GMM
+
+Figure 4: Plots of 90% CI coverage and RMSE for estimators of edge density δ1.123456     
+
+> γ = 0.5 123456
+> γ = 0.55 123456
+> γ = 0.85 123456
+> γ = 0.9 123456
+> γ = 0.95
+
+Figure 5: Pie chart visualizing weighting of snapshot-wise edge density estimators, K = 11, 
+
+δ1 = 0 .4, α = 0 .05, β = 0 .2, λ = 0 .6(1 − γ), μ = 0 .4(1 − γ), varying γ.
+
+6.2 Inference for higher-order subgraph densities 
+
+In this section we verify the inferential properties of our weighted estimators of higher-order subgraph densities under the noisy dynamic model, assuming the parameters in θ are known (as in Section 4). We compare our adaptively reweighted “Boot-wt” estimator with bootstrap CI based on 500 samples to the “C22” estimator developed in Chang et al. (2022) with bootstrap CI based on 500 samples, and the naive empirical subgraph density of Y (1) .For comparison, we also implement the Boot-wt estimator which uses only the first two observed snapshots for estimation (“Boot-wt, K = 2”). We evaluate the performance for the triangle density of A(1) , denoted C△, which counts the rate at which all three potential edges are present among a set of three nodes. 25 In these simulations, we vary n, fix K = 5, and consider four settings for the error and evolution parameters: “Low error, low stability” ( α = 0 .05, β = 0 .1, λ = 0 .2, μ = 0 .2), “High error, low stability” ( α = 0 .25, β = 0 .25, λ = 0 .2, μ = 0 .2), “Low error, high stability” ( α = 0 .05, β = 0 .1, λ = 0 .05, μ = 0 .05), and “Low error, low stability” ( α = 0 .05, 
+
+β = 0 .1, λ = 0 .05, μ = 0 .05). Note that throughout this section, inference is performed using the ground truth values of these error and evolution parameters. The initial network 
+
+A(1) is constructed as an induced subgraph of a perturbed lattice graph generated on 400 nodes, and has ground truth edge density δ1 ≈ 0.4, and triangle density C△ ≈ 0.083. In Figure 6, we plot the RMSE of three estimators of C△. In all cases we see the Boot-wt and C22 estimators have RMSE approaching zero as n increases, while the naive estimator remains biased. In three settings, the Boot-wt estimator is a more efficient estimator than the C22 estimator, by incorporating information from later snapshots. The exceptional case is the “High error, low stability” setting, where the later snapshots provide very little information about A(1) , making the adaptive weighting approach highly unstable. In this case, the Boot-wt K = 2 estimator is preferred, and its performance is also comparable to C22. Note that the effect of instability is exacerbated for estimation of higher-order subgraph density (relative to edge density): roughly, information about edge density will be preserved in later snapshots if edges do not transition out of their initial state, while information about triangle will only be preserved in later snapshots if all three potential edges do not transition out of their initial states. In Figure 7, we plot the 90% CI coverage of two estimators of C△. Other than the “High error, low stability” setting, all methods give CI’s with nominal coverage, even for very small values of n. The instability of adaptive weighting in the “High error, low stability” setting causes issues with coverage of the Boot-wt estimator which uses all 5 observed snapshots. In practice, for inference on higher-order subgraph densities, we caution against incorporating later snapshots when they provide negligible information about A(1) . For instance, in the “High error, low stability” setting, valid and efficient inference can be achieved using only the first 1-2 observed snapshots, while later snapshots make the adaptive weights and covariance 26 50 100 150 200 250 300 350 400 −15  −14  −13  −12  −11  −10  −9 
+
+Low error, low stability        
+
+> nlog(RMSE) 50 100 150 200 250 300 350 400 −13  −12  −11  −10  −9  −8  −7
+
+High error, low stability        
+
+> nlog(RMSE) Naive C22 Boot−wt Boot−wt, K=2 50 100 150 200 250 300 350 400 −15  −14  −13  −12  −11  −10  −9
+
+Low error, high stability        
+
+> nlog(RMSE) 50 100 150 200 250 300 350 400 −14  −13  −12  −11  −10  −9  −8
+
+High error, high stability 
+
+> nlog(RMSE)
+
+Figure 6: Plots of RMSE for estimators of triangle density C△.estimation unstable. Finally, note that this study assumes oracle knowledge of the error and evolution rate parameters in θ. Following Section 6.1, when θ is unknown, our GMM-based approach can provide an unbiased estimators of θ in cases where the C22 estimator will be biased. 
+
+6.3 Dynamic comparison of edge densities 
+
+In this section we verify the properties of our GMM estimators of edge density under the dynamic comparison model, through two simulation settings. In both settings, we consider 27 50 100 150 200 250 300 350 400 0.5  0.6  0.7  0.8  0.9  1.0                      
+
+> Low error, low stability
+> nEmpirical coverage 50 100 150 200 250 300 350 400 0.5  0.6  0.7  0.8  0.9  1.0
+> High error, low stability
+> nEmpirical coverage C22 Boot−wt Boot−wt, K=2 50 100 150 200 250 300 350 400 0.5  0.6  0.7  0.8  0.9  1.0
+> Low error, high stability
+> nEmpirical coverage 50 100 150 200 250 300 350 400 0.5  0.6  0.7  0.8  0.9  1.0
+> High error, high stability
+> nEmpirical coverage
+
+Figure 7: Plots of 90% CI coverage for estimators of triangle density C△.sequences of noisy dynamic networks with α = 0 .05, β = 0 .2, λ = 0 .12, and μ = 0 .08. The initial snapshot A(1) is assigned edges uniformly at random to match the desired edge density 
+
+δ1 = 0 .4. The final snapshot A(K) is assigned edges uniformly at random with varying edge density δK , where δK is chosen from {0.2, 0.4, 0.6, 0.8}. We compare our GMM estimator of δ1 to a naive estimator, the empirical edge density of Y (1) , as well as C22. The C22 estimator is implemented by applying their methodology to the first 3 and last 3 snapshots respectively, and taking the difference of the two edge density estimators. A CI for the C22 estimate of the difference in densities is found from the individual CI’s, assuming the two estimators are independent. 28 In setting 1, we consider sequences of noisy dynamic networks with K = 11, and vary n and 
+
+δK . Results are reported in Figure 8. From the left panel of Figure 8, our GMM CI’s achieve the nominal coverage rate, while the C22 CI’s do not. The coverage of the C22 CI’s becomes worse as n increases, or as the difference between δ1 and δK increases. In the right panel of Figure 8, our GMM estimator of δK − δ1 achieves a smaller RMSE than the naive or C22 estimators. When δK = 0 .4, the effect of the bias on the naive estimators will cancel out. 50 100 150 200 0.0  0.2  0.4  0.6  0.8  1.0 nEmpirical coverage 50 100 150 200 0.00  0.05  0.10  0.15 nRMSE( δK − δ 1)Naive C22 GMM         
+
+> δK=0.2
+> δK=0.4
+> δK=0.6
+> δK=0.8
+
+Figure 8: Plots of 90% CI coverage and RMSE for estimators of difference in edge density 
+
+δK − δ1. Points are colored according to the value of δK .In setting 2, we consider sequences of noisy dynamic networks with n = 50, and vary K and 
+
+δK . Results are reported in Figure 9. From the left panel of Figure 9, we again see that our GMM CI’s achieve the nominal coverage rate, while the C22 CI’s do not. In the right panel of Figure 9, our GMM estimator of δK − δ1 achieves a smaller RMSE than the naive or C22 estimators. The improvement in RMSE for the GMM estimator is modest as K increases. 
+
+# 7 Analysis of Learning Brain data 
+
+In this section, we analyze networks constructed from the Learning Brain dataset, available from OpenNeuro (Olszewska et al., 2025a). This dataset includes K = 5 longitudinal obser-29 5 10 15 20 0.0  0.2  0.4  0.6  0.8  1.0 KEmpirical coverage 5 10 15 20 0.00  0.05  0.10  0.15  0.20  0.25  0.30 KRMSE( δK − δ 1)Naive C22 GMM         
+
+> δK=0.2
+> δK=0.4
+> δK=0.6
+> δK=0.8
+
+Figure 9: Plots of 90% CI coverage and RMSE for estimators of difference in edge density 
+
+δK − δ1. Points are colored according to the value of δK .vations of 23 female subjects aged between 18 and 26, collected over 6 months while subjects received training in piano. For each session, functional magnetic resonance imaging (fMRI) scans were taken in a resting state, as well as during a passive listening task. The sessions were not equally spaced in time, with the schedule (0, 1, 6, 13 and 26 weeks) designed to mimic the non-linear nature of brain plasticity, as the rate of change is hypothesized to slow as training progresses (Olszewska et al., 2021). Thus this design supports the use of time homogeneous evolution parameters, as in Section 5. Previous published analysis of this data investigated blood oxygenation level-dependent (BOLD) signals, rather than network connectivity or correlations. Analysis of the listening task scans did not find any clusters of brain voxels whose BOLD signals changed significantly over the course of training (Olszewska et al., 2025b). For this analysis, BOLD signals were processed using a standard pipeline, using the Python library nilearn , to remove confounding effects due to head movement and non-neural ac-tivity and to map voxel-wise signals onto a standard atlas with n = 200 ROIs (Schaefer et al., 2018). Binary adjacency matrices were constructed by thresholding the absolute cross-correlations between signals at a fixed level 0 .4. We use the methods developed in Section 5.1 and Appendix D.3 to compare both edge density and summaries based on higher-order sub-30 graph densities at the beginning and end of each subject’s training. We analyze each subject independently, and freely estimate individual evolution, error and subgraph density param-eters. In addition to the model parameters ( δ1, δ K , α, β, λ, μ ), we also perform inference for the difference in edge density between underlying snapshots 1 and K, denoted ∆ δ = δK − δ1,as well as changes in two higher-order summaries: change in clustering coefficient, given by ∆cc = C(K)
+
+> △
+
+C(K) 
+
+> △
+
++ C(K)
+
+> ∨
+
+− C(1) 
+
+> △
+
+C(1)  
+
+> △
+
++ C(1) 
+
+> ∨
+
+,
+
+which can be interpreted as the proportion of closed two-stars; and change in normalized triangle density, given by ∆nt = C(K)
+
+> △
+
+δ3
+
+> K
+
+− C(1) 
+
+> △
+
+δ31
+
+.
+
+Asymptotic standard errors for higher-order summaries are based on a bootstrap sampler with 400 samples. 0.0  0.2  0.4  0.6  0.8  1.0 Resting Listening Resting Listening Resting Listening Resting Listening Resting Listening Resting Listening      
+
+> δ
+> ^1δ
+> ^Kα^β
+> ^λ
+> ^μ^Estimate
+
+Figure 10: Boxplots of parameter estimates for 23 subjects, resting and listening networks. From the summaries in Figure 10, we see that these adjacency matrix sequences tend to show asymmetric type I and type II error rates (which will bias a naive edge density estimator), and non-zero edge transition rates (which bias the C22 method that assumes iid replicates). Figure 10, along with full testing results in Appendix E, show that these subjects are highly heterogeneous. This is to be expected, as the high-dimensional parameters A(1) and A(K)
+
+31 are allowed to vary freely for each subject. Overall, we find that the listening networks tend to have higher density than the corresponding resting networks at both the beginning and end of the study, and find many significant changes in edge density in both sets of networks at the Bonferroni-corrected 5% level (20/23 resting state, 19/23 listening task). The box plots show that listening scan sequences are more often characterized by birth of new edges and low death rate, where the opposite is true for the resting scan sequences. Some subjects show significant differences in clustering coefficient and/or triangle density, implying changes in higher level organization, with 17 total significant differences in clustering coefficient and triangle density found in the listening networks, compared to 11 in the resting state networks. Detailed testing results are provided in Table 2 in Appendix E. 
+
+# 8 Conclusions and future work 
+
+In this work, we develop a model for dynamically observed noisy networks, and methodology to estimate and perform inference on edge densities and higher-order subgraph densities, ei-ther at a fixed snapshot or at multiple snapshots, relaxing the assumption of iid replication and allowing for dynamic comparison of subgraph densities. We extend a bootstrapping ap-proach of Chang et al. (2022) to tractably estimate the asymptotic variance and covariances of these estimators. There are several potential extensions of the model presented in this paper, including het-erogeneity of error and evolution parameters across both nodes and times, or dependent bit-flipping models as in Chang et al. (2026). Analysis in high-dimensional settings where the number of error and evolution parameters grows with n may also require more intricate asymptotics for growing K, to understand the balance between model flexibility and sample size. Variance estimation without bootstrapping is also possible in principle (cf. Remark 12 in the appendix), but is computationally challenging; the bootstrap developed in this paper is one form of stochastic approximation, but it may be valuable to consider whether other approximations or fast variance computations are possible. Finally, we can consider the 32 application of this noisy dynamic evolution model to perform inference for other statistics, for instance other global graph summaries such as branching factor Li et al. (2022), or the density of a temporal motif as in Zhu and Kolaczyk (2022). 
+
+Data. The data that support the findings in this paper are openly available in OpenNeuro at http://doi.org/10.18112/openneuro.ds007022.v1.0.1 .
+
+# References 
+
+P. Balachandran, E. D. Kolaczyk, W. D. Viles, et al. On the propagation of low-rate measure-ment error to subgraph counts in large networks. Journal of Machine Learning Research ,18(61):1–33, 2017. J. Chang, E. D. Kolaczyk, and Q. Yao. Estimation of subgraph densities in noisy networks. 
+
+Journal of the American Statistical Association , 117(537):361–374, 2022. J. Chang, Q. Hu, E. D. Kolaczyk, Q. Yao, and F. Yi. Edge differentially private estimation in the β-model via jittering and method of moments. The Annals of Statistics , 52(2): 708–728, 2024. J. Chang, Q. Fang, E. D. Kolaczyk, P. W. MacDonald, and Q. Yao. Autoregressive net-works with dependent edges. Journal of the Royal Statistical Society Series B: Statistical Methodology , 2026. Advance online publication. A. R. Hall. Generalized method of moments . Oxford, 2004. D. Hsu, S. M. Kakade, and T. Zhang. A spectral algorithm for learning hidden Markov models. Journal of Computer and System Sciences , 78(5):1460–1480, 2012. H. Jaeger. Observable operator models for discrete stochastic time series. Neural Computa-tion , 12(6):1371–1398, 2000. 33 B. Jiang, J. Li, and Q. Yao. Autoregressive networks. Journal of Machine Learning Research ,24(227):1–69, 2023. S. M. Kazemi, R. Goel, K. Jain, I. Kobyzev, A. Sethi, P. Forsyth, and P. Poupart. Repre-sentation learning for dynamic graphs: A survey. Journal of Machine Learning Research ,21(70):1–73, 2020. B. Kim, K. H. Lee, L. Xue, and X. Niu. A review of dynamic network models with latent variables. Statistics Surveys , 12:105, 2018. P. N. Krivitsky and M. S. Handcock. A separable model for dynamic networks. Journal of the Royal Statistical Society, Series B , 76:29–48, 2014. F. Lavancier and P. Rochet. A general procedure to combine estimators. Computational Statistics & Data Analysis , 94:175–192, Feb. 2016. W. Li, D. L. Sussman, and E. D. Kolaczyk. Estimation of the branching factor in noisy networks. IEEE Transactions on Network Science and Engineering , 10(1):565–577, 2022. C. Matias and V. Miele. Statistical clustering of temporal networks through a dynamic stochastic block model. Journal of the Royal Statistical Society, Series B , 79:1119–1141, 2017. W. K. Newey and D. McFadden. Large sample estimation and hypothesis testing. Handbook of Econometrics , 4:2111–2245, 1994. A. Olszewska, M. Gaca, D. Dro´ zdziel, B. Kossowski, A. M. Herman, and A. Marchewka. Learning Brain - a longitudinal dataset on neural plasticity dynamics in braille and music training, 2025a. A. M. Olszewska, M. Gaca, A. M. Herman, K. Jednor´ og, and A. Marchewka. How mu-sical training shapes the adult brain: Predispositions and neuroplasticity. Frontiers in Neuroscience , 15:630829, 2021. 34 A. M. Olszewska, M. Gaca, D. Dro´ zdziel, K. Jednor´ og, A. Marchewka, and A. M. Herman. Piano training induces dynamic neuroplasticity of bimanual coordination but not auditory processing in young adults. Journal of Neuroscience Research , 103(7):e70067, 2025b. C. E. Priebe, D. L. Sussman, M. Tang, and J. T. Vogelstein. Statistical inference on errorfully observed graphs. Journal of Computational and Graphical Statistics , 24(4):930–953, 2015. A. Schaefer, R. Kong, E. M. Gordon, T. O. Laumann, X.-N. Zuo, A. J. Holmes, S. B. Eickhoff, and B. T. Yeo. Local-global parcellation of the human cerebral cortex from intrinsic functional connectivity MRI. Cerebral Cortex , 28(9):3095–3114, 2018. D. K. Sewell and Y. Chen. Latent space models for dynamic networks. Journal of the American Statistical Association , 110:1646–1657, 2015. X. Zhu and E. D. Kolaczyk. Quantifying uncertainty for temporal motif estimation in graph streams under sampling. arXiv preprint arXiv:2202.10513 , 2022. X. Zhu, H. Shappell, M. A. Kramer, C. J. Chu, and E. D. Kolaczyk. Distinguishing between different percolation regimes in noisy dynamic networks with an application to epileptic seizures. PLOS Computational Biology , 19(6):e1011188, 2023. 35 A Implementation of GMM estimation 
+
+A.1 Evolution and error model 
+
+Implementation of GMM estimation requires the evaluation of joint expectations and covari-ances under the evolution and error model. We prove the following result, a special case of Hsu et al. (2012), Lemma 1, which gives a simple formulation for the joint probabilities from finite state space hidden Markov models (HMMs) in terms of so-called observation operators 
+
+(Jaeger, 2000). 
+
+Lemma 1. Suppose {Zt}t≥0 is a finite state, homogeneous HMM on state space {1, . . . , S }.Denote the underlying chain by {Xt}t≥0, also on state space {1, . . . , S }. Denote the s-step transition matrix ( s ≥ 0) by 
+
+Ps[i, j ] = P(Xt+s = j | Xt = i) ∈ RS×S ,
+
+and the observation distribution matrix by 
+
+E[i, j ] = P(Zt = i | Xt = j) ∈ RS×S ,
+
+for t = 1 , 2, . . . . For s ≥ 0 and i ∈ { 1, . . . , S }, denote the observation operator matrix 
+
+O(s) 
+
+> i
+
+=
+
+
+
+E[i, 1] 0. . .0 E[i, S ]
+
+ Ps ∈ RS×S .
+
+Then the joint probabilities of {Zt}t≥1 conditional on the initial underlying state X0 satisfy 
+
+P (Zt1 = i1, . . . , Z tK = iK | X0) = 1⊺ 
+
+> S
+
+O(tK −tK−1) 
+
+> i1
+
+· · · O(t2−t1) 
+
+> i1
+
+O(t1) 
+
+> i1
+
+eX0 (19) for state sequence {i1, . . . , i K } and increasing seqence of integers 0 ≤ t1 < t 2 < . . . < t K .Here, ex for x ∈ { 1, . . . , S } denotes the xth standard basis vector in RS .In our setting with binary edges, we will have S = 2, and the expectations and covariances (second moments) of individual edge sequences can be written through indicator functions. 36 For example, without loss of generality using node pair (1 , 2), and conditioning on A(1) 12 = 0, 
+
+Eθ(D5,12 | A(1) 12 = 0) = Pθ(Y (5) 12 = 1 | A(1) 12 = 0) (20) 
+
+Eθ(T011 ,12 | A(1) 12 = 0) = 
+
+> K
+
+X
+
+> k=3
+
+Pθ(Y (k)12 = 0 , Y (k−1) 12 = 1 , Y (k−2) 12 = 1 | A(1) 12 = 0) , (21) and 
+
+Eθ(D5,12 T011 ,12 | A(1) 12 = 0) = 
+
+> K
+
+X
+
+> k=3
+
+Pθ(Y (5) 12 = 1 , Y (k)12 = 0 , Y (k−1) 12 = 1 , Y (k−2) 12 = 1 | A(1) 12 = 0) .
+
+(22) Note that in (22), a probability on the right-hand side may not be of a sequence of four states, as it is written. If k ∈ { 6, 7}, then the first event is contained in the third or fourth, leading to the probability of a sequence of three states. If k = 5, then the first and second events are mutually exclusive, and the probability is zero. Thus, with some care, the probabilities on the right-hand sides of (20)—(22) can be evaluated using (19), and the resulting expectations can be used to find the expectations and covari-ances needed for GMM estimation, see Section 3. We evaluate derivatives of expectations (also needed for covariance estimation) numerically rather than analytically. In order to efficiently calculate the s-step transition probabilities resulting from the one-step evolution model 
+
+P(A(k+1)  
+
+> ij
+
+= 1 |A(k) 
+
+> ij
+
+= 0) = λ, P(A(k+1)  
+
+> ij
+
+= 0 |A(k) 
+
+> ij
+
+= 1) = μ, 
+
+we use a reparameterization in terms of parameters τ and γ,
+
+τ = λλ + μ ∈ (0 , 1) , γ = 1 − (λ + μ) ∈ (−1, 1) ,
+
+so that 
+
+Ps = Ps(τ, γ ) = 
+
+1 − τ τ
+
+1 − τ τ
+
+ + γs
+
+ τ −τ
+
+−(1 − τ ) 1 − τ
+
+ ∈ (0 , 1) 2×2
+
+is easy to calculate for all values of s. The inverse parameterization is given by 
+
+λ = τ (1 − γ), μ = (1 − τ )(1 − γ).
+
+37 A.2 Dynamic comparison model 
+
+In order to evaluate joint probabilities under the dynamic comparison model, we use a generalization of Lemma 1 to HMMs with inhomogeneous transition kernels 
+
+Lemma 2. Suppose {Zt}t≥0 is a finite state, inhomogeneous HMM on state space {1, . . . , S }.Denote the underlying chain by {Xt}t≥0, also on state space {1, . . . , S }. Denote the transition matrix from step t to step t + s (t ≥ 0, s ≥ 0) by 
+
+Pt,s [i, j ] = P(Xt+s = j | Xt = i) ∈ RS×S ,
+
+and the observation distribution matrix at step t (t ≥ 0) by 
+
+Et[i, j ] = P(Zt = i | Xt = j) ∈ RS×S ,
+
+For t ≥ 0, s ≥ 0 and i ∈ { 1, . . . , S }, denote the observation operator matrix 
+
+O(t,s ) 
+
+> i
+
+=
+
+
+
+Et+s[i, 1] 0. . .0 Et+s[i, S ]
+
+ Pt,s ∈ RS×S .
+
+Then the joint probabilities of {Zt}t≥1 conditional on the initial underlying state X0 satisfy 
+
+P (Zt1 = i1, . . . , Z tK = iK | X0) = 1⊺ 
+
+> S
+
+O(tK−1,t K −tK−1) 
+
+> i1
+
+· · · O(t1,t 2−t1) 
+
+> i1
+
+O(0 ,t 1) 
+
+> i1
+
+eX0 (23) for state sequence {i1, . . . , i K } and increasing seqence of integers 0 ≤ t1 < t 2 < . . . < t K .In our setting with binary edges, we will have S = 2, and time homogeneous observation distribution matrices Et = E for all t ≥ 0. The time inhomogeneous transition matrices for a given node pair ( i, j ) will depend on the final state of edge ( i, j ) in the underlying adjacency matrix A(K).38 B Theory for GMM estimation 
+
+B.1 Inference with known θ
+
+Define 
+
+xk(θ) = Eθ
+
+n
+
+Dk(⃗Y12 ) A(1) 12 = 0 
+
+o
+
+, yk(θ) = Eθ
+
+n
+
+Dk(⃗ Y12 ) A(1) 12 = 1 
+
+o
+
+.
+
+Following the discussion in Section 3, a method of moments estimator for δ1 based on Y (k)
+
+would solve 
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+Dk(⃗Yij ) = 
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+Y (k) 
+
+> ij
+
+= ˆδ(k)1 yk(θ) + 
+
+
+
+1 − ˆδ(k)1
+
+
+
+xk(θ).
+
+This estimator has a closed form ˆδ(k)1 =
+
+n
+
+2
+
+−1 X
+
+> i<j
+
+Y (k) 
+
+> ij
+
+− xk(θ)
+
+yk(θ) − xk(θ) (24) for k = 1 , . . . , K . If there are no errors and no evolution, we will have xk(θ) = 0, yk(θ) = 1, and (24) will reduce to the usual edge density. To produce a final estimator, we follow Lavancier and Rochet (2016) to adaptively reweight these K (correlated) unbiased estimators. Denote the vector of unbiased estimators ˆδ1 = ( ˆδ(0) 1 , . . . , ˆδ(K)1 ) (25) An optimal estimator will minimize the MSE of the linear combination w⊺ ˆδ1 over coefficient vectors w ∈ RK , subject to w⊺1K = 1. Lavancier and Rochet (2016) prove that the oracle linear combination is given by 
+
+w∗ = w∗(δ1, θ ) = 
+
+Σ(δ)(δ1, θ ) −1 1K
+
+1⊺ 
+
+> K
+
+{Σ(δ)(δ1, θ )}−1 1K
+
+∈ RK ,
+
+where 
+
+Σ(δ)(δ1, θ ) = δ1Σ(δ)1 (θ) + (1 − δ1)Σ(δ)0 (θ),
+
+39 and 
+
+Σ(δ) 
+
+> s
+
+(θ) = Cov θ
+
+(
+
+Y (1) 12 − x1(θ)
+
+y1(θ) − x1(θ), . . . , Y (K)12 − xK (θ)
+
+yK (θ) − xK (θ)
+
+!
+
+A(1) 12 = s
+
+)
+
+∈ RK×K .
+
+The oracle linear combined estimator remains unbiased, with variance Var( w⊺ 
+
+> ∗
+
+ˆδ1,K ) = w⊺
+
+> ∗
+
+Σ(δ)(δ1, θ ) −1 w∗ = 1
+
+1⊺ 
+
+> K
+
+{Σ(δ)(δ1, θ )}−1 1K
+
+To find an estimator which is asymptotically efficient, we recommend to choose the weight vector iteratively, and evaluate ˆδ1,h = w∗
+
+ˆδ1,h −1, θ 
+
+⊺ ˆδ1
+
+for h = 1 , 2, . . . to convergence, initializing with δ1,0 = ˆδ(1) 1 , the estimator using only the first snapshot. Asymptotic efficiency of the adaptively weighted estimator can be proven for ˆδ1,1,after just one iteration. In the following result, we allow δ1 = δ1(n) to depend on n, subject to the following mild condition. 
+
+Assumption 6. δ1(n) ∈ (0 , 1) uniformly over n, and the sequence converges, that is δ1(n) →
+
+δ1(∞) ∈ (0 , 1). Throughout, we will explicitly note when the limiting value δ1(∞) is referred to. When δ1
+
+is written, it should be interpreted as δ1(n) for the appropriate choice of n.
+
+Proposition 5. Suppose Assumption 6 holds, and ( δ1, α, β, λ, μ ) ∈ Ψ. Then 
+
+n
+
+2
+
+1/2 
+
+w∗(ˆδ(1) 1 , θ )⊺ ˆδ1 − δ1
+
+ d
+
+→ N 0, 1
+
+1⊺ 
+
+> K
+
+{Σ(δ)(δ1(∞), θ )}−1 1K
+
+!
+
+.
+
+Other than some degenerate cases, typically w∗ will have non-negative entries which sum to 1 and decay as k increases, since the edges become progressively less correlated with the initial snapshot. 40 B.1.1 Proofs for inference with known θ
+
+We begin with a supporting lemma, a central limit theorem for the empirical moments, averaged over the node pairs. 
+
+Lemma 3. Define m∗ as in Section 3.1, and suppose Assumption 6 holds. Then 
+
+n
+
+2
+
+−1/2 "X
+
+> i<j
+
+m∗(⃗ Yij ) −
+
+n
+
+2
+
+ δ1m∗ 
+
+> θ, 1
+
++ (1 − δ1)m∗
+
+> θ, 0
+
+#
+
+> d
+
+→N  0K+4 , δ 1(∞)Σ∗ 
+
+> θ, 1
+
++ (1 − δ1(∞)) Σ∗
+
+> θ, 0
+
+ (26) as n → ∞ , where 
+
+m∗ 
+
+> θ,s
+
+= Eθ
+
+n
+
+m∗
+
+⃗
+
+Y12 
+
+
+
+A(1) 12 = s
+
+o
+
+∈ RK+4 ,
+
+and 
+
+Σ∗ 
+
+> θ,s
+
+= Cov θ
+
+n
+
+m∗
+
+⃗
+
+Y12 
+
+
+
+A(1) 12 = s
+
+o
+
+∈ R(K+4) ×(K+4) .
+
+Proof. For s = 0 , 1, define 
+
+Ns = Ns(n) = 
+
+n
+
+2
+
+
+
+δs
+
+> 1
+
+(1 − δ1)1−s,
+
+and 
+
+Es =
+
+n
+
+(i, j ) : A(1)  
+
+> ij
+
+= s
+
+o
+
+.
+
+By assumption, |E s| > 0, and |E s| ≥  n
+
+> 2
+
+ min {δ1(n), 1 − δ1(n)} → ∞ as n → ∞ , since min {δ1(n), 1 − δ1(n)} → min {δ1(∞), 1 − δ1(∞)} > 0.
+
+Then, for s = 0 , 1, and conditional on A(1) ,
+
+{m∗(⃗ Yij )}(i,j )∈E s
+
+is a set of iid random vectors with mean m∗ 
+
+> θ,s
+
+and covariance Σ∗
+
+> θ,s
+
+. By multivariate CLT, 
+
+N −1/2
+
+> s
+
+X
+
+> (i,j )∈E s
+
+m∗(⃗Yij ) − Nsm∗
+
+> θ,s
+
+
+
+> d
+
+→ N  0K+4 , Σ∗
+
+> θ,s
+
+ .
+
+41 Expanding, we get 
+
+ n
+
+2
+
+
+
+δs
+
+> 1
+
+(1 − δ1)1−s
+
+−1/2
+
+X
+
+> (i,j )∈E s
+
+m∗(⃗Yij ) −
+
+n
+
+2
+
+
+
+δs
+
+> 1
+
+(1 − δ1)1−sm∗
+
+> θ,s
+
+
+
+> d
+
+→ N  0K+4 , Σ∗
+
+> θ,s
+
+ .
+
+Multiplying by 
+
+δs
+
+> 1
+
+(1 − δ1)1−s → (δ1(∞)) s(1 − δ1(∞)) 1−s 1/2
+
+gives 
+
+n
+
+2
+
+−1/2
+
+X
+
+> (i,j )∈E s
+
+m∗(⃗ Yij ) −
+
+n
+
+2
+
+
+
+δs
+
+> 1
+
+(1 − δ1)1−sm∗
+
+> θ,s
+
+
+
+> d
+
+→ N  0K+4 , (δ1(∞)) s(1 − δ1(∞)) 1−sΣ∗
+
+> θ,s
+
+ .
+
+by Slutsky’s Theorem. Finally, adding the two independent convergent sequences gives the desired result (26), again by Slutsky’s Theorem. 
+
+Remark 5. For a given K, applying the lemma with ˜K = K + 3, the asymptotic distri-bution of the first K coordinates (the local densities ( D1, . . . , D K ) used in Section B.1) is multivariate normal. 
+
+n
+
+2
+
+1/2
+
+ n
+
+> 2
+
+−1 P 
+
+> i<j
+
+Y (1)  
+
+> ij
+
+− δ1y1(θ) − (1 − δ1)x1(θ)...
+
+ n
+
+> 2
+
+−1 P 
+
+> i<j
+
+Y (K) 
+
+> ij
+
+− δ1yK (θ) − (1 − δ1)xK (θ)
+
+
+
+> d
+
+→ N  0K , Σ(D)(δ1(∞), θ ) .
+
+where Σ (D)(δ1(∞), θ ) is the top-left K × K block of δ1(∞)Σ∗ 
+
+> θ, 1
+
++ (1 − δ1(∞)) Σ∗
+
+> θ, 0
+
+.We can also estabish conditions on the error parameters such that Σ (D)(δ1(∞), θ ) is positive definite. 
+
+Lemma 4. Suppose δ1(∞), α, β ∈ (0 , 1). Then Σ (D)(δ1(∞), θ ) is positive definite. 
+
+Proof. Fix s ∈ { 0, 1} and node pair (1 , 2) without loss of generality. Fix an arbitrary vector 
+
+v ∈ RK and denote ⃗
+
+Y12 = ( Y (1) 12 , . . . , Y (K)12 )⊺,⃗ A12 = ( A(1) 12 , . . . , A(K)12 )⊺.
+
+42 Note that we can write each entry as 
+
+Y (k)12 = A(k)12 + Ek(A(k)12 ),
+
+where 
+
+Ek(A(k)12 ) ∼
+
+
+
+Bernoulli( α) A(k)12 = 0 ,
+
+− Bernoulli( β) A(k)12 = 1 .
+
+and the Ek variables are mutually independent over k.Var( v⊺⃗ Y12 | A(1) 12 = s) ≥ E{Var( v⊺⃗ Y12 |⃗ A12 , A(1) 12 = s)}
+
+= E{Var( v⊺{A(k)12 + Ek(A(k)12 )} | ⃗ A12 , A(1) 12 = s)}
+
+= E{Var( v⊺Ek(A(k)12 ) |⃗ A12 , A(1) 12 = s)}≥ min {α(1 − α), β (1 − β)}v⊺v.
+
+This variance is zero if and only if v = 0K , thus for each s the top-left K × K block of Σ∗
+
+> θ,s
+
+is positive definite. The result is complete since the convex combination of positive definite matrices is positive definite. In the following lemma, we establish the joint asymptotic normality of the local density estimators used in Section B.1. 
+
+Lemma 5. Under Assumption 6, 
+
+α + β̸ = 1 , λ + μ̸ = 1 ,
+
+we have n
+
+2
+
+1/2 ˆδ1,K − δ11K
+
+ d
+
+→ N  0K , Σ(δ)(δ1(∞), θ ) .
+
+Moreover, Σ(δ)(δ1(∞), θ ) = SK (θ)−1Σ(D)(δ1(∞), θ )SK (θ)−1,
+
+where SK (θ) is the diagonal matrix 
+
+
+
+y1(θ) − x1(θ) 0. . .0 yK (θ) − xK (θ)
+
+ .
+
+43 Proof. Starting from Remark 5, we apply the linear function 
+
+g(z1, . . . , z K ) = 
+
+
+
+> z1−x1(θ)
+> y1(θ)−x1(θ)
+
+...    
+
+> zK−xK(θ)
+> yK(θ)−xK(θ)
+
+ .
+
+Some algebra shows that under the reparameterized error and evolution models, we can write 
+
+xk(θ) = α(1 − τ ) + (1 − β)τ − (1 − β − α)τ γ k−1,yk(θ) = α(1 − τ ) + (1 − β)τ + (1 − β − α)(1 − τ )γk−1
+
+for k = 1 , . . . , K .
+
+yk(θ) − xk(θ) = (1 − β − α)γk−1 = (1 − β − α)(1 − λ − μ)k−1.
+
+Thus α+β̸ = 1 and λ+μ̸ = 1 is a sufficient condition for yk(θ)−xk(θ)̸ = 0 for all k = 1 , . . . , K ,so this linear function is well-defined. The result follows by definition of ˆδ1,K , and since 
+
+SK (θ)−1 = ∇z g(z1, . . . , z K ).
+
+We are now ready to prove the main result, Proposition 5. 
+
+Proof. By Lavancier and Rochet (2016), Proposition 3.3, it is sufficient to show that 
+
+Σ(δ)(ˆδ(1) 1 , θ ) Σ(δ)(δ1(∞), θ ) −1 P
+
+→ IK . (27) Expand these definitions as 
+
+nˆδ(1) 1 Σ(δ) 
+
+> θ, 1
+
++ (1 − ˆδ(1) 1 )Σ(δ)
+
+> θ, 0
+
+o n 
+
+δ1(∞)Σ(δ) 
+
+> θ, 1
+
++ (1 − δ1(∞)) Σ(δ)
+
+> θ, 0
+
+o−1
+
+By Slutsky’s Theorem and consistency of ˆδ(1) 1 it follows that ˆδ(1) 1 Σ(δ) 
+
+> θ, 1
+
++ (1 − ˆδ(1) 1 )Σ(δ)
+
+> θ, 0
+> P
+
+→ δ1(∞)Σ(δ) 
+
+> θ, 1
+
++ (1 − δ1(∞)) Σ(δ)
+
+> θ, 0
+
+.
+
+Then (27) follows since 
+
+δ1(∞)Σ(δ) 
+
+> θ, 1
+
++ (1 − δ1(∞)) Σ(δ)
+
+> θ, 0
+
+is positive definite, so that right multiplication by its inverse is a well-defined continuous mapping. 44 B.2 Inference with unknown θ
+
+In this section denote the true parameter by 
+
+ψ0 = ( δ1, θ ) = ( δ1, α, β, λ, μ ) ∈ ¯Ψ,
+
+where recall we have modified the parameter space to be compact, ¯Ψ = ¯Ψ( ξ) = {ψ ∈ [ξ, 1 − ξ]5 : ψ2 + ψ3 ≤ 1 − ξ, ψ 4 + ψ5 ≤ 1 − ξ}
+
+for a small constant ξ > 0. Also recall that we implicitly allow δ1 = δ1(n) to depend on n,and write the limiting parameter as 
+
+ψ0(∞) = ( δ1(∞), α, β, λ, μ ) ∈ ¯Ψ.
+
+Throughout, we will make Assumption 2 from Section 3.1 on the sequence of true parameters. We will analyze the GMM estimator using a generic mapping m, later these general results can be applied to either the full set of moments m∗ or the initializing set m(init) . Define the GMM objective 
+
+f (ψ) = { ˆm − m(ψ)}⊺W { ˆm − m(ψ)}
+
+where ˆ m are the empirical edge-averaged moments, and m(ψ) = m(δ1, θ ) are the population counterparts for a generic mapping m from {0, 1}K → Rp. Note that f implicitly depends on the data through ˆ m as well as n through δ1(n). We make an assumption analogous to Assumption 1 for this generic mapping. 
+
+Assumption 7. The mapping m(ψ) is an injective function on Ψ. To make the result applicable to adaptive weighting, we also allow a stochastic sequence of weighting matrices Wn which depend on n, subject to the following assumption. 
+
+Assumption 8. The sequence of weighting matrices {W }∞ 
+
+> n=1
+
+satisfies 
+
+WnP
+
+→ W∞ ∈ Rp×p (28) 0 < c ′ ≤ λmin (Wn) ≤ λmax (Wn) ≤ C′ < ∞ (29) uniformly over n, where c′ and C′ are constants which are free of n, but may depend on ξ.45 Note that throughout the section, we omit the subscript n on W , instead adding the subscript 
+
+∞ to the probability limit of the weighting matrices. 
+
+Remark 6. By Lemma 1, all the entries of m(ψ) are polynomials of the entries of ψ.Viewing one entry as the argument, this is a polynomial with bounded coefficients (in the unit interval) over a bounded domain (the unit interval). Thus m is smooth ( ∞-times continuously differentiable), and all the entries of all of its derivatives are uniformly bounded (over ψ) by a constant which may depend on K.Denote the derivative matrix 
+
+Dm (ψ) = ∂m(ψ)
+
+∂ψ ∈ Rp×5,
+
+and second derivative tensor D2m(ψ) ∈ R5×5×p with slices 
+
+∂2mℓ(ψ)
+
+∂ψ∂ψ ⊺ ∈ R5×5, ℓ = 1 , . . . , p. ∂f (ψ)
+
+∂ψ = −2Dm (ψ)⊺W { ˆm − m(ψ)} ∈ R5
+
+∂2f (ψ)
+
+∂ψ∂ψ ⊺ = 2 Dm (ψ)⊺W Dm (ψ) − 2D2m(ψ) ¯ ×3 {W ( ˆ m − m(ψ)) } ∈ R5×5.
+
+We define the estimator ˆψ as the minimizer of f (ψ). By differentiability of f , this minimizer will solve the system of non-linear equations 
+
+05 = Dm ( ˆψ)⊺W
+
+n
+
+ˆm − m( ˆψ)
+
+o
+
+. (30) We first establish consistency of ˆψ for ψ0(∞). 
+
+Proposition 6. Under Assumptions 2, 7, and 8, ˆψ P
+
+→ ψ0(∞)46 Proof. This result follows by an application of Newey and McFadden (1994), Theorem 2.1. Define the population analog of the GMM objective function, 
+
+f0(ψ) = ( m(ψ0(∞)) − m(ψ)) ⊺W∞(m(ψ0(∞)) − m(ψ)) .
+
+Note that f0(ψ) ≥ 0 for any ψ ∈ ¯Ψ. By Assumption 1, and since W∞ is positive-definite, 
+
+f0(ψ) is uniquely minimized at ψ = ψ0(∞). We also have that Ψ is compact by construction, and f0(ψ) is continuous by Remark 6. All that remains is to show that f (ψ) converges to f0(ψ) uniformly over Ψ. 
+
+|f (ψ) − f0(ψ)| = | ˆm⊺W ˆm − { m(ψ0(∞)) }⊺W∞m(ψ0(∞)) − 2m(ψ)⊺W ˆm + 2 m(ψ)⊺W∞m(ψ∞ 
+
+> 0
+
+)|≤ | ˆm⊺(W − W∞) ˆ m| + | ˆm⊺W∞ ˆm − { m(ψ0(∞)) }⊺W∞m(ψ0(∞)) | + · · · · · · + |2m(ψ)⊺(W − W∞) ˆ m| + |2m(ψ)⊺W∞{ ˆm − m(ψ0(∞)) }| .
+
+Note that sup  
+
+> ψ∈¯Ψ
+
+∥m(ψ)∥2 ≤ C < ∞
+
+by Remark 6, where C is a constant that is free of ψ. Thus, by Cauchy-Schwarz inequality, sup  
+
+> ψ∈¯Ψ
+
+|f (ψ) − f0(ψ)| ≤ | ˆm⊺(W − W∞) ˆ m| + | ˆm⊺W∞ ˆm − { m(ψ0(∞)) }⊺W∞m(ψ0(∞)) | + · · · · · · + 2 C∥(W − W∞) ˆ m∥2 + 2 C∥W∞{ ˆm − m(ψ0(∞)) }∥ 2.
+
+The first and third terms converge in probability to zero by (28), and since ∥ ˆm∥2 is (a.s.) bounded. The second and fourth terms converge to zero in probability by Lemma 3, and (29). Thus, we verify all the conditions of Newey and McFadden (1994), Theorem 2.1, and conclude ˆψ P
+
+→ ψ0(∞). The following central limit theorem will be used to justify the asymptotic normality of ˆψ.
+
+Lemma 6. Under Assumptions 2 and 8, 
+
+n
+
+2
+
+1/2
+
+Dm (ψ0)⊺W { ˆm − m(ψ0)} d
+
+→ N 
+
+
+
+05 , eΣ(ψ)(ψ0(∞)) 
+
+
+
+,
+
+47 where ψ0(∞) = ( δ1(∞), θ )
+
+eΣ(ψ)(ψ0(∞)) = Dm (ψ0(∞)) ⊺W∞ {δ1(∞)Σ1(θ) + (1 − δ1(∞)) Σ0(θ)} W∞Dm (ψ0(∞)) with ψ0(∞) = ( δ1(∞), θ ), and Σs(θ) defined as in (3) for s = 0 , 1. 
+
+Proof. Note that 
+
+n
+
+2
+
+1/2
+
+Dm (ψ0)⊺W { ˆm − m(ψ0)} =
+
+n
+
+2
+
+−1/2 X
+
+> i<j
+
+Dm (ψ0)⊺W
+
+n
+
+m(⃗Yij ) − m(ψ0)
+
+o
+
+Then, beginning from Lemma 3, apply the linear transformation 
+
+Dm (ψ0(∞)) ⊺W∞ ∈ R5×p,
+
+which implies 
+
+n
+
+2
+
+−1/2 X
+
+> i<j
+
+Dm (ψ0(∞)) ⊺W∞
+
+n
+
+m(⃗Yij ) − m(ψ0)
+
+o d
+
+→ N 
+
+
+
+05 , eΣ(ψ)(ψ0(∞)) 
+
+
+
+.
+
+The result follows by Slutsky’s Theorem, since 
+
+n
+
+2
+
+−1/2 X
+
+> i<j
+
+{W Dm (ψ0) − W∞Dm (ψ0(∞)) }⊺ n
+
+m(⃗Yij ) − m(ψ0)
+
+o
+
+= op(1) .
+
+This follows since 
+
+W Dm (ψ0) − W∞Dm (ψ0(∞)) = op(1) ,
+
+by (28) and continuity of Dm ; and 
+
+n
+
+2
+
+−1/2 X
+
+> i<j
+
+n
+
+m(⃗Yij ) − m(ψ0)
+
+o
+
+= Op(1) by Lemma 3. The main result of this section is a central limit theorem for a GMM estimator ˆψ. For this result, we require a generic version of the local identification Assumption 3 on the derivative matrix of the edge-averaged moments. 
+
+Assumption 9. The derivative matrix Dm (ψ) has full column rank for any ψ ∈ ¯Ψ. 48 Proposition 7. Under Assumptions 2, 7, 8, and 9, 
+
+n
+
+2
+
+1/2
+
+( ˆψ − ψ) d
+
+→ N  0, Σ(ψ)(ψ0(∞))  ,
+
+where 
+
+Σ(ψ)(ψ0(∞)) = {Dm (ψ0(∞)) ⊺W∞Dm (ψ0(∞)) }−1 eΣ(ψ)(ψ0(∞)) {Dm (ψ0(∞)) ⊺W∞Dm (ψ0(∞)) }−1 .
+
+Proof. Begin with an application of the mean value theorem to the coordinate functions of (30) between ˆψ and ψ0, giving 
+
+05 = Dm (ψ0)⊺W { ˆm − m(ψ0)} + D2( ˜ψ)( ˆψ − ψ0) (31) where 
+
+D2(ψ) = D2m(ψ) ¯ ×3 {W∞( ˆ m − m(ψ)) } − Dm (ψ)⊺W∞Dm (ψ) ∈ R5×5.
+
+and ˜ψ is on the line segment between ψ0 and ˆψ.We first show that D2( ˜ψ) converges in probability to limiting matrix which is free of ˜ψ.                  
+
+> ∥D2( ˜ψ)−D2(ψ0(∞)) ∥2=∥
+> n
+> D2m( ˜ψ)− D 2m(ψ)
+> o¯×3Wˆm∥2
+> |{z }
+> (I)
+> +· · · · · · +∥D 2m( ˜ψ) ¯ ×3W m ( ˜ψ)−Dm ( ˜ψ)⊺W Dm ( ˜ψ)− D 2m(ψ0(∞)) ¯ ×3W m (ψ0(∞)) + Dm (ψ0(∞)) ⊺W Dm (ψ0(∞)) ∥2
+> |{z }
+> (II )
+> .
+
+The second term is a difference of a continuous function of ˜ψ and ψ0(∞), thus ( II ) P
+
+→ 0 by Proposition 6 and (29). For the first term, by triangle inequality (I) ≤
+
+> p
+
+X
+
+> ℓ=1
+
+|(W ˆm)ℓ| ∂2mℓ
+
+∂ψ∂ψ ⊺ ( ˜ψ) − ∂2mℓ
+
+∂ψ∂ψ ⊺ (ψ0(∞)) 2
+
+.
+
+Then ( I) P
+
+→ 0 since the second derivatives are continuous, and the entries of W ˆm are (a.s.) bounded: ∥W ∥2 is uniformly bounded by (29), and ˆ m ∈ [0 , 1] p, as they are empirical proportions. Thus, 
+
+∥D2( ˜ψ) − D2(ψ0(∞)) ∥2
+
+> P
+
+→ 0. (32) 49 Next, note that 
+
+∥D 2m(ψ0(∞)) ¯ ×3 {W ( ˆ m − m(ψ0(∞)) }∥ 2
+
+> P
+
+→ 0 (33) again by Proposition 6, and since the entries of D2m are bounded by Remark 6. Combining (32), (33), and finally (28), we get 
+
+D2( ˜ψ) = −Dm (ψ0(∞)) ⊺W∞Dm (ψ0(∞)) + op(1) .
+
+Thus, (31) becomes 
+
+{− Dm (ψ0(∞)) ⊺W∞Dm (ψ0(∞)) + op(1) } ( ˆψ − ψ0) = −Dm (ψ0)⊺W { ˆm − m(ψ0)} .
+
+By Assumption 9, the leading term is invertible. Rearranging, and applying Lemma 6, we get the desired limiting distribution for 
+
+n
+
+2
+
+1/2
+
+( ˆψ − ψ0).
+
+Remark 7. Proposition 7 justifies asymptotic normality for ˆψ, however its asymptotic co-variance matrix depends on the unknown parameters. It is natural to estimate this covariance parametrically by plugging in the estimate of ψ. Normalizing by the estimated covariance will still lead to consistent inference for ψ.
+
+Remark 8. Proposition 7 can be used to find the weighting matrix which produces an asymptotically efficient estimator of ˆψ. In particular, the minimial covariance matrix in terms of the partial order induced by is achieved for a sequence of weighting matrices which satisfy Assumption 8, and converge to 
+
+W∞ = {δ1(∞)Σ1(θ) + (1 − δ1(∞)) Σ0(θ)}−1 .
+
+The resulting asymptotic covariance matrix of ˆψ is 
+
+Dm (ψ0)⊺ {δ1(∞)Σ1(θ) + (1 − δ1(∞)) Σ0(θ)}−1 Dm (ψ0),
+
+where ψ0 = ( δ0, θ ). 50 We now complete this section by using the above results to prove Proposition 1. 
+
+Proof. Recall that Assumption 2 is assumed throughout. Our goal will be to apply Proposition 1 with the mapping m∗ and adaptive weighting matrices 
+
+cW . The result will follow if we can verify the assumptions of Proposition 1. We first apply Proposition 6 with the mapping m(init) and fixed weighting matrices Wn =
+
+I8. Assumption 7 follows from Assumption 1. Assumption 8 holds vacuously. Thus, by Proposition 6, (ˆδ(init) 1 , ˆθ(init) ) P
+
+→ (δ1(∞), θ ).
+
+By Remark 6, cW is a continuous function of ( ˆδ(init) 1 , ˆθ(init) ), so 
+
+cW P
+
+→ { δ1(∞)Σ1(θ) + (1 − δ1(∞)) Σ0(θ)}−1 . (34) Moreover, (29) follows from Assumption 4. Thus, the sequence of adaptive weighting matri-ces cW satisfy Assumption 8, with optimal probability limit given by (34) (see Remark 8). We complete the verification of the assumptions of Proposition 1. Assumption 7 follows from Assumption 1, and Assumption 9 follows from Assumption 3. This completes the verification of the assumptions of Proposition 1. 
+
+# C Theory for higher-order subgraph densities 
+
+C.1 Inference with known θ
+
+To formally state our results about higher-order subgraph densities, we introduce notation originally defined by Chang et al. (2022). Recall that we are working with a subgraph H on 
+
+L edges, based on the configuration of the vertex pairs in each v = ( v1, . . . , v L) ∈ V .51 For some s ∈ { 1, . . . , L − 1} and 1 ≤ ℓ1 < · · · < ℓ s ≤ L, define 
+
+Gℓ1,...,ℓ s (v) = {(u1, . . . , u s) : ( v1, . . . , v ℓ1−1, u 1, v ℓ1+1 , . . . , v ℓs−1, u s, v ℓs+1 , . . . , v L) ∈ V} ,
+
+and 
+
+ℵV (s) = max  
+
+> v∈V
+
+max 
+
+> ℓ1<··· <ℓ s
+
+|G ℓ1,...,ℓ s (v)|.
+
+Roughly, for 1 ≤ s ≤ L − 1, ℵV (L − s) enumerates the (maximal) number of subgraphs that can be constructed, after fixing exactly s of the vertex pairs. The following is a restatement of Chang et al. (2022), Proposition 2 in our dynamic setting. The proof is identical to theirs. 
+
+Corollary 1. Suppose yk(θ)̸ = xk(θ) for all k = 1 , . . . , K . Then 
+
+| eC(k) 
+
+> H
+
+− CH | = OP
+
+s
+
+ℵV (L − 1) 
+
+|V| 
+
+!
+
+We also require some regularity conditions on the index sets described by V.
+
+Assumption 10 (Chang et al. (2022), Assumption 2) .
+
+1. ℵV (s)/ℵV (L − 1) → 0 for any 1 ≤ s ≤ L − 2. 2. max v∈V max ℓ1<··· <ℓ L−1 |G ℓ1,...,ℓ L−1 (v)| ≍ min v∈V min ℓ1<··· <ℓ L−1 |G ℓ1,...,ℓ L−1 (v)|.Assumption 10 says that (i) the count with more than one edge fixed is asymptotically dominated by the count with exactly one edge fixed, and (ii) up to constant factors, this maximum does not depend on which vertex pairs are fixed. To replace eC(k) 
+
+> H
+
+by the linearized 
+
+S(k) 
+
+> H
+
+after centering and scaling, we also require that n2ℵV (L − 1) ≲ |V| , which roughly says that we can enumerate the index sets in V by fixing any one vertex pair, then the cardinality of the set of index sets with that fixed vertex pair is ℵV (L − 1), up to constant factors. The following is a restatement of Chang et al. (2022), Proposition 3 in our dynamic setting. The proof is identical to theirs. 
+
+Corollary 2. Suppose Assumption 10 holds, 
+
+ℵV (L − 1) /|V| ≍ n−2
+
+52 and yk(θ)̸ = xk(θ). Then we have that 
+
+n
+
+2
+
+1/2
+
+( eC(k) 
+
+> H
+
+− CH ) = S(k) 
+
+> H
+
++ oP(1) .
+
+We next prove Proposition 2, which justifies the choice of bootstrap distribution for ⃗ Y † 
+
+> ij
+
+.
+
+Proof. Let ∆(2 K ) denote the probability simplex on {0, 1}K . Without loss of generality, let π(0) ∈ ∆(2 K ) denote the distribution of ⃗ Y12 for A(1) 12 = 0 and π(1) ∈ ∆(2 K ) denote the distribution of ⃗ Y12 for A(1) 12 = 1. Note that π(0) and π(1) are fully parameterized by the error and evolution parameters θ = ( α, β, λ, μ ). Thus Σ(s) = Cov π(s) (⃗Y ) for s = 0 , 1, which matches the definition from Section 4. For each pair of snapshot indices k1 ≤ k2, the conditional covariance constraint (14) can be rewritten as 
+
+X
+
+> y∈{ 0,1}K
+
+Cov( B(y)(k2), B(y)(k2)){(1 − A(1) 12 )π(0)  
+
+> y
+
++ A(1) 12 π(1)  
+
+> y
+
+}
+
+=(1 − A(1) 12 ) Σ(0)  
+
+> k1k2
+
++ A(1) 12 
+
+Σ(1)  
+
+> k1k2
+
+.
+
+Expanding as a linear function of A(1) leads to two sets of moment constraints on the bootstrapped edge sequence B(y): 
+
+X
+
+> y∈{ 0,1}K
+
+Cov( B(y)(k1), B(y)(k2))π(0)  
+
+> y
+
+= Σ(0) 
+
+> k1k2
+
+X
+
+> y∈{ 0,1}K
+
+Cov( B(y)(k1), B(y)(k2))π(1)  
+
+> y
+
+= Σ(1)  
+
+> k1k2
+
+. (35) To simplify this calculation, we reduce the number of conditional distributions, by assuming that the distribution of B(y) depends only on the first observed edge y1. In particular, we will assume 
+
+B(y) ∼ N (0K , Σ† 
+
+> y1
+
+).
+
+53 Then (35) reduces to the system of equations 
+
+X
+
+> y∈{ 0,1}K
+
+Σ†
+
+> y1
+
+
+
+> k1k2
+
+π(0)  
+
+> y
+
+= Σ(0) 
+
+> k1k2
+
+X
+
+> y∈{ 0,1}K
+
+Σ†
+
+> y1
+
+
+
+> k1k2
+
+π(1)  
+
+> y
+
+= Σ(1)  
+
+> k1k2
+
+,
+
+which further reduces to 
+
+h
+
+Σ†
+
+> 0
+
+i
+
+> k1k2
+
+P(Y (1) 12 = 0 | A(1) 12 = 0) + 
+
+h
+
+Σ†
+
+> 1
+
+i
+
+> k1k2
+
+P(Y (1) 12 = 1 | A(1) 12 = 0) = Σ(0) 
+
+> k1k2
+
+h
+
+Σ†
+
+> 0
+
+i
+
+> k1k2
+
+P(Y (1) 12 = 0 | A(1) 12 = 1) + 
+
+h
+
+Σ†
+
+> 1
+
+i
+
+> k1k2
+
+P(Y (1) 12 = 1 | A(1) 12 = 1) = Σ(1)  
+
+> k1k2
+
+,
+
+a 2 × 2 system of linear equations. Note that the coefficient matrix of this system, 
+
+1 − α αβ 1 − β
+
+
+
+is invertible under the restriction α + β < 1. This implies the closed form solutions 
+
+Σ† 
+
+> 0
+
+= (1 − β)Σ(0) − αΣ(1) 
+
+1 − α − β , Σ† 
+
+> 1
+
+= (1 − α)Σ(1) − βΣ(0) 
+
+1 − α − β .
+
+Thus, ⃗ Y † 
+
+> ij
+
+∼ N 
+
+
+
+0K , Σ† 
+
+> Y(1)
+> ij
+
+
+
+will satisfy (14), as desired. We proceed to prove Theorem 3. 
+
+Proof. If a = 0K , the result holds vacuously. Otherwise, from (13), we have that 
+
+n
+
+2
+
+1/2
+
+a⊺( eCH − CH 1K )=
+
+n
+
+2
+
+1/2 KX
+
+> k=1
+
+ak
+
+|V|{ yk(θ) − xk(θ)}L ·
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+n
+
+Y (k) 
+
+> vj
+
+− EθY (k)
+
+> vj
+
+o Y 
+
+> ℓ̸=j
+
+Eθ
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+) + oP(1) .
+
+Define 
+
+η = E
+
+
+
+> K
+
+X
+
+> k=1
+
+ak
+
+|V|{ yk(θ) − xk(θ)}L ·
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+n
+
+Y (k) 
+
+> vj
+
+− EθY (k)
+
+> vj
+
+o Y 
+
+> ℓ̸=j
+
+Eθ
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+)
+
+!2 .
+
+54 Then by an application of Berry-Esseen Theorem, similar to Chang et al. (2022), we have sup 
+
+> z∈R
+
+P
+
+(n
+
+2
+
+1/2
+
+a⊺( eCH − CH 1K ) ≤ z
+
+)
+
+− Φ
+
+(n
+
+2
+
+−1/2
+
+η−1/2z
+
+)
+
+= o(1) . (36) Expanding the argument in η, we will get expectations of product terms 
+
+> K
+
+X
+
+> k1,k 2=1
+> L
+
+X
+
+> j1,j 2=1
+
+X
+
+> v,˜v∈V
+
+(· · · )k1,j 1,v(· · · )k2,j 2,˜v.
+
+For fixed k1, k 2, j 1, j 2, consider the expectations of the internal terms which depend on v and ˜v,
+
+X
+
+> v,˜v∈V
+
+E
+
+n
+
+Y (k1) 
+
+> vj1
+
+− EθY (k1)
+
+> vj1
+
+o n 
+
+Y (k2)˜vj2
+
+− EθY (k2)˜vj2
+
+o Y 
+
+> ℓ̸=j1
+
+Eθ
+
+ϕℓ,θ (Y (k1) 
+
+> vℓ
+
+) Y 
+
+> ℓ′̸=j2
+
+Eθ
+
+n
+
+ϕℓ′,θ (Y (k2)˜vℓ′ )
+
+o!
+
+.
+
+(37) By independence of edges, we have that this term will only be non-zero if vj1 = ˜ vj2 . Otherwise we have 
+
+E
+
+n 
+
+Y (k1) 
+
+> vj1
+
+− EθY (k1)
+
+> vj1
+
+o n 
+
+Y (k2)˜vj2
+
+− EθY (k2)˜vj2
+
+o 
+
+= Cov 
+
+
+
+Y (k1) 
+
+> vj1
+
+, Y (k2)
+
+> vj1
+
+
+
+.
+
+Define 
+
+Vj1,j 2 (v) = {˜v ∈ V : ˜ vj2 = vj1 }. (38) Then (37) becomes Γk1,k 2,j 1,j 2 := X
+
+> v∈V
+
+Cov 
+
+
+
+Y (k1) 
+
+> vj1
+
+, Y (k2)
+
+> vj1
+
+ Y 
+
+> ℓ̸=j1
+
+Eθ
+
+ϕℓ,θ (Y (k1) 
+
+> vℓ
+
+) X 
+
+> ˜v∈V j1,j 2(v)
+
+Y 
+
+> ℓ′̸=j2
+
+Eθ
+
+n
+
+ϕℓ′,θ (Y (k2)˜vℓ′ )
+
+o
+
+.
+
+(39) for k1, k 2 ∈ { 1, . . . , K } and j1, j 2 ∈ { 1, . . . , L }, and we can write 
+
+η =
+
+> K
+
+X
+
+> k1,k 2=1
+> L
+
+X
+
+> j1,j 2=1
+
+ak1 ak2
+
+{yk1 (θ) − xk1 (θ)}L{yk2 (θ) − xk2 (θ)}L (−1) 2−τj1 −τj2 |V| −2Γk1,k 2,j 1,j 2 .
+
+From (15), we can apply the Berry-Esseen Theorem conditional on Y = ( Y (1) , . . . , Y (K)), and perform similar manipulations on the variance term to conclude sup 
+
+> z∈R
+
+P
+
+n
+
+a⊺S† 
+
+> H
+
+≤ z | Y
+
+o
+
+− Φ
+
+(n
+
+2
+
+−1/2
+
+(η†)−1/2z
+
+)
+
+= o(1) , (40) 55 where 
+
+η† =
+
+> K
+
+X
+
+> k1,k 2=1
+> L
+
+X
+
+> j1,j 2=1
+
+ak1 ak2
+
+{yk1 (θ) − xk1 (θ)}L{yk2 (θ) − xk2 (θ)}L (−1) 2−τj1 −τj2 |V| −2Γ† 
+
+> k1,k 2,j 1,j 2
+
+,
+
+and Γ† 
+
+> k1,k 2,j 1,j 2
+
+= X
+
+> v∈V
+
+Cov 
+
+
+
+Y †,(k1) 
+
+> vj1
+
+, Y †,(k2) 
+
+> vj1
+
+|⃗ Yvj1
+
+ Y 
+
+> ℓ̸=j1
+
+ϕℓ,θ (Y (k1) 
+
+> vℓ
+
+) X 
+
+> ˜v∈V j1,j 2(v)
+
+Y 
+
+> ℓ′̸=j2
+
+ϕℓ′,θ (Y (k2)˜vℓ′ ). (41) Note that we use that the edges of the bootstrapped network sequence are independent (across node pairs) conditional on Y .By (36) and (40), it suffices to show that 
+
+|η† − η| = oP
+
+(n
+
+2
+
+−1)
+
+= oP(n−2)which follows if 
+
+|V| −2|Γ† 
+
+> k1,k 2,j 1,j 2
+
+− Γk1,k 2,j 1,j 2 | = oP(n−2) (42) for all k1, k 2, j 1, j 2.To collapse some notation, for ℓ = 1 , . . . , L , define ˜ϕℓ,θ (⃗Yvℓ ) = 
+
+
+
+Cov 
+
+
+
+Y †,(k1) 
+
+> vj1
+
+, Y †,(k2) 
+
+> vj1
+
+|⃗ Yvj1
+
+
+
+, ℓ = j1
+
+ϕℓ,θ (Y (k1) 
+
+> vℓ
+
+), ℓ̸ = j1.
+
+Note that 
+
+E
+
+n
+
+Cov 
+
+
+
+Y †,(k1) 
+
+> vj1
+
+, Y †,(k2) 
+
+> vj1
+
+|⃗ Yvj1
+
+o 
+
+= Cov 
+
+
+
+Y (k1) 
+
+> vj1
+
+, Y (k2)
+
+> vj1
+
+
+
+56 by construction. Then we can decompose Γ† 
+
+> k1,k 2,j 1,j 2
+
+− Γk1,k 2,j 1,j 2
+
+= X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+˜ϕℓ,θ (⃗Yvℓ ) X 
+
+> ˜v∈V j1,j 2(v)
+
+Y 
+
+> ℓ′̸=j2
+
+ϕℓ′,θ (Y (k2)˜vℓ′ )
+
+− X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+Eθ
+
+n ˜ϕℓ,θ (⃗Yvℓ )
+
+o X 
+
+> ˜v∈V j1,j 2(v)
+
+Y 
+
+> ℓ′̸=j2
+
+Eθ
+
+n
+
+ϕℓ′,θ (Y (k2)˜vℓ′ )
+
+o
+
+= X
+
+> v∈V
+
+" LY
+
+> ℓ=1
+
+˜ϕℓ,θ (⃗Yvℓ ) −
+
+> L
+
+Y
+
+> ℓ=1
+
+Eθ
+
+n ˜ϕℓ,θ (⃗Yvℓ )
+
+o# X 
+
+> ˜v∈V j1,j 2(v)
+
+Y 
+
+> ℓ′̸=j2
+
+ϕℓ′,θ (Y (k2)˜vℓ′ )+ X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+Eθ
+
+n ˜ϕℓ,θ (⃗Yvℓ )
+
+o X 
+
+> ˜v∈V j1,j 2(v)
+
+" Y 
+
+> ℓ′̸=j2
+
+ϕℓ′,θ (Y (k2)˜vℓ′ ) − Y 
+
+> ℓ′̸=j2
+
+Eθ
+
+n
+
+ϕℓ′,θ (Y (k2)˜vℓ′ )
+
+o#
+
++ X
+
+> v∈V
+
+" LY
+
+> ℓ=1
+
+˜ϕℓ,θ (⃗Yvℓ ) −
+
+> L
+
+Y
+
+> ℓ=1
+
+Eθ
+
+n ˜ϕℓ,θ (⃗Yvℓ )
+
+o#
+
+· X 
+
+> ˜v∈V j1,j 2(v)
+
+" Y 
+
+> ℓ′̸=j2
+
+ϕℓ′,θ (Y (k2)˜vℓ′ ) − Y 
+
+> ℓ′̸=j2
+
+Eθ
+
+n
+
+ϕℓ′,θ (Y (k2)˜vℓ′ )
+
+o#
+
+.
+
+This three term decomposition is identical to Chang et al. (2022), Proof of Theorem 4. Their proof can be used to conclude (42), noting that ˜ϕℓ,θ (⃗ Yvℓ ) is a bounded random variable for all ℓ = 1 , . . . , L .Towards the proof of Proposition 4., we state and prove the following supporting lemmas. 
+
+Lemma 7. Suppose Assumptions 10 and 5 both hold. Let 
+
+w∗(θ) = Cov −1 
+
+> θ
+
+( eCH )1K
+
+1⊺ 
+
+> K
+
+Cov −1 
+
+> θ
+
+( eCH )1K
+
+w∗∗ (θ) = Cov −1 
+
+> θ
+
+(SH )1K
+
+1⊺ 
+
+> K
+
+Cov −1 
+
+> θ
+
+(SH )1K
+
+.
+
+Then 
+
+∥w∗(θ) − w∗∗ (θ)∥2 → 0as n → ∞ .In order to prove Lemma 7, we state and prove another technical lemma. 57 Lemma 8. Suppose {An}∞ 
+
+> n=1
+
+and {Bn}∞ 
+
+> n=1
+
+are two sequences of q × q symmetric matrices such that 0 < c ≤ λmin (An) ≤ λmax (An) ≤ C < ∞
+
+uniformly over n, and ∥An − Bn∥2 = o(1). Then 
+
+A−1 
+
+> n
+
+1q
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q
+
+− B−1 
+
+> n
+
+1q
+
+1⊺ 
+
+> q
+
+B−1 
+
+> n
+
+1q 2
+
+= o(1) .
+
+Proof. Note that 
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q ≥ qλ min (A−1 
+
+> n
+
+) = qλmax (An) ≥ qC ,
+
+so 1
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q
+
+≤ Cq .
+
+Fix n sufficiently large such that ∥An − Bn∥2 ≤ c/ 2 and |1⊺ 
+
+> q
+
+(An − Bn)1q| ≤ q/ (2 C). 
+
+A−1 
+
+> n
+
+1q
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q
+
+− B−1 
+
+> n
+
+1q
+
+1⊺ 
+
+> q
+
+B−1 
+
+> n
+
+1q 2
+
+≤√q
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q
+
+∥A−1 
+
+> n
+
+− B−1 
+
+> n
+
+∥2 + √q∥B−1 
+
+> n
+
+∥2
+
+1
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q
+
+− 1
+
+1⊺ 
+
+> q
+
+B−1 
+
+> n
+
+1q
+
+≤ C
+
+√q ∥A−1 
+
+> n
+
+− B−1 
+
+> n
+
+∥2 +
+
+√qc + √q∥A−1 
+
+> n
+
+− B−1 
+
+> n
+
+∥2
+
+ 1
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q
+
+− 1
+
+1⊺ 
+
+> q
+
+B−1 
+
+> n
+
+1q
+
+The result will follow if 
+
+∥A−1 
+
+> n
+
+− B−1 
+
+> n
+
+∥2 = o(1) ,
+
+1
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q
+
+− 1
+
+1⊺ 
+
+> q
+
+B−1 
+
+> n
+
+1q
+
+= o(1) .
+
+Since ∥An − Bn∥2 = o(1), suppose n is sufficiently large such that ∥An − Bn∥2 < c/ 2. Then 
+
+∥A−1 
+
+> n
+
+− B−1 
+
+> n
+
+∥2 ≤ ∥An − Bn∥2
+
+λmin (An) {λmin (An) − ∥ An − Bn∥2}≤ ∥An − Bn∥2
+
+c {c − ∥ An − Bn∥2} = o(1) .
+
+Then 
+
+|1⊺ 
+
+> q
+
+(A−1 
+
+> n
+
+− B−1 
+
+> n
+
+)1q| < q ∥A−1 
+
+> n
+
+− B−1 
+
+> n
+
+∥2 = o(1) ,
+
+58 so also suppose n is sufficiently large such that 
+
+|1⊺ 
+
+> q
+
+(A−1 
+
+> n
+
+− B−1 
+
+> n
+
+)1q| ≤ q/ (2 C).
+
+1
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q
+
+− 1
+
+1⊺ 
+
+> q
+
+B−1 
+
+> n
+
+1q
+
+≤ |1⊺ 
+
+> q
+
+(A−1 
+
+> n
+
+− B−1 
+
+> n
+
+)1q|
+
+1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q {1⊺ 
+
+> q
+
+A−1 
+
+> n
+
+1q − | 1⊺ 
+
+> q
+
+(A−1 
+
+> n
+
+− B−1 
+
+> n
+
+)1q|} ≤ |1⊺ 
+
+> q
+
+(A−1 
+
+> n
+
+− B−1 
+
+> n
+
+)1q|
+
+(q/C ) {(q/C ) − | 1⊺ 
+
+> q
+
+(A−1 
+
+> n
+
+− B−1 
+
+> n
+
+)1q|} = o(1) .
+
+Remark 9. Lemma 8 will continue to hold (with convergence in probability) if Bn is a stochastic sequence of matrices, and ∥An − Bn∥ = oP(1). We now proceed to prove the original supporting Lemma 7. 
+
+Proof. First note that 
+
+w∗(θ) = Cov −1 
+
+> θ
+
+( eCH )1K
+
+1⊺ 
+
+> K
+
+Cov −1 
+
+> θ
+
+( eCH )1K
+
+= Σ−1 
+
+> C
+
+(n)1K
+
+1⊺ 
+
+> K
+
+Σ−1 
+
+> C
+
+(n)1K
+
+where Σ C (n) is defined in (17). By Lemma 8 and Assumption 5, it suffices to show that 
+
+∥ΣC (n) − Cov θ(SH )∥2 = o(1) .
+
+It is sufficient to show that the difference in ( k1, k 2) entries of these matrices converge for each pair k1, k 2 ∈ { 1, . . . , K }.For any k, we decompose 
+
+n
+
+2
+
+1/2
+
+( ˜C(k) 
+
+> H
+
+− CH ) = S(k) 
+
+> H
+
++ R(k)
+
+> H
+
+where 
+
+R(k) 
+
+> H
+
+=
+
+n
+
+2
+
+1/2 1
+
+{yk(θ) − xk(θ)}L
+
+X
+
+> g1+··· +gL≥2
+> g1,...,g L∈{ 0,1}
+
+1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+) − Eϕℓ,θ (Y (k) 
+
+> vℓ
+
+) gℓ Eϕℓ,θ (Y (k) 
+
+> vℓ
+
+) 1−gℓ
+
+,
+
+59 and both S(k) 
+
+> H
+
+and R(k) 
+
+> H
+
+have mean zero. The proof of Proposition 2 in Chang et al. (2022) can be easily adapted to show the following inequalities of the moments of S(k) 
+
+> H
+
+and R(k) 
+
+> H
+
+:Var 
+
+
+
+S(k)
+
+> H
+
+
+
+≲
+
+n
+
+2
+
+ℵV (L − 1) 
+
+|V| = O(1) , (43) and Var 
+
+
+
+R(k)
+
+> H
+
+
+
+≲
+
+n
+
+2
+
+ℵV (L − 2) 
+
+|V| =
+
+n
+
+2
+
+ℵV (L − 2) 
+
+ℵV (L − 1) 
+
+ℵV (L − 1) 
+
+|V| = o(1) , (44) both by assumption. Then Cov 
+
+(n
+
+2
+
+1/2
+
+( ˜C(k1) 
+
+> H
+
+− CH ),
+
+n
+
+2
+
+1/2
+
+( ˜C(k2) 
+
+> H
+
+− CH )
+
+)
+
+= Cov 
+
+
+
+S(k1) 
+
+> H
+
++ R(k1) 
+
+> H
+
+, S (k2) 
+
+> H
+
++ R(k2)
+
+> H
+
+
+
+,
+
+so that 
+
+|Cov 
+
+(n
+
+2
+
+1/2
+
+( ˜C(k1) 
+
+> H
+
+− CH ),
+
+n
+
+2
+
+1/2
+
+( ˜C(k2) 
+
+> H
+
+− CH )
+
+)
+
+− Cov 
+
+
+
+S(k1) 
+
+> H
+
+, S (k2)
+
+> H
+
+
+
+|≤
+
+q
+
+Var( S(k1) 
+
+> H
+
+) Var( R(k2) 
+
+> H
+
+) + 
+
+q
+
+Var( R(k1) 
+
+> H
+
+) Var( S(k2) 
+
+> H
+
+) + 
+
+q
+
+Var( R(k1) 
+
+> H
+
+) Var( R(k2) 
+
+> H
+
+) = o(1) .
+
+by Cauchy-Schwarz inequality. This completes the proof. A final supporting lemma is used to justify the use of the bootstrapped samples to estimate a weight vector, and combine the subgraph density estimators from each network snapshot. 
+
+Lemma 9. Under the conditions of Theorem 3, and Assumption 5, let 
+
+w†(Y ; θ) = Cov −1(S† 
+
+> H
+
+| Y )1K
+
+1⊺ 
+
+> K
+
+Cov −1(S† 
+
+> H
+
+| Y )1K
+
+.
+
+Then 
+
+∥Cov( S† 
+
+> H
+
+| Y ) − ΣC (n)∥2 = oP(1) , ∥w†(Y ; θ) − w∗(θ)∥2 = oP(1) as n → ∞ , where w∗(θ) is defined in (11). 60 Proof. By Lemma 7, Lemma 8, and Remark 9, it suffices to show that 
+
+∥Cov( S† 
+
+> H
+
+| Y ) − Cov( SH )∥2 = oP(1) . (45) Similar to the proof of Lemma 7, we show this by proving that the ( k1, k 2) entries converge in probability for fixed k1, k 2 ∈ { 1, . . . , K }.Recall the definition, 
+
+S(k) 
+
+> H
+
+=
+
+n
+
+2
+
+1/2 1
+
+{yk(θ) − xk(θ)}L
+
+1
+
+|V| 
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+(Y (k) 
+
+> vj
+
+− EY (k) 
+
+> vj
+
+) Y
+
+> ℓ̸=j
+
+Eϕℓ,θ (Y (k) 
+
+> vℓ
+
+).
+
+To compute Cov( S(k1) 
+
+> H
+
+, S (k2) 
+
+> H
+
+), consider the pairwise covariances of the terms with indices (k1, j 1, v), (k2, j 2, ˜v): Cov 
+
+(
+
+(Y (k1) 
+
+> vj1
+
+− EY (k1) 
+
+> vj1
+
+) Y
+
+> ℓ̸=j1
+
+Eϕℓ,θ (Y (k1) 
+
+> vℓ
+
+), (Y (k2)˜vj2
+
+− EY (k2)˜vj2
+
+) Y
+
+> ℓ̸=j2
+
+Eϕℓ,θ (Y (k2)˜vℓ )
+
+)
+
+Note that this covariance is zero unless vj1 = ˜ vj2 , that is for terms with ˜ v ∈ V j1,j 2 (v), as defined in (38). Expanding over the summations, we can simplify Cov( S(k1) 
+
+> H
+
+, S (k2) 
+
+> H
+
+) = 
+
+n
+
+2
+
+ 1
+
+{yk1 (θ) − xk1 (θ)}L{yk2 (θ) − xk2 (θ)}LLX
+
+> j1,j 2=1
+
+(−1) 2−τj1 −τj2 |V| −2Γk1,k 2,j 1,j 2 ,
+
+where Γ k1,k 2,j 1,j 2 is defined in (39). Similar manipulations can be performed to show that Cov( S†,(k1) 
+
+> H
+
+, S †,(k2) 
+
+> H
+
+| Y ) = 
+
+n
+
+2
+
+ 1
+
+{yk1 (θ) − xk1 (θ)}L{yk2 (θ) − xk2 (θ)}LLX
+
+> j1,j 2=1
+
+(−1) 2−τj1 −τj2 |V| −2Γ† 
+
+> k1,k 2,j 1,j 2
+
+,
+
+where Γ † 
+
+> k1,k 2,j 1,j 2
+
+is defined in (41). Thus we have 
+
+Cov( S†,(k1) 
+
+> H
+
+, S †,(k2) 
+
+> H
+
+| Y ) − Cov( S(k1) 
+
+> H
+
+, S (k2) 
+
+> H
+
+) ≲ n2
+
+> L
+
+X
+
+> j1,j 2=1
+
+|V| −2|Γ† 
+
+> k1,k 2,j 1,j 2
+
+− Γk1,k 2,j 1,j 2 |.
+
+61 By (42) (from the Proof of Theorem 3), we have 
+
+Cov( S†,(k1) 
+
+> H
+
+, S †,(k2) 
+
+> H
+
+| Y ) − Cov( S(k1) 
+
+> H
+
+, S (k2) 
+
+> H
+
+) = oP(1) Which suffices to prove (45). With these lemmas in hand, we prove Proposition 4. 
+
+Proof. 
+
+n
+
+2
+
+1/2  bCH − CH
+
+
+
+=
+
+n
+
+2
+
+1/2 n
+
+w†(Y ; θ)⊺ eCH − CH
+
+o
+
+=
+
+n
+
+2
+
+1/2 n
+
+w†(Y ; θ)⊺ eCH − w∗(θ)⊺ eCH + w∗(θ)⊺ eCH − CH
+
+o
+
+.
+
+Thus, by Slutsky’s Theorem, it suffices to show 
+
+n
+
+2
+
+1/2 n
+
+w†(Y ; θ)⊺ eCH − w∗(θ)⊺ eCH
+
+o
+
+= oP(1) . (46) By construction, 1 = w†(Y ; θ)⊺1K = w∗(θ)⊺1K ,
+
+which implies that 0 = w∗(θ)⊺(CH 1K ) − w†(Y ; θ)⊺(CH 1K ).
+
+Thus, 
+
+n
+
+2
+
+1/2 n
+
+w†(Y ; θ)⊺ eCH − w∗(θ)⊺ eCH
+
+o
+
+=
+
+n
+
+2
+
+1/2 n
+
+w†(Y ; θ)⊺ eCH − w†(Y ; θ)⊺(CH 1K ) + w∗(θ)⊺(CH 1K ) − w∗(θ)⊺ eCH
+
+o
+
+=w†(Y ; θ)⊺
+
+(n
+
+2
+
+1/2
+
+( eCH − CH 1K )
+
+)
+
+− w∗(θ)⊺
+
+(n
+
+2
+
+1/2
+
+( eCH − CH 1K )
+
+)
+
+= w†(Y ; θ) − w∗(θ) ⊺
+
+(n
+
+2
+
+1/2
+
+( eCH − CH 1K )
+
+)
+
+.
+
+By Corollary 1, n
+
+2
+
+1/2
+
+( eCH − CH 1K ) = OP(1) ,
+
+62 and by Proposition 9, 
+
+∥w†(Y ; θ) − w∗(θ)∥2 = oP(1) ,
+
+which together are sufficient to show (46). 
+
+C.2 Inference with unknown θ
+
+We state and prove the following lemma, similar to Proposition 4 in Chang et al. (2022). When θ = ( α, β, λ, μ ) is unknown, define the plug-in analog of ˜C(k) 
+
+> H
+
+for k = 1 , . . . , K by 
+
+bC(k) 
+
+> H
+
+= 1
+
+|V| · 1
+
+{yk(ˆθ) − xk(ˆθ)}L · X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕℓ, ˆθ(Y (k) 
+
+> vℓ
+
+).
+
+where ˆθ is the GMM estimator developed in Section 3. 
+
+Lemma 10. Suppose the Assumptions of Proposition 1 hold, Assumption 10 holds, 
+
+ℵV (L − 1) /|V| ≍ n−2
+
+and yk(θ)̸ = xk(θ). Then we have that 
+
+n
+
+2
+
+1/2
+
+( bC(k) 
+
+> H
+
+− CH ) = S(k) 
+
+> H
+
++
+
+
+
+∆(k)
+
+> H
+
+⊺
+
+(n
+
+2
+
+1/2
+
+(ˆθ − θ)
+
+)
+
++ oP(1) . (47) where S(k) 
+
+> H
+
+is defined in (12) and ∆ (k) 
+
+> H
+
+∈ R4 has a closed form defined in the proof. 
+
+Proof. By Proposition 1, we have 
+
+∥ˆθ − θ∥2 = OP
+
+(n
+
+2
+
+−1/2)
+
+.
+
+Denote its asymptotic covariance matrix by Σ, which is a 4 × 4 block of Σ(GMM) (δ1(∞), θ ). Define 
+
+T (k) 
+
+> H
+
+= {yk(θ) − xk(θ)}L · CH ,
+
+eT (k) 
+
+> H
+
+= {yk(θ) − xk(θ)}L eCH ,
+
+bT (k) 
+
+> H
+
+= {yk(ˆθ) − xk(ˆθ)}L bCH .
+
+63 By calculations similar to Chang et al. (2022), display (S.9), 
+
+n
+
+2
+
+1/2
+
+( bC(k) 
+
+> H
+
+− CH )=
+
+n
+
+2
+
+1/2 bT (k) 
+
+> H
+
+− T (k)
+
+> H
+
+{yk(θ) − xk(θ)}L + L · CH
+
+ n
+
+> 2
+
+1/2{xk(ˆθ) − xk(θ)}
+
+yk(θ) − xk(θ) + L · CH
+
+ n
+
+> 2
+
+1/2{yk(θ) − yk(ˆθ)}
+
+yk(θ) − xk(θ) + oP(1) =S(k) 
+
+> H
+
++
+
+n
+
+2
+
+1/2 bT (k) 
+
+> H
+
+− eT (k)
+
+> H
+
+{yk(θ) − xk(θ)}L + L · CH {∇ xk(θ) − ∇ yk(θ)}
+
+yk(θ) − xk(θ)
+
+(n
+
+2
+
+1/2
+
+(ˆθ − θ)
+
+)
+
++ oP(1) ,
+
+(48) where we use the fact that both xk and yk are bounded polynomials in θ, and ∥ˆθ − θ∥2 =
+
+OP
+
+n n
+
+> 2
+
+−1/2o
+
+, thus 
+
+xk(ˆθ) − xk(θ) = {∇ xk(θ)}⊺(ˆθ − θ) + OP
+
+(n
+
+2
+
+−1)
+
+,yk(ˆθ) − yk(θ) = {∇ yk(θ)}⊺(ˆθ − θ) + OP
+
+(n
+
+2
+
+−1)
+
+.
+
+It remains to analyze the difference bT (k) 
+
+> H
+
+− eT (k) 
+
+> H
+
+.Again following the same calculations as Chang et al. (2022), p. S15-S16, we find 
+
+bT (k) 
+
+> H
+
+− eT (k) 
+
+> H
+
+=
+
+> L
+
+X
+
+> j=1
+
+{xk(θ)−xk(ˆθ)}τj {yk(ˆθ)−yk(θ)}1−τj |V| −1 X
+
+> v∈V
+
+Y
+
+> ℓ̸=j
+
+Eθ
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+) +OP
+
+(n
+
+2
+
+−1)
+
+.
+
+Also recall that 
+
+Eθ
+
+n
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+)
+
+o
+
+yk(θ) − xk(θ) =  A(1) 
+
+> vℓ
+
+τℓ  1 − A(1) 
+
+> vℓ
+
+1−τℓ
+
+.
+
+For each j = 1 , . . . , L , define 
+
+U (−j) 
+
+> H
+
+= |V| −1 X
+
+> v∈V
+
+Y
+
+> ℓ̸=j
+
+ A(1) 
+
+> vℓ
+
+τℓ  1 − A(1) 
+
+> vℓ
+
+1−τℓ
+
+.
+
+This quantity U (−j) 
+
+> H
+
+is a leave-one-out subgraph density, which enumerates all the configura-tions for subgraph H but ignores the status of the jth edge. 64 Combining these last four displays, we get 
+
+bT (k) 
+
+> H
+
+− eT (k)
+
+> H
+
+{yk(θ) − xk(θ)}L =
+
+(P   
+
+> j:τj=0
+
+U (−j) 
+
+> H
+
+∇yk(θ) − P  
+
+> j:τj=1
+
+U (−j) 
+
+> H
+
+∇xk(θ)
+
+yk(θ) − xk(θ)
+
+)⊺
+
+(ˆθ−θ)+ OP
+
+(n
+
+2
+
+−1)
+
+.
+
+Plugging this approximation into (48) completes the proof of (47), with ∆(k) 
+
+> H
+
+=
+
+P  
+
+> j:τj=0
+
+U (−j) 
+
+> H
+
+∇yk(θ) − P  
+
+> j:τj=1
+
+U (−j) 
+
+> H
+
+∇xk(θ) + L · CH {∇ xk(θ) − ∇ yk(θ)}
+
+yk(θ) − xk(θ)=
+
+P 
+
+> j:τj=0
+
+(U (−j) 
+
+> H
+
+− CH )∇yk(θ) − P 
+
+> j:τj=1
+
+(U (−j) 
+
+> H
+
+− CH )∇xk(θ)
+
+yk(θ) − xk(θ) .
+
+Remark 10. If H is a triangle, then for j = 1, the leave-one-out subgraph density considers all ordered triples of distinct nodes ( i1, i 2, i 3) and counts whether the i2 ↔ i3 and i3 ↔ i1
+
+edges are present. By rotational symmetry this subgraph density is the same for j = 2 and 
+
+j = 3 as well. We refer to this as the two-chain density. If H is a two-star, then for j = 1 the leave-one-out subgraph density is the same two-chain density desribed above for triangles. However, if j = 2, the leave-one-out subgraph density considers all ordered triples of distinct nodes ( i1, i 2, i 3) and counts whether the i1 ↔ i2 edge is absent and the i3 ↔ i1 edge is present. By rotational symmetry, this leave-one-out subgraph density is the same for j = 3. We refer to this as the half-chain density. Including triangle density and two-star density, denote these four subgraph densities on ordered node triples by 
+
+C , C , C , C
+
+respectively. Then, for inference on triangle and two-star density, we can derive simplified expressions for ∆(k) 
+
+> H
+
+as follows. 65 ∆(k) = −3C ∇xk(θ)
+
+yk(θ) − xk(θ) ,
+
+∆(k) = C ∇yk(θ) − 2( C − C )∇xk(θ)
+
+yk(θ) − xk(θ) ,
+
+where we use the relationship C + C = C .Combining the general result of Lemma 10 over k = 1 , . . . , K , we have 
+
+n
+
+2
+
+1/2  bCH − CH 1K
+
+
+
+= SH + ∆H
+
+(n
+
+2
+
+1/2
+
+(ˆθ − θ)
+
+)
+
++ oP(1) ,
+
+where 
+
+∆⊺ 
+
+> H
+
+=
+
+
+
+∆(1)  
+
+> H
+
+· · · ∆(K)
+
+> H
+
+
+
+∈ R4×K .
+
+Based on the approximation in (47), an analog of (Chang et al., 2022), Theorem 5 will also continue to hold in this setting, which we can use to develop an estimator for the asymptotic covariance matrix for bCH . In particular, if ∆H converges, we have aCov 
+
+ bCH
+
+
+
+= aCov( SH ) + ∆H aCov( ˆθ)∆⊺ 
+
+> H
+
++ aCov( SH , ˆθ)∆⊺ 
+
+> H
+
++ ∆H aCov( SH , ˆθ)⊺
+
+The first term aCov( SH ) can be consistently estimated using the bootstrapping approach described in Section 4 and by plugging in the GMM estimator ˆθ. For the second term, a consistent estimator for aCov( ˆθ) is given in Section 3.1; ∆H can be estimated by plugging in the GMM estimator ˆθ, bC(1)  
+
+> H
+
+, and 
+
+bU (−j) 
+
+> H
+
+= 1
+
+|V|{ y1(ˆθ) − x1(ˆθ)}L−1
+
+X
+
+> v∈V
+
+Y
+
+> ℓ̸=j
+
+ϕℓ, ˆθ(Y (1)  
+
+> vℓ
+
+)for j = 1 , . . . , L based on the first noisy snapshot. All that remains is to find a consistent estimator of the asymptotic cross-covariance matrix aCov( SH , ˆθ). Following the proof of Proposition 7, we can write 
+
+n
+
+2
+
+1/2
+
+(ˆθ − θ) = ˜M (ψ)
+
+(n
+
+2
+
+1/2
+
+( ˆ m − m(ψ)) 
+
+)
+
++ oP(1) 66 for a matrix ˜M (ψ) made up of the second through fifth rows of 
+
+M (ψ) = ( Dm (ψ)⊺W Dm (ψ)) −1Dm (ψ)⊺W .
+
+In practice, to evaluate ˜M (ψ) we substitute the optimal asymptotic weight matrix for W :
+
+W = {δ1Σ1(θ) + (1 − δ1)Σ0(θ)}−1 .
+
+This matrix is a continuous function of the unknown edge density, error and evolution pa-rameters, and recalling that m collects the edge averaged moments used for estimation. Thus, it suffices to find the coordinate-wise covariances between S(k) 
+
+> H
+
+and ˆmh for fixed k =1, . . . , K and h = 1 , . . . , p . Note that both of these quantities decompose over the edges. Define 
+
+σs,kh (θ) = Cov θ
+
+
+
+Y (k) 
+
+> ij
+
+, m h(⃗Yij ) | A(1)  
+
+> ij
+
+= s
+
+
+
+for s ∈ { 0, 1}, so that Cov θ(Y (k) 
+
+> ij
+
+, m h(⃗Yij )) = σ0,kh (θ) + A(1)  
+
+> ij
+
+{σ1,kh (θ) − σ0,kh (θ)} .
+
+Note that these covariances are continuous (polynomial) functions of the error and evolution parameters, and can be evaluated using observation operators. Then Cov θ S(k) 
+
+> H
+
+,
+
+"n
+
+2
+
+1/2
+
+( ˆ m − m(ψ)) 
+
+#
+
+> h
+
+!
+
+= 12|V|{ yk(θ) − xk(θ)}LLX
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+X
+
+> s̸=t
+
+Cov θ(Y (k) 
+
+> vj
+
+, m h(⃗ Yst )) Y
+
+> ℓ̸=j
+
+Eθ
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+)
+
+= σ0,kh (θ)2|V|{ yk(θ) − xk(θ)}LLX
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+Y
+
+> ℓ̸=j
+
+Eθ
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+) + · · · · · · + σ1,kh (θ) − σ0,kh (θ)2|V|{ yk(θ) − xk(θ)}LLX
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+A(1) 
+
+> vj
+
+Y
+
+> ℓ̸=j
+
+Eθ
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+)
+
+Similar to the proof of Lemma 10, the first term can be simplified in terms of the leave-one-out subgraph densities U (−j) 
+
+> H
+
+. To simplify the second term, we define add-one subgraph densities 
+
+W (j) 
+
+> H
+
+= |V| −1 X
+
+> v∈V
+
+A(1)  
+
+> vj
+
+· Y
+
+> ℓ̸=j
+
+ A(1) 
+
+> vℓ
+
+τℓ  1 − A(1) 
+
+> vℓ
+
+1−τℓ
+
+.
+
+67 which enumerates the same configurations as the original subgraph H but requiring the jth edge to be present. Then Cov θ S(k) 
+
+> H
+
+,
+
+"n
+
+2
+
+1/2
+
+( ˆ m − m(ψ)) 
+
+#
+
+> h
+
+!
+
+= σ0,kh (θ)2{yk(θ) − xk(θ)}
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj U (−j) 
+
+> H
+
++ σ1,kh (θ) − σ0,kh (θ)2{yk(θ) − xk(θ)}
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj W (j) 
+
+> H
+
+.
+
+Define these covariance matrices by Ω H,n , and suppose the sequence converges to a limit ΩH ∈ RK×p. Then aCov( SH , ˆθ) = Ω H ˜M (ψ)⊺ ∈ RK×4.
+
+Under our regularity conditions, this asymptotic covariance can be consistently estimated by plugging in the GMM estimator ˆψ, as well as estimators 
+
+cW (j) 
+
+> H
+
+= 1
+
+|V|{ y1(ˆθ) − x1(ˆθ)}L
+
+X
+
+> v∈V
+
+n
+
+Y (1)  
+
+> vℓ
+
+− x1(ˆθ)
+
+o Y 
+
+> ℓ̸=j
+
+ϕℓ, ˆθ(Y (1)  
+
+> vℓ
+
+)for j = 1 , . . . , L , based on the first noisy snapshot. 
+
+Remark 11. Similar to Remark 10, we can explicitly describe the add-one subgraph densi-ties, and the resulting Ω H in the case where H is either a triangle or a two-star. If H is a triangle, then it is easy to see that W (j) is also the triangle density C for j = 1 , 2, 3. If H
+
+is a two-star, then W (j) is also the two-star density C for j = 2 , 3. If j = 1, then W (1) is the triangle density C .we can derive simplified expressions for the ( k, h ) entry of Ω H as follows. 
+
+h
+
+Ω
+
+i
+
+> kh
+
+= 3σ1,kh (θ)C + 3 σ0,kh (θ)C
+
+2 {yk(θ) − xk(θ)} ,
+
+h
+
+Ω
+
+i
+
+> kh
+
+= σ0,kh (θ)(2 C − C ) + {σ1,kh (θ) − σ0,kh (θ)}(2 C − C )2{yk(θ) − xk(θ)} ,
+
+where we use the relationship C = C + C .
+
+Remark 12. In principle, these same types of expansions could be used to evaluate the analytical covariances of S(k1) 
+
+> H
+
+and S(k2) 
+
+> H
+
+for any k1 and k2 without the need for an edge 68 bootstrap. However, the resulting expressions would involve ( L2)-many sums over configu-rations of edges in V × V , and thus will be computationally expensive to evaluate when n is large, even relative to the computational cost of the bootstrap. For instance, the variance of triangle density would require sums with O(n6) terms, relative to sums with O(n3) terms to compute each bootstrap replicate S† 
+
+> H
+
+.
+
+Remark 13. As in Chang et al. (2022), similar results will hold for joint inference on multiple subgraph densities, where the covariance among densities can be calculated by estimating both on the same set of bootstrap replicates. The covariance between subgraph densities and ˆθ can be estimated using the methods presented in this section. 
+
+# D Theoretical sketches for the dynamic comparison model 
+
+D.1 GMM estimation 
+
+We state an analog of Lemma 3 under the comparison model. The proof is identical to the proof of Lemma 3 with some analogous assumptions stated below. 
+
+Lemma 11. Define m∗C as in Section 5.1, and suppose ρ1, ρ K , ρ 1K ∈ (0 , 1). Then 
+
+n
+
+2
+
+−1/2 "X
+
+> i<j
+
+m∗C (⃗Yij ) −
+
+n
+
+2
+
+
+
+m∗C (ρ1, ρ K , ρ 1K , θ )
+
+#
+
+> d
+
+→ N (0K+5 , Σ∗C (ρ1, ρ K , ρ 1K , θ )) (49) as n → ∞ , where 
+
+Σ∗C (ρ1, ρ K , ρ 1K , θ ) = ρ1K Σ∗C,11 (θ) + ρ1Σ∗C,10 (θ) + ρK Σ∗C,01 (θ) + (1 − ρ1 − ρK − ρ1K )Σ∗C,00 (θ)and 
+
+Σ∗C,st (θ) = Cov θ
+
+n
+
+m∗C
+
+⃗
+
+Y12 
+
+
+
+A(1) 12 = s, A(K)12 = t
+
+o
+
+∈ R(K+5) ×(K+5) .
+
+69 Using Lemma 11, derivation of the asymptotic distribution for the GMM estimators, includ-ing an asymptotic distribution for the linear combinations ˆδ1 = ˆ ρ1 + ˆ ρ1K , ˆδK = ˆ ρK + ˆ ρ1K
+
+will follow the same proof structure as in Section B, under analogous assumptions to As-sumptions 1-4. Define ΨC = {(ρ1, ρ K , ρ 1K , α, β, λ, μ ) ∈ (0 , 1) 7 : α + β < 1, λ + μ < 1},
+
+and the compact restriction ¯ΨC = ¯ΨC (ξ) = {(ρ1, ρ K , ρ 1K , α, β, λ, μ ) ∈ [ξ, 1−ξ]7 : α+β ≤ 1−ξ, λ +μ ≤ 1−ξ, ρ 1+ρK +ρ1K ≤ 1−ξ}.
+
+Assumption 11. The mapping m(init)  
+
+> C
+
+(ρ1, ρ K , ρ 1K , θ ) is an injective function on Ψ C .
+
+Assumption 12. The true parameters satisfy ( ρ1(n), ρ K (n), ρ 1K (n), α, β, λ, μ ) ∈ ¯ΨC for all 
+
+n, and the sequence is convergent as n → ∞ .
+
+Assumption 13. The derivative matrix 
+
+Dm ∗(ρ1, ρ K , ρ 1K , θ ) ∈ R(K+5) ×7
+
+has full column rank for all ( ρ1, ρ K , ρ 1K , θ ) ∈ ¯ΨC .
+
+Assumption 14. The covariance matrix Σ∗C (ρ1, ρ K , ρ 1K , θ ) satisfies 0 < c ≤ λmin {Σ∗C (ρ1, ρ K , ρ 1K , θ )} ≤ λmax {Σ∗C (ρ1, ρ K , ρ 1K , θ )} ≤ C < ∞
+
+uniformly over all ( ρ1, ρ K , ρ 1K , θ ) ∈ ¯ΨC for constants c and C (which may depend on ξ). 70 D.2 Computing bootstrap replicates under the dynamic compar-ison model 
+
+Under the dynamic comparison model, we simplify the expressions in Section 5. As in that section, we drop “ ij ” subscripts and show how to find bootstrap replicates 
+
+ Y (1 ,†)
+
+Y (K, †)
+
+ ∼ p(·, Y (1) , Y (K))With expected conditional covariance structure which mimics the covariance of the original: Cov 
+
+ Y (1) 
+
+Y (K)
+
+ A(1) = s, A(K) = t
+
+ =
+
+(1 − s)α(1 − α) + sβ (1 − β) 00 (1 − t)α(1 − α) + tβ (1 − β)
+
+ .
+
+As Y (1) and Y (K) are uncorrelated for any underlying state ( s, t ), it is sufficient to indepen-dently bootstrap the two snapshots. Define 
+
+ν† 
+
+> 0
+
+= α(1 − β), ν† 
+
+> 1
+
+= (1 − α)β. 
+
+We claim that a valid bootstrap procedure will sample 
+
+Y (1 ,†) ∼ N 
+
+
+
+0, ν † 
+
+> Y(1)
+
+
+
+, Y (K, †) ∼ N 
+
+
+
+0, ν † 
+
+> Y(K)
+
+
+
+independently. This can be verified by checking that for s ∈ { 0, 1} and k ∈ { 1, K },
+
+E Var( Y (k, †) | Y (k)) | A(k) = s
+
+= E{ν†
+
+> 1
+
+Y (k) + ν†
+
+> 0
+
+(1 − Y (k)) | A(k) = s}
+
+= ν† 
+
+> 0
+
++ ( ν† 
+
+> 1
+
+− ν†
+
+> 0
+
+)E(Y (k) | A(k) = s)= α − αβ + ( β − α){(1 − s)α + s(1 − β)}
+
+= α − αβ + αβ − sαβ + sβ − sβ 2 − α2 − sα 2 − sα + sαβ 
+
+= α − α2 − sα + sα 2 + sβ − sβ 2
+
+= (1 − s)α(1 − α) + sβ (1 − β)= Var( Y (k) | A(k) = s).
+
+71 D.3 Higher-order subgraph density estimation with unknown θ
+
+In this section we develop detailed expressions to estimate the asymptotic covariance of the two plug-in estimators 
+
+bC(1)  
+
+> H, C
+
+= 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕℓ, ˆθ(Y (1)  
+
+> vℓ
+
+), bC(K) 
+
+> H, C
+
+= 1
+
+|V| 
+
+X
+
+> v∈V
+> L
+
+Y
+
+> ℓ=1
+
+ϕℓ, ˆθ(Y (K) 
+
+> vℓ
+
+),
+
+of subgraph density developed in Section 5.2, where ˆθ is the GMM estimator of ( α, β, λ, μ )developed in Section 5.2. Note that ϕℓ,θ is free of λ and μ, and in fact coincides with the edge adjustment used in Chang et al. (2022) without dynamic observation. Towards (joint) inference using these two estimators, we state a lemma which gives a simple asymptotic expansion of each of these estimators to isolate the additional variability induced by estimation of θ. The proof of this lemma omitted, as it is similar to the proof of Lemma 10, where we note that in this case, 
+
+xk(θ) = α, yk(θ) = 1 − β, ∇xk(θ) = (1 , 0, 0, 0) ⊺, ∇yk(θ) = (0 , −1, 0, 0) ⊺
+
+for k ∈ { 1, K }.
+
+Lemma 12. Under the conditions of Lemma 10, for k ∈ { 1, K },
+
+n
+
+2
+
+1/2
+
+( bC(k) 
+
+> H, C
+
+− C(k) 
+
+> H
+
+) = S(k) 
+
+> H, C
+
++
+
+
+
+Ξ(k)
+
+> H
+
+⊺
+
+n
+
+2
+
+1/2
+
+ˆα − α
+
+ˆβ − β
+
+ + oP(1) , (50) where 
+
+S(k) 
+
+> H, C
+
+=
+
+n
+
+2
+
+1/2
+
+· 1
+
+|V| ·
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+(
+
+Y (k) 
+
+> vj
+
+− EθY (k)
+
+> vj
+
+1 − α − β
+
+) Y
+
+> ℓ̸=j
+
+Eθ
+
+ϕℓ,θ (Y (k) 
+
+> vℓ
+
+) .
+
+Ξ(k) 
+
+> H
+
+= 11 − α − β
+
+L · C(k) 
+
+> H
+
+− P  
+
+> j:τj=1
+
+U (−j,k )
+
+> H
+
+L · C(k) 
+
+> H
+
+− P  
+
+> j:τj=0
+
+U (−j,k )
+
+> H
+
+
+
+and 
+
+U (−j,k ) 
+
+> H
+
+= |V| −1 X
+
+> v∈V
+
+Y
+
+> ℓ̸=j
+
+ A(k)
+
+> vℓ
+
+τℓ  1 − A(k)
+
+> vℓ
+
+1−τℓ
+
+.
+
+As above, U (−j,k ) 
+
+> H
+
+is a “leave-one-out” subgraph density for the jth edge in the subgraph configuration, and the kth underlying snapshot. 72 Remark 14. Recall, for triangle density, τ1 = τ2 = τ3 = 1, and U (−j,k ) = C(k) for j = 1 , 2, 3. Thus, 
+
+Ξ(k) = 31 − α − β
+
+C(k) − C(k)
+
+C(k)
+
+ = 31 − α − β
+
+−C(k)
+
+C(k)
+
+
+
+for k = 1 , K .For two-star density, τ1 = 0 with U −1,k ) = C(k), and τ2 = τ3 = 1 with U −j,k ) = C(k) for 
+
+j = 2 , 3. Thus, 
+
+Ξ(k) = 11 − α − β
+
+3C(k) − 2C(k)
+
+3C(k) − C(k)
+
+
+
+for k = 1 , K .From the expression in (50), a bootstrap procedure, plus analogous derivations to those in Section C.2 to find the asymptotic variances aVar 
+
+n bC(k)
+
+> H, C
+
+o
+
+= aVar( S(k) 
+
+> H, C
+
+) + 2 · aCov 
+
+S(k) 
+
+> H, C
+
+,
+
+ˆα
+
+ˆβ
+
+ Ξ(k) 
+
+> H
+
++
+
+
+
+Ξ(k)
+
+> H
+
+⊺
+
+aCov 
+
+ˆα
+
+ˆβ
+
+ Ξ(k)
+
+> H
+
+for k ∈ { 1, K }. It is also possible to determine the asymptotic covariance between bC(1)  
+
+> H, C
+
+and 
+
+bC(K) 
+
+> H, C
+
+which is induced by the common estimates of α and β. In particular, aCov 
+
+n bC(1)  
+
+> H, C
+
+, bC(K)
+
+> H, C
+
+o
+
+= aCov 
+
+S(1)  
+
+> H, C
+
+,
+
+ˆα
+
+ˆβ
+
+ Ξ(K) 
+
+> H
+
++aCov 
+
+S(K) 
+
+> H, C
+
+,
+
+ˆα
+
+ˆβ
+
+ Ξ(1)  
+
+> H
+
++
+
+
+
+Ξ(1) 
+
+> H
+
+⊺
+
+aCov 
+
+ˆα
+
+ˆβ
+
+ Ξ(K)
+
+> H
+
+where we use the fact that S(1)  
+
+> H, C
+
+and S(K) 
+
+> H, C
+
+are independent. Similar expressions can be found for the asymptotic covariance between multiple different higher order subgraphs. As in Section C.2 we derive the cross-covariance matrices between the subgraph densities and GMM estimator by a linear decomposition aCov 
+
+S(1) 
+
+> H, C
+
+S(K)
+
+> H, C
+
+ ,
+
+ˆα
+
+ˆβ
+
+ = ΛH ˜M (ψC )⊺
+
+where ˜M (ψC ) is computed as part of the comparison model analog to Proposition 1, and Λ H
+
+can be found by computing the coordinate-wise covariances between S(k) 
+
+> H
+
+and ˆmh for fixed 73 k = 1 , K and h = 1 , . . . , p . Define 
+
+σst,kh (θ) = Cov θ
+
+
+
+Y (k) 
+
+> ij
+
+, m h(⃗ Yij ) | A(1)  
+
+> ij
+
+= s, A(K) 
+
+> ij
+
+= t
+
+
+
+for s, t ∈ { 0, 1}, so that Cov θ(Y (k) 
+
+> ij
+
+, m h(⃗ Yij )) = X
+
+> s,t ∈{ 0,1}
+
+σst,kh (θ)I(A(1)  
+
+> ij
+
+= s, A(K) 
+
+> ij
+
+= t).
+
+Then Cov θ S(k) 
+
+> H
+
+,
+
+"n
+
+2
+
+1/2
+
+( ˆ m − m(ψ)) 
+
+#
+
+> h
+
+!
+
+= 12|V| (1 − α − β)
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+X 
+
+> i1̸=i2
+
+Cov θ(Y (k) 
+
+> vj
+
+, m h(⃗Yi1i2 )) Y
+
+> ℓ̸=j
+
+(A(k) 
+
+> vℓ
+
+)τℓ (1 − A(k) 
+
+> vℓ
+
+)1−τℓ
+
+= 12|V| (1 − α − β)
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+Cov θ(Y (k) 
+
+> vj
+
+, m h(⃗ Yvj )) Y
+
+> ℓ̸=j
+
+(A(k) 
+
+> vℓ
+
+)τℓ (1 − A(k) 
+
+> vℓ
+
+)1−τℓ
+
+= 12|V| (1 − α − β)
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+X
+
+> v∈V
+
+X
+
+> s,t ∈{ 0,1}
+
+σst,kh (θ)I(A(1)  
+
+> vj
+
+= s, A(K) 
+
+> vj
+
+= t)
+
+Y
+
+> ℓ̸=j
+
+(A(k) 
+
+> vℓ
+
+)τℓ (1 − A(k) 
+
+> vℓ
+
+)1−τℓ
+
+= 12(1 − α − β)
+
+X
+
+> s,t ∈{ 0,1}
+
+σst,kh (θ)
+
+> L
+
+X
+
+> j=1
+
+(−1) 1−τj
+
+(
+
+1
+
+|V| 
+
+X
+
+> v∈V
+
+I(A(1)  
+
+> vj
+
+= s, A(K) 
+
+> vj
+
+= t) Y
+
+> ℓ̸=j
+
+(A(k) 
+
+> vℓ
+
+)τℓ (1 − A(k) 
+
+> vℓ
+
+)1−τℓ
+
+)
+
+Notice that for fixed j, s and t, the final average in braces, 1
+
+|V| 
+
+X
+
+> v∈V
+
+I(A(1)  
+
+> vj
+
+= s, A(K) 
+
+> vj
+
+= t) Y
+
+> ℓ̸=j
+
+(A(k) 
+
+> vℓ
+
+)τℓ (1 − A(k) 
+
+> vℓ
+
+)1−τℓ
+
+is a subgraph density involving edges from both the 1st and Kth underlying snapshots. These densities decompose the overall density of the jth leave-one-out subgraph density in the kth underlying snapshot, such that their sum over s, t ∈ { 0, 1} is U (−j,k ) 
+
+> H
+
+. As in Section C.2, the asymptotic cross-covariance can be approximated as a linear combination of the entries of 
+
+σst,kh (θ) for s, t ∈ { 0, 1}.
+
+Remark 15. When H is the density of triangles or two-stars, we have 
+
+U (−j,k ) 
+
+> H
+
+∈ { C(k), C (k)}
+
+74 for k = 1 , K . We denote the decomposition of these 4 subgraph densities by 
+
+C(k) 
+
+> H
+
+= X
+
+> s,t ∈{ 0,1}
+
+¯C(k),st H
+
+for k = 1 , K and H is either two-chains or half-chains. Simplifying for triangles, the entries of the cross-covariance are given by 
+
+h
+
+Λ
+
+i
+
+> kh
+
+= 32(1 − α − β)
+
+X
+
+> s,t ∈{ 0,1}
+
+σst,kh (θ) ¯C(k),st ,
+
+and for two-stars, 
+
+h
+
+Λ
+
+i
+
+> kh
+
+= 12(1 − α − β)
+
+X
+
+> s,t ∈{ 0,1}
+
+σst,kh (θ)
+
+n
+
+2 ¯C(k),st − ¯C(k),st o
+
+both for k = 1 , K and h indexing an edge-averaged moment in the GMM computation (see Section 5). As in Section C.2, these cross covariances can be consistently estimated by plugging in ˆθ, and estimates of each of the 16 subgraph densities ¯C(k),st H based on the 1st and 
+
+Kth observed snapshots. 
+
+# E Additional analysis of neuroimaging data 
+
+In this section, we present the full testing results for changes in edge density (∆ δ), clustering coefficient (∆cc), and normalized triangle density (∆nt) at the Bonferroni-corrected 5% level for the 23 subjects analyzed in Section 7. Table 2 also shows the signs of the significant changes, + for increase and − for decrease. Due to the heterogeneity across subjects, as a case study we also present the detailed results for subject 1, for both resting state and listening task scans. Table 3 reports estimates of (δ1, δ K , α, β, λ, μ ) for both the resting state and listening task network sequences. Table 4 re-ports estimates of ∆ δ, ∆cc, and ∆nt. All estimates are accompanied by asymptotic marginal 95% confidence intervals. Asymptotic standard errors for higher-order summaries are based on a bootstrap sampler with 400 samples. The results are reported in Tables 3 and 4. 75 We see only minor changes in properties of the resting state network: while the change in density is significant at the 5% level, it is small in magnitude and does not survive a Bonfer-roni correction in the multi-subject data. Changes in the network coordination, measured by ∆cc and ∆nt, are not significant. On the other hand, the listening task networks show signficant changes which are large in magnitude in both ∆ δ and ∆nt. At the end of training, this subject shows a significant decrease edge density, suggesting less overall coordination in fMRI signals; but a significant increase in normalized triangle density, suggesting more tightly clustered regions of brain activity. 
+
+# References 
+
+J. Chang, E. D. Kolaczyk, and Q. Yao. Estimation of subgraph densities in noisy networks. 
+
+Journal of the American Statistical Association , 117(537):361–374, 2022. D. Hsu, S. M. Kakade, and T. Zhang. A spectral algorithm for learning hidden Markov models. Journal of Computer and System Sciences , 78(5):1460–1480, 2012. H. Jaeger. Observable operator models for discrete stochastic time series. Neural Computa-tion , 12(6):1371–1398, 2000. F. Lavancier and P. Rochet. A general procedure to combine estimators. Computational Statistics & Data Analysis , 94:175–192, Feb. 2016. W. K. Newey and D. McFadden. Large sample estimation and hypothesis testing. Handbook of Econometrics , 4:2111–2245, 1994. 76 Resting Listening Subject ∆δ ∆cc ∆nt ∆δ ∆cc ∆nt 1 - - +2 + + -3 - + +4 - +5 - - + - +6 -7 + +8 + + - -9 + - +10 - - + - - -11 - + +12 + - +13 + - + -14 - + -15 + +16 + + - +17 + +18 - -19 + - + -20 + - + -21 -22 + - + -23 - - - + +Table 2: Signs of significant changes in network summaries by condition, all subjects. 77 Rest Listening Parameter Estimate 95% CI Estimate 95% CI 
+
+δ1 0.1674 [0.1631, 0.1718] 0.4623 [0.4563, 0.4684] 
+
+δK 0.1547 [0.1504, 0.1589] 0.1637 [0.1591, 0.1682] 
+
+α 0.0298 [0.0276, 0.0320] 0.0724 [0.0686, 0.0761] 
+
+β 0.1573 [0.1465, 0.1682] 0.1086 [0.1007, 0.1166] 
+
+λ 0.0078 [0.0037, 0.0118] 0.0002 [-0.1392, 0.1396] 
+
+μ 0.3579 [0.2869, 0.4290] 0.0180 [-0.1361, 0.1721] Table 3: Parameter estimates for resting state and listening task networks, subject 1. Rest Listening Parameter Estimate 95% CI Estimate 95% CI ∆δ -0.0127 [-0.0175, -0.0080] -0.2987 [-0.3053, -0.2920] ∆cc 0.0083 [-0.0312, 0.0478] 0.0575 [-0.0248, 0.1399] ∆nt -0.3490 [-1.696, 0.9985] 4.225 [3.121, 5.330] Table 4: Difference in (higher-order) summaries for resting state and listening task networks, subject 1. 78

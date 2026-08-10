@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.06137v1/fig-002.webp",
+      "caption": "Figure 1: Selective repair in electricity price forecasting windows from two cities. The annotated regions show how SkillTFM converts boundary evidence into repairs: periodic overestimation, persistent overestimation while prices remain low, and underestimation during an upward ramp. Evidence-supported repairs reduce MAE from 45.03 to 23.90 and from 66.16 to 33.62; otherwise, SkillTFM preserves the base-model trajectory through fallback.",
+      "page": 2,
+      "index": 2,
+      "width": 890,
+      "height": 400
+    },
+    {
+      "url": "assets/figures/arxiv/2608.06137v1/fig-005.webp",
+      "caption": "Figure 2: Overview of SkillTFM. The lower panels show evidence-conditioned boundary expansion, where task evidence activates verified repair skills and the gating policy selects either a certified repair or fallback; yellow highlights indicate skills or routes activated by the current evidence. The upper loop shows validation-gated skill evolution, where execution traces generate candidate edits, accepted edits update the external skill state, and rejected edits become memory constraints for future decisions.",
+      "page": 3,
+      "index": 5,
+      "width": 1050,
+      "height": 483
+    },
+    {
+      "url": "assets/figures/arxiv/2608.06137v1/fig-001.webp",
+      "caption": "Table 2: Ablation of the core SkillTFM mechanisms. Panel A evaluates evidence-conditioned retrieval and runtime certification on the boundary-shift benchmark; Panel B evaluates validation-gated skill evolution on the nonlinear boundary.",
+      "page": 6,
+      "index": 1,
+      "width": 952,
+      "height": 273
+    },
+    {
+      "url": "assets/figures/arxiv/2608.06137v1/fig-003.webp",
+      "caption": "Figure 4: Capability extension across frozen foundation models with a shared external skill state. Squares denote frozen-model AUC, circles denote AUC after applying the same SkillTFM state, and connecting lines show the resulting improvement. The shared state consistently improves all four models while preserving selective intervention and zero observed harm.",
+      "page": 7,
+      "index": 3,
+      "width": 1056,
+      "height": 508
+    },
+    {
+      "url": "assets/figures/arxiv/2608.06137v1/fig-004.webp",
+      "caption": "Table 5: Controlled boundary families used to evaluate SkillTFM. Boundary evidence is observable at runtime, while boundaryfamily labels are used only for evaluation grouping.",
+      "page": 10,
+      "index": 4,
+      "width": 1054,
+      "height": 412
+    }
+  ]
+}

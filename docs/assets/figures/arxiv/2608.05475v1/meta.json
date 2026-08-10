@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-003.webp",
+      "caption": "Figure 1: Overview of KV-Skill. (a) A KV-Skill is an external factorized associative operator, not text or an attention KV cache. Keys U (ℓ) s address slots; values W (ℓ) s return a query-dependent response. (b) Registration converts a text skill into per-layer operators M (ℓ) s , updating only the shared interface Iregb . (c) Reward learning optimizes a compact operator and task interface jointly, backbone frozen. The operator can start from scratch or from text-informed initialization. (d) Loading, replacing, or removing a KV-Skill adds no prompt positions; a swap requires one re-prefill. (e) One registered interface lets a frozen backbone read multiple independent KV-Skills, each constructed per backbone.",
+      "page": 2,
+      "index": 3,
+      "width": 950,
+      "height": 504
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-007.webp",
+      "caption": "Figure 2: Reading a KV-Skill. The interface queries the loaded operator from the residual state and injects a gated response into the frozen backbone, separate from self-attention and without adding attention KV-cache entries.",
+      "page": 4,
+      "index": 7,
+      "width": 422,
+      "height": 371
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-001.webp",
+      "caption": "Table 1: Main-task and general-QA results. Dashes mark unevaluated settings; bold marks the best per backbone and column. Registered KV-Skill uses the matched-budget protocol (Appendix A).",
+      "page": 6,
+      "index": 1,
+      "width": 808,
+      "height": 433
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-002.webp",
+      "caption": "Table 2: Additional backbones. DocVQA is omitted as these backbones lack a vision pathway.",
+      "page": 6,
+      "index": 2,
+      "width": 727,
+      "height": 342
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-006.webp",
+      "caption": "Table 5: Matched reward training across trainable substrates. All methods use the same reward objective, backbone, training budget, decoding protocol, and parameter count. KV-Skill is best in seven of eight settings. KV-Skill results repeat the corresponding entries from Table 1 with error bars; each baseline was trained once. A dash denotes an unavailable initialization, and bold marks the best result for each backbone, task, and initialization.",
+      "page": 8,
+      "index": 6,
+      "width": 789,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-005.webp",
+      "caption": "Table 6: Two constructions within the KV-Skill design space. Both use the same associative read but differ in how the operator is obtained and optimized.",
+      "page": 13,
+      "index": 5,
+      "width": 904,
+      "height": 193
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-004.webp",
+      "caption": "Figure 4: Post-hoc rank and direction analysis. Left: spectral truncation preserves full-operator performance down to rank one while the registered interface remains fixed. Right: the correct rank-one direction preserves nearly all of the gain, whereas a magnitude-matched random direction does not. Results use 124 LiveMath, 300 SearchQA, and 100 STaRK-Prime examples.",
+      "page": 14,
+      "index": 4,
+      "width": 865,
+      "height": 373
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-010.webp",
+      "caption": "Table 14: Per-skill resource comparison. The compact KV-Skill contains two 32× 256 FP32 factors. The soft prefix contains 32 BF16 vectors of dimension 2560. The LoRA size is computed analytically from the rank-8 configuration used by SoftSkill and was not reproduced in our implementation. KV-Skill sizes exclude the shared per-backbone interface I .",
+      "page": 17,
+      "index": 10,
+      "width": 831,
+      "height": 208
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-008.webp",
+      "caption": "Table 16: Measured KV-Skill runtime overhead on one H100. The experiment uses Qwen3.5-4B and a 512-slot KV-Skill. Peak-memory differences round to 0.000 GiB at every evaluated context length.",
+      "page": 17,
+      "index": 8,
+      "width": 457,
+      "height": 266
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05475v1/fig-009.webp",
+      "caption": "Table 18: STaRK candidate-selection results on Qwen3.5-4B and gpt-oss-20b. Each example contains ten candidates and is evaluated by exact match. Bold marks the best result within each backbone and graph.",
+      "page": 17,
+      "index": 9,
+      "width": 429,
+      "height": 327
+    }
+  ]
+}

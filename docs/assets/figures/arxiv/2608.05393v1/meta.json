@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-004.webp",
+      "caption": "Figure 1: Overview of cascaded semantic prompting. Fundamental image priors (i.e., color, texture, and shape) condition the input space, while instance-aware self-attention semantics guide intermediate features.",
+      "page": 2,
+      "index": 4,
+      "width": 441,
+      "height": 337
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-014.webp",
+      "caption": "Figure 2: Overall architecture of our method. (a) Fundamental Image Prior Visual Prompt: handcrafted priors (color histogram, texture, shape) are computed directly from the input image X (i.e., in the input space, not from any deep feature), concatenated with a randomized learnable prompt, and projected by a lightweight FC for token-size alignment. The block labeled “Image Feature” in panel (a) denotes the resulting token embedding after this FC projection. (b) Re-Weighting Adapter: a light two-layer linear module produces channel-wise weights to re-calibrate the final features before the head. (c) Cascaded prompting in the backbone: prompts are injected at selected layers {Li}; the self-attention map from the previous layer is encoded and cascaded forward as a semantic prompt, forming a skip-cascade that integrates fundamental priors with advanced image semantics.",
+      "page": 5,
+      "index": 14,
+      "width": 960,
+      "height": 419
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-001.webp",
+      "caption": "Figure 3: Ablation studies on CUB-200. (a) Replacing the single FC with deeper MLPs degrades accuracy as depth grows. (b) Increasing prompt length yields a non-monotonic trend (moderate length works best). (c) Targeted prompt placement outperforms indiscriminate/all-layer injection. (d) Enlarging the adapter width quickly saturates.",
+      "page": 6,
+      "index": 1,
+      "width": 968,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-005.webp",
+      "caption": "Table 1: Performance comparison of different fine-tuning strategies on ViT-Base/16. The best are in bold, the second are underlined.",
+      "page": 7,
+      "index": 5,
+      "width": 932,
+      "height": 413
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-006.webp",
+      "caption": "Table 2: Performance comparison on VTAB-1k with Swin Transformer.",
+      "page": 7,
+      "index": 6,
+      "width": 640,
+      "height": 246
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-012.webp",
+      "caption": "Table 3: Comparison between semantic and text prompts.",
+      "page": 8,
+      "index": 12,
+      "width": 982,
+      "height": 468
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-007.webp",
+      "caption": "Figure 5: t-SNE (Van der Maaten & Hinton, 2008) results of the learned features in the last layer of the model by four different methods on Sun397.",
+      "page": 10,
+      "index": 7,
+      "width": 786,
+      "height": 259
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-008.webp",
+      "caption": "Figure 6: Information Bottleneck and Mutual Information between feature and label across transformer layers on CUB-200. β is set to 1 following common practices.",
+      "page": 10,
+      "index": 8,
+      "width": 568,
+      "height": 331
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-002.webp",
+      "caption": "Table 5: Ablation study on VTAB-1k. We analyze the impact of removing components.",
+      "page": 11,
+      "index": 2,
+      "width": 540,
+      "height": 302
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-013.webp",
+      "caption": "Figure 7: Performance comparison of using different shape and texture operators, with the color operator fixed.",
+      "page": 12,
+      "index": 13,
+      "width": 668,
+      "height": 517
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-011.webp",
+      "caption": "Table 7: Performance of different methods on the VTAB-1k benchmark based on ViT backbone. The best results are highlighted in bold to showcase the most effective methodology. Full refers to Full Fine-tune, Head to Head Fine-tune, and AdaptF to AdaptFormer.",
+      "page": 23,
+      "index": 11,
+      "width": 977,
+      "height": 448
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-003.webp",
+      "caption": "Figure 8: Comparison of features learned without (middle) and with (right) semantic priors using cosinesimilarity maps (Vaswani et al., 2017).",
+      "page": 26,
+      "index": 3,
+      "width": 444,
+      "height": 311
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-009.webp",
+      "caption": "Table 13: Hyperparameter settings used by our method, VPT (Jia et al., 2022), and VFPT (Zeng et al., 2024) on VTAB-1k and FGVC with ViT-B/16. “per-task grid” means the value is chosen on the official validation split of each dataset. “–” means not applicable.",
+      "page": 33,
+      "index": 9,
+      "width": 932,
+      "height": 598
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05393v1/fig-010.webp",
+      "caption": "Table 14: Mean±std across three random seeds on the VTAB-1k group means and the FGVC mean. VFPT numbers come from the per-task std tables (Tab. S1–S4) of (Zeng et al., 2024); SA2VP is rerun under our protocol.",
+      "page": 33,
+      "index": 10,
+      "width": 929,
+      "height": 434
+    }
+  ]
+}

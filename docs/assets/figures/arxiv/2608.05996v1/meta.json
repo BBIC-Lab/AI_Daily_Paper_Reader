@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.05996v1/fig-005.webp",
+      "caption": "Figure 1: Layer-wise evolution of representation measures across three imageclassification tasks. Deep belief networks with 100, 50, or 30 neurons per hidden layer were trained using CD-1 on MNIST, Fashion-MNIST, and KMNIST. Solid lines with circles, dashed lines with squares, and dotted lines with triangles denote widths of 100, 50, and 30 neurons, respectively. (A–I) The generalized discrimination value (GDV; orange), abstraction distance operationalized as reconstruction MSE (blue), and effective dimension (olive) are shown as functions of layer depth for ten-layer DBNs. (J) MNIST GDV for matched, exceptionally deep DBNs comprising 30 hidden layers. The ten lower RBMs are identical to those used in panels A, D, and G; layers H11–H30 were subsequently trained with the same greedy CD-1 procedure and hyperparameters while the lower layers remained frozen. Thin curves represent five individual random seeds, shaded regions indicate the corresponding minimum–maximum ranges, and thick curves show the means across seeds. GDV was evaluated using the same fixed, class-balanced subset for all models.",
+      "page": 27,
+      "index": 5,
+      "width": 1045,
+      "height": 1001
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05996v1/fig-003.webp",
+      "caption": "Figure 2: Layer-wise transformation of MNIST representations and control analyses. (a–e) Metric two-dimensional multidimensional-scaling (MDS) embeddings of the input and the deterministic activation-probability representations in hidden layers H1, H2, H5, and H10 of a DBN trained with CD-1 (seed 1234). The same class-balanced subset of 100 test examples per MNIST digit was used in every panel; colors denote digit labels. Distances were computed after the same component-wise standardization used for the GDV. Panel titles report the GDV and the test accuracy of an RBF-SVM trained on the respective full representation. MDS serves only as a visualization and was not involved in DBN training or quantitative GDV estimation. (f) Layer-wise GDV for the trained CD-1 reference, a matched CD-2 run, an untrained network, a network with independently shuffled incoming weight vectors, and the trained representations evaluated after permutation of the labels. (g) Comparison of deterministic activation probabilities with local pre-activations, the cumulative affine control path, and direct or recursively propagated Bernoulli samples. All GDV curves show the same MNIST seed-1234 preliminary experiments.",
+      "page": 28,
+      "index": 3,
+      "width": 1049,
+      "height": 992
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05996v1/fig-002.webp",
+      "caption": "Figure 3: Redundancy of learned weight directions drives the layer-wise collapse of effective dimensionality. Five MNIST DBNs with 100 neurons per hidden layer were trained using CD1. Thin curves show individual random seeds, shaded regions indicate the corresponding minimum– maximum ranges, and thick curves show means across seeds; layer 0 denotes the input representation and is included only in the activity-based panels A–F. (A) Actual effective dimensionality (olive) and the variance-only dimension obtained after discarding all off-diagonal covariances (turquoise). Their large separation shows that unequal single-neuron variances alone cannot account for the observed dimensionality collapse. (B) Covariance-induced redundancy, defined as 1−Deff/Dvar, equivalently the fraction of squared covariance-matrix energy contained in off-diagonal entries. (C)Mean absolute Pearson correlation between pairs of non-constant neuronal activities. (D) Fraction of total variance explained by the first principal component. (E) Total activity variance, given by the trace of the covariance matrix. (F) Mean single-neuron activity standard deviation. (G) Mean absolute cosine similarity across all incoming weight-vector pairs and mean similarity of each neuron to its most similar same-layer partner. (H) Participation-ratio dimension of the weight matrix after normalizing every neuronal weight vector to unit length. (I) Across-pair association between weight-vector similarity and activity correlation, shown as the Spearman correlation between their absolute values and the Pearson correlation between their signed values. Together, the measures show that deeper representations become dominated by a small number of shared activity directions because many neurons learn increasingly similar weight directions and consequently produce correlated, functionally redundant responses.",
+      "page": 29,
+      "index": 2,
+      "width": 1048,
+      "height": 873
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05996v1/fig-001.webp",
+      "caption": "Figure 4: Global GDV improvement coexists with declining class readout and the collapse of a few critical digit pairs. Five MNIST DBNs with 100 neurons per hidden layer were trained using CD-1; layer 0 denotes the input representation. (A) Layer-wise GDV and test accuracy of three probes fitted independently to each frozen representation. Thin curves show individual DBN seeds, shaded regions indicate minimum–maximum ranges, and thick curves show means. Linear logistic and 200-center Gaussian-kernel probes were trained on all 60,000 training examples. Gaussian centers were obtained without labels by MiniBatchKMeans, with a shared layer-specific bandwidth set to the median training distance to the nearest center; only the logistic output used labels. The exact RBF-SVM used the same fixed, stratified subset of 10,000 training examples for every DBN, with C = 10 and γ = 4/d fixed from the preliminary training-only validation. Probe levels should therefore be compared cautiously across methods, whereas their layer-wise trends are directly interpretable. (B–F) Mean pairwise-GDV matrices for the input, H1, H2, H5, and H10, evaluated on the same fixed class-balanced test subset and averaged across five DBN seeds. Only the upper triangle is shown because the matrices are symmetric; all panels use a common color scale, with more negative values indicating better separation. (G) Change in pairwise GDV from H2 to H10. Blue cells denote improved and red cells deteriorated pairwise separation. Black outlines identify pairs for which both pairwise GDV and symmetric RBF-SVM confusion deteriorated: 4–9, 5–8, and 3–5. Thus, the global GDV improves because most digit pairs become geometrically better separated, while the decline in classification accuracy is concentrated in a small number of difficult, visually similar pairs.",
+      "page": 30,
+      "index": 1,
+      "width": 1046,
+      "height": 877
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05996v1/fig-006.webp",
+      "caption": "Figure 5: Learned H1 weight structure determines whether nonlinear compression enhances or destroys class accessibility. Linear logistic, 200-center Gaussian-kernel, and exact RBF-SVM probes were evaluated on the input, intact H1 activation probabilities, and an H1 control in which every neuron’s incoming weights were independently permuted across pixels. (A–C) MNIST, Fashion-MNIST, and KMNIST results across five DBN seeds. Bars show means, open symbols individual seeds, and whiskers minimum–maximum ranges. Permutation preserved each neuron’s weight multiset, norm, and bias but caused a pronounced accuracy loss for every dataset and probe. (D–F) Exploratory mechanism analysis for MNIST seed 1234 using linear and RBF-SVM probes. (D) Endpoint comparison of the input and the preactivation (pre) and sigmoid representations generated by intact or permuted weights. Permuted preactivations retain considerable class information, whereas their sigmoid transformation is strongly destructive. (E) Dose response obtained from Wα = αW + (1 − α)W̃ , after restoring every column to its learned norm. Accessibility increases systematically with retained learned structure, particularly after the sigmoid. (F) Mean neuronal preactivation standard deviation and the percentage of sigmoid activations below 0.01 or above 0.99. Scale and saturation contribute to, but do not fully explain, the structure-dependent accuracy trend.",
+      "page": 31,
+      "index": 6,
+      "width": 1045,
+      "height": 719
+    },
+    {
+      "url": "assets/figures/arxiv/2608.05996v1/fig-004.webp",
+      "caption": "Figure 6: Free generation and data-grounded reconstruction change qualitatively across DBN depth and datasets. Ten-layer DBNs with 100 neurons per hidden layer were trained using CD-1 on MNIST, Fashion-MNIST, and KMNIST (seed 1234). Columns show generation or reconstruction through H1, H2, H3, H5, and H10. (a–e,k–o,u–y) For MNIST, Fashion-MNIST, and KMNIST, respectively, 25 independent free-running chains were initialized from Bernoulli(0.5) states in the lower part of the RBM terminating at the indicated layer and evolved for 2,000 alternating Gibbs steps. The resulting states were propagated stochastically through the directed lower DBN; final visible-unit probabilities are shown. No data sample was used to initialize or clamp the chains. (f–j,p–t,z–ad) Twenty-five fixed test images per dataset, with labels cycling through 0–9, were propagated deterministically to the indicated layer and immediately back to the visible layer, without equilibration or sampling. Small numbers denote the true input classes. Free dreams become generally more varied and data-like with depth, but show pronounced dataset-specific mode concentration and ambiguity. Reconstructions retain coarse class identity over much of the hierarchy while progressively losing individual detail and becoming more prototypical.",
+      "page": 32,
+      "index": 4,
+      "width": 950,
+      "height": 1068
+    }
+  ]
+}

@@ -1,48 +1,48 @@
 ## 最新日报
-- 最新运行日期：2026-08-10
-- 运行时间：2026-08-10 04:46:41 北京时间
+- 最新运行日期：2026-08-11
+- 运行时间：2026-08-11 04:23:01 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读两篇高分研究，聚焦回声状态网络的动力学剪枝新视角和源域无关域适应的共识漂移调制，速读则涉猎多模态对齐、图学习压缩等前沿方向。  
-蓄水池剪枝的动力学分析和无源域适应共识机制最值得深挖，前者可能重塑网络压缩范式。  
-建议从《Rethinking Reservoir Pruning》切入，结合高效对齐方法，重新审视轻量时序建模的边界。
-- 详情：[/202608/10/README](/202608/10/README)
+今日精读以9分高分聚焦模型迁移自适应，涵盖视觉基础模型级联语义适配与无线感知跨域对抗迁移。  
+值得重点关注级联语义结构如何赋予大模型更强适应力，以及双注意力对抗网络在跨方向感知上的突破。  
+建议读者从“分层语义注入”与“注意力对抗迁移”两条路径，探索自身业务场景的泛化可能。
+- 详情：[/202608/11/README](/202608/11/README)
 
 ### 精读区论文标签
-1. [Rethinking Reservoir Pruning: A Dynamical Perspective for Echo State Networks](/202608/10/2608.04593v1-rethinking-reservoir-pruning-a-dynamical-perspective-for-echo-state-networks)  
+1. [Adapting Vision Foundation Models with Cascaded Semantics](/202608/11/2608.05393v1-adapting-vision-foundation-models-with-cascaded-semantics)  
    标签：评分：9.0/10、query:ndai
-   evidence：提出回声状态网络动态模态剪枝方法，提升时间序列预测
-2. [COSMO: Consensus-Driven Shift Modulation for Source-Free Domain Adaptation](/202608/10/2608.04604v1-cosmo-consensus-driven-shift-modulation-for-source-free-domain-adaptation)  
+   evidence：参数高效的视觉提示调优通过少量新参数适配预训练ViT
+2. [Dual-Attention and Adversarial Transfer Networks for Sim-to-Real Cross-Orientation Wireless Sensing](/202608/11/2608.05664v1-dual-attention-and-adversarial-transfer-networks-for-sim-to-real-cross-orientation-wireless-sensing)  
    标签：评分：9.0/10、query:ndai
-   evidence：无源域适应利用预训练视觉语言模型将源训练模型适应到无标注目标域
-3. [An active-learning framework for real-time depth perception from monocular vision streams](/202608/10/2608.04917v1-an-active-learning-framework-for-real-time-depth-perception-from-monocular-vision-streams)  
+   evidence：通过对抗迁移从仿真到真实数据，减少多朝向标注数据的需求
+3. [Convergent Evolution in Neural Representation Space: Emergent Order in Deep Belief Networks](/202608/11/2608.05996v1-convergent-evolution-in-neural-representation-space-emergent-order-in-deep-belief-networks)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于有限标签域自适应的主动学习框架
-4. [Rectifying Geometric Misalignment: Online Source-Free Adaptation for Class-Imbalanced EEG](/202608/10/2608.05315v1-rectifying-geometric-misalignment-online-source-free-adaptation-for-class-imbalanced-eeg)  
+   evidence：深度信念网络从原始图像中无监督学习分层表征，并随深度出现类别结构
+4. [Beyond Flat Policies: Hierarchical Post-Training for Embodied Agents in Robotic Manipulation](/202608/11/2608.05999v1-beyond-flat-policies-hierarchical-post-training-for-embodied-agents-in-robotic-manipulation)  
    标签：评分：9.0/10、query:ndai
-   evidence：面向EEG脑机接口的无源在线域适应方法，处理黎曼流形上的类别不均衡标签偏移
-5. [Spectral Distillation: From Nonlinear Dynamics to Linear State-Space Models](/202608/10/2608.05416v1-spectral-distillation-from-nonlinear-dynamics-to-linear-state-space-models)  
+   evidence：利用预训练视觉语言模型进行下游机器人控制
+5. [SkillTFM: Gated Skill Evolution for Training-Free Adaptation of Tabular Foundation Models](/202608/11/2608.06137v1-skilltfm-gated-skill-evolution-for-training-free-adaptation-of-tabular-foundation-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：从非线性动力学中学习紧凑线性状态空间表示以预测未来观测
+   evidence：无需训练和标签即可将表格基础模型适配到新领域
 
 ### 速读区论文标签
-1. [Multimodal Alignment Through Joint Kernel Entropic Gromov--Wasserstein Optimal Transport](/202608/10/2608.04234v1-multimodal-alignment-through-joint-kernel-entropic-gromov--wasserstein-optimal-transport)  
+1. [Inference for subgraph densities in noisy dynamic networks](/202608/11/2608.05407v1-inference-for-subgraph-densities-in-noisy-dynamic-networks)  
    标签：评分：8.0/10、query:ndai
-   evidence：联合核最优传输实现多模态表示对齐
-2. [iStructTab: Structured Feature Sequencing for Multimodal Learning of Image and Tabular Data](/202608/10/2608.04348v1-istructtab-structured-feature-sequencing-for-multimodal-learning-of-image-and-tabular-data)  
+   evidence：利用隐马尔可夫模型对动态网络序列进行统计推断
+2. [KV-Skill: Forging Expertise in the Model's Native Language](/202608/11/2608.05475v1-kv-skill-forging-expertise-in-the-models-native-language)  
    标签：评分：8.0/10、query:ndai
-   evidence：将特征转换为有序序列的结构化特征排序算法
-3. [EvtGraph: Event-Adaptive Compression for Sparse Temporal Graph Learning in Multimodal Time Series](/202608/10/2608.04368v1-evtgraph-event-adaptive-compression-for-sparse-temporal-graph-learning-in-multimodal-time-series)  
+   evidence：将任务知识存储为外部算子，供冻结的预训练语言模型读取，以支持下游技能应用
+3. [From Local Learning to Global Prediction Through Layered Surprise Cascades](/202608/11/2608.05481v1-from-local-learning-to-global-prediction-through-layered-surprise-cascades)  
    标签：评分：8.0/10、query:ndai
-   evidence：面向多模态时间序列的事件自适应压缩与稀疏时序图推理，用于序列分析与预测。
-4. [NodeJEPA: Structure-Conditioned Latent Prediction for Node-Level Graph Self-Supervised Learning](/202608/10/2608.04381v1-nodejepa-structure-conditioned-latent-prediction-for-node-level-graph-self-supervised-learning)  
+   evidence：具有分层皮层表征的类脑预测编码模型
+4. [Learning Context-Free Grammars for Grammar-Constrained Decoding via Declarative Agentic Programming with Guarantees](/202608/11/2608.05493v1-learning-context-free-grammars-for-grammar-constrained-decoding-via-declarative-agentic-programming-with-guarantees)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于潜在预测的图节点自监督表示学习
-5. [PADFormer: Pose-agnostic Anomaly Detection from Sparse View Images](/202608/10/2608.04210v1-padformer-pose-agnostic-anomaly-detection-from-sparse-view-images)  
+   evidence：语法约束解码将语言模型原始输出转换为领域特定语言中的合法序列
+5. [Hybrid Probabilistic Zonotopes for Identifiable and Refinable Predictive Uncertainty](/202608/11/2608.05454v1-hybrid-probabilistic-zonotopes-for-identifiable-and-refinable-predictive-uncertainty)  
    标签：评分：7.0/10、query:ndai
-   evidence：通过掩码重建和空间对齐从原始图像学习正常表征
+   evidence：在序列预测步骤间耦合不确定性的概率输出头
 
