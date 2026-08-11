@@ -1,0 +1,424 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-11T20:36:43.071748+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 66,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 97,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 17,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 12,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 18
+  },
+  "deep_dive": [
+    {
+      "id": "2608.06673v1",
+      "source": "arxiv",
+      "title": "When Semantics Saturate or Emerge: Adaptation-Conditional Semantic Utility in Source-Free Cross-Domain Few-Shot Learning",
+      "abstract": "Language descriptions in source-free cross-domain few-shot learning (SF-CDFSL) are often selected according to zero-shot accuracy obtained with a frozen vision--language model. This paper asks whether that ranking remains valid after target-domain visual adaptation. Under a strictly paired protocol, we compare a generic class-name template with fixed detailed class descriptions before and after visual Low-Rank Adaptation (LoRA) on EuroSAT, CropDisease, ISIC, and ChestX. Let $\\deltazero$ and $\\deltalora$ denote the Detailed-minus-Base accuracy before and after adaptation, respectively. Two recurring regimes emerge. In \\emph{semantic saturation}, $\\deltazero>0$ but $0<\\deltalora\\ll\\deltazero$: on EuroSAT and CropDisease, initial gains of 8.13--21.54 percentage points contract to 0.69--2.96 points after LoRA. In \\emph{semantic emergence}, $\\deltazero\\leq0$ but $\\deltalora>0$: on ISIC and ChestX, detailed descriptions become more useful only after the visual representation is updated. Training trajectories and sample-level decomposition show that saturation is driven mainly by Base-LoRA recovering errors already solved by detailed semantics, whereas emergence is associated with prediction turnover and newly formed Detailed-only correct decisions. Fixed-point-free shuffled-semantic controls, a second CLIP backbone, and multiple random seeds support the broad pattern while identifying ChestX 1-shot as a weak boundary case. These findings establish that zero-shot prompt quality is an incomplete proxy for adaptation-anchor quality and motivate evaluating language on both sides of the adaptation boundary.",
+      "authors": [
+        "Wei Liu",
+        "Xing Deng",
+        "Haijian Shao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T00:38:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.06673v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "source-free cross-domain few-shot learning with limited labels",
+      "llm_evidence_cn": "无源跨域小样本学习与有限标注适配",
+      "llm_evidence": "无源跨域小样本学习与有限标注适配",
+      "canonical_evidence": "无源跨域小样本学习与有限标注适配",
+      "llm_tldr_en": "Studies how language description utility changes after target-domain visual adaptation in cross-domain few-shot learning.",
+      "llm_tldr_cn": "研究跨域小样本学习中语言描述效用如何随目标域适配而变化。",
+      "llm_tldr": "研究跨域小样本学习中语言描述效用如何随目标域适配而变化。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.06748v1",
+      "source": "arxiv",
+      "title": "KReF: Training-Free Retrieval for Long-Term Time-Series Forecasting and Predictive Uncertainty",
+      "abstract": "Probabilistic long-term time-series forecasting commonly relies on trained models. Training-free conformal methods typically construct intervals around a pre-existing point forecaster and do not natively represent a complete predictive distribution; sequential variants additionally suffer from increasingly delayed feedback at long horizons. We propose KReF, a training-free retrieval framework that treats retrieved historical futures as a querylocal empirical predictive distribution. After robust preprocessing, KReF embeds each lookback using handcrafted statistics or frozen random Fourier features and retrieves similar historical lookback-future pairs. Their similarity weights directly define predictive masses, quantiles, CRPS, and a weighted-mean point forecast. KReF further uses the observed query lookback to construct a probability-integral-transform map and applies validation-selected expansion and shrinkage rates to adapt interval boundaries. Across six LTSF benchmarks and four horizons, KReF obtains the lowest CRPS in all 12 dataset-embedding settings and the lowest IS90 in 9 settings. Without gradient-based fitting, its point forecasts also match or surpass trained baselines on two of six datasets. An archive-oracle analysis further reveals substantial headroom under finer horizon- and channel-wise routing. These results establish retrieval as a useful and underexplored inductive bias for LTSF.",
+      "authors": [
+        "Yang Zhang",
+        "Rui Su"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-07T03:16:25+00:00",
+      "link": "https://arxiv.org/pdf/2608.06748v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "long-term time-series forecasting via training-free retrieval, direct match to sequential data prediction",
+      "llm_evidence_cn": "通过免训练的检索实现长期时间序列预测，直接匹配序列数据预测",
+      "llm_evidence": "通过免训练的检索实现长期时间序列预测，直接匹配序列数据预测",
+      "canonical_evidence": "通过免训练的检索实现长期时间序列预测，直接匹配序列数据预测",
+      "llm_tldr_en": "Presents a training-free retrieval framework for probabilistic long-term time-series forecasting and uncertainty, directly addressing sequential data prediction.",
+      "llm_tldr_cn": "提出免训练检索框架用于长期时间序列概率预测与不确定性估计，直接解决序列预测。",
+      "llm_tldr": "提出免训练检索框架用于长期时间序列概率预测与不确定性估计，直接解决序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.06860v1",
+      "source": "arxiv",
+      "title": "Bridging the Gap Between Hyperdimensional Computing and Kernel Methods via the Nyström Method",
+      "abstract": "Hyperdimensional computing (HDC) is an approach from the cognitive science literature for solving information processing tasks using data represented as high-dimensional random vectors. The technique has a rigorous mathematical backing, and is easy to implement in energy-efficient and highly parallel hardware like FPGAs and \"processing-in-memory\" architectures. The effectiveness of HDC in machine learning largely depends on how raw data is mapped to high-dimensional space. In this work, we propose NysHD, a new method for constructing this mapping that is based on the Nyström method from the literature on kernel approximation. Our approach provides a simple recipe to turn any user-defined positive-semidefinite similarity function into an equivalent mapping in HDC. There is a vast literature on the design of such functions for learning problems. Our approach provides a mechanism to import them into the HDC setting, expanding the types of problems that can be tackled using HDC. Empirical evaluation against existing HDC encoding methods shows that NysHD can achieve, on average, 11% and 17% better classification accuracy on graph and string datasets respectively.",
+      "authors": [
+        "Quanling Zhao",
+        "Anthony Hitchcock Thomas",
+        "Ari Brin",
+        "Xiaofan Yu",
+        "Tajana Rosing"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-07T06:37:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.06860v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Nyström-based mapping of raw data to high-dimensional vectors for kernel-based representation learning",
+      "llm_evidence_cn": "基于Nyström的原始数据到高维向量映射，用于核表示学习",
+      "llm_evidence": "基于Nyström的原始数据到高维向量映射，用于核表示学习",
+      "canonical_evidence": "基于Nyström的原始数据到高维向量映射，用于核表示学习",
+      "llm_tldr_en": "Presents NysHD, a method that maps raw data to hyperdimensional vectors via the Nyström method for any similarity function.",
+      "llm_tldr_cn": "提出NysHD，利用Nyström方法将任意相似函数的原始数据映射为超维向量。",
+      "llm_tldr": "提出NysHD，利用Nyström方法将任意相似函数的原始数据映射为超维向量。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.07033v1",
+      "source": "arxiv",
+      "title": "ZIPBrain: Can EEG Foundation Models Be Faster, Locally Deployable, but Accurate?",
+      "abstract": "This work investigates whether Electroencephalograph (EEG) foundation models (EFMs) can be made faster and locally deployable without sacrificing accuracy. EEG foundation models are a major trend, offering strong general-purpose representations. However, their computational burden grows quadratically with input length, hindering deployment on resource-constrained scenario, particularly for real-time clinical monitoring. EEG's low SNR further suggests many of these tokens are redundant and compressible with little accuracy cost. We propose ZIPBrain, a novel redundancy-aware EEG token pooling module that leverages this low-SNR characteristic to reduce token count. Given a token sequence, ZIPBrain partitions tokens into redundant and unique groups, then merges each redundant token with its most similar counterpart in the unique group. Furthermore, ZIPBrain serves as a training-free, plug-and-play module that seamlessly integrates into standard Transformer encoders with negligible computational overhead. Extensive experiments across multiple EEG foundation models show ZIPBrain's strong versatility, achieving 1.3%-10.5% average improvement over baselines, while reducing wall-clock inference time by 32.7% (up to 41.8% with CUDA Graph) compared to the original EEG foundation models.",
+      "authors": [
+        "Lingwei Li",
+        "Yirong Kan",
+        "Peng Chen",
+        "Xu Cao",
+        "Zheng Chen",
+        "Yasuhiko Nakashima"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-07T09:45:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.07033v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG representation learning and token compression",
+      "llm_evidence_cn": "EEG表征学习与令牌压缩",
+      "llm_evidence": "EEG表征学习与令牌压缩",
+      "canonical_evidence": "EEG表征学习与令牌压缩",
+      "llm_tldr_en": "Introduces ZIPBrain, a token pooling method to accelerate EEG foundation models while retaining accuracy.",
+      "llm_tldr_cn": "提出ZIPBrain，通过令牌池化加速EEG基础模型并保持精度。",
+      "llm_tldr": "提出ZIPBrain，通过令牌池化加速EEG基础模型并保持精度。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "representation learning for neural activity",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.07065v1",
+      "source": "arxiv",
+      "title": "AutoIntervene: Calibrated Intervention for Action-Chunking Imitation Learning Policies",
+      "abstract": "Action-chunking visuomotor policies learn from demonstrations and improve temporal consistency by predicting short action sequences rather than single-step commands. Yet perception errors and execution drift can move the robot outside the demonstration distribution, while the policy continues to produce smooth action chunks that are inconsistent with the observed state. We present AutoIntervene, an online framework that selectively transfers control between an action-chunking policy and an operator during deployment. AutoIntervene evaluates proposed chunks against a visual-action support memory built from successful task executions, combining visual similarity with consistency between proposed and reference actions. Phase-local support governs policy-to-operator transfer within the current task phase, whereas global support governs the return to policy control after operator recovery. We calibrate separate switching thresholds for the two directions from empirical quantiles of evaluation-level scores on held-out expert demonstrations, avoiding direct manual tuning of score cutoffs. Intervention segments retained from successful rollouts target learner-induced states and provide corrective supervision for subsequent policy updates. Experiments on real-world bimanual manipulation tasks show higher post-adaptation task success and lower operator-control time than manual intervention. Videos and additional results are available at https://aus.bot/research/autointervene/.",
+      "authors": [
+        "Jinhe Tang",
+        "Weiming Zhi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV",
+        "cs.HC",
+        "cs.LG"
+      ],
+      "published": "2026-08-07T10:14:29+00:00",
+      "link": "https://arxiv.org/pdf/2608.07065v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Action-chunking policy predicts short action sequences from input, converting model outputs into sequences.",
+      "llm_evidence_cn": "动作分块策略从输入预测短动作序列，将模型输出转换为序列。",
+      "llm_evidence": "动作分块策略从输入预测短动作序列，将模型输出转换为序列。",
+      "canonical_evidence": "动作分块策略从输入预测短动作序列，将模型输出转换为序列。",
+      "llm_tldr_en": "AutoIntervene selectively controls action-chunking policy by evaluating proposed action sequences against a visual-action memory.",
+      "llm_tldr_cn": "AutoIntervene通过视觉-动作记忆评估动作序列，选择性地控制动作分块策略。",
+      "llm_tldr": "AutoIntervene通过视觉-动作记忆评估动作序列，选择性地控制动作分块策略。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.06729v1",
+      "source": "arxiv",
+      "title": "AtlasVLA: Persistent World-Ego State Modeling for Vision-Language-Action Models",
+      "abstract": "While Vision-Language-Action (VLA) models have advanced embodied AI, their fundamentally reactive paradigm severely limits performance in partially observable and long-horizon tasks. When restricted to a single wrist-mounted camera, they inevitably suffer from perception forgetting as objects exit the field of view, and temporal task-progress forgetting} during multi-step execution. To overcome these bottlenecks, we propose AtlasVLA, a novel framework that transitions from direct reactive manipulation to proactive reasoning through a persistent world-ego state. AtlasVLA features a dual-memory architecture: a 4D Persistent World State Memory that lifts transient 2D observations into a globally updated, voxel-hashed spatial state to resolve visual blind spots, and an Ego-Working State Memory that tracks historical ego state and task progress. By conditioning a diffusion transformer (DiT) on this joint World-Ego state, AtlasVLA enables robust spatial reasoning. Extensive evaluations across LIBERO, RLBench, and real-world benchmarks demonstrate that AtlasVLA achieves state-of-the-art performance using solely a wrist camera. Remarkably, it decisively outperforms multi-view baselines, yielding absolute success rate improvements of 9.4% on LIBERO-Long and 17.5% in real-world long-horizon tasks.",
+      "authors": [
+        "Guiyu Zhao",
+        "Longteng Guo",
+        "Yanghong Mei",
+        "Zilin Zhu",
+        "Yu Zhang",
+        "Bin Cao",
+        "Mingming Yu",
+        "Xingjian He",
+        "Jie Jiang",
+        "Jing Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-08-07T02:49:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.06729v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Persistent world-ego state modeling for predicting long-horizon actions",
+      "llm_evidence_cn": "持久世界自我状态建模，用于长时序行动预测",
+      "llm_evidence": "持久世界自我状态建模，用于长时序行动预测",
+      "canonical_evidence": "持久世界自我状态建模，用于长时序行动预测",
+      "llm_tldr_en": "AtlasVLA uses a dual-memory persistent state to overcome perception and task-progress forgetting in long-horizon vision-language-action models.",
+      "llm_tldr_cn": "AtlasVLA通过持久化双记忆状态，减少长程任务中的感知和进度遗忘，提升行动预测性能。",
+      "llm_tldr": "AtlasVLA通过持久化双记忆状态，减少长程任务中的感知和进度遗忘，提升行动预测性能。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.06595v1",
+      "source": "arxiv",
+      "title": "Flowing Through States: Neural ODE Regularization for Reinforcement Learning",
+      "abstract": "Neural networks applied to sequential decision-making tasks typically rely on latent representations of environment states. While environment dynamics dictate how semantic states evolve, the corresponding latent transitions are usually left implicit, creating a potential misalignment between the two. We propose to model latent dynamics explicitly by drawing an analogy between Markov decision process (MDP) trajectories and ordinary differential equation (ODE) flows: in both cases, the current state fully determines its successors. Building on this view, we introduce a neural ODE-based regularization method that enforces latent embeddings to follow consistent ODE flows, thereby aligning representation learning with environment dynamics. Although broadly applicable to deep learning agents, we demonstrate its effectiveness in reinforcement learning by integrating it into Actor-Critic algorithms. Our approach yields major performance gains across various standard Atari benchmarks for A2C and gridworld environments for PPO.",
+      "authors": [
+        "Mohamed Ghanem",
+        "Bernd Finkbeiner"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-06T21:11:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.06595v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Neural ODE regularization for latent state transitions in reinforcement learning; enforces temporally consistent latent dynamics",
+      "llm_evidence_cn": "面向强化学习隐状态转移的神经ODE正则化，强制潜表示沿时间演化",
+      "llm_evidence": "面向强化学习隐状态转移的神经ODE正则化，强制潜表示沿时间演化",
+      "canonical_evidence": "面向强化学习隐状态转移的神经ODE正则化，强制潜表示沿时间演化",
+      "llm_tldr_en": "Proposes neural ODE regularization to align latent representations with environment dynamics in RL.",
+      "llm_tldr_cn": "提出神经ODE正则化，使强化学习隐表示与环境动态对齐。",
+      "llm_tldr": "提出神经ODE正则化，使强化学习隐表示与环境动态对齐。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.06765v1",
+      "source": "arxiv",
+      "title": "LiFTER: A Grounded Neuro-Symbolic Microscope for Continuous-Time Dynamic Graph Forecasting",
+      "abstract": "Continuous-time dynamic graph models predict future links by compressing past interactions into neural states. Although effective for forecasting, this computation obscures which entities are shared across events and how temporal patterns contribute to a prediction. We treat this gap as a property of the predictive architecture rather than a problem to be addressed after prediction. Link-Fact Temporal Rule Inducer (LiFTER) is a neuro-symbolic predictor that preserves observed interactions as grounded temporal facts and applies executable tempo- ral rules to pre-query facts. Each score is a signed sum of rule exe- cutions whose historical facts, entity bindings, and temporal order are explicitly satisfied. The evidence and rules responsible for a prediction can therefore be inspected, independently recomputed, and intervened upon. Across four CTDG benchmarks, LiFTER achieves competitive historical-negative forecasting and the highest macro explanation ac- curacy and deletion fidelity. The same architecture also serves as a microscope that separates the contributions of recurrence, history po- sition, and transition across datasets and traces them to individual facts. Independent execution reconstructs all logits for 19,664 test predictions with a maximum error of 0.0000131. LiFTER turns future-link forecasting into a verifiable grounded computation.",
+      "authors": [
+        "Minwoo Yu",
+        "Young-guk Ha"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-07T03:39:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.06765v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Predicts future links in continuous-time dynamic graphs via temporal rules",
+      "llm_evidence_cn": "通过时间规则预测连续时间动态图中的未来连接",
+      "llm_evidence": "通过时间规则预测连续时间动态图中的未来连接",
+      "canonical_evidence": "通过时间规则预测连续时间动态图中的未来连接",
+      "llm_tldr_en": "A neuro-symbolic model forecasts continuous-time dynamic graph links using grounded temporal rules with explicit evidence.",
+      "llm_tldr_cn": "一种神经符号模型，利用基于事实的时间规则及其证据预测连续时间动态图链接。",
+      "llm_tldr": "一种神经符号模型，利用基于事实的时间规则及其证据预测连续时间动态图链接。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.06972v1",
+      "source": "arxiv",
+      "title": "Generative Embedding Benchmark: How Much Information Survives in a Dense Embedding?",
+      "abstract": "Embeddings have emerged as a standard representational interface linking foundation models with downstream systems. Most embedding benchmarks assess representations through discriminative tasks or geometric criteria centered on separability in embedding space. However, strong performance on such evaluations does not establish whether content compressed into an embedding remains accessible to a downstream generator. To address this gap, we introduce the Generative Embedding Benchmark (GEB), in which a decoder answers questions using only a frozen embedding and question text, without access to the original image or intermediate visual features. Answer quality under this readout measures generative information: the answer-relevant content recoverable from an embedding. GEB includes a curated visual-question-answering dataset with a 1,800-item development split and a held-out 900-item test split covering natural images, scene text, and visual documents. Using a common decoder and training recipe, we evaluate seven public embedding models in visual-only and vision-language joint modes. On the test set, visual-only scores range from 28.25 to 33.21; with image-question joint encoding, all five VLM-based embedding models score higher, and the best reaches 65.56. Matched embeddings also outperform text-only inputs, zero embeddings, and shuffled embeddings. Natural-image information is much easier to recover than scene text or visual-document information, while a Qwen3-VL-2B reference with access to the original image reaches 84.30. Together, these results show that generative readout exposes information bottlenecks that separability-based evaluation does not capture.",
+      "authors": [
+        "Yun Li",
+        "Biao Yang",
+        "Peixi Wu",
+        "Yunhao Zhou",
+        "Mingzhou Jiang",
+        "Wei Yuan",
+        "Fan Yang",
+        "Wenwu Ou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T08:46:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.06972v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Benchmark for measuring how much information survives in dense embeddings for downstream generation",
+      "llm_evidence_cn": "评估稠密嵌入中信息保留量的基准方法，用于表征学习",
+      "llm_evidence": "评估稠密嵌入中信息保留量的基准方法，用于表征学习",
+      "canonical_evidence": "评估稠密嵌入中信息保留量的基准方法，用于表征学习",
+      "llm_tldr_en": "GEB evaluates whether dense embeddings preserve enough answer-relevant content for a decoder to answer questions without seeing the original input.",
+      "llm_tldr_cn": "GEB基准检验稠密嵌入是否保留足够信息，使解码器无需原始输入即可生成答案。",
+      "llm_tldr": "GEB基准检验稠密嵌入是否保留足够信息，使解码器无需原始输入即可生成答案。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.06997v1",
+      "source": "arxiv",
+      "title": "Hierarchical Quantization with Domain-Adaptive Sparse Routing for Generative Cross-Domain Recommendation",
+      "abstract": "Generative Recommendation (GenRec) represents a promising paradigm that achieves remarkable empirical success by encoding items as compact Semantic IDs (SIDs) and modeling user behavior via next-token prediction across diverse recommendation scenarios. Extending this paradigm to cross-domain recommendation is challenging because a unified model must accommodate heterogeneous item semantics and behavioral patterns across domains. Existing methods commonly rely on globally shared representations or lightweight domain adaptation, which may provide insufficient capacity for modeling heterogeneous patterns at different semantic granularities. To address these challenges, we propose HD-Rec, a unified generative framework for cross-domain recommendation. HD-Rec employs a hierarchical domain-aware quantizer that constructs semantic identifiers using globally shared coarse-level codebooks and adaptively routed fine-level codebooks. It further introduces a domain-adaptive sparse mixture-of-experts module that combines a continuously activated shared expert with a dynamically selected specialized expert. To improve the coherence of multi-token item representations, we develop a cross-granularity routing consistency objective that regularizes token-level routing decisions toward their item-level consensus. Experiments on three public cross-domain recommendation benchmarks show that HD-Rec consistently improves over competitive sequential, generative, and cross-domain recommendation baselines.",
+      "authors": [
+        "Haiying He",
+        "Xiaopeng Li",
+        "Yuchen Gu",
+        "Kuo Cai",
+        "Bo Chen",
+        "Jingtong Gao",
+        "Yejing Wang",
+        "Derong Xu",
+        "Ruiming Tang",
+        "Guorui Zhou",
+        "Han Li",
+        "Xiangyu Zhao"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-08-07T09:15:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.06997v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "encodes items as compact Semantic IDs and learns representations for generative recommendation",
+      "llm_evidence_cn": "将物品编码为紧凑语义ID并学习生成式推荐表征",
+      "llm_evidence": "将物品编码为紧凑语义ID并学习生成式推荐表征",
+      "canonical_evidence": "将物品编码为紧凑语义ID并学习生成式推荐表征",
+      "llm_tldr_en": "Proposes HD-Rec, a generative cross-domain recommendation framework using compact semantic IDs and domain-adaptive sparse routing.",
+      "llm_tldr_cn": "提出HD-Rec，一种使用紧凑语义ID和域自适应稀疏路由的生成式跨域推荐框架。",
+      "llm_tldr": "提出HD-Rec，一种使用紧凑语义ID和域自适应稀疏路由的生成式跨域推荐框架。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

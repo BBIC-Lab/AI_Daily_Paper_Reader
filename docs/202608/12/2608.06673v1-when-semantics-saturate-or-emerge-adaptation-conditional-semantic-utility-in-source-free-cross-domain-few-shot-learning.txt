@@ -1,0 +1,630 @@
+Title: When Semantics Saturate or Emerge: Adaptation-Conditional Semantic Utility in Source-Free Cross-Domain Few-Shot Learning
+
+URL Source: https://arxiv.org/pdf/2608.06673v1
+
+Published Time: Mon, 10 Aug 2026 00:17:39 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+> 1
+
+# When Semantics Saturate or Emerge: Adaptation-Conditional Semantic Utility in Source-Free Cross-Domain Few-Shot Learning 
+
+Wei Liu , XING DENG , HAIJIAN SHAO 
+
+Abstract —Language descriptions in source-free cross-domain few-shot learning (SF-CDFSL) are often selected according to zero-shot accuracy obtained with a frozen vision–language model. This paper asks whether that ranking remains valid after target-domain visual adaptation. Under a strictly paired protocol, we compare a generic class-name template with fixed detailed class descriptions before and after visual Low-Rank Adaptation (LoRA) on EuroSAT, CropDisease, ISIC, and ChestX. Let ∆0
+
+and ∆L denote the Detailed-minus-Base accuracy before and after adaptation, respectively. Two recurring regimes emerge. In 
+
+semantic saturation , ∆0 > 0 but 0 < ∆L ≪ ∆0: on EuroSAT and CropDisease, initial gains of 8.13–21.54 percentage points contract to 0.69–2.96 points after LoRA. In semantic emergence ,
+
+∆0 ≤ 0 but ∆L > 0: on ISIC and ChestX, detailed descriptions become more useful only after the visual representation is updated. Training trajectories and sample-level decomposition show that saturation is driven mainly by Base-LoRA recovering errors already solved by detailed semantics, whereas emergence is associated with prediction turnover and newly formed Detailed-only correct decisions. Fixed-point-free shuffled-semantic con-trols, a second CLIP backbone, and multiple random seeds support the broad pattern while identifying ChestX 1-shot as a weak boundary case. These findings establish that zero-shot prompt quality is an incomplete proxy for adaptation-anchor quality and motivate evaluating language on both sides of the adaptation boundary. 
+
+Index Terms —Source-free cross-domain few-shot learning, vision–language models, semantic prompting, low-rank adapta-tion, prompt evaluation, domain adaptation. 
+
+I. I NTRODUCTION 
+
+# CROSS-DOMAIN few-shot learning (CDFSL) aims to recognize previously unseen classes in a target domain from only a small labeled support set. The challenge is especially pronounced when the target domain departs sub-stantially from conventional natural-image pretraining data, as in the BSCD-FSL benchmark, which spans satellite, plant-disease, dermatological, and radiological imagery [1]. Source-free CDFSL (SF-CDFSL) further removes access to the orig-inal source data, leaving the learner with only a pretrained model and the target-domain support examples [2], [3]. Under this restriction, successful adaptation must extract as much transferable structure as possible from the pretrained represen-tation while avoiding overfitting to a handful of target samples. 
+
+(Corresponding author: XING DENG.) Wei Liu, XING DENG and HAIJIAN SHAO are with the College of Computer Science, Jiangsu University of Science and Technology, Zhenjiang 212003, China(e-mail: wliu@stu.just.edu.cn, xdeng@just.edu.cn, jsj shj@just.edu.cn, feiw@just.edu.cn ) 
+
+Vision–language models (VLMs), particularly CLIP [4], provide a natural foundation for this setting because target classes can be represented by language and the visual en-coder can be adapted with parameter-efficient mechanisms. Prompt learning [5], [6], adapters, and Low-Rank Adaptation (LoRA) [7], [8] have therefore become common tools for few-shot VLM transfer. Within SF-CDFSL, recent studies have examined semantic prompting [9], style-aware prompt tuning [10], attention degradation [11], [12], discriminability imbalance [13], underused textual representations [14], and local cross-modal alignment [15]. These efforts share a broad objective: to exploit language as a semantic prior when the target-domain visual evidence is scarce. A largely implicit assumption in this line of research is that a text description that improves frozen-model classification should also constitute a better target for few-shot adaptation. This assumption is intuitive but need not hold. Frozen zero-shot classification evaluates the compatibility between a fixed 
+
+visual representation and a text embedding. By contrast, visual LoRA changes the representation itself under supervision from the target support set. Consequently, language can interact with adaptation in at least two qualitatively different ways. A detailed description may provide a strong initial decision boundary whose benefit becomes redundant once the visual encoder learns from labeled target examples. Conversely, a description that is poorly aligned with the frozen visual space may still encode a useful class geometry that becomes accessi-ble only after adaptation reshapes the target-domain represen-tation. Zero-shot prompt quality and adaptation-anchor quality are therefore related, but not equivalent, quantities. This paper isolates that distinction through a controlled comparison in which the adaptation algorithm, support set, op-timization protocol, and visual backbone are fixed, while only the textual representation of the episode classes is changed. The Base view uses a conventional class-name template, whereas the Detailed view uses fixed class-specific visual descriptions. For each view, we evaluate both frozen CLIP and a separately trained visual LoRA. We define the zero-shot semantic utility 
+
+∆0 = A0 
+
+> D
+
+− A0 
+
+> B
+
+, (1) and the adapted semantic utility 
+
+∆L = ALD − ALB , (2) where A0 
+
+> B
+
+and A0 
+
+> D
+
+denote frozen-model accuracies under the Base and Detailed views, and ALB and ALD denote the arXiv:2608.06673v1 [cs.CV] 7 Aug 2026 2
+
+corresponding accuracies after visual LoRA. Their relationship reveals whether language acts primarily as an immediately usable prior or as an adaptation-dependent anchor. Across EuroSAT, CropDisease, ISIC, and ChestX, two reproducible regimes emerge. In semantic saturation , ∆0 > 0
+
+but 0 < ∆L ≪ ∆0. EuroSAT and CropDisease obtain substantial frozen-model gains from the Detailed view, ranging from 8.13 to 21 .54 percentage points, yet retain only 0.69 –
+
+2.96 points after LoRA. In semantic emergence , ∆0 ≤ 0 while 
+
+∆L > 0. On ISIC and ChestX, the Detailed view is not a better zero-shot classifier, but it becomes a better adaptation anchor after the visual representation is updated. These results show that the usefulness of language is adaptation-conditional : the prompt ranking observed before adaptation does not reliably predict the ranking after adaptation. We further examine why the two regimes arise. Training tra-jectories show that the large semantic advantage on EuroSAT and CropDisease contracts rapidly as Base-LoRA learns from the support set, whereas the advantage on ISIC and ChestX appears only after several adaptation steps. At the sample level, saturation is characterized by high retention of Detailed zero-shot correct samples together with high coverage of Detailed-only corrections by Base-LoRA, indicating substantial overlap between the errors solved by detailed semantics and those solved by visual adaptation. Emergence instead involves a broader reconstruction of the decision boundary rather than preservation of the frozen Detailed predictions. A fixed-point-free shuffled-semantic control confirms that these effects de-pend on the correct class–description correspondence rather than merely on longer text or an arbitrary text codebook. The same regime split persists with a second CLIP backbone and across multiple random seeds. Accordingly, this work is positioned as an empirical and diagnostic study rather than a new adaptation algorithm. Its purpose is to establish what language quality means when the visual representation used for classification is itself trainable, and to provide the controls needed for future method papers to evaluate that question. The contributions of this work are summarized as follows:  
+
+> •
+
+We introduce an adaptation-conditional evaluation frame-work that separates the semantic utility of a text view before and after visual adaptation, avoiding the common practice of treating frozen zero-shot accuracy as a proxy for adaptation usefulness.  
+
+> •
+
+We identify two stable regimes in SF-CDFSL: semantic saturation , in which a strong initial language advantage is largely absorbed by support-driven visual adaptation, and 
+
+semantic emergence , in which useful language structure becomes effective only after the visual representation adapts.  
+
+> •
+
+We provide a sample-level and temporal account of these regimes through training trajectories, correction-overlap analysis, retention and coverage statistics, and prompt-transfer measurements.  
+
+> •
+
+We establish the robustness of the finding through a shuffled-semantic control, two CLIP visual backbones, multiple random seeds, four heterogeneous target do-mains, and both 1-shot and 5-shot evaluation protocols. II. R ELATED WORK 
+
+A. Cross-Domain and Source-Free Few-Shot Learning 
+
+Foundational few-shot learning develops transferable met-rics, prototypes, or rapid adaptation rules from episodic training [16]–[21]. Cross-domain few-shot learning (CDFSL) adds a mismatch between representation learning and target episodes. The BSCD-FSL study established the four-domain benchmark used here and showed that domain distance can dominate conventional few-shot difficulty [1]. Later work studies feature-wise transformation, domain similarity, target-conditioned adapters, metric calibration, prototype revision, and source-side style diversification [22]–[29]. These methods demonstrate that both source representation quality and target support structure determine transfer. Source-free CDFSL removes access to source images during target adaptation. Visual Domain Bridge corrects internal distribution mismatch without revisiting source data [2]; IM-DCL combines information maximization with distance-aware contrastive learning on the target support set [3]; and StepSPT uses step-wise distribution-aligned style prompts [10]. Recent strong CDFSL work further investigates reconstruction targets, attention temperature, CLS-token behavior, image-token conti-nuity, and random registers [30]–[34]. This literature primarily asks how to improve adaptation. We instead hold adaptation fixed and ask how the value assigned to language changes across the adaptation boundary. 
+
+B. Parameter-Efficient Adaptation of Vision–Language Mod-els 
+
+CLIP performs recognition by comparing image features with text-derived class prototypes [4]. Its downstream behavior is therefore jointly determined by the visual representation and the linguistic form of each class. CoOp learns con-tinuous textual context [5], CoCoOp conditions prompts on inputs [35], and MaPLe couples visual and textual prompts [6]. Knowledge-guided and regularized prompt learners preserve pretrained knowledge or improve unseen-class transfer [36]– [38]. Tip-Adapter, CLIP-Adapter, and TaskRes instead adapt a cache, residual feature interface, or classifier residual [39]– [41]. Low-Rank Adaptation injects trainable low-rank updates into frozen weight matrices [7]. CLIP-LoRA established this strategy as a strong few-shot VLM baseline [8]. Language itself can also be enriched with LLM-generated class descrip-tions, as in CuPL and description-based classifiers [42], [43]. These studies show that both text formulation and parameter-efficient adaptation matter, but typically compare prompts at one fixed model state. Our paired quantities ∆0 and ∆L test whether a prompt ranking measured before visual adaptation remains valid after the representation moves. 
+
+C. Language and Cross-Modal Mechanisms in SF-CDFSL 
+
+Language-assisted SF-CDFSL has progressed from semantic-guided prompt diversity and style alignment [9], [10] to increasingly fine-grained analyses of CLIP adaptation. Recent work attributes limitations to exacerbated attention 3
+
+sink, a discriminability trap, underused intermediate text layers, degraded local alignment, or uniform treatment of semantically weak visual tokens [11], [13]–[15], [44]. Semantic Probe contrasts prompt- and adapter-based tuning and introduces text-guided attention rectification [12]. Our study is complementary but differently positioned. It neither proposes another loss nor claims a unique internal fail-ure mode. Visual LoRA is used as a controlled probe: the same target episode is optimized against two fixed text coordinate systems, and semantic value is measured before, during, and after that movement. This isolates whether language acts as an immediately useful prior, an adaptation-dependent anchor, or a prior whose relative advantage becomes redundant under support supervision. III. P ROBLEM FORMULATION 
+
+A. Source-Free Episodic Recognition 
+
+Let fθ and gϕ denote the pretrained CLIP visual and text encoders, respectively. Both encoders are initialized from the same pretrained model, and no source-domain image or label is available during target adaptation. An N -way K-shot target episode is 
+
+E = ( S, Q), (3) with labeled support set 
+
+S = {(xsi , y si )}N K i=1 (4) and query set 
+
+Q = {(xqj , y qj )}N Q j=1 . (5) The query labels are used only for evaluation. All adaptation is performed independently within each episode using S.Each episode class c ∈ { 1, . . . , N } is represented by two fixed textual views. The Base view bc is a conventional class-name template, whereas the Detailed view dc is a class-specific visual description. Their normalized text embeddings are 
+
+tVc = gϕ(pVc )
+
+∥gϕ(pVc )∥2
+
+, V ∈ { B, D }, (6) where pBc = bc and pDc = dc. We collect the class anchors of view V as 
+
+TV = {tV 
+
+> 1
+
+, . . . , t VN }. (7) The two views describe the same class identities; only their linguistic specificity differs. For visual parameters ϑ, let 
+
+zϑ(x) = fϑ(x)
+
+∥fϑ(x)∥2
+
+(8) be the normalized image representation. Classification with text view V uses 
+
+sVc (x; ϑ) = τ z ϑ(x)⊤tVc , (9) where τ is the CLIP logit scale. The frozen-model query accuracy associated with TV , averaged over the same paired episode distribution, is denoted by A0 
+
+> V
+
+.
+
+B. Text-View-Conditioned Visual Adaptation 
+
+We adapt only the visual encoder with Low-Rank Adapta-tion (LoRA), while keeping the original CLIP weights and the entire text encoder frozen. For an adapted projection matrix 
+
+Wℓ at layer ℓ,
+
+W ′ 
+
+> ℓ
+
+= Wℓ + ∆ Wℓ, ∆Wℓ = BℓAℓ, (10) where Aℓ and Bℓ are trainable low-rank factors [7]. Let ∆θ
+
+collect all trainable LoRA parameters. The same support episode induces two controlled adaptation runs, one for each text view. For training view U ∈ { B, D },the LoRA parameters are obtained by 
+
+∆θ⋆U = arg min 
+
+> ∆θ
+
+1
+
+|S| 
+
+X  
+
+> (xsi,y si)∈S
+
+CE  sU (xsi ; θ ⊕ ∆θ),ysi
+
+,
+
+(11) where θ ⊕ ∆θ denotes the frozen CLIP visual parameters augmented by the LoRA update, and sU is the vector of logits defined by TU . The Base and Detailed runs use the same classes, support/query samples, initialization protocol, data stream, and optimization schedule; only the text anchor set used by the support loss changes. To make the conditioning explicit, we denote by 
+
+ALU →V (12) the mean query accuracy obtained after training LoRA with text view U and evaluating the adapted visual encoder with text view V . The matched-view accuracies used in the princi-pal comparison are 
+
+ALB = ALB→B , ALD = ALD→D. (13) The cross-view quantities ALB→D and ALD→B measure prompt-coordinate dependence and are analyzed separately. This nota-tion distinguishes the text view that induces the visual update from the text view that reads out the adapted representation. 
+
+C. Adaptation-Conditional Semantic Utility 
+
+We quantify the relative value of the Detailed view against the Base view at two stages of the pipeline. Before adaptation, the zero-shot semantic utility is 
+
+∆0 = A0 
+
+> D
+
+− A0 
+
+> B
+
+. (14) After view-matched visual adaptation, the adapted semantic utility is 
+
+∆L = ALD − ALB . (15) Their change across the adaptation boundary is 
+
+∆shift = ∆ L − ∆0. (16) All three quantities are reported in percentage points. They are comparative and protocol dependent: they measure the utility of one text view relative to another for a fixed backbone, target domain, shot, and adaptation procedure, rather than assigning an intrinsic quality score to a prompt. The experiments reveal two recurring regimes. We define 
+
+semantic saturation by 
+
+∆0 > 0, 0 < ∆L < ∆0, (17) 4
+
+which implies ∆shift < 0. In this regime, the Detailed view is already beneficial in the frozen representation, but support-driven visual adaptation makes part of that advantage redundant. For conditions satisfying (17), the absorbed fraction can be summarized as 
+
+ρsat = 1 − ∆L
+
+∆0
+
+. (18) We define semantic emergence by 
+
+∆0 ≤ 0, ∆L > 0, (19) so that ∆shift > 0. Here, the Detailed view is not superior under the frozen visual representation, yet becomes the better anchor after the support set reshapes that representation. Its emergence magnitude is naturally measured by ∆shift .These two regimes are the empirically observed cases central to this work; they are not intended as an exhaustive taxonomy of every possible sign pattern. Statistical confidence in each assignment is assessed with paired episode-level bootstrap intervals, described in Sec. IV-C. IV. E XPERIMENTAL SETUP 
+
+A. Benchmarks and Episodic Protocol 
+
+We evaluate on the four target domains introduced by BSCD-FSL [1]: EuroSAT, CropDisease, ISIC, and ChestX. These benchmarks cover satellite scene recognition, plant dis-ease classification, dermoscopic lesion recognition, and chest radiography, respectively, and therefore provide substantially different visual statistics and degrees of compatibility with the pretrained CLIP representation. All experiments follow a source-free 5-way episodic proto-col. Each episode contains either one or five labeled support images per class and 15 query images per class. Query images and labels are never used for adaptation. The principal results use 800 independently sampled episodes for 1-shot evaluation and 400 episodes for 5-shot evaluation. Within every episode, the Base and Detailed conditions share the same class subset, support samples, query samples, LoRA initialization, support training tensors, mini-batch order, and random-number stream. Consequently, each reported Detailed-minus-Base difference is an episode-wise paired comparison rather than a difference between independently sampled runs. The two shot settings use an identical model and adaptation rule; only the number of labeled support images changes. Un-less otherwise stated, the main tables report the standard seed-1 protocol above. All accuracies are averaged over episodes and expressed in percentage points. 
+
+B. Controlled Adaptation Configuration 1) Text views: The Base view uses the conventional tem-plate “ a photo of a {} .” with the corresponding class name. The Detailed view uses a fixed bank of class-specific visual descriptions. The description bank is held constant throughout the study: no text prompt is generated, selected, ensembled, or optimized within an episode. Thus, the experi-ment evaluates the behavior of two already available text views rather than a prompt-generation procedure. For a sampled 5-way episode, only the five embeddings associated with its selected classes are used. The CLIP text encoder is frozen in every condition. Base and Detailed runs differ solely in the text anchors supplied to the support classification loss and, for matched-view evaluation, to the final classifier. Cross-view evaluation reuses the same adapted visual model with the alternative text anchor set, yielding the complete prompt-transfer matrix defined in Sec. III. 
+
+2) Visual backbone and LoRA: The principal backbone is CLIP ViT-B/16 [4]. We insert LoRA modules into the query, key, and value projections of every visual Transformer block. The rank is 16, the LoRA scaling factor is 1, and the LoRA dropout rate is 0.25. All pretrained CLIP parameters, including the complete text encoder, remain frozen; only the inserted visual LoRA factors are trainable. A second set of experiments repeats the principal comparison with CLIP ViT-B/32 while leaving all remaining settings unchanged. Each episode is optimized independently with AdamW using a learning rate of 10 −4, weight decay 10 −2, and cosine annealing to a minimum learning rate of 10 −6. The support mini-batch size is at most 25, the evaluation batch size is 128, the input resolution is 224 × 224 , and the cosine-similarity logits use a fixed scale of 100. Mixed-precision training is enabled on CUDA. EuroSAT, CropDisease, and ISIC use 250 optimizer updates per episode. Following the established base-line implementation, ChestX uses 125 updates. This dataset-specific budget is fixed before analysis and is identical for Base and Detailed conditions, preserving the paired comparison within every ChestX episode. No hyperparameter is tuned separately for either text view or either shot setting. 
+
+C. Evaluation Suites and Statistical Analysis 1) Principal comparison: For every episode, we first eval-uate the frozen visual encoder with both text views, obtaining 
+
+A0 
+
+> B
+
+and A0 
+
+> D
+
+. We then train two visual-LoRA models from the same initialization: one with Base anchors and one with Detailed anchors. Each adapted model is evaluated with both anchor sets, producing ALB→B , ALB→D, ALD→B , and ALD→D.The matched-view quantities define the zero-shot and adapted semantic utilities, while the cross-view quantities quantify prompt-coordinate dependence. We additionally store per-query predictions and margins for the sample-level retention, forgetting, and correction analyses. 
+
+2) Training dynamics and semantic controls: Training dy-namics are measured on 100 episodes for each dataset and shot. For the 250-update datasets, query and support statistics are recorded at updates 0, 1, 5, 10 , 25 , 50 , 100 , 150 , and 250 ;for ChestX, the final checkpoint is update 125. At each checkpoint, both the Base-trained and Detailed-trained visual models are read out with both text views. This protocol measures when semantic utility changes without altering the optimization trajectory. To verify that the observed effects depend on correct class semantics rather than merely on description length or on the geometry of an alternative text codebook, we construct a shuffled-semantic control. Within each episode, a fixed-point-free permutation reassigns the five Detailed embeddings 5
+
+to incorrect classes. The permutation preserves the set of text vectors while destroying class–description correspon-dence. Correct-Detailed and shuffled-Detailed conditions use the same episode and paired training stream. This control is evaluated on 100 episodes for every dataset and shot. Generalization is assessed in two complementary ways. First, the complete Base/Detailed comparison is repeated with ViT-B/32 on 100 episodes per dataset and shot. Second, seeds 2 and 3 repeat all four datasets with 200 episodes for 1-shot and 100 episodes for 5-shot; these runs are summarized together with the principal seed-1 result. The additional runs test whether the sign and regime of semantic utility are stable across both model capacity and episodic randomness, rather than serving as a new hyperparameter search. 
+
+3) Uncertainty estimation: All inferential comparisons are paired at the episode level. We use 10,000 paired bootstrap resamples to estimate 95% percentile confidence intervals for 
+
+∆0, ∆L, ∆shift , and the sample-level conditional rates. Two-sided paired bootstrap p-values are computed from the mass of the resampled difference distribution on either side of zero. We bootstrap episodes rather than pooling all query images, thereby respecting the dependence among samples drawn from the same episode. Regime assignments are based jointly on the observed signs and their paired confidence intervals; the corresponding operational definitions are given in Sec. III. V. M AIN OBSERVATION : S EMANTIC UTILITY SATURATES OR EMERGES 
+
+Table I reports the matched-view results under the con-trolled protocol of Section IV. Across all eight dataset–shot conditions, Detailed-LoRA attains higher query accuracy than Base-LoRA. However, the same ordering does not hold before adaptation. The relation between zero-shot utility ∆0 and adapted utility ∆L therefore separates the target domains into two qualitatively different regimes. Full paired-bootstrap confidence intervals are reported in Table III of the appendix. 
+
+A. Semantic Saturation 
+
+EuroSAT and CropDisease exhibit a strong zero-shot benefit from Detailed descriptions. On EuroSAT, ∆0 is +8 .13 points in 1-shot episodes and +8 .31 points in 5-shot episodes. CropDisease shows an even larger advantage of +21 .00 and 
+
++21 .54 points. These gains are statistically reliable, with 95% confidence intervals that remain well above zero. After visual LoRA, the Detailed view remains superior, but its relative advantage contracts sharply. EuroSAT retains only 
+
++2 .21 points in 1-shot and +0 .82 points in 5-shot, while CropDisease retains +2 .96 and +0 .69 points. Equivalently, adaptation removes approximately 72 .9% and 90 .2% of the initial EuroSAT advantage, and 85 .9% and 96 .8% of the initial CropDisease advantage. The negative shifts are significant in all four conditions. This contraction should not be interpreted as a failure of Detailed-LoRA. Detailed-LoRA remains the best matched-view model in every saturation condition. The result is instead relative: supervised target-domain adaptation substantially im-proves the Base condition and makes much of the initial language advantage no longer exclusive to the Detailed view. The stronger contraction in 5-shot episodes further suggests that additional labeled support reduces dependence on zero-shot text quality, although the remaining positive ∆L shows that the two text views are not fully interchangeable. 
+
+B. Semantic Emergence 
+
+ISIC and ChestX show the opposite pattern. In frozen CLIP, the Detailed view provides no positive advantage. For ISIC, 
+
+∆0 is −0.74 points in 1-shot and −0.51 points in 5-shot; the latter difference is statistically indistinguishable from zero because its confidence interval slightly crosses zero. ChestX exhibits negative zero-shot utilities of −0.75 and −0.67 points. Visual adaptation reverses this ordering. Detailed-LoRA exceeds Base-LoRA by +3 .84 and +3 .12 points on ISIC, and by +0 .40 and +1 .54 points on ChestX. The resulting utility shifts are all positive: +4 .58 and +3 .62 points for ISIC, and +1 .15 and +2 .22 points for ChestX. The post-adaptation ChestX gain is comparatively small in 1-shot episodes, but remains positive under paired bootstrap testing ( p = 0 .034 ). Semantic emergence therefore cannot be explained by pre-serving an already superior frozen-model decision rule. The Detailed view becomes useful only after the support set has altered the visual representation. In these domains, the quality of a text view as an adaptation anchor is not revealed by its zero-shot accuracy. 
+
+C. A Boundary Between Prompt Evaluation and Adaptation 
+
+Figure 1 makes the distinction explicit. Saturation occupies the region ∆0 > 0 and 0 < ∆L < ∆0, whereas emergence occupies the region ∆0 ≤ 0 and ∆L > 0. The two regimes are not separated by whether Detailed descriptions ultimately help: they improve matched-view LoRA accuracy in both. They are separated by when that utility becomes observable. This finding establishes the central empirical claim of the paper: frozen-model prompt quality is not a reliable proxy for adaptation-anchor quality. A text view may offer a large advan-tage that becomes largely redundant after few-shot adaptation, or it may appear unhelpful before adaptation and become beneficial only after the visual space is updated. The following sections examine how these two regimes develop during optimization and which sample-level transitions account for them. VI. H OW SEMANTIC UTILITY EVOLVES DURING 
+
+ADAPTATION 
+
+The final results establish that semantic utility can either saturate or emerge, but they do not reveal when the two regimes form. We therefore evaluate the same paired episodes at intermediate adaptation checkpoints. Let 
+
+AB (t) = ALB→B (t), AD (t) = ALD→D(t), (20) and define the checkpoint-dependent semantic utility as 
+
+∆t = AD (t) − AB (t). (21) At t = 0 , no LoRA update has been applied and ∆t reduces to the zero-shot utility on the dynamic-evaluation episodes. 6
+
+TABLE I ADAPTATION -CONDITIONAL SEMANTIC UTILITY ON VIT-B/16 ( SEED 1). D ETAILED DESCRIPTIONS EXHIBIT EITHER SATURATION OR EMERGENCE AFTER VISUAL LORA. Dataset Shot Zero-shot accuracy After visual LoRA Semantic utility (pp) Regime Base Detailed Base Detailed ∆0 ∆L ∆shift 
+
+EuroSAT 1 54.85 62.98 82.19 84.40 +8.13 +2.21 -5.92 SAT .5 54.55 62.86 92.74 93.55 +8.31 +0.82 -7.49 SAT .CropDisease 1 40.90 61.91 82.48 85.44 +21.00 +2.96 -18.04 SAT .5 40.80 62.34 94.80 95.49 +21.54 +0.69 -20.85 SAT .ISIC 1 27.24 26.50 35.43 39.27 -0.74 +3.84 +4.58 EMER .5 27.08 26.57 50.55 53.67 -0.51 +3.12 +3.62 EMER .ChestX 1 21.93 21.18 21.50 21.90 -0.75 +0.40 +1.15 EMER .5 21.84 21.17 23.06 24.60 -0.67 +1.54 +2.22 EMER .Accuracies and semantic-utility terms are percentage points. Bold denotes the better text view within the same adaptation state. 
+
+∆0 = A0 
+
+> D
+
+− A0 
+
+> B
+
+, ∆L = ALD − ALB , and ∆shift = ∆ L − ∆0.SAT .: semantic saturation; E MER .: semantic emergence. 0 5 10 15 20     
+
+> Pre-adaptation semantic utility, Δ0(percentage points)
+> 01234
+> Post-adaptation semantic utility,  ΔL (percentage points)
+> EuroSAT-1s EuroSAT-5s CropDisease-1s CropDisease-5s ISIC-1s ISIC-5s ChestX-1s ChestX-5s
+> Semantic emergence Semantic saturation
+> 1-shot 5-shot
+
+Fig. 1. Adaptation-conditional semantic utility. The horizontal axis measures Detailed-minus-Base utility before visual LoRA ( ∆0), and the vertical axis measures the corresponding matched-view utility after LoRA ( ∆L). Circles and squares denote 1-shot and 5-shot results, respectively. EuroSAT and CropDisease fall in the saturation regime, whereas ISIC and ChestX fall in the emergence regime. Error bars show 95% confidence intervals from 10,000 paired episode-level bootstrap resamples. 
+
+Figure 2 shows that the final regimes arise from distinct optimization trajectories rather than from a uniform decay or preservation of the initial prompt gap. 
+
+A. Saturation Is Delayed, Not Immediate 
+
+EuroSAT preserves almost all of its initial Detailed ad-vantage during the first ten updates. In 1-shot episodes, ∆t
+
+remains near 7.6 points from step 0 through step 10; the 5-shot trajectory is similarly stable at approximately 7.9 points. The sharp contraction occurs only after the model begins to fit the support set more substantially: at steps 25 and 50, the 1-shot utility falls to 3.96 and 1.73 points, while the 5-shot utility falls to 2.99 and 1.43 points. By the final checkpoint, only 0.99 and 0.85 points remain. CropDisease makes the delayed nature of saturation even clearer. Detailed utility first increases : from 22 .27 to 23 .08 
+
+points in 1-shot episodes and from 22 .67 to 24 .21 points in 5-shot episodes by step 10. It then contracts rapidly, reaching 
+
+8.01 and 7.79 points at step 50 and ending at 3.55 and 
+
+0.51 points. Thus, adaptation does not immediately suppress a useful semantic prior. During the earliest updates, the Detailed anchor can benefit at least as much as the Base anchor; saturation begins when support supervision becomes strong enough for Base-LoRA to recover class distinctions that were initially available only through richer language. The matched-view accuracies support this differential-catch-up interpretation. Between steps 10 and 50, Base-LoRA gains 
+
+22 .05 –34 .91 points across the four EuroSAT/CropDisease conditions, whereas Detailed-LoRA gains 13 .76 –21 .87 points. The relative utility contracts because the Base condition improves faster, not because Detailed-LoRA collapses. This temporal evidence is consistent with the large-scale endpoint result: few-shot supervision progressively substitutes for part of the discriminative information supplied by Detailed text. 70 1 5 10 25 50 100 150 250 02468                                      
+
+> Semantic utility  Δt (pp)
+> (a) EuroSAT
+> 01510 25 50 100 150 250 0510 15 20 25
+> (b) CropDisease
+> 01510 25 50 100 150 250
+> Adaptation checkpoint (step)
+> 012345
+> Semantic utility  Δt (pp)
+> (c) ISIC
+> 01510 25 50 100 125
+> Adaptation checkpoint (step)
+> −1.0 −0.5 0.0 0.5 1.0 1.5 2.0
+> (d) ChestX
+> 1-shot 5-shot
+> Fig. 2. Evolution of matched-view semantic utility during visual LoRA adaptation. At checkpoint t,∆t=AD(t)−AB(t)compares Detailed-LoRA and Base-LoRA evaluated with their respective training text views. Step 0 corresponds to frozen CLIP. Curves report means over 100 paired episodes; consequently, their endpoints need not exactly equal the larger-scale estimates in Table I. EuroSAT and CropDisease show delayed but pronounced saturation, whereas ISIC and ChestX reveal early and late semantic emergence, respectively.
+
+B. Emergence Requires Movement of the Visual Space 
+
+ISIC follows the opposite trajectory. Its Detailed utility is non-positive at initialization, but the ordering reverses after only five updates: ∆5 = +1 .09 points in 1-shot episodes and 
+
++0 .95 points in 5-shot episodes. Utility then grows to +5 .59 
+
+and +4 .87 points at step 25 before settling at +4 .17 and +2 .65 
+
+points at convergence. Over the first 25 updates, Detailed-LoRA gains 8.15 and 10 .25 accuracy points, compared with only 2.53 and 5.03 points for Base-LoRA. The Detailed text is therefore not merely revealed by longer training; it guides a more favorable early reorganization of the target visual representation. ChestX exhibits a weaker and later transition. Both shots remain negative through step 25, and the sign reversal appears around step 50. The 5-shot trajectory remains positive there-after and ends at +1 .49 points. The 1-shot trajectory briefly reaches +1 .16 points at step 50 but returns close to zero in the 100-episode dynamic subset. This fluctuation is consistent with the much smaller +0 .40 -point gain measured by the larger 800-episode main experiment: ChestX 1-shot is a weak-emergence case whose estimated magnitude is sensitive to episodic sampling, rather than a stable multi-point separation like ISIC. The delayed crossing also agrees with the severe visual mismatch between web-pretrained CLIP features and radiographic images. 
+
+C. Regimes Reflect Relative Learning Rates 
+
+The trajectories reveal three properties that are hidden by endpoint evaluation. First, semantic utility is non-monotonic: CropDisease is initially amplified before saturating, while ISIC peaks early and later settles to a smaller positive advantage. Second, the sign of zero-shot utility does not constrain the sign after adaptation; a text view that is initially neutral or unfavorable can become the better anchor once the visual encoder moves. Third, shot count changes the speed and stability of this transition rather than inducing one universal effect. More support accelerates saturation on EuroSAT and CropDisease and produces a clearer late emergence on ChestX, but it does not uniformly increase the peak utility on ISIC. These observations refine the interpretation of adaptation-conditional utility. The relevant quantity is not how much semantic information a prompt contains in isolation, but how the two text-conditioned optimization processes improve relative to one another. Saturation occurs when Base-LoRA learns faster and closes an initial gap; emergence occurs when Detailed-LoRA extracts greater benefit from the same support supervision and opens a new gap. The next section examines 8
+
+the sample-level prediction transitions underlying these two temporal patterns. VII. S AMPLE -L EVEL MECHANISMS 
+
+The aggregate utilities in Sections VI and the preceding endpoint analysis reveal whether Detailed text is relatively more useful, but not which query decisions carry that utility .We therefore trace the correctness state of every query sam-ple under Base-ZS, Detailed-ZS, Base-LoRA, and Detailed-LoRA. This analysis separates two possibilities that are in-distinguishable from accuracy alone: adaptation may preserve an initially useful Detailed decision rule while Base-LoRA catches up, or it may replace the frozen decisions and create a new Detailed advantage. For a text view V ∈ { B, D } and adaptation state s ∈{0, L }, let 
+
+CsV = {x ∈ Q : ˆ ysV (x) = y(x)} (22) denote the set of query samples classified correctly. We first measure how much of the Detailed zero-shot evidence survives adaptation: 
+
+RD = |C 0 
+
+> D
+
+∩ C LD ||C 0 
+
+> D
+
+| . (23) Because a low retention rate can coexist with substantial correction of previously wrong samples, we also define 
+
+KD = |(Q \ C 0 
+
+> D
+
+) ∩ C LD ||Q \ C 0 
+
+> D
+
+| , (24) which is the Detailed-ZS error-correction rate of Detailed-LoRA. To quantify how much of the initial Detailed advantage becomes reproducible from support labels alone, define the Detailed-only zero-shot set 
+
+U0 
+
+> D
+
+= C0 
+
+> D
+
+\ C 0 
+
+> B
+
+, (25) and its Base-LoRA coverage 
+
+OB = |U 0 
+
+> D
+
+∩ C LB ||U 0 
+
+> D
+
+| . (26) Finally, the adapted utility admits an exact sample-space decomposition. Let 
+
+XD = |C LD \ C LB ||Q| , XB = |C LB \ C LD ||Q| . (27) Then 
+
+∆L = XD − XB , (28) when accuracies are expressed as proportions. Thus, Detailed-LoRA is better precisely when its exclusive correct set exceeds that of Base-LoRA. 
+
+A. Saturation Reflects Preservation Plus Overlap 
+
+EuroSAT and CropDisease show that semantic saturation is not caused by Detailed-LoRA discarding its initial advantage. Detailed-ZS retention ranges from 93 .9% to 98 .6% , while Detailed-LoRA also corrects 68 .2% –90 .3% of the samples that Detailed-ZS initially misclassifies. The Detailed condition therefore both preserves most of its frozen successes and expands beyond them after adaptation. The contraction of relative utility is instead explained by cross-view overlap. Base-LoRA covers 84 .4% –97 .3% of the Detailed-only zero-shot set, with the largest coverage in 5-shot episodes. In other words, most samples whose correctness initially depends on richer language cease to be exclusive evidence once the Base condition can learn from labeled sup-port. This sample-level recovery directly matches the temporal catch-up observed in Section VI. The exclusive-correct decomposition makes the remaining advantage explicit. On EuroSAT, Detailed-LoRA is exclusively correct on 5.8% and 2.4% of query samples, compared with 
+
+3.6% and 1.6% for Base-LoRA, yielding the final +2 .21 -and +0 .82 -point utilities. CropDisease similarly yields 7.3% −
+
+4.3% = +2 .96 points in 1-shot and 2.3% − 1.6% = +0 .69 
+
+points in 5-shot. Most post-adaptation successes are therefore shared, and the initial semantic advantage saturates because Base-LoRA reproduces much of the same discriminative out-come. 
+
+B. Emergence Reflects Decision Turnover 
+
+ISIC and ChestX exhibit a different transition. Detailed-ZS retention is only 53 .9% –58 .3% on ISIC and 28 .9% –33 .5% 
+
+on ChestX. These values should not be interpreted as harmful forgetting: the frozen Detailed classifier is not superior in these domains. Instead, adaptation replaces many initial decisions while correcting new samples. Detailed-LoRA corrects 34 .0% 
+
+and 52 .0% of Detailed-ZS errors on ISIC, and 20 .0% and 
+
+22 .2% on ChestX. The resulting predictor is therefore not a preserved version of Detailed-ZS, but a substantially revised decision rule supported by the target examples. Base-LoRA also covers much less of the Detailed-only zero-shot set in these domains: 33 .5% –48 .7% on ISIC and 
+
+20 .6% –23 .0% on ChestX. More importantly, the final Detailed advantage is created by a new imbalance in exclusive cor-rectness. On ISIC, Detailed-LoRA-only correctness reaches 
+
+11 .4% and 10 .9% , versus 7.6% and 7.8% for Base-LoRA, exactly accounting for the +3 .84 - and +3 .12 -point utilities. ChestX shows a much narrower imbalance: 11 .2% versus 
+
+10 .8% in 1-shot and 13 .8% versus 12 .2% in 5-shot. This near balance explains why ChestX emergence is positive but weaker, particularly in the 1-shot setting. 
+
+C. Inherited Versus Reconstructed Semantic Evidence 
+
+The two regimes can now be distinguished at the sample level. In saturation domains, Detailed semantic evidence is largely inherited : Detailed-LoRA retains the frozen successes, but Base-LoRA learns many of the same cases from sup-port supervision, leaving only a small exclusive advantage. In emergence domains, useful Detailed evidence is largely 91-shot 5-shot 020 40 60 80 100               
+
+> Rate (%)
+> (a) EuroSAT
+> 93.9 97.2 84.4 95.2
+> 1-shot 5-shot
+> (b) CropDisease
+> 95.4 98.6 86.7 97.3
+> 1-shot 5-shot 020 40 60 80 100
+> Rate (%)
+> (c) ISIC
+> 53.9 58.3 33.5 48.7
+> 1-shot 5-shot
+> (d) ChestX
+> 28.9 33.5 23.0 20.6
+> Detailed-ZS retention Base-LoRA coverage
+> Fig. 3. Sample-level evidence for the two semantic-utility regimes. Detailed-ZS retention measures the fraction of frozen Detailed successes preserved by Detailed-LoRA, while Base-LoRA coverage measures how often support supervision recovers samples that were correct only under Detailed-ZS. Error bars are 95% confidence intervals from paired episode-level bootstrap resampling. Saturation domains exhibit high retention and high coverage; emergence domains exhibit substantially lower values, indicating greater decision turnover and less recovery of the initial Detailed-only evidence.
+
+reconstructed : the frozen Detailed successes are unstable, yet adaptation creates more new Detailed-only correct samples than Base-only ones. The complete transition statistics and the algebraic deriva-tion of Eq. (28) are reported in Appendix D. This decomposition does not identify a unique internal feature, attention path, or gradient component responsible for each transition. It establishes a stricter empirical boundary: saturation is dominated by preservation and overlap, whereas emergence is dominated by prediction turnover and newly formed exclusive correctness. The next section tests whether these effects depend on genuine class semantics and whether they generalize across backbones and random seeds. VIII. C ONTROLS AND GENERALIZATION 
+
+Shuffled semantics. Let π(c)̸ = c permute the episode classes and assign etDc = tDπ(c). Correct alignment strongly outperforms this codebook on EuroSAT, CropDisease, and ISIC, before and after LoRA (Fig. 4). The effect cannot therefore be reduced to prompt length or merely replacing the text-vector basis. Yet Shuffled-LoRA becomes surprisingly competent in 5-shot episodes, showing that labels can partially organize visual features around even an incorrect codebook. ChestX differences are small and not significant after LoRA, consistent with its weak semantic signal. Full intervals are in Appendix E. 
+
+Backbone and seed robustness. ViT-B/32 preserves satu-ration on EuroSAT/CropDisease and adaptation-created utility on ISIC/ChestX. ISIC 1-shot changes from formal emergence to amplification because its ViT-B/32 ∆0 is slightly positive, illustrating that the robust object is the direction of utility shift rather than an immutable categorical label. Across three seeds, seven of eight conditions retain the exact regime; only the near-zero ChestX 1-shot case changes label. Appendix E reports all results. 
+
+Prompt transfer. Cross-view evaluation shows ALB→B̸ =
+
+ALB→D and ALD→D̸ = ALD→B . Visual LoRA is therefore prompt-conditioned rather than a freely composable domain correction. Non-zero transfer gaps do not by themselves im-ply harmful overfitting; the matched Detailed view remains superior. Appendix F reports the full matrix. IX. D ISCUSSION 
+
+What prompt quality measures. ∆0 measures compat-ibility with the frozen visual representation, whereas ∆L
+
+measures the usefulness of an anchor while that representation is optimized. Their mismatch means prompt quality is not an intrinsic scalar attached to a sentence. Zero-shot evaluation re-mains informative, but it is an incomplete proxy for adaptation utility. 
+
+How labels interact with semantics. In saturation domains, support supervision substitutes for part of the initially acces-sible semantic prior: Base-LoRA learns overlapping correc-tions. In emergence domains, labels first reorganize the visual space, after which richer anchors become useful. Language 10 EuroSAT 1-shot EuroSAT 5-shot CropDisease 1-shot CropDisease 5-shot 010 20 30 40 50 60           
+
+> Advantage over shuffled semantics (pp)  *** *** *** *** *** *** *** ***
+> (a)
+> +53.6 +53.3 +53.2 +53.5 +36.9 +15.5 +28.3 +4.6
+> ISIC 1-shot ISIC 5-shot ChestX 1-shot ChestX 5-shot 0246810 12 14
+> Advantage over shuffled semantics (pp)
+> *** *** ** *** ***
+> (b)
+> +8.9 +8.7 +1.6 +1.0 +10.9 +9.0 +0.6 +1.1
+> Zero-shot After LoRA
+
+Fig. 4. Aligned Detailed accuracy minus a fixed-point-free shuffled Detailed codebook. The control preserves the text-embedding multiset but breaks class– description correspondence. Error bars are 95% paired-bootstrap intervals. 
+
+and supervision are therefore neither globally additive nor globally redundant. Methods that force preservation of frozen predictions may be harmful in emergence, while methods that assume semantic and adaptation gains add independently ignore the large overlap in saturation. 
+
+Evaluation and positioning. Language-assisted SF-CDFSL should report (∆ 0, ∆L, ∆shift ) on paired episodes and include cross-prompt evaluation when the visual module is trained against text anchors. This paper is an empirical/diagnostic contribution, not a state-of-the-art method claim. Appendix G places Detailed-LoRA beside representative published results. Its accuracy is competitive with vanilla CLIP-LoRA and several source-free baselines but below the strongest recent optimization methods on average. Direct ranking is secondary because backbone, episode count, augmentation, update bud-get, language resources, and target-image access differ. 
+
+Scope. The evidence is limited to fixed class-level descrip-tions, visual LoRA, two CLIP-B backbones, four targets, and 5-way 1/5-shot episodes. The analysis identifies prediction overlap and turnover but not a unique internal causal com-ponent. The shuffled control establishes the importance of correct class–description mapping, not which words or visual attributes are causal. Detailed descriptions constitute additional class-level target-domain side information constructed from an audited reference pool that is disjoint from the reported episodic images. Accordingly, the published-method compari-son is contextual rather than a harmonized state-of-the-art test. Within the controlled Base–Detailed analysis, however, the episode data and optimization protocol are identical, isolating the effect of the fixed text view. Future work should predict utility regimes from short trajectories and test adaptation-aware prompt selection across additional adaptation families under harmonized information access. X. C ONCLUSION 
+
+Detailed class semantics do not have a fixed value across frozen and adapted CLIP representations. Under paired visual-LoRA experiments, EuroSAT and CropDisease show seman-tic saturation: a large zero-shot advantage becomes largely shared with Base-LoRA. ISIC and, more weakly, ChestX show semantic emergence: detailed anchors become useful only after visual adaptation. Training trajectories, sample transi-tions, shuffled semantics, prompt transfer, a second backbone, and multiple seeds support this adaptation-conditional view. The practical conclusion is direct: prompt evaluation for SF-CDFSL should occur on both sides of the adaptation boundary, and visual LoRA should be interpreted as co-adapting with the text coordinates used for training. REFERENCES [1] Y. Guo, N. C. F. Codella, L. Karlinsky, J. V. Codella, J. R. Smith, K. Saenko, T. Rosing, and R. Feris, “A broader study of cross-domain few-shot learning,” in European Conference on Computer Vision , 2020, pp. 124–141. [2] M. Yazdanpanah and P. Moradi, “Visual domain bridge: A source-free domain adaptation for cross-domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recogni-tion Workshops , 2022, pp. 2868–2877. [3] H. Xu, L. Liu, S. Zhi, S. Fu, Z. Su, M.-M. Cheng, and Y. Liu, “Enhanc-ing information maximization with distance-aware contrastive learning for source-free cross-domain few-shot learning,” IEEE Transactions on Image Processing , vol. 33, pp. 2058–2073, 2024. [4] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal, G. Sastry, A. Askell, P. Mishkin, J. Clark et al. , “Learning transferable visual models from natural language supervision,” in International Conference on Machine Learning , 2021, pp. 8748–8763. [5] K. Zhou, J. Yang, C. C. Loy, and Z. Liu, “Learning to prompt for vision-language models,” International Journal of Computer Vision , vol. 130, no. 9, pp. 2337–2348, 2022. [6] M. U. Khattak, H. Rasheed, M. Maaz, S. Khan, and F. S. Khan, “MaPLe: Multi-modal prompt learning,” in Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , 2023, pp. 19 113– 19 122. [7] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, and W. Chen, “LoRA: Low-rank adaptation of large language models,” in International Conference on Learning Representations , 2022. [8] M. Zanella and I. Ben Ayed, “Low-rank few-shot adaptation of vision-language models,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops , 2024, pp. 1593– 1603. [9] L. Zhuo, Z. Wang, Y. Fu, and T. Qian, “Prompt as free lunch: En-hancing diversity in source-free cross-domain few-shot learning through semantic-guided prompting,” arXiv preprint arXiv:2412.00767 , 2024. [10] H. Xu, L. Liu, T. Liu, S. Zhi, S. Sun, and M.-M. Cheng, “Step-wise distribution-aligned style prompt tuning for source-free cross-domain few-shot learning,” IEEE Transactions on Pattern Analysis and Machine Intelligence , vol. 48, no. 2, pp. 1098–1114, 2026. 11 
+
+[11] S. Yi, Y. Zou, Y. Li, and R. Li, “Addressing exacerbated attention sink for source-free cross-domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2026, pp. 29 494–29 503. [12] Y. Zhao, Y. Liu, Y. Zou, Y. Li, and R. Li, “Reviving in-domain fine-tuning methods for source-free cross-domain few-shot learning,” arXiv preprint arXiv:2605.11659 , 2026. [13] Z. Zhang, Y. Zou, Y. Li, R. Li, and G. Chen, “Mind the discriminability trap in source-free cross-domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2026, pp. 36 978–36 988. [14] Z. Zhang, G. Chen, Y. Zou, Y. Li, and R. Li, “Reclaiming lost text layers for source-free cross-domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2026, pp. 15 080–15 090. [15] Y. Zhao, Y. Zou, Y. Li, and R. Li, “Interpretable cross-domain few-shot learning with rectified target-domain local alignment,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2026, pp. 41 605–41 615. [16] O. Vinyals, C. Blundell, T. Lillicrap, K. Kavukcuoglu, and D. Wierstra, “Matching networks for one shot learning,” in Advances in Neural Information Processing Systems , 2016, pp. 3637–3645. [17] C. Finn, P. Abbeel, and S. Levine, “Model-agnostic meta-learning for fast adaptation of deep networks,” in International Conference on Machine Learning , 2017, pp. 1126–1135. [18] J. Snell, K. Swersky, and R. Zemel, “Prototypical networks for few-shot learning,” in Advances in Neural Information Processing Systems , 2017, pp. 4077–4087. [19] F. Sung, Y. Yang, L. Zhang, T. Xiang, P. H. S. Torr, and T. M. Hospedales, “Learning to compare: Relation network for few-shot learning,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition , 2018, pp. 1199–1208. [20] W.-Y. Chen, Y.-C. Liu, Z. Kira, Y.-C. F. Wang, and J.-B. Huang, “A closer look at few-shot classification,” in International Conference on Learning Representations , 2019. [21] E. Triantafillou, T. Zhu, V. Dumoulin, P. Lamblin, U. Evci, K. Xu, R. Goroshin, C. Gelada, K. Swersky, P.-A. Manzagol, and H. Larochelle, “Meta-dataset: A dataset of datasets for learning to learn from few examples,” in International Conference on Learning Representations ,2020. [22] H.-Y. Tseng, H.-Y. Lee, J.-B. Huang, and M.-H. Yang, “Cross-domain few-shot classification via learned feature-wise transformation,” in In-ternational Conference on Learning Representations , 2020. [23] J. Oh, S. Kim, N. Ho, J.-H. Kim, H. Song, and S.-Y. Yun, “Understand-ing cross-domain few-shot learning based on domain similarity and few-shot difficulty,” in Advances in Neural Information Processing Systems ,vol. 35, 2022. [24] W.-H. Li, X. Liu, and H. Bilen, “Cross-domain few-shot learning with task-specific adapters,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 7161–7170. [25] P. Li, S. Gong, C. Wang, and Y. Fu, “Ranking distance calibration for cross-domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 9099–9108. [26] F. Zhou, P. Wang, L. Zhang, W. Wei, and Y. Zhang, “Revisiting proto-typical network for cross domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2023, pp. 20 061–20 070. [27] Y. Fu, Y. Xie, Y. Fu, J. Chen, and Y.-G. Jiang, “Wave-SAN: Wavelet based style augmentation network for cross-domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022. [28] Y. Fu, Y. Xie, Y. Fu, and Y.-G. Jiang, “StyleAdv: Meta style adversarial training for cross-domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2023, pp. 24 575–24 584. [29] Y. Zou, Y. Liu, Y. Hu, Y. Li, and R. Li, “Flatten long-range loss landscapes for cross-domain few-shot learning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2024, pp. 23 575–23 584. [30] R. Ma, Y. Zou, Y. Li, and R. Li, “Reconstruction target matters in masked image modeling for cross-domain few-shot learning,” in Proceedings of the AAAI Conference on Artificial Intelligence , 2025, pp. 19 305–19 313. [31] Y. Zou, R. Ma, Y. Li, and R. Li, “Attention temperature matters in ViT-based cross-domain few-shot learning,” in Advances in Neural Information Processing Systems , vol. 37, 2024, pp. 116 332–116 354. [32] Y. Zou, S. Yi, Y. Li, and R. Li, “A closer look at the CLS token for cross-domain few-shot learning,” in Advances in Neural Information Processing Systems , vol. 37, 2024, pp. 85 523–85 545. [33] S. Yi, Y. Zou, Y. Li, and R. Li, “Revisiting continuity of image tokens for cross-domain few-shot learning,” arXiv preprint arXiv:2506.03110 ,2025. [34] ——, “Random registers for cross-domain few-shot learning,” arXiv preprint arXiv:2506.02843 , 2025. [35] K. Zhou, J. Yang, C. C. Loy, and Z. Liu, “Conditional prompt learning for vision-language models,” in Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition , 2022, pp. 16 816– 16 825. [36] H. Yao, R. Zhang, and C. Xu, “Visual-language prompt tuning with knowledge-guided context optimization,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2023, pp. 6757–6767. [37] B. Zhu, Y. Niu, Y. Han, Y. Wu, and H. Zhang, “Prompt-aligned gradient for prompt tuning,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, pp. 15 659–15 669. [38] M. U. Khattak, S. T. Wasim, M. Naseer, S. Khan, M.-H. Yang, and F. S. Khan, “Self-regulating prompts: Foundational model adaptation without forgetting,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, pp. 15 190–15 200. [39] R. Zhang, R. Zhang, R. Fang, P. Gao, K. Li, J. Dai, Y. Qiao, and H. Li, “Tip-adapter: Training-free adaption of CLIP for few-shot classification,” in European Conference on Computer Vision , 2022, pp. 493–510. [40] P. Gao, S. Geng, R. Zhang, T. Ma, R. Fang, Y. Zhang, H. Li, and Y. Qiao, “CLIP-adapter: Better vision-language models with feature adapters,” 
+
+International Journal of Computer Vision , vol. 132, no. 2, pp. 581–595, 2024. [41] T. Yu, Z. Lu, X. Jin, Z. Chen, and X. Wang, “Task residual for tuning vision-language models,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 10 899–10 909. [42] S. Pratt, I. Covert, R. Liu, and A. Farhadi, “What does a platypus look like? generating customized prompts for zero-shot image classification,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, pp. 15 691–15 701. [43] S. Menon and C. Vondrick, “Visual classification via description from large language models,” in International Conference on Learning Rep-resentations , 2023. [44] S. Yi, Y. Zou, Y. Li, and R. Li, “Improving CLIP adaptation by breaking tail alignment for source-free cross-domain few-shot learning,” in International Conference on Machine Learning , ser. Proceedings of Machine Learning Research, vol. 306, 2026. [45] P. Helber, B. Bischke, A. Dengel, and D. Borth, “EuroSAT: A novel dataset and deep learning benchmark for land use and land cover classi-fication,” IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing , vol. 12, no. 7, pp. 2217–2226, 2019. [46] S. P. Mohanty, D. P. Hughes, and M. Salath´ e, “Using deep learning for image-based plant disease detection,” Frontiers in Plant Science , vol. 7, p. 1419, 2016. [47] N. C. F. Codella, V. Rotemberg, P. Tschandl, M. E. Celebi, S. Dusza, D. Gutman, B. Helba, A. Kalloo, K. Liopyris, M. Marchetti et al. ,“Skin lesion analysis toward melanoma detection 2018: A challenge hosted by the international skin imaging collaboration,” arXiv preprint arXiv:1902.03368 , 2019. [48] X. Wang, Y. Peng, L. Lu, Z. Lu, M. Bagheri, and R. M. Summers, “ChestX-ray8: Hospital-scale chest x-ray database and benchmarks on weakly-supervised classification and localization of common thorax diseases,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition , 2017, pp. 3462–3471. [49] B. Efron and R. J. Tibshirani, An Introduction to the Bootstrap . Boca Raton, FL: CRC Press, 1994. 12 
+
+APPENDIX AREPRODUCIBILITY AND INFORMATION ACCESS 
+
+A. Target Domains and Episode Construction 
+
+The four target datasets follow the BSCD-FSL evaluation family: EuroSAT for remote-sensing scenes [45], CropDisease for plant pathology [46], ISIC for dermoscopic lesions [47], and ChestX for thoracic radiography [48]. Every episode samples five target classes, K ∈ { 1, 5} labeled support images per class, and 15 disjoint query images per class. No source-domain image is loaded during episode adaptation. Base and Detailed conditions consume the same episode object and are paired before any model update. The principal ViT-B/16 run contains 800 episodes for 1-shot and 400 for 5-shot. Dynamics and shuffled controls use 100 paired episodes per dataset and shot. ViT-B/32 uses 100 paired episodes, while the additional seed runs use 200 episodes for 1-shot and 100 for 5-shot. These smaller suites are diagnostic replications and are not substituted for the principal endpoint estimates. 
+
+B. Detailed Description Bank and Information Access 
+
+Each class is represented by one fixed, class-level visual description. The descriptions were constructed offline with Qwen3.5-27B-FP8 from one to three representative reference images per class. The generation instruction restricted the output to observable, class-defining visual evidence, including appearance, structure, color, texture, and spatial organiza-tion, while excluding image-specific incidental details and unsupported encyclopedic knowledge. After construction, the description bank was frozen and reused unchanged across all episodes. No episodic support or query image, model predic-tion, gradient, or evaluation outcome was used to generate, select, or revise a description. The reference images were maintained in a separate ref-erence pool and excluded from every reported support and query set. We verified this separation against the serialized episode manifests using canonical image identifiers and file-content hashes. Detailed therefore introduces additional class-level target-domain side information relative to the class-name Base condition, but it does not use episode-specific or query-dependent information. The Base and Detailed conditions remain strictly paired: they use identical classes, support/query images, initialization, optimization, and random streams, with only the fixed text view changed. Comparisons with published methods are consequently reported as contextual rather than harmonized rankings whenever the permitted language or image side information differs across studies. 
+
+C. Optimization and Numerical Configuration 
+
+All tensors participating in similarity or matrix multiplica-tion are placed on the same concrete device and converted to compatible floating-point types. This is essential because pretrained CLIP modules may execute in FP16 while newly inserted LoRA factors default to FP32. Base and Detailed runs use identical data order, initialization, augmentation, optimizer state construction, and update count.                       
+
+> TABLE II PRINCIPAL VISUAL -L ORA CONFIGURATION .Component Setting Backbone CLIP ViT-B/16; replication with ViT-B/32 Trainable modules Visual Q/K/V LoRA in all Transformer blocks Rank / scale / dropout 16 / 1 / 0.25 Frozen modules Original visual weights and complete text en-coder Optimizer AdamW, learning rate 10 −4,weight decay
+> 10 −2
+> Schedule Cosine decay to 10 −6
+> Updates 250; ChestX 125 Support batch At most 25 Evaluation batch 128 Input / logit scale 224 ×224 / 100 Precision CUDA mixed precision
+
+D. Paired Inference and Bootstrap Procedure 
+
+For each episode e, every reported contrast is first computed as a within-episode difference, e.g., de = ALD,e − ALB,e . We draw 10,000 bootstrap samples of episodes with replacement and recompute the mean difference. The 2.5th and 97.5th percentiles form the reported 95% interval [49]. Two-sided 
+
+p-values are obtained from twice the smaller bootstrap tail probability and clipped at one. Query images are not pooled as independent observations because samples within an episode share classes, support data, and an adapted model. APPENDIX BFULL ENDPOINT STATISTICS AND REGIME TAXONOMY 
+
+The sign-based labels in the main text cover the two recur-ring patterns, but the framework admits a broader taxonomy: A discrete label should not substitute for uncertainty. ISIC 5-shot has a slightly negative point estimate before LoRA but a confidence interval that touches zero; ChestX 1-shot has a small positive post-LoRA estimate whose magnitude varies across seeds. We preserve their operational labels for consistency while explicitly treating near-zero conditions as boundaries. The taxonomy is deliberately threshold-free: a regime name follows the signs and ordering of (∆ 0, ∆L), whereas evidential strength is conveyed separately by the paired interval, p-value, and effect magnitude. This prevents an arbitrary “practical significance” cutoff from changing the scientific definition. For comparison across domains, we report absolute percentage-point differences rather than relative percentage changes, be-cause the latter would inflate effects on low-accuracy domains such as ChestX. The continuous quantities remain primary; the regime label is a compact summary of their relationship. 13 
+
+TABLE III PAIRED EPISODE -LEVEL BOOTSTRAP ANALYSIS OF SEMANTIC UTILITY .Dataset Shot Before LoRA After LoRA Adaptation shift 
+
+∆0 [95% CI] p ∆L [95% CI] p ∆shift [95% CI] p
+
+EuroSAT 1 +8.13 [+7.57, +8.71] < . 0001 +2.21 [+1.87, +2.55] < . 0001 -5.92 [-6.55, -5.29] < . 0001 
+
+5 +8.31 [+7.49, +9.11] < . 0001 +0.82 [+0.58, +1.05] < . 0001 -7.49 [-8.33, -6.64] < . 0001 
+
+CropDisease 1 +21.00 [+20.07, +21.90] < . 0001 +2.96 [+2.54, +3.40] < . 0001 -18.04 [-19.00, -17.09] < . 0001 
+
+5 +21.54 [+20.28, +22.82] < . 0001 +0.69 [+0.44, +0.96] < . 0001 -20.85 [-22.14, -19.56] < . 0001 
+
+ISIC 1 -0.74 [-1.12, -0.35] 0.0002 +3.84 [+3.43, +4.24] < . 0001 +4.58 [+4.06, +5.08] < . 0001 
+
+5 -0.51 [-1.05, +0.05] 0.072 +3.12 [+2.57, +3.65] < . 0001 +3.62 [+2.83, +4.41] < . 0001 
+
+ChestX 1 -0.75 [-1.04, -0.45] < . 0001 +0.40 [+0.03, +0.78] 0.034 +1.15 [+0.68, +1.60] < . 0001 
+
+5 -0.67 [-1.09, -0.25] 0.002 +1.54 [+0.98, +2.13] < . 0001 +2.22 [+1.51, +2.91] < . 0001 
+
+Confidence intervals and p values are computed by 10,000 paired episode-level bootstrap resamples. TABLE IV COMPLETE QUALITATIVE TAXONOMY OF ADAPTATION -CONDITIONAL UTILITY .Condition Name Interpretation 
+
+∆0 > 0, 0 < ∆L < ∆0 Saturation Initial benefit contracts 
+
+∆0 > 0, ∆L > ∆0 Amplification Initial benefit strength-ens 
+
+∆0 ≤ 0, ∆L > 0 Emergence Benefit appears after adaptation 
+
+∆0 > 0, ∆L ≤ 0 Reversal Initial benefit is lost/reversed 
+
+∆0 ≤ 0, ∆L ≤ 0 Persistent non-benefit Detailed never becomes superior 
+
+APPENDIX CADDITIONAL TRAINING -D YNAMICS EVIDENCE 
+
+The combined curve in Fig. 2 is reproduced below as individual domain panels to expose scale differences that are compressed in the shared layout. The dynamic suite uses 100 paired episodes and therefore estimates a trajectory rather than reproducing the exact princi-pal endpoint. The decisive observation is directional: the large saturation-domain gap closes because Base-LoRA improves relatively faster, while the emergence-domain gap becomes positive only after the visual representation has moved. No checkpoint is selected using query accuracy; all checkpoints are predetermined and evaluated retrospectively. Each trajectory can be read through four descriptive quan-tities: its initial utility ∆0, the first observed sign crossing, the maximum absolute utility reached during adaptation, and the final utility. These summaries are not used for model selection. In particular, the temporary peak on ISIC and the early amplification on CropDisease are retained rather than replaced by the best checkpoint. This distinction is necessary because the paper studies how utility evolves under a fixed adaptation schedule, not how to tune a stopping rule with query labels. The paired checkpoint curves also reduce a common ambiguity in training plots: a changing gap may arise from Base improving, Detailed improving, or both. The endpoint and sample-level analyses show that the dominant source differs across regimes. 14 0 1 5 10 25 50 100 150 250 
+
+Adaptation checkpoint (step)          
+
+> 012345678
+> Semantic utility  Δt (pp)
+> 1-shot 5-shot 01510 25 50 100 150 250
+
+Adaptation checkpoint (step)          
+
+> 0510 15 20 25
+> Semantic utility  Δt (pp)
+> 1-shot 5-shot 01510 25 50 100 150 250
+
+Adaptation checkpoint (step)         
+
+> 012345
+> Semantic utility  Δt (pp)
+> 1-shot 5-shot 01510 25 50 100 125
+
+Adaptation checkpoint (step)  
+
+> −1.0 −0.5 0.0 0.5 1.0 1.5 2.0
+> Semantic utility  Δt (pp)
+> 1-shot 5-shot
+
+Fig. 5. Per-domain training trajectories. EuroSAT and CropDisease exhibit delayed contraction after an initially stable or amplified Detailed advantage. ISIC crosses into positive utility within the first few updates, whereas ChestX crosses later and remains weakest in 1-shot. 
+
+APPENDIX DCOMPLETE SAMPLE -L EVEL DECOMPOSITION 
+
+For completeness, Eq. (28) follows from partitioning the two correct sets into their intersection and exclusive parts: 
+
+ALD − ALB = |C LD | − |C LB ||Q| (29) 
+
+= |C LD \ C LB | − |C LB \ C LD ||Q| (30) 
+
+= XD − XB . (31) The shared intersection cancels exactly. Thus, the adapted utility is not merely correlated with exclusive correctness; it is identical to the difference between the two exclusive-correct rates. The conditional rates in Table V answer distinct questions. Retention asks whether Detailed-LoRA preserves frozen De-tailed successes. Error correction asks whether it expands beyond those successes. Base-LoRA coverage asks whether support supervision can recover the cases initially unique to richer language. Their joint pattern separates preservation-plus-overlap from decision reconstruction without asserting a unique internal attention or gradient mechanism. 15                                                               
+
+> TABLE V SAMPLE -LEVEL TRANSITION STATISTICS FOR SEMANTIC SATURATION AND EMERGENCE .Dataset Shot Detailed-ZS transitions Cross-view overlap Post-LoRA exclusivity Regime Retention [95% CI] Error correction [95% CI] Base-LoRA coverage [95% CI] D-only B-only EuroSAT 193.9 [93.5, 94.3] 68.2 [67.2, 69.3] 84.4 [83.2, 85.6] 5.8 3.6 SAT .597.2 [96.9, 97.5] 87.4 [86.6, 88.2] 95.2 [94.4, 95.9] 2.4 1.6 SAT .CropDisease 195.4 [95.0, 95.8] 69.2 [68.0, 70.4] 86.7 [85.8, 87.7] 7.3 4.3 SAT .598.6 [98.3, 98.9] 90.3 [89.4, 91.2] 97.3 [96.7, 97.8] 2.3 1.6 SAT .ISIC 153.9 [52.7, 55.1] 34.0 [33.3, 34.6] 33.5 [32.1, 35.0] 11.4 7.6 EMER .558.3 [57.0, 59.8] 52.0 [51.0, 52.9] 48.7 [46.5, 51.0] 10.9 7.8 EMER .ChestX 128.9 [27.7, 30.1] 20.0 [19.6, 20.5] 23.0 [21.7, 24.3] 11.2 10.8 EMER .533.5 [32.0, 34.8] 22.2 [21.7, 22.8] 20.6 [19.1, 22.1] 13.8 12.2 EMER .Retention is the fraction of Detailed-ZS correct samples retained by Detailed-LoRA. Error correction is the fraction of Detailed-ZS errors corrected by Detailed-LoRA. Base-LoRA coverage is measured on samples correct only under Detailed-ZS. D-only and B-only are percentages of all query samples correct exclusively under Detailed-LoRA and Base-LoRA, respectively; their difference equals the adapted semantic utility ∆L.
+
+APPENDIX ESEMANTIC CONTROLS , B ACKBONES , AND SEEDS 
+
+The shuffled condition is intentionally stronger than arandom-text baseline: it preserves the exact Detailed embed-ding multiset and all pairwise distances up to relabeling. It therefore isolates class–description correspondence. Its lim-itation is equally important: a fixed-point-free permutation changes every class anchor simultaneously and does not reveal which phrase, visual attribute, or class pair drives the aligned advantage. The control separates three claims that are often conflated. First, a richer text-embedding set is not sufficient: assigning the same vectors to the wrong classes sharply reduces perfor-mance on EuroSAT, CropDisease, and ISIC. Second, the non-zero shuffled-LoRA accuracy shows that support supervision can partially learn even an incorrect codebook, especially with five shots. Third, the aligned–shuffled difference after adaptation measures the value of correct correspondence under a fixed text multiset; it does not measure the total value of language relative to a text-free classifier. ChestX remains the important weak case, where aligned–shuffled post-LoRA intervals include zero. Across ViT-B/16 and ViT-B/32, EuroSAT/CropDisease con-sistently contract while ISIC/ChestX gain relative utility after adaptation. The exact categorical label can change when ∆0
+
+lies close to zero, as in ISIC 1-shot on ViT-B/32. The backbone study therefore supports a directional generalization claim— contraction versus adaptation-created utility—rather than in-variance of every discrete label. The three-seed aggregation addresses a different source of uncertainty. It does not enlarge the number of principal episodes or replace the paired bootstrap; instead, it tests whether the sign pattern survives independently generated episode streams. Seven of eight dataset–shot conditions retain the same regime across all seeds. ChestX 1-shot is the sole exception and has a mean ∆L close to zero, so its instability is consistent with effect size rather than evidence against the broader phenomenon. These results motivate reporting continuous utilities and uncertainty in addition to regime names. 16 
+
+TABLE VI EFFECT OF CORRECT CLASS –TEXT ALIGNMENT RELATIVE TO A FIXED -POINT -FREE SHUFFLED DETAILED CODEBOOK .
+
+Dataset Shot Zero-shot After visual LoRA Aligned − shuffled [95% CI] p Aligned − shuffled [95% CI] p
+
+EuroSAT 1 +53.64 [+50.88, +56.41] < . 0001 +36.92 [+34.08, +39.69] < . 0001 
+
+5 +53.33 [+50.68, +56.00] < . 0001 +15.47 [+13.92, +17.07] < . 0001 
+
+CropDisease 1 +53.20 [+49.72, +56.60] < . 0001 +28.25 [+25.88, +30.60] < . 0001 
+
+5 +53.48 [+49.91, +56.95] < . 0001 +4.64 [+3.72, +5.61] < . 0001 
+
+ISIC 1 +8.85 [+7.63, +10.05] < . 0001 +10.88 [+9.16, +12.56] < . 0001 
+
+5 +8.71 [+7.43, +10.03] < . 0001 +8.97 [+7.36, +10.56] < . 0001 
+
+ChestX 1 +1.61 [+0.45, +2.76] 0.007 +0.63 [-0.53, +1.75] 0.291 5 +0.99 [-0.01, +2.01] 0.053 +1.15 [-0.11, +2.39] 0.072 
+
+The shuffled condition preserves the same Detailed text-embedding multiset but permutes its class assignment within each episode. Positive values favor correct semantic alignment. Confidence intervals and two-sided p-values use 10,000 paired episode-level bootstrap resamples. TABLE VII BACKBONE GENERALIZATION OF ADAPTATION -CONDITIONAL SEMANTIC UTILITY .Dataset Backbone Shot Zero-shot After visual LoRA Semantic utility (pp) Regime Base Detailed Base Detailed ∆0 ∆L
+
+EuroSAT ViT-B/16 1 54.85 62.98 82.19 84.40 +8.13 +2.21 SAT .ViT-B/16 5 54.55 62.86 92.74 93.55 +8.31 +0.82 SAT .ViT-B/32 1 48.12 56.80 79.49 82.84 +8.68 +3.35 SAT .ViT-B/32 5 48.32 57.05 92.32 93.37 +8.73 +1.05 SAT .CropDisease ViT-B/16 1 40.90 61.91 82.48 85.44 +21.00 +2.96 SAT .ViT-B/16 5 40.80 62.34 94.80 95.49 +21.54 +0.69 SAT .ViT-B/32 1 33.92 49.49 77.92 82.00 +15.57 +4.08 SAT .ViT-B/32 5 33.92 49.33 93.16 94.97 +15.41 +1.81 SAT .ISIC ViT-B/16 1 27.24 26.50 35.43 39.27 -0.74 +3.84 EMER .ViT-B/16 5 27.08 26.57 50.55 53.67 -0.51 +3.12 EMER .ViT-B/32 1 27.12 27.48 36.40 39.28 +0.36 +2.88 AMPL .ViT-B/32 5 27.15 26.85 50.03 52.19 -0.29 +2.16 EMER .ChestX ViT-B/16 1 21.93 21.18 21.50 21.90 -0.75 +0.40 EMER .ViT-B/16 5 21.84 21.17 23.06 24.60 -0.67 +1.54 EMER .ViT-B/32 1 20.08 19.37 21.23 22.56 -0.71 +1.33 EMER .ViT-B/32 5 20.04 18.93 21.51 23.44 -1.11 +1.93 EMER .Bold marks the better text view for the same backbone and adaptation state. Regimes follow the sign definitions in Section III; A MPL . denotes positive utility that increases after adaptation. TABLE VIII THREE -SEED ROBUSTNESS OF SEMANTIC UTILITY ON VIT-B/16. 
+
+Dataset Shot ∆0 ∆L ∆shift Regime stable Majority regime EuroSAT 1 +8.02 ± 0.18 +2.15 ± 0.51 -5.87 ± 0.35 ✓ SAT .5 +8.57 ± 0.30 +0.94 ± 0.17 -7.63 ± 0.13 ✓ SAT .CropDisease 1 +21.66 ± 0.58 +3.03 ± 0.25 -18.63 ± 0.52 ✓ SAT .5 +22.65 ± 0.97 +0.80 ± 0.14 -21.84 ± 0.86 ✓ SAT .ISIC 1 -0.88 ± 0.35 +3.62 ± 0.74 +4.50 ± 0.40 ✓ EMER .5 -0.75 ± 0.22 +4.05 ± 0.87 +4.80 ± 1.09 ✓ EMER .ChestX 1 -0.62 ± 0.15 +0.26 ± 0.29 +0.87 ± 0.28 – EMER .5 -0.46 ± 0.25 +1.67 ± 0.47 +2.12 ± 0.31 ✓ EMER .
+
+Entries are mean ± standard deviation across three episodic seeds. A checkmark indicates that the exact sign-based regime is identical for all seeds. ChestX 1-shot is a weak boundary case whose adapted utility is close to zero. 17 
+
+APPENDIX FPROMPT -T RANSFER MATRIX 
+
+Define the signed transfer gaps as GB = ALB→B − ALB→D
+
+and GD = ALD→D − ALD→B . Positive values mean that the prompt used during support optimization remains preferable at evaluation; a negative value means that switching prompts improves accuracy. The latter occurs for Base-trained ISIC 1-shot and prevents us from equating every non-zero gap with a loss. CropDisease exhibits the largest coordinate dependence: changing the test prompt after training changes accuracy by 14–22 points. EuroSAT and ISIC have smaller but clear signed gaps, while ChestX is weakly prompt-conditioned. The asymmetry GB̸ = GD also matters: Base-conditioned and Detailed-conditioned LoRA do not learn a single prompt-neutral domain correction viewed from two test templates. Instead, each update is optimized against a different anchor geometry. This observation justifies matched-view reporting, 
+
+TABLE IX PROMPT -CONDITIONED CO -ADAPTATION MEASURED BY CROSS -PROMPT EVALUATION .
+
+Dataset Shot Train Base Train Detailed Gap (pp) 
+
+B → B B → D D → B D → D GB GD
+
+EuroSAT 1 82.19 79.70 77.46 84.40 +2.49 +6.94 5 92.74 89.56 89.61 93.55 +3.18 +3.94 CropDisease 1 82.48 68.32 63.22 85.44 +14.16 +22.22 5 94.80 80.13 79.40 95.49 +14.67 +16.09 ISIC 1 35.43 38.06 33.61 39.27 -2.63 +5.66 5 50.55 48.96 47.59 53.67 +1.59 +6.08 ChestX 1 21.50 20.26 21.59 21.90 +1.24 +0.31 5 23.06 20.17 23.71 24.60 +2.89 +0.89 
+
+B and D denote Base and Detailed prompts. GB and GD are signed matched-minus-cross-prompt accuracy differences; positive values favor the training prompt. EuroSAT 1-shot EuroSAT 5-shot CropDisease 1-shot CropDisease 5-shot ISIC 1-shot ISIC 5-shot ChestX 1-shot ChestX 5-shot −5 0510 15 20 25       
+
+> Prompt transfer gap (pp)
+> Base-LoRA Detailed-LoRA
+> +2.5 +3.2 +14.2 +14.7 -2.6 +1.6 +1.2 +2.9 +6.9 +3.9 +22.2 +16.1 +5.7 +6.1 +0.3 +0.9
+
+Fig. 6. Prompt-transfer gaps after Base-conditioned and Detailed-conditioned visual LoRA. Non-zero gaps show that the visual update is coupled to the anchor coordinates used during support optimization. A transfer gap is a diagnostic of co-adaptation, not by itself evidence of harmful overfitting. 
+
+but it does not imply that prompt dependence is harmful overfitting; that judgment still requires query accuracy and generalization evidence. Visual LoRA should therefore not be treated as a universal target-domain residual that can be trained under one text space and freely recombined with another. APPENDIX GCONTEXTUAL COMPARISON WITH PUBLISHED ACCURACY 
+
+RESULTS TABLE X Contextual 5-way 1-shot comparison (%). 
+
+Method ChestX ISIC EuroSAT CropDisease Avg. IM-DCL [3] 23.98 38.13 77.14 84.37 55.91 StepSPT [10] 22.84 32.97 70.01 84.84 52.68 CLIP-LoRA (reported) [8], [44] 21.73 35.23 81.41 85.32 55.92 Semantic Probe (LoRA) [12] 23.65 38.77 82.94 85.11 57.62 ATHA [44] 24.00 38.86 82.56 87.99 58.35 Detailed-LoRA (ours) 21.90 39.27 84.40 85.44 57.75 
+
+TABLE XI Contextual 5-way 5-shot comparison (%). 
+
+Method ChestX ISIC EuroSAT CropDisease Avg. IM-DCL [3] 28.93 52.74 89.47 95.73 66.72 StepSPT [10] 26.36 52.12 89.40 96.01 65.97 CLIP-LoRA (reported) [8], [44] 24.13 51.10 92.52 96.21 65.99 Semantic Probe (LoRA) [12] 25.79 55.95 93.43 96.88 68.01 ATHA [44] 26.67 56.42 93.41 97.62 68.53 Detailed-LoRA (ours) 24.60 53.67 93.55 95.49 66.83 18  
+
+> Comparison note: values are transcribed from the cited papers. They are contextual rather than harmonized because backbones, episode counts, op-timization budgets, augmentation, and language resources differ. Bold marks the best displayed value within a column and is not a significance claim.
+
+Tables X and XI are included because an empirical analysis must demonstrate that its observations occur in a meaningful performance regime. Detailed-LoRA is competitive with the reported CLIP-LoRA baseline and reaches the best contextual EuroSAT result in both shots and the best 1-shot ISIC result among the listed rows. It is not the best average method: ATHA and Semantic Probe explicitly optimize final adaptation and are stronger overall, especially on 5-shot ISIC/ChestX or CropDisease. This is consistent with the paper’s positioning rather than a deficiency in the central claim. The comparison is not used as a formal superiority test. IM-DCL uses a different backbone, and the CLIP methods vary in episode count, optimization length, augmentation, prompt expansion, and text-side information. Recent Semantic Probe experiments, for example, evaluate 400 episodes in both shot settings and incorporate LLM-expanded text, whereas ATHA uses 800/400 episodes and a 100-epoch schedule. Our numbers come from the paired protocol described in Appendix A. A fair ranking would require all methods to be rerun with the same episodes, text bank, image-access policy, and optimization budget.
