@@ -1,48 +1,49 @@
 ## 最新日报
-- 最新运行日期：2026-08-12
-- 运行时间：2026-08-12 04:40:42 北京时间
+- 最新运行日期：2026-08-13
+- 运行时间：2026-08-13 04:35:25 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
 - 速读区：5
 
 ### 今日简报（AI）
-今日精读了两篇9分论文，分别探索无源域小样本学习中语义饱和与涌现的适应性条件，以及免训练检索如何驱动长时序列预测与不确定性量化，并速读了具身智能世界—自我建模、动态图神经符号预测与嵌入信息留存等研究。
-最值得关注的方向：语义效用在域适应中由“饱和”向“涌现”灵活切换的机制，以及KReF证明无需训练即可通过检索增强长期预测并可靠估计不确定性的简单有效方案。
-建议普通读者优先阅读这两篇精读论文，体会其“条件化自适应”与“检索即预测”的核心思路，并思考这些方法能否迁移到自身面对的跨域或序列决策问题中。
-- 详情：[/202608/12/README](/202608/12/README)
+- 今日共生成 10 篇推荐（精读 5 篇，速读 5 篇）
+- 精读：《Ground-Truth Neighborhood Regularization for Reinforcement Learning Post-Training of Time Series Foundation Models》（9.0/10）, 《Three Necessary Principles for Self-Supervised Visual Representation Learning》（9.0/10）
+- 速读：《LoRSA: Toward Generalizable Parameter-Efficient Fine-Tuning for Biomedical Downstream Tasks》（8.0/10）, 《Phase State Space Models: Parallel, Surrogate-Free Training of Spiking Networks》（8.0/10）, 《GRACE: LLM-Grounded Semantic Metric Spaces for Scalable Mixed-Data Clustering》（8.0/10）
+- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
+- 详情：[/202608/13/README](/202608/13/README)
 
 ### 精读区论文标签
-1. [When Semantics Saturate or Emerge: Adaptation-Conditional Semantic Utility in Source-Free Cross-Domain Few-Shot Learning](/202608/12/2608.06673v1-when-semantics-saturate-or-emerge-adaptation-conditional-semantic-utility-in-source-free-cross-domain-few-shot-learning)  
+1. [Ground-Truth Neighborhood Regularization for Reinforcement Learning Post-Training of Time Series Foundation Models](/202608/13/2608.08010v1-ground-truth-neighborhood-regularization-for-reinforcement-learning-post-training-of-time-series-foundation-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：无源跨域小样本学习与有限标注适配
-2. [KReF: Training-Free Retrieval for Long-Term Time-Series Forecasting and Predictive Uncertainty](/202608/12/2608.06748v1-kref-training-free-retrieval-for-long-term-time-series-forecasting-and-predictive-uncertainty)  
+   evidence：直接针对预训练基础模型和强化学习微调的时间序列预测
+2. [Three Necessary Principles for Self-Supervised Visual Representation Learning](/202608/13/2608.08309v1-three-necessary-principles-for-self-supervised-visual-representation-learning)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过免训练的检索实现长期时间序列预测，直接匹配序列数据预测
-3. [Bridging the Gap Between Hyperdimensional Computing and Kernel Methods via the Nyström Method](/202608/12/2608.06860v1-bridging-the-gap-between-hyperdimensional-computing-and-kernel-methods-via-the-nystrm-method)  
+   evidence：从原始图像进行自监督视觉表征学习，结合不变性、预测和非退化原则。
+3. [Learning Deep Modality-Shared Self-Expressiveness for Image Clustering with Textual Information](/202608/13/2608.08418v1-learning-deep-modality-shared-self-expressiveness-for-image-clustering-with-textual-information)  
    标签：评分：9.0/10、query:ndai
-   evidence：基于Nyström的原始数据到高维向量映射，用于核表示学习
-4. [ZIPBrain: Can EEG Foundation Models Be Faster, Locally Deployable, but Accurate?](/202608/12/2608.07033v1-zipbrain-can-eeg-foundation-models-be-faster-locally-deployable-but-accurate)  
+   evidence：利用预训练的视觉-语言模型表示为图像聚类下游任务服务
+4. [MGMCL: Multi-Granularity Manifold Contrastive Learning With Neural ODEs for Cross-Subject EEG Emotion Recognition](/202608/13/2608.08440v1-mgmcl-multi-granularity-manifold-contrastive-learning-with-neural-odes-for-cross-subject-eeg-emotion-recognition)  
    标签：评分：9.0/10、query:ndai
-   evidence：EEG表征学习与令牌压缩
-5. [AutoIntervene: Calibrated Intervention for Action-Chunking Imitation Learning Policies](/202608/12/2608.07065v1-autointervene-calibrated-intervention-for-action-chunking-imitation-learning-policies)  
+   evidence：跨被试EEG情绪识别的多粒度流形对比学习
+5. [End-to-End Neural Decomposition with Koopman Operators for Time-Series Forecasting](/202608/13/2608.08788v1-end-to-end-neural-decomposition-with-koopman-operators-for-time-series-forecasting)  
    标签：评分：9.0/10、query:ndai
-   evidence：动作分块策略从输入预测短动作序列，将模型输出转换为序列。
+   evidence：基于Koopman算子的深度网络用于非线性时间序列预测，直接解决序列数据预测问题。
 
 ### 速读区论文标签
-1. [AtlasVLA: Persistent World-Ego State Modeling for Vision-Language-Action Models](/202608/12/2608.06729v1-atlasvla-persistent-world-ego-state-modeling-for-vision-language-action-models)  
+1. [LoRSA: Toward Generalizable Parameter-Efficient Fine-Tuning for Biomedical Downstream Tasks](/202608/13/2608.07749v1-lorsa-toward-generalizable-parameter-efficient-fine-tuning-for-biomedical-downstream-tasks)  
    标签：评分：8.0/10、query:ndai
-   evidence：持久世界自我状态建模，用于长时序行动预测
-2. [LiFTER: A Grounded Neuro-Symbolic Microscope for Continuous-Time Dynamic Graph Forecasting](/202608/12/2608.06765v1-lifter-a-grounded-neuro-symbolic-microscope-for-continuous-time-dynamic-graph-forecasting)  
+   evidence：参数高效微调在有限标注数据下将预训练模型适应到生物医学任务
+2. [Phase State Space Models: Parallel, Surrogate-Free Training of Spiking Networks](/202608/13/2608.07754v1-phase-state-space-models-parallel-surrogate-free-training-of-spiking-networks)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过时间规则预测连续时间动态图中的未来连接
-3. [Generative Embedding Benchmark: How Much Information Survives in a Dense Embedding?](/202608/12/2608.06972v1-generative-embedding-benchmark-how-much-information-survives-in-a-dense-embedding)  
+   evidence：将状态空间模型用于脉冲递归网络，面向神经数据的序列建模
+3. [GRACE: LLM-Grounded Semantic Metric Spaces for Scalable Mixed-Data Clustering](/202608/13/2608.07881v1-grace-llm-grounded-semantic-metric-spaces-for-scalable-mixed-data-clustering)  
    标签：评分：8.0/10、query:ndai
-   evidence：评估稠密嵌入中信息保留量的基准方法，用于表征学习
-4. [Hierarchical Quantization with Domain-Adaptive Sparse Routing for Generative Cross-Domain Recommendation](/202608/12/2608.06997v1-hierarchical-quantization-with-domain-adaptive-sparse-routing-for-generative-cross-domain-recommendation)  
+   evidence：利用预训练LLM知识构建语义度量空间以服务于聚类下游任务
+4. [SegDem: Segmentation helps Demosaicing](/202608/13/2608.07916v1-segdem-segmentation-helps-demosaicing)  
    标签：评分：8.0/10、query:ndai
-   evidence：将物品编码为紧凑语义ID并学习生成式推荐表征
-5. [Flowing Through States: Neural ODE Regularization for Reinforcement Learning](/202608/12/2608.06595v1-flowing-through-states-neural-ode-regularization-for-reinforcement-learning)  
+   evidence：从预训练分割模型进行跨任务解码器表示迁移
+5. [Ghost Features and Spooky Transfer Learning for Hypercomplex-Valued Neural Networks](/202608/13/2608.07735v1-ghost-features-and-spooky-transfer-learning-for-hypercomplex-valued-neural-networks)  
    标签：评分：7.0/10、query:ndai
-   evidence：面向强化学习隐状态转移的神经ODE正则化，强制潜表示沿时间演化
+   evidence：利用迁移学习将超复数层的鬼特征集成到已训练网络，借助预训练表征。
 
