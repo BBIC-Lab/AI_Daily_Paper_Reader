@@ -1,0 +1,452 @@
+Title: FSTC-Encoder: Feature–Spatial–Temporal Correlation Learning for Generalizable RF Sensing
+
+URL Source: https://arxiv.org/pdf/2608.08439v1
+
+Published Time: Tue, 11 Aug 2026 01:02:49 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# FSTC-Encoder: Feature–Spatial–Temporal Correlation Learning for Generalizable RF Sensing 
+
+# Jing Wang, Zhu Wang, Changlong Cheng, Yifan Guo, Yin Zhang 
+
+Northwestern Polytechnical University jingwang25@mail.nwpu.edu.cn, wangzhu@nwpu.edu.cn 
+
+Abstract 
+
+Heterogeneous RF sensing differs substantially in feature structure, spatial layout, and temporal scale, making exist-ing models difficult to reuse across devices, environments, and RF modalities. We propose FSTC-Encoder, which unifies heterogeneous RF representation learning through feature, spatial, and temporal correlation modeling. Structure-aware feature encoding accommodates different signal structures, set-based spatial encoding aggregates variable observations, and hierarchical temporal encoding jointly captures local vari-ations and long-range dependencies. Across sensing tasks and modalities, FSTC-Encoder retains the same spatial–temporal backbone architecture while varying only the feature con-figuration and task head. Across Widar3.0, CSI-Bench, and XRF55, FSTC-Encoder achieves 92.15% mean Accuracy un-der multi-factor cross-domain protocols, ranks first on three of four additional sensing tasks, remains consistently strong across WiFi, millimeter-wave radar, and RFID, and reduces the cross-modality performance gap from 18.85% to 12.93% through cross-RF learning. These results demonstrate that FSTC-Encoder achieves high domain robustness, task gen-erality, and modality extensibility. 
+
+# Introduction 
+
+Radio-frequency (RF) sensing transforms human-induced variations in wireless propagation into contactless observa-tions of the physical world. It has expanded from human tracking, vital-sign monitoring, and gesture recognition to daily-life understanding and increasingly diverse sensing set-tings (Adib et al. 2014, 2015; Lien et al. 2016; Fan et al. 2020). Recent benchmarks further span multiple users, tasks, hardware platforms, and RF modalities (Yang et al. 2023; Huang et al. 2024; Wang et al. 2024; Zhu et al. 2025). This shifts the objective from optimizing one configured pipeline to supporting changes in environments, devices, spatial lay-outs, and signal modalities. Most RF sensing models, however, target a specific sens-ing configuration. Modeling-based approaches rely on se-lected signal quantities, whereas learning-based approaches assume fixed input representations and encoder structures. Both perform well under matched training and deployment conditions, but their input construction and representation 
+
+Copyright © 2027, Association for the Advancement of Artificial Intelligence (www.aaai.org). All rights reserved. 
+
+Figure 1: Feature, spatial, and temporal correlations in RF sensing. Feature correlation describes dependencies among signal attributes, spatial correlation captures complementary observations and propagation relationships across sensing units, and temporal correlation characterizes the evolution of motion-induced signal variations over time. learning remain coupled to the sensing configuration, caus-ing substantial degradation when it changes (Zhang et al. 2022; Yan et al. 2025; Zhang et al. 2026). In heterogeneous RF sensing, changes in feature composition, device config-uration, or RF modality may alter both the data distribution and the data structure. The resulting challenge is more fun-damental than conventional domain shift: behavior-relevant correlations become entangled with the feature geometry and spatial layout induced by a particular acquisition process. Despite this acquisition-level heterogeneity, human be-havior induces recurring correlations in RF signals. As il-lustrated in Fig. 1, feature correlation captures dependencies among signal attributes, spatial correlation reflects comple-mentary observations and propagation relationships across sensing units, and temporal correlation describes the evolu-tion of motion-induced variations. These correlations pro-vide a natural basis for separating behavior-relevant infor-mation from configuration-specific measurements. Motivated by this insight, existing studies model spatial– temporal dependencies, multidimensional relations, or cor-relation graphs to improve robustness (Ren et al. 2023; Liu et al. 2024b; Gao et al. 2026; Dang et al. 2025). The remain-arXiv:2608.08439v1 [cs.LG] 9 Aug 2026 ing gap is how these correlations remain coupled to the sens-ing configuration. Their operators are typically instantiated on predetermined fingerprints, tensors, graph topologies, or modality-specific representations. Changing the feature fam-ily, spatial cardinality, or RF modality may therefore require redefining the input construction, relational structure, or en-coder components. Flattening heterogeneous inputs provides a common shape but discards informative feature and spatial structures; preserving every structure with a configuration-specific backbone prevents architectural reuse. What is miss-ing is a factorized architecture that preserves configuration-specific correlations where they arise while exposing stable interfaces for reusable behavior modeling. To address this issue, we propose FSTC-Encoder , a 
+
+Feature– Spatial– Temporal Correlation Encoder that stan-dardizes the interfaces between correlation-encoding stages rather than standardizing the raw inputs themselves. Structure-aware feature encoding preserves the dependency structure of each feature family while producing a common temporal–spatial representation. Set-based spatial encoding then removes dependence on spatial ordering and cardinality, yielding a unified temporal sequence. With feature and spa-tial variations isolated, hierarchical temporal encoding can focus on instantaneous transitions, local motion patterns, and long-range behavioral evolution. This factorization preserves signal-specific structure while preventing acquisition-level changes from propagating into high-level behavior represen-tations. Across sensing settings, only the structure-aware fea-ture encoding configuration and task head change, while the spatial–temporal backbone architecture remains unchanged. We evaluate FSTC-Encoder on Widar3.0, CSI-Bench, and XRF55 across multiple domains, sensing tasks, and RF modalities. It achieves 92.15% mean Accuracy under the multi-factor Widar3.0 protocols and obtains 52.61% and 59.88% Weighted-F1 in CSI-Bench cross-environment and cross-user evaluation, respectively. Across four additional CSI-Bench tasks, it ranks first on three and reaches 98.65% mean Accuracy. On XRF55, FSTC-Single achieves 85.52% mean Accuracy across WiFi, millimeter-wave radar, and RFID without cross-RF training; cross-RF learning raises the mean to 87.54% and reduces the modality gap to 12.93%. These results demonstrate domain robustness, task general-ity, and modality extensibility in heterogeneous sensing. Our contributions are threefold. First, we identify the coupling of acquisition-specific feature geometry and spa-tial layout with behavior modeling as a central obstacle to reusable RF sensing, and formulate heterogeneous represen-tation learning as factorized feature, spatial, and temporal correlation encoding. Second, we develop FSTC-Encoder with structure-aware feature encoding, set-based spatial ag-gregation, and hierarchical temporal modeling under a uni-fied backbone architecture. Third, we systematically eval-uate the framework across domains, sensing tasks, and RF modalities, including multi-factor cross-domain protocols. 
+
+# Related Work 
+
+Modeling-Based Wireless Sensing 
+
+Modeling-based methods derive physically interpretable rep-resentations from the relationship between human motion and wireless propagation. Early systems use handcrafted RSS or CSI variations for recognition (Pu et al. 2013; Abdel-nasser, Youssef, and Harras 2015; Wang et al. 2017; Virmani and Shahzad 2017), while Widar3.0 and WiHF construct more domain-stable velocity or motion-change representa-tions (Zhang et al. 2022; Li, Liu, and Cao 2022). Although effective in target settings, these methods remain tied to se-lected physical quantities and propagation assumptions, often requiring redesign across tasks, hardware, or RF modalities. 
+
+Learning-Based Signal Representation 
+
+Learning-based methods replace handcrafted decision rules with neural representation learning. Sequence models use convolutional, recurrent, or attention-based architectures to learn local signal variations and long-term dynamics (Yao et al. 2017; Gu et al. 2022; Li et al. 2021), whereas another line reshapes CSI, radar, or RF measurements into image-like tensors and adopts visual backbones (Ma et al. 2018; Zhao et al. 2018; Li et al. 2019; Wang et al. 2019; Zhao et al. 2019; Li et al. 2022; Lee et al. 2023; Yan et al. 2025). These generic architectures provide strong modeling capacity, but flattening can obscure the organization of subcarriers, links, and Doppler bins, while image conversion may introduce artificial spatial adjacency. Their portability therefore often comes at the cost of RF-specific structure. 
+
+Structure-Aware RF Representation Learning 
+
+Structure-aware methods explicitly model selected correla-tions within RF signals. FSTNet learns spatial–temporal de-pendencies from wireless fingerprints, while Wi-CBR uses complementary feature branches (Ren et al. 2023; Zhang et al. 2026). WiGNN and Star Graph encode observa-tion topology, whereas multidimensional CSI tensors and lightweight spatio-spectro-temporal networks capture depen-dencies across signal dimensions (Chen and Huang 2024; Gao et al. 2026; Du et al. 2024; Dang et al. 2025). SCL is the closest work, modeling dimensional, spatial, and temporal relationships through explicitly constructed correlation graphs across multiple wireless modalities (Liu et al. 2024b). However, prior methods generally bind their correlation mechanism to a fixed feature combination, sen-sor topology, or graph-construction procedure. In contrast, FSTC provides modular interfaces for heterogeneous feature structures, variable spatial observations, and local-to-global temporal dynamics within one backbone design. 
+
+# Method 
+
+Problem Formulation 
+
+We consider a sensing task T under an input configuration 
+
+κ, which specifies the RF modality and active feature fami-lies. User, environment, device, location, and orientation are treated as domain factors. For sample i, the heterogeneous Figure 2: Overview of FSTC-Encoder. Structure-aware feature encoding maps heterogeneous inputs to a common interface, set-based spatial encoding aggregates variable observations, and hierarchical temporal encoding models local-to-global dynamics. input and task label are 
+
+X (κ) 
+
+> i
+
+=
+
+n
+
+X(m) 
+
+> i
+
+| m ∈ A κ
+
+o
+
+, yi ∈ Y T ,
+
+X(m) 
+
+> i
+
+∈ RTi×Ri×Dm .
+
+(1) where m indexes feature branches rather than RF modalities and Aκ is the active-branch set. The branch-specific internal feature shape Dm = ( Dm, 1, . . . , D m,K m ) may contain an ordered axis or paired component dimensions. The notation 
+
+Ti × Ri × Dm abbreviates Ti × Ri × Dm, 1 × · · · × Dm,K m .Here Ti is the temporal length and Ri = |R i| is the number of valid spatial observations. Active branches are aligned to common temporal and spatial axes within a sample, with masks identifying invalid positions. The predictor is defined by 
+
+ˆyi = fκ, T
+
+
+
+X (κ)
+
+> i
+
+
+
+∈ RCT , CT = |Y T |. (2) It must preserve branch-dependent feature structure, aggre-gate a variable and unordered set of spatial observations, and model behavior over variable temporal extents. For domain generalization within a fixed input configu-ration, the source and unseen target domains share the task label space but differ in their class-conditional distributions: 
+
+YT 
+
+> s
+
+= YT 
+
+> t
+
+, P (κ) 
+
+> s
+
+(X | Y )̸ = P (κ) 
+
+> t
+
+(X | Y ). (3) This setting covers cross-user, cross-environment, cross-device, cross-location, and cross-orientation evaluation. Across input configurations, the raw feature spaces and active branches may instead differ. We therefore require configuration-specific structure-aware feature encoding that exposes a common interface to the shared spatial–temporal backbone architecture. The central challenge is to prevent configuration-dependent feature structures and observation sets from coupling to task-level temporal behavior. 
+
+FSTC-Encoder Overview 
+
+As illustrated in Figure 2, FSTC-Encoder decomposes RF representation learning into feature, spatial, and temporal correlation encoding. For a fixed input configuration κ, we omit the sample index and auxiliary masks: 
+
+HF = Φ (κ) 
+
+> F
+
+(X (κ)) ∈ RT ×R×DF ,
+
+HS = Φ S (HF ) ∈ RT ×DS ,
+
+HT = Φ T (HS ) ∈ RJ×DT .
+
+(4) Here T and R denote the temporal length and the num-ber of valid spatial units, while DF , DS , and DT are the feature-fusion, spatial, and global-token dimensions, respec-tively. The number of temporal windows is J. The Feature Encoder maps branch-dependent internal structures to a com-mon T × R × DF interface, the Spatial Encoder removes the variable observation axis, and the Temporal Encoder trans-forms the resulting sequence into J contextualized window representations. This factorization confines feature-format variation to the feature encoding stage and variation in spa-tial layout to the spatial encoding stage, allowing tempo-ral modeling to focus on behavior dynamics. Consequently, different input configurations change the structure-aware fea-ture encoding configuration while retaining the same spatial– temporal backbone architecture. 
+
+Structure-Aware Feature Correlation Encoding 
+
+Stage 1 of Figure 2 separates structure-specific branch en-coding from cross-family fusion. RF features are grouped by internal dependency structure and processed by matching branches, which preserve the temporal and spatial axes and output H(m) ∈ RT ×R×dm , standardizing internal dimen-sions. Structure-Specific Branch Encoding. Low-dimensional descriptors lack meaningful local feature adjacency. We project vectors and model short-term changes: 
+
+Plow (Xlow ) = SiLU (LN ( Xlow Wlow + blow )) ,
+
+Hlow = SiLU (DWConv t (Plow (Xlow ))) . (5) Here, DWConv t is a depthwise one-dimensional temporal convolution that processes projected channels independently. Ordered-axis features, such as subcarrier or Doppler mea-surements, have meaningful local adjacency along a physical axis a. Their branch therefore models and aggregates axis-local patterns: 
+
+Haxis = Proj m
+
+
+
+Pool (m) 
+
+> a
+
+(AxisEnc a(Xaxis )) 
+
+
+
+. (6) Here AxisEnc a comprises one or more one-dimensional convolutions, normalization, and SiLU activations along a.Fixed-width Doppler and phase branches use adaptive aver-age pooling; variable or partially valid subcarrier branches use masked mean–max pooling. The projection is identity when the dimensions already match. For pair-coupled features, such as real–imaginary or sine– cosine components, the two components jointly represent a physical quantity and are embedded before aggregation: 
+
+pj = SiLU 
+
+
+
+[x(1)  
+
+> j
+
+∥x(2)  
+
+> j
+
+]Wp + bp
+
+
+
+,
+
+Hpair = Agg pair ({pj }) ∈ RT ×R×dpair . (7) For fixed-size collections, Agg pair is an MLP; on a physical axis, it adds an axis-wise convolution before aggregation. 
+
+Cross-Family Fusion. Despite different internal operators, the aligned branch outputs differ only in feature dimension. Optional sample-level gating reweights them before they are concatenated and jointly projected: 
+
+HF = SiLU 
+
+
+
+LN 
+
+
+
+[H(1) ∥ · · · ∥ H(M )]WF + bF
+
+ 
+
+. (8) Let A denote the set of active branches and dΣ = P 
+
+> m∈A
+
+dm.Their concatenation has shape T × R × dΣ, and WF ∈
+
+RdΣ×DF maps it to HF ∈ RT ×R×DF . This standardizes internal dimensions without mixing temporal or spatial axes and establishes a common interface for subsequent modeling. 
+
+Set-Based Spatial Correlation Encoding 
+
+Stage 2 of Figure 2 treats receivers, links, channels, or tags at each time step as a variable-size set. Shared observation encoding and permutation-invariant aggregation avoid de-pendence on fixed ordering or spatial layout. 
+
+Shared Observation Encoding. Each spatial unit is mapped by the same residual encoder: 
+
+eht,r = hFt,r + MLP  LN( hFt,r ) , (9) Parameter sharing preserves permutation equivariance with-out unit-specific encoders; R excludes masked observations. 
+
+Complementary Set Aggregation. We use two comple-mentary views of the valid set. Order-invariant statistics cap-ture global trend, peak response, and cross-unit variation: 
+
+μt = Mean r∈R eht,r , mt = Max r∈R eht,r ,σt = Std r∈R eht,r . (10) In parallel, the spatial mean provides a set-level context query, while individual observations provide keys and values. For attention head h, the weight on unit r is 
+
+a(h) 
+
+> t,r
+
+= Softmax r∈R 
+
+(W(h) 
+
+> q
+
+μt)⊤(W(h) 
+
+> k
+
+eht,r )
+
+√dh
+
++ β(h)
+
+> r
+
+!
+
+,
+
+(11) where H is the number of heads and dh = DF /H . The optional β(h) 
+
+> r
+
+is a signed additive quality bias derived from receiver-level quality metadata and is zero when such infor-mation is unavailable. The set-conditioned attention output is 
+
+pt = Wo
+
+> H
+
+∥
+
+> h=1
+
+X
+
+> r∈R
+
+a(h) 
+
+> t,r
+
+W(h) 
+
+> v
+
+eht,r 
+
+!
+
+. (12) Statistics preserve the set distribution, while attention cap-tures sample-dependent complementarity. Their concatena-tion is projected into the spatial representation: 
+
+hSt = SiLU (LN ([ μt∥mt∥σt∥pt]WS )) . (13) Since μt, mt, σt, and pt are in RDF , their concatenation is 
+
+4DF -dimensional. The projection WS ∈ R4DF ×DS yields 
+
+hSt ∈ RDS and HS ∈ RT ×DS , eliminating the variable spatial axis while preserving time. 
+
+Hierarchical Temporal Correlation Encoding 
+
+Stage 3 of Figure 2 factorizes temporal correlation by scale: full-sequence encoding may dilute short transitions, while purely local modeling misses long-range evolution. We therefore separate motion-transition enhancement, within-window correlation, and cross-window global modeling. 
+
+Motion-Transition Enhancement. Given HS =[hS 
+
+> 1
+
+, . . . , hST ], we expose instantaneous changes: 
+
+∆ht = hSt − hSt−1, ut = W∆[hSt ∥∆ht]. (14) With ∆h1 = 0 , the projection W∆ ∈ RDS ×2DS maps the concatenated state and difference back to DS , yielding 
+
+U = [ u1, . . . , uT ] ∈ RT ×DS . Parallel depthwise convolu-tions then capture channel-wise motion responses at multiple durations, and a pointwise convolution fuses them: 
+
+CL = PWConv  ∥k∈K DWConv k(U) ,
+
+HL = LN  U + SiLU( CL) . (15) 
+
+DWConv k is a channel-wise temporal convolution with ker-nel size k, while PWConv is a 1 × 1 convolution that fuses the multi-kernel responses across channels. Within-Window Correlation. We project HL ∈ RT ×DS
+
+to ¯HL ∈ RT ×DL and partition it into overlapping windows of length Lw and stride Sw. For window j, a shared Local Rotary Transformer models temporal dependencies: 
+
+Vj = LocalRoPEEnc   ¯HLj , {0, . . . , L w − 1}, Mj
+
+ ,
+
+Vj = [ vj, 1, . . . , vj,L w ] ∈ RLw ×DL .
+
+(16) Parameters are shared across windows, Mj masks invalid positions, and window-relative RoPE preserves local order, making each vj,t a context-aware motion state. A learned score measures its importance: 
+
+ej,t = w⊤ 
+
+> a
+
+vj,t + ba,αj,t = MaskedSoftmax t (ej,t ; Mj,t ) . (17) The normalized weights form an attentive summary, paired with a masked mean: 
+
+¯v aj = X
+
+> t∈W j
+
+αj,t vj,t , ¯v mj =
+
+P 
+
+> t∈W j
+
+Mj,t vj,t 
+
+P 
+
+> t∈W j
+
+Mj,t 
+
+, (18) 
+
+wj = Proj  ¯v aj ∥¯v mj
+
+ , (19) Attention emphasizes salient motion states, whereas the mean preserves the complete local context. Their 2DL-dimensional concatenation is projected to wj ∈ RDT .
+
+Cross-Window Physical-Time Modeling. To model long-range evolution, let τj be the physical timestamp at the center of window j and δ a fixed temporal normalization unit. The global positional coordinate is pj = τj /δ . The Global Rotary Transformer then operates on the window sequence: 
+
+HT = GlobalRoPEEnc  {wj }Jj=1 , {pj }Jj=1 , MW  .
+
+(20) Here pj ∈ R is a scalar RoPE coordinate and MW ∈ { 0, 1}J
+
+is the valid-window mask. Both the input token sequence and HT are in RJ×DT . Unlike an additive embedding, pj
+
+directly preserves the physical spacing between windows. When timestamps are unavailable, τj is recovered from frame indices and the nominal sampling interval. The temporal path maps T × DS frame states to J × DT window tokens, retain-ing local motion detail and modeling long-range evolution. 
+
+Information-Rich Output Tokens. The resulting se-quence HT = [ hT 
+
+> 1
+
+, . . . , hTJ ] ∈ RJ×DT is the output of FSTC-Encoder. Because these tokens are produced through progressive feature, spatial, and temporal correlation mod-eling, they jointly encode structure-specific signal cues, complementary observation evidence, contextualized lo-cal motion, and cross-window behavioral evolution. This information-rich token interface can support different sens-ing tasks through lightweight aggregation, projection, and task heads without changing the FSTC backbone. For these tasks, attention-weighted statistical pooling gives 
+
+z = μa∥σa∥hmax , (21) where μa and σa are the attention-weighted mean and stan-dard deviation over valid tokens, and hmax is their element-wise maximum. Thus z ∈ R3DT . The projection maps it to 
+
+RDZ , and gT : RDZ → RCT produces the task logits: 
+
+ˆy = gT (Proj( z)) . (22) 
+
+# Experiments 
+
+We test four hypotheses across Widar3.0, CSI-Bench, and XRF55. First, Feature–Spatial–Temporal correlation mod-eling remains robust under shifts in location, orientation, en-vironment, user, and device. Second, the same backbone ar-chitecture supports sensing tasks with different dynamics and prediction objectives. Third, modality-specific structure-aware feature encoding supports different RF modalities without redesigning the spatial–temporal backbone. Finally, 
+
+the performance gains cannot be attributed to model scale or richer inputs alone. 
+
+Experimental Setup 
+
+Widar3.0. Widar3.0 (Zhang et al. 2022) is a WiFi gesture-recognition benchmark whose official splits are close to saturation, with recent methods approaching 100% Accu-racy (Zhang et al. 2026). We therefore use the complete dataset and stricter multi-fold cross-location (CL), cross-orientation (CO), and cross-environment (CE) protocols, holding out each condition of the target factor in turn while allowing the remaining factors to vary. 
+
+CSI-Bench. CSI-Bench (Zhu et al. 2025) is a real-world multi-task WiFi benchmark collected with commodity elec-tronic devices rather than dedicated sensing boards. For HAR, we follow the official in-domain, cross-device, cross-environment, and cross-user splits to evaluate domain gener-alization. We use official in-domain splits for Fall Detection, Breathing Detection, Room-Level Localization, and Motion Source Recognition to evaluate task generality. 
+
+XRF55. XRF55 (Wang et al. 2024) provides synchronized WiFi, millimeter-wave radar, and RFID measurements. We follow its recommended four-fold, 8-gesture WiFi cross-scene (CS) protocol and the official 55-class HAR protocol across all three RF modalities. 
+
+Baselines and Metrics. We compare three main baseline families: RF sensing-specific methods such as Wi-CBR; gen-eral sequence models including MLP, LSTM, Transformer, PatchTST, and TimeSformer-1D; and general image models including ResNet-18 and ViT. Following the official evalua-tion settings, we report Accuracy for Widar3.0 and XRF55 and primarily Weighted-F1 for CSI-Bench. 
+
+Cross-Domain Generalization 
+
+Cross-Domain Generalization on Widar3.0. The upper block of Table 1 first confirms why a harder protocol is needed: Wi-CBR nearly saturates the official splits. When the nuisance factors vary under our multi-fold evaluation, FSTC-Encoder achieves the highest mean among the hard-protocol methods and remains above 90% on CL, CO, and CE. Its 2.95% mean improvement over Wi-CBR provides the central comparison, while the advantage over PatchTST shows that the result holds against both RF-specific and gen-eral sequence designs. The key outcome is therefore stable adaptation across multiple domain factors rather than a peak score on a saturated split. Method Processing Flow Widar3.0 Mean XRF55 CL CO CE CS Widar3.0 (Zhang et al. 2022) CSI → DFS → BVP 90.48 81.58 83.30 85.12 –WiHF (Li, Liu, and Cao 2022) CSI → DFS → MCP 91.22 80.64 – – –WiSR (Liu et al. 2024a) CSI image 67.73 69.74 52.77 63.41 26.66 Recurrent ConFormer (Shang and Hong 2023) Raw CSI 73.84 85.88 50.38 70.03 16.54 Wi-SFDAGR (Yan et al. 2025) CSI → Phase 97.30 97.17 95.52 96.66 57.99 
+
+Wi-CBR (easy) (Zhang et al. 2026) CSI → Phase, DFS 98.34 96.30 96.87 97.17 66.05 
+
+Wi-CBR (hard) (Zhang et al. 2026) CSI → Phase, DFS 92.98 89.01 85.60 89.20 40.31 PatchTST (Nie et al. 2023) CSI → DFS 87.60 72.74 74.38 78.24 22.29 
+
+FSTC-Encoder (ours) CSI → RSSI, DFS, dCSI 93.84 92.43 90.17 92.15 41.11 
+
+Table 1: Results on Widar3.0 and XRF55. All values are Accuracy (%). Rows above and below the horizontal rule use the official easy and our harder multi-factor protocols, respectively. Bold values mark the best result within each protocol group.                                                             
+
+> Method ID CDev CE CU CD Avg. Worst CD MLP (Rumelhart, Hinton, and Williams 1986) 83.31 50.79 43.45 42.05 45.43 42.05 LSTM (Hochreiter and Schmidhuber 1997) 94.54 57.04 46.22 45.70 49.65 45.70 ResNet-18 (He et al. 2016) 94.13 63.57 50.90 52.07 55.51 50.90 Transformer (Vaswani et al. 2017) 94.51 57.80 47.17 46.67 50.55 46.67 ViT (Dosovitskiy et al. 2021) 95.67 63.65 51.86 51.48 55.66 51.48 PatchTST (Nie et al. 2023) 94.67 58.05 49.55 49.25 52.28 49.25 TimeSformer-1D (Bertasius, Wang, and Torresani 2021) 95.05 55.70 46.63 45.74 49.36 45.74 Wi-CBR (Zhang et al. 2026) 96.80 45.95 44.52 58.06 49.51 44.52
+> FSTC-Encoder (ours) 93.32 61.32 52.61 59.88 57.94 52.61
+
+Table 2: Human activity recognition results on CSI-Bench. All metrics are Weighted-F1 (%). Bold and underlined values indicate the best and second-best results, respectively. ID, CDev, CE, and CU denote in-domain, cross-device, cross-environment, and cross-user, respectively. CD denotes cross-domain; CD Avg. and Worst CD are the mean and minimum of its three protocols. 
+
+In-the-Wild Domain Shifts on CSI-Bench. Table 2 tests naturally occurring device, environment, and user shifts rather than controlled single-factor changes. FSTC-Encoder ranks first in CD Avg. and Worst CD and also leads on CE and CU. This joint result is more informative than any single split: several baselines with stronger ID or CDev performance become less reliable under unseen environments and users, whereas FSTC-Encoder maintains the strongest lower bound and the most balanced cross-domain profile. Its weaker CDev result may partly reflect information loss when reconstruct-ing the multi-link structure from the flattened official release. Overall, the results demonstrate that the learned representa-tion remains robust across different naturally occurring shifts rather than specializing in one domain factor. 
+
+Cross-Scene Evaluation on XRF55. XRF55 provides a single cross-domain setting based on cross-scene evaluation. Under its official four-fold split, FSTC-Encoder achieves the strongest result among methods evaluated under the same protocol, slightly exceeding the RF-specific Wi-CBR and clearly outperforming the general PatchTST. Together with the Widar3.0 and CSI-Bench results, this shows that the gen-eralization benefit persists across both controlled multi-factor shifts and naturally occurring cross-scene variation.                                     
+
+> Method Fall Breath. Local. MSR MLP 92.16 97.59 87.14 98.86 ResNet-18 94.88 98.58 100.00 99.56 LSTM 94.93 98.62 99.12 98.42 Transformer 94.28 98.64 99.27 98.61 ViT 93.58 98.63 99.94 98.74 PatchTST 94.03 98.84 99.91 98.86 TimeSformer-1D 93.86 98.68 100.00 98.38
+> FSTC-Encoder (ours) 95.82 99.31 99.81 99.66
+
+Table 3: Accuracy (%) on four CSI-Bench tasks: Fall Detec-tion (Fall), Breathing Detection (Breath.), Room-Level Lo-calization (Local.), and Motion Source Recognition (MSR). Bold and underlined values mark the best and second-best. 
+
+Task Generality across Sensing Tasks 
+
+The four CSI-Bench tasks require different forms of evi-dence, ranging from abrupt events and weak periodic motion to spatial-state discrimination and motion-source attribution. Despite these different dynamics and prediction objectives, the FSTC backbone architecture remains unchanged. FSTC-Encoder ranks first on three tasks and remains within 0.19% 
+
+of the best result on the already saturated localization task. Method Training Paradigm WiFi mmWave RFID Mod. Gap ↓
+
+DML (Wang et al. 2024) Cross-RF mutual learning 87.26 86.88 56.82 30.44 WiTalk (Yang et al. 2025) DML + text semantics 91.16 87.34 59.41 31.75 X-Fi (Chen and Yang 2025) Unified multimodal training 55.70 83.90 42.50 41.40 PTA (Weng et al. 2026) Multimodal teacher distillation 82.34 90.03 55.04 34.99 COMPASS (Wang et al. 2026) Proxy-token cross-modal learning 85.40 90.50 48.40 42.10 
+
+FSTC-Single (ours) Independent unimodal training 92.06 91.28 73.21 18.85 
+
+FSTC-Multi (ours) Cross-RF DML training 92.21 91.12 79.28 12.93 
+
+Table 4: Single-modality inference results on XRF55 under different training paradigms. All metrics are Accuracy (%). Bold and underlined values indicate the best and second-best results, respectively. Mod. Gap is the difference between the best and worst modality results for each method; lower is better.                            
+
+> Method Feature-family Weighted-F1 ∆Weighted-F1 FSTC A+D+ ∆ 93.47 –
+> D+ ∆ 79.01 −14 .46
+> D63.26 −30 .21 ∆72.42 −21 .05
+> PatchTST A+D+ ∆ 50.23 –
+> D85.74 +35 .51 ∆13.83 −36 .40
+
+Table 5: Feature-family ablation on CSI-Bench HAR. A,
+
+D, and ∆ denote the low-dimensional amplitude, dynamic-residual, and temporal-difference families.             
+
+> Variant CL CO CE Avg. Drop FSTC-Encoder 93.84 92.43 90.17 –w/o Feature Encoder 90.32 88.72 86.37 3.68 w/o Spatial Encoder 87.75 84.46 81.88 7.45 w/o Temporal Encoder 71.29 69.47 65.48 23.40
+
+Table 6: Structural ablation on Widar3.0. All values are Ac-curacy (%). Avg. Drop is the mean decrease across CL, CO, and CE relative to full FSTC. More importantly, its 98 .65% mean Accuracy is the highest across all four tasks. This consistent performance, rather than an isolated gain on one task, shows that the same Feature– Spatial–Temporal organization provides a general represen-tation for heterogeneous sensing objectives. 
+
+Modality Extensibility across RF Modalities 
+
+Table 4 compares single-modality inference under differ-ent training paradigms on XRF55. FSTC retains the same backbone architecture across WiFi, mmWave, and RFID and changes only the structure-aware feature encoding configu-ration. Even without cross-RF training, FSTC-Single ranks among the top two methods on every modality, reaches 
+
+85 .52% mean Accuracy, and limits the modality gap to 
+
+18 .85% . This consistency shows that the architecture adapts across RF sensing mechanisms without favoring one modal-ity. Cross-RF DML further raises the mean Accuracy to 
+
+87 .54% and narrows the modality gap to 12 .93% , primar-ily by improving the weaker RFID modality while pre-serving WiFi and mmWave performance. Cross-RF learning therefore transfers useful knowledge without degrading the stronger modalities. 
+
+Ablation Studies 
+
+We distinguish gains from richer inputs and model capacity, then isolate each encoding stage’s contribution. 
+
+Input Configuration Ablation. Table 5 compares FSTC-Encoder and PatchTST under matched feature-family defini-tions; ∆ Weighted-F1 is measured from each method’s full 
+
+A + D + ∆ configuration. FSTC-Encoder reaches 93 .47% with all three families, im-proving by 14 .46% over D + ∆ . PatchTST instead performs best with D alone and falls by 35 .51% when all families are combined. Thus, the gain depends on structure-aware encoding and correlation learning, not input quantity alone. Model scale also does not explain this contrast. FSTC-Encoder contains 2.019M parameters, remains close in size to PatchTST and ViT, and uses 40% –91% fewer parameters than the larger Transformer, ResNet-18, and Wi-CBR mod-els. The input and scale controls therefore attribute the gain to structured feature–spatial–temporal modeling rather than greater capacity. 
+
+Structural Ablation. Removing feature, spatial, or tempo-ral encoding reduces the mean Accuracy by 3.68% , 7.45% ,and 23 .40% , respectively, across the Widar3.0 protocols. All stages are complementary, with temporal encoding contribut-ing most. Each removal also causes its largest loss under CE, showing that the full factorization becomes more important under stronger environmental shifts. 
+
+# Conclusion 
+
+FSTC-Encoder factorizes heterogeneous RF sensing into fea-ture, spatial, and temporal correlation encoding. Across three datasets, it demonstrates robust domain, task, and modality adaptability, including cross-RF learning gains. Matched-input, scale, and structural analyses attribute these gains to the architecture rather than richer inputs or larger models. References 
+
+Abdelnasser, H.; Youssef, M.; and Harras, K. A. 2015. WiGest: A Ubiquitous WiFi-Based Gesture Recognition Sys-tem. In Proceedings of IEEE INFOCOM , 1472–1480. Adib, F.; Kabelac, Z.; Katabi, D.; and Miller, R. C. 2014. 3D Tracking via Body Radio Reflections. In Proceedings of the 11th USENIX Symposium on Networked Systems Design and Implementation , 317–329. Adib, F.; Mao, H.; Kabelac, Z.; Katabi, D.; and Miller, R. C. 2015. Smart Homes that Monitor Breathing and Heart Rate. In Proceedings of the 33rd Annual ACM Conference on Hu-man Factors in Computing Systems , 837–846. Bertasius, G.; Wang, H.; and Torresani, L. 2021. Is Space-Time Attention All You Need for Video Understanding? In 
+
+Proceedings of the 38th International Conference on Ma-chine Learning , volume 139 of Proceedings of Machine Learning Research , 813–824. Chen, X.; and Yang, J. 2025. X-Fi: A Modality-Invariant Foundation Model for Multimodal Human Sensing. In Inter-national Conference on Learning Representations .Chen, Y.; and Huang, X. 2024. WiGNN: WiFi-Based Cross-Domain Gesture Recognition Inspired by Dynamic Topology Structure. IEEE Wireless Communications , 31(3): 249–256. Dang, V. N.; Hoang, N. C.; Nguyen, Q. C.; and Le, M. T. 2025. Advancing Robust Human Activity Recogni-tion via Informative mmWave Radar Characteristics and a Lightweight Spatio-Spectro-Temporal Network. Measure-ment , 256: 118056. Dosovitskiy, A.; Beyer, L.; Kolesnikov, A.; Weissenborn, D.; Zhai, X.; Unterthiner, T.; Dehghani, M.; Minderer, M.; Heigold, G.; Gelly, S.; Uszkoreit, J.; and Houlsby, N. 2021. An Image Is Worth 16x16 Words: Transformers for Image Recognition at Scale. In International Conference on Learn-ing Representations .Du, L.; Shang, S.; Zhang, L.; Li, C.; Yang, J.; and Tian, X. 2024. Multidomain Correlation-Based Multidimensional CSI Tensor Generation for Device-Free Wi-Fi Sensing. Com-puter Modeling in Engineering & Sciences , 138(2): 1749– 1767. Fan, L.; Li, T.; Yuan, Y.; and Katabi, D. 2020. In-Home Daily-Life Captioning Using Radio Signals. In Computer Vision – ECCV 2020 , 105–123. Gao, S.; Zhang, J.; Mei, L.; Wang, S.; and Wang, X. 2026. Ex-ploring Spatial–Temporal Representation via Star Graph for mmWave Radar-Based Human Activity Recognition. IEEE Transactions on Mobile Computing , 25(4): 5700–5715. Gu, Y.; Zhang, X.; Wang, Y.; Wang, M.; Liu, Z.; Yan, H.; Ji, Y.; Li, J.; and Dong, M. 2022. WiGRUNT: WiFi-Enabled Gesture Recognition Using Dual-Attention Network. IEEE Transactions on Human-Machine Systems , 52(4): 736–746. He, K.; Zhang, X.; Ren, S.; and Sun, J. 2016. Deep Residual Learning for Image Recognition. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition ,770–778. Hochreiter, S.; and Schmidhuber, J. 1997. Long Short-Term Memory. Neural Computation , 9(8): 1735–1780. Huang, S.; Li, K.; You, D.; Chen, Y.; Lin, A.; Liu, S.; Li, X.; and McCann, J. A. 2024. WiMANS: A Benchmark Dataset for WiFi-Based Multi-User Activity Sensing. In Computer Vision – ECCV 2024 , 72–91. Lee, S.-P.; Kini, N. P.; Peng, W.-H.; Ma, C.-W.; and Hwang, J.-N. 2023. HuPR: A Benchmark for Human Pose Estima-tion Using Millimeter Wave Radar. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision , 5715–5724. Li, C.; Liu, M.; and Cao, Z. 2022. WiHF: Gesture and User Recognition With WiFi. IEEE Transactions on Mobile Computing , 21(2): 757–768. Li, T.; Fan, L.; Yuan, Y.; and Katabi, D. 2022. Unsuper-vised Learning for Human Sensing Using Radio Signals. In 
+
+Proceedings of the IEEE/CVF Winter Conference on Appli-cations of Computer Vision , 3288–3297. Li, T.; Fan, L.; Zhao, M.; Liu, Y.; and Katabi, D. 2019. Making the Invisible Visible: Action Recognition Through Walls and Occlusions. In Proceedings of the IEEE/CVF International Conference on Computer Vision , 872–881. Li, X.; Chang, L.; Song, F.; Wang, J.; Chen, X.; Tang, Z.; and Wang, Z. 2021. CrossGR: Accurate and Low-Cost Cross-Target Gesture Recognition Using Wi-Fi. Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies , 5(1): 21:1–21:23. Lien, J.; Gillian, N.; Karagozler, M. E.; Amihood, P.; Schwe-sig, C.; Olson, E.; Raja, H.; and Poupyrev, I. 2016. Soli: Ubiquitous Gesture Sensing with Millimeter Wave Radar. 
+
+ACM Transactions on Graphics , 35(4): 142:1–142:19. Liu, S.; Chen, Z.; Wu, M.; Liu, C.; and Chen, L. 2024a. WiSR: Wireless Domain Generalization Based on Style Randomization. IEEE Transactions on Mobile Computing ,23(5): 4520–4532. Liu, X.; Zhang, B.; Chen, S.; Xie, X.; Tong, X.; Gu, T.; and Li, K. 2024b. A Wireless Signal Correlation Learning Framework for Accurate and Robust Multi-Modal Sensing. 
+
+IEEE Journal on Selected Areas in Communications , 42(9): 2424–2439. Ma, Y.; Zhou, G.; Wang, S.; Zhao, H.; and Jung, W. 2018. SignFi: Sign Language Recognition Using WiFi. Proceed-ings of the ACM on Interactive, Mobile, Wearable and Ubiq-uitous Technologies , 2(1): 23:1–23:21. Nie, Y.; Nguyen, N. H.; Sinthong, P.; and Kalagnanam, J. 2023. A Time Series Is Worth 64 Words: Long-Term Fore-casting with Transformers. In International Conference on Learning Representations .Pu, Q.; Gupta, S.; Gollakota, S.; and Patel, S. 2013. Whole-Home Gesture Recognition Using Wireless Signals. In Pro-ceedings of the 19th Annual International Conference on Mobile Computing and Networking , 27–38. Ren, Q.; Wang, Y.; Liu, S.; and Lv, X. 2023. FSTNet: Learn-ing Spatial–Temporal Correlations from Fingerprints for In-door Positioning. Ad Hoc Networks , 149: 103244. Rumelhart, D. E.; Hinton, G. E.; and Williams, R. J. 1986. Learning Representations by Back-Propagating Errors. Na-ture , 323(6088): 533–536. Shang, M.; and Hong, X. 2023. Recurrent ConFormer for WiFi Activity Recognition. IEEE/CAA Journal of Automat-ica Sinica , 10(6): 1491–1493. Vaswani, A.; Shazeer, N.; Parmar, N.; Uszkoreit, J.; Jones, L.; Gomez, A. N.; Kaiser, L.; and Polosukhin, I. 2017. At-tention Is All You Need. In Advances in Neural Information Processing Systems , volume 30. Virmani, A.; and Shahzad, M. 2017. Position and Orientation Agnostic Gesture Recognition Using WiFi. In Proceedings of the 15th Annual International Conference on Mobile Sys-tems, Applications, and Services , 252–264. Wang, F.; Lv, Y.; Zhu, M.; Ding, H.; and Han, J. 2024. XRF55: A Radio Frequency Dataset for Human Indoor Ac-tion Analysis. Proceedings of the ACM on Interactive, Mo-bile, Wearable and Ubiquitous Technologies , 8(1): 21:1– 21:34. Wang, F.; Zhou, S.; Panev, S.; Han, J.; and Huang, D. 2019. Person-in-WiFi: Fine-Grained Person Perception Us-ing WiFi. In Proceedings of the IEEE/CVF International Conference on Computer Vision , 5452–5461. Wang, H.; Qian, Y.; Weng, P.; Xia, Z.; Dan, W.; Xu, Y.; and Wang, F. 2026. COMPASS: Complete Multimodal Fusion via Proxy Tokens and Shared Spaces for Ubiquitous Sensing. 
+
+arXiv preprint arXiv:2604.02056 .Wang, W.; Liu, A. X.; Shahzad, M.; Ling, K.; and Lu, S. 2017. Device-Free Human Activity Recognition Using Com-mercial WiFi Devices. IEEE Journal on Selected Areas in Communications , 35(5): 1118–1131. Weng, P.; Qian, Y.; Xu, Y.; and Wang, F. 2026. Purify-then-Align: Towards Robust Human Sensing under Modality Missing with Knowledge Distillation from Noisy Multimodal Teacher. arXiv preprint arXiv:2604.05584 .Yan, H.; Zhang, X.; Huang, J.; Feng, Y.; Li, M.; Wang, A.; Ou, W.; Wang, H.; and Liu, Z. 2025. Wi-SFDAGR: WiFi-Based Cross-Domain Gesture Recognition via Source-Free Domain Adaptation. IEEE Internet of Things Journal ,12(13): 24159–24173. Yang, J.; Huang, H.; Zhou, Y.; Chen, X.; Xu, Y.; Yuan, S.; Zou, H.; Lu, C. X.; and Xie, L. 2023. MM-Fi: Multi-Modal Non-Intrusive 4D Human Dataset for Versatile Wire-less Sensing. In Advances in Neural Information Processing Systems , volume 36, 18756–18768. Yang, Z.; Huang, Z.; Wang, G.; Ding, H.; Han, T. X.; and Wang, F. 2025. Talk Is Not Always Cheap: Promoting Wire-less Sensing Models with Text Prompts. arXiv preprint arXiv:2504.14621 .Yao, S.; Hu, S.; Zhao, Y.; Zhang, A.; and Abdelzaher, T. 2017. DeepSense: A Unified Deep Learning Framework for Time-Series Mobile Sensing Data Processing. In Proceedings of the 26th International Conference on World Wide Web , 351– 360. Zhang, R.; Tang, S.; Yan, H.; Zhang, X.; and Guo, J. 2026. Wi-CBR: Salient-Aware Adaptive WiFi Sensing for Cross-Domain Behavior Recognition. Proceedings of the AAAI Conference on Artificial Intelligence , 40(2): 1552–1560. Zhang, Y.; Zheng, Y.; Qian, K.; Zhang, G.; Liu, Y.; Wu, C.; and Yang, Z. 2022. Widar3.0: Zero-Effort Cross-Domain Gesture Recognition With Wi-Fi. IEEE Transactions on Pattern Analysis and Machine Intelligence , 44(11): 8671– 8688. Zhao, M.; Li, T.; Alsheikh, M. A.; Tian, Y.; Zhao, H.; Tor-ralba, A.; and Katabi, D. 2018. Through-Wall Human Pose Estimation Using Radio Signals. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition ,7356–7365. Zhao, M.; Liu, Y.; Raghu, A.; Zhao, H.; Li, T.; Torralba, A.; and Katabi, D. 2019. Through-Wall Human Mesh Recovery Using Radio Signals. In Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision , 10113–10122. Zhu, G.; Hu, Y.; Gao, W.; Wang, W.-H.; Wang, B.; and Liu, K. J. R. 2025. CSI-Bench: A Large-Scale In-the-Wild Dataset for Multi-Task WiFi Sensing. In Advances in Neural Information Processing Systems , volume 38.

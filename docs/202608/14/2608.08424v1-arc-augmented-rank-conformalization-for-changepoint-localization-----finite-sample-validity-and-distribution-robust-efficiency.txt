@@ -1,0 +1,354 @@
+Title: ARC: Augmented-Rank Conformalization for Changepoint Localization — Finite-Sample Validity and Distribution-Robust Efficiency
+
+URL Source: https://arxiv.org/pdf/2608.08424v1
+
+Published Time: Tue, 11 Aug 2026 01:02:04 GMT
+
+Number of Pages: 19
+
+Markdown Content:
+# ARC: Augmented-Rank Conformalization for Changepoint Localization — Finite-Sample Validity and Distribution-Robust Efficiency 
+
+Chenchen Peng ∗1,2 , Mixia Wu 1, Qijing Yan 1, Zhiqi Shen 2, and Jie Zhang 2
+
+> 1
+
+School of Mathematics, Statistics and Mechanics, Beijing University of Technology, Beijing 100124, China 
+
+> 2
+
+College of Computing and Data Science, Nanyang Technological University, Singapore 639798, Singapore 
+
+August 7, 2026 
+
+Abstract 
+
+Conformal changepoint localization converts any score function into a confidence set for the changepoint location with finite-sample coverage. In this precise sense coverage has be-come universal, since it is guaranteed irrespective of how the score is chosen; efficiency has not. The oracle score is a likelihood ratio, so practical scores estimate density ratios, and the length of the resulting sets deteriorates silently under heavy tails, skewness, and distri-bution shift, precisely the regimes in which no existing length guarantee applies. We propose ARC (Augmented-Rank Conformalization), a family of scores that depend on the data only through within-segment ranks: rank-CUSUM location and scale channels, their fixed com-binations, and a lightweight neural score trained on synthetic data and then frozen. Every ARC score inherits finite-sample coverage for every frozen weight configuration, including random initializations and misspecified training. Our main result is an efficiency transfer theorem. The entire ARC confidence set is almost surely invariant under strictly increasing marginal transforms, so the law of the set length depends on the data pair only through its rank structure: lengths certified once hold verbatim across the pair’s entire monotone orbit, however heavy-tailed or skewed, whereas a plug-in score’s length changes with every re-expression. Across different rank structures lengths do change, and are reported as such. Classical rank-test theory positions ARC scores as targeting the optimal invariant score, with a bounded price of invariance. Simulations confirm nominal coverage for all scores, including deliberately sabotaged networks, exactly identical sets under monotone transforms where plug-in likelihood scores inflate, and set lengths that deteriorate smoothly where plug-in sets become vacuous; on the well-log benchmark ARC localizes annotated shifts to three to five candidates and signals model misfit through an empty set. Two boundaries are charted rather than hidden: serial dependence destroys exactness and block permutations repair it only partly, and trend-type alternatives lie outside the piecewise-exchangeable model. 
+
+Keywords: changepoint localization; conformal inference; rank statistics; confidence set; distribution-free; invariance 
+
+> ∗
+
+Corresponding author. Email: pengcc@emails.bjut.edu.cn 
+
+1arXiv:2608.08424v1 [stat.ML] 9 Aug 2026 1 Introduction 
+
+Practitioners who run a changepoint detector on sensor streams, activity recordings, or moni-toring data are typically supplied with a point estimate ˆ τ and nothing further. The decisions that follow, concerning when to retrain a model, whether to trust a segment boundary, and how much data to discard, depend on the uncertainty attached to that location, which is rarely quantified [22, 33, 41]. In the real-data application considered below, the classic well-log drilling series [8], the analysis windows comprise a few dozen observations around a suspected shift, the measurements are contaminated by outlier bursts, and the marginal distribution is unknown, so any uncertainty statement resting on a parametric model is fragile at the outset. A recent line of work has solved one half of this problem. Conformal changepoint localization [rooted in conformal prediction, 37] constructs, from an arbitrary score function, a set C1−α ⊆{1, . . . , n } of candidate locations with the finite-sample guarantee P(τ ∈ C 1−α) ≥ 1 − α under no distributional assumption beyond within-segment exchangeability: the matrix-of-p-values construction of Dandapanthula and Ramdas [6], the CONCH framework of Hore and Ramdas [14], and, in the sequential setting, post-detection localization [31, 32]. The defining feature of these results is universality: an arbitrary score yields valid coverage, and Hore and Ramdas [14] prove that every valid distribution-free localization procedure arises in this manner. The score question has been answered only at the oracle. Both Dandapanthula and Ramdas [6] and Hore and Ramdas [14] establish conformal Neyman–Pearson lemmas: the score minimiz-ing the expected set length is a likelihood ratio between the pre- and post-change distributions. In practice these densities are unknown, so the recommended implementations estimate the ratio with pre-trained classifiers or plug-in models, and the available length guarantees [3, 14] assume the oracle ratio or a consistent estimate of it. No existing result addresses the length of the sets when the plug-in is misspecified, when the tails are heavy, or when the deployment distribution differs from the one on which the score was tuned, which are precisely the regimes that motivated distribution-free coverage in the first place. This is the gap addressed here. Conformal wrappers rendered coverage universal, but no current score offers transferable efficiency. Set lengths certified under one distribution carry no guarantee under another, and the oracle likelihood-ratio score, being density-dependent, is the score whose efficiency transfers worst. A score family whose entire localization output is invariant to the marginal distribution of the data has not previously been considered. We propose ARC (Augmented-Rank Conformalization). The score family measures within-segment changepoint evidence through within-segment ranks alone, comprising rank-CUSUM location and scale channels, their fixed maxima or simplex combinations, and a single-hidden-layer network that reads downsampled rank paths, is trained on synthetic data, and is frozen before deployment. Supplied to the backend of Hore and Ramdas [14] or Dandapanthula and Ramdas [6], every ARC score yields finite-sample coverage for every frozen weight configuration, including random initializations and misspecified training (Theorem 1). The main theoretical contribution is an efficiency transfer theorem. Because ranks are in-variant under strictly increasing transforms, the entire ARC confidence set is almost surely unchanged when an arbitrary strictly increasing g is applied to the data (Theorem 2), and con-sequently the law of the set length depends on ( F0, F 1) only through its rank structure. Lengths certified once transfer verbatim across the entire monotone orbit of the certified pair, including arbitrarily heavy-tailed or skewed re-expressions of the same rank experiment, whereas a plug-in score’s length changes with every re-expression. Between genuinely different rank experiments, such as a Gaussian shift and a Cauchy shift, lengths differ for every method, and Section 5 2Table 1: Three localization guarantees. ARC occupies the third row; the three are complemen-tary, not competing.                               
+
+> Guarantee Form Representatives Region false-positive control
+> P{∃ ˆR∈ˆR: ˆR∩T∗=∅} ≤ αNSP [11], NOT [2], SMUCE [9], con-fidence regions of Fang et al. [7], ART localization [5, Thm. 4, Prop. 1] Post-detection error control FWER over detected ˆ τj’s; cov-erage conditional on a correct alarm TUNE [16], ART diagnostic [5, Thm. 5], selective inference [15], se-quential post-detection [31, 32] Coverage of the loca-tion
+> P(τ∈ C 1−α)≥1−αMCP [6, Thm. 4.1], CONCH [14, Thm. 3.1]; this paper (score design)
+
+reports those differences as they stand. Classical theory [4, 12] positions ARC as targeting the optimal invariant score, with a bounded price of invariance. Localization is additionally type-aware: location and scale channels are combined by rules frozen before the test window is seen, so type adaptivity costs nothing in validity, and the residual gap to an oracle that knows the change type is quantified empirically. Every number in Section 5 derives from executed simulations, covering nominal coverage for all scores including deliberately sabotaged networks, exactly identical sets under monotone transforms where plug-in likelihood scores drift and inflate, stable lengths across distributions, and a boundary study under AR(1) dependence in which block permutations restore coverage only approximately. Trend-type alternatives are excluded by the model itself (Remark 1). Section 2 places these contributions in the landscape of localization guarantees. Section 3 defines the ARC pipeline, Section 4 states the theory, Section 5 reports simulations, Section 6 specifies the real-data protocol, and Section 7 discusses limitations. 
+
+# 2 Background: Three Guarantees and One Gap 
+
+2.1 Three kinds of localization guarantee 
+
+Statements about “where the changepoint is” come in three distinct mathematical forms, which the literature does not always keep apart. The first form controls the probability that a reported region fails to contain a true change-point; under weak signal the procedure may return no region at all, which is vacuously correct but uninformative about where τ is. The second form diagnoses changepoints that some de-tector has already produced. The third form is a genuine confidence set for the location: it is never empty of meaning, since weak signal manifests as a longer set rather than silence. ART [5] provides sophisticated instances of the first two forms in a distribution-free way, but not the third; the conformal line [6, 14] provides the third for an arbitrary score. Our contribution is entirely on the score side of the third row, and an ARC pipeline can be run alongside an ART diagnostic without conflict. 32.2 What is known about the score 
+
+For the third guarantee the wrapper is settled and the oracle is known. Dandapanthula and Ramdas [6] prove a conformal Neyman–Pearson lemma: the uniformly most powerful conformal score is the likelihood ratio q/r of post- to pre-change densities; Hore and Ramdas [14] derive the analogous optimal changepoint-profile score and show (their Theorem 4.3) that any strictly increasing transformation of the score leaves the confidence set unchanged. Length guarantees exist under the oracle score or a ratio estimated consistently on independent data [14, Thms. 5.1– 5.2], and in parametric triangular arrays [3]. The universality theorem of Hore and Ramdas [14, Thm. 6.1] shows every valid procedure is a CONCH instance for some score; ARC is therefore, by construction, a concrete score family inside their framework, and we claim no novelty in the wrapper. What is missing is any statement about score behaviour away from the oracle. Estimating a density ratio is exactly the kind of task that heavy tails and distribution shift make hard [23, 34]; a classifier tuned on Gaussian training data retains coverage everywhere (universality) but its set lengths are unprotected. No existing result bounds, transfers, or even measures this degradation. The rank-test literature [4, 12, 26, 39] has studied invariant alternatives to likelihood-based statistics for seventy years, and recent detectors feed such fixed transforms into calibrated downstream pipelines [27], while fully learned critics [24] act on raw values and enjoy no invariance. None of these lines has been connected to conformal localization. Establishing that connection is the contribution of this paper. 
+
+# 3 Methodology: The ARC Pipeline 
+
+3.1 Setting and the conformal backend 
+
+We observe a window X = ( X1, . . . , X n) of real-valued observations with a single changepoint 
+
+τ : X1, . . . , X τ i.i.d. F0 and Xτ +1 , . . . , X n i.i.d. F1, with F0̸ = F1 continuous. Candidates range over T = {m0, . . . , n − m0} for a margin m0. For a candidate t, the split hypothesis is 
+
+H0,t : X1, . . . , X t i.i.d. and Xt+1 , . . . , X n i.i.d. ,
+
+which holds exactly when t = τ . Fix a segment statistic A mapping a segment to a scalar measure of internal changepoint evidence, and define the split statistic Wt = max {A(X1: t), A (Xt+1: n)}:if t̸ = τ , one of the two segments straddles the true changepoint and Wt tends to be large. The p-value for H0,t is computed by within-segment permutation. Drawing B i.i.d. pairs of independent uniform permutations ( π(b) 
+
+> ℓ
+
+, π (b) 
+
+> r
+
+) of the two segments and writing W (b) 
+
+> t
+
+for the statistic on the permuted window, 
+
+pt = 1 + # {b : W (b) 
+
+> t
+
+≥ Wt}
+
+B + 1 , C1−α = {t ∈ T : pt > α }. (1) Under H0,t both segments are separately exchangeable, so pt is a valid Monte Carlo permutation p-value for any statistic A [13, 21], and P(τ ∈ C 1−α) = P(pτ > α ) ≥ 1 − α. This is the within-segment instance of the conformal localization schema [6, 14]; everything that follows concerns the choice of A.4test window                   
+
+> X1, . . . , X n
+> within-segment ranks Rat each candidate split t
+> location channel rank CUSUM Aloc
+> scale channel squared-rank Asc
+> network score Ann
+> gθ(ϕ(R)), 16 →64 →1fixed combination max or w1, w 2
+> (frozen before test) within-segment permutation p-value pt
+> existence test change type ˆτ= arg max tpt
+> C1−α={t:pt> α }
+> trained on synthetic data, then frozen: any weight state keeps coverage (Thm. 1) ranks only ⇒monotone-invariant (Thm. 2)
+
+Figure 1: The ARC mechanism. Each candidate split t is scored through within-segment ranks only; scores are combined by a rule frozen before the test window is seen and calibrated by exact within-segment permutation, yielding the localization confidence set together with the existence test and change-type label. 
+
+3.2 The ARC score family 
+
+Let R = ( R1, . . . , R m) denote the ranks of a segment of length m (no ties, almost surely) and 
+
+Ci = Ri − (m + 1) /2 the centred ranks. ARC statistics are functionals of R alone. 
+
+Location channel. The two-sample Wilcoxon evidence for an internal split at s [39], 
+
+Zloc  
+
+> s
+
+= X
+
+> i≤s
+
+Ci
+
+.p s(m − s)( m + 1) /12 , Aloc (R) = max 
+
+> m1≤s≤m−m1
+
+Zloc  
+
+> s
+
+,
+
+with an interior margin m1; the maximization over s is the CUSUM-scan device of Page [30] applied to rank scores. 
+
+Scale channel. Mood-type squared centred ranks [26]: with qi = C2 
+
+> i
+
+and ¯ q, vq the segment mean and variance of ( qi) (constants across permutations, since the rank multiset is fixed), 
+
+Zsc  
+
+> s
+
+= X
+
+> i≤s
+
+(qi − ¯q)
+
+.q 
+
+s(m − s)vq/m, Asc (R) = max 
+
+> m1≤s≤m−m1
+
+Zsc  
+
+> s
+
+.
+
+Fixed combinations. The combined score is Acomb = max {Aloc , A sc }; a learned convex com-bination Aw = w1Aloc +w2Asc , w1 +w2 = 1, w1, w 2 ≥ 0, uses weights fitted on synthetic training data and frozen thereafter. 
+
+Frozen network score. The two standardized rank paths ( Z·
+
+> s
+
+)s are downsampled to eight points each, giving a 16-dimensional feature ϕ(R), and a single-hidden-layer network gθ (16 →
+
+64 → 1, tanh) is trained with Adam [17] on synthetic Gaussian segments labelled by the presence of an internal changepoint, then frozen : Ann (R) = gθ(ϕ(R)). Training data are synthetic and independent of any test window, so the score is fitted once and then deployed unchanged. Every member above is a deterministic function of the within-segment ranks. That single structural property drives the entire theory. Figure 1 summarizes the mechanism. 53.3 Type-aware combination without paying for it 
+
+One might first classify the change type on the test window and then select the matching channel. Such a rule makes the score a function of the test data and invalidates the permutation argument behind (1). ARC therefore fixes the combination rule, either the max-combination or simplex weights learned on synthetic data, before the test window is seen, so that validity is retained at no cost, and we quantify the residual gap to an oracle that knows the change type in Section 5.5. Adaptive selection on the test window is possible in principle via sample splitting, at a direct cost in effective window length; we do not pursue it here. 
+
+3.4 The full pipeline and reporting convention 
+
+On a test window ARC reports, in order: (i) an exact existence test, namely the ART test of Cui et al. [5, Thms. 1, 3] or, equivalently, the permutation p-value of the combined score on the whole window; (ii) a change-type label from a type classifier trained on synthetic data and frozen before deployment; (iii) the point estimate ˆ τ = arg max t pt; and (iv) the confidence set 
+
+C1−α. The set is reported unconditionally : its coverage P(τ ∈ C 1−α) ≥ 1 − α is marginal and does not condition on the existence test rejecting. Conditional-on-detection coverage is a strictly stronger target that requires the machinery of Saha and Ramdas [31, 32]; we flag the distinction explicitly to avoid over-claiming. 
+
+3.5 Weak dependence: block variant 
+
+Within-segment exchangeability fails under serial dependence. Replacing uniform permutations in (1) by within-segment circular block permutations [in the spirit of 18] restores approximate validity, at block length L chosen to exceed the dependence range. As a practical rule we take 
+
+L to be two to three times the smallest lag at which the sample autocorrelation of the segments becomes negligible; Appendix B uses L = 10 for AR(1) with ϕ = 0 .5, whose autocorrelation falls below 0 .1 by lag 3. Coverage is then approximate, not exact; Appendix B quantifies the degradation and the repair under an AR(1) design. All Gaussian-through-skewed claims of exactness in this paper are for independent-within-segment data. 
+
+# 4 Theory 
+
+Theorem 1 (Finite-sample coverage, any frozen score) . Let A be any ARC score, including 
+
+Ann with an arbitrary frozen parameter θ obtained by training to convergence, by stopping after one epoch, by random initialization, or by training on a misspecified or adversarially labelled synthetic distribution. If θ and the combination rule are fixed independently of the test window, then for any α ∈ (0 , 1) and any B ≥ 1, P(τ ∈ C 1−α) ≥ 1 − α.
+
+The proof (Appendix A) is the within-segment permutation argument; validity is inherited from the backend schema of Dandapanthula and Ramdas [6], Hore and Ramdas [14] and the exactness of Monte Carlo permutation tests [13]. The content is the quantifier: no property of the training run is assumed. The practical consequence is that ARC needs no deployment-side calibration data and cannot be invalidated by a bad training day. 
+
+Remark 1 (Model scope) . Theorem 1 is a statement about the piecewise-i.i.d. or more generally piecewise-exchangeable, model, which covers arbitrary distributional changes in location, scale, shape, or any combination. Trend-type alternatives, in which a deterministic drift follows the 6change, place a non-exchangeable segment on one side of the true split, so H0,τ itself fails and no procedure in the conformal localization schema [6, 14] guarantees coverage there, whatever the score. Such alternatives are outside the scope of this paper, and localizing them with rigorous uncertainty statements is open. 
+
+Lemma 1 (Rank invariance) . Let g : R → R be strictly increasing. For any segment, the rank vector of (g(xi)) i equals that of (xi)i; hence every ARC score, every split statistic Wt, and, under the same permutation randomness, every p-value pt computed from g(X) coincides with its value computed from X.
+
+Theorem 2 (Invariance and efficiency transfer) . Couple the procedure on X and on g(X) by sharing the Monte Carlo permutations. Then C1−α(g(X)) = C1−α(X) almost surely, for every strictly increasing g. Consequently, if X follows the changepoint model (F0, F 1, τ ) and g(X)
+
+the model (F0 ◦ g−1, F 1 ◦ g−1, τ ), the joint law of  C1−α, τ , and in particular the coverage, the distribution of the set length |C 1−α|, and the localization error of ˆτ , is identical across the entire orbit {(F0 ◦ g−1, F 1 ◦ g−1) : g strictly increasing }.
+
+Theorem 2 is the efficiency transfer result: a length distribution certified once, for instance by Gaussian simulation, holds verbatim for every monotone-equivalent pair, whether lognormal, logistic-compressed, or arbitrarily heavy-tailed images of the same rank configuration. Two remarks delimit the claim. 
+
+Remark 2 (Relation to score-level invariance) . Theorem 4.3 of Hore and Ramdas [14] states that strictly increasing transformations of the score do not change the CONCH set, a property of the wrapper that holds for every score. Theorem 2 concerns strictly increasing transformations of the data , and holds for rank-based scores only: a plug-in likelihood or classifier score changes with g, and its set with it. The two statements are orthogonal, and only the second yields efficiency transfer. 
+
+Remark 3 (The price of invariance) . The monotone group’s maximal invariant is the rank vector [12], so every invariant procedure is a rank procedure, and the optimal invariant score is a rank functional. Against the oracle likelihood-ratio score of Dandapanthula and Ramdas [6], Hore and Ramdas [14], ARC pays the classical price of invariance, which rank-test theory bounds tightly: in the two-sample location problem, normal-scores rank statistics attain asymptotic relative efficiency at least one against the t-statistic uniformly over distributions [4], and the Wilcoxon channel’s ARE at the Gaussian is 3 /π ≈ 0.955. ARC trades at most a few percent of efficiency at any fixed model for exact efficiency transfer across the model’s entire monotone orbit. 
+
+Proposition 1 (Length contraction) . Consider the location channel with a stochastically ordered alternative, ρ = P(X′ > X )̸ = 1 /2 for X ∼ F0, X′ ∼ F1, and τ = ⌊γn ⌋, γ ∈ (0 , 1) fixed. Then 
+
+|C 1−α|/n → 0 in probability as n → ∞ , with the exclusion of any fixed fraction |t − τ | ≥ εn 
+
+occurring at exponential rate in n.
+
+The proof sketch (Appendix A) combines two-sample U -statistic concentration for the Wilcoxon evidence inside the mislocated segment with the O(√log n) growth of permutation quantiles; the argument parallels the length analyses of Bhattacharyya and Ramdas [3], Hore and Ramdas [14] and the interval-width rates of Cui et al. [5, Prop. 1] and Madrid Padilla et al. [25]. We state it as a proposition rather than a sharp-rate theorem: the constants are not optimized, and our evidence for finite-sample length behaviour is the simulation study, reported 7in full. The proposition’s scope should be read precisely: it covers the location channel under a stochastically ordered alternative ( ρ̸ = 1 /2); a pure scale change may have ρ = 1 /2, and for the combined, learned, and network scores we state no length guarantee; their finite-sample length behaviour is documented empirically, without theoretical cover, in Section 5. 
+
+# 5 Simulation Studies 
+
+All results in this section were produced by executing the accompanying code (files arc core.py 
+
+and run experiments.py in the supplement); every number below is read from the generated result files. Window length n = 120, changepoint τ = 60, candidate margin m0 = 10, interior margin m1 = 5, B = 79 permutations, nominal level α = 0 .10 throughout; Monte Carlo stan-dard errors for coverage entries at 250–300 replications are about 0 .02, and each table states its per-cell replication count. With B = 79 the p-values in (1) lie on the grid {1/80 , . . . , 80 /80 }, so the rule pt > α at α = 0 .10 retains candidates with pt ≥ 9/80 and the procedure is conservative by at most one grid step; Appendix C verifies that coverage and mean length are insensitive to 
+
+B ∈ { 79 , 199 , 999 }. The network score is trained once on 6,000 synthetic Gaussian segments with mean- and scale-type internal changes in equal proportion and frozen; training uses the binary-cross-entropy loss with Adam (learning rate 10 −3, batch size 64, 30 epochs; weights initialized 
+
+N (0 , 1/√din ); training AUC 0 .986). Four weight states are carried through all experiments: 
+
+trained (30 epochs), epoch-1 , random (never trained), and mistrained (30 epochs on permuted labels). The learned convex combination, fitted on the same synthetic data by projected gra-dient descent on the logistic loss (learning rate 0 .05, 200 epochs), is w = (0 .51 , 0.49) over (location, scale), mirroring the balanced composition of the training alternatives. Throughout, “plug-in LR” labels the two-sample t statistic, which is a monotone transformation of the Gaus-sian likelihood-ratio statistic; it stands for the density-based plug-in family, not for a universal likelihood-ratio estimator. 
+
+5.1 Coverage: any frozen weight 
+
+Table 2 reports empirical coverage under a mean shift ( δ = 2) for four marginal distributions and nine scores, 300 replications each. Every entry lies within Monte Carlo error of the nominal 0.90, including the never-trained network at 0 .88–0 .91 and the network trained on permuted labels at 0 .88–0 .91. Sabotaged weights cost set length, their mean lengths being 52–88 out of 101 candidates against 7–32 for the trained scores, but never validity: this is Theorem 1 made visible, and it is the property that no post-hoc calibration of a fully learned detector provides for free. 
+
+5.2 Invariance: exactly identical sets 
+
+Eighty Gaussian mean-shift windows ( δ = 2) were each transformed by three strictly increasing maps, namely exp( x), x3, and the logistic 1 /(1 + e−x), and the full procedure was re-run on each transformed window with shared permutation randomness. For all eight rank-based scores (two channels, two fixed combinations, four network weight states) the maximal absolute p-value change across all candidates, replications, and transforms was exactly 0, and the confidence set was identical to the untransformed one in 80 /80 replications: the invariance of Theorem 2 is not approximate. Figure 2 displays the mechanism on a single window: the four transformed copies of the data produce four exactly coincident ARC p-value profiles, whereas the plug-in profiles 8Table 2: Empirical coverage of C1−α at nominal 1 − α = 0 .90 (mean shift δ = 2, n = 120, τ = 60, 300 replications; MC-SE ≈ 0.017). 
+
+Score Gaussian t3 Cauchy Lognormal ARC learned combination Aw 0.917 0.963 0.907 0.903 ARC max combination Acomb 0.893 0.923 0.890 0.913 ARC location channel 0.910 0.917 0.900 0.890 ARC network (trained) 0.913 0.930 0.893 0.900 ARC network (epoch 1) 0.883 0.937 0.907 0.903 ARC network (random weights) 0.880 0.907 0.907 0.890 ARC network (mistrained) 0.880 0.907 0.907 0.880 Raw CUSUM (plug-in) 0.897 0.903 0.910 0.937 Two-sample t (plug-in LR) 0.897 0.903 0.910 0.937 20 40 60 80 100 candidate location t       
+
+> 0.0 0.2 0.4 0.6 0.8 1.0 conformal p-value  pt
+> = 0.1
+> ARC rank score (curves coincide exactly) 20 40 60 80 100 candidate location t
+> = 0.1
+> Plug-in two-sample tscore
+> identity exp cube logistic
+
+Figure 2: Conformal p-value profiles pt on one Gaussian mean-shift window ( n = 120, τ = 60, vertical line) and on its exp, cube, and logistic images, with shared permutation randomness. Left: the ARC learned combination, for which the four curves coincide exactly (Theorem 2), so one profile is visible. Right: the plug-in two-sample t score changes with each transform. differ visibly, since each transform presents the plug-in score with a different estimation problem and elicits a different answer. Table 3 reports mean set lengths. The plug-in scores are slightly shorter at the Gaussian identity (6 .7–6 .8 vs. 7 .8 for the learned ARC combination), which is the classical price of invariance of Remark 3 made visible; under the exp image of the very same data their sets inflate more than threefold (6 .7 → 21 .6 and 6.8 → 22 .1) while every ARC length is unchanged to the last replication. 
+
+5.3 Set length across distributions and change types 
+
+Table 4 and Figure 3 report mean set lengths for mean and scale changes. Three conclusions follow. First, the efficiency ordering at the Gaussian is the classical one: the plug-in scores are shortest at 6 .8, and the learned ARC combination pays approximately ten percent at 7 .5, which is the numerical counterpart of Remark 3. Second, the ordering reverses as soon as the marginal departs from the Gaussian: at t3 the learned combination is already shorter, 11 .2 against 14 .1; at the lognormal it is 2 .6 times shorter, 9 .3 against 23 .9; and at the Cauchy the plug-in sets 9Table 3: Mean confidence-set length ( n = 120, α = 0 .10, 80 replications) on the same windows under strictly increasing transforms. Rank-based ARC scores are exactly invariant; Gaussian plug-in scores retain coverage but inflate. 
+
+Score identity exp cube logistic ARC learned combination Aw 7.83 7.83 7.83 7.83 ARC max combination Acomb 8.79 8.79 8.79 8.79 ARC network (trained) 15.20 15.20 15.20 15.20 ARC network (random weights) 61.46 61.46 61.46 61.46 Raw CUSUM (plug-in) 6.73 21.56 15.30 6.65 Two-sample t (plug-in LR) 6.75 22.14 15.69 6.66 Gaussian t3 Cauchy Lognormal 020 40 60 80 mean set length (of 101) Mean change ( = 2)      
+
+> ARC learned comb. ARC max comb. ARC network Raw CUSUM Plug-in t
+> Gaussian t3Cauchy Lognormal Scale change ( × 3)
+
+Figure 3: Mean confidence-set length by marginal distribution and score (values from Table 4). Coverage is at the nominal level for every bar; length is where the scores separate. The plug-in scores are marginally shorter at the Gaussian and collapse to near-vacuous sets under the Cauchy, whereas the ARC scores deteriorate smoothly and, by Theorem 2, their bars would be exactly identical under any monotone re-expression of the data. are effectively vacuous at 84 .9 of 101 candidates, while the learned combination reports 26 .6and the location channel 21 .8. Coverage is universal, whereas length is where the plug-in scores deteriorate. Third, under scale changes the mean-oriented plug-in scores are uninformative by construction, at 82–91, while the ARC scale channel and max combination localize at 15 .8–45 .5. This is a statement about the type coverage of the score bank rather than about the plug-in family as such, since a variance-oriented plug-in would face the same heavy-tail fragility. 
+
+5.4 Transfer: Gaussian-trained scores on heavy tails 
+
+The transfer reading of Table 4 isolates the two learned scores, both fitted on Gaussian synthetic data only and frozen. Moving from Gaussian to Cauchy test data multiplies the plug-in t-score’s mean length by 12 .5 (6 .8 → 84 .9); the frozen ARC network grows by a factor of 2 .2 (14 .7 → 32 .2) and the learned rank combination by 3 .5 (7 .5 → 26 .6). For the ARC scores this growth is entirely a property of the rank experiment ( F0, F 1) rather than of the training mismatch: by Theorem 2 the same lengths would be obtained for any monotone re-expression of the test data, whereas the 10 Table 4: Mean set length ( α = 0 .10, n = 120; mean cells 300 reps, scale cells 250 reps). Coverage for every entry is at, or within Monte Carlo error of, the nominal 0 .90; the smallest observed value (0 .852, t3 scale, 250 reps) was rechecked at 1 ,000 replications and returned 0 .885–0 .915 across all scores (MC-SE ≈ 0.010; result file rev t3scale recheck.json ), confirming Monte Carlo fluctuation rather than a coverage deficit.                                                                         
+
+> Mean change ( δ= 2) Scale change ( σ×3) Score Gau. t3Cau. Logn. Gau. t3Cau. Logn. ARC learned comb. Aw7.5 11.2 26.6 9.3 21.8 27.8 51.4 15.8 ARC max comb. Acomb 8.3 11.6 24.9 9.2 18.0 23.3 45.5 16.4 ARC location channel 8.2 10.7 21.8 9.9 87.5 86.5 88.3 51.1 ARC scale channel 53.9 71.4 82.5 46.5 15.8 20.3 40.7 16.8 ARC network (trained) 14.7 19.4 32.2 16.9 21.6 25.6 45.8 19.4 Raw CUSUM (plug-in) 6.8 13.8 84.5 23.1 82.0 84.3 90.5 83.4 Two-sample t(plug-in LR) 6.8 14.1 84.9 23.9 82.8 84.8 90.6 84.1
+
+plug-in score would produce yet another, unpredictable length on each. Coverage stays nominal for every score throughout (Table 2). 
+
+5.5 Type-aware ablation 
+
+Comparing rows of Table 4 quantifies the price of not knowing the change type. Under a mean change, the oracle (location channel, 8 .2 at the Gaussian) is matched or beaten by both combinations (7 .5–8 .3); under a scale change, the oracle scale channel (15 .8 at the Gaussian) is approached by the max combination (18 .0) and the balanced learned combination (21 .8). The oracle gap of the max combination stays below a factor of 1 .15 across every mean and scale cell, and at the lognormal it even undercuts the single-channel oracle. Not knowing the change type therefore costs at most fifteen percent in length, whereas selecting the wrong single channel can cost a factor of five or more, as the location channel does under scale changes at 51–88. 
+
+5.6 Conditional-on-detection reading 
+
+Section 3.4 reports the confidence set unconditionally, and a natural second-round question is how much the coverage statement erodes for a user who only reads the set after the existence test fires. We measured this directly (result file rev conditional.json ): with the existence test taken as the whole-window permutation test of the combined score ( B = 199, α = 0 .10) and 300 replications per cell, the Gaussian mean-shift design at δ = 2 detects in 100% of replications, so conditional and marginal coverage coincide at 0 .900; at the weaker δ = 0 .8 the detection rate is 0.973 and coverage conditional on detection is 0 .921 against a marginal 0 .920 (mean lengths 39 .5conditional vs. 40 .9 marginal). At these signal strengths the selection effect is negligible because detection is nearly certain whenever localization is informative; in severely underpowered regimes the conditional guarantee genuinely requires the post-detection machinery of Saha and Ramdas [31, 32], as stated in Section 3.4. 11 Table 5: Well-log: 90% localization sets per window. Each entry is the set length out of 33 candidates, with ✓ when the set contains the consensus annotation. The empty sets in the first window are a model-misfit alarm, discussed in the text.                                                             
+
+> Annotation ARC learned ARC max Location Scale ARC network Plug-in t
+> 179 00216 ✓42255 4✓7✓6✓17 ✓8✓7✓
+> 281 5✓5✓7✓12 ✓8✓3✓
+> 311 4✓6✓5✓20 ✓6✓4✓
+> 343 3✓2✓313 ✓6✓3
+
+5.7 Dependence preview 
+
+Under AR(1) dependence ( ϕ = 0 .5) the i.i.d.-permutation procedure undercovers catastrophi-cally (coverage 0 .30 for the learned combination at nominal 0 .90); circular block permutations with block length 10 restore 0 .84–0 .86 at a substantial length cost (2 .6 → 16 .7). Exactness is genuinely lost, not merely dented, and the block variant is a repair, not a cure; Appendix B tabulates all scores. 
+
+# 6 Real Data: Well-Log Localization 
+
+We analyse the classic well-log series, a record of nuclear magnetic response measured while drilling, a standard changepoint benchmark whose level shifts are contaminated by outlier bursts [8, 28], in the version curated by the Turing Change Point Dataset (TCPD; 675 observations), which provides independent changepoint annotations from five human annotators [35]. 
+
+Protocol. We call an index a consensus changepoint if at least three of the five annotators marked it (nine indices: 179, 255, 281, 311, 343, 402, 412, 422, 432). The paper’s model assumes a single changepoint per window, so we form one window of length 48 centred on each consensus changepoint whose nearest consensus neighbour is farther than half a window away; this yields five windows (around 179, 255, 281, 311, 343) and excludes the cluster 402–432, whose spacings of about ten observations place several changes in any reasonable window. Within each window the annotated location is candidate 24 of the 33 candidates ( m0 = 8, m1 = 4, B = 99, α = 0 .10); the network score and combination weights are those of Section 5, trained on synthetic Gaussian data and then frozen, so that nothing is tuned on the well-log. 
+
+Results. Table 5 and Figure 4 summarize the outcome. In four of the five windows the ARC learned combination returns sets of three to five candidates that contain the annotation, which constitutes an actionable uncertainty statement of ±2 observations at 90% confidence under no distributional assumption. The plug-in t sets are of comparable length here, consistent with the Gaussian column of Table 4, since within these windows the marginals are locally near-Gaussian and the advantage established by Theorem 2 functions as insurance rather than as a guaranteed improvement. At annotation 343 the plug-in and pure location sets, locally {21 , 22 , 23 }, miss the annotated index by one position, which lies within the ±1 ambiguity of the annotation convention, whereas the combined ARC sets contain it. 12 0 100 200 300 400 500 600 700 75 100 125 response (10 3) (a) Well-log series, consensus annotations (dashed) and analysis windows (shaded) 230 240 250 260 270 280 290 index 75 100 125 response (10 3)   
+
+> annotation ARC learned comb. (4) ARC network (8) Plug-in t(7)
+> (b) Window around annotation 255: data and 90% localization sets (length in parentheses)
+
+Figure 4: Well-log analysis. (a) The full series with the nine consensus annotations (dashed) and the five single-changepoint analysis windows (shaded). (b) The window around annotation 255: data, annotation, and the 90% localization sets of three scores (bar length = set extent; set size in parentheses). The window around 179 is instructive: the combined scores return empty sets. An empty conformal set is not a failure mode but a certificate, since under the assumed single-changepoint piecewise-i.i.d. model it occurs with probability at most α, and it therefore signals model misfit in this window at level 0 .10. The signal is corroborated externally, as this is precisely the region where the human annotators disagree, two placing the change at 177 and three at 179; the location and scale channels point at different candidates (Table 5), and the transition there is gradual rather than abrupt. A procedure that must always return an interval would have silently reported a wrong one. 
+
+# 7 Discussion 
+
+Five limitations bound the claims. First, the theory is for a single changepoint in an offline window; multiple changepoints can be handled in practice by seeded or wild binary segmentation wrappers [2, 10] around ARC windows, but the simultaneous coverage of the resulting sets is not established here, and the multiscale machinery of Cui et al. [5] is the natural bridge. Second, exact coverage requires within-segment independence; under serial dependence the block variant restores validity only approximately (Appendix B), and a rank theory for dependent data [1] is the direction we consider most promising. Third, our sets are marginal, not conditional on a detection event; conditional coverage after an alarm is the harder target addressed by Saha and Ramdas [31, 32]. Fourth, type adaptivity is bought by freezing the combination rule in advance, and the oracle gap in Section 5.5, while modest, is not zero. Fifth, the piecewise-exchangeable model excludes trend-type changes (Remark 1); a rigorous treatment of drifting segments within a conformal localization framework is open. 13 Two extensions follow naturally. Online ARC would combine the rank channels with e-value or anytime-valid machinery [20, 38], whose exchangeability-martingale roots go back to Vovk et al. [36]. In the multivariate direction, coordinate attribution with error control [19, 29] could be conformalized with rank scores per coordinate, extending type-awareness to “which coordinate changed”, a step toward attribution-aware localization on object- and distribution-valued streams [40, 42]. 
+
+# 8 Conclusion 
+
+Coverage of conformal changepoint localization is universal; efficiency is not. ARC makes ef-ficiency the object of design. Scoring the window through within-segment ranks, and freezing every learned component before the test window is seen, yields confidence sets that are finite-sample valid for any weight configuration and almost surely invariant to monotone distortions of the data. Validity is universal, whereas ranks are what render efficiency transferable. 
+
+# Declarations 
+
+Data availability. All results in this paper are fully reproducible from the accompanying code ( arc core.py , run experiments.py , real data welllog.py , rev experiments.py ; fixed seeds) and the generated result files, both of which accompany this preprint as ancillary files. The implementation uses Python with NumPy only (no GPU); the full study, network training included, runs in about one hour on a laptop CPU, and dependency versions are pinned in the accompanying requirements.txt . The well-log series and its annotations are publicly available from the Turing Change Point Dataset repository [35]. 
+
+Conflict of interest. The authors declare no conflict of interest. 
+
+Ethics. This study uses synthetic data and a public, fully de-identified geophysical benchmark series (well-log, distributed with the Turing Change Point Dataset); no human-subject data are involved. 
+
+AI usage disclosure. Large-language-model assistance was used for literature triage, draft-ing, and code scaffolding under author direction; all experiments were executed and verified computationally, all numbers in the paper are read from the generated result files, and the authors take full responsibility for the content. 
+
+# A Proofs 
+
+A.1 Proof of Theorem 1 
+
+Under H0,τ the left and right segments are independent samples of exchangeable (i.i.d.) variables. Conditional on the two segment multisets, the observed window is uniformly distributed on the orbit of within-segment permutations, and Wτ is a deterministic function of the window and the frozen parameters (which are independent of the test window by assumption). The Monte Carlo permutation p-value with the +1-correction in (1) is therefore super-uniform [13, 21]: 14 P(pτ ≤ α) ≤ α, whence P(τ ∈ C 1−α) = P(pτ > α ) ≥ 1 − α. No property of the training procedure enters the argument. 
+
+A.2 Proof of Lemma 1 and Theorem 2 
+
+Strict monotonicity preserves all pairwise order relations, so the rank vector of every segment, and of every permuted segment, is unchanged by g; ARC statistics are deterministic functions of these rank vectors, so every Wt and W (b) 
+
+> t
+
+is unchanged, and with shared permutation draws every pt in (1) is unchanged, hence C1−α(g(X)) = C1−α(X) almost surely. For the transfer statement, observe that if X follows ( F0, F 1, τ ) then g(X) follows ( F0 ◦ g−1, F 1 ◦ g−1, τ ) and, by the coupling just established, C1−α(g(X)) = C1−α(X); thus any functional of ( C1−α, τ ) has the same law under both models. Since every pair ( G0, G 1) in the monotone orbit of ( F0, F 1) arises this way, the law is constant on the orbit. 
+
+A.3 Proof sketch of Proposition 1 
+
+Fix ε > 0 and a candidate t with t ≤ τ − εn (the mirrored case is symmetric). The right segment 
+
+Xt+1: n then contains the true changepoint at relative position bounded away from its edges, and splits it into subsamples of sizes proportional to n on both sides. The internal Wilcoxon evidence at the true split is a two-sample U -statistic with drift |ρ − 1/2|ps(m − s) 12 /(m + 1) ≍ √n |ρ −
+
+1/2|; Hoeffding’s inequality for U -statistics gives Aloc ≥ c√n |ρ − 1/2| with probability 1 − e−c′n.Under within-segment permutation the same statistic is a maximum of O(n) standardized rank CUSUMs with sub-Gaussian tails, so the (1 − α) permutation quantile is O(√log n); a union bound over the B draws and over t yields max |t−τ |≥ εn pt ≤ α with probability tending to one exponentially. Hence C1−α ⊆ (τ − εn, τ + εn ) eventually, for every ε > 0. Two steps are stated here without full proof and would need to be discharged in a rigorous account: the sub-Gaussian tail bound for the maximum of standardized rank CUSUMs under permutation (available in principle from H´ ajek-projection tail inequalities for linear rank statistics), and the union bound over the B Monte Carlo draws, which requires B to grow at least logarithmically in n. Constants are not optimized; see Bhattacharyya and Ramdas [3], Hore and Ramdas [14], Madrid Padilla et al. [25] for sharper analyses under stronger assumptions. 
+
+# B Dependence: AR(1) study 
+
+Windows follow a stationary AR(1) process with ϕ = 0 .5, unit marginal variance, and a mean shift δ = 2 at τ = 60 ( n = 120, 250 replications, α = 0 .10). Table 6 compares i.i.d. within-segment permutations with circular block permutations (block length 10). Positive autocorrela-tion makes locally smooth excursions that every internal-heterogeneity statistic reads as change-point evidence, so the i.i.d.-permutation p-value rejects even at the true split: sharp scores col-lapse to 0 .24–0 .30 coverage. Block permutations restore 0 .84–0 .92, still below nominal because the block length preserves the dependence structure only approximately, at three-to-seven-fold longer sets. All exactness claims in the main text are therefore confined to within-segment independence, as stated. 15 Table 6: AR(1) dependence ( ϕ = 0 .5): coverage / mean length at nominal 0 .90.                                     
+
+> i.i.d. permutation Block permutation ( L= 10) Score coverage length coverage length ARC learned combination 0.296 2.6 0.844 16.7 ARC max combination 0.296 3.1 0.856 16.8 ARC location channel 0.248 2.7 0.836 16.7 ARC scale channel 0.776 34.1 0.908 74.0 ARC network (trained) 0.552 9.1 0.868 28.9 Raw CUSUM (plug-in) 0.240 2.2 0.864 13.8 Two-sample t(plug-in LR) 0.240 2.2 0.856 14.3
+
+# C Sensitivity to the number of permutations 
+
+The Monte Carlo p-values (1) lie on a grid of spacing 1 /(B + 1), so small B makes the procedure conservative by at most one grid step and adds Monte Carlo noise to every pt. To verify that the paper’s conclusions are not driven by the default B = 79, the Gaussian mean-shift cell (δ = 2, n = 120, 200 replications, MC-SE ≈ 0.021) was rerun at B ∈ { 79 , 199 , 999 } (result file 
+
+rev b sensitivity.json ). Table 7 shows that empirical coverage stays within Monte Carlo error of the nominal 0 .90 at every B and, more to the point, that mean set lengths are flat in B
+
+for every score (the learned combination moves from 7 .4 to 7 .5; the plug-in t from 6 .5 to 6 .6): the efficiency comparisons of Section 5 are not an artefact of p-value discretization. Table 7: B-sensitivity (Gaussian mean shift, δ = 2, α = 0 .10, 200 replications): coverage / mean length.                        
+
+> Score B= 79 B= 199 B= 999 ARC learned combination 0.880 / 7.4 0.930 / 7.5 0.915 / 7.5 ARC max combination 0.895 / 8.1 0.910 / 8.1 0.920 / 8.0 ARC location channel 0.870 / 7.9 0.935 / 8.1 0.930 / 7.8 ARC network (trained) 0.875 / 14.1 0.925 / 14.3 0.915 / 13.5 Two-sample t(plug-in LR) 0.895 / 6.5 0.915 / 6.6 0.930 / 6.6
+
+# References 
+
+[1] Imon Banerjee et al. Nonparametric multi change point detection for Markov chains via adaptive clustering, 2026. arXiv:2607.12369. [2] Rafal Baranowski, Yining Chen, and Piotr Fryzlewicz. Narrowest-over-threshold detection of multiple change points and change-point-like features. Journal of the Royal Statistical Society: Series B (Statistical Methodology) , 81:649–672, 2019. doi: 10.1111/rssb.12322. [3] Swapnaneel Bhattacharyya and Aaditya Ramdas. Theoretical guarantees for change local-ization using conformal p-values, 2025. arXiv:2510.08749. [4] Herman Chernoff and I. Richard Savage. Asymptotic normality and efficiency of certain 16 nonparametric test statistics. The Annals of Mathematical Statistics , 29(4):972–994, 1958. doi: 10.1214/aoms/1177706436. [5] Xiaolong Cui, Haoyu Geng, Guanghui Wang, Zhaojun Wang, and Changliang Zou. ART: Distribution-free and model-agnostic changepoint detection with finite-sample guarantees. 
+
+Journal of the Royal Statistical Society Series B: Statistical Methodology , 2026. doi: 10. 1093/jrsssb/qkag037. [6] Sanjit Dandapanthula and Aaditya Ramdas. Offline changepoint localization using a matrix of conformal p-values. Transactions on Machine Learning Research , 2026. [7] Xiao Fang, Jian Li, and David Siegmund. Segmentation and estimation of change-point models: False positive control and confidence regions. The Annals of Statistics , 48:1615– 1647, 2020. doi: 10.1214/19-AOS1861. [8] Paul Fearnhead and Guillem Rigaill. Changepoint detection in the presence of outliers. 
+
+Journal of the American Statistical Association , 114(525):169–183, 2019. doi: 10.1080/ 01621459.2017.1385466. [9] Klaus Frick, Axel Munk, and Hannes Sieling. Multiscale change point inference. Journal of the Royal Statistical Society: Series B (Statistical Methodology) , 76:495–580, 2014. doi: 10.1111/rssb.12047. [10] Piotr Fryzlewicz. Wild binary segmentation for multiple change-point detection. The Annals of Statistics , 42:2243–2281, 2014. doi: 10.1214/14-AOS1245. [11] Piotr Fryzlewicz. Narrowest significance pursuit: Inference for multiple change-points in linear models. Journal of the American Statistical Association , 119:1633–1646, 2024. doi: 10.1080/01621459.2023.2211733. [12] Jaroslav H´ ajek and Zbynˇ ek ˇSid´ ak. Theory of Rank Tests . Academic Press, New York, 1967. [13] Jesse Hemerik and Jelle Goeman. Exact testing with random permutations. TEST , 27: 811–825, 2018. doi: 10.1007/s11749-017-0571-1. [14] Rohan Hore and Aaditya Ramdas. Conformal changepoint localization, 2026. arXiv:2602.06267. [15] Sean Jewell, Paul Fearnhead, and Daniela Witten. Testing for a change in mean after changepoint detection. Journal of the Royal Statistical Society: Series B (Statistical Method-ology) , 84:1082–1104, 2022. doi: 10.1111/rssb.12501. [16] Yinxu Jia, Jingru Liu, Guanghui Wang, Zhaojun Wang, and Changliang Zou. TUNE: Algorithm-agnostic inference after changepoint detection, 2024. arXiv:2409.15676. [17] Diederik P. Kingma and Jimmy Ba. Adam: A method for stochastic optimization. In 
+
+Proceedings of the 3rd International Conference on Learning Representations (ICLR) , 2015. [18] Hans R. K¨ unsch. The jackknife and the bootstrap for general stationary observations. The Annals of Statistics , 17(3):1217–1241, 1989. doi: 10.1214/aos/1176347265. 17 [19] Hui Lan, Luyue Qi, Jianyuan Xue, and Qijing Yan. WAVE: Interpretable high-dimensional change point detection via adaptive weighted variable selection. Mathematics , 14(13):2422, 2026. doi: 10.3390/math14132422. [20] Seungwon Lee, Yunxiao Chen, and Xiaoou Li. Sequential change-point detection with FDR control in reconfigurable sensor networks. IEEE Transactions on Information Theory , 72 (5):3312–3326, 2026. doi: 10.1109/TIT.2026.3669453. [21] Erich L. Lehmann and Joseph P. Romano. Testing Statistical Hypotheses . Springer, New York, 3rd edition, 2005. [22] Jialiang Li, Jingli Wang, and Yuetao Yu. Change-point detection and its modern ap-plications. Annual Review of Statistics and Its Application , 13:421–438, 2026. doi: 10.1146/annurev-statistics-041124-044143. [23] Mengchu Li, Yudong Chen, Tengyao Wang, and Yi Yu. Robust mean change point testing in high-dimensional data with heavy tails. IEEE Transactions on Information Theory , 72 (1):571–609, 2026. doi: 10.1109/TIT.2025.3634207. [24] Yunchen Li, Guanghui Wang, Shuntuo Xu, and Zhou Yu. Integral probability metric-guided CUSUM-Net for nonparametric changepoint detection. Biometrika , 2026. doi: 10.1093/ biomet/asag046. [25] Oscar Hernan Madrid Padilla, Yi Yu, Daren Wang, and Alessandro Rinaldo. Optimal nonparametric change point analysis. Electronic Journal of Statistics , 15:1154–1201, 2021. doi: 10.1214/21-EJS1809. [26] Alexander M. Mood. On the asymptotic efficiency of certain nonparametric two-sample tests. The Annals of Mathematical Statistics , 25(3):514–522, 1954. doi: 10.1214/aoms/ 1177728719. [27] Shan Nie et al. Calibrated persistent-laplacian CUSUM for online change-point detection, 2026. arXiv:2607.08635. [28] Joseph J. K. ´O Ruanaidh and William J. Fitzgerald. Numerical Bayesian Methods Applied to Signal Processing . Springer, New York, 1996. [29] Dhia-Elhaq Ouerfelli, Sylvain Arlot, Kevin Bleakley, and Patrick Pamphile. Post hoc inference for component attribution in multivariate change-point detection, 2026. arXiv:2607.14814. [30] Ewan S. Page. Continuous inspection schemes. Biometrika , 41(1–2):100–115, 1954. doi: 10.1093/biomet/41.1-2.100. [31] Aytijhya Saha and Aaditya Ramdas. Distribution-free changepoint localization after se-quential change detection, 2026. arXiv:2606.01256. [32] Aytijhya Saha and Aaditya Ramdas. Post-detection inference for sequential changepoint localization. Journal of the Royal Statistical Society Series B: Statistical Methodology , 2026. doi: 10.1093/jrsssb/qkag069. 18 [33] Ansgar Steland. Online detection of changes in moment-based projections: When to retrain deep learners or update portfolios? Journal of Machine Learning Research , 27(2):1–50, 2026. [34] Edwin Yiu Nam Tang, Yudong Chen, Mengchu Li, and Yi Yu. Online change point detection under heavy-tailedness and contamination, 2026. arXiv:2606.09737. [35] Gerrit J. J. van den Burg and Christopher K. I. Williams. An evaluation of change point detection algorithms, 2020. arXiv:2003.06222. [36] Vladimir Vovk, Ilia Nouretdinov, and Alexander Gammerman. Testing exchangeability on-line. In Proceedings of the 20th International Conference on Machine Learning , pages 768–775, 2003. [37] Vladimir Vovk, Alexander Gammerman, and Glenn Shafer. Algorithmic Learning in a Random World . Springer, New York, 2005. [38] Song Wei and Yao Xie. Online kernel CUSUM for change-point detection. Journal of the Royal Statistical Society Series B: Statistical Methodology , 2026. doi: 10.1093/jrsssb/ qkag020. [39] Frank Wilcoxon. Individual comparisons by ranking methods. Biometrics Bulletin , 1(6): 80–83, 1945. doi: 10.2307/3001968. [40] Yingyan Zeng, Yujing Huang, and Xiaoyu Chen. Beyond Euclidean summaries: Online change point detection for distribution-valued data, 2026. arXiv:2602.07252. [41] Wenyi Zhang, Xiaoyong Ni, Nir Shlezinger, and Zengfu Wang. Change-aware self-adaptive AI-aided Kalman filters with neural change point detection, 2026. arXiv:2607.13387. [42] Yi Zhang, Changbo Zhu, and Xiaofeng Shao. Change-point detection for object-valued time series. Journal of Business & Economic Statistics , 44(1):255–269, 2026. doi: 10.1080/ 07350015.2025.2520862. 19

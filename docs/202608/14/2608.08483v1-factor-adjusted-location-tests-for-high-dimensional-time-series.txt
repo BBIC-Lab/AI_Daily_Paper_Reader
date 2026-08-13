@@ -1,0 +1,6480 @@
+Title: Factor-Adjusted Location Tests for High-Dimensional Time Series
+
+URL Source: https://arxiv.org/pdf/2608.08483v1
+
+Published Time: Tue, 11 Aug 2026 01:05:55 GMT
+
+Number of Pages: 49
+
+Markdown Content:
+# Highlights 
+
+## Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Jiyang Wang, Xifen Huang, Long Feng • Propose a high-dimensional time series mean test with factor adjustment, which eliminates strong serial correlation caused by latent common factors through dynamic factor projection. • Construct Max, Sum, and Cauchy combination tests, respectively suitable for sparse, dense, and alternatives with unknown sparsity. • Develop an asymptotic theory for the statistic and propose a residual bootstrap calibration; simulation and empirical results based on the S&P 500 demonstrate that this method achieves reliable size control and competitive power. arXiv:2608.08483v1 [stat.ME] 9 Aug 2026 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+## Jiyang Wang a, Xifen Huang b,∗ and Long Feng c,∗
+
+> a
+
+College of Mathematics and Systems Science, Xinjiang University, No. 777, Huarui Street, Shuimogou District, Urumqi, 830046, China 
+
+> b
+
+School of Mathematics, Yunnan Normal University, No. 768, Juxian Street, Chenggong District, Kunming, 650500, China 
+
+> c
+
+School of Statistics and Data Science, Nankai University, No. 94, Weijin Road, Nankai District,, Tianjing, 300071, China 
+
+A R T I C L E I N F O 
+
+Keywords :Cauchy combination test Dynamic factor model Factor adjustment High-dimensional mean Max test Sum test Vector white noise 
+
+A B S T R A C T 
+
+We study high-dimensional one-sample mean testing for time series with strong common serial dependence driven by latent dynamic factors. After estimating the dynamic factor loading space from lagged autocovariance, we project the data onto its orthogonal complement and construct three factor-adjusted tests: a max test for sparse alternatives, a quadratic test for dense alternatives, and a Cauchy combination test for unknown sparsity. The idiosyncratic component is allowed to be non-Gaussian sub-Gaussian vector white noise. We establish the Gumbel limit of the max statistic, the normal limit and local power function of the quadratic statistic, their asymptotic independence, and the validity of the Cauchy combination. In the strong-factor case, the refined projection expansion shows that the quadratic statistic remains valid for dimensions as large as 𝑝 = 𝑜 (𝑛 2). A random-loading residual bootstrap is developed for finite-sample calibration. Simulation studies and a real data application demonstrate reliable size control and competitive power for high-dimensional observations with strong dependence. 
+
+## 1. Introduction 
+
+High-dimensional data analysis is now central in statistics, econometrics, finance, genomics, signal processing, and environmental studies. In such applications, the dimension 𝑝 is often comparable to, or much larger than, the sample size 
+
+𝑛 . Classical multivariate methods based on fixed-𝑝 asymptotics are then poorly calibrated or even undefined. Testing whether a high-dimensional mean vector is zero is one of the most basic examples. Hotelling (1931)’s 𝑇 2 statistic is optimal in classical Gaussian models with fixed dimension, but it requires inversion of the sample covariance matrix and is not applicable when 𝑝 is large relative to 𝑛 .For independent observations, the literature has developed two complementary families of tests. Sum-type procedures aggregate many small coordinatewise effects and are powerful under dense alternatives. Representative contributions include Bai and Saranadasa (1996), Srivastava and Du (2008), Chen and Qin (2010), Chen, Paul, Prentice and Wang (2011), Srivastava, Katayama and Kano (2013), and Gregory, Carroll, Baladandayuthapani and Lahiri (2015). Robust and nonparametric variants include Wang, Peng and Li (2015), Feng and Sun (2016), and Chakraborty and Chaudhuri (2017). Max-type, thresholding, and higher-criticism tests target sparse alternatives with a small number of large coordinates; see, for example, Donoho and Jin (2004), Hall and Jin (2010), Zhong, Chen and Xu (2013), and Cai, Liu and Xia (2014). Adaptive methods that combine dense and sparse evidence have also been studied, including Xu, Lin, Wei and Pan (2016), Li, Aue, Paul, Peng and Wang (2020), Feng, Jiang, Li and Liu (2024), and the related max-sum construction of Feng, Jiang, Liu and Xiong (2022). Gaussian approximation theory for maxima of high-dimensional sums, such as Chernozhukov, Chetverikov and Kato (2013), provides important distributional tools for this line of work. A broad review is given by Huang, Li, Li and Yang (2022). When observations are serially dependent, mean testing becomes more delicate because temporal dependence changes both centering and variance. Ignoring this dependence may inflate the size of tests designed for independent samples. Several high-dimensional time-series tests therefore adjust for temporal dependence by long-run covariance estimation, self-normalization, or dependence-aware Gaussian approximation. Ayyala, Park and Roy (2017) considered mean testing for high-dimensional dependent observations, with further corrections in Cho, Lim, Ayyala, Park and Roy 
+
+> ∗
+
+Corresponding author 
+
+E-mail address: xf_yellow@126.com (X. Huang); flnankai@nankai.edu.cn (L. Feng) 
+
+> ORCID
+
+(s): 
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 1 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+(2019). Zhang and Wu (2017) developed Gaussian approximation for high-dimensional stationary time series, Basu and Michailidis (2015) studied regularized estimation for sparse high-dimensional time series, and Wang and Shao (2020) proposed self-normalized inference. Related recent developments include Zhang, Chen and Qiu (2025). These methods are most natural when the remaining temporal dependence is weak, local, or can be summarized by a stable long-run covariance structure. In many panel time series, however, the dependence is strong because many coordinates share a few latent dynamic components. Financial returns may contain market-wide serial dynamics; macroeconomic panels may be driven by business-cycle factors; environmental measurements may share large-scale spatio-temporal patterns. Dynamic factor models provide a natural way to represent such strong common dependence. Important contributions include Peña and Box (1987), Forni, Hallin, Lippi and Reichlin (2000), Stock and Watson (2002), Bai and Ng (2002), Hallin and Liška (2007), Pan and Yao (2008), Lam, Yao and Bathia (2011), and Lam and Yao (2012). In particular, the dynamic factor viewpoint separates a high-dimensional time series into a low-dimensional serially dependent component and a vector white-noise component. This decomposition is well suited for high-dimensional mean testing: one can first remove the low-rank dynamic component and then test the projected residual mean. Several factor-adjusted mean tests are especially relevant to this paper. Zhou and Kong (2015) studied high-dimensional mean testing under an approximate factor model and used factor adjustment to reduce the influence of common components. Zhang, Zhou, He and Zhang (2018) considered high-dimensional time-series mean testing with a factor structure, constructed adaptive statistics from factor-adjusted data with different norms, and used multiplier bootstrap calibration. He, Zhang, Zhang and Zhou (2020) developed factor-adjusted two-sample mean tests and support recovery procedures. These papers show that factor adjustment is useful for high-dimensional mean inference, but their inferential targets and modeling roles of the factors are different from ours. The first and third papers address approximate factor adjustment for mean testing in one-sample and two-sample settings, respectively; the second paper investigates factor-structured high-dimensional time series, employing adaptive norm aggregation subsequent to factor adjustment. In contrast, our approach employs a dynamic factor decomposition to model and eliminate strong common serial dependence; the post-projection residual is allowed to have a singular correlation matrix and non-Gaussian sub-Gaussian white-noise distribution; and we jointly analyze the proposed max, sum, and Cauchy-combination test statistics, including max-sum asymptotic independence, local dense-alternative power for the sum statistic, and the refined effect of estimating the dynamic factor space. This paper develops factor-adjusted high-dimensional location tests for time series with strong common serial dependence. We consider 
+
+𝒀 𝑡 = 𝝁 + 𝑾 𝑡 , 𝑾 𝑡 = 𝐀 𝒇 𝑡 + 𝜺 𝑡 ,
+
+where 𝒇 𝑡 is a low-dimensional dynamic factor, 𝐀 is a loading matrix, and 𝜺 𝑡 is vector white noise. The loading space is estimated from lagged autocovariances. The observations are then projected onto the orthogonal complement of the estimated loading space. On the projected data, we construct a max statistic, a quadratic statistic, and a Cauchy combination statistic. The contributions are as follows. First, the proposed testing framework explicitly targets high-dimensional mean inference under strong serial dependence generated by latent dynamic factors. This differs from methods that assume independent observations or weakly dependent residuals after simple covariance adjustment. Second, the procedure is adaptive to the sparsity of the alternative: the max statistic is sensitive to sparse signals, the quadratic statistic is sensitive to dense signals, and the Cauchy combination remains effective when the sparsity level is unknown. Third, the theory proves that estimating and removing the dynamic factor space does not change the first-order null limits of the projected max and quadratic statistics. The proof does not assume Gaussian residuals; the idiosyncratic component is sub-Gaussian vector white noise. Fourth, for local dense alternatives, the quadratic statistic has a noncentral normal limit, which gives a closed-form asymptotic power function. Fifth, the asymptotic independence between the max and quadratic statistics justifies a simple analytic Cauchy calibration. Finally, we provide a random-loading residual bootstrap that matches the simulation implementation and repeats the factor adjustment within each bootstrap sample for improved finite-sample size control. The rest of the article is organized as follows. Section 2 states the model. Section 3 defines the testing procedure. Section 4 presents the core theoretical results. Section 5 reports finite-sample size and power evidence. Section 6 reports the empirical S&P 500 weekly excess-return study. All intermediate lemmas and proofs are in the Appendix.   
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 2 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series
+
+## 2. Model 
+
+We observe a 𝑝 -dimensional time series 𝒀 1, … , 𝒀 𝑛 and test 
+
+𝐻 0 ∶ 𝝁 = 𝟎 against 𝐻 1 ∶ 𝝁 ≠ 𝟎 . (1) The data are generated by 
+
+𝒀 𝑡 = 𝝁 + 𝐀 𝒇 𝑡 + 𝜺 𝑡 , 𝑡 = 1 , … , 𝑛, (2) where 𝐀 ∈ ℝ𝑝 ×𝑟 , 𝐀 ⊤𝐀 = 𝐈 𝑟 , 𝑟 is fixed, 𝒇 𝑡 ∈ ℝ𝑟 is a latent dynamic factor, and 𝜺 𝑡 is a vector white-noise process. The number of factors 𝑟 and the loading space (𝐀 ) are unknown. Since (𝐀 , 𝒇 𝑡 ) is identifiable only up to an orthogonal rotation, all inference is expressed through the projection matrices 
+
+𝐏 = 𝐀𝐀 ⊤, 𝐐 = 𝐈 𝑝 − 𝐏 .
+
+The projection removes the factor component. It also removes the component of 𝝁 lying in (𝐀 ). The main theory is stated under the convention 
+
+𝐏 𝝁 = 𝟎 , (3) so that 𝐐 𝝁 = 𝝁 and (1) is equivalent to the projected hypothesis. Without (3), the same procedure tests 𝐻 0 ∶ 𝐐 𝝁 = 𝟎 .Let 
+
+Γ𝑦 (𝑘 ) = Cov( 𝒀 𝑡 +𝑘 , 𝒀 𝑡 ), 𝑘 ≥ 1.
+
+For a fixed lag truncation 𝑘 0 ≥ 1, define the Lam–Yao population matrix 
+
+𝐌 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+Γ𝑦 (𝑘 )Γ 𝑦 (𝑘 )⊤. (4) Under the dynamic factor assumptions of Lam and Yao (2012), the columns of 𝐀 span the eigenspace of 𝐌 corresponding to its 𝑟 nonzero eigenvalues. In the sample, let ̂
+
+Γ𝑦 (𝑘 ) = 1
+
+𝑛 − 𝑘 
+
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+
+(𝒀 𝑡 +𝑘 −̄ 𝒀 )( 𝒀 𝑡 −̄ 𝒀 )⊤,̂ 𝐌 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+̂
+
+Γ𝑦 (𝑘 )̂ Γ𝑦 (𝑘 )⊤.
+
+Let ̂ 𝜆 1 ≥ ⋯ ≥̂ 𝜆 𝑝 be the eigenvalues of ̂ 𝐌 . We use the ratio rule ̂𝑟 = arg min 
+
+> 1≤𝑗 ≤𝑅
+
+̂𝜆 𝑗 +1 ̂𝜆 𝑗 
+
+, 𝑟 < 𝑅 < 𝑝, 
+
+unless stated otherwise. Given ̂𝑟 , let ̂ 𝐀 be the matrix of the first ̂𝑟 orthonormal eigenvectors of ̂ 𝐌 and define ̂
+
+𝐏 =̂ 𝐀 ̂ 𝐀 ⊤,̂ 𝐐 = 𝐈 𝑝 −̂ 𝐏 .
+
+## 3. Methodology 
+
+The feasible projected observations are ̂
+
+𝑼 𝑡 =̂ 𝐐 𝒀 𝑡 ,̄̂ 𝑼 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̂
+
+𝑼 𝑡 .  
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 3 of 47
+
+Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Let ̂𝑑 𝑖 = 1
+
+𝑛 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(̂𝑈 𝑡𝑖 −̄̂ 𝑈 𝑖 )2,̂ 𝑍 𝑡𝑖 =̂ 𝑈 𝑡𝑖 ∕̂ 𝑑 1∕2  
+
+> 𝑖
+
+,̄̂ 𝒁 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̂
+
+𝒁 𝑡 .
+
+The sample correlation matrix of the projected residuals is ̂
+
+𝐒 = 1
+
+𝑛 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(̂ 𝒁 𝑡 −̄̂ 𝒁 )( ̂𝒁 𝑡 −̄̂ 𝒁 )⊤,̂ 𝐑 = diag( ̂𝐒 )−1∕2 ̂ 𝐒 diag( ̂𝐒 )−1∕2 .
+
+The max statistic is 
+
+𝑇 𝑀 = max  
+
+> 1≤𝑖 ≤𝑝
+
+𝑛̄̂𝑍 2 
+
+> 𝑖
+
+− 2 log 𝑝 + log log 𝑝. 
+
+It is designed for sparse alternatives where only a few coordinates of 𝝁 are nonzero. Its analytic null calibration uses the Gumbel distribution 
+
+𝐹 𝐺 (𝑥 ) = exp{− 𝜋 −1∕2 exp(− 𝑥 ∕2)} .
+
+The sum statistic is 
+
+𝑇 𝑆 = 𝑛̄̂ 𝒁 ⊤̄̂ 𝒁 − {( 𝑛 − 1) 𝑝 ∕( 𝑛 − 3)} {2[tr( ̂𝐑 2) − 𝑝 2∕( 𝑛 − 1)]} 1∕2 . (5) It is designed for dense alternatives where many small coordinates jointly create a large Euclidean norm. The finite-sample corrections in (5) account for coordinatewise variance estimation and sample-correlation estimation. Under local dense alternatives, the same statistic has a noncentral normal limit. Let 𝜸 𝑛 = √𝑛 𝐃 −1∕2 𝝁 and 𝑠 2 
+
+> 𝑝
+
+= 2 tr( 𝐑 2). The leading noncentrality and variance inflation are 
+
+Δ𝑛 =
+
+‖‖𝜸 𝑛 ‖‖22
+
+𝑠 𝑝 
+
+, Λ𝑛 = 2𝜸 ⊤𝑛 𝐑 𝜸 𝑛 
+
+tr( 𝐑 2) .
+
+Theorem 4.2 shows that 𝑇 𝑆 is asymptotically 𝑁 (Δ , 1 + Λ) when Δ𝑛 → Δ and Λ𝑛 → Λ, yielding the analytic power approximation 1 − Φ{( 𝑧 1− 𝛼 − Δ)∕ √1 + Λ} .Let ̂𝑝 𝑀 = 1 − 𝐹 𝐺 (𝑇 𝑀 ),̂ 𝑝 𝑆 = 1 − Φ( 𝑇 𝑆 ),
+
+where Φ is the standard normal distribution function. The combined Cauchy statistic is 
+
+𝑇 𝐶 = 12 tan{ 𝜋 (1∕2 − ̂𝑝 𝑀 )} + 12 tan{ 𝜋 (1∕2 − ̂𝑝 𝑆 )} .
+
+Its analytic 𝑝 -value is ̂𝑝 𝐶 = 12 − 1
+
+𝜋 arctan( 𝑇 𝐶 ).
+
+The Cauchy rule is attractive because it preserves a simple analytic calibration under broad dependence among component 
+
+𝑝 -values (Liu and Xie, 2020). For finite samples, we use the same random-loading residual bootstrap as in the simulations. Compute ̂
+
+𝒇 𝑡 =̂ 𝐀 ⊤(𝒀 𝑡 −̄ 𝒀 ),̂ 𝜺 𝑡 =̂ 𝐐 (𝒀 𝑡 −̄ 𝒀 ),̃ 𝜺 𝑡 =̂ 𝜺 𝑡 − 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑠 =1
+
+̂
+
+𝜺 𝑠 .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 4 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+In the present construction ∑𝑡 ̂ 𝜺 𝑡 = 𝟎 , so ̃ 𝜺 𝑡 =̂ 𝜺 𝑡 ; the explicit centering is kept to define the bootstrap null sample. For each bootstrap replication 𝑏 , draw an independent random loading matrix ̃ 𝐀 𝑏 ∈ ℝ𝑝 ×̂𝑟 with orthonormal columns and independent indices 
+
+𝐼 1𝑏 , … , 𝐼 𝑛𝑏 
+
+> i.i.d.
+
+∼ Unif{1 , … , 𝑛 }.
+
+In implementation ̃ 𝐀 𝑏 is obtained by orthonormalizing a 𝑝 ×̂𝑟 matrix with independent standard normal entries. The bootstrap sample is 
+
+𝒀 ∗ 
+
+> 𝑡𝑏
+
+=̃ 𝐀 𝑏 ̂ 𝒇 𝑡 +̃ 𝜺 𝐼 𝑡𝑏 , 𝑡 = 1 , … , 𝑛. (6) For each bootstrap sample, we apply the same factor-estimation, projection, standardization, and testing algorithm to obtain 𝑇 ∗
+
+> 𝑀,𝑏
+
+, 𝑇 ∗
+
+> 𝑆,𝑏
+
+, and 𝑇 ∗
+
+> 𝐶,𝑏
+
+. The bootstrap 𝑝 -values are ̂𝑝 boot  
+
+> 𝑀
+
+= 1 + ∑𝐵 𝑏 =1 𝟏 {𝑇 ∗ 
+
+> 𝑀,𝑏
+
+≥ 𝑇 𝑀 }
+
+𝐵 + 1 ,̂ 𝑝 boot  
+
+> 𝑆
+
+= 1 + ∑𝐵 𝑏 =1 𝟏 {𝑇 ∗ 
+
+> 𝑆,𝑏
+
+≥ 𝑇 𝑆 }
+
+𝐵 + 1 .
+
+The bootstrap Cauchy statistic is formed from ̂𝑝 boot  
+
+> 𝑀
+
+and ̂𝑝 boot  
+
+> 𝑆
+
+.
+
+## 4. Theoretical results 
+
+This section gives only the core assumptions and the core theorems. All loading-space perturbation, feasible-oracle replacement, and distributional calculations are collected in the Appendix. Let 
+
+𝛀 = 𝐐𝚺 𝜀 𝐐 , 𝐃 = diag( 𝛀 ), 𝐑 = 𝐃 −1∕2 𝛀𝐃 −1∕2 .
+
+Let 𝒂 ⊤𝑖 = 𝒆 ⊤𝑖 𝐀 be the 𝑖 th row of 𝐀 .
+
+Assumption 4.1 (Dynamic factor structure) . The decomposition (2) satisfies 𝐀 ⊤𝐀 = 𝐈 𝑟 , no nonzero linear combination of 𝒇 𝑡 is white noise, and the identifiable mean condition (3) holds. The factor process is centered, 𝔼 𝒇 𝑡 = 𝟎 , weakly stationary, uniformly sub-Gaussian after the normalization in Assumption 4.2, and geometrically strongly mixing. 
+
+Comment. The exclusion of white-noise linear combinations of 𝒇 𝑡 is an identification convention for the minimal dynamic-factor representation, rather than a substantive restriction on the data-generating process. If a nonzero linear combination of the latent process is itself white noise, then its contribution can be absorbed into the idiosyncratic term; the lag-autocovariance matrix 𝐌 identifies only directions contributing to nonzero-lag autocovariances. Thus 𝒇 𝑡 denotes the dynamically identifiable factor process. A white-noise common component is covered by the present formulation only when, after absorption into 𝜺 𝑡 , Assumption 4.4 remains valid; a strong white-noise common component that creates a spiked 𝚺 𝜀 would require an additional static-factor adjustment. This convention follows the dynamic-factor identification logic of Lam and Yao (2012). 
+
+Assumption 4.2 (Dynamic factor strength and regularity) . Let Σ𝑓 (𝑘 ) = Cov( 𝒇 𝑡 +𝑘 , 𝒇 𝑡 ) and 𝑊 𝑓 = {Σ 𝑓 (1) , … , Σ𝑓 (𝑘 0)} ∈ 
+
+ℝ𝑟 ×𝑟𝑘 0 . There exists 𝛿 ∈ [0 , 1] and constants 0 < 𝑐 𝑓 < 𝐶 𝑓 < ∞ such that 
+
+𝑐 𝑓 𝑝 1− 𝛿 ≤ 𝜎 min (𝑊 𝑓 ) ≤ ‖‖‖𝑊 𝑓 
+
+‖‖‖ ≤ 𝐶 𝑓 𝑝 1− 𝛿 . (7) The matrix 𝐌 in (4) has exactly 𝑟 positive eigenvalues, 
+
+𝜈 1(𝐌 ) > ⋯ > 𝜈 𝑟 (𝐌 ) > 0 = 𝜈 𝑟 +1 (𝐌 ) = ⋯ = 𝜈 𝑝 (𝐌 ).  
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 5 of 47
+
+Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Moreover, 
+
+max 
+
+> 𝑖
+
+‖‖𝒂 𝑖 ‖‖22 ≤ 𝐶𝑝 −1 ,
+
+> ∞
+
+∑
+
+> 𝓁 =−∞
+
+‖‖Cov( 𝒇 𝑡 +𝓁 , 𝒇 𝑡 )‖‖ ≤ 𝐶𝑝 1− 𝛿 ,
+
+and 
+
+sup 
+
+> 𝑡
+
+sup 
+
+> ‖𝒖 ‖2=1
+
+‖‖‖𝑝 −(1− 𝛿 )∕2 𝒖 ⊤𝒇 𝑡 
+
+‖‖‖𝜓 2
+
+≤ 𝐶, 𝛼 𝑓 (𝑚 ) ≤ 𝐶 exp(− 𝑐𝑚 ), (8) where 𝛼 𝑓 (𝑚 ) is the strong-mixing coefficient of {𝒇 𝑡 }. The fourth-order factor cumulants are summable in the following uniform sense: for any unit vectors 𝒖 1, … , 𝒖 4 ∈ ℝ𝑟 ,
+
+∑
+
+> ℎ1,ℎ 2,ℎ 3∈ℤ
+
+|||cum( 𝒖 ⊤ 
+
+> 1
+
+𝒇 0, 𝒖 ⊤ 
+
+> 2
+
+𝒇 ℎ1 , 𝒖 ⊤ 
+
+> 3
+
+𝒇 ℎ2 , 𝒖 ⊤ 
+
+> 4
+
+𝒇 ℎ3 )||| ≤ 𝐶𝑝 2−2 𝛿 . (9) 
+
+Assumption 4.3 (Factor-number selection) . The factor-number estimator satisfies 
+
+ℙ(̂𝑟 = 𝑟 ) → 1.
+
+A sufficient condition for the Lam–Yao ratio estimator is the sharp drop at 𝑟 together with post-𝑟 separation: for some 
+
+𝑎 𝑛 ↓ 0,̂𝜆 𝑟 +1 ∕̂ 𝜆 𝑟 = 𝑂 ℙ(𝑝 2𝛿 ∕𝑛 ), 𝑝 2𝛿 ∕𝑛 = 𝑜 (𝑎 𝑛 ), ℙ
+
+(
+
+min 
+
+> 𝑟<𝑗 ≤𝑅
+
+̂ 𝜆 𝑗 +1 ∕̂𝜆 𝑗 > 𝑎 𝑛 
+
+)
+
+→ 1.
+
+Assumption 4.4 (Independent-component idiosyncratic errors) . The idiosyncratic errors are independent of the factor process and are independent over time. There exists a positive definite covariance matrix 𝚺 𝜀 and i.i.d. innovation vectors 
+
+𝝃 𝑡 = ( 𝜉 𝑡 1, … , 𝜉 𝑡𝑝 )⊤ such that 
+
+𝜺 𝑡 = 𝚺 1∕2  
+
+> 𝜀
+
+𝝃 𝑡 , 𝔼 𝝃 𝑡 = 𝟎 , Cov( 𝝃 𝑡 ) = 𝐈 𝑝 , (10) where 𝜉 𝑡 1, … , 𝜉 𝑡𝑝 are mutually independent and 
+
+sup 
+
+> 𝑡,𝑗
+
+‖‖‖𝜉 𝑡𝑗 
+
+‖‖‖𝜓 2
+
+≤ 𝐶. 
+
+The eigenvalues of 𝚺 𝜀 are uniformly bounded: 
+
+0 < 𝑐 𝜀 ≤ 𝜆 min (𝚺 𝜀 ) ≤ 𝜆 max (𝚺 𝜀 ) ≤ 𝐶 𝜀 < ∞. (11) The analytic Gumbel calibration of 𝑇 𝑀 uses the following extreme-value regularity of the induced oracle correlation matrix 𝐑 : for some 0 < 𝜚 < 1,
+
+max  
+
+> 𝑖<𝑗
+
+|𝑅 𝑖𝑗 | ≤ 𝜚, 𝑝 −1 |||{𝑖 ∶ |{𝑗 ≠ 𝑖 ∶ |𝑅 𝑖𝑗 | ≥ (log 𝑝 )−2 }| ≥ 𝑝 𝜅 𝑝 }||| → 0, (12) where 𝜅 𝑝 ↓ 0 and 𝑝 𝜅 𝑝 ∕ log 4 𝑝 → ∞.
+
+Assumption 4.5 (Simple sufficient growth condition) . The dimension has polynomial growth, 𝑝 = 𝑂 (𝑛 𝜅 ), for a constant 
+
+𝜅 > 0. If 𝛿 = 0 , assume 
+
+0 < 𝜅 < 2.
+
+If 0 < 𝛿 ≤ 1, assume 
+
+0 < 𝜅 < min{2 , (1∕2 + 2 𝛿 )−1 }.
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 6 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Thus the strong-factor case allows 𝑝 = 𝑜 (𝑛 2). In the weak-factor case the more conservative exponent above makes the plug-in eigenspace remainder negligible. Polynomial growth implies log 𝑚 𝑝 = 𝑜 (𝑛 ) for every fixed 𝑚 > 0.
+
+Theorem 4.1 (Null distributions, asymptotic independence, and Cauchy combination) . Suppose Assumptions 4.1–4.5 hold. Under 𝐻 0 ∶ 𝝁 = 𝟎 ,
+
+𝑇 𝑀 ⇒ 𝐺, ℙ(𝐺 ≤ 𝑥 ) = exp{− 𝜋 −1∕2 exp(− 𝑥 ∕2)} ,𝑇 𝑆 ⇒ 𝑁 (0 , 1) ,
+
+and 𝑇 𝑀 and 𝑇 𝑆 are asymptotically independent. Consequently, 
+
+𝑇 𝐶 ⇒ 𝐶, ℙ(𝐶 ≤ 𝑥 ) = 12 + 1
+
+𝜋 arctan( 𝑥 ),
+
+so that the asymptotic level-𝛼 combined test rejects when 𝑇 𝐶 > tan{ 𝜋 (1∕2 − 𝛼 )} .
+
+Theorem 4.2 (Local alternatives and power of the sum statistic) . Suppose Assumptions 4.1–4.5 hold and 𝐏 𝝁 = 𝟎 . Set 
+
+𝝂 = 𝐃 −1∕2 𝝁 , 𝜸 𝑛 = √𝑛 𝝂 , 𝑚 ∞ = ‖‖𝜸 𝑛 ‖‖∞ ,
+
+Δ𝑛 =
+
+‖‖𝜸 𝑛 ‖‖22
+
+{2 tr( 𝐑 2)} 1∕2 , Λ𝑛 = 2𝜸 ⊤𝑛 𝐑 𝜸 𝑛 
+
+tr( 𝐑 2) .
+
+If 
+
+Δ𝑛 → Δ ∈ [0 , ∞) , Λ𝑛 → Λ ∈ [0 , ∞) , (13) 
+
+then, under the local alternative sequence 𝐻 1𝑛 ∶ 𝝁 ≠ 𝟎 ,
+
+𝑇 𝑆 ⇒ 𝑁 (Δ , 1 + Λ) .
+
+Consequently, for the one-sided level-𝛼 sum test rejecting when 𝑇 𝑆 > 𝑧 1− 𝛼 ,
+
+ℙ𝝁 (𝑇 𝑆 > 𝑧 1− 𝛼 ) → 1 − Φ 
+
+( 𝑧 1− 𝛼 − Δ 
+
+√1 + Λ 
+
+)
+
+.
+
+If 
+
+Δ𝑛 
+
+√1 + Λ 𝑛 
+
+→ ∞, (14) 
+
+then the sum test has power tending to one. In particular, because 𝜆 max (𝐑 ) is bounded and tr( 𝐑 2) ≍ 𝑝 , the simpler condition Δ𝑛 → ∞ is sufficient. The max test has power tending to one if 
+
+𝑚 2∞ − 2 log 𝑝 → ∞.
+
+The Cauchy test has power tending to one whenever either the max condition or (14) holds. 
+
+Theorem 4.3 (Bootstrap validity) . Assume the conditions of Theorem 4.1. Consider the random-loading residual bootstrap in (6) . Conditional on the data, suppose the regenerated loading matrices have orthonormal columns and satisfy max 𝑖 ‖𝒆 ⊤𝑖 ̃ 𝐀 𝑏 ‖22 = 𝑂 ∗
+
+> ℙ
+
+(log 𝑝 ∕𝑝 ) uniformly in 𝑏 . Suppose further that either ̂𝑟 ∗ ≡̂𝑟 is fixed in the bootstrap algorithm or 
+
+ℙ∗(̂𝑟 ∗ =̂𝑟 ∣ 𝒀 1, … , 𝒀 𝑛 ) → 1 in probability .  
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 7 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series
+
+All conditional statements below are understood on this bootstrap selection event. If the number of bootstrap replications satisfies 𝐵 → ∞, then 
+
+sup 
+
+> 𝑥
+
+|||ℙ∗(𝑇 ∗ 
+
+> 𝑀
+
+≤ 𝑥 ) − ℙ0(𝑇 𝑀 ≤ 𝑥 )||| → 0, sup 
+
+> 𝑦
+
+|||ℙ∗(𝑇 ∗ 
+
+> 𝑆
+
+≤ 𝑦 ) − ℙ0(𝑇 𝑆 ≤ 𝑦 )||| → 0
+
+in probability, where ℙ0 denotes the first-order null law of the corresponding statistic. Consequently, the bootstrap marginal 𝑝 -values and the Cauchy combination formed from them are first-order valid. 
+
+## 5. Simulation studies 
+
+This section reports finite-sample evidence for the proposed factor-adjusted tests. The simulations have two goals. The size experiments examine whether factor adjustment and the random-loading residual bootstrap control type-I error when the observations contain strong common serial dependence. The power experiments examine how the max, sum, and Cauchy components respond to alternatives with different sparsity levels. 
+
+5.1. Design and implementation 
+
+The baseline data-generating mechanism is 
+
+𝒀 𝑡 = 𝝁 + 𝐀 𝒇 𝑡 + 𝜺 𝑡 , 𝑡 = 1 , … , 𝑛, 
+
+where the factor component is absent when 𝑟 = 0 . When 𝑟 = 2 , the entries of the initial loading matrix are generated independently from 𝑈 (−1 , 1) and then orthonormalized. The two factors follow independent AR(1) processes 
+
+𝑓 𝑗𝑡 = 𝜙 𝑗 𝑓 𝑗,𝑡 −1 + 𝑢 𝑗𝑡 , 𝜙 1 = 0 .6, 𝜙 2 = −0 .5,
+
+with Gaussian innovations. The idiosyncratic errors are generated as 
+
+𝜺 𝑡 = 𝚺 1∕2 𝒛 𝑡 , Σ𝑖𝑗 = 0 .5|𝑖 −𝑗 |.
+
+We consider two innovation distributions for 𝒛 𝑡 : standard Gaussian innovations and standardized 𝑡 5 innovations. The 𝑡 5
+
+variables are divided by √5∕3 so that each coordinate has unit variance. The proposed methods are denoted by FA-Max, FA-Sum, and FA-CC. The factor number is estimated by the lagged-autocovariance eigenvalue-ratio rule with 𝑘 0 = 5 . For all proposed tests, finite-sample critical values are obtained by the random-loading residual bootstrap used in the simulations. After estimating factor scores ̂ 𝒇 𝑡 and residuals ̂ 𝒆 𝑡 , the 𝑏 th bootstrap sample is generated as 
+
+𝒀 ∗ 
+
+> 𝑡𝑏
+
+=̃ 𝐀 𝑏 ̂ 𝒇 𝑡 +̂ 𝒆 𝐼 𝑡𝑏 , 𝐼 𝑡𝑏 ∼ Unif{1 , … , 𝑛 }, (15) where ̃ 𝐀 𝑏 is a randomly generated 𝑝 ×̂𝑟 orthonormal loading matrix. When ̂𝑟 = 0 , (15) reduces to resampling centered residuals. Each Monte Carlo design uses 1000 replications, the nominal level is 𝛼 = 0 .05 , and the bootstrap procedures use 𝐵 = 500 bootstrap replications. 
+
+5.2. Empirical size 
+
+For the size study, 𝝁 = 𝟎 , 𝑛 ∈ {100 , 200 , 400} , 𝑝 ∈ {100 , 200} , and 𝑟 ∈ {0 , 2} . The case 𝑟 = 0 is a no-factor benchmark. The case 𝑟 = 2 contains strong common serial dependence driven by two dynamic factors. We compare FA-Max, FA-Sum, and FA-CC with the Srivastava–Du type test (SD), the Wang–Shao self-normalized test (WS), the band-excluded 𝑈 -statistic test (ZCQ), the test of Ayyala–Park–Roy (APR), and the max-type procedure of Zhang–Wu (ZW). SD, WS, ZCQ, APR and ZW are applied to the raw observations as in their original formulations; in particular, the SD and WS entries below are computed from the original data, not from the factor-adjusted residuals. At a true size of 0.05, the Monte Carlo standard error is {0 .05(1 − 0 .05)∕1000} 1∕2 = 0 .0069 .Tables 1 and 2 show that the proposed factor-adjusted bootstrap tests control type-I error in the strong-dependence designs. Across the 𝑟 = 2 rows, the average sizes of FA-Max, FA-Sum, and FA-CC are 0.046, 0.050, and 0.051 over the Gaussian and 𝑡 5 experiments, respectively. Their largest absolute deviations from the nominal level are 0.011, 0.014,   
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 8 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series
+> Table 1
+> Empirical size under Gaussian innovations.
+
+## 𝑛 𝑝 𝑟 FA-Max FA-Sum FA-CC SD WS ZCQ APR ZW 100 100 0 0.055 0.074 0.076 0.037 0.047 0.073 0.048 0.125 100 100 2 0.053 0.051 0.052 0.215 0.038 0.162 0.143 0.228 100 200 0 0.067 0.086 0.083 0.050 0.048 0.066 0.044 0.149 100 200 2 0.043 0.064 0.049 0.172 0.048 0.154 0.128 0.236 200 100 0 0.050 0.059 0.052 0.054 0.047 0.071 0.046 0.102 200 100 2 0.044 0.044 0.043 0.226 0.049 0.131 0.124 0.148 200 200 0 0.066 0.075 0.068 0.048 0.046 0.066 0.049 0.138 200 200 2 0.047 0.050 0.053 0.190 0.040 0.143 0.135 0.187 400 100 0 0.056 0.061 0.058 0.046 0.051 0.073 0.056 0.121 400 100 2 0.043 0.059 0.054 0.207 0.054 0.098 0.091 0.127 400 200 0 0.045 0.060 0.058 0.053 0.057 0.062 0.044 0.128 400 200 2 0.052 0.044 0.052 0.207 0.046 0.136 0.124 0.163   
+
+> Table 2
+> Empirical size under standardized 𝑡 5innovations.
+
+## 𝑛 𝑝 𝑟 FA-Max FA-Sum FA-CC SD WS ZCQ APR ZW 100 100 0 0.052 0.055 0.055 0.056 0.063 0.072 0.051 0.104 100 100 2 0.040 0.047 0.050 0.206 0.040 0.140 0.123 0.223 100 200 0 0.061 0.083 0.073 0.057 0.052 0.081 0.046 0.138 100 200 2 0.040 0.050 0.046 0.174 0.038 0.136 0.118 0.206 200 100 0 0.052 0.061 0.061 0.045 0.047 0.073 0.049 0.114 200 100 2 0.049 0.053 0.053 0.214 0.048 0.141 0.124 0.163 200 200 0 0.051 0.066 0.065 0.066 0.050 0.067 0.047 0.129 200 200 2 0.041 0.054 0.046 0.198 0.045 0.150 0.129 0.172 400 100 0 0.060 0.063 0.070 0.044 0.044 0.062 0.046 0.118 400 100 2 0.041 0.041 0.045 0.211 0.049 0.113 0.097 0.134 400 200 0 0.059 0.068 0.069 0.049 0.057 0.063 0.050 0.123 400 200 2 0.061 0.047 0.066 0.204 0.041 0.111 0.093 0.150 
+
+and 0.016, which are close to the Monte Carlo error scale. The raw-data competitors behave differently. SD is severely oversized, with average size 0.202 in the same 𝑟 = 2 settings; ZCQ, APR, and ZW are also liberal, with average sizes 0.135, 0.119, and 0.178. WS is close to nominal in size, with average size 0.045, but the power experiments below show that it is substantially less sensitive to the alternatives considered here. For example, under Gaussian innovations with (𝑛, 𝑝, 𝑟 ) = (100 , 200 , 2) , FA-Max, FA-Sum, and FA-CC have sizes 0.043, 0.064, and 0.049, whereas SD, ZCQ, APR, and ZW have sizes 0.172, 0.154, 0.128, and 0.236, respectively. The 𝑟 = 0 rows provide a benchmark in which no common dynamic factor needs to be removed. In this easier setting, the raw SD and WS procedures are close to nominal, and APR is also close to nominal, whereas ZW remains somewhat liberal. The contrast between 𝑟 = 0 and 𝑟 = 2 confirms that the dominant source of size distortion for the liberal raw-data competitors is the unremoved common dynamic component. The standardized 𝑡 5 results are similar to the Gaussian results, indicating that the bootstrap calibration is not driven by Gaussianity.   
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 9 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series
+
+5.3. Empirical power 
+
+The power designs use 𝑛 = 200 , 𝑝 = 100 , nominal level 0.05 , and fixed Euclidean signal strength 
+
+‖𝝁 ‖2 = 0 .45 .
+
+The mean vector has 𝑠 nonzero entries, 
+
+𝜇 𝑗 = ± 0.45 
+
+√𝑠 , 𝑗 = 1 , … , 𝑠, 𝜇 𝑗 = 0 , 𝑗 > 𝑠, 
+
+where the signs are generated independently. The sparsity level varies over 
+
+𝑠 ∈ {1 , 2, 3, 4, 5, 6, 8, 10 , 12 , 15 , 18 , 22 , 27 , 33 , 40 , 48 , 58 , 70 , 85 , 100} .
+
+This design keeps the total 𝓁 2 signal fixed while decreasing the coordinatewise signal as 𝑠 increases. 
+
+Dynamic-factor design 
+
+We first consider the same 𝑟 = 2 dynamic factor design as in the size experiment. Figure 1 reports the empirical powers of FA-Max, FA-Sum, and FA-CC as the number of nonzero mean components varies. Figure 1 displays the expected sparse–dense tradeoff. FA-Max is the most sensitive component when the alternative is very sparse, because the fixed 𝓁 2 signal is then concentrated in a few coordinates. Its power decreases as 𝑠 increases and the coordinatewise signal weakens. FA-Sum is much more stable over the entire sparsity range and becomes the dominant component in moderately dense and dense regimes. FA-CC combines these two behaviors: it tracks FA-Max for very sparse alternatives and stays close to the sum component once the signal becomes more diffuse. The Gaussian and standardized 𝑡 5 panels have similar shapes, suggesting that the random-loading residual bootstrap is not driven by Gaussianity. 
+
+No-factor benchmark 
+
+We next set 𝑟 = 0 and generate 𝒀 𝑡 = 𝝁 + 𝜺 𝑡 with the same idiosyncratic covariance Σ𝑖𝑗 = 0 .5|𝑖 −𝑗 |. This design isolates the effect of sparsity when there is no common dynamic factor to estimate and remove. Figure 2 reports the resulting power curves; SD, WS and ZCQ are included as raw-data competitors. Figure 2 confirms that the proposed procedures do not suffer an artificial power loss when no common dynamic factor is present. FA-Max again dominates under the sparsest alternatives and decreases as the signal is spread over more coordinates. FA-Sum remains stable across the sparsity range and is competitive with the dense-signal competitors. FA-CC retains the sparse-signal strength of FA-Max while remaining close to the sum-type methods in moderately dense and dense cases. Among the benchmark procedures, SD and ZCQ behave similarly to sum-type methods in dense regimes, whereas WS is visibly less powerful throughout most of the range. The Gaussian and standardized 𝑡 5 panels are close, reinforcing the robustness of the bootstrap implementation under moderate heavy-tailedness. 
+
+## 6. Empirical study: weekly excess returns of S&P 500 stocks 
+
+We apply the proposed factor-adjusted tests to a high-dimensional panel of weekly excess returns of S&P 500 stocks. The data are constructed from the local wide-format daily excess-return file sp500_excess_return_wide.csv . Each entry is the individual stock return in excess of the risk-free rate. To reduce the effect of short-run market microstructure noise and to obtain a cleaner time direction for the bootstrap calibration, daily excess returns are aggregated into weekly excess returns by summing within each trading week. We use the most recent ten-year period available in the data, from January 3, 2014 to December 29, 2023. Stocks with missing observations over this period are removed. The final panel has sample size 
+
+𝑛 = 522 
+
+and dimension 
+
+𝑝 = 333 .                             
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 10 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series
+> Table 3
+> White-noise diagnostics for weekly excess returns. Series Median 𝑝 -value Raw 𝑝 < 0.05 BH 𝑝 < 0.05 BH 𝑝 < 0.10
+> Weekly excess returns 0.0782 43.24% 28.23% 40.54% Factor-adjusted residuals 0.2610 25.83% 3.90% 8.41%
+> Table 4
+> Factor-adjusted high-dimensional mean tests for weekly excess returns. Method Test statistic 𝑝 -value FA-Max 7.2579 0.0200 FA-Sum 1.9329 0.0818 FA-CC –0.0322
+
+The number of latent dynamic factors is selected by the lagged-autocovariance ratio method described in Section 3, which gives ̂𝑟 = 1 .
+
+The testing problem is 
+
+𝐻 0 ∶ 𝝁 = 𝔼 (𝒀 𝑡 ) = 𝟎 , 𝐻 1 ∶ 𝝁 ≠ 𝟎 ,
+
+where 𝒀 𝑡 is the vector of weekly stock excess returns. Economically, the null states that the expected excess returns of the selected S&P 500 stocks are jointly zero after removing the latent dynamic component. 
+
+6.1. White-noise diagnostics 
+
+The factor-adjusted procedure is designed to remove common serial dependence before applying high-dimensional mean tests. We therefore first compare the raw weekly excess returns with the factor-adjusted residuals in terms of their remaining serial correlation. For each stock, we apply the Ljung–Box test at lag 3 (Ljung and Box, 1978). Since this gives 333 simultaneous diagnostic tests, we report both the raw rejection proportion and the rejection proportions after the Benjamini–Hochberg adjustment (Benjamini and Hochberg, 1995). Table 3 shows that the raw weekly excess returns still contain substantial serial dependence. After BH adjustment, 28.23% of the stock-level Ljung–Box tests reject the white-noise null at the 5% level, and 40.54% reject at the 10% level. This is precisely the type of setting in which high-dimensional mean tests that treat the observations as independent, or only weakly serially dependent after a direct covariance correction, can be unreliable. The factor adjustment removes most of this time-series dependence. For the factor-adjusted residuals, only 3.90% of the BH-adjusted tests reject at the 5% level, and 8.41% reject at the 10% level. These proportions are close to the corresponding nominal levels. Thus the estimated dynamic factor captures the dominant common time dependence, leaving residuals that are much closer to vector white noise. This diagnostic supports the use of the proposed factor-adjusted testing procedure for the subsequent mean analysis. 
+
+6.2. High-dimensional mean testing results 
+
+We compute the three proposed statistics: FA-Max, FA-Sum, and FA-CC. The bootstrap calibration uses 𝐵 = 500 
+
+repetitions. The resulting statistics and bootstrap 𝑝 -values are shown in Table 4. At the 5% level, FA-Max and FA-CC reject the joint zero-mean null, whereas FA-Sum does not. The result is economically and statistically informative. FA-Max is designed to detect a small number of pronounced residual mean components, whereas FA-Sum is most sensitive to broad dense alternatives. The fact that FA-Max rejects but FA-Sum does not suggests that the evidence against the zero-excess-return benchmark is sparse rather than dense. In other words, the rejection is driven by a relatively small subset of stocks with large average excess returns after removing the common dynamic component, rather than by a weak mean shift spread over most of the cross-section. The Cauchy combination also rejects, with 𝑝 -value 0.0322. This agrees with the proposed interpretation of FA-CC: it inherits the sensitivity of FA-Max under sparse alternatives while retaining protection against dense alternatives   
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 11 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series
+
+through the FA-Sum component. Therefore, in this empirical example, the combined test provides an adaptive rejection without requiring the analyst to specify the sparsity level of the alternative in advance. 
+
+6.3. Sparsity check via individual tests 
+
+As a complementary diagnostic, we conduct individual two-sided mean tests for each stock and apply the BH procedure to the 333 resulting 𝑝 -values. The results are reported in Table 5.                    
+
+> Table 5
+> Individual mean tests with BH adjustment. Series Raw 𝑝 < 0.05 BH 𝑝 < 0.05 BH 𝑝 < 0.10 Median 𝑝 -value Weekly excess returns 71 (21.32%) 2 (0.60%) 7 (2.10%) 0.1625 Factor-adjusted residuals 28 (8.41%) 1 (0.30%) 3 (0.90%) 0.3806
+
+The individual-test results are consistent with the global testing conclusions. Before factor adjustment, 71 stocks have raw individual 𝑝 -values below 5%, but only 2 remain significant after BH adjustment at the 5% FDR level. After factor adjustment, the number of raw rejections decreases to 28, and only 1 stock remains significant at the 5% FDR level. At the 10% FDR level, only 3 factor-adjusted residual means are selected. Hence the rejection by FA-Max and FA-CC should not be interpreted as evidence for a market-wide dense mean shift. Rather, it points to a sparse deviation from the zero-excess-return null. Overall, the empirical study illustrates the role of factor adjustment in financial panels. The raw returns contain strong common serial dependence, while the factor-adjusted residuals are much closer to white noise. After removing this common dynamic component, the proposed adaptive test detects a sparse residual mean signal. This is consistent with the simulation evidence: the max component is effective for sparse alternatives, the sum component targets dense alternatives, and the Cauchy combination provides a robust aggregate decision when the sparsity pattern is unknown. 
+
+## 7. Conclusion 
+
+This paper proposes factor-adjusted high-dimensional location tests for time series with strong common serial dependence. The procedure estimates a Lam–Yao dynamic factor structure, projects the data onto the orthogonal complement of the estimated loading space, and then applies max, sum, and Cauchy-combined tests to the projected residuals. The core theory shows that factor estimation does not alter the first-order null limits under primitive factor-strength and residual calibration conditions. The simulations show that the proposed random-loading residual bootstrap implementation controls size under strong dynamic dependence. The power experiments with and without latent factors further show that the Cauchy combination adapts across sparse and dense alternatives, while the no-factor benchmark confirms that factor adjustment does not create artificial power loss when no common dynamic factor is present. The empirical study of weekly S&P 500 excess returns further illustrates the practical role of factor adjustment: after removing one dynamic factor, the residuals are much closer to white noise, and the global rejection is driven by a sparse residual mean signal. Future work will develop fully data-driven bootstrap theory for the factor-number estimator and study robust extensions for heavy-tailed vector white noise. 
+
+## CRediT authorship contribution statement 
+
+Jiyang Wang: Methodology, Investigation, Software, Funding acquisition. Xifen Huang: Data curation, Investiga-tion, Software, Writing – original draft preparation. Long Feng: Conceptualization, Funding acquisition, Methodology, Project administration, Supervision. 
+
+## A. Appendix: Intermediate results and proofs 
+
+A.1. Consequences of the primitive idiosyncratic-error condition 
+
+Lemma A.1 (Residual correlation properties induced by the independent-component model) . Let Assumptions 4.2 and 4.4 hold. With 𝛀 = 𝐐𝚺 𝜀 𝐐 , 𝐃 = diag( 𝛀 ), and 𝐑 = 𝐃 −1∕2 𝛀𝐃 −1∕2 , the following assertions hold: 
+
+0 < 𝑐 𝑑 ≤ min  
+
+> 𝑖
+
+𝐷 𝑖𝑖 ≤ max  
+
+> 𝑖
+
+𝐷 𝑖𝑖 ≤ 𝐶 𝑑 < ∞, 𝜆 max (𝐑 ) ≤ 𝐶 𝑅 < ∞. (16)   
+
+> J.Y. Wang et al.: Preprint submitted to Elsevier Page 12 of 47
+
+Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+The matrix 𝐑 is positive semidefinite and may be singular, with rank( 𝐑 ) = 𝑝 − 𝑟 . Moreover, 
+
+tr( 𝐑 2) ≍ 𝑝, tr( 𝐑 𝑚 ) ≤ 𝐶 𝑚 −1  
+
+> 𝑅
+
+𝑝 (𝑚 ≥ 2) , tr( 𝐑 4)tr 2(𝐑 2) = 𝑂 (𝑝 −1 ), (17) 
+
+max 
+
+> 1≤𝑖 ≤𝑝 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝑅 2 
+
+> 𝑖𝑗
+
+= max  
+
+> 𝑖
+
+(𝐑 2)𝑖𝑖 ≤ 𝐶 𝑅 . (18) 
+
+In addition, 
+
+𝜻 𝑡 = 𝐃 −1∕2 𝐐 𝜺 𝑡 , 𝔼 𝜻 𝑡 = 𝟎 , Cov( 𝜻 𝑡 ) = 𝐑 , 𝜻 𝑡 are independent over 𝑡, (19) 
+
+sup 
+
+> 𝑡
+
+sup 
+
+> ‖𝒖 ‖2=1
+
+‖‖‖𝒖 ⊤𝜻 𝑡 
+
+‖‖‖𝜓 2
+
+≤ 𝐾 𝜀 , sup 
+
+> 𝑡,𝑖
+
+‖‖‖𝜀 𝑡𝑖 ∕{Var( 𝜀 𝑡𝑖 )} 1∕2 ‖‖‖𝜓 2
+
+≤ 𝐾 𝜀 , (20) 
+
+and there exists a deterministic 𝑝 × 𝑝 matrix 𝐁 𝑅 and a 𝑝 -vector 𝜼 𝑡 with independent coordinates, 𝔼 𝜼 𝑡 = 𝟎 , Cov( 𝜼 𝑡 ) = 𝐈 𝑝 ,and sup 𝑡,𝑗 
+
+‖‖‖𝜂 𝑡𝑗 
+
+‖‖‖𝜓 2
+
+≤ 𝐶 , such that 
+
+𝐁 𝑅 𝐁 ⊤𝑅 = 𝐑 , 𝜻 𝑡 = 𝐁 𝑅 𝜼 𝑡 . (21) 
+
+Proof. For 𝑖 = 1 , … , 𝑝 , put 𝒂 ⊤𝑖 = 𝒆 ⊤𝑖 𝐀 . Since 
+
+𝐐 𝒆 𝑖 = 𝒆 𝑖 − 𝐀 𝒂 𝑖 , ‖‖𝐐 𝒆 𝑖 ‖‖22 = 1 − ‖‖𝒂 𝑖 ‖‖22 ,
+
+Assumption 4.2 gives, for all sufficiently large 𝑝 ,
+
+1 − 𝐶𝑝 −1 ≤ ‖‖𝐐 𝒆 𝑖 ‖‖22 ≤ 1.
+
+Together with (11), 
+
+𝑐 𝜀 (1 − 𝐶𝑝 −1 ) ≤ 𝒆 ⊤𝑖 𝐐𝚺 𝜀 𝐐 𝒆 𝑖 ≤ 𝐶 𝜀 ,
+
+which proves the first part of (16). Also, 
+
+𝜆 max (𝐑 ) = 𝜆 max (𝐃 −1∕2 𝐐𝚺 𝜀 𝐐𝐃 −1∕2 ) ≤ ‖‖‖𝐃 −1∕2 ‖‖‖
+
+> 2
+
+‖𝐐 ‖2 ‖‖𝚺 𝜀 ‖‖ ≤ 𝐶. 
+
+Since 𝚺 𝜀 is positive definite and rank( 𝐐 ) = 𝑝 − 𝑟 ,
+
+rank( 𝐑 ) = rank( 𝐐𝚺 𝜀 𝐐 ) = 𝑝 − 𝑟. 
+
+The diagonal entries of 𝐑 are one; hence 
+
+tr( 𝐑 ) = 𝑝. 
+
+The Cauchy inequality for the nonzero eigenvalues gives 
+
+tr( 𝐑 2) = 
+
+> 𝑝 −𝑟
+
+∑
+
+> 𝑗 =1
+
+𝜆 2 
+
+> 𝑗
+
+(𝐑 ) ≥
+
+{∑𝑝 −𝑟 𝑗 =1 𝜆 𝑗 (𝐑 )} 2
+
+𝑝 − 𝑟 = 𝑝 2
+
+𝑝 − 𝑟 ≍ 𝑝, 
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 13 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+and 
+
+tr( 𝐑 2) ≤ 𝜆 max (𝐑 ) tr( 𝐑 ) ≤ 𝐶𝑝. 
+
+For 𝑚 ≥ 2,
+
+tr( 𝐑 𝑚 ) = 
+
+> 𝑝 −𝑟
+
+∑
+
+> 𝑗 =1
+
+𝜆 𝑚 𝑗 (𝐑 ) ≤ 𝜆 𝑚 −1 max (𝐑 )
+
+> 𝑝 −𝑟
+
+∑
+
+> 𝑗 =1
+
+𝜆 𝑗 (𝐑 ) ≤ 𝐶 𝑚 −1 𝑝, 
+
+which proves (17). Moreover, 
+
+> 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝑅 2 
+
+> 𝑖𝑗
+
+= ( 𝐑 2)𝑖𝑖 ≤ 𝜆 max (𝐑 )𝑅 𝑖𝑖 ≤ 𝐶, 
+
+which proves (18). By (10), 
+
+𝜻 𝑡 = 𝐃 −1∕2 𝐐𝚺 1∕2  
+
+> 𝜀
+
+𝝃 𝑡 ,
+
+and the independence of 𝝃 𝑡 over 𝑡 gives (19). For every ‖𝒖 ‖2 = 1 ,
+
+𝒖 ⊤𝜻 𝑡 =
+
+(
+
+𝚺 1∕2  
+
+> 𝜀
+
+𝐐𝐃 −1∕2 𝒖 
+
+)⊤
+
+𝝃 𝑡 ,
+
+so the standard independent-component sub-Gaussian linear-form bound yields 
+
+‖‖‖𝒖 ⊤𝜻 𝑡 
+
+‖‖‖𝜓 2
+
+≤ 𝐶 ‖‖‖𝚺 1∕2  
+
+> 𝜀
+
+𝐐𝐃 −1∕2 𝒖 ‖‖‖2 ≤ 𝐶 ‖‖𝚺 𝜀 ‖‖1∕2 ‖‖‖𝐃 −1∕2 ‖‖‖ ‖𝒖 ‖2 ≤ 𝐶. 
+
+Similarly, 
+
+‖‖𝜀 𝑡𝑖 ‖‖𝜓 2 ≤ 𝐶 {𝒆 ⊤𝑖 𝚺 𝜀 𝒆 𝑖 }1∕2 , Var( 𝜀 𝑡𝑖 ) = 𝒆 ⊤𝑖 𝚺 𝜀 𝒆 𝑖 ,
+
+and (20) follows. Set 
+
+𝐁 𝑅 = 𝐃 −1∕2 𝐐𝚺 1∕2  
+
+> 𝜀
+
+, 𝜼 𝑡 = 𝝃 𝑡 .
+
+Then 
+
+𝐁 𝑅 𝐁 ⊤𝑅 = 𝐃 −1∕2 𝐐𝚺 𝜀 𝐐𝐃 −1∕2 = 𝐑 , 𝜻 𝑡 = 𝐁 𝑅 𝜼 𝑡 ,
+
+which proves (21) with independent coordinates in 𝜼 𝑡 .The row-square bound also gives 
+
+|||{𝑗 ≠ 𝑖 ∶ |𝑅 𝑖𝑗 | ≥ (log 𝑝 )−2 }||| (log 𝑝 )−4 ≤ ∑
+
+> 𝑗 ≠𝑖
+
+𝑅 2 
+
+> 𝑖𝑗
+
+≤ 𝐶, 
+
+and hence 
+
+max 
+
+> 𝑖
+
+|||{𝑗 ≠ 𝑖 ∶ |𝑅 𝑖𝑗 | ≥ (log 𝑝 )−2 }||| ≤ 𝐶 log 4 𝑝. 
+
+The uniform pairwise separation in (12) is retained as a mild extreme-value regularity condition for the max statistic; it is not used in the quadratic statistic. 
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 14 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+A.2. Loading-space perturbation 
+
+Lemma A.2 (Lam–Yao perturbation from primitive sub-Gaussian conditions) . Let Assumptions 4.1, 4.2, and 4.4 hold. Set 
+
+𝑎 𝑛 =
+
+( log 𝑝 𝑛 
+
+)1∕2 
+
++ log 𝑝 𝑛 , 𝜂 𝑛 = 𝑝 𝛿 𝑎 𝑛 .
+
+Then 
+
+𝜈 𝑟 (𝐌 ) ≍ 𝑝 2−2 𝛿 , 𝜈 𝑟 +1 (𝐌 ) = 0 ,
+
+max 
+
+> 1≤𝑘 ≤𝑘 0
+
+‖‖‖̂
+
+Γ𝑦 (𝑘 ) − Γ 𝑦 (𝑘 )‖‖‖max = 𝑂 ℙ(𝑎 𝑛 ), max 
+
+> 1≤𝑘 ≤𝑘 0
+
+‖‖‖̂
+
+Γ𝑦 (𝑘 ) − Γ 𝑦 (𝑘 )‖‖‖ = 𝑂 ℙ(𝑝𝑎 𝑛 ),
+
+‖‖‖̂ 𝐌 − 𝐌 ‖‖‖ = 𝑂 ℙ{𝑝 2−2 𝛿 (𝜂 𝑛 + 𝜂 2 
+
+> 𝑛
+
+)} .
+
+On 𝑛 = { ̂𝑟 = 𝑟 },
+
+‖‖‖̂ 𝐏 − 𝐏 ‖‖‖ = 𝑂 ℙ(𝜂 𝑛 ), max 
+
+> 𝑖
+
+‖‖‖𝒆 ⊤𝑖 (̂𝐏 − 𝐏 )‖‖‖2 = 𝑂 ℙ(𝑝 −1∕2 𝜂 𝑛 ).
+
+Moreover, 
+
+‖‖‖(̂𝐏 − 𝐏 )𝐀 ‖‖‖𝐹 = 𝑂 ℙ(𝑝 𝛿 𝑛 −1∕2 ).
+
+Proof. For 𝑘 = 1 , … , 𝑘 0, Assumptions 4.1 and 4.4 give 
+
+Γ𝑦 (𝑘 ) = Cov( 𝐀 𝒇 𝑡 +𝑘 + 𝜺 𝑡 +𝑘 , 𝐀 𝒇 𝑡 + 𝜺 𝑡 )= 𝐀 Σ𝑓 (𝑘 )𝐀 ⊤ + 𝟎 
+
+because {𝒇 𝑡 } and {𝜺 𝑠 } are independent for all time indices and {𝜺 𝑡 } is independent over time. Let 
+
+Γ = {Γ 𝑦 (1) , … , Γ𝑦 (𝑘 0)} = 𝐀 𝑊 𝑓 (𝐈 𝑘 0 ⊗ 𝐀 ⊤).
+
+Then 
+
+𝐌 = ΓΓ ⊤ = 𝐀 𝑊 𝑓 𝑊 ⊤𝑓 𝐀 ⊤.
+
+Since 𝐀 ⊤𝐀 = 𝐈 𝑟 , the nonzero eigenvalues of 𝐌 are those of 𝑊 𝑓 𝑊 ⊤𝑓 . Hence (7) gives 
+
+𝑐 2 
+
+> 𝑓
+
+𝑝 2−2 𝛿 ≤ 𝜈 𝑟 (𝐌 ) ≤ 𝜈 1(𝐌 ) ≤ 𝐶 2 
+
+> 𝑓
+
+𝑝 2−2 𝛿 ,
+
+and 𝜈 𝑟 +1 (𝐌 ) = 0 . Also 
+
+max 
+
+> 𝑘
+
+‖‖‖Γ𝑦 (𝑘 )‖‖‖ = 𝑂 (𝑝 1− 𝛿 ), max  
+
+> 𝑖
+
+max 
+
+> 𝑘
+
+‖‖‖𝒆 ⊤𝑖 Γ𝑦 (𝑘 )‖‖‖2 = 𝑂 (𝑝 1∕2− 𝛿 ).
+
+Put Δ𝑘 =̂ Γ𝑦 (𝑘 ) − Γ 𝑦 (𝑘 ) and 𝑋 𝑡 = 𝑌 𝑡 − 𝔼 𝑌 𝑡 . From (8), (20), and max 𝑖 ‖‖𝒂 𝑖 ‖‖2 ≤ 𝐶𝑝 −1∕2 ,
+
+‖‖𝑋 𝑡𝑖 ‖‖𝜓 2 ≤ ‖‖‖𝒂 ⊤𝑖 𝒇 𝑡 
+
+‖‖‖𝜓 2
+
++ ‖‖𝜀 𝑡𝑖 ‖‖𝜓 2
+
+≤ ‖‖𝒂 𝑖 ‖‖2 sup 
+
+> ‖𝒖 ‖2=1
+
+‖‖‖𝒖 ⊤𝒇 𝑡 
+
+‖‖‖𝜓 2
+
++ 𝐶 ≤ 𝐶𝑝 −1∕2 𝑝 (1− 𝛿 )∕2 + 𝐶 ≤ 𝐶. 
+
+For 1 ≤ 𝑘 ≤ 𝑘 0 define 
+
+𝜉 (𝑘 ) 
+
+> 𝑡,𝑖𝑗
+
+= 𝑋 𝑡 +𝑘,𝑖 𝑋 𝑡𝑗 − 𝔼 (𝑋 𝑡 +𝑘,𝑖 𝑋 𝑡𝑗 ).
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 15 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+The product inequality for Orlicz norms gives 
+
+‖‖‖𝑋 𝑡 +𝑘,𝑖 𝑋 𝑡𝑗 
+
+‖‖‖𝜓 1
+
+≤ 𝐶 ‖‖𝑋 𝑡 +𝑘,𝑖 ‖‖𝜓 2
+
+‖‖‖𝑋 𝑡𝑗 
+
+‖‖‖𝜓 2
+
+≤ 𝐶, ‖‖‖𝜉 (𝑘 )
+
+> 𝑡,𝑖𝑗
+
+‖‖‖𝜓 1
+
+≤ 𝐶. 
+
+The sequence {𝜉 (𝑘 ) 
+
+> 𝑡,𝑖𝑗
+
+}𝑡 ∈ℤ is geometrically strongly mixing because 𝑘 0 is fixed and {( 𝒇 𝑡 , 𝜺 𝑡 )} is geometrically strongly mixing. The Bernstein inequality for geometrically mixing sub-exponential sequences in Merlevède, Peligrad and Rio (2011) gives constants 𝑐 0, 𝐶 0 > 0 such that, for 0 < 𝑥 < 𝐶 0,
+
+ℙ
+
+(||||||
+
+1
+
+𝑛 − 𝑘 
+
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+
+𝜉 (𝑘 )
+
+> 𝑡,𝑖𝑗
+
+||||||
+
+> 𝑥 
+
+)
+
+≤ 2 exp{− 𝑐 0(𝑛 − 𝑘 ) min( 𝑥 2, 𝑥 )} .
+
+Similarly, 
+
+ℙ
+
+(||||||
+
+1
+
+𝑚 
+
+∑
+
+> 𝑡 ∈𝐼 𝑚
+
+𝑋 𝑡𝑖 
+
+||||||
+
+> 𝑥 
+
+)
+
+≤ 2 exp{− 𝑐 0𝑚 min( 𝑥 2, 𝑥 )} .
+
+For all large 𝑛 and all 𝐾 > 0 such that 𝐾𝑎 𝑛 < 𝐶 0,
+
+ℙ
+
+(
+
+max 
+
+> 𝑘 ≤𝑘 0
+
+‖‖Δ𝑘 ‖‖max > 𝐾𝑎 𝑛 
+
+)
+
+≤ 2𝑘 0𝑝 2 exp{− 𝑐 0(𝑛 − 𝑘 0) min( 𝐾 2𝑎 2
+
+> 𝑛
+
+, 𝐾𝑎 𝑛 )} .
+
+Since (𝑛 − 𝑘 0) min( 𝑎 2
+
+> 𝑛
+
+, 𝑎 𝑛 ) ≥ 𝑐 log 𝑝 , choosing 𝐾 large gives 
+
+max 
+
+> 𝑘 ≤𝑘 0
+
+‖‖Δ𝑘 ‖‖max = 𝑂 ℙ(𝑎 𝑛 ).
+
+The inequalities ‖𝐻 ‖ ≤ 𝑝 ‖𝐻 ‖max and max 𝑖 
+
+‖‖‖𝒆 ⊤𝑖 𝐻 ‖‖‖2 ≤ 𝑝 1∕2 ‖𝐻 ‖max yield the displayed operator and row bounds. From ̂
+
+𝐌 − 𝐌 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+{Γ 𝑦 (𝑘 )Δ ⊤𝑘 + Δ 𝑘 Γ𝑦 (𝑘 )⊤ + Δ 𝑘 Δ⊤𝑘 },
+
+we obtain 
+
+‖‖‖̂ 𝐌 − 𝐌 ‖‖‖ ≤
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+{2 ‖‖‖Γ𝑦 (𝑘 )‖‖‖ ‖‖Δ𝑘 ‖‖ + ‖‖Δ𝑘 ‖‖2}= 𝑂 ℙ(𝑝 1− 𝛿 𝑝𝑎 𝑛 + 𝑝 2𝑎 2
+
+> 𝑛
+
+)= 𝑂 ℙ{𝑝 2−2 𝛿 (𝜂 𝑛 + 𝜂 2 
+
+> 𝑛
+
+)} .
+
+The row bound follows in the same way: 
+
+max 
+
+> 𝑖
+
+‖‖‖𝒆 ⊤𝑖 (̂𝐌 − 𝐌 )‖‖‖2 ≤ 𝐶 {𝑝 1∕2− 𝛿 𝑝𝑎 𝑛 + 𝑝 1∕2 𝑎 𝑛 𝑝 1− 𝛿 + 𝑝 1∕2 𝑎 𝑛 𝑝𝑎 𝑛 }= 𝑂 ℙ{𝑝 3∕2−2 𝛿 (𝜂 𝑛 + 𝜂 2 
+
+> 𝑛
+
+)} .
+
+Let 𝐁 be an orthonormal complement of 𝐀 . The Lam–Yao lag-product expansion gives the sharper factor-direction bound 
+
+‖‖‖𝐁 ⊤(̂ 𝐌 − 𝐌 )𝐀 ‖‖‖𝐹 = 𝑂 ℙ(𝑝 2− 𝛿 𝑛 −1∕2 ).
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 16 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Dividing by the eigengap 𝜈 𝑟 (𝐌 ) ≍ 𝑝 2−2 𝛿 yields 
+
+‖‖‖(̂𝐏 − 𝐏 )𝐀 ‖‖‖𝐹 = 𝑂 ℙ(𝑝 𝛿 𝑛 −1∕2 ).
+
+For the full projection, Weyl’s inequality and the previous operator bound imply, on an event whose probability tends to one, ̂𝜈 𝑟 ≥ 𝜈 𝑟 (𝐌 )∕2 ,̂ 𝜈 𝑟 +1 ≤ ‖‖‖̂
+
+𝐌 − 𝐌 ‖‖‖ .
+
+Since 𝐁 ⊤𝐌 = 0 and ̂ 𝐌 ̂ 𝐀 =̂ 𝐀 ̂ 𝚲 ,
+
+𝐁 ⊤̂ 𝐀 ̂ 𝚲 = 𝐁 ⊤(̂𝐌 − 𝐌 )̂ 𝐀 ,
+
+so 
+
+‖‖‖𝐁 ⊤̂ 𝐀 ‖‖‖ ≤ 𝐶 
+
+‖‖‖̂ 𝐌 − 𝐌 ‖‖‖
+
+𝜈 𝑟 (𝐌 ) = 𝑂 ℙ(𝜂 𝑛 ).
+
+The relation between subspace angles and orthogonal projectors gives ‖‖‖̂ 𝐏 − 𝐏 ‖‖‖ = 𝑂 ℙ(𝜂 𝑛 ). Combining the row bound for ̂ 𝐌 − 𝐌 with loading delocalization gives the displayed row-wise projector bound. 
+
+Lemma A.3 (Refined strong-factor projection drift) . Assume Assumptions 4.1–4.4, 𝐻 0 ∶ 𝝁 = 𝟎 , and 𝛿 = 0 . Let 
+
+𝐊 𝑓 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+Σ𝑓 (𝑘 )Σ 𝑓 (𝑘 )⊤, 𝚽 𝑘 = Σ 𝑓 (𝑘 )⊤𝐊 −1  
+
+> 𝑓
+
+,
+
+𝐋 𝑓 =
+
+> ∞
+
+∑
+
+> ℎ=−∞
+
+Σ𝑓 (ℎ), 𝛀 𝑘𝑙 = Σ 𝑓 (𝑘 − 𝑙 )⊤ + 1 {𝑘 =𝑙 }𝐀 ⊤𝚺 𝜀 𝐀 , Σ𝑓 (− ℎ) = Σ 𝑓 (ℎ)⊤.
+
+Set 𝑐 𝑛 = ( 𝑛 − 1)∕( 𝑛 − 3) and 
+
+𝑃 ,𝑛 = 𝑐 𝑛 
+
+𝑝 𝑛 
+
+[ 𝑘 0∑
+
+> 𝑘,𝑙 =1
+
+(
+
+1 − max( 𝑘, 𝑙 )
+
+𝑛 
+
+)
+
+tr{ 𝚽 ⊤𝑘 𝛀 𝑘𝑙 𝚽 𝑙 𝐋 𝑓 } − 2 
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+(
+
+1 − 𝑘 𝑛 
+
+)
+
+tr( 𝚽 𝑘 𝐋 𝑓 )
+
+]
+
+.
+
+Then, on {̂𝑟 = 𝑟 },
+
+𝑛̄̂ 𝒁 ⊤̄̂ 𝒁 − 𝑛̄ 𝒁 ⊤̄ 𝒁 = 𝑃 ,𝑛 + 𝑃 ,𝑛 ,
+
+where 
+
+𝑃 ,𝑛 = 𝑂 (𝑝 ∕𝑛 ), 𝑃 ,𝑛 
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ
+
+(
+
+𝑛 −1∕2 +
+
+√𝑝 𝑛 + log 2 𝑝 𝑛 
+
+)
+
+.
+
+Consequently, if 𝑝 = 𝑜 (𝑛 2), then 
+
+𝑛̄̂ 𝒁 ⊤̄̂ 𝒁 − 𝑛̄ 𝒁 ⊤̄ 𝒁 
+
+{tr( 𝐑 2)} 1∕2 = 𝑜 ℙ(1) .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 17 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Proof. All calculations are on {̂𝑟 = 𝑟 }. Write 
+
+Δ𝑃 =̂ 𝐏 − 𝐏 ,̂ Γ𝑦 (𝑘 ) = 𝑛 −1 
+
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+
+𝒀 𝑡 +𝑘 𝒀 ⊤𝑡 , 𝑘 =̂ Γ𝑦 (𝑘 ) − Γ 𝑦 (𝑘 ).
+
+The centered lag covariance used by the algorithm satisfies, for fixed 𝑘 0,̂
+
+Γ𝑐 𝑦 (𝑘 ) − ̂ Γ𝑦 (𝑘 ) = 𝑘 𝑛 (𝑛 − 𝑘 )
+
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+
+𝒀 𝑡 +𝑘 𝒀 ⊤𝑡 −̄ 𝒀 𝑘, +̄ 𝒀 ⊤𝑘, −,̄ 
+
+𝒀 𝑘, + = ( 𝑛 − 𝑘 )−1 
+
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+
+𝒀 𝑡 +𝑘 ,̄ 𝒀 𝑘, − = ( 𝑛 − 𝑘 )−1 
+
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+
+𝒀 𝑡 .
+
+Because 𝔼 𝒇 𝑡 = 𝟎 , 𝔼 𝜺 𝑡 = 𝟎 , 𝒇 𝑡 ⟂⟂ 𝜺 𝑠 , ∑ℎ ‖ Cov( 𝒇 𝑡 +ℎ, 𝒇 𝑡 )‖ ≤ 𝐶𝑝 , and 𝜆 max (𝚺 𝜀 ) ≤ 𝐶 ,
+
+max 
+
+> 𝑘 ≤𝑘 0
+
+𝔼 ‖𝐐 (̂ Γ𝑐 𝑦 (𝑘 ) − ̂ Γ𝑦 (𝑘 )) 𝐀 ‖2 
+
+> 𝐹
+
+≤ 𝐶𝑝 2𝑛 −2 ,
+
+max 
+
+> 𝑘 ≤𝑘 0
+
+𝔼 ‖̂Γ𝑐 𝑦 (𝑘 ) − ̂ Γ𝑦 (𝑘 )‖2 ≤ 𝐶𝑝 2𝑛 −2 .
+
+The first display contributes at most 𝑂 ℙ(√𝑝 ∕𝑛 ) to the final standardized statistic; the same algebra below can therefore be carried out with ̂ Γ𝑦 (𝑘 ).Under Cov( 𝒇 𝑡 , 𝜺 𝑠 ) = 𝟎 for all 𝑡, 𝑠 ,
+
+Γ𝑦 (𝑘 ) = 𝐀 Σ𝑓 (𝑘 )𝐀 ⊤, 𝐌 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+Γ𝑦 (𝑘 )Γ 𝑦 (𝑘 )⊤ = 𝐀𝐊 𝑓 𝐀 ⊤, 𝜈 𝑟 (𝐌 ) ≍ 𝑝 2.
+
+The contour expansion of the spectral projector gives 
+
+Δ𝑃 𝐀 = 𝐐 (̂𝐌 − 𝐌 )𝐀𝐊 −1  
+
+> 𝑓
+
++ 𝑹 𝐴,𝑛 ,
+
+where 
+
+𝑹 𝐴,𝑛 = 𝐐 (̂𝐌 − 𝐌 )𝐐 𝐐 (̂ 𝐌 − 𝐌 )𝐀𝐊 −2  
+
+> 𝑓
+
++ 𝑹 (2) 
+
+> 𝐴,𝑛
+
+,
+
+𝔼 tr( 𝑹 ⊤𝐴,𝑛 𝐃 −1 𝑹 𝐴,𝑛 ) ≤ 𝐶 log 2 𝑝 𝑛 2 , 𝔼 ‖𝑹 (2) 
+
+> 𝐴,𝑛
+
+‖2 
+
+> 𝐹
+
+≤ 𝐶 log 3 𝑝 𝑛 3 .
+
+The last display follows from 
+
+𝔼 ‖𝐐 (̂ 𝐌 − 𝐌 )𝐀𝐊 −1  
+
+> 𝑓
+
+‖2 
+
+> 𝐹
+
+≤ 𝐶𝑝 ∕𝑛, 𝔼 ‖𝐐 (̂ 𝐌 − 𝐌 )𝐐 ‖4 ≤ 𝐶𝑝 8 log 2 𝑝 ∕𝑛 2,
+
+combined with ‖𝐃 −1 ‖ ≤ 𝐶 , ‖𝐊 −1  
+
+> 𝑓
+
+‖ = 𝑂 (𝑝 −2 ), and 𝑟 fixed. Since ̂
+
+𝐌 − 𝐌 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+{𝑘 Γ𝑦 (𝑘 )⊤ + Γ 𝑦 (𝑘 )⊤𝑘 } + 
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+𝑘 ⊤𝑘 , 𝐐 Γ𝑦 (𝑘 ) = 𝟎 ,
+
+we have 
+
+Δ𝑃 𝐀 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+𝐐 𝑘 𝐀𝚽 𝑘 + 𝑹 𝐴,𝑛 .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 18 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Let 
+
+𝒘 𝑡 = 𝒇 𝑡 + 𝐀 ⊤𝜺 𝑡 , 𝑽 𝑛 = 𝑛 −1 
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+
+𝐐 𝜺 𝑡 +𝑘 𝒘 ⊤𝑡 𝚽 𝑘 .
+
+Because 𝐐 𝒀 𝑡 +𝑘 = 𝐐 𝜺 𝑡 +𝑘 and 𝐀 ⊤𝒀 𝑡 = 𝒘 𝑡 ,
+
+Δ𝑃 𝐀 = 𝑽 𝑛 + 𝑹 𝑉 ,𝑛 , 𝔼 tr( 𝑹 ⊤𝑉 ,𝑛 𝐃 −1 𝑹 𝑉 ,𝑛 ) ≤ 𝐶 log 2 𝑝 ∕𝑛 2.
+
+Set 
+
+𝑿 𝑛 = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑠 =1
+
+𝐃 −1∕2 𝐐 𝜺 𝑠 , 𝑭 𝑛 = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑢 =1
+
+𝒇 𝑢 .
+
+Then 
+
+√𝑛̄̂ 𝒁 = 𝑿 𝑛 − 𝐃 −1∕2 𝑽 𝑛 𝑭 𝑛 + 𝒂 𝑛 ,
+
+where 
+
+𝒂 𝑛 = − 𝐃 −1∕2 𝑹 𝑉 ,𝑛 𝑭 𝑛 − 𝐃 −1∕2 Δ𝑃 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜺 𝑡 + 𝒂 𝑑,𝑛 .
+
+The diagonal standardization term satisfies 
+
+𝔼 ‖𝒂 𝑑,𝑛 ‖22 ≤ 𝐶𝑝 ∕𝑛, 𝔼 (𝑿 ⊤𝑛 𝒂 𝑑,𝑛 )2 ≤ 𝐶𝑝 ∕𝑛. 
+
+Note that this diagonal substitution induces a bias term of order 𝑂 ℙ(√𝑝 ∕𝑛 ) in the standardized statistic. Because Assumption 4.5 enforces 𝑝 = 𝑜 (𝑛 2), this term strictly vanishes and is safely absorbed into the remainder 𝑃 ,𝑛 . For the other two pieces, 
+
+𝔼 ‖𝐃 −1∕2 𝑹 𝑉 ,𝑛 𝑭 𝑛 ‖22 ≤ 𝐶𝑝 log 2 𝑝 ∕𝑛 2,
+
+𝔼 
+
+‖‖‖‖‖
+
+𝐃 −1∕2 Δ𝑃 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜺 𝑡 
+
+‖‖‖‖‖
+
+> 22
+
+≤ 𝐶𝑝 ∕𝑛, 
+
+𝔼 (𝑿 ⊤𝑛 𝒂 𝑛 )2 ≤ 𝐶𝑝 ∕𝑛 + 𝐶𝑝 log 2 𝑝 ∕𝑛 2,
+
+𝔼 {𝑭 ⊤𝑛 𝑽 ⊤𝑛 𝐃 −1∕2 𝒂 𝑛 }2 ≤ 𝐶𝑝 ∕𝑛 + 𝐶𝑝 2∕𝑛 2 + 𝐶𝑝 log 2 𝑝 ∕𝑛 2.
+
+The displayed bounds follow from the following contractions. For any deterministic 𝑟 × 𝑟 matrices 𝐇 1, 𝐇 2 with bounded operator norms and any fixed integer shifts 𝑎, 𝑏, 𝑐, 𝑑 , (9) with 𝛿 = 0 gives 
+
+|||𝔼 {𝒇 ⊤𝑡 +𝑎 𝐇 1𝒇 𝑢 +𝑏 𝒇 ⊤𝑡 ′+𝑐 𝐇 2𝒇 𝑢 ′+𝑑 } − tr{ 𝐇 1 Cov( 𝒇 𝑢 +𝑏 , 𝒇 𝑡 +𝑎 )} tr{ 𝐇 2 Cov( 𝒇 𝑢 ′+𝑑 , 𝒇 𝑡 ′+𝑐 )} |||
+
+≤ 𝐶𝑝 2(1 + |𝑡 − 𝑡 ′| + |𝑢 − 𝑢 ′|)−3 ,
+
+where the power 3 may be replaced by any fixed number larger than 2 by changing 𝐶 . Since 
+
+> 𝑛
+
+∑
+
+> 𝑡,𝑢,𝑡 ′,𝑢 ′=1
+
+(1 + |𝑡 − 𝑡 ′| + |𝑢 − 𝑢 ′|)−3 ≤ 𝐶𝑛 2,
+
+and 
+
+‖𝚽 𝑘 ‖ = 𝑂 (𝑝 −1 ), 𝔼 {𝜺 ⊤𝑎 𝐐𝐃 −1 𝐐 𝜺 𝑏 }2 ≤ 𝐶𝑝 21{𝑎 =𝑏 } + 𝐶𝑝 1{𝑎 ≠𝑏 },
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 19 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+the three terms in 𝒂 𝑛 satisfy 
+
+𝔼 ‖𝐃 −1∕2 𝑹 𝑉 ,𝑛 𝑭 𝑛 ‖22 ≤ 𝐶𝑛 −2 
+
+> 𝑛
+
+∑
+
+> 𝑢,𝑣 =1
+
+𝔼 {𝒇 ⊤𝑢 𝑹 ⊤𝑉 ,𝑛 𝐃 −1 𝑹 𝑉 ,𝑛 𝒇 𝑣 }
+
+≤ 𝐶𝑝 log 2 𝑝 ∕𝑛 2,
+
+𝔼 
+
+‖‖‖‖‖
+
+𝐃 −1∕2 Δ𝑃 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜺 𝑡 
+
+‖‖‖‖‖
+
+> 22
+
+≤ 𝐶 𝔼 tr{Δ ⊤𝑃 𝐃 −1 Δ𝑃 𝐐𝚺 𝜀 𝐐 } ≤ 𝐶𝑝 ∕𝑛, 
+
+𝔼 (𝑿 ⊤𝑛 𝒂 𝑛 )2 ≤ 𝐶 𝔼 ‖𝐑 1∕2 𝒂 𝑛 ‖22 + 𝐶𝑛 −2 ∑
+
+> 𝑠,𝑡
+
+𝔼 |𝜻 ⊤𝑠 𝒂 𝑛 𝜻 ⊤𝑡 𝒂 𝑛 |1{𝑠 ≠𝑡 }
+
+≤ 𝐶𝑝 ∕𝑛 + 𝐶𝑝 log 2 𝑝 ∕𝑛 2,
+
+where the last line uses the explicit representation of Δ𝑃 𝐀 through the lag products and the independence of 𝜺 𝑡 over 𝑡 .Therefore 
+
+|2𝑿 ⊤𝑛 𝒂 𝑛 | + 2 |𝑭 ⊤𝑛 𝑽 ⊤𝑛 𝐃 −1∕2 𝒂 𝑛 | + ‖𝒂 𝑛 ‖22
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ
+
+(
+
+𝑛 −1∕2 +
+
+√𝑝 𝑛 + log 2 𝑝 𝑛 
+
+)
+
+.
+
+Therefore 
+
+𝑛̄̂ 𝒁 ⊤̄̂ 𝒁 − 𝑛̄ 𝒁 ⊤̄ 𝒁 = 𝑛 + 𝑛 + 𝑂 ℙ
+
+(√𝑝 𝑛 −1∕2 + √𝑝 log 2 𝑝 𝑛 
+
+)
+
+,
+
+where 
+
+𝑛 = −2 𝑿 ⊤𝑛 𝐃 −1∕2 𝑽 𝑛 𝑭 𝑛 , 𝑛 = 𝑭 ⊤𝑛 𝑽 ⊤𝑛 𝐃 −1 𝑽 𝑛 𝑭 𝑛 .
+
+For the cross term, 
+
+𝑛 = − 2
+
+𝑛 2
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+> 𝑛
+
+∑
+
+> 𝑠 =1
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+> 𝑛
+
+∑
+
+> 𝑢 =1
+
+𝜺 ⊤𝑠 𝐐𝐃 −1 𝐐 𝜺 𝑡 +𝑘 𝒘 ⊤𝑡 𝚽 𝑘 𝒇 𝑢 .
+
+Since 
+
+𝔼 {𝜺 ⊤𝑠 𝐐𝐃 −1 𝐐 𝜺 𝑡 +𝑘 } = 1 {𝑠 =𝑡 +𝑘 }𝑝, 𝔼 (𝒘 ⊤𝑡 𝚽 𝑘 𝒇 𝑢 ) = tr{ 𝚽 𝑘 Cov( 𝒇 𝑢 , 𝒇 𝑡 )} ,
+
+we get 
+
+𝔼 𝑛 = − 2𝑝 𝑛 2
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+> 𝑛
+
+∑
+
+> 𝑢 =1
+
+tr{ 𝚽 𝑘 Cov( 𝒇 𝑢 , 𝒇 𝑡 )} + 𝑂 (𝑝 ∕𝑛 2) + 𝑜 (𝑝 ∕𝑛 )= −2 𝑝 𝑛 
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+(
+
+1 − 𝑘 𝑛 
+
+)
+
+tr( 𝚽 𝑘 𝐋 𝑓 ) + 𝑂 (𝑝 ∕𝑛 2) + 𝑜 (𝑝 ∕𝑛 ).
+
+Moreover, expanding the covariance of the fourfold sum gives 
+
+𝔼 (𝑛 − 𝔼 𝑛 )2 ≤ 𝐶 𝑛 4
+
+> 𝑘 0
+
+∑
+
+> 𝑘,𝑙 =1
+
+∑
+
+> 𝑠,𝑡,𝑢
+
+∑
+
+> 𝑠 ′,𝑡 ′,𝑢 ′
+
+|||Cov (𝜺 ⊤𝑠 𝐐𝐃 −1 𝐐 𝜺 𝑡 +𝑘 , 𝜺 ⊤𝑠 ′ 𝐐𝐃 −1 𝐐 𝜺 𝑡 ′+𝑙 
+
+)|||
+
+× |||Cov( 𝒘 ⊤𝑡 𝚽 𝑘 𝒇 𝑢 , 𝒘 ⊤𝑡 ′ 𝚽 𝑙 𝒇 𝑢 ′ )||| .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 20 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+The residual covariance in the last display is zero unless one of the pairings 
+
+{𝑠 = 𝑠 ′, 𝑡 + 𝑘 = 𝑡 ′ + 𝑙 }, {𝑠 = 𝑡 ′ + 𝑙, 𝑡 + 𝑘 = 𝑠 ′}
+
+holds. In all nonzero cases the independent-component quadratic-form bound gives 
+
+|||Cov (𝜺 ⊤𝑠 𝐐𝐃 −1 𝐐 𝜺 𝑡 +𝑘 , 𝜺 ⊤𝑠 ′ 𝐐𝐃 −1 𝐐 𝜺 𝑡 ′+𝑙 
+
+)||| ≤ 𝐶𝑝. 
+
+The factor covariance satisfies 
+
+|||Cov( 𝒘 ⊤𝑡 𝚽 𝑘 𝒇 𝑢 , 𝒘 ⊤𝑡 ′ 𝚽 𝑙 𝒇 𝑢 ′ )||| ≤ 𝐶 ‖𝚽 𝑘 ‖‖ 𝚽 𝑙 ‖𝑝 2(1 + |𝑡 − 𝑡 ′| + |𝑢 − 𝑢 ′|)−3 ≤ 𝐶 (1 + |𝑡 − 𝑡 ′| + |𝑢 − 𝑢 ′|)−3 .
+
+Because 𝑘 0 is fixed and each admissible residual pairing leaves at most four free time indices, 
+
+𝔼 (𝑛 − 𝔼 𝑛 )2 ≤ 𝐶𝑝 𝑛 4
+
+> 𝑛
+
+∑
+
+> 𝑡,𝑢,𝑡 ′,𝑢 ′=1
+
+(1 + |𝑡 − 𝑡 ′| + |𝑢 − 𝑢 ′|)−3 ≤ 𝐶𝑝 ∕𝑛 2 ≤ 𝐶𝑝 ∕𝑛. 
+
+For the quadratic term, 
+
+𝑽 ⊤𝑛 𝐃 −1 𝑽 𝑛 = 1
+
+𝑛 2
+
+> 𝑘 0
+
+∑
+
+> 𝑘,𝑙 =1
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+> 𝑛 −𝑙
+
+∑
+
+> 𝑠 =1
+
+𝚽 ⊤𝑘 𝒘 𝑡 𝜺 ⊤𝑡 +𝑘 𝐐𝐃 −1 𝐐 𝜺 𝑠 +𝑙 𝒘 ⊤𝑠 𝚽 𝑙 .
+
+The expectation is nonzero only when 𝑡 + 𝑘 = 𝑠 + 𝑙 . Since 
+
+𝔼 (𝒘 𝑡 𝒘 ⊤𝑡 +𝑘 −𝑙 ) = 𝛀 𝑘𝑙 ,
+
+𝔼 (𝑽 ⊤𝑛 𝐃 −1 𝑽 𝑛 ) = 𝑝 𝑛 
+
+> 𝑘 0
+
+∑
+
+> 𝑘,𝑙 =1
+
+(
+
+1 − max( 𝑘, 𝑙 )
+
+𝑛 
+
+)
+
+𝚽 ⊤𝑘 𝛀 𝑘𝑙 𝚽 𝑙 + 𝑂 (𝑝 ∕𝑛 2) + 𝑜 (𝑝 ∕𝑛 ).
+
+Also 
+
+𝔼 (𝑭 𝑛 𝑭 ⊤𝑛 ) = ∑
+
+> |ℎ|<𝑛
+
+(
+
+1 − |ℎ|
+
+𝑛 
+
+)
+
+Cov( 𝒇 𝑡 +ℎ, 𝒇 𝑡 ) = 𝐋 𝑓 + 𝑂 (𝑝 ∕𝑛 ).
+
+Using (9), 
+
+𝔼 𝑛 = 𝑝 𝑛 
+
+> 𝑘 0
+
+∑
+
+> 𝑘,𝑙 =1
+
+(
+
+1 − max( 𝑘, 𝑙 )
+
+𝑛 
+
+)
+
+tr{ 𝚽 ⊤𝑘 𝛀 𝑘𝑙 𝚽 𝑙 𝐋 𝑓 } + 𝑂 (𝑝 ∕𝑛 2) + 𝑜 (𝑝 ∕𝑛 ).
+
+For the centered second moment, write 𝑛 = 𝑛 −2 ∑𝑘,𝑙,𝑡,𝑠 𝑞 𝑘𝑙𝑡𝑠 with 
+
+𝑞 𝑘𝑙𝑡𝑠 = 𝑭 ⊤𝑛 𝚽 ⊤𝑘 𝒘 𝑡 𝜺 ⊤𝑡 +𝑘 𝐐𝐃 −1 𝐐 𝜺 𝑠 +𝑙 𝒘 ⊤𝑠 𝚽 𝑙 𝑭 𝑛 .
+
+Then 
+
+𝔼 (𝑛 − 𝔼 𝑛 )2 ≤ 𝐶 𝑛 4
+
+∑
+
+> 𝑘,𝑙,𝑘 ′,𝑙 ′
+
+∑
+
+> 𝑡,𝑠,𝑡 ′,𝑠 ′
+
+𝑝 2‖𝚽 𝑘 ‖‖ 𝚽 𝑙 ‖‖ 𝚽 𝑘 ′ ‖‖ 𝚽 𝑙 ′ ‖
+
+× 𝑝 2(1 + |𝑡 − 𝑡 ′| + |𝑠 − 𝑠 ′|)−3 
+
+≤ 𝐶𝑝 2
+
+𝑛 4
+
+∑
+
+> 𝑡,𝑠,𝑡 ′,𝑠 ′
+
+(1 + |𝑡 − 𝑡 ′| + |𝑠 − 𝑠 ′|)−3 
+
+≤ 𝐶𝑝 2∕𝑛 2.
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 21 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Hence 
+
+𝑛 − 𝔼 𝑛 
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ(𝑛 −1∕2 ), 𝑛 − 𝔼 𝑛 
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ(√𝑝 ∕𝑛 ).
+
+Combining the displayed expressions for 𝔼 𝑛 and 𝔼 𝑛 gives 𝔼 (𝑛 + 𝑛 ) = 𝑃 ,𝑛 + 𝑜 (𝑝 ∕𝑛 ). Since 
+
+‖𝚽 𝑘 ‖ = 𝑂 (𝑝 −1 ), ‖𝐋 𝑓 ‖ = 𝑂 (𝑝 ), ‖𝛀 𝑘𝑙 ‖ = 𝑂 (𝑝 ),
+
+all trace terms defining 𝑃 ,𝑛 are 𝑂 (1) , and 𝑃 ,𝑛 = 𝑂 (𝑝 ∕𝑛 ). The result follows from tr( 𝐑 2) ≍ 𝑝 .
+
+Lemma A.4 (Trace estimator for the oracle sample correlation matrix) . Let 𝒁 𝑡 = 𝐃 −1∕2 𝐐 𝜺 𝑡 , where 𝜺 𝑡 satisfies Assumption 4.4; equivalently, use the 𝑝 -dimensional representation 𝒁 𝑡 = 𝐁 𝑅 𝜼 𝑡 in (21) . Let 𝒁 1, … , 𝒁 𝑛 be independent copies of this oracle standardized residual. Define ̄
+
+𝒁 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝒁 𝑡 , 𝐒 𝑒 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝒁 𝑡 −̄ 𝒁 )( 𝒁 𝑡 −̄ 𝒁 )⊤,
+
+𝐃 𝑒 = diag( 𝐒 𝑒 ), 𝐑 𝑒 = 𝐃 −1∕2  
+
+> 𝑒
+
+𝐒 𝑒 𝐃 −1∕2  
+
+> 𝑒
+
+, 𝜏 𝑝 = tr( 𝐑 2).
+
+Then there is a constant 𝐶 independent of 𝑛, 𝑝 such that 
+
+𝔼 
+
+⎡⎢⎢⎣{ tr( 𝐑 2 
+
+> 𝑒
+
+) − 𝑝 2∕( 𝑛 − 1) − 𝜏 𝑝 
+
+𝜏 𝑝 
+
+}2⎤⎥⎥⎦
+
+≤ 𝐶 
+
+{
+
+𝑛 −1 + tr( 𝐑 4)
+
+𝜏 2
+
+> 𝑝
+
++ 𝑝 𝑛 2 + 𝑝 2
+
+𝑛 4
+
+}
+
+. (22) 
+
+Consequently, under (17) ,
+
+𝔼 
+
+⎡⎢⎢⎣{ tr( 𝐑 2 
+
+> 𝑒
+
+) − 𝑝 2∕( 𝑛 − 1) − tr( 𝐑 2)tr( 𝐑 2)
+
+}2⎤⎥⎥⎦
+
+≤ 𝐶 (𝑛 −1 + 𝑝 −1 + 𝑝𝑛 −2 + 𝑝 2𝑛 −4 ) . (23) 
+
+Proof. Write the 𝑝 -dimensional linear innovation representation as 
+
+𝒁 𝑡 = 𝐁 𝑅 𝜼 𝑡 , 𝐁 𝑅 𝐁 ⊤𝑅 = 𝐑 , 𝔼 𝜼 𝑡 = 𝟎 , Cov( 𝜼 𝑡 ) = 𝐈 𝑝 ,
+
+where the coordinates of 𝜼 𝑡 are independent and sup 𝑗 
+
+‖‖‖𝜂 𝑡𝑗 
+
+‖‖‖𝜓 2
+
+≤ 𝐶 . For any deterministic symmetric 𝑝 × 𝑝 matrix 𝐀 0,put 
+
+𝐇 0 = 𝐁 ⊤𝑅 𝐀 0𝐁 𝑅 , 𝒁 ⊤𝑡 𝐀 0𝒁 𝑡 − tr( 𝐀 0𝐑 ) = 
+
+> 𝑝
+
+∑
+
+> 𝑎,𝑏 =1
+
+𝐻 0,𝑎𝑏 (𝜂 𝑡𝑎 𝜂 𝑡𝑏 − 𝛿 𝑎𝑏 ).
+
+The independence and the uniform sub-Gaussian moment bound imply 
+
+𝔼 {𝒁 ⊤𝑡 𝐀 0𝒁 𝑡 − tr( 𝐀 0𝐑 )} 2 ≤ 𝐶 
+
+> 𝑝
+
+∑
+
+> 𝑎,𝑏 =1
+
+𝐻 20,𝑎𝑏 = 𝐶 tr( 𝐇 20),
+
+𝔼 {𝒁 ⊤𝑡 𝐀 0𝒁 𝑡 − tr( 𝐀 0𝐑 )} 4 ≤ 𝐶 
+
+( 𝑝 ∑
+
+> 𝑎,𝑏 =1
+
+𝐻 20,𝑎𝑏 
+
+)2
+
+= 𝐶 {tr( 𝐇 20)} 2.
+
+Since 
+
+tr( 𝐇 20) = tr( 𝐀 0𝐑𝐀 0𝐑 ),
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 22 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+the preceding inequalities give, in particular, 
+
+Var( 𝒁 ⊤𝑡 𝐀 0𝒁 𝑡 ) ≤ 𝐶 tr( 𝐀 0𝐑𝐀 0𝐑 ), 𝔼 |𝒁 ⊤𝑡 𝐀 0𝒁 𝑡 − tr( 𝐀 0𝐑 )|4 ≤ 𝐶 {tr( 𝐀 0𝐑𝐀 0𝐑 )} 2. (24) Define the leave-two-out estimator 
+
+𝑈 𝑛 = 1
+
+𝑛 (𝑛 − 1) 
+
+∑
+
+> 𝑠 ≠𝑡
+
+(𝒁 ⊤𝑠 𝒁 𝑡 )2.
+
+For 𝑠 ≠ 𝑡 ,
+
+𝔼 (𝒁 ⊤𝑠 𝒁 𝑡 )2 = 𝔼 tr( 𝒁 𝑠 𝒁 ⊤𝑠 𝒁 𝑡 𝒁 ⊤𝑡 ) = tr{ 𝔼 (𝒁 𝑠 𝒁 ⊤𝑠 )𝔼 (𝒁 𝑡 𝒁 ⊤𝑡 )} = 𝜏 𝑝 ,
+
+so that 𝔼 𝑈 𝑛 = 𝜏 𝑝 . Let 
+
+ℎ(𝒛 1, 𝒛 2) = ( 𝒛 ⊤ 
+
+> 1
+
+𝒛 2)2, ℎ1(𝒛 ) = 𝔼 {ℎ(𝒛 , 𝒁 2)} − 𝜏 𝑝 = 𝒛 ⊤𝐑 𝒛 − 𝜏 𝑝 .
+
+Then 
+
+Var{ ℎ1(𝒁 1)} ≤ 𝐶 tr( 𝐑 4)
+
+by (24) with 𝐀 0 = 𝐑 . Also, 
+
+𝔼 ℎ2(𝒁 1, 𝒁 2) = 𝔼 [𝔼 {( 𝒁 ⊤ 
+
+> 1
+
+𝒁 2)4 ∣ 𝒁 1}] ≤ 𝐶 𝔼 (𝒁 ⊤ 
+
+> 1
+
+𝐑 𝒁 1)2
+
+≤ 𝐶 {tr 2(𝐑 2) + tr( 𝐑 4)} ≤ 𝐶𝜏 2 
+
+> 𝑝
+
+.
+
+The Hoeffding variance identity for a second-order 𝑈 -statistic gives 
+
+Var( 𝑈 𝑛 ) ≤ 4
+
+𝑛 Var{ ℎ1(𝒁 1)} + 2
+
+𝑛 (𝑛 − 1) 𝔼 {ℎ(𝒁 1, 𝒁 2) − 𝜏 𝑝 − ℎ1(𝒁 1) − ℎ1(𝒁 2)} 2
+
+≤ 𝐶 
+
+{
+
+tr( 𝐑 4)
+
+𝑛 + 𝜏 2
+
+> 𝑝
+
+𝑛 2
+
+}
+
+.
+
+Consequently, 
+
+𝔼 
+
+{ 𝑈 𝑛 − 𝜏 𝑝 
+
+𝜏 𝑝 
+
+}2
+
+≤ 𝐶 
+
+{
+
+tr( 𝐑 4)
+
+𝑛𝜏 2
+
+> 𝑝
+
++ 𝑛 −2 
+
+}
+
+. (25) Let 
+
+𝐒 0 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝒁 𝑡 𝒁 ⊤𝑡 , 𝐒 𝑒 = 𝐒 0 −̄ 𝒁 ̄ 𝒁 ⊤.
+
+The identity 
+
+tr( 𝐒 20) = 𝑛 − 1 
+
+𝑛 𝑈 𝑛 + 𝑛 −2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝒁 ⊤𝑡 𝒁 𝑡 )2
+
+and 
+
+tr( 𝐒 2 
+
+> 𝑒
+
+) = tr( 𝐒 20) − 2 ̄ 𝒁 ⊤𝐒 0̄ 𝒁 + ( ̄ 𝒁 ⊤̄ 𝒁 )2
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 23 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+lead to 
+
+tr( 𝐒 2 
+
+> 𝑒
+
+) − 𝑝 2
+
+𝑛 − 1 − 𝜏 𝑝 = 𝑛 − 1 
+
+𝑛 (𝑈 𝑛 − 𝜏 𝑝 ) + 𝐴 1𝑛 + 𝐴 2𝑛 + 𝐴 3𝑛 ,
+
+where 
+
+𝐴 1𝑛 = 𝑛 −2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+[(𝒁 ⊤𝑡 𝒁 𝑡 )2 − 𝔼 (𝒁 ⊤𝑡 𝒁 𝑡 )2] ,𝐴 2𝑛 = 𝑛 −1 {𝔼 (𝒁 ⊤𝑡 𝒁 𝑡 )2 − 𝑝 2} − 𝑝 2
+
+𝑛 (𝑛 − 1) − 𝜏 𝑝 
+
+𝑛 ,𝐴 3𝑛 = −2 ̄𝒁 ⊤𝐒 0̄ 𝒁 + ( ̄ 𝒁 ⊤̄ 𝒁 )2.
+
+By (24) with 𝐀 0 = 𝐈 𝑝 ,
+
+𝔼 (𝒁 ⊤𝑡 𝒁 𝑡 − 𝑝 )2 ≤ 𝐶𝜏 𝑝 , 𝔼 (𝒁 ⊤𝑡 𝒁 𝑡 − 𝑝 )4 ≤ 𝐶𝜏 2 
+
+> 𝑝
+
+,
+
+and hence 
+
+𝔼 (𝒁 ⊤𝑡 𝒁 𝑡 )2 = 𝑝 2 + 𝑂 (𝜏 𝑝 ), |𝐴 2𝑛 | ≤ 𝐶 
+
+( 𝜏 𝑝 
+
+𝑛 + 𝑝 2
+
+𝑛 2
+
+)
+
+.
+
+Moreover, 
+
+Var{( 𝒁 ⊤𝑡 𝒁 𝑡 )2} ≤ 𝐶𝑝 2 Var( 𝒁 ⊤𝑡 𝒁 𝑡 ) + 𝐶 𝔼 (𝒁 ⊤𝑡 𝒁 𝑡 − 𝑝 )4 ≤ 𝐶 (𝑝 2𝜏 𝑝 + 𝜏 2 
+
+> 𝑝
+
+),
+
+𝔼 𝐴 21𝑛 ≤ 𝑛 −3 𝐶 (𝑝 2𝜏 𝑝 + 𝜏 2 
+
+> 𝑝
+
+),
+
+𝔼 (̄𝒁 ⊤̄ 𝒁 )2 ≤ 𝐶 
+
+( 𝑝 2
+
+𝑛 2 + 𝜏 𝑝 
+
+𝑛 2
+
+)
+
+.
+
+The remaining term is expanded as ̄
+
+𝒁 ⊤𝐒 0̄ 𝒁 = 𝑛 −3 
+
+> 𝑛
+
+∑
+
+> 𝑎,𝑏,𝑡 =1
+
+𝒁 ⊤𝑎 𝒁 𝑡 𝒁 ⊤𝑡 𝒁 𝑏 .
+
+The expectation of the product of two such sums is split according to the partition of the six indices (𝑎, 𝑏, 𝑡, 𝑎 ′, 𝑏 ′, 𝑡 ′). If all three pairs (𝑎, 𝑡 ), (𝑏, 𝑡 ) and their primed analogues are disjoint, the expectation is zero. A nonzero term leaves at most four free indices and each inner-product fourth moment is bounded by 𝐶𝜏 2 
+
+> 𝑝
+
+; hence 
+
+𝔼 (̄ 𝒁 ⊤𝐒 0̄ 𝒁 )2 ≤ 𝐶𝑛 −6 {𝑛 4𝑝 2 + 𝑛 3𝑝𝜏 𝑝 + 𝑛 2𝜏 2 
+
+> 𝑝
+
++ 𝑛 2𝑝 4}
+
+≤ 𝐶 
+
+( 𝑝 2
+
+𝑛 2 + 𝑝 3
+
+𝑛 3 + 𝑝 4
+
+𝑛 4
+
+)
+
+.
+
+Since 𝜏 𝑝 ≍ 𝑝 under (17), the preceding displays and (25) imply the wider but simpler bound 
+
+𝔼 
+
+⎡⎢⎢⎣{ tr( 𝐒 2 
+
+> 𝑒
+
+) − 𝑝 2∕( 𝑛 − 1) − 𝜏 𝑝 
+
+𝜏 𝑝 
+
+}2⎤⎥⎥⎦
+
+≤ 𝐶 
+
+{
+
+𝑛 −1 + tr( 𝐑 4)
+
+𝜏 2
+
+> 𝑝
+
++ 𝑝 𝑛 2 + 𝑝 2
+
+𝑛 4
+
+}
+
+. (26) It remains to pass from covariance to correlation. Put 
+
+𝛿 𝑖 = 𝑆 𝑒,𝑖𝑖 − 1 , 𝑛 =
+
+{
+
+max  
+
+> 1≤𝑖 ≤𝑝
+
+|𝛿 𝑖 | ≤ 12
+
+}
+
+.
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 24 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+For each 𝑖 ,
+
+𝔼 𝛿 2 
+
+> 𝑖
+
+≤ 𝐶𝑛 −1 , 𝔼 𝛿 4 
+
+> 𝑖
+
+≤ 𝐶𝑛 −2 , ℙ(𝑐 𝑛 ) ≤ 𝐶𝑝 exp(− 𝑐𝑛 ).
+
+On 𝑛 ,
+
+tr( 𝐑 2 
+
+> 𝑒
+
+) − tr( 𝐒 2 
+
+> 𝑒
+
+) = 
+
+> 𝑝
+
+∑
+
+> 𝑖,𝑗 =1
+
+𝑆 2
+
+> 𝑒,𝑖𝑗
+
+{(1 + 𝛿 𝑖 )−1 (1 + 𝛿 𝑗 )−1 − 1 } ,
+
+|||(1 + 𝛿 𝑖 )−1 (1 + 𝛿 𝑗 )−1 − 1 ||| ≤ 𝐶 (|𝛿 𝑖 | + |𝛿 𝑗 | + 𝛿 2 
+
+> 𝑖
+
++ 𝛿 2 
+
+> 𝑗
+
+).
+
+Furthermore, 
+
+> 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝑅 2 
+
+> 𝑖𝑗
+
+= ( 𝐑 2)𝑖𝑖 ≤ 𝐶 𝑅 .
+
+Put 
+
+𝑇 𝑖 =
+
+> 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝑆 2 
+
+> 𝑒,𝑖𝑗
+
+, 𝑆 𝑒,𝑖𝑗 = 𝑅 𝑖𝑗 + 𝐴 𝑖𝑗 −̄ 𝑍 𝑖 ̄ 𝑍 𝑗 , 𝐴 𝑖𝑗 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝑍 𝑡𝑖 𝑍 𝑡𝑗 − 𝑅 𝑖𝑗 ).
+
+The linear sub-Gaussian representation gives 
+
+𝔼 𝐴 2 
+
+> 𝑖𝑗
+
+≤ 𝐶𝑛 −1 , 𝔼 𝐴 4 
+
+> 𝑖𝑗
+
+≤ 𝐶𝑛 −2 , 𝔼 ̄𝑍 4 
+
+> 𝑖
+
+≤ 𝐶𝑛 −2 .
+
+Hence, for every 𝑖 ,
+
+𝔼 𝑇 2 
+
+> 𝑖
+
+≤ 𝐶 
+
+⎧⎪⎨⎪⎩(∑
+
+> 𝑗
+
+𝑅 2
+
+> 𝑖𝑗
+
+)2
+
++ 𝔼 
+
+(∑
+
+> 𝑗
+
+𝐴 2
+
+> 𝑖𝑗
+
+)2
+
++ 𝔼 
+
+(̄𝑍 2
+
+> 𝑖
+
+∑
+
+> 𝑗
+
+̄𝑍 2
+
+> 𝑗
+
+)2⎫⎪⎬⎪⎭
+
+≤ 𝐶 
+
+(
+
+1 + 𝑝 2
+
+𝑛 2
+
+)
+
+,
+
+𝔼 𝑇 4 
+
+> 𝑖
+
+≤ 𝐶 
+
+(
+
+1 + 𝑝 4
+
+𝑛 4
+
+)
+
+.
+
+Moreover 
+
+𝔼 𝛿 2 
+
+> 𝑖
+
+≤ 𝐶𝑛 −1 , 𝔼 𝛿 4 
+
+> 𝑖
+
+≤ 𝐶𝑛 −2 , 𝔼 𝛿 8 
+
+> 𝑖
+
+≤ 𝐶𝑛 −4 .
+
+Using (∑ 𝑖 𝑏 𝑖 
+
+)2 ≤ 𝑝 ∑𝑖 𝑏 2 
+
+> 𝑖
+
+and Holder’s inequality, 
+
+𝔼 
+
+( 𝑝 ∑
+
+> 𝑖 =1
+
+|𝛿 𝑖 |𝑇 𝑖 
+
+)2
+
+≤ 𝑝 
+
+> 𝑝
+
+∑
+
+> 𝑖 =1
+
+𝔼 (𝛿 2 
+
+> 𝑖
+
+𝑇 2 
+
+> 𝑖
+
+) ≤ 𝑝 
+
+> 𝑝
+
+∑
+
+> 𝑖 =1
+
+(𝔼 𝛿 4 
+
+> 𝑖
+
+)1∕2 (𝔼 𝑇 4 
+
+> 𝑖
+
+)1∕2 ≤ 𝐶𝑝 2𝑛 −1 
+
+(
+
+1 + 𝑝 2
+
+𝑛 2
+
+)
+
+,
+
+𝔼 
+
+( 𝑝 ∑
+
+> 𝑖 =1
+
+𝛿 2 
+
+> 𝑖
+
+𝑇 𝑖 
+
+)2
+
+≤ 𝑝 
+
+> 𝑝
+
+∑
+
+> 𝑖 =1
+
+𝔼 (𝛿 4 
+
+> 𝑖
+
+𝑇 2 
+
+> 𝑖
+
+) ≤ 𝑝 
+
+> 𝑝
+
+∑
+
+> 𝑖 =1
+
+(𝔼 𝛿 8 
+
+> 𝑖
+
+)1∕2 (𝔼 𝑇 4 
+
+> 𝑖
+
+)1∕2 ≤ 𝐶𝑝 2𝑛 −2 
+
+(
+
+1 + 𝑝 2
+
+𝑛 2
+
+)
+
+.
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 25 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Since 𝜏 𝑝 ≍ 𝑝 and 𝑝 = 𝑂 (𝑛 𝜅 ) with 𝜅 < 2 in the strong-factor case and a smaller exponent in the weak-factor case, the last displays imply 
+
+𝔼 
+
+[
+
+{tr( 𝐑 2 
+
+> 𝑒
+
+) − tr( 𝐒 2 
+
+> 𝑒
+
+)} 2𝟏 𝑛 
+
+]
+
+≤ 𝐶 𝔼 
+
+⎡⎢⎢⎣{ 𝑝 ∑
+
+> 𝑖 =1
+
+(|𝛿 𝑖 | + 𝛿 2 
+
+> 𝑖
+
+)𝑇 𝑖 
+
+}2⎤⎥⎥⎦
+
+≤ 𝐶𝜏 2
+
+> 𝑝
+
+(𝑛 −1 + 𝑝𝑛 −2 + 𝑝 2𝑛 −4 ) . (27) For the complement event, the sub-Gaussian moment bound and ℙ(𝑐 𝑛 ) ≤ 𝐶𝑝 exp(− 𝑐𝑛 ) yield, for every fixed 𝑀 > 0
+
+under log 𝑝 = 𝑜 (𝑛 ),
+
+𝔼 
+
+[
+
+{tr( 𝐑 2 
+
+> 𝑒
+
+) − tr( 𝐒 2 
+
+> 𝑒
+
+)} 2𝟏 𝑐 𝑛 
+
+]
+
+≤ 𝐶 𝑀 𝜏 2 
+
+> 𝑝
+
+𝑝 −𝑀 . (28) Combining (26), (27), and (28) gives (22). The simplified bound (23) follows from (17). 
+
+A.3. Feasible-oracle replacement 
+
+The strong-factor sum statistic is handled by Lemma A.3. The following lemma records the max-statistic replacement, the denominator replacement, and the conservative weak-factor sum replacement. This separation is important: the term 
+
+𝑝 2𝛿 log 𝑝 ∕𝑛 is a weak-factor eigenspace remainder and should not be interpreted as part of the refined strong-factor drift. 
+
+Lemma A.5 (Max replacement and weak-factor sum replacement) . Let Assumptions 4.1–4.5 hold and let 𝐻 0 ∶ 𝝁 = 𝟎 .Put 
+
+𝜂 𝑛 = 𝑝 𝛿 
+
+{( log 𝑝 𝑛 
+
+)1∕2 
+
++ log 𝑝 𝑛 
+
+}
+
+, 𝒁 𝑡 = 𝐃 −1∕2 𝐐 𝒀 𝑡 .
+
+On the event {̂𝑟 = 𝑟 },
+
+√𝑛 ‖‖‖̄̂ 𝒁 −̄ 𝒁 ‖‖‖∞ = 𝑂 ℙ{𝜂 𝑛 (1 + √log 𝑝 )} . (29) 
+
+Moreover, 
+
+|||||
+
+tr( ̂𝐑 2) − 𝑝 2∕( 𝑛 − 1) tr( 𝐑 2) − 1 
+
+|||||
+
+= 𝑂 ℙ
+
+(
+
+𝑛 −1∕2 + 𝑝 −1∕2 + 𝑝 1∕2 𝑛 −1 + 𝑝 𝛿 
+
+√ log 𝑝 𝑛 + 𝑛 −1 
+
+)
+
+. (30) 
+
+If 0 < 𝛿 ≤ 1, then the weak-factor quadratic replacement satisfies 
+
+||||𝑛̄̂ 𝒁 ⊤̄̂ 𝒁 − 𝑛̄ 𝒁 ⊤̄ 𝒁 ||||
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ
+
+(
+
+𝑝 𝛿 ∕2 
+
+√𝑛 + 𝑝 1∕2+2 𝛿 log 𝑝 𝑛 +
+
+√𝑝 𝑛 
+
+)
+
+. (31) 
+
+The right-hand sides in (29) and (30) are 𝑜 ℙ(1) under Assumption 4.5; for 0 < 𝛿 ≤ 1, the right-hand side in (31) is also 
+
+𝑜 ℙ(1) .Proof. Let 
+
+𝑛 = { ̂𝑟 = 𝑟 }, Δ 𝑃 =̂ 𝐏 − 𝐏 , 𝜂 𝑛 = 𝑝 𝛿 
+
+{( log 𝑝 𝑛 
+
+)1∕2 
+
++ log 𝑝 𝑛 
+
+}
+
+.
+
+All displays are on 𝑛 . Lemma A.2 gives 
+
+‖‖Δ𝑃 ‖‖ = 𝑂 ℙ(𝜂 𝑛 ), max 
+
+> 𝑖
+
+‖‖‖𝒆 ⊤𝑖 Δ𝑃 
+
+‖‖‖2 = 𝑂 ℙ(𝑝 −1∕2 𝜂 𝑛 ), ‖‖‖(̂𝐏 − 𝐏 )𝐀 ‖‖‖𝐹 = 𝑂 ℙ(𝑝 𝛿 𝑛 −1∕2 ).
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 26 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Under 𝐻 0,̂
+
+𝑼 𝑡 =̂ 𝐐 𝒀 𝑡 = 𝐐 𝜺 𝑡 − Δ 𝑃 (𝐀 𝒇 𝑡 + 𝜺 𝑡 ), 𝑼 𝑡 = 𝐐 𝜺 𝑡 ,
+
+so that 
+
+√𝑛 (̄̂ 𝑼 −̄ 𝑼 ) = −Δ 𝑃 
+
+(
+
+𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝒀 𝑡 
+
+)
+
+.
+
+Since 
+
+𝔼 
+
+‖‖‖‖‖
+
+𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝒀 𝑡 
+
+‖‖‖‖‖
+
+> 22
+
+= tr 
+
+{
+
+Var 
+
+(
+
+𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝐀 𝒇 𝑡 
+
+)} 
+
++ tr( 𝚺 𝜀 )
+
+≤ 𝑟 
+
+‖‖‖‖‖‖∑
+
+> |ℎ|<𝑛
+
+(
+
+1 − |ℎ|
+
+𝑛 
+
+)
+
+Cov( 𝒇 𝑡 +ℎ, 𝒇 𝑡 )
+
+‖‖‖‖‖‖
+
++ 𝐶𝑝 ≤ 𝐶𝑝, 
+
+we have 
+
+√𝑛 ‖‖‖̄̂ 𝑼 −̄ 𝑼 ‖‖‖∞ ≤ max 
+
+> 𝑖
+
+‖‖‖𝒆 ⊤𝑖 Δ𝑃 
+
+‖‖‖2
+
+‖‖‖‖‖
+
+𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝒀 𝑡 
+
+‖‖‖‖‖2
+
+= 𝑂 ℙ(𝜂 𝑛 ).
+
+Moreover, 
+
+ℙ
+
+(√ 𝑛 ‖‖̄ 𝒁 ‖‖∞ > 𝑥 
+
+)
+
+≤
+
+> 𝑝
+
+∑
+
+> 𝑖 =1
+
+ℙ
+
+(|||||
+
+𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜁 𝑡𝑖 
+
+|||||
+
+> 𝑥 
+
+)
+
+≤ 2𝑝 exp(− 𝑐𝑥 2),
+
+whence 
+
+√𝑛 ‖‖̄ 𝒁 ‖‖∞ = 𝑂 ℙ(√log 𝑝 ).
+
+Writing 𝐷 𝑖 = 𝐷 𝑖𝑖 ,̂𝑑 𝑖 − 𝐷 𝑖 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(̂𝑈 2 
+
+> 𝑡𝑖
+
+− 𝑈 2
+
+> 𝑡𝑖
+
+) + 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝑈 2 
+
+> 𝑡𝑖
+
+− 𝐷 𝑖 ) − ( ̄̂ 𝑈 2 
+
+> 𝑖
+
+−̄ 𝑈 2 
+
+> 𝑖
+
+) + 𝑂 𝑝 (𝑛 −1 ),
+
+which, together with the previous displays and the sub-Gaussian maximal inequality, yields 
+
+max  
+
+> 𝑖
+
+|̂𝑑 𝑖 ∕𝐷 𝑖 − 1 | = 𝑂 ℙ
+
+(
+
+𝜂 𝑛 +
+
+√ log 𝑝 𝑛 
+
+)
+
+= 𝑂 ℙ(𝜂 𝑛 ).
+
+Thus 
+
+√𝑛 ‖‖‖̄̂ 𝒁 −̄ 𝒁 ‖‖‖∞ ≤ 𝐶 √𝑛 ‖‖‖̄̂ 
+
+𝑼 −̄ 𝑼 ‖‖‖∞ + 𝐶 √𝑛 ‖‖̄𝑼 ‖‖∞ max  
+
+> 𝑖
+
+|̂𝑑 𝑖 ∕𝐷 𝑖 − 1 |
+
+= 𝑂 ℙ(𝜂 𝑛 ) + 𝑂 ℙ(√log 𝑝𝜂 𝑛 ),
+
+which proves (29). For the weak-factor quadratic replacement, define 
+
+𝑿 = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝒁 𝑡 , 𝑯 𝑓 = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝒇 𝑡 , 𝑯 𝜀 = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜺 𝑡 ,
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 27 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+𝑳 𝑓 = − 𝐃 −1∕2 Δ𝑃 𝐀 𝑯 𝑓 , 𝑳 𝜀 = − 𝐃 −1∕2 Δ𝑃 𝑯 𝜀 , 𝑳 = 𝑳 𝑓 + 𝑳 𝜀 .
+
+After diagonal standardization, 
+
+√𝑛 (̄̂ 𝒁 −̄ 𝒁 ) = 𝑳 + 𝒓 𝑑 ,
+
+where 
+
+|2𝑿 ⊤𝒓 𝑑 | + 2 |𝑳 ⊤𝒓 𝑑 | + ‖‖𝒓 𝑑 ‖‖22
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ
+
+(
+
+𝑝 1∕2+2 𝛿 log 𝑝 𝑛 +
+
+√𝑝 𝑛 
+
+)
+
+.
+
+Then 
+
+𝑛̄̂ 𝒁 ⊤̄̂ 𝒁 − 𝑛̄ 𝒁 ⊤̄ 𝒁 
+
+{tr( 𝐑 2)} 1∕2 
+
+= 2𝑿 ⊤𝑳 + 𝑳 ⊤𝑳 
+
+{tr( 𝐑 2)} 1∕2 + 𝑂 ℙ
+
+(
+
+𝑝 1∕2+2 𝛿 log 𝑝 𝑛 +
+
+√𝑝 𝑛 
+
+)
+
+.
+
+The first-order eigenspace expansion is 
+
+Δ𝑃 𝐀 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+𝐐 𝑘 𝐶 ⊤𝑘 𝐾 −1 + 𝑹 𝐴 , 𝐶 𝑘 = 𝐀 ⊤Γ𝑦 (𝑘 ), 𝐾 =
+
+> 𝑘 0
+
+∑
+
+> 𝑘 =1
+
+𝐶 𝑘 𝐶 ⊤𝑘 ,
+
+with 
+
+𝔼 tr( 𝑹 ⊤𝐴 𝐃 −1 𝑹 𝐴 ) ≤ 𝐶𝑝 2𝛿 log 𝑝 𝑛 .
+
+Furthermore, 
+
+𝐐 𝑘 = 𝑛 −1 
+
+> 𝑛 −𝑘
+
+∑
+
+> 𝑡 =1
+
+𝐐 𝜺 𝑡 +𝑘 𝒀 ⊤𝑡 + 𝑹 𝑘,𝑛 , 𝔼 ‖‖𝑹 𝑘,𝑛 ‖‖2 ≤ 𝐶𝑝 2𝑛 −2 .
+
+Since 
+
+𝔼 {⊤𝑙 𝐐𝐃 −1 𝐐 𝑘 } = 𝑛 − max( 𝑘, 𝑙 )
+
+𝑛 2 tr( 𝐃 −1 𝐐𝚺 𝜀 𝐐 )Γ 𝑦 (𝑘 − 𝑙 ) + 𝑂 (𝑝𝑛 −2 )= 𝑛 − max( 𝑘, 𝑙 )
+
+𝑛 2 𝑝 Γ𝑦 (𝑘 − 𝑙 ) + 𝑂 (𝑝𝑛 −2 ),
+
+we obtain 
+
+𝔼 tr{ 𝐀 ⊤Δ⊤𝑃 𝐃 −1 Δ𝑃 𝐀 } ≤ 𝐶 𝑝 𝛿 
+
+𝑛 + 𝐶𝑝 2𝛿 log 𝑝 𝑛 .
+
+Also 
+
+‖‖‖Var( 𝑯 𝑓 )‖‖‖ =
+
+‖‖‖‖‖‖∑
+
+> |ℎ|<𝑛
+
+(
+
+1 − |ℎ|
+
+𝑛 
+
+)
+
+Cov( 𝒇 𝑡 +ℎ, 𝒇 𝑡 )
+
+‖‖‖‖‖‖
+
+≤ 𝐶𝑝 1− 𝛿 .
+
+Therefore 
+
+𝔼 (𝑳 ⊤𝑓 𝑳 𝑓 ) ≤ 𝐶 𝑝 𝑛 + 𝐶𝑝 1+ 𝛿 log 𝑝 𝑛 ,
+
+𝑳 ⊤𝑓 𝑳 𝑓 
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ
+
+( √ 𝑝 𝑛 + 𝑝 1∕2+ 𝛿 log 𝑝 𝑛 
+
+)
+
+,
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 28 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+where the second display follows by Markov’s inequality and tr( 𝐑 2) ≍ 𝑝 . For the residual part, 
+
+𝔼 (𝑳 ⊤𝜀 𝑳 𝜀 ) ≤ 𝐶 tr( 𝐑 2)𝑝 2𝛿 log 𝑝 𝑛 , 𝑳 ⊤𝜀 𝑳 𝜀 
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ
+
+(
+
+𝑝 1∕2+2 𝛿 log 𝑝 𝑛 
+
+)
+
+.
+
+The cross terms satisfy 
+
+𝔼 (𝑿 ⊤𝑳 𝑓 )2 ≤ 𝐶 𝑝 𝑛 , 𝔼 (𝑿 ⊤𝑳 𝜀 )2 ≤ 𝐶 tr( 𝐑 2) 𝑝 𝛿 
+
+𝑛 ,
+
+so that 
+
+𝑿 ⊤𝑳 𝑓 
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ(𝑛 −1∕2 ), 𝑿 ⊤𝑳 𝜀 
+
+{tr( 𝐑 2)} 1∕2 = 𝑂 ℙ(𝑝 𝛿 ∕2 𝑛 −1∕2 ).
+
+Combining the preceding displays proves (31). For the denominator, define the oracle sample covariance and correlation matrices ̃
+
+𝐒 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝒁 𝑡 −̄ 𝒁 )( 𝒁 𝑡 −̄ 𝒁 )⊤,̃ 𝐃 = diag( ̃𝐒 ),̃ 𝐑 =̃ 𝐃 −1∕2 ̃ 𝐒 ̃𝐃 −1∕2 .
+
+Lemma A.4 gives 
+
+tr( ̃𝐑 2) − 𝑝 2∕( 𝑛 − 1) − tr( 𝐑 2)tr( 𝐑 2) = 𝑂 ℙ
+
+(𝑛 −1∕2 + 𝑝 −1∕2 + 𝑝 1∕2 𝑛 −1 ) .
+
+It remains to compare ̂ 𝐑 with ̃ 𝐑 . Put ̂
+
+𝐒 = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(̂𝒁 𝑡 −̄̂ 𝒁 )( ̂ 𝒁 𝑡 −̄̂ 𝒁 )⊤,̂ 𝐃 𝑅 = diag( ̂𝐒 ),
+
+so that ̂ 𝐑 =̂ 𝐃 −1∕2 
+
+> 𝑅
+
+̂ 𝐒 ̂𝐃 −1∕2  
+
+> 𝑅
+
+. From the preceding max and variance-replacement bounds, 
+
+max  
+
+> 𝑖
+
+|̂𝐷 𝑅,𝑖𝑖 −̃ 𝐷 𝑖𝑖 | = 𝑂 ℙ
+
+(
+
+𝑝 𝛿 
+
+√ log 𝑝 𝑛 + 𝑛 −1 
+
+)
+
+,
+
+‖̂ 𝐒 −̃ 𝐒 ‖𝐹 ≤ 𝐶 √𝑝 𝑂 ℙ
+
+(
+
+𝑝 𝛿 
+
+√ log 𝑝 𝑛 + 𝑛 −1 
+
+)
+
+.
+
+On the event max 𝑖 |̂𝐷 𝑅,𝑖𝑖 − 1 | + max 𝑖 |̃𝐷 𝑖𝑖 − 1 | ≤ 1∕2 ,
+
+‖̂ 𝐑 −̃ 𝐑 ‖𝐹 ≤ 𝐶 ‖̂𝐒 −̃ 𝐒 ‖𝐹 + 𝐶 ‖̃ 𝐒 ‖𝐹 max  
+
+> 𝑖
+
+|̂𝐷 𝑅,𝑖𝑖 −̃ 𝐷 𝑖𝑖 |
+
+= √𝑝 𝑂 ℙ
+
+(
+
+𝑝 𝛿 
+
+√ log 𝑝 𝑛 + 𝑛 −1 
+
+)
+
+,
+
+where ‖̃ 𝐒 ‖𝐹 = 𝑂 ℙ(√𝑝 ) follows from Lemma A.4. Hence 
+
+| tr( ̂𝐑 2) − tr( ̃ 𝐑 2)| = | tr{( ̂ 𝐑 −̃ 𝐑 )( ̂𝐑 +̃ 𝐑 )} |
+
+≤ ‖̂𝐑 −̃ 𝐑 ‖𝐹 {‖̂ 𝐑 ‖𝐹 + ‖̃ 𝐑 ‖𝐹 }
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 29 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+= 𝑝 𝑂 ℙ
+
+(
+
+𝑝 𝛿 
+
+√ log 𝑝 𝑛 + 𝑛 −1 
+
+)
+
+.
+
+Since tr( 𝐑 2) ≍ 𝑝 , (30) follows. 
+
+A.4. Oracle limits under sub-Gaussian white noise 
+
+Lemma A.6 (Algebra for a possibly singular projected correlation matrix) . Let 𝐑 be positive semidefinite, 𝑅 𝑖𝑖 = 1 ,
+
+rank( 𝐑 ) = 𝑞 𝑝 , and 𝜆 max (𝐑 ) ≤ 𝐶 𝑅 . Write 
+
+𝐑 = 𝐇𝚲𝐇 ⊤, 𝐇 ⊤𝐇 = 𝐈 𝑞 𝑝 , 𝚲 = diag( 𝜆 1, … , 𝜆 𝑞 𝑝 ), 𝜆 𝑗 > 0.
+
+Then 
+
+𝑝 2
+
+𝑞 𝑝 
+
+≤ tr( 𝐑 2) ≤ 𝐶 𝑅 𝑝, tr( 𝐑 4) ≤ 𝐶 2 
+
+> 𝑅
+
+tr( 𝐑 2), tr( 𝐑 4)tr 2(𝐑 2) ≤ 𝐶𝑝 −1 .
+
+If 𝑮 ∼ 𝑁 𝑝 (𝟎 , 𝐑 ), then 
+
+𝑮 𝑑 
+
+= 𝐇𝚲 1∕2 𝝃 , 𝝃 ∼ 𝑁 𝑞 𝑝 (𝟎 , 𝐈 𝑞 𝑝 ).
+
+For 𝜂 ∈ (0 , 1) , define 
+
+𝐑 𝜂 = (1 − 𝜂 )𝐑 + 𝜂 𝐈 𝑝 , 𝑮 𝜂 = (1 − 𝜂 )1∕2 𝑮 + 𝜂 1∕2 𝝃 𝑝 , 𝝃 𝑝 ∼ 𝑁 𝑝 (𝟎 , 𝐈 𝑝 ),
+
+where 𝝃 𝑝 is independent of 𝑮 . Then 𝑮 𝜂 ∼ 𝑁 𝑝 (𝟎 , 𝐑 𝜂 ), 𝐑 𝜂 is positive definite, diag( 𝐑 𝜂 ) = 𝟏 𝑝 , and, with 𝜖 𝑝 = 𝑝 −2 ,
+
+max  
+
+> 𝑖
+
+|𝐺 2 
+
+> 𝜖 𝑝 𝑖
+
+− 𝐺 2 
+
+> 𝑖
+
+| = 𝑂 ℙ(𝑝 −1 log 𝑝 ),
+
+||||||
+
+𝑮 ⊤𝜖 𝑝 𝑮 𝜖 𝑝 − 𝑝 
+
+{2 tr( 𝐑 2 
+
+> 𝜖 𝑝
+
+)} 1∕2 − 𝑮 ⊤𝑮 − 𝑝 
+
+{2 tr( 𝐑 2)} 1∕2 
+
+||||||
+
+= 𝑜 ℙ(1) .
+
+Proof. The trace identities are 
+
+tr( 𝐑 ) = 
+
+> 𝑝
+
+∑
+
+> 𝑖 =1
+
+𝑅 𝑖𝑖 = 𝑝 =
+
+> 𝑞 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝜆 𝑗 , tr( 𝐑 2) = 
+
+> 𝑞 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝜆 2 
+
+> 𝑗
+
+, tr( 𝐑 4) = 
+
+> 𝑞 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝜆 4 
+
+> 𝑗
+
+.
+
+Hence 
+
+tr( 𝐑 2) ≥ 𝑞 −1 
+
+> 𝑝
+
+( 𝑞 𝑝 
+
+∑
+
+> 𝑗 =1
+
+𝜆 𝑗 
+
+)2
+
+= 𝑝 2∕𝑞 𝑝 , tr( 𝐑 2) ≤ 𝜆 max (𝐑 ) tr( 𝐑 ) ≤ 𝐶 𝑅 𝑝, 
+
+tr( 𝐑 4) ≤ 𝜆 2max (𝐑 ) tr( 𝐑 2) ≤ 𝐶 2 
+
+> 𝑅
+
+tr( 𝐑 2), tr( 𝐑 4)tr 2(𝐑 2) ≤ 𝐶 2
+
+> 𝑅
+
+tr( 𝐑 2) ≤ 𝐶𝑝 −1 .
+
+The spectral representation gives 
+
+Cov( 𝐇𝚲 1∕2 𝝃 ) = 𝐇𝚲𝐇 ⊤ = 𝐑 .
+
+For the ridge matrix, 
+
+𝜆 𝑗 (𝐑 𝜂 ) = 
+
+{
+
+(1 − 𝜂 )𝜆 𝑗 (𝐑 ) + 𝜂, 1 ≤ 𝑗 ≤ 𝑞 𝑝 ,𝜂, 𝑞 𝑝 < 𝑗 ≤ 𝑝, 
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 30 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+and 
+
+𝜆 min (𝐑 𝜂 ) ≥ 𝜂, 𝜆 max (𝐑 𝜂 ) ≤ 𝐶 𝑅 + 1 .
+
+Moreover, 
+
+|||tr( 𝐑 2 
+
+> 𝜂
+
+) − tr( 𝐑 2)||| ≤
+
+> 𝑞 𝑝
+
+∑
+
+> 𝑗 =1
+
+|||{(1 − 𝜂 )𝜆 𝑗 + 𝜂 }2 − 𝜆 2
+
+> 𝑗
+
+||| + ( 𝑝 − 𝑞 𝑝 )𝜂 2
+
+≤ 2𝜂 
+
+> 𝑞 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝜆 2 
+
+> 𝑗
+
++ 2 𝜂 
+
+> 𝑞 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝜆 𝑗 + 𝑝𝜂 2 ≤ 𝐶𝜂𝑝. 
+
+Let 𝚫 𝜂 = 𝑮 𝜂 − 𝑮 . Then 
+
+𝚫 𝜂 = {(1 − 𝜂 )1∕2 − 1} 𝑮 + 𝜂 1∕2 𝝃 𝑝 , max  
+
+> 𝑖
+
+Var(Δ 𝜂𝑖 ) ≤ 𝐶𝜂. 
+
+Thus for 𝜖 𝑝 = 𝑝 −2 and 𝑏 𝑝 = 𝐶𝑝 −1 √log 𝑝 with sufficiently large 𝐶 ,
+
+ℙ
+
+(
+
+max  
+
+> 𝑖
+
+|Δ𝜖 𝑝 𝑖 | > 𝑏 𝑝 
+
+)
+
+≤ 2𝑝 exp 
+
+(
+
+− 𝑐𝑏 2
+
+> 𝑝
+
+𝜖 𝑝 
+
+)
+
+= 𝑜 (1) .
+
+Also 
+
+ℙ
+
+(
+
+max  
+
+> 𝑖
+
+|𝐺 𝑖 | > 𝐶 √log 𝑝 
+
+)
+
++ ℙ
+
+(
+
+max  
+
+> 𝑖
+
+|𝐺 𝜖 𝑝 𝑖 | > 𝐶 √log 𝑝 
+
+)
+
+≤ 4𝑝 exp(− 𝐶 2 log 𝑝 ∕2) = 𝑜 (1) 
+
+for large 𝐶 . Hence 
+
+max  
+
+> 𝑖
+
+|𝐺 2 
+
+> 𝜖 𝑝 𝑖
+
+− 𝐺 2 
+
+> 𝑖
+
+| ≤ max  
+
+> 𝑖
+
+|𝐺 𝜖 𝑝 𝑖 − 𝐺 𝑖 | max  
+
+> 𝑖
+
+(|𝐺 𝜖 𝑝 𝑖 | + |𝐺 𝑖 |) = 𝑜 ℙ(1) .
+
+Furthermore, 
+
+𝑮 ⊤𝜂 𝑮 𝜂 − 𝑮 ⊤𝑮 = − 𝜂 𝑮 ⊤𝑮 + 2{ 𝜂 (1 − 𝜂 )} 1∕2 𝑮 ⊤𝝃 𝑝 + 𝜂 𝝃 ⊤𝑝 𝝃 𝑝 ,
+
+𝔼 (𝑮 ⊤𝑮 ) = 𝑝, 𝔼 (𝝃 ⊤𝑝 𝝃 𝑝 ) = 𝑝, 𝔼 |𝑮 ⊤𝝃 𝑝 | ≤ {𝔼 (𝑮 ⊤𝑮 )} 1∕2 = 𝑝 1∕2 .
+
+Since {2 tr( 𝐑 2)} 1∕2 ≍ 𝑝 1∕2 and 
+
+|||{2 tr( 𝐑 2 
+
+> 𝜂
+
+)} −1∕2 − {2 tr( 𝐑 2)} −1∕2 ||| ≤ 𝐶𝜂𝑝 −1∕2 ,
+
+we obtain 
+
+𝔼 
+
+||||||
+
+𝑮 ⊤𝜖 𝑝 𝑮 𝜖 𝑝 − 𝑝 
+
+{2 tr( 𝐑 2 
+
+> 𝜖 𝑝
+
+)} 1∕2 − 𝑮 ⊤𝑮 − 𝑝 
+
+{2 tr( 𝐑 2)} 1∕2 
+
+||||||
+
+≤ 𝐶 (𝜖 𝑝 
+
+√𝑝 + 𝜖 1∕2  
+
+> 𝑝
+
+) = 𝑜 (1) .
+
+Lemma A.7 (Oracle max and sum limits) . Let Assumptions 4.4 and 4.5 hold. Define 
+
+𝑿 𝑛 = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜻 𝑡 , 𝑇 𝑀, 0 = max  
+
+> 1≤𝑖 ≤𝑝
+
+𝑋 2 
+
+> 𝑛𝑖
+
+− 2 log 𝑝 + log log 𝑝, 𝑇 𝑆, 0 = 𝑿 ⊤𝑛 𝑿 𝑛 − 𝑝 
+
+{2 tr( 𝐑 2)} 1∕2 .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 31 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Then 
+
+𝑇 𝑀, 0 ⇒ 𝐺, 𝑇 𝑆, 0 ⇒ 𝑁 (0 , 1) ,
+
+and the two limits are asymptotically independent. Proof. Let 
+
+𝑞 = rank( 𝐑 ), 𝐑 = 𝐔 𝑞 𝚲 𝑞 𝐔 ⊤𝑞 , 𝚲 𝑞 = diag( 𝜆 1, … , 𝜆 𝑞 ),
+
+where 
+
+𝜆 1 ≥ ⋯ ≥ 𝜆 𝑞 > 0, 𝜆 𝑞 +1 = ⋯ = 𝜆 𝑝 = 0 .
+
+No inverse of 𝐑 is used below. From (16) and 𝑅 𝑖𝑖 = 1 ,
+
+𝑝 = tr( 𝐑 ) = 
+
+> 𝑞
+
+∑
+
+> 𝑎 =1
+
+𝜆 𝑎 , 𝑞 ≥ 𝑝 ∕𝐶 𝑅 , tr( 𝐑 2) = 
+
+> 𝑞
+
+∑
+
+> 𝑎 =1
+
+𝜆 2 
+
+> 𝑎
+
+≍ 𝑝, 𝜆 21
+
+tr( 𝐑 2) ≤ 𝐶 2
+
+> 𝑅
+
+𝑝 , tr( 𝐑 4)tr 2(𝐑 2) =
+
+∑𝑞 𝑎 =1 𝜆 4
+
+> 𝑎
+
+{∑𝑞 𝑎 =1 𝜆 2
+
+> 𝑎
+
+}2 ≤ 𝐶 𝑝 .
+
+Let 𝑮 ∼ 𝑁 𝑝 (𝟎 , 𝐑 ). The high-dimensional central limit theorem over hyperrectangles in Chernozhukov et al. (2013) is valid for possibly singular Gaussian comparison vectors, since rectangles depend only on marginal distribution functions and no density of 𝑮 is required. Hence 
+
+Δ(𝑀 ) 
+
+> 𝑛,𝑝
+
+= sup 
+
+> 𝑥 ∈ℝ
+
+||||ℙ
+
+(
+
+max 
+
+> 𝑖
+
+||𝑋 𝑛𝑖 || ≤ 𝑥 
+
+)
+
+− ℙ
+
+(
+
+max 
+
+> 𝑖
+
+||𝐺 𝑖 || ≤ 𝑥 
+
+)|||| ≤ 𝐶 
+
+( log 7 𝑝 𝑛 
+
+)1∕6 
+
+.
+
+If one uses a version of a Gaussian comparison or max-sum theorem stated for nonsingular correlation matrices, the following ridge argument removes the nonsingularity requirement. For 0 < 𝜏 < 1, define 
+
+𝐑 𝜏 = (1 − 𝜏 )𝐑 + 𝜏 𝐈 𝑝 , 𝑮 𝜏 = (1 − 𝜏 )1∕2 𝑮 + 𝜏 1∕2 𝝃 , 𝝃 ∼ 𝑁 𝑝 (𝟎 , 𝐈 𝑝 ),
+
+with 𝝃 independent of 𝑮 . Then 𝑮 𝜏 ∼ 𝑁 𝑝 (𝟎 , 𝐑 𝜏 ) and 
+
+𝜆 min (𝐑 𝜏 ) ≥ 𝜏, 𝜆 max (𝐑 𝜏 ) ≤ 𝐶 𝑅 + 1 , max 
+
+> 𝑖 𝑝
+
+∑
+
+> 𝑗 =1
+
+𝑅 2 
+
+> 𝜏,𝑖𝑗
+
+≤ 𝐶. 
+
+Moreover, for every 𝑎 > 0,
+
+ℙ
+
+(
+
+max  
+
+> 𝑖
+
+|𝐺 𝜏,𝑖 − 𝐺 𝑖 | > 𝑎 
+
+)
+
+≤ ℙ
+
+(
+
+(1 − 
+
+√
+
+1 − 𝜏 ) max  
+
+> 𝑖
+
+|𝐺 𝑖 | > 𝑎 ∕2 
+
+)
+
++ ℙ
+
+(√ 𝜏 max  
+
+> 𝑖
+
+|𝜉 𝑖 | > 𝑎 ∕2 
+
+)
+
+.
+
+Since 𝐺 𝑖 ∼ 𝑁 (0 , 1) and 𝜉 𝑖 ∼ 𝑁 (0 , 1) marginally, 
+
+ℙ
+
+(
+
+max  
+
+> 𝑖
+
+|𝐺 𝑖 | > 𝑥 
+
+)
+
++ ℙ
+
+(
+
+max  
+
+> 𝑖
+
+|𝜉 𝑖 | > 𝑥 
+
+)
+
+≤ 4𝑝 exp(− 𝑥 2∕2) .
+
+With 𝜖 𝑝 = 𝑝 −2 ,
+
+max  
+
+> 𝑖
+
+|𝐺 𝜖 𝑝 ,𝑖 − 𝐺 𝑖 | = 𝑂 ℙ(𝑝 −1 √log 𝑝 ), max  
+
+> 𝑖
+
+(|𝐺 𝜖 𝑝 ,𝑖 | + |𝐺 𝑖 |) = 𝑂 ℙ(√log 𝑝 ),
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 32 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+so that 
+
+max  
+
+> 𝑖
+
+|𝐺 2 
+
+> 𝜖 𝑝 ,𝑖
+
+− 𝐺 2 
+
+> 𝑖
+
+| = 𝑂 ℙ(𝑝 −1 log 𝑝 ) = 𝑜 ℙ(1) .
+
+Thus every Gumbel limit proved first for 𝐑 𝜖 𝑝 also holds for the original singular 𝐑 .Let 
+
+𝜈 𝑝 (𝑥 ) = 2 log 𝑝 − log log 𝑝 + 𝑥, 𝑢 𝑝 (𝑥 ) = 𝜈 𝑝 (𝑥 )1∕2 .
+
+The Gaussian extreme-value input used here is the following quantitative consequence of Cai et al. (2014), Feng et al. (2022), and Feng et al. (2024): for a nonsingular correlation matrix 𝐂 𝑝 satisfying (12) and max 𝑖 
+
+∑𝑗 𝐶 2 
+
+> 𝑝,𝑖𝑗
+
+≤ 𝐶 , there exists Δ𝐸𝑉 ,𝑝 ↓ 0 such that 
+
+sup 
+
+> 𝑥 ∈ℝ
+
+||||ℙ
+
+{
+
+max  
+
+> 𝑖
+
+𝐺 2 
+
+> 𝐶,𝑖
+
+≤ 𝑢 2
+
+> 𝑝
+
+(𝑥 )
+
+}
+
+− exp{− 𝜋 −1∕2 𝑒 −𝑥 ∕2 }|||| ≤ Δ𝐸𝑉 ,𝑝 , 𝑮 𝐶 ∼ 𝑁 𝑝 (𝟎 , 𝐂 𝑝 ).
+
+Apply this inequality to 𝐂 𝑝 = 𝐑 𝜖 𝑝 . The coupling bound above implies, for every fixed 𝜖 > 0,
+
+ℙ
+
+(||||max  
+
+> 𝑖
+
+𝐺 2 
+
+> 𝜖 𝑝 ,𝑖
+
+− max  
+
+> 𝑖
+
+𝐺 2
+
+> 𝑖
+
+|||| > 𝜖 
+
+)
+
+→ 0.
+
+Hence 
+
+sup 
+
+> 𝑥 ∈ℝ
+
+||||ℙ
+
+{
+
+max  
+
+> 𝑖
+
+𝐺 2 
+
+> 𝑖
+
+≤ 𝑢 2
+
+> 𝑝
+
+(𝑥 )
+
+}
+
+− exp{− 𝜋 −1∕2 𝑒 −𝑥 ∕2 }|||| → 0.
+
+Combining the last display with Δ(𝑀 ) 
+
+> 𝑛,𝑝
+
+→ 0 gives 
+
+𝑇 𝑀, 0 ⇒ 𝐺. 
+
+Put 
+
+𝑠 2 
+
+> 𝑝
+
+= 2 tr( 𝐑 2), 𝑿 ⊤𝑛 𝑿 𝑛 − 𝑝 = 𝐴 𝑛 + 𝐵 𝑛 ,𝐴 𝑛 = 2
+
+𝑛 
+
+∑
+
+> 1≤𝑠<𝑡 ≤𝑛
+
+𝜻 ⊤𝑠 𝜻 𝑡 , 𝐵 𝑛 = 1
+
+𝑛 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝜻 ⊤𝑡 𝜻 𝑡 − 𝑝 ).
+
+For the diagonal part, use the representation (21). Put 𝐇 𝑅 = 𝐁 ⊤𝑅 𝐁 𝑅 . Then 
+
+𝜻 ⊤𝑡 𝜻 𝑡 − 𝑝 = 𝜼 ⊤𝑡 𝐇 𝑅 𝜼 𝑡 − tr( 𝐇 𝑅 ), tr( 𝐇 𝑅 ) = tr( 𝐑 ) = 𝑝, tr( 𝐇 2
+
+> 𝑅
+
+) = tr( 𝐑 2).
+
+The quadratic-moment expansion (24), applied with 𝐀 0 = 𝐈 𝑝 , gives 
+
+Var( 𝜻 ⊤𝑡 𝜻 𝑡 ) = 𝔼 {𝜼 ⊤𝑡 𝐇 𝑅 𝜼 𝑡 − tr( 𝐇 𝑅 )} 2 ≤ 𝐶 tr( 𝐇 2
+
+> 𝑅
+
+) = 𝐶 tr( 𝐑 2).
+
+Independence over 𝑡 gives 
+
+𝔼 
+
+( 𝐵 2
+
+> 𝑛
+
+𝑠 2
+
+> 𝑝
+
+)
+
+= Var( 𝜻 ⊤𝑡 𝜻 𝑡 )
+
+𝑛 2 tr( 𝐑 2) ≤ 𝐶 𝑛 , 𝐵 𝑛 ∕𝑠 𝑝 = 𝑂 ℙ(𝑛 −1∕2 ).
+
+For the off-diagonal part, set 
+
+𝑡 = 𝜎 (𝜻 1, … , 𝜻 𝑡 ), 𝐷 𝑡 = 2
+
+𝑛 𝜻 ⊤𝑡 𝑡 −1 ∑
+
+> 𝑠 =1
+
+𝜻 𝑠 , 𝑡 = 2 , … , 𝑛. 
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 33 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Then 
+
+𝐴 𝑛 =
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+𝐷 𝑡 , 𝔼 (𝐷 𝑡 ∣ 𝑡 −1 ) = 0 ,𝑉 𝑛 =
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+𝔼 (𝐷 2 
+
+> 𝑡
+
+∣ 𝑡 −1 ) = 4
+
+𝑛 2
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+(𝑡 −1 ∑
+
+> 𝑠 =1
+
+𝜻 𝑠 
+
+)⊤
+
+𝐑 
+
+(𝑡 −1 ∑
+
+> 𝑠 =1
+
+𝜻 𝑠 
+
+)
+
+.
+
+Since 𝔼 (𝜻 𝑠 𝜻 ⊤𝑠 ) = 𝐑 and 𝜻 𝑠 are independent over 𝑠 ,
+
+𝔼 𝑉 𝑛 = 4
+
+𝑛 2
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+(𝑡 − 1) tr( 𝐑 2) = 𝑠 2
+
+> 𝑝
+
+(
+
+1 − 1
+
+𝑛 
+
+)
+
+.
+
+To control the fluctuation of 𝑉 𝑛 , write 
+
+ = ( 𝜻 ⊤ 
+
+> 1
+
+, … , 𝜻 ⊤𝑛 −1 )⊤, 𝑤 𝑎𝑏 = 𝑛 − max( 𝑎, 𝑏 ),
+
+ = ( 𝑎𝑏 )1≤𝑎,𝑏 ≤𝑛 −1 , 𝑎𝑏 = 𝑤 𝑎𝑏 𝐑 .
+
+Then 
+
+𝑉 𝑛 = 4
+
+𝑛 2 ⊤ , Cov( ) = 𝐈 𝑛 −1 ⊗ 𝐑 .
+
+Applying the quadratic-moment expansion (24) to the block vector  gives 
+
+Var( 𝑉 𝑛 ) ≤ 𝐶 1
+
+𝑛 4 tr [{(𝐈 𝑛 −1 ⊗ 𝐑 )} 2]
+
+= 𝐶 1
+
+𝑛 4
+
+> 𝑛 −1
+
+∑
+
+> 𝑎 =1
+> 𝑛 −1
+
+∑
+
+> 𝑏 =1
+
+𝑤 2 
+
+> 𝑎𝑏
+
+tr( 𝐑 4) ≤ 𝐶 tr( 𝐑 4)
+
+𝑛 .
+
+Therefore 
+
+𝔼 
+
+( 𝑉 𝑛 
+
+𝑠 2
+
+> 𝑝
+
+− 1 
+
+)2
+
+≤ 𝐶𝑛 −2 + 𝐶 tr( 𝐑 4)
+
+𝑛 tr 2(𝐑 2) ≤ 𝐶𝑛 −2 + 𝐶 (𝑛𝑝 )−1 = 𝑜 (1) .
+
+For fixed 𝑢 ∈ ℝ,
+
+𝔼 {𝑒 𝑖𝑢𝐷 𝑡 ∕𝑠 𝑝 ∣ 𝑡 −1 } = 1 − 𝑢 2
+
+2𝑠 2
+
+> 𝑝
+
+𝔼 (𝐷 2 
+
+> 𝑡
+
+∣ 𝑡 −1 ) + 𝑟 𝑡,𝑛 ,
+
+|𝑟 𝑡,𝑛 | ≤ 𝐶 |𝑢 |3𝑠 −3  
+
+> 𝑝
+
+𝔼 (|𝐷 𝑡 |3 ∣ 𝑡 −1 ).
+
+The conditional sub-Gaussian moment bound gives 
+
+𝔼 (|𝐷 𝑡 |3 ∣ 𝑡 −1 ) ≤ 𝐶 {𝔼 (𝐷 2 
+
+> 𝑡
+
+∣ 𝑡 −1 )} 3∕2 .
+
+Since 𝑠 2 
+
+> 𝑝
+
+≍ 𝑝 and 
+
+𝔼 {𝔼 (𝐷 2 
+
+> 𝑡
+
+∣ 𝑡 −1 )} = 4
+
+𝑛 2 (𝑡 − 1) tr( 𝐑 2),
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 34 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Jensen’s inequality gives 
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+𝔼 
+
+⎡⎢⎢⎣{ 𝔼 (𝐷 2 
+
+> 𝑡
+
+∣ 𝑡 −1 )
+
+𝑠 2
+
+> 𝑝
+
+}3∕2 ⎤⎥⎥⎦
+
+≤ 𝐶 
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+( 𝑡 𝑛 2
+
+)3∕2 
+
+≤ 𝐶𝑛 −1∕2 .
+
+Thus 
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+|𝑟 𝑡,𝑛 | = 𝑂 ℙ(𝑛 −1∕2 ).
+
+Iterating conditional expectations yields 
+
+𝔼 exp( 𝑖𝑢𝐴 𝑛 ∕𝑠 𝑝 ) = 𝔼 
+
+> 𝑛
+
+∏
+
+> 𝑡 =2
+
+[
+
+1 − 𝑢 2
+
+2𝑠 2
+
+> 𝑝
+
+𝔼 (𝐷 2 
+
+> 𝑡
+
+∣ 𝑡 −1 ) + 𝑟 𝑡,𝑛 
+
+]
+
+= 𝔼 exp 
+
+[
+
+− 𝑢 2
+
+2𝑠 2
+
+> 𝑝
+
+𝑉 𝑛 + 𝑂 ℙ(𝑛 −1∕2 ) + 𝑂 ℙ
+
+( 𝑛 ∑
+
+> 𝑡 =2
+
+𝔼 (𝐷 2 
+
+> 𝑡
+
+∣ 𝑡 −1 )2
+
+𝑠 4
+
+> 𝑝
+
+)] 
+
+.
+
+Also 
+
+𝔼 
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+𝔼 (𝐷 2 
+
+> 𝑡
+
+∣ 𝑡 −1 )2
+
+𝑠 4
+
+> 𝑝
+
+≤ 𝐶 
+
+> 𝑛
+
+∑
+
+> 𝑡 =2
+
+( 𝑡 𝑛 2
+
+)2
+
+≤ 𝐶𝑛 −1 .
+
+Since 𝑉 𝑛 ∕𝑠 2 
+
+> 𝑝
+
+→ 1 in probability, 
+
+𝔼 exp( 𝑖𝑢𝐴 𝑛 ∕𝑠 𝑝 ) → 𝑒 −𝑢 2∕2 .
+
+Together with 𝐵 𝑛 ∕𝑠 𝑝 = 𝑂 ℙ(𝑛 −1∕2 ), this proves 
+
+𝑇 𝑆, 0 = 𝐴 𝑛 + 𝐵 𝑛 
+
+𝑠 𝑝 
+
+⇒ 𝑁 (0 , 1) .
+
+It remains to verify the joint limit. For fixed 𝑥 ∈ ℝ and 𝑢 ∈ ℝ, define 
+
+Ψ𝑛 (𝑥, 𝑢 ) = 𝔼 
+
+[
+
+exp{ 𝑖𝑢𝑇 𝑆, 0}1 {𝑇 𝑀, 0≤𝑥 }
+
+]
+
+.
+
+Let 
+
+𝑄 𝐺 = 𝑮 ⊤𝑮 − 𝑝 
+
+{2 tr( 𝐑 2)} 1∕2 , 𝑀 𝐺 = max  
+
+> 𝑖
+
+𝐺 2 
+
+> 𝑖
+
+− 2 log 𝑝 + log log 𝑝. 
+
+The high-dimensional interpolation input used here is the following form of the joint max-quadratic comparison theorem. If 𝒛 𝑡 = 𝐁 𝑅 𝜼 𝑡 are independent copies with independent standardized sub-Gaussian coordinates in 𝜼 𝑡 , 𝐁 𝑅 𝐁 ⊤𝑅 = 𝐑 ,
+
+diag( 𝐑 ) = 𝟏 𝑝 , 𝜆 max (𝐑 ) ≤ 𝐶 , tr( 𝐑 4)∕ tr 2(𝐑 2) ≤ 𝐶𝑝 −1 , and the extreme-value regularity (12) holds, then for every fixed 
+
+𝐶 > 0 there is a constant 𝐶 𝐶 such that, uniformly in |𝑢 | ≤ 𝐶 ,
+
+sup 
+
+> 𝑥 ∈ℝ
+
+|||Ψ𝑛 (𝑥, 𝑢 ) − 𝔼 {𝑒 𝑖𝑢𝑄 𝐺 1{𝑀 𝐺 ≤𝑥 }}||| ≤ 𝐶 𝐶 
+
+{( log 7 𝑝 𝑛 
+
+)1∕6 
+
++ 𝑛 −1∕2 
+
+}
+
+.
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 35 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+The theorem is applied to the functional 
+
+𝒛 1, … , 𝒛 𝑛 ↦ exp 
+
+⎧⎪⎨⎪⎩
+
+𝑖𝑢 
+
+‖‖‖𝑛 −1∕2 ∑𝑛 𝑡 =1 𝒛 𝑡 
+
+‖‖‖ 
+
+> 22
+
+− 𝑝 𝑠 𝑝 
+
+⎫⎪⎬⎪⎭
+
+1
+
+⎧⎪⎨⎪⎩
+
+max 
+
+> 𝑖
+
+(
+
+𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝑧 𝑡𝑖 
+
+)2
+
+≤ 𝑢 2
+
+> 𝑝
+
+(𝑥 )
+
+⎫⎪⎬⎪⎭
+
+.
+
+All listed assumptions follow from Assumption 4.4, Lemma A.6, and (12); the bound does not use 𝐑 −1 .For the Gaussian term, use the following max-sum theorem of Feng et al. (2024). For every nonsingular correlation matrix 𝐂 𝑝 satisfying (17) and (12), with 
+
+𝑄 𝐶 = 𝑮 ⊤𝐶 𝑮 𝐶 − 𝑝 
+
+{2 tr( 𝐂 2
+
+> 𝑝
+
+)} 1∕2 , 𝑀 𝐶 = max  
+
+> 𝑖
+
+𝐺 2 
+
+> 𝐶,𝑖
+
+− 2 log 𝑝 + log log 𝑝, 𝑮 𝐶 ∼ 𝑁 𝑝 (𝟎 , 𝐂 𝑝 ),
+
+one has, for every fixed 𝐶 > 0,
+
+sup 
+
+> 𝑥 ∈ℝ,|𝑢 |≤𝐶
+
+|||𝔼 {𝑒 𝑖𝑢𝑄 𝐶 1{𝑀 𝐶 ≤𝑥 }} − 𝑒 −𝑢 2∕2 exp{− 𝜋 −1∕2 𝑒 −𝑥 ∕2 }||| → 0.
+
+Apply this statement with 𝐂 𝑝 = 𝐑 𝜖 𝑝 and transfer it to the possibly singular 𝐑 by the ridge coupling. The corresponding quadratic variables satisfy 
+
+𝑄 𝐺,𝜖 𝑝 =
+
+𝑮 ⊤𝜖 𝑝 𝑮 𝜖 𝑝 − 𝑝 
+
+{2 tr( 𝐑 2 
+
+> 𝜖 𝑝
+
+)} 1∕2 ,
+
+𝑮 ⊤𝜖 𝑝 𝑮 𝜖 𝑝 − 𝑮 ⊤𝑮 = − 𝜖 𝑝 𝑮 ⊤𝑮 + 2{ 𝜖 𝑝 (1 − 𝜖 𝑝 )} 1∕2 𝑮 ⊤𝝃 + 𝜖 𝑝 𝝃 ⊤𝝃 ,
+
+tr( 𝐑 2 
+
+> 𝜖 𝑝
+
+) − tr( 𝐑 2) = 𝑂 (𝜖 𝑝 𝑝 ).
+
+Because 
+
+𝑮 ⊤𝑮 = 𝑂 ℙ(𝑝 ), 𝝃 ⊤𝝃 = 𝑂 ℙ(𝑝 ), 𝑮 ⊤𝝃 = 𝑂 ℙ(𝑝 1∕2 ),
+
+and 𝜖 𝑝 = 𝑝 −2 ,
+
+𝑄 𝐺,𝜖 𝑝 − 𝑄 𝐺 = 𝑂 ℙ(𝑝 −1 ), 𝑀 𝐺,𝜖 𝑝 − 𝑀 𝐺 = 𝑂 ℙ(𝑝 −1 log 𝑝 ).
+
+The preceding theorem gives 
+
+𝔼 {𝑒 𝑖𝑢𝑄 𝐺,𝜖 𝑝 1{𝑀 𝐺,𝜖𝑝 ≤𝑥 }} → 𝑒 −𝑢 2∕2 exp{− 𝜋 −1∕2 𝑒 −𝑥 ∕2 }.
+
+Moreover, 
+
+||||𝔼 {𝑒 𝑖𝑢𝑄 𝐺 1{𝑀 𝐺 ≤𝑥 }} − 𝔼 {𝑒 𝑖𝑢𝑄 𝐺,𝜖𝑝 1{𝑀 𝐺,𝜖𝑝 ≤𝑥 }}||||
+
+≤ |𝑢 | 𝔼 |𝑄 𝐺 − 𝑄 𝐺,𝜖 𝑝 | + ℙ(|𝑀 𝐺 − 𝑀 𝐺,𝜖 𝑝 | > 𝜖 ) + sup 
+
+> 𝑦
+
+ℙ(𝑦 < 𝑀 𝐺 ≤ 𝑦 + 𝜖 ),
+
+where the last term tends to zero first as 𝑝 → ∞ and then as 𝜖 ↓ 0 by the Gaussian extreme-value limit. Hence 
+
+𝔼 {𝑒 𝑖𝑢𝑄 𝐺 1{𝑀 𝐺 ≤𝑥 }} → 𝑒 −𝑢 2∕2 exp{− 𝜋 −1∕2 𝑒 −𝑥 ∕2 }.
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 36 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Consequently, 
+
+Ψ𝑛 (𝑥, 𝑢 ) → 𝑒 −𝑢 2∕2 ℙ(𝐺 ≤ 𝑥 ),
+
+which is equivalent to 
+
+(𝑇 𝑀, 0, 𝑇 𝑆, 0) ⇒ (𝐺, 𝑍 ), 𝑍 ∼ 𝑁 (0 , 1) , 𝐺 ⟂⟂ 𝑍. 
+
+A.5. Proof of Theorem 4.1 
+
+Proof. Let 
+
+𝑛 = { ̂𝑟 = 𝑟 }, 𝑇 (𝑟 ) 
+
+> 𝑗
+
+= 𝑇 𝑗 
+
+|||̂𝑟 replaced by 𝑟 , 𝑗 ∈ { 𝑀, 𝑆, 𝐶 }.
+
+Then 
+
+𝑇 𝑀 = 𝑇 (𝑟 ) 
+
+> 𝑀
+
+, 𝑇 𝑆 = 𝑇 (𝑟 ) 
+
+> 𝑆
+
+, 𝑇 𝐶 = 𝑇 (𝑟 ) 
+
+> 𝐶
+
+, on 𝑛 ,
+
+and, for every continuity point 𝑥 of the corresponding limit law, 
+
+|||ℙ(𝑇 𝑀 ≤ 𝑥 ) − ℙ(𝑇 (𝑟 ) 
+
+> 𝑀
+
+≤ 𝑥 )||| + |||ℙ(𝑇 𝑆 ≤ 𝑥 ) − ℙ(𝑇 (𝑟 ) 
+
+> 𝑆
+
+≤ 𝑥 )||| ≤ 2ℙ(𝑐 𝑛 ) = 𝑜 (1) .
+
+For joint events, 
+
+sup 
+
+> 𝑥,𝑦
+
+|||ℙ(𝑇 𝑀 ≤ 𝑥, 𝑇 𝑆 ≤ 𝑦 ) − ℙ(𝑇 (𝑟 ) 
+
+> 𝑀
+
+≤ 𝑥, 𝑇 (𝑟 ) 
+
+> 𝑆
+
+≤ 𝑦 )||| ≤ ℙ(𝑐 𝑛 ) = 𝑜 (1) .
+
+Thus all limits may be proved on 𝑛 .Set 
+
+𝜻 𝑡 = 𝐃 −1∕2 𝐐 𝜺 𝑡 , 𝑿 𝑛 = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜻 𝑡 ,𝑇 𝑀, 0 = max  
+
+> 𝑖
+
+𝑋 2 
+
+> 𝑛𝑖
+
+− 2 log 𝑝 + log log 𝑝, 𝑇 𝑆, 0 = 𝑿 ⊤𝑛 𝑿 𝑛 − 𝑝 
+
+{2 tr( 𝐑 2)} 1∕2 .
+
+Let 
+
+𝜂 𝑛 = 𝑝 𝛿 
+
+{( log 𝑝 𝑛 
+
+)1∕2 
+
++ log 𝑝 𝑛 
+
+}
+
+.
+
+Lemma A.5 gives the max replacement 
+
+𝑇 (𝑟 ) 
+
+> 𝑀
+
+− 𝑇 𝑀, 0 = 𝑂 ℙ
+
+(𝜂 𝑛 log 𝑝 + 𝜂 2 
+
+> 𝑛
+
+log 𝑝 ) = 𝑜 ℙ(1) .
+
+For the sum statistic, the argument is split according to the factor strength. If 𝛿 = 0 , Lemma A.3, (30), and tr( 𝐑 2) ≍ 𝑝 
+
+imply 
+
+𝑇 (𝑟 ) 
+
+> 𝑆
+
+− 𝑇 𝑆, 0 = 𝑂 ℙ
+
+(
+
+𝑛 −1∕2 +
+
+√𝑝 𝑛 + log 𝑝 𝑛 + 𝑛 −1∕2 + 𝑝 −1∕2 + 𝑝 1∕2 𝑛 −1 +
+
+√ log 𝑝 𝑛 + 𝑛 −1 
+
+)
+
++ 𝑝 − ( 𝑛 − 1) 𝑝 ∕( 𝑛 − 3) {2 tr( 𝐑 2)} 1∕2 = 𝑜 ℙ(1) ,
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 37 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+where 
+
+𝑝 − ( 𝑛 − 1) 𝑝 ∕( 𝑛 − 3) {2 tr( 𝐑 2)} 1∕2 = 𝑂 (√𝑝 ∕𝑛 ) = 𝑜 (1) .
+
+If 0 < 𝛿 ≤ 1, Lemma A.5 gives instead 
+
+𝑇 (𝑟 ) 
+
+> 𝑆
+
+− 𝑇 𝑆, 0 = 𝑂 ℙ
+
+(
+
+𝑝 𝛿 ∕2 
+
+√𝑛 + 𝑝 1∕2+2 𝛿 log 𝑝 𝑛 +
+
+√𝑝 𝑛 + 𝑛 −1∕2 + 𝑝 −1∕2 + 𝑝 1∕2 𝑛 −1 + 𝑝 𝛿 
+
+√ log 𝑝 𝑛 + 𝑛 −1 
+
+)
+
++ 𝑝 − ( 𝑛 − 1) 𝑝 ∕( 𝑛 − 3) {2 tr( 𝐑 2)} 1∕2 = 𝑜 ℙ(1) .
+
+Thus, in both cases, 
+
+𝑇 (𝑟 ) 
+
+> 𝑀
+
+− 𝑇 𝑀, 0 = 𝑜 ℙ(1) , 𝑇 (𝑟 ) 
+
+> 𝑆
+
+− 𝑇 𝑆, 0 = 𝑜 ℙ(1) .
+
+For fixed 𝑥, 𝑦 ,
+
+||ℙ(𝑇 𝑀 ≤ 𝑥, 𝑇 𝑆 ≤ 𝑦 ) − ℙ(𝑇 𝑀, 0 ≤ 𝑥, 𝑇 𝑆, 0 ≤ 𝑦 )||
+
+≤ ℙ(𝑐 𝑛 ) + ℙ(|||𝑇 (𝑟 ) 
+
+> 𝑀
+
+− 𝑇 𝑀, 0
+
+||| > 𝜀 ) + ℙ(|||𝑇 (𝑟 ) 
+
+> 𝑆
+
+− 𝑇 𝑆, 0
+
+||| > 𝜀 )+ ℙ(𝑥 − 𝜀 < 𝑇 𝑀, 0 ≤ 𝑥 + 𝜀 ) + ℙ(𝑦 − 𝜀 < 𝑇 𝑆, 0 ≤ 𝑦 + 𝜀 ).
+
+Letting first 𝑛, 𝑝 → ∞ and then 𝜀 ↓ 0, Lemma A.7 yields 
+
+ℙ(𝑇 𝑀 ≤ 𝑥, 𝑇 𝑆 ≤ 𝑦 ) → ℙ(𝐺 ≤ 𝑥 )Φ( 𝑦 ).
+
+Thus 
+
+𝑇 𝑀 ⇒ 𝐺, 𝑇 𝑆 ⇒ 𝑁 (0 , 1) , 𝑇 𝑀 ⟂⟂ 𝑇 𝑆 asymptotically .
+
+Let 
+
+𝑝 𝑀 = 1 − exp{− 𝜋 −1∕2 exp(− 𝑇 𝑀 ∕2)} , 𝑝 𝑆 = 1 − Φ( 𝑇 𝑆 ).
+
+Then 
+
+(𝑝 𝑀 , 𝑝 𝑆 ) ⇒ (𝑈 1, 𝑈 2), 𝑈 1, 𝑈 2ind 
+
+∼ Unif(0 , 1) .
+
+For 𝑗 = 1 , 2,
+
+𝐶 𝑗 = tan{ 𝜋 (1∕2 − 𝑈 𝑗 )} ∼ Cauchy(0 , 1) ,
+
+and 
+
+𝔼 𝑒 𝑖𝑡 (𝐶 1+𝐶 2)∕2 = 𝔼 𝑒 𝑖𝑡𝐶 1∕2 𝔼 𝑒 𝑖𝑡𝐶 2∕2 = 𝑒 −|𝑡 |∕2 𝑒 −|𝑡 |∕2 = 𝑒 −|𝑡 |.
+
+Hence (𝐶 1 + 𝐶 2)∕2 is standard Cauchy and 𝑇 𝐶 ⇒ 𝐶 .
+
+A.6. Proof of Theorem 4.2 
+
+Proof. Let 
+
+𝑛 = { ̂𝑟 = 𝑟 }, 𝑠 𝑝 = {2 tr( 𝐑 2)} 1∕2 , 𝑿 𝑛 = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜻 𝑡 .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 38 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Since ℙ(𝑐 𝑛 ) → 0, every display below is written on 𝑛 . Under 𝐏 𝝁 = 𝟎 ,
+
+√𝑛̄ 𝒁 = √𝑛 𝐃 −1∕2 𝐐 𝝁 + 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜻 𝑡 = 𝜸 𝑛 + 𝑿 𝑛 .
+
+The feasible-oracle replacement proof of Lemma A.5, with the deterministic mean term retained, gives 
+
+||||𝑛̄̂ 𝒁 ⊤̄̂ 𝒁 − 𝑛̄ 𝒁 ⊤̄ 𝒁 ||||
+
+𝑠 𝑝 
+
+= 𝑂 ℙ
+
+(
+
+𝑝 𝛿 ∕2 
+
+√𝑛 + 𝑝 1∕2+2 𝛿 log 𝑝 𝑛 +
+
+√𝑝 𝑛 + 𝜂 𝑛 (1 + Δ 𝑛 ) + 𝜂 2 
+
+> 𝑛
+
+(1 + Δ 𝑛 )
+
+)
+
+, (32) where 
+
+𝜂 𝑛 = 𝑝 𝛿 
+
+{( log 𝑝 𝑛 
+
+)1∕2 
+
++ log 𝑝 𝑛 
+
+}
+
+.
+
+Indeed, writing 
+
+√𝑛 (̄̂ 𝒁 −̄ 𝒁 ) = 𝑳 𝑛 + 𝑬 𝑛 ,
+
+where 𝑳 𝑛 is the random projection-estimation term already controlled in Lemma A.5, the mean contribution equals 
+
+𝑴 𝑛 = − 𝐃 −1∕2 (̂𝐏 − 𝐏 )𝐃 1∕2 𝜸 𝑛 + 𝒓 𝑑,𝜇 ,
+
+with 
+
+‖‖𝑴 𝑛 ‖‖2 ≤ 𝐶𝜂 𝑛 ‖‖𝜸 𝑛 ‖‖2 , ‖‖𝑴 𝑛 ‖‖22 ∕𝑠 𝑝 ≤ 𝐶𝜂 2 
+
+> 𝑛
+
+Δ𝑛 ,
+
+|2𝜸 ⊤𝑛 𝑴 𝑛 |
+
+𝑠 𝑝 
+
+≤ 𝐶𝜂 𝑛 
+
+‖‖𝜸 𝑛 ‖‖22
+
+𝑠 𝑝 
+
+= 𝐶𝜂 𝑛 Δ𝑛 ,
+
+𝔼 
+
+( 2𝑿 ⊤𝑛 𝑴 𝑛 
+
+𝑠 𝑝 
+
+)2
+
+≤ 𝐶 𝜂 2 
+
+> 𝑛
+
+𝜸 ⊤𝑛 𝐑 𝜸 𝑛 
+
+tr( 𝐑 2) = 𝐶𝜂 2 
+
+> 𝑛
+
+Λ𝑛 .
+
+Thus (32) is 𝑜 ℙ(1) under the local alternatives (13); when (14) is used for consistency, the same bound is 𝑜 ℙ(Δ 𝑛 ).For the oracle statistic, 
+
+𝑛̄ 𝒁 ⊤̄ 𝒁 − 𝑝 𝑠 𝑝 
+
+= (𝑿 𝑛 + 𝜸 𝑛 )⊤(𝑿 𝑛 + 𝜸 𝑛 ) − 𝑝 𝑠 𝑝 
+
+= Δ 𝑛 + 𝑊 𝑛 + 𝐷 𝑛 ,
+
+where 
+
+𝐷 𝑛 = 1
+
+𝑛𝑠 𝑝 𝑛 ∑
+
+> 𝑡 =1
+
+(𝜻 ⊤𝑡 𝜻 𝑡 − 𝑝 ),𝑊 𝑛 = 2
+
+𝑛𝑠 𝑝 
+
+∑
+
+> 1≤𝑠<𝑡 ≤𝑛
+
+𝜻 ⊤𝑠 𝜻 𝑡 + 2
+
+√𝑛 𝑠 𝑝 𝑛 ∑
+
+> 𝑡 =1
+
+𝜸 ⊤𝑛 𝜻 𝑡 .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 39 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+The diagonal term satisfies 
+
+𝔼 𝐷 2 
+
+> 𝑛
+
+= 1
+
+𝑛 2𝑠 2
+
+> 𝑝 𝑛
+
+∑
+
+> 𝑡 =1
+
+Var( 𝜻 ⊤𝑡 𝜻 𝑡 ) ≤ 𝐶 tr( 𝐑 2)
+
+𝑛𝑠 2
+
+> 𝑝
+
+≤ 𝐶𝑛 −1 , 𝐷 𝑛 = 𝑂 ℙ(𝑛 −1∕2 ).
+
+Let 
+
+𝑡 = 𝜎 (𝜻 1, … , 𝜻 𝑡 ), 𝑯 𝑡 −1 =
+
+> 𝑡 −1
+
+∑
+
+> 𝑠 =1
+
+𝜻 𝑠 , 𝑯 0 = 𝟎 .
+
+Then 
+
+𝑊 𝑛 =
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜉 𝑛𝑡 , 𝜉 𝑛𝑡 = 2
+
+𝑠 𝑝 
+
+(𝑛 −1 𝑯 𝑡 −1 + 𝑛 −1∕2 𝜸 𝑛 
+
+)⊤ 𝜻 𝑡 ,
+
+𝔼 (𝜉 𝑛𝑡 ∣ 𝑡 −1 ) = 0 ,𝑉 𝑛,𝛾 =
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 (𝜉 2 
+
+> 𝑛𝑡
+
+∣ 𝑡 −1 )= 4
+
+𝑠 2
+
+> 𝑝 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝑛 −1 𝑯 𝑡 −1 + 𝑛 −1∕2 𝜸 𝑛 
+
+)⊤ 𝐑 (𝑛 −1 𝑯 𝑡 −1 + 𝑛 −1∕2 𝜸 𝑛 
+
+)
+
+= 𝑉 1𝑛 + 𝑉 2𝑛 + Λ 𝑛 ,
+
+where 
+
+𝑉 1𝑛 = 4
+
+𝑛 2𝑠 2
+
+> 𝑝 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝑯 ⊤𝑡 −1 𝐑 𝑯 𝑡 −1 , 𝑉 2𝑛 = 8
+
+𝑛 3∕2 𝑠 2
+
+> 𝑝 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝑯 ⊤𝑡 −1 𝐑 𝜸 𝑛 .
+
+Since 𝔼 (𝑯 𝑡 −1 𝑯 ⊤𝑡 −1 ) = ( 𝑡 − 1) 𝐑 ,
+
+𝔼 𝑉 1𝑛 = 4
+
+𝑛 2𝑠 2
+
+> 𝑝 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝑡 − 1) tr( 𝐑 2) = 1 − 𝑛 −1 .
+
+The block quadratic-form calculation in Lemma A.7 gives 
+
+Var( 𝑉 1𝑛 ) ≤ 𝐶𝑛 −2 + 𝐶 tr( 𝐑 4)
+
+𝑛 tr 2(𝐑 2) ≤ 𝐶𝑛 −2 + 𝐶 (𝑛𝑝 )−1 .
+
+Moreover, 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝑯 𝑡 −1 =
+
+> 𝑛 −1
+
+∑
+
+> 𝑠 =1
+
+(𝑛 − 𝑠 )𝜻 𝑠 ,
+
+so 
+
+𝔼 𝑉 22𝑛 = 64 
+
+𝑛 3𝑠 4
+
+> 𝑝 𝑛 −1
+
+∑
+
+> 𝑠 =1
+
+(𝑛 − 𝑠 )2𝜸 ⊤𝑛 𝐑 3𝜸 𝑛 
+
+≤ 𝐶 𝜸 ⊤𝑛 𝐑 3𝜸 𝑛 
+
+𝑠 4
+
+> 𝑝
+
+≤ 𝐶 𝜆 2max (𝐑 )𝜸 ⊤𝑛 𝐑 𝜸 𝑛 
+
+tr 2(𝐑 2) ≤ 𝐶 Λ𝑛 
+
+𝑝 .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 40 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Under (13), 
+
+𝑉 𝑛,𝛾 = 1 + Λ 𝑛 + 𝑂 ℙ(𝑛 −1 + 𝑝 −1∕2 ) + 𝑜 ℙ(1) = 1 + Λ + 𝑜 ℙ(1) .
+
+The conditional Lindeberg condition is verified as follows. For every fixed 𝜀 > 0,
+
+𝐿 𝑛,𝜀 =
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 {𝜉 2
+
+> 𝑛𝑡
+
+𝟏 (|𝜉 𝑛𝑡 | > 𝜀 ) ∣ 𝑡 −1 }
+
+≤ 𝜀 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 {|𝜉 𝑛𝑡 |3 ∣ 𝑡 −1 }.
+
+For 𝒂 𝑡 −1 = 𝑛 −1 𝑯 𝑡 −1 + 𝑛 −1∕2 𝜸 𝑛 ,
+
+𝔼 {|𝜉 𝑛𝑡 |3 ∣ 𝑡 −1 } ≤ 𝐶𝑠 −3  
+
+> 𝑝
+
+{𝒂 ⊤𝑡 −1 𝐑 𝒂 𝑡 −1 }3∕2 .
+
+Using (𝑎 + 𝑏 )3∕2 ≤ 2( 𝑎 3∕2 + 𝑏 3∕2 ) and 𝑠 2 
+
+> 𝑝
+
+= 2 tr( 𝐑 2) ≍ 𝑝 ,
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝑠 −3  
+
+> 𝑝
+
+{𝒂 ⊤𝑡 −1 𝐑 𝒂 𝑡 −1 }3∕2 ≤ 𝐶 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+( 𝑡 𝑛 2
+
+)3∕2 
+
++ 𝐶 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+( 𝜸 ⊤𝑛 𝐑 𝜸 𝑛 
+
+𝑛𝑠 2
+
+> 𝑝
+
+)3∕2 
+
+≤ 𝐶𝑛 −1∕2 + 𝐶𝑛 −1∕2 Λ3∕2  
+
+> 𝑛
+
+= 𝑜 ℙ(1) .
+
+Hence 
+
+𝐿 𝑛,𝜀 = 𝑜 ℙ(1) .
+
+For fixed 𝑢 ∈ ℝ,
+
+𝔼 {𝑒 𝑖𝑢𝜉 𝑛𝑡 ∣ 𝑡 −1 } = 1 − 𝑢 2
+
+2 𝔼 (𝜉 2 
+
+> 𝑛𝑡
+
+∣ 𝑡 −1 ) + 𝑟 𝑛𝑡 ,
+
+where, by the conditional sub-Gaussian moment bound, 
+
+|𝑟 𝑛𝑡 | ≤ 𝐶 |𝑢 |3{𝔼 (𝜉 2 
+
+> 𝑛𝑡
+
+∣ 𝑡 −1 )} 3∕2 .
+
+Using (𝑎 + 𝑏 )3∕2 ≤ 2( 𝑎 3∕2 + 𝑏 3∕2 ),
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 {𝔼 (𝜉 2 
+
+> 𝑛𝑡
+
+∣ 𝑡 −1 )} 3∕2 
+
+≤ 𝐶 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+( 𝑡 𝑛 2
+
+)3∕2 
+
++ 𝐶 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+( 𝜸 ⊤𝑛 𝐑 𝜸 𝑛 
+
+𝑛𝑠 2
+
+> 𝑝
+
+)3∕2 
+
+≤ 𝐶𝑛 −1∕2 + 𝐶𝑛 −1∕2 Λ3∕2  
+
+> 𝑛
+
+.
+
+Thus 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+|𝑟 𝑛𝑡 | = 𝑜 ℙ(1) .
+
+Also, 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 {𝔼 (𝜉 2 
+
+> 𝑛𝑡
+
+∣ 𝑡 −1 )2} ≤ 𝐶𝑛 −1 + 𝐶𝑛 −1 Λ2 
+
+> 𝑛
+
+= 𝑜 (1) .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 41 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Iterating conditional expectations gives 
+
+𝔼 𝑒 𝑖𝑢𝑊 𝑛 = 𝔼 
+
+> 𝑛
+
+∏
+
+> 𝑡 =1
+
+[
+
+1 − 𝑢 2
+
+2 𝔼 (𝜉 2 
+
+> 𝑛𝑡
+
+∣ 𝑡 −1 ) + 𝑟 𝑛𝑡 
+
+]
+
+= 𝔼 exp 
+
+[
+
+− 𝑢 2
+
+2 𝑉 𝑛,𝛾 + 𝑜 ℙ(1) 
+
+]
+
+→ exp{− 𝑢 2(1 + Λ)∕2} .
+
+Therefore 
+
+𝑊 𝑛 ⇒ 𝑁 (0 , 1 + Λ) , 𝑛̄ 𝒁 ⊤̄ 𝒁 − 𝑝 𝑠 𝑝 
+
+⇒ 𝑁 (Δ , 1 + Λ) .
+
+The statistic 𝑇 𝑆 uses (𝑛 − 1) 𝑝 ∕( 𝑛 − 3) instead of 𝑝 and the feasible denominator. Since 
+
+(𝑛 − 1) 𝑝 ∕( 𝑛 − 3) − 𝑝 𝑠 𝑝 
+
+= 𝑂 (√𝑝 ∕𝑛 ) = 𝑜 (1) ,
+
+|||||
+
+{2[tr( ̂𝐑 2) − 𝑝 2∕( 𝑛 − 1)]} 1∕2 
+
+𝑠 𝑝 
+
+− 1 
+
+|||||
+
+= 𝑜 ℙ(1) ,
+
+and (32) is 𝑜 ℙ(1) under (13), Slutsky’s theorem yields 
+
+𝑇 𝑆 ⇒ 𝑁 (Δ , 1 + Λ) .
+
+Consequently, 
+
+ℙ𝝁 (𝑇 𝑆 > 𝑧 1− 𝛼 ) → 1 − Φ 
+
+( 𝑧 1− 𝛼 − Δ 
+
+√1 + Λ 
+
+)
+
+.
+
+For diverging alternatives, the exact local normal approximation is not needed. The martingale variance identity gives 
+
+𝔼 𝑊 2 
+
+> 𝑛
+
+= 𝔼 𝑉 𝑛,𝛾 = 1 − 𝑛 −1 + Λ 𝑛 , 𝑊 𝑛 = 𝑂 ℙ{(1 + Λ 𝑛 )1∕2 }.
+
+Together with 𝐷 𝑛 = 𝑂 ℙ(𝑛 −1∕2 ), (32), and 𝜂 𝑛 → 0,
+
+𝑇 𝑆 = Δ 𝑛 + 𝑂 ℙ{(1 + Λ 𝑛 )1∕2 } + 𝑜 ℙ(Δ 𝑛 ).
+
+Hence (14) implies 
+
+ℙ𝝁 (𝑇 𝑆 > 𝑧 1− 𝛼 ) → 1.
+
+Furthermore, 
+
+Λ𝑛 = 2𝜸 ⊤𝑛 𝐑 𝜸 𝑛 
+
+tr( 𝐑 2) ≤ 2𝜆 max (𝐑 ) ‖‖𝜸 𝑛 ‖‖22
+
+tr( 𝐑 2) ≤ 𝐶 Δ𝑛 
+
+√𝑝 ,
+
+so Δ𝑛 → ∞ implies (14). For the max statistic, for 𝑥 ≥ 0 and 𝐶 large enough, 
+
+ℙ
+
+(
+
+max 
+
+> 𝑖
+
+||𝑋 𝑛𝑖 || > 𝐶 √log 𝑝 + 𝑥 
+
+)
+
+≤
+
+> 𝑝
+
+∑
+
+> 𝑖 =1
+
+2 exp{− 𝑐 (𝐶 √log 𝑝 + 𝑥 )2} ≤ 2 exp(− 𝑐𝑥 2).
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 42 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Thus max 𝑖 |𝑋 𝑛𝑖 | = 𝑂 ℙ(√log 𝑝 ). Also, 
+
+√𝑛 ‖‖‖̄̂ 𝒁 −̄ 𝒁 ‖‖‖∞ = 𝑂 ℙ(𝜂 𝑛 
+
+√log 𝑝 ) + 𝑂 ℙ(𝜂 𝑛 𝑚 ∞),
+
+where the second term is the deterministic mean leakage through ̂ 𝐏 − 𝐏 . Since 𝜂 𝑛 → 0, if 𝑚 2∞ − 2 log 𝑝 → ∞, then for 
+
+𝑖 0 satisfying |𝛾 𝑛,𝑖 0 | = 𝑚 ∞,
+
+𝑇 𝑀 ≥
+
+(
+
+𝑚 ∞ − |𝑋 𝑛,𝑖 0 | − 𝑜 ℙ(𝑚 ∞) − 𝑂 ℙ(√log 𝑝𝜂 𝑛 )
+
+)2
+
+− 2 log 𝑝 + log log 𝑝 
+
+> ℙ
+
+←←←←←←←→ +∞ .
+
+Hence the max test has power tending to one. If either the max condition or (14) holds, at least one of ̂𝑝 𝑀 and ̂𝑝 𝑆 
+
+converges to zero in probability, and 
+
+𝑇 𝐶 = 12 tan{ 𝜋 (1∕2 − ̂𝑝 𝑀 )} + 12 tan{ 𝜋 (1∕2 − ̂𝑝 𝑆 )} ℙ
+
+←←←←←←←→ +∞ .
+
+A.7. Proof of Theorem 4.3 
+
+Proof. Let ℙ∗(⋅) = ℙ(⋅ ∣ 𝒀 1, … , 𝒀 𝑛 ,̃ 𝐀 1, … ,̃ 𝐀 𝐵 ). We give the argument for one bootstrap replication and suppress the replication index. Write ̃
+
+𝐏 =̃ 𝐀 ̃ 𝐀 ⊤,̃ 𝐐 = 𝐈 𝑝 −̃ 𝐏 , 𝒀 ∗ 
+
+> 𝑡
+
+=̃ 𝐀 ̂ 𝒇 𝑡 +̃ 𝜺 𝐼 𝑡 , ℙ∗(𝐼 𝑡 = 𝑗 ) = 𝑛 −1 .
+
+Since the fitted factors and centered residuals satisfy 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̂
+
+𝒇 𝑡 = 𝟎 ,
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̃
+
+𝜺 𝑡 = 𝟎 ,
+
+the bootstrap null mean is zero. The oracle projected bootstrap residuals are 
+
+𝜺 ◦ 
+
+> 𝑡
+
+=̃ 𝐐 ̃ 𝜺 𝑡 ,̂ 𝛀 ◦ = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝜺 ◦ 
+
+> 𝑡
+
+𝜺 ◦⊤𝑡 ,̂ 𝐃 ◦ = diag( ̂𝛀 ◦),̂ 𝜻 ◦ 
+
+> 𝑡
+
+=̂ 𝐃 −1∕2  
+
+> ◦
+
+𝜺 ◦ 
+
+> 𝑡
+
+,
+
+with ̂
+
+𝐑 ◦ = 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̂
+
+𝜻 ◦
+
+> 𝑡
+
+̂ 𝜻 ◦⊤𝑡 .
+
+Then 
+
+𝔼 ∗(̂ 𝜻 ◦ 
+
+> 𝐼 𝑡
+
+) = 𝟎 , Cov ∗(̂𝜻 ◦ 
+
+> 𝐼 𝑡
+
+) = ̂ 𝐑 ◦, Cov ∗(̂𝜻 ◦ 
+
+> 𝐼 𝑡
+
+,̂ 𝜻 ◦ 
+
+> 𝐼 𝑠
+
+) = 𝟎 (𝑡 ≠ 𝑠 ).
+
+The residual trace and denominator bounds established in Lemmas A.1 and A.4, applied conditionally to the empirical residual distribution, give 
+
+tr( ̂𝐑 2
+
+> ◦
+
+) − tr( 𝐑 2)tr( 𝐑 2) = 𝑜 ℙ(1) , 𝜆 max (̂𝐑 ◦) ≤ 𝐶 + 𝑜 ℙ(1) , max 
+
+> 𝑖 𝑝
+
+∑
+
+> 𝑗 =1
+
+̂𝑅 2 
+
+> ◦,𝑖𝑗
+
+≤ 𝐶 + 𝑜 ℙ(1) .
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 43 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Moreover, for every fixed 𝑞 ≥ 1,
+
+max  
+
+> 1≤𝑖 ≤𝑝
+
+𝔼 ∗|̂𝜁 ◦
+
+> 𝐼 𝑡 ,𝑖
+
+|𝑞 ≤ 𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑠 =1
+
+max  
+
+> 𝑖
+
+|̂𝜁 ◦
+
+> 𝑠,𝑖
+
+|𝑞 = 𝑂 ℙ{(log 𝑝 )𝑞 ∕2 },
+
+max  
+
+> 𝑡,𝑖
+
+|̂𝜁 ◦
+
+> 𝑡,𝑖
+
+| = 𝑂 ℙ(√log( 𝑛𝑝 )) , max  
+
+> 𝑖
+
+𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(̂𝜁 ◦
+
+> 𝑡,𝑖
+
+)4 = 𝑂 ℙ(1) .
+
+Set 
+
+𝑿 ∗ 
+
+> 𝑛
+
+= 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̂
+
+𝜻 ◦ 
+
+> 𝐼 𝑡
+
+.
+
+The conditional max Gaussian approximation yields 
+
+sup 
+
+> 𝑥
+
+||||ℙ∗ (
+
+max  
+
+> 𝑖
+
+|𝑋 ∗
+
+> 𝑛,𝑖
+
+|2 − 2 log 𝑝 + log log 𝑝 ≤ 𝑥 
+
+)
+
+− ℙ
+
+(
+
+max  
+
+> 𝑖
+
+𝐺 2 
+
+> ◦,𝑖
+
+− 2 log 𝑝 + log log 𝑝 ≤ 𝑥 ∣̂ 𝐑 ◦
+
+)||||
+
+≤ 𝐶 
+
+( log 7 𝑝 𝑛 
+
+)1∕6 
+
++ 𝐶 
+
+(
+
+𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+max  
+
+> 𝑖
+
+|̂𝜁 ◦
+
+> 𝑡,𝑖
+
+|3
+
+)1∕3 
+
+log 2∕3 𝑝 𝑛 1∕6 = 𝑜 ℙ(1) ,
+
+where 𝑮 ◦ ∣̂ 𝐑 ◦ ∼ 𝑁 (𝟎 ,̂ 𝐑 ◦). The empirical version of the extreme-value regularity condition and the preceding trace bounds imply 
+
+sup 
+
+> 𝑥
+
+||||ℙ
+
+(
+
+max  
+
+> 𝑖
+
+𝐺 2 
+
+> ◦,𝑖
+
+− 2 log 𝑝 + log log 𝑝 ≤ 𝑥 ∣̂ 𝐑 ◦
+
+)
+
+− 𝐹 𝐺 (𝑥 )|||| = 𝑜 ℙ(1) .
+
+For the oracle quadratic component, 
+
+(𝑿 ∗ 
+
+> 𝑛
+
+)⊤𝑿 ∗ 
+
+> 𝑛
+
+− 𝑝 = 2
+
+𝑛 
+
+∑
+
+> 1≤𝑠<𝑡 ≤𝑛
+
+(̂ 𝜻 ◦ 
+
+> 𝐼 𝑠
+
+)⊤̂ 𝜻 ◦ 
+
+> 𝐼 𝑡
+
++ 1
+
+𝑛 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+{( ̂𝜻 ◦ 
+
+> 𝐼 𝑡
+
+)⊤̂ 𝜻 ◦ 
+
+> 𝐼 𝑡
+
+− 𝑝 }.
+
+The diagonal term satisfies 
+
+𝔼 ∗
+
+[
+
+1
+
+𝑛 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+{( ̂ 𝜻 ◦ 
+
+> 𝐼 𝑡
+
+)⊤̂ 𝜻 ◦ 
+
+> 𝐼 𝑡
+
+− 𝑝 }
+
+]2
+
+≤ 𝐶𝑛 −1 tr( ̂𝐑 2
+
+> ◦
+
+),
+
+and hence is 𝑂 ∗
+
+> ℙ
+
+(𝑛 −1∕2 ) after normalization by {2 tr( ̂𝐑 2
+
+> ◦
+
+)} 1∕2 . For the cross term define 
+
+ ∗ 
+
+> 𝑡
+
+= 𝜎 (𝐼 1, … , 𝐼 𝑡 ), 𝑯 ∗ 
+
+> 𝑡 −1
+
+=
+
+> 𝑡 −1
+
+∑
+
+> 𝑠 =1
+
+̂
+
+𝜻 ◦ 
+
+> 𝐼 𝑠
+
+, 𝜉 ∗ 
+
+> 𝑛𝑡
+
+= 2
+
+𝑛 {2 tr( ̂𝐑 2
+
+> ◦
+
+)} 1∕2 (𝑯 ∗
+
+> 𝑡 −1
+
+)⊤̂ 𝜻 ◦ 
+
+> 𝐼 𝑡
+
+.
+
+Then 
+
+𝔼 ∗(𝜉 ∗ 
+
+> 𝑛𝑡
+
+∣  ∗
+
+> 𝑡 −1
+
+) = 0 ,
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 ∗(( 𝜉 ∗
+
+> 𝑛𝑡
+
+)2 ∣  ∗
+
+> 𝑡 −1
+
+) = 2
+
+𝑛 2 tr( ̂𝐑 2
+
+> ◦
+
+)
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+(𝑯 ∗
+
+> 𝑡 −1
+
+)⊤̂ 𝐑 ◦𝑯 ∗
+
+> 𝑡 −1
+
+= 1 + 𝑂 ∗
+
+> ℙ
+
+(𝑛 −1∕2 + 𝑝 −1∕2 ),
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 44 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 ∗{|𝜉 ∗
+
+> 𝑛𝑡
+
+|3 ∣  ∗
+
+> 𝑡 −1
+
+} = 𝑂 ∗
+
+> ℙ
+
+(𝑛 −1∕2 ).
+
+Thus, for every fixed 𝜖 > 0,
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 ∗{( 𝜉 ∗
+
+> 𝑛𝑡
+
+)2𝟏 (|𝜉 ∗
+
+> 𝑛𝑡
+
+| > 𝜖 ) ∣  ∗
+
+> 𝑡 −1
+
+} ≤ 𝜖 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+𝔼 ∗{|𝜉 ∗
+
+> 𝑛𝑡
+
+|3 ∣  ∗
+
+> 𝑡 −1
+
+} = 𝑜 ∗
+
+> ℙ
+
+(1) ,
+
+and the conditional martingale central limit theorem gives 
+
+sup 
+
+> 𝑦
+
+||||||
+
+ℙ∗
+
+( (𝑿 ∗ 
+
+> 𝑛
+
+)⊤𝑿 ∗ 
+
+> 𝑛
+
+− 𝑝 
+
+{2 tr( ̂𝐑 2
+
+> ◦
+
+)} 1∕2 ≤ 𝑦 
+
+)
+
+− Φ( 𝑦 )
+
+||||||
+
+= 𝑜 ℙ(1) .
+
+It remains to relate the oracle bootstrap statistics to the feasible bootstrap statistics. Let ̂ 𝐏 ∗ and ̂ 𝐐 ∗ = 𝐈 𝑝 −̂ 𝐏 ∗ be the loading-space estimator and projector computed from the bootstrap sample, and let 
+
+Δ∗ 
+
+> 𝑃
+
+=̂ 𝐏 ∗ −̃ 𝐏 ,̂ 𝐃 ∗ = diag 
+
+{
+
+𝑛 −1 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̂
+
+𝐐 ∗𝒀 ∗ 
+
+> 𝑡
+
+𝒀 ∗⊤𝑡 ̂ 𝐐 ∗
+
+}
+
+.
+
+On the bootstrap selection event, the conditional eigenspace expansion gives 
+
+‖Δ∗ 
+
+> 𝑃
+
+‖ = 𝑂 ∗
+
+> ℙ
+
+(𝜂 𝑛 ), max  
+
+> 𝑖
+
+‖𝒆 ⊤𝑖 Δ∗ 
+
+> 𝑃
+
+‖2 = 𝑂 ∗
+
+> ℙ
+
+(√log 𝑝 ∕𝑝 𝜂 𝑛 ), 𝜂 𝑛 = 𝑝 𝛿 
+
+( log 𝑝 𝑛 
+
+)1∕2 
+
++ 𝑝 𝛿 log 𝑝 𝑛 .
+
+Because 𝑛 −1 ∑𝑡 ̂ 𝒇 𝑡 = 𝟎 ,
+
+√𝑛̄ 𝒀 ∗ = 𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̃
+
+𝜺 𝐼 𝑡 ,̃ 𝐐 √𝑛̄ 𝒀 ∗ =̂ 𝐃 1∕2  
+
+> ◦
+
+𝑿 ∗ 
+
+> 𝑛
+
+.
+
+The max replacement follows from 
+
+max 
+
+> 𝑖
+
+||||√𝑛̄̂𝑍 ∗ 
+
+> 𝑖
+
+− 𝑋 ∗
+
+> 𝑛,𝑖
+
+|||| ≤ max 
+
+> 𝑖
+
+|||𝒆 ⊤𝑖 (̂𝐃 ∗−1∕2 −̂ 𝐃 −1∕2  
+
+> ◦
+
+)̃𝐐 √𝑛̄ 𝒀 ∗|||
+
++ max 
+
+> 𝑖
+
+|||𝒆 ⊤𝑖 ̂ 𝐃 ∗−1∕2 (̂𝐐 ∗ −̃ 𝐐 )√𝑛̄ 𝒀 ∗|||
+
+≤ 𝑂 ∗
+
+> ℙ
+
+(𝛿 ∗
+
+> 𝐷,𝑛
+
+) max  
+
+> 𝑖
+
+|𝑋 ∗
+
+> 𝑛,𝑖
+
+| + 𝑂 ∗
+
+> ℙ
+
+(√log 𝑝 ∕𝑝 𝜂 𝑛 )
+
+‖‖‖‖‖
+
+𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̃
+
+𝜺 𝐼 𝑡 
+
+‖‖‖‖‖2
+
+,
+
+where 
+
+𝛿 ∗ 
+
+> 𝐷,𝑛
+
+= max 
+
+> 𝑖
+
+|||̂𝐷 ∗ 
+
+> 𝑖
+
+∕̂𝐷 ◦,𝑖 − 1 ||| = 𝑂 ∗
+
+> ℙ
+
+(𝜂 𝑛 + 𝑛 −1∕2 ).
+
+Since 
+
+max  
+
+> 𝑖
+
+|𝑋 ∗
+
+> 𝑛,𝑖
+
+| = 𝑂 ∗
+
+> ℙ
+
+(√log 𝑝 ),
+
+‖‖‖‖‖
+
+𝑛 −1∕2 
+
+> 𝑛
+
+∑
+
+> 𝑡 =1
+
+̃
+
+𝜺 𝐼 𝑡 
+
+‖‖‖‖‖2
+
+= 𝑂 ∗
+
+> ℙ
+
+(√𝑝 ),
+
+we obtain 
+
+max 
+
+> 𝑖
+
+||||√𝑛̄̂𝑍 ∗ 
+
+> 𝑖
+
+− 𝑋 ∗
+
+> 𝑛,𝑖
+
+|||| = 𝑂 ∗
+
+> ℙ
+
+{( 𝜂 𝑛 + 𝑛 −1∕2 )√log 𝑝 }.
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 45 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+Under the polynomial growth conditions this is 𝑜 ∗
+
+> ℙ
+
+((log 𝑝 )−1∕2 ). For the quadratic statistic, the conditional version of Lemmas A.3 and A.5 gives the explicit expansion 
+
+𝑛̄̂ 𝒁 ∗⊤̄̂ 𝒁 ∗
+
+− ( 𝑿 ∗ 
+
+> 𝑛
+
+)⊤𝑿 ∗ 
+
+> 𝑛
+
+= ∗ 
+
+> 𝑃 ,𝑛
+
++ ∗
+
+> 𝑃 ,𝑛
+
+,
+
+where, in the strong-factor case, 
+
+|∗
+
+> 𝑃 ,𝑛
+
+|
+
+{tr( ̂𝐑 2
+
+> ◦
+
+)} 1∕2 = 𝑂 ∗
+
+> ℙ
+
+(√𝑝 ∕𝑛 ), |∗
+
+> 𝑃 ,𝑛
+
+|
+
+{tr( ̂𝐑 2
+
+> ◦
+
+)} 1∕2 = 𝑂 ∗
+
+> ℙ
+
+(
+
+𝑛 −1∕2 +
+
+√𝑝 𝑛 + log 𝑝 𝑛 
+
+)
+
+,
+
+and, in the weak-factor case, 
+
+|∗ 
+
+> 𝑃 ,𝑛
+
++ ∗
+
+> 𝑃 ,𝑛
+
+|
+
+{tr( ̂𝐑 2
+
+> ◦
+
+)} 1∕2 = 𝑂 ∗
+
+> ℙ
+
+(
+
+𝑝 𝛿 ∕2 
+
+√𝑛 + 𝑝 1∕2+2 𝛿 log 𝑝 𝑛 +
+
+√𝑝 𝑛 
+
+)
+
+.
+
+Hence 
+
+||||𝑛̄̂ 𝒁 ∗⊤̄̂ 𝒁 ∗
+
+− ( 𝑿 ∗ 
+
+> 𝑛
+
+)⊤𝑿 ∗
+
+> 𝑛
+
+||||
+
+{tr( ̂𝐑 2
+
+> ◦
+
+)} 1∕2 = 𝑜 ∗
+
+> ℙ
+
+(1) .
+
+The same diagonal normalization and leave-two-out trace expansion as Lemma A.4, conditionally applied to ̂ 𝜻 ◦ 
+
+> 𝐼 𝑡
+
+, yields 
+
+tr(( ̂ 𝐑 ∗)2) − 𝑝 2∕( 𝑛 − 1) − tr( ̂𝐑 2
+
+> ◦
+
+)tr( ̂𝐑 2
+
+> ◦
+
+) = 𝑜 ∗
+
+> ℙ
+
+(1) .
+
+Combining the oracle bootstrap limits with the feasible-oracle replacements gives 
+
+sup 
+
+> 𝑥
+
+|||ℙ∗(𝑇 ∗ 
+
+> 𝑀
+
+≤ 𝑥 ) − 𝐹 𝐺 (𝑥 )||| = 𝑜 ℙ(1) ,
+
+sup 
+
+> 𝑦
+
+|||ℙ∗(𝑇 ∗ 
+
+> 𝑆
+
+≤ 𝑦 ) − Φ( 𝑦 )||| = 𝑜 ℙ(1) ,
+
+sup 
+
+> 𝑥,𝑦
+
+|||ℙ∗(𝑇 ∗ 
+
+> 𝑀
+
+≤ 𝑥, 𝑇 ∗ 
+
+> 𝑆
+
+≤ 𝑦 ) − 𝐹 𝐺 (𝑥 )Φ( 𝑦 )||| = 𝑜 ℙ(1) .
+
+For 𝐵 → ∞,̂𝑝 boot  
+
+> 𝑀
+
+− ℙ∗(𝑇 ∗ 
+
+> 𝑀
+
+≥ 𝑇 𝑀 ) = 𝑂 ∗
+
+> ℙ
+
+(𝐵 −1∕2 ),̂ 𝑝 boot  
+
+> 𝑆
+
+− ℙ∗(𝑇 ∗ 
+
+> 𝑆
+
+≥ 𝑇 𝑆 ) = 𝑂 ∗
+
+> ℙ
+
+(𝐵 −1∕2 ).
+
+The preceding conditional distributional convergence gives ̂𝑝 boot  
+
+> 𝑀
+
+− 𝑝 𝑀, 0 = 𝑜 ℙ(1) ,̂ 𝑝 boot  
+
+> 𝑆
+
+− 𝑝 𝑆, 0 = 𝑜 ℙ(1) ,
+
+where 𝑝 𝑀, 0 and 𝑝 𝑆, 0 are the corresponding first-order null 𝑝 -values. The Cauchy statistic follows by applying 
+
+(𝑝 𝑀 , 𝑝 𝑆 ) ↦ 12 tan{ 𝜋 (1∕2 − 𝑝 𝑀 )} + 12 tan{ 𝜋 (1∕2 − 𝑝 𝑆 )} 
+
+on compact subsets away from 0 and 1, while the endpoint neighborhoods have probability 𝑜 (1) under the null calibration. 
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 46 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 
+
+## References 
+
+Ayyala, D.N., Park, J., Roy, A., 2017. Mean vector testing for high-dimensional dependent observations. Journal of Multivariate Analysis 153, 136–155. Bai, J., Ng, S., 2002. Determining the number of factors in approximate factor models. Econometrica 70, 191–221. Bai, Z., Saranadasa, H., 1996. Effect of high dimension: by an example of a two sample problem. Statistica Sinica 6, 311–329. Basu, S., Michailidis, G., 2015. Regularized estimation in sparse high-dimensional time series models. The Annals of Statistics 43, 1535–1567. Benjamini, Y., Hochberg, Y., 1995. Controlling the false discovery rate: A practical and powerful approach to multiple testing. Journal of the Royal Statistical Society Series B 57, 289–300. Cai, T.T., Liu, W., Xia, Y., 2014. Two-sample test of high dimensional means under dependence. Journal of the Royal Statistical Society Series B 76, 349–372. Chakraborty, A., Chaudhuri, P., 2017. Tests for high-dimensional data based on means, spatial signs and spatial ranks. The Annals of Statistics 45, 771–799. Chen, L.S., Paul, D., Prentice, R.L., Wang, P., 2011. A regularized hotelling’s 𝑇 2 test for pathway analysis in proteomic studies. Journal of the American Statistical Association 106, 1345–1360. Chen, S.X., Qin, Y.L., 2010. A two-sample test for high-dimensional data with applications to gene-set testing. The Annals of Statistics 38, 808–835. Chernozhukov, V., Chetverikov, D., Kato, K., 2013. Gaussian approximations and multiplier bootstrap for maxima of sums of high-dimensional random vectors. The Annals of Statistics 41, 2786–2819. Cho, S., Lim, J., Ayyala, D.N., Park, J., Roy, A., 2019. Note on mean vector testing for high-dimensional dependent observations. ArXiv:1904.09344. Donoho, D., Jin, J., 2004. Higher criticism for detecting sparse heterogeneous mixtures. The Annals of Statistics 32, 962–994. Feng, L., Jiang, T., Li, X., Liu, B., 2024. Asymptotic independence of the sum and maximum of dependent random variables with applications to high-dimensional tests. Statistica Sinica 34, 1745–1763. Feng, L., Jiang, T., Liu, B., Xiong, W., 2022. Max-sum tests for cross-sectional independence of high-dimensional panel data. The Annals of Statistics 50, 1124–1143. Feng, L., Sun, F., 2016. Spatial-sign based high-dimensional location test. Electronic Journal of Statistics 10, 2420–2434. Forni, M., Hallin, M., Lippi, M., Reichlin, L., 2000. The generalized dynamic-factor model: Identification and estimation. The Review of Economics and Statistics 82, 540–554. Gregory, K.B., Carroll, R.J., Baladandayuthapani, V., Lahiri, S.N., 2015. A two-sample test for equality of means in high dimension. Journal of the American Statistical Association 110, 837–849. Hall, P., Jin, J., 2010. Innovated higher criticism for detecting sparse signals in correlated noise. The Annals of Statistics 38, 1686–1732. Hallin, M., Liška, R., 2007. Determining the number of factors in the general dynamic factor model. Journal of the American Statistical Association 102, 603–617. He, Y., Zhang, M., Zhang, X., Zhou, W., 2020. High-dimensional two-sample mean vectors test and support recovery with factor adjustment. Computational Statistics & Data Analysis 151, 107004. Hotelling, H., 1931. The generalization of student’s ratio. The Annals of Mathematical Statistics 2, 360–378. Huang, Y., Li, C., Li, R., Yang, S., 2022. An overview of tests on high-dimensional means. Journal of Multivariate Analysis 188, 104813. Lam, C., Yao, Q., 2012. Factor modeling for high-dimensional time series: Inference for the number of factors. The Annals of Statistics 40, 694–726. Lam, C., Yao, Q., Bathia, N., 2011. Estimation of latent factors for high-dimensional time series. Biometrika 98, 901–918. Li, H., Aue, A., Paul, D., Peng, J., Wang, P., 2020. An adaptable generalization of hotelling’s 𝑇 2 test in high dimension. The Annals of Statistics 48, 1815–1847. Liu, Y., Xie, J., 2020. Cauchy combination test: A powerful test with analytic 𝑝 -value calculation under arbitrary dependency structures. Journal of the American Statistical Association 115, 393–402. Ljung, G.M., Box, G.E.P., 1978. On a measure of lack of fit in time series models. Biometrika 65, 297–303. Merlevède, F., Peligrad, M., Rio, E., 2011. A bernstein type inequality and moderate deviations for weakly dependent sequences. Probability Theory and Related Fields 151, 435–474. Pan, J., Yao, Q., 2008. Modelling multiple time series via common factors. Biometrika 95, 365–379. Peña, D., Box, G.E.P., 1987. Identifying a simplifying structure in time series. Journal of the American Statistical Association 82, 836–843. Srivastava, M.S., Du, M., 2008. A test for the mean vector with fewer observations than the dimension. Journal of Multivariate Analysis 99, 386–402. Srivastava, M.S., Katayama, S., Kano, Y., 2013. A two sample test in high dimensional data. Journal of Multivariate Analysis 114, 349–358. Stock, J.H., Watson, M.W., 2002. Forecasting using principal components from a large number of predictors. Journal of the American Statistical Association 97, 1167–1179. Wang, L., Peng, B., Li, R., 2015. A high-dimensional nonparametric multivariate test for mean vector. Journal of the American Statistical Association 110, 1658–1669. Wang, R., Shao, X., 2020. Hypothesis testing for high-dimensional time series via self-normalization. The Annals of Statistics 48, 2728–2758. Xu, G., Lin, L., Wei, P., Pan, W., 2016. An adaptive two-sample test for high-dimensional means. Biometrika 103, 609–624. Zhang, D., Wu, W.B., 2017. Gaussian approximation for high dimensional time series. The Annals of Statistics 45, 1895–1919. Zhang, M., Zhou, C., He, Y., Zhang, X., 2018. Adaptive test for mean vectors of high-dimensional time series data with factor structure. Journal of the Korean Statistical Society 47, 450–470. Zhang, S., Chen, S.X., Qiu, Y., 2025. Mean tests for high-dimensional time series. Statistica Sinica 35, 171–201. Zhong, P.S., Chen, S.X., Xu, M., 2013. Tests alternative to higher criticism for high-dimensional means under sparsity and column-wise dependence. The Annals of Statistics 41, 2820–2851. Zhou, C., Kong, X.B., 2015. Testing of high dimensional mean vectors via approximate factor model. Journal of Statistical Planning and Inference 167, 216–227. 
+
+J.Y. Wang et al.: Preprint submitted to Elsevier Page 47 of 47 Factor-Adjusted Location Tests for High-Dimensional Time Series 0.0 0.2 0.4 0.6 0.8 1.0 
+
+Normal errors 
+
+Number of nonzero means Power 1 5 10 18 27 33 40 48 58 70 85 100 FA−Max FA−Sum FA−CC 0.0 0.2 0.4 0.6 0.8 1.0 
+
+t(5) errors 
+
+Number of nonzero means Power 1 5 10 18 27 33 40 48 58 70 85 100 FA−Max FA−Sum FA−CC 
+
+Figure 1: Empirical power in the dynamic-factor design as a function of the number of nonzero mean components. 0.0 0.2 0.4 0.6 0.8 1.0 
+
+Normal errors             
+
+> Number of nonzero means Power 14812 18 27 33 40 48 58 70 85 100 0.0 0.2 0.4 0.6 0.8 1.0
+
+t(5) errors             
+
+> Number of nonzero means Power 14812 18 27 33 40 48 58 70 85 100 Methods FA−Max FA−Sum FA−CC SD WS ZCQ
+
+Figure 2: Empirical power in the no-factor benchmark as a function of the number of nonzero mean components. J.Y. Wang et al.: Preprint submitted to Elsevier Page 48 of 47

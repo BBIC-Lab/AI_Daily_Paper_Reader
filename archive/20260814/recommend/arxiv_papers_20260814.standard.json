@@ -1,0 +1,408 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-13T20:48:50.971253+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 56,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 94,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 16,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 11,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 17
+  },
+  "deep_dive": [
+    {
+      "id": "2608.08636v1",
+      "source": "arxiv",
+      "title": "Enhancing Scientific Named Entity Recognition via Large Language Models: A Type-driven Multi-task Learning Approach",
+      "abstract": "Scientific named entity recognition (SciNER) plays a crucial role in information extraction and knowledge discovery from scientific texts. Recently, large language models (LLMs) have demonstrated the capacity to achieve competitive SciNER performance with minimal human effort. Existing research highlights the importance of incorporating candidate entity type information for accurate entity recognition and classification by LLMs. However, when too many candidate entity types are provided in the prompt, LLMs struggle to accurately recognize and label entities in scientific texts, where entity types are more complex than in general domains. To address this challenge, we propose TdSciNER, a type-driven approach that effectively leverages entity type information to enhance SciNER performance. In TdSciNER, we first design an entity type filter model to identify the most likely entity types present in a given sentence. Subsequently, we introduce an auxiliary multi-class entity typing task within a multi-task learning framework alongside SciNER to obtain richer contextual representations. Then, we develop a novel demonstration selection strategy based on sentence similarity and entity type diversity to activate the in-context learning capabilities of LLMs, thereby improving entity recognition accuracy across diverse scientific domains. Experiments on three datasets demonstrate that our method achieves performance comparable to fully supervised models. Further analysis validates that each entity type-driven component in TdSciNER contributes to the improvement of SciNER performance. This work provides valuable insights for future advancements in SciNER and broader information extraction tasks in scientific text mining.",
+      "authors": [
+        "Tong Bao",
+        "Yi Zhao",
+        "Heng Zhang",
+        "Chengzhi Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.DL",
+        "cs.IR"
+      ],
+      "published": "2026-08-09T10:59:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.08636v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Leverages pretrained large language models for downstream scientific NER tasks",
+      "llm_evidence_cn": "利用预训练大语言模型提升下游科学命名实体识别任务",
+      "llm_evidence": "利用预训练大语言模型提升下游科学命名实体识别任务",
+      "canonical_evidence": "利用预训练大语言模型提升下游科学命名实体识别任务",
+      "llm_tldr_en": "Type-driven multi-task learning approach that improves LLM-based SciNER by using candidate entity type information",
+      "llm_tldr_cn": "提出类型驱动的多任务学习方法，利用实体类型信息提升大语言模型科学命名实体识别",
+      "llm_tldr": "提出类型驱动的多任务学习方法，利用实体类型信息提升大语言模型科学命名实体识别",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09088v1",
+      "source": "arxiv",
+      "title": "A Multi-Scale Temporal Framework with Dynamic Fusion for EEG-Based Emotion Recognition",
+      "abstract": "Mixed emotions represent a clinically relevant but still underexplored target for automatic emotion recognition. EEG provides millisecond-level access to neural activity, yet most EEG pipelines analyze the signal through a single temporal window, thereby fixing the temporal structure available to the model. This study introduces a multi-scale temporal framework for EEG-based emotion recognition. The EEG waveform is decomposed into windows of one or several durations, processed by a shared attention-based encoder, and integrated through a dynamic fusion module that assigns sample-specific weights across temporal scales. The framework is evaluated under a subject-independent protocol in binary and three-class settings, with the three-class task including the mixed affective category. The best results are 65.22% for the two-class task and 45.43% for the three-class task. Both are obtained with three-scale dynamic-fusion configurations and remain substantially above the full-signal baseline. The best-performing temporal scales differ between the two tasks. Dynamic fusion outperforms concatenation in the highest-scoring two-class configuration and slightly exceeds it in the highest-scoring three-class configuration, although these multi-scale settings require substantially more computation than the full-signal baseline.",
+      "authors": [
+        "Stefanos Gkikas",
+        "Yang Guo",
+        "Guangliang Li",
+        "Raul Fernandez Rojas",
+        "Giorgos Giannakakis",
+        "Randy Gomez"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG",
+        "cs.SD"
+      ],
+      "published": "2026-08-10T03:39:20+00:00",
+      "link": "https://arxiv.org/pdf/2608.09088v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-scale temporal framework for EEG emotion recognition using shared attention encoder and dynamic fusion",
+      "llm_evidence_cn": "用于EEG情绪识别的多尺度时间框架，使用共享注意力编码器和动态融合",
+      "llm_evidence": "用于EEG情绪识别的多尺度时间框架，使用共享注意力编码器和动态融合",
+      "canonical_evidence": "用于EEG情绪识别的多尺度时间框架，使用共享注意力编码器和动态融合",
+      "llm_tldr_en": "Introduces a multi-scale temporal EEG framework with dynamic fusion for subject-independent emotion recognition.",
+      "llm_tldr_cn": "提出具有动态融合的多尺度时间EEG框架，用于受试者无关的情绪识别。",
+      "llm_tldr": "提出具有动态融合的多尺度时间EEG框架，用于受试者无关的情绪识别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09331v1",
+      "source": "arxiv",
+      "title": "RAG-Audio: Retrieval-Augmented Generation for Faithful Brain-to-Audio Reconstruction",
+      "abstract": "Brain-to-audio reconstruction is limited by \\emph{prior domination}: when a pretrained generator is conditioned on a weak neural signal, it produces realistic but stimulus-inaccurate audio. We introduce RAG-Audio, which decodes fMRI into a semantic audio embedding, retrieves a matching real-audio exemplar, and initializes the frozen generator's sampling trajectory from that exemplar while retaining the decoded embedding as conditioning. On Brain2Music, RAG-Audio improves 10-way stimulus identification from $0.14$--$0.18$ for direct generation, near the $0.10$ chance level, to $0.40$--$0.43$, comparable to retrieval. It also reduces Fréchet Audio Distance by roughly an order of magnitude, from $13.49$ to $1.25$ for AudioLDM. RAG-Audio approaches nearest-neighbor retrieval in identification while remaining generative; its higher FAD is expected because retrieval directly replays real audio. An autoregressive negative control, which lacks an initializable latent trajectory, shows no comparable gain, attributing the improvement to trajectory initialization. These results suggest that retrieval-guided initialization can mitigate prior domination in brain-to-audio generation.",
+      "authors": [
+        "Ambuj Mehrish",
+        "Sebastiano Vascon"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI"
+      ],
+      "published": "2026-08-10T09:10:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.09331v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Decodes fMRI signals into semantic audio embeddings for faithful brain-to-audio reconstruction",
+      "llm_evidence_cn": "将fMRI信号解码为语义音频嵌入，实现大脑到音频的重建",
+      "llm_evidence": "将fMRI信号解码为语义音频嵌入，实现大脑到音频的重建",
+      "canonical_evidence": "将fMRI信号解码为语义音频嵌入，实现大脑到音频的重建",
+      "llm_tldr_en": "RAG-Audio uses retrieval-augmented generation to reconstruct audio from fMRI with high fidelity, directly advancing neural decoding.",
+      "llm_tldr_cn": "RAG-Audio用检索增强生成从fMRI高保真重建音频，直接推进神经解码。",
+      "llm_tldr": "RAG-Audio用检索增强生成从fMRI高保真重建音频，直接推进神经解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09468v1",
+      "source": "arxiv",
+      "title": "MixFormer: Linear Transformer with Mixture of Memory Experts",
+      "abstract": "State Space Models (SSMs), as a mainstream research direction of linear Transformers, aim to achieve higher efficiency than standard Transformers in long-context modeling. However, existing SSMs suffer from limited input adaptivity and constrained memory capacity, leading to information loss when modeling ultra-long sequences. To address these limitations, we propose MixFormer, a novel linear Transformer that integrates a Mixture-of-Memory-Experts (MoE) mechanism. Specifically, the model maintains differentiated memory states through multiple collaborating memory experts and employs a novel Time-Aware Linear Attention (TALA) mechanism, which leverages learnable exponential decay functions and positional biases to dynamically update memory. This design enables the model to selectively reinforce important historical information while effectively mitigating memory dilution, substantially improving long-range dependency modeling. Experiments on long-sequence text and image generation tasks demonstrate that MixFormer not only achieves significant performance gains but also provides a more sustainable computational backbone for the next generation of web infrastructure.",
+      "authors": [
+        "Yu Guo",
+        "Lei Duan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-10T11:38:30+00:00",
+      "link": "https://arxiv.org/pdf/2608.09468v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "linear Transformer sequence model with time-aware memory for long sequences",
+      "llm_evidence_cn": "用于长序列的带时间感知记忆的线性Transformer序列模型",
+      "llm_evidence": "用于长序列的带时间感知记忆的线性Transformer序列模型",
+      "canonical_evidence": "用于长序列的带时间感知记忆的线性Transformer序列模型",
+      "llm_tldr_en": "MixFormer improves long-context sequence modeling with mixture-of-memory-experts and time-aware linear attention.",
+      "llm_tldr_cn": "MixFormer通过混合记忆专家和时间感知线性注意力改善了长序列建模。",
+      "llm_tldr": "MixFormer通过混合记忆专家和时间感知线性注意力改善了长序列建模。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.10120v1",
+      "source": "arxiv",
+      "title": "ChronoSSM: Training for Temporally Aware Representations in Autoregressive State Space Models",
+      "abstract": "Modern sequence models, from Transformers to State Space Models, have enabled powerful generative modeling across diverse domains, yet they are typically trained to predict what happens while treating when it happens as a secondary concern. In data-mining settings where events are associated with explicit timing information, this separation can limit temporal reasoning, anomaly detection, and faithful reconstruction of event chronology. A common strategy is to treat timing as an auxiliary signal, training a separate timing model using representations learned solely for event prediction. However, this two-stage approach implicitly assumes that representations optimized for event prediction already contain sufficient temporal structure.   We introduce ChronoSSM, an autoregressive State Space Model (SSM) that jointly models events and timestamps with a shared backbone trained using combined token and temporal generation objectives. We compare the joint regime, where temporal supervision updates the backbone, with the two-stage regime, where timing is learned only using the frozen event representations. Across four domains spanning dense and partial timestamp supervision, joint training consistently makes inter-arrival information more recoverable from frozen representations without any systematic degradation in content-generation quality overall. Our results show that temporal supervision can produce more temporally informative representations without materially degrading autoregressive event modeling.",
+      "authors": [
+        "Adrien Schoen",
+        "Nachiketa Ratnakar Patil",
+        "Arjun Bhagoji",
+        "Francesco Bronzino"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.NI"
+      ],
+      "published": "2026-08-10T18:35:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.10120v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Trains autoregressive state space models to learn temporally aware representations for event sequence data",
+      "llm_evidence_cn": "训练自回归状态空间模型为事件序列数据学习具有时序感知的表示",
+      "llm_evidence": "训练自回归状态空间模型为事件序列数据学习具有时序感知的表示",
+      "canonical_evidence": "训练自回归状态空间模型为事件序列数据学习具有时序感知的表示",
+      "llm_tldr_en": "Proposes ChronoSSM to jointly model event timing and prediction so sequence representations retain temporal structure.",
+      "llm_tldr_cn": "提出ChronoSSM联合建模事件时序与预测，使序列表示保留时间结构。",
+      "llm_tldr": "提出ChronoSSM联合建模事件时序与预测，使序列表示保留时间结构。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.08439v1",
+      "source": "arxiv",
+      "title": "FSTC-Encoder: Feature--Spatial--Temporal Correlation Learning for Generalizable RF Sensing",
+      "abstract": "Heterogeneous RF sensing differs substantially in feature structure, spatial layout, and temporal scale, making existing models difficult to reuse across devices, environments, and RF modalities. We propose FSTC-Encoder, which unifies heterogeneous RF representation learning through feature, spatial, and temporal correlation modeling. Structure-aware feature encoding accommodates different signal structures, set-based spatial encoding aggregates variable observations, and hierarchical temporal encoding jointly captures local variations and long-range dependencies. Across sensing tasks and modalities, FSTC-Encoder retains the same spatial--temporal backbone architecture while varying only the feature configuration and task head. Across Widar3.0, CSI-Bench, and XRF55, FSTC-Encoder achieves 92.15% mean Accuracy under multi-factor cross-domain protocols, ranks first on three of four additional sensing tasks, remains consistently strong across WiFi, millimeter-wave radar, and RFID, and reduces the cross-modality performance gap from 18.85% to 12.93% through cross-RF learning. These results demonstrate that FSTC-Encoder achieves high domain robustness, task generality, and modality extensibility.",
+      "authors": [
+        "Jing Wang",
+        "Zhu Wang",
+        "Changlong Cheng",
+        "Yifan Guo",
+        "Yin Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-09T03:10:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.08439v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unified representation learning across RF features, spatial layouts, and temporal scales",
+      "llm_evidence_cn": "跨RF特征、空间布局和时间尺度的统一表示学习",
+      "llm_evidence": "跨RF特征、空间布局和时间尺度的统一表示学习",
+      "canonical_evidence": "跨RF特征、空间布局和时间尺度的统一表示学习",
+      "llm_tldr_en": "Proposes FSTC-Encoder for generalizable RF representation learning through feature-spatial-temporal correlation modeling.",
+      "llm_tldr_cn": "提出FSTC-Encoder，通过特征-空间-时间相关性建模实现可泛化的RF表示学习。",
+      "llm_tldr": "提出FSTC-Encoder，通过特征-空间-时间相关性建模实现可泛化的RF表示学习。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.08424v1",
+      "source": "arxiv",
+      "title": "ARC: Augmented-Rank Conformalization for Changepoint Localization --- Finite-Sample Validity and Distribution-Robust Efficiency",
+      "abstract": "Conformal changepoint localization turns any score into a confidence set for the changepoint with finite-sample coverage. Coverage is universal; efficiency is not. The oracle score is a likelihood ratio, so practical scores estimate density ratios, and set length deteriorates under heavy tails, skewness, and distribution shift, where no length guarantee applies. We propose ARC (Augmented-Rank Conformalization), a family of scores depending on the data only through within-segment ranks: rank-CUSUM location and scale channels, their fixed combinations, and a lightweight neural score frozen after synthetic training. Every ARC score inherits finite-sample coverage for every frozen weight configuration, including random initialization and mistraining. The main result is an efficiency transfer theorem: the entire ARC confidence set is almost surely invariant under strictly increasing marginal transforms, so the set length distribution depends on the data pair only through its rank structure, and lengths certified once hold verbatim across its monotone orbit, whereas a plug-in score's length changes with every re-expression. Across different rank structures lengths do change, and are reported as such. Classical rank-test theory positions ARC as targeting the optimal invariant score at bounded cost. Simulations confirm nominal coverage for all scores, including sabotaged networks, identical sets under monotone transforms where plug-in scores inflate, and smooth degradation where plug-in sets become vacuous; on the well-log benchmark ARC localizes annotated shifts to three to five candidates and flags misfit by an empty set. Two boundaries are stated rather than hidden: serial dependence destroys exactness, and trend-type alternatives lie outside the piecewise-exchangeable model.",
+      "authors": [
+        "Chenchen Peng",
+        "Mixia Wu",
+        "Qijing Yan",
+        "Zhiqi Shen",
+        "Jie Zhang"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-09T02:44:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.08424v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "presents conformal changepoint localization, a method for analyzing sequential data over time with distribution-robust confidence sets",
+      "llm_evidence_cn": "提出增广秩共形变点定位方法，为时序数据分析提供分布鲁棒的置信集合",
+      "llm_evidence": "提出增广秩共形变点定位方法，为时序数据分析提供分布鲁棒的置信集合",
+      "canonical_evidence": "提出增广秩共形变点定位方法，为时序数据分析提供分布鲁棒的置信集合",
+      "llm_tldr_en": "Proposes augmented-rank conformal scores for changepoint localization with finite-sample validity and distribution-robust efficiency.",
+      "llm_tldr_cn": "提出增广秩共形分数以实现变点定位，具备有限样本有效性和分布鲁棒效率。",
+      "llm_tldr": "提出增广秩共形分数以实现变点定位，具备有限样本有效性和分布鲁棒效率。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.08483v1",
+      "source": "arxiv",
+      "title": "Factor-Adjusted Location Tests for High-Dimensional Time Series",
+      "abstract": "We study high-dimensional one-sample mean testing for time series with strong common serial dependence driven by latent dynamic factors. After estimating the dynamic factor loading space from lagged autocovariance, we project the data onto its orthogonal complement and construct three factor-adjusted tests: a max test for sparse alternatives, a quadratic test for dense alternatives, and a Cauchy combination test for unknown sparsity. The idiosyncratic component is allowed to be non-Gaussian sub-Gaussian vector white noise. We establish the Gumbel limit of the max statistic, the normal limit and local power function of the quadratic statistic, their asymptotic independence, and the validity of the Cauchy combination. In the strong-factor case, the refined projection expansion shows that the quadratic statistic remains valid for dimensions as large as $p=o(n^2)$. A random-loading residual bootstrap is developed for finite-sample calibration. Simulation studies and a real data application demonstrate reliable size control and competitive power for high-dimensional observations with strong dependence.",
+      "authors": [
+        "Jiyang Wang",
+        "Xifen Huang",
+        "Long Feng"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-08-09T04:57:11+00:00",
+      "link": "https://arxiv.org/pdf/2608.08483v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "high-dimensional time series analysis with latent dynamic factors",
+      "llm_evidence_cn": "含潜在动态因子的高维时间序列分析",
+      "llm_evidence": "含潜在动态因子的高维时间序列分析",
+      "canonical_evidence": "含潜在动态因子的高维时间序列分析",
+      "llm_tldr_en": "Introduces factor-adjusted tests for high-dimensional time series with dynamic factor dependence, improving mean inference for sequential data.",
+      "llm_tldr_cn": "提出因子调整检验处理高维时间序列中的动态因子依赖，改善序列数据均值推断。",
+      "llm_tldr": "提出因子调整检验处理高维时间序列中的动态因子依赖，改善序列数据均值推断。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.08508v1",
+      "source": "arxiv",
+      "title": "Towards Adaptive Super-Resolution and Quality Assessment via Test-Time Adaptation",
+      "abstract": "This paper presents doctoral research on adaptive video super-resolution and perceptual quality modeling under real-world conditions. Existing video super-resolution (VSR) methods struggle to generalize under unknown degradations arising from heterogeneous devices, codecs, and network environments. We address this challenge through test-time adaptation (TTA), a unified paradigm that improves robustness and perceptual quality without retraining or high-quality supervision. Specifically, we: 1) propose a TTA-based framework for no-reference video quality assessment (VQA), where adapted quality predictions provide perceptual guidance for VSR under unseen distortions; 2) develop a transformer-based architecture for screen-content super-resolution that preserves text clarity and structural fidelity; and 3) introduce a region-aware TTA strategy that selectively refines text and non-text regions without requiring high-resolution ground truth. Experimental results across diverse benchmarks demonstrate consistent improvements in perceptual quality and readability. We also outline ongoing work toward fully adaptive video enhancement systems capable of generalizing across unseen domains.",
+      "authors": [
+        "Ajeet Kumar Verma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-09T06:10:20+00:00",
+      "link": "https://arxiv.org/pdf/2608.08508v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "test-time adaptation for domain shift without retraining or labels",
+      "llm_evidence_cn": "用于适应未知域移的测试时自适应，无需重新训练或标签",
+      "llm_evidence": "用于适应未知域移的测试时自适应，无需重新训练或标签",
+      "canonical_evidence": "用于适应未知域移的测试时自适应，无需重新训练或标签",
+      "llm_tldr_en": "Proposes test-time adaptation framework for video super-resolution and quality assessment under unseen degradations.",
+      "llm_tldr_cn": "提出测试时自适应框架，用于未知降级下的视频超分辨率和质量评估。",
+      "llm_tldr": "提出测试时自适应框架，用于未知降级下的视频超分辨率和质量评估。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.08646v1",
+      "source": "arxiv",
+      "title": "Multi-Relational Knowledge Graph Enhanced Embedding for Trajectory-User Linking",
+      "abstract": "Trajectory-User Linking (TUL) aims to identify the owner of an anonymous trajectory from a set of candidate users, providing a basis for user mobility analysis and personalized location-aware services. Existing methods often learn Point of Interest (POI), temporal, and semantic features independently, make limited use of structural knowledge shared across trajectories, and compress structural and sequential information before classification. To address these issues, we propose Multi-Relational Knowledge Graph Enhanced Embedding for Trajectory-User Linking (MakeTUL), which, to the best of our knowledge, is the first attempt to introduce knowledge graph representation learning into TUL. MakeTUL organizes visit-time, POI-category, and transfer-speed information as typed relations in a multi-relational mobility knowledge graph, allowing heterogeneous mobility semantics to jointly constrain the learned embeddings. The resulting POI representations are further enriched with high-order co-occurrence patterns extracted from the trajectory collection, providing structural prior knowledge for sparse and overlapping trajectories. By integrating these prior-enhanced representations with temporal, category, and transfer information, the trajectory sequence learning module captures ordered mobility patterns, while a dual-branch classification layer preserves and combines global structural evidence and sequential evidence at the decision level.",
+      "authors": [
+        "Zhifeng Chu",
+        "Bin Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-08-09T11:41:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.08646v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Trajectory-user linking as sequential trajectory analysis using KG-enhanced embeddings with temporal features",
+      "llm_evidence_cn": "利用知识图谱增强嵌入和时序特征进行轨迹序列分析以实现轨迹-用户关联",
+      "llm_evidence": "利用知识图谱增强嵌入和时序特征进行轨迹序列分析以实现轨迹-用户关联",
+      "canonical_evidence": "利用知识图谱增强嵌入和时序特征进行轨迹序列分析以实现轨迹-用户关联",
+      "llm_tldr_en": "Proposes MakeTUL, a knowledge graph enhanced embedding method for trajectory-user linking using temporal and sequential information.",
+      "llm_tldr_cn": "提出MakeTUL，一种利用时序和序列信息进行轨迹-用户关联的知识图谱增强嵌入方法。",
+      "llm_tldr": "提出MakeTUL，一种利用时序和序列信息进行轨迹-用户关联的知识图谱增强嵌入方法。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

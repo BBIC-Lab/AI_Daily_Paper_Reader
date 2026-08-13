@@ -1,0 +1,811 @@
+Title: Multi-Relational Knowledge Graph Enhanced Embedding for Trajectory-User Linking
+
+URL Source: https://arxiv.org/pdf/2608.08646v1
+
+Published Time: Tue, 11 Aug 2026 01:16:54 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# Multi-Relational Knowledge Graph Enhanced Embedding for Trajectory-User Linking ⋆
+
+Zhifeng Chu a, Bin Wang a,∗, Xi Zhai b, Yan Ma a and Xiong Li c,∗
+
+> a
+
+the College of Information, Mechanical and Electrical Engineering, Shanghai Normal University, Shanghai, 201400, China 
+
+> b
+
+Shanghai Urban-Rural Construction & Transportation Development Institute, Shanghai, 200032, China 
+
+> c
+
+Zhongke Zidong Information Technology, Beijing, 100000, China 
+
+A R T I C L E I N F O 
+
+Keywords :Trajectory-User Linking Multi-Relational Knowledge Graph Trajectory Representation Learning Human Mobility Location-Based Social Networks 
+
+A B S T R A C T 
+
+Trajectory-User Linking (TUL) aims to identify the owner of an anonymous trajectory from a set of candidate users, providing a basis for user mobility analysis and personalized location-aware services. Existing methods often learn Point of Interest (POI), temporal, and semantic features independently, make limited use of structural knowledge shared across trajectories, and compress structural and sequential information before classification. To address these issues, we propose Multi-Rel ational Knowledge Graph Enhanced Embedding for Trajectory-User Linking (MakeTUL), which, to the best of our knowledge, is the first attempt to introduce knowledge graph representation learning into TUL. MakeTUL organizes visit-time, POI-category, and transfer-speed information as typed relations in a multi-relational mobility knowledge graph, allowing heterogeneous mobility semantics to jointly constrain the learned embeddings. The resulting POI representations are further enriched with high-order co-occurrence patterns extracted from the trajectory collection, providing structural prior knowledge for sparse and overlapping trajectories. By integrating these prior-enhanced representations with temporal, category, and transfer information, the trajectory sequence learning module captures ordered mobility patterns, while a dual-branch classification layer preserves and combines global structural evidence and sequential evidence at the decision level. Experiments on Foursquare-NYC, Foursquare-TKY, and Foursquare-JKT are evaluated using ACC@1, ACC@5, Macro-Precision, Macro-Recall, and Macro-F1. MakeTUL achieves the best results on all five metrics across six user-scale settings. On Foursquare-JKT with 1,400 users, ACC@1 and Macro-F1 exceed the strongest baselines by 10.67% and 12.70%, respectively, showing that multi-relational knowledge and structural priors provide useful complementary information for trajectory owner classification, particularly under larger candidate-user settings.The source code is available at 
+
+https://github.com/superior-DL/MakeTUL .
+
+1. Introduction 
+
+The widespread deployment of Global Positioning System (GPS)-enabled devices and Location-Based Social Networks (LBSNs) has generated large volumes of check-in trajectories that record users’ visits to different locations over time Zheng (2015); Graser, Jalali, Lampert, Weißenfeld and Janowicz (2024); Kong, Chen, Hou, Wang and Xia (2023). These trajectories provide an important data source for understanding user mobility patterns and supporting location-aware services Yabe, Tsubouchi, Shimizu, Sekimoto, Sezaki, Moro and Pentland (2024); Du, Aoki and Fujiwara (2025). TULER Gao, Zhou, Zhang, Trajcevski, Luo and Zhang (2017) first formulated and defined Trajectory-User Linking (TUL) as the task of associating an anonymous trajectory with the user who most likely generated it. Given a set of anonymous trajectories and a set of candidate users, TUL learns a mapping from each anonymous trajectory to its corresponding trajectory owner. Unlike conventional trajectory classification, which usually distinguishes a limited number of transportation modes or activity types, TUL treats candidate users as classification categories. The resulting large label space, together with the sparsity and irregularity of check-in records, makes the extraction of discriminative user mobility patterns particularly challenging. 
+
+> ⋆
+> ∗
+
+Corresponding author 
+
+1000569132@smail.shnu.edu.cn (Z. Chu); binwang@shnu.edu.cn (B. Wang); jessie_zx28@163.com (X. Zhai); 
+
+ma-yan@shnu.edu.cn (Y. Ma); li.xiong@foxmail.com (X. Li) 
+
+(Z. Chu); (B. Wang); (X. Zhai); (Y. Ma); (X. Li) 
+
+> ORCID
+
+(s): 
+
+> 1
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 1 of 22 arXiv:2608.08646v1 [cs.LG] 9 Aug 2026 Before deep representation learning became the dominant solution, TUL and related trajectory classification tasks were mainly addressed using trajectory similarity measures and statistical learning models. Longest Common Sub-Sequence (LCSS) Ying, Lu, Lee, Weng and Tseng (2010) measures the similarity between two trajectories by identifying their longest matched subsequence. Dynamic Time Warping (DTW) Keogh and Pazzani (2000) aligns trajectories with different temporal progressions and calculates their alignment cost. Spatial-Temporal Similarity (STS) Li, Hung, Liu, Pan, Peng and Chan (2021) evaluates the consistency of trajectories by jointly considering spatial and temporal proximity. Signature Representation (SR) Jin, Hua, Xu and Zhou (2019) constructs compact trajectory signatures for trajectory comparison and retrieval. Linear Discriminant Analysis (LDA) Shahdoosti and Mirzapour (2017) classifies trajectories by projecting manually constructed features into a discriminative subspace, whereas Support Vector Machine (SVM) Cortes and Vapnik (1995) learns a decision boundary between user classes from trajectory feature vectors. Decision Tree (DT) Jiang (2018) and Random Forest (RF) Breiman (2001) have also been applied to mobility pattern classification using statistical trajectory features. Although these methods provide interpretable solutions, their performance depends strongly on predefined distance functions and feature engineering, which limits their ability to represent sparse, irregular, and high-dimensional check-in trajectories. Deep learning methods subsequently shifted the focus from manually designed features to trajectory representation learning. TULER Gao et al. (2017) learns POI embeddings using a Word2Vec-based strategy and employs recurrent neural networks (RNNs) to capture sequential POI transition patterns. TULVAE Zhou, Gao, Trajcevski, Zhang, Zhong and Zhang (2018) introduces a semi-supervised variational autoencoder to exploit unlabeled trajectories and model the hierarchical latent semantics of human mobility. DeepTUL Miao, Wang, Yu, Zhang and Qi (2020) combines historical trajectories with an attentive recurrent architecture to capture multi-periodic user mobility patterns. GNNTUL Zhou, Chen, Wu, Cao and Zhang (2021a) constructs a check-in graph that integrates geographical proximity and POI transition information and applies a graph neural network to learn location representations. MainTUL Chen, Li, Huang, Yu, Jiang and Dong (2022a) uses an input-trajectory branch and a historical-trajectory branch to transfer mobility knowledge through mutual distillation. S2TUL Deng, Sun, Zhao, Liu and Zheng (2023) constructs multiple trajectory-level homogeneous and heterogeneous graphs to model repeatability, spatial proximity, and spatio-temporal proximity among trajectories. AttnTUL Chen, Huang, Yu, Jiang and Dong (2024) introduces hierarchical spatio-temporal attention to jointly model local transition dependencies and global trajectory relationships. TULMGAT Li, Sun, Shao, Zhen, Xu and Wang (2025) constructs multi-scale check-in-oriented graphs and learns trajectory representations through graph attention and cross-scale information fusion. ScaleTUL Zhang, Chen, Zhao, Qi, Jiang and Yu (2025) combines spatio-temporal trajectory augmentation with a dual-stream representation network to capture short-term and long-term mobility dependencies in large-scale TUL settings. HGTUL Chang, Zhu, Hu and Qin (2026) models POIs as vertices and trajectories as hyperedges to capture high-order inter-trajectory associations induced by shared POIs. These studies have progressively strengthened sequential, spatial, and structural trajectory modeling, but the embedding, trajectory encoding, and classification stages still leave several aspects insufficiently explored. First, existing embedding schemes usually rely on randomly initialized lookup tables or Word2Vec-based POI pretraining, without explicitly modeling the relations between POIs and other mobility semantics. As shown in Fig. 1(a), the Continuous Bag-of-Words (CBOW) Mikolov, Sutskever, Chen, Corrado and Dean (2013) objective uses the neighboring POIs 𝑝 1 and 𝑝 3 to predict the center POI 𝑝 2, thereby learning POI representations from local co-occurrence contexts. However, visit time, POI category, and transition semantics are generally represented by inde-pendently initialized embeddings and subsequently combined with POI embeddings through addition or concatenation. Such operations treat different semantic factors as separate identifiers rather than relationally constrained knowledge. Figure 1(b) provides a more structured description of the same trajectory. For example, 𝑝 1 and 𝑝 2 belong to category 𝑐 1
+
+and are visited at time entities 𝑡 1 and 𝑡 2, respectively; 𝑝 3 and 𝑝 4 belong to category 𝑐 2 and correspond to 𝑡 3 and 𝑡 4; and 𝑝 5
+
+is associated with category 𝑐 3 and time entity 𝑡 5. Meanwhile, the directed transitions among consecutive POIs preserve the movement order and provide the basis for distinguishing different transfer-speed relations. Existing independent embedding strategies cannot fully preserve these heterogeneous associations. Second, trajectory encoding is commonly driven by the observed POI sequence of the current trajectory, with limited incorporation of prior structural knowledge extracted from the trajectory collection. Sequence-based methods mainly describe local transition dependencies, whereas graph-based structural information is often processed independently and fused only after trajectory encoding. Consequently, the POI representations entering the sequence learning process are not directly conditioned on high-order POI co-occurrence patterns across trajectories, which is particularly restrictive when an anonymous trajectory is sparse or shares many POIs with different users. Third, many existing methods combine structural and sequential representations through addition or concatenation and then use a single classification branch. This early compression   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 2 of 22
+
+does not retain the independent prediction evidence provided by global trajectory structure and fine-grained sequential patterns, making it difficult to adjust their relative confidence at the decision level. p1      
+
+> p2
+> p3
+> p4
+> p5
+> p1
+> p2
+> p3
+> p4
+> p5
+> t1t2t3
+> c1c2c3
+> POIs
+> POI categories
+> t4t5
+> POI visit time
+> (a) (b)
+> POIs
+
+Figure 1: Comparison between context-based POI embedding and multi-relational semantic association modeling. (a) CBOW learns the representation of 𝑝 2 from its neighboring POIs 𝑝 1 and 𝑝 3. (b) POIs are connected to visit-time and category entities through typed associations, while directed POI transitions are retained for relation-aware mobility modeling. To address these issues, we propose Multi-Rel ational Knowledge Graph Enhanced Embedding for Trajectory-User 
+
+Linking (MakeTUL). To the best of our knowledge, this is the first work to introduce knowledge graph representation learning into the TUL task. MakeTUL constructs a multi-relational mobility knowledge graph containing visit-time relations, POI-category relations, and transfer-speed relations, and projects entities into relation-specific spaces. Through multimodal embedding, the resulting POI, time, category, and transfer-relation embeddings are jointly constrained by the multi-relational structure rather than learned as mutually independent lookup vectors. Based on the knowledge graph enhanced POI embeddings, the Trajectory Prior Structure Extraction Module further incorporates prior structural knowledge into POI representations. These representations, together with time, category, and transfer-relation embeddings, are then passed to the Trajectory Sequence Learning Module to model the ordered interactions among prior-enhanced check-in representations. Therefore, the sequence representation of an anonymous trajectory depends not only on its observed POI order but also on global structural regularities extracted from the trajectory collection. When the current trajectory is sparse or its visited POIs overlap with those of multiple users, the extracted prior knowledge provides additional structural context for trajectory encoding. At the prediction stage, MakeTUL retains the global trajectory representation and the sequence representation as two independent prediction branches in the Dual-Branch Classification Layer . Each branch produces its own user prediction scores, after which a learnable temperature-calibrated fusion mechanism combines the two prediction distributions. This design preserves the different evidence conveyed by trajectory prior structure and sequential mobility patterns and adjusts the confidence of the two branches at the prediction level. The TUL classification objective and the knowledge graph representation objective are jointly optimized so that multi-relational embedding learning directly supports trajectory owner prediction. The main contributions of this work are summarized as follows: • We propose a multi-relational knowledge graph enhanced multimodal embedding method for TUL. Visit-time, POI-category, and transfer-speed semantics are organized as typed relations, enabling POI, time, category, and transfer-relation embeddings to be jointly constrained in relation-specific representation spaces. • We develop a prior-enhanced trajectory representation architecture consisting of the Trajectory Prior Structure Extraction Module and the Trajectory Sequence Learning Module . The former extracts prior structural knowl-edge from high-order POI co-occurrence patterns, while the latter integrates this knowledge with multimodal semantic embeddings to model the ordered mobility patterns of anonymous trajectories.   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 3 of 22
+
+• We design a Dual-Branch Classification Layer that preserves the global trajectory representation and the sequence representation in separate prediction branches and combines their user prediction distributions through learnable temperature-calibrated fusion. • We conduct extensive experiments on three real-world datasets. Comparisons with representative TUL methods and component-wise analyses validate the effectiveness of MakeTUL. 
+
+2. Related work 
+
+Existing deep learning methods for TUL can be broadly divided into two categories according to how they organize mobility information: sequence-based modeling methods and graph-based modeling methods. Sequence-based methods represent an anonymous trajectory as an ordered sequence of check-ins and focus on capturing intra-trajectory dependencies. Graph-based methods organize POIs or trajectories as graph elements and exploit spatial or inter-trajectory structures. The following subsections review these two research directions. 
+
+2.1. Sequence-based modeling methods 
+
+Sequence-based methods regard a trajectory as a chronologically ordered POI sequence and learn a trajectory representation by modeling successive check-in records. TULER Gao et al. (2017) first formulates the TUL problem and employs a Word2Vec-based embedding strategy to map POIs into a low-dimensional space. The resulting POI embeddings are processed by RNNs to capture sequential POI transitions and predict the trajectory owner. Although TULER establishes the basic sequence-classification paradigm for TUL, its supervised learning process is sensitive to sparse labeled trajectories. TULVAE Zhou et al. (2018) extends recurrent trajectory modeling with a semi-supervised Variational Autoencoder (VAE). It introduces latent variables at different levels of the recurrent architecture to model hierarchical mobility semantics and incorporates unlabeled trajectories into model training. STULIG Zhou, Liu, Zhang and Trajcevski (2020) also adopts a generative learning framework. It pretrains POI representations with the Continuous Bag-of-Words technique and learns disentangled trajectory representations from labeled and unlabeled mobility data. These generative methods alleviate the dependence on labeled samples, but their trajectory representations remain primarily derived from the sequential organization of individual trajectories. DeepTUL Miao et al. (2020) introduces an attentive recurrent architecture to exploit historical trajectories. It models periodic mobility regularities at different temporal scales and uses attention to identify historical movement patterns relevant to the current anonymous trajectory. AdattTUL Gao, Zhang, Yao, Li, Mei and Zhou (2020) incorporates adversarial transfer learning into trajectory representation learning to improve the adaptability of the learned mobility patterns. TGAN Zhou, Yin, Trajcevski, Zhang, Wu and Khokhar (2021c) employs adversarial trajectory generation to augment sparse check-in data and enhance the representation of user mobility patterns. SML-TUL Zhou, Dai, Gao, Wang and Zhong (2021b) applies contrastive learning under spatial and temporal constraints to learn representations that preserve the consistency of trajectories generated by the same user. MainTUL Chen et al. (2022a) constructs two complementary sequence encoders for the current trajectory and its augmented historical trajectory. Mobility knowledge is transferred between the two encoders through mutual distillation, enabling the current trajectory branch to benefit from long-term historical patterns. ScaleTUL Zhang et al. (2025) further considers large-scale TUL scenarios and develops a dual-stream representation network. Its short-term and long-term encoders capture mobility dependencies from trajectories with different temporal ranges, while spatio-temporal augmentation and representation alignment are used to improve trajectory representation learning. These methods demonstrate the effectiveness of recurrent architectures, attention mechanisms, generative learning, knowledge distillation, and contrastive learning for extracting sequential user mobility patterns. Nevertheless, their representations are mainly learned from the POI order and contextual attributes within individual trajectories. Relations among POIs, semantic entities, and trajectories are not explicitly represented by a unified relational structure, which limits the use of global mobility regularities as prior knowledge for trajectory encoding. 
+
+2.2. Graph-based modeling methods 
+
+Graph-based methods extend trajectory modeling from Euclidean sequences to non-Euclidean structures. GN-NTUL Zhou et al. (2021a) constructs a spatially aware POI transition graph by combining consecutive check-in transitions with geographical proximity. A graph neural network aggregates neighboring POI information to learn location representations for trajectory owner prediction. TULRN Sang, Xie, Chen and Zhao (2023) extends this   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 4 of 22
+
+framework by incorporating a prior road network and using Rényi-entropy-based weights to guide neighbor sampling, thereby assigning different importance to POIs during graph aggregation. Unlike POI-level graph methods, S2TUL Deng et al. (2023) represents trajectories as graph nodes and explicitly models inter-trajectory relationships. It constructs repeatability, spatial-proximity, and spatio-temporal-proximity graphs and integrates different relation types through graph convolution. The learned trajectory-level representation is combined with a location-level sequential representation, while a greedy relinking strategy is used to handle temporal conflicts among predicted trajectories. AttnTUL Chen et al. (2024) jointly constructs local and global spatial graphs. Its local graph describes transitions between geographical regions, whereas its global graph captures relationships among trajectories and users. Hierarchical spatio-temporal attention is then used to integrate local sequential dependencies and global trajectory context. TULMGAT Li et al. (2025) constructs multi-scale check-in-oriented graphs to retain trajectory context and spatial connectivity. It employs graph attention to model interactions among check-in nodes and combines representations obtained at different sampling scales. HGTUL Chang et al. (2026) further introduces a trajectory hypergraph in which POIs are represented as vertices and trajectories are represented as hyperedges. This formulation enables a hyperedge to connect multiple POIs and captures high-order associations among trajectories through shared POI vertices. A hypergraph attention mechanism is used to distinguish the contributions of different POIs to each trajectory representation. The above methods show that graph structures can capture spatial connectivity, POI transitions, inter-trajectory relationships, and high-order POI co-occurrence patterns. However, existing graph-based TUL methods primarily focus on topological connectivity. Visit time, POI category, and mobility transfer information are generally treated as node attributes or auxiliary features rather than typed relational knowledge. Consequently, the semantic roles of different relations are not explicitly distinguished during trajectory representation learning. Knowledge graphs provide another graph-based paradigm for organizing heterogeneous mobility information. Although knowledge graph modeling has not formed an established research direction in TUL, it has been explored in the closely related POI recommendation task. Meta-SKR Cui, Sun, Zhao, Yin and Zheng (2021) constructs a sequential knowledge graph that preserves POI check-in order and integrates sequential, spatio-temporal, and social knowledge for next POI recommendation. Its knowledge-aware embedding module learns entities and relations while meta-learning is used to adapt the model to sparse user check-in patterns. STKGRec Chen, Wan, Guo, Huang, Zheng, Li, Lin and Lin (2022b) constructs a spatial-temporal knowledge graph directly from user check-in sequences. It defines spatial-temporal transfer relations between POIs and exploits knowledge graph representations to model users’ long-term and short-term preferences. Unlike methods that only append temporal and geographical attributes to POI embeddings, STKGRec organizes mobility transitions as relational facts and incorporates them into the recommendation process. UPSTKGRec Sang, Yang, Zhang and Liao (2025) builds a user preference knowledge graph containing spatio-temporal transfer features. It models POI preferences from both individual-user and global-user perspectives and constructs user preference graphs from local knowledge triples. The resulting graph representations are used to strengthen the connection between users and candidate POIs. DecKG Zheng, Qu, Ye, Chen, Shi and Yin (2025) introduces knowledge graph enhancement into decentralized POI recommendation. It pretrains a knowledge graph without exposing private user–POI interactions and assigns relevant subgraphs to individual users, allowing auxiliary knowledge to complement limited local check-in data. These studies indicate that knowledge graphs can organize users, POIs, categories, temporal contexts, and mobility transitions through explicitly typed relations. However, their learning objectives are designed to rank or predict candidate POIs rather than identify the trajectory owner of an anonymous trajectory. Moreover, they do not consider how multi-relational mobility embeddings should be integrated with trajectory-level prior structures and independent user-classification branches for TUL. Different from existing studies, MakeTUL constructs a multi-relational mobility knowledge graph containing visit-time, POI-category, and transfer-speed relations to jointly constrain multimodal mobility embeddings. The knowledge graph enhanced POI embeddings are processed by the Trajectory Prior Structure Extraction Module to obtain POI representations containing global structural knowledge. These representations are subsequently integrated with time, category, and transfer-relation embeddings in the Trajectory Sequence Learning Module , allowing the trajectory representation to capture both global POI co-occurrence regularities and ordered mobility patterns. Finally, the Dual-Branch Classification Layer retains the global trajectory representation and the sequence representation in separate prediction branches and combines their user prediction distributions through learnable temperature-calibrated fusion.   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 5 of 22
+
+3. Preliminaries 
+
+This section introduces the basic concepts used in this paper and formally defines the TUL problem. 
+
+Definition 1 (Check-in Record). A check-in record is denoted by 𝑞 = ( 𝑢, 𝑝, 𝑐, 𝑡 ), where 𝑢 is the user who generates the record, 𝑝 is the visited POI, 𝑐 is the semantic category of the POI, and 𝑡 is the corresponding visit timestamp. Each POI is identified by a unique identifier and is associated with a geographical coordinate consisting of longitude and latitude. 
+
+Definition 2 (Trajectory). Let  = { 𝑢 1, 𝑢 2, … , 𝑢 𝑀 } denote the set of candidate users, where 𝑀 is the number of users. A trajectory generated by a user 𝑢 ∈  during a predefined time interval 𝜏 is a sequence of check-in records arranged in chronological order, denoted by  = ( 𝑞 1, 𝑞 2, … , 𝑞 𝐿 ), where 𝐿 is the trajectory length. The interval 𝜏 
+
+determines how continuous check-in records are divided into individual trajectories. A trajectory with a known user label is referred to as a linked trajectory, whereas a trajectory whose generating user is unknown is referred to as an anonymous trajectory. 
+
+Definition 3 (Knowledge Graph). A knowledge graph is a structured representation of entities and their relations. It consists of a set of triples in the form ⟨ℎ, 𝑟, 𝑜 ⟩, where ℎ denotes the head entity, 𝑟 denotes the relation, and 𝑜 denotes the tail entity. Each triple expresses a relational fact indicating that the head entity is connected to the tail entity through the specified relation. 
+
+Problem Formulation. Given a set of anonymous trajectories  = { 1, 2, … , 𝑁 } and a set of candidate users 
+
+ = {𝑢 1, 𝑢 2, … , 𝑢 𝑀 } who generated these trajectories, the TUL task aims to learn a classifier that links each anonymous trajectory to its corresponding trajectory owner:  ↦  .
+
+4. Methodology 
+
+Figure 2 presents the overall architecture of the proposed MakeTUL. Given a trajectory, the model takes its POI sequence, time sequence, and category sequence as input. MakeTUL consists of four main components. First, 
+
+Construction of Multi-Relational Knowledge Graph organizes visit time, POI category, and movement speed as relational facts. Second, Multimodal Embedding Based on Knowledge Graph learns the representations of POIs, time entities, category entities, and transfer relations in relation-specific spaces. Third, Trajectory Representation Modeling 
+
+extracts structural prior knowledge from the trajectory collection and learns a sequence representation from prior-enhanced check-ins. Finally, User Linking retains the global trajectory representation and the sequence representation in two prediction branches and combines their classification results. p1                         
+
+> t1
+> p2
+> t2
+> p3
+> t3...
+> Visit relation knowledge graph
+> p1
+> p2
+> p3
+> c1
+> c2
+> c3
+> ...
+> Category relation knowledge graph
+> p1
+> p2
+> p4
+> p3
+> p5
+> ...
+> Transfer speed relation knowledge graph
+> Construction of Multi -Relational
+> Knowledge Graph
+> (h,r,o)
+> (h,r,o' )
+> Negative
+> sampling
+> Optimization
+> fpos
+> fneg
+> Multimodal Embedding Based on Knowledge Graph Trajectory Sequence Inputs
+> POI sequence ...
+> Time
+> sequence ...
+> Category sequence ...
+> p1p2p3pn
+> t1t2t3tn
+> c1c2c3cn
+> (p,r v,t)
+> (p,r c,t)
+> (p,r s,p next )
+> EP
+> ET
+> EC
+> ES
+> p1p3
+> p2
+> p4
+> p5
+> Construct Trajectory
+> Hypergraph
+> ... Trajectory Graph
+> Convolutional Layer
+> J ×
+> Trajectory Representation Modeling
+> Trajectory Prior Structure Extraction Module
+> Trajectory Sequence Learning Module
+> Addition
+> Trajectory Encoder
+> Layer
+> Q
+> K
+> V
+> Dual-Branch Classification Layer
+> User Linking
+> Prior
+> Knowledge
+> +-h
+> r
+> o
+> MrMr
+> +-h
+> r
+> o'
+> MrMr
+> Positive sample score calculation
+> Negative sample score calculation
+
+: Head embedding 
+
+> after projection
+
+:Relation  embedding 
+
+:Tail  embedding after  
+
+> projection
+> Mr
+
+: Relationship 
+
+> projection matrix
+
+: POI 
+
+> embedding
+
+: Time 
+
+> embedding
+
+: Category 
+
+> embedding
+
+:Transfer speed 
+
+> embedding
+
+Figure 2: Overall architecture of MakeTUL. 
+
+4.1. Construction of multi-relational knowledge graph 
+
+A check-in trajectory contains several types of mobility information. The POI sequence records the visited locations, the time sequence describes when these locations are visited, and the category sequence provides the functional semantics of the visited POIs. In addition, the movement between consecutive POIs reflects how a user transfers from one location to another. To organize these heterogeneous factors in a unified structure, MakeTUL constructs a multi-relational mobility knowledge graph containing visit-time relations, POI-category relations, and transfer-speed relations. 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 6 of 22 4.1.1. Visit-time relation 
+
+The visit timestamp of each check-in is mapped to one of 48 half-hour time entities within a day. These time entities retain fine-grained temporal information. To distinguish the general temporal context of a visit, they are further divided into four periods. For the 𝑖 -th check-in, the visit-time relation is defined as 
+
+𝑟 𝑣 𝑖 =
+
+⎧⎪⎪⎨⎪⎪⎩
+
+𝑟 midnight , 1 ≤̄ 𝑡 𝑖 ≤ 12 ,𝑟 morning , 13 ≤̄ 𝑡 𝑖 ≤ 24 ,𝑟 af ternoon , 25 ≤̄ 𝑡 𝑖 ≤ 36 ,𝑟 evening , 37 ≤̄ 𝑡 𝑖 ≤ 48 ,
+
+(1) where ̄ 𝑡 𝑖 denotes the discretized visit-time entity. Accordingly, the visit-time information of POI 𝑝 𝑖 is represented by the triple ⟨𝑝 𝑖 , 𝑟 𝑣 𝑖 ,̄ 𝑡 𝑖 ⟩. The time entity preserves the specific half-hour interval, while the relation indicates the broader period in which the visit occurs. 
+
+4.1.2. POI-category relation 
+
+Each POI is associated with a semantic category that describes its function, such as restaurant, office, or shopping venue. The category information of POI 𝑝 𝑖 is represented by the triple ⟨𝑝 𝑖 , 𝑟 𝑐 , 𝑐 𝑖 ⟩, where 𝑟 𝑐 denotes the POI-category relation and 𝑐 𝑖 is the category entity associated with 𝑝 𝑖 . This relation explicitly connects a POI with its functional semantics instead of treating the POI and its category as unrelated identifiers. 
+
+4.1.3. Transfer-speed relation 
+
+The movement between two consecutive POIs is described by a transfer-speed relation. For the transition from 𝑝 𝑖 
+
+to 𝑝 𝑖 +1 , the movement speed is calculated as 
+
+𝑣 𝑖 = 𝑑 (𝑝 𝑖 , 𝑝 𝑖 +1 )
+
+𝑡 𝑖 +1 − 𝑡 𝑖 
+
+, (2) where 𝑑 (𝑝 𝑖 , 𝑝 𝑖 +1 ) is the geographical distance between the two POIs, and 𝑡 𝑖 +1 − 𝑡 𝑖 is the time interval between the corresponding check-ins. The geographical distance is calculated from the longitude and latitude of the two POIs using the haversine distance. The calculated speed is assigned to a predefined speed interval. Let  = { 𝛽 0, 𝛽 1, … , 𝛽 𝑆 } denote the ordered speed boundaries, where 𝑆 is the number of speed intervals. For a valid speed 𝑣 𝑖 , its interval index 𝑏 (𝑣 𝑖 ) is determined by 
+
+𝑏 (𝑣 𝑖 ) = 𝑗, if 𝛽 𝑗 −1 ≤ 𝑣 𝑖 < 𝛽 𝑗 , 𝑗 = 1 , 2, … , 𝑆. (3) The movement from 𝑝 𝑖 to 𝑝 𝑖 +1 is then represented by the triple ⟨𝑝 𝑖 , 𝑟 𝑠 𝑏 (𝑣 𝑖 ), 𝑝 𝑖 +1 ⟩, where 𝑟 𝑠 𝑏 (𝑣 𝑖 ) denotes the transfer-speed relation associated with the identified interval. When two consecutive records contain the same POI or have no valid time difference, the transition is assigned to the first speed interval. The three types of triples jointly form the multi-relational mobility knowledge graph. Visit-time triples describe temporal visiting patterns, POI-category triples provide functional semantics, and transfer-speed triples describe movement characteristics between consecutive POIs. 
+
+4.2. Multimodal embedding based on knowledge graph 
+
+The constructed knowledge graph contains different types of entities and relations. A POI can be connected to a time entity through a visit-time relation, to a category entity through a POI-category relation, and to another POI through a transfer-speed relation. Since these relations describe different mobility semantics, representing all entities in a single common space may weaken their relation-specific meanings. We therefore employ TransR Lin, Liu, Sun, Liu and Zhu (2015) to project entities into the representation space associated with each relation. For a positive triple ⟨ℎ, 𝑟, 𝑜 ⟩, let 𝐞 ℎ, 𝐞 𝑟 , and 𝐞 𝑜 denote the embeddings of the head entity, relation, and tail entity, respectively. Let 𝐌 𝑟 denote the projection matrix associated with relation 𝑟 . The positive triple distance is calculated as   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 7 of 22
+
+𝑓 pos (ℎ, 𝑟, 𝑜 ) = ‖‖𝐌 𝑟 𝐞 ℎ + 𝐞 𝑟 − 𝐌 𝑟 𝐞 𝑜 ‖‖22 . (4) The projection matrix maps the head and tail entities from the entity space to the relation-specific space. A smaller value of 𝑓 pos (ℎ, 𝑟, 𝑜 ) indicates that the projected head entity combined with the relation embedding is closer to the projected tail entity. For each positive triple, 𝐾 negative triples are constructed by replacing the original tail entity 𝑜 with a sampled entity 𝑜 ′
+
+> 𝑘
+
+. The distance of the 𝑘 -th negative triple is 
+
+𝑓 neg (ℎ, 𝑟, 𝑜 ′
+
+> 𝑘
+
+) = ‖‖‖𝐌 𝑟 𝐞 ℎ + 𝐞 𝑟 − 𝐌 𝑟 𝐞 𝑜 ′
+
+> 𝑘
+
+‖‖‖ 
+
+> 22
+
+. (5) The negative tail entity is sampled from the entity type allowed by the current relation. For a visit-time relation, the negative tail is selected from time entities. For a POI-category relation, it is selected from category entities. For a transfer-speed relation, it is selected from POI entities. The sampled entity is required to differ from the original tail entity. The model is expected to assign a smaller distance to a positive triple than to its corresponding negative triples. The knowledge graph loss is therefore defined as 
+
+KG = − 1
+
+||𝐾 
+
+∑
+
+> ⟨ℎ,𝑟,𝑜 ⟩∈
+> 𝐾
+
+∑
+
+> 𝑘 =1
+
+log 𝜎 (𝑓 neg (ℎ, 𝑟, 𝑜 ′
+
+> 𝑘
+
+) − 𝑓 pos (ℎ, 𝑟, 𝑜 )) , (6) where  is the set of positive triples, 𝑜 ′ 
+
+> 𝑘
+
+is the negative tail entity of the 𝑘 -th negative triple, and 𝜎 (⋅) is the sigmoid function. Minimizing Eq. (6) decreases the distances of valid triples and increases the distances of corrupted triples. After optimization, the module produces the POI embedding matrix 𝐄 𝑃 , the time embedding matrix 𝐄 𝑇 , the category embedding matrix 𝐄 𝐶 , and the transfer-relation embedding matrix 𝐄 𝑆 . These representations are jointly constrained by the multi-relational knowledge graph and are used in the following trajectory representation modeling process. 
+
+4.3. Trajectory representation modeling 
+
+Trajectory representation modeling contains two complementary modules: the Trajectory Prior Structure Extrac-tion Module and the Trajectory Sequence Learning Module . The first module extracts high-order POI co-occurrence information from the trajectory collection. The second module combines the extracted prior knowledge with temporal, category, and transfer information to learn a sequence-level trajectory representation. 
+
+4.3.1. Trajectory prior structure extraction module 
+
+A sparse trajectory contains only a limited number of observed check-ins. Learning its representation from the individual sequence alone may therefore provide insufficient evidence for distinguishing users with overlapping POI records. To introduce global structural knowledge, MakeTUL constructs a trajectory hypergraph in which POIs are treated as nodes and trajectories are treated as hyperedges. Each hyperedge connects the POIs contained in the corresponding trajectory. Let 𝐇 ∈ {0 , 1} 𝑁 𝑝 ×𝑁 𝑠 denote the incidence matrix, where 𝑁 𝑝 is the number of POIs and 𝑁 𝑠 is the number of trajectories. Its element is defined as 
+
+𝐻 𝑖𝑗 =
+
+{
+
+1, 𝑝 𝑖 ∈ 𝑗 ,
+
+0, otherwise , (7) where 𝑗 denotes the 𝑗 -th trajectory. Let 𝐃 𝑣 and 𝐃 𝑒 denote the node degree matrix and the hyperedge degree matrix, respectively. Their diagonal elements are   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 8 of 22
+
+(𝐃 𝑣 )𝑖𝑖 =
+
+> 𝑁 𝑠
+
+∑
+
+> 𝑗 =1
+
+𝐻 𝑖𝑗 , (𝐃 𝑒 )𝑗𝑗 =
+
+> 𝑁 𝑝
+
+∑
+
+> 𝑖 =1
+
+𝐻 𝑖𝑗 . (8) The POI embedding matrix learned from the knowledge graph is used as the initial node representation, i.e., 
+
+𝐄 𝑃 = 𝐏 (0) ∈ ℝ𝑁 𝑝 ×𝑑 , where 𝑑 is the embedding dimension. At the 𝑙 -th trajectory hypergraph convolutional layer, POI information is first aggregated into trajectory hyperedges and then propagated back to POI nodes. The propagation is defined as ̃
+
+𝐏 (𝑙 ) = 𝐃 −1  
+
+> 𝑣
+
+𝐇𝐃 −1  
+
+> 𝑒
+
+𝐇 ⊤𝐏 (𝑙 −1) 𝐖 (𝑙 ), (9) where 𝐖 (𝑙 ) ∈ ℝ𝑑 ×𝑑 is the trainable transformation matrix of the 𝑙 -th layer. The operation in Eq. (9) allows a POI to receive information from other POIs that occur in the same trajectories. A residual connection is used to retain the representation from the previous layer: 
+
+𝐏 (𝑙 ) = 𝐏 (𝑙 −1) +̃ 𝐏 (𝑙 ). (10) Instead of using only the output of the final layer, the representations from all layers are averaged: 
+
+𝐏 ∗ = 1
+
+𝐽 + 1 
+
+> 𝐽
+
+∑
+
+> 𝑙 =0
+
+𝐏 (𝑙 ), (11) where 𝐽 is the number of trajectory hypergraph convolutional layers. 𝐏 ∗ is the final structure-enhanced POI representation matrix. It preserves the semantic information learned from the knowledge graph while incorporating high-order POI co-occurrence information. The global representations of all trajectories are obtained by aggregating the enhanced POI representations within their corresponding hyperedges: 
+
+𝐆 = 𝐇 ⊤𝐏 ∗. (12) The 𝑗 -th row 𝐠 𝑗 of 𝐆 denotes the global representation of trajectory 𝑗 . Meanwhile, the POI-level output 𝐏 ∗ is used as structural prior knowledge in the subsequent trajectory sequence learning process. 
+
+4.3.2. Trajectory sequence learning module 
+
+For the 𝑖 -th check-in of a trajectory, MakeTUL retrieves the structure-enhanced POI embedding 𝐩 ∗ 
+
+> 𝑖
+
+from 𝐏 ∗. The time embedding 𝐭 𝑖 , category embedding 𝐜 𝑖 , and transfer-relation embedding 𝐫 𝑠 𝑖 are retrieved from the corresponding rows of 𝐄 𝑇 , 𝐄 𝐶 , and 𝐄 𝑆 , respectively. Specifically, 𝐭 𝑖 represents the embedding of the visit-time entity associated with 
+
+𝑝 𝑖 , 𝐜 𝑖 represents the embedding of its POI category, and 𝐫 𝑠 𝑖 represents the embedding of the transfer relation from 𝑝 𝑖 to 
+
+𝑝 𝑖 +1 . These representations are added to form the multimodal check-in representation: 
+
+𝐱 𝑖 = 𝐩 ∗ 
+
+> 𝑖
+
++ 𝐭 𝑖 + 𝐜 𝑖 + 𝐫 𝑠 𝑖 . (13) The transfer-relation embedding 𝐫 𝑠 𝑖 describes the relation from 𝑝 𝑖 to 𝑝 𝑖 +1 . Since the final POI has no subsequent transition, its transfer-relation embedding is set to a zero vector. The check-in representations are stacked as 
+
+𝐗 = [ 𝐱 1, 𝐱 2, … , 𝐱 𝐿 ] ∈ ℝ𝐿 ×𝑑 , (14)   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 9 of 22
+
+where 𝐿 is the trajectory length and 𝑑 is the embedding dimension. They are then processed by stacked trajectory encoder layers based on multi-head self-attention. For one attention head, the query, key, and value matrices are calculated as 
+
+𝐐 = 𝐗𝐖 𝑄 , 𝐊 = 𝐗𝐖 𝐾 , 𝐕 = 𝐗𝐖 𝑉 , (15) where 𝐖 𝑄 , 𝐖 𝐾 , and 𝐖 𝑉 are trainable projection matrices that map the check-in representations into the query, key, and value spaces, respectively. The attention output is calculated as 
+
+Attn( 𝐐 , 𝐊 , 𝐕 ) = sof tmax 
+
+(
+
+𝐐𝐊 ⊤
+
+√𝑑 ℎ
+
+)
+
+𝐕 , (16) where 𝑑 ℎ is the dimension of each attention head. Multiple attention heads capture different interactions among check-ins. Their outputs are concatenated and projected to obtain the multi-head attention (MHA) output: 
+
+MHA( 𝐗 ) = Concat (head 1, head 2, … , head 𝐴 
+
+) 𝐖 𝑂 , (17) where 𝐴 is the number of attention heads, head 𝑎 is the output of the 𝑎 -th attention head, and 𝐖 𝑂 is a trainable output projection matrix. A residual connection and layer normalization are applied to the multi-head attention output: 
+
+𝐙 = LayerNorm ( 𝐗 + MHA( 𝐗 )) . (18) The position-wise feed-forward network (FFN) is defined as 
+
+FFN( 𝐙 ) = 𝜙 (𝐙𝐖 1 + 𝐛 1
+
+) 𝐖 2 + 𝐛 2, (19) where 𝐖 1 and 𝐖 2 are trainable weight matrices, 𝐛 1 and 𝐛 2 are bias vectors, and 𝜙 (⋅) denotes the ReLU activation function. Another residual connection and layer normalization are then applied to obtain the encoder output: 
+
+𝐘 = LayerNorm ( 𝐙 + FFN( 𝐙 )) . (20) Let 𝐘 = [ 𝐲 1, 𝐲 2, … , 𝐲 𝐿 ] denote the final output of the stacked trajectory encoder layers. A mean pooling operation is used to obtain the sequence representation: 
+
+𝐬 = 1
+
+𝐿 
+
+> 𝐿
+
+∑
+
+> 𝑖 =1
+
+𝐲 𝑖 . (21) The representation is then normalized as ̂
+
+𝐬 = 𝐬 
+
+‖𝐬 ‖2
+
+. (22) Through this process, the sequence representation contains the POI transition information of the current trajectory as well as the structural prior knowledge extracted from the trajectory collection.   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 10 of 22
+
+4.4. User linking 
+
+The global trajectory representation and the sequence representation describe different aspects of user mobility. The global representation captures high-order POI co-occurrence patterns across trajectories, whereas the sequence representation captures the interactions among multimodal check-ins. MakeTUL retains these two representations as separate prediction branches in the Dual-Branch Classification Layer .The global representation of the current trajectory is first normalized as ̂
+
+𝐠 = 𝐠 
+
+‖𝐠 ‖2
+
+. (23) The sequence branch and the global branch independently produce user prediction logits: 
+
+𝐳 𝑠 = 𝐖 𝑠 ̂ 𝐬 + 𝐛 𝑠 , (24) 
+
+𝐳 𝑔 = 𝐖 𝑔 ̂ 𝐠 + 𝐛 𝑔 , (25) where 𝐖 𝑠 and 𝐖 𝑔 are trainable classification matrices, 𝐛 𝑠 and 𝐛 𝑔 are bias vectors, and 𝑀 is the number of candidate users. The direct combination of the two prediction branches is 
+
+𝐳 plain = 𝐳 𝑠 + 𝐳 𝑔 . (26) The prediction distributions of the two branches may have different confidence levels. Two learnable temperature parameters, 𝑇 𝑠 and 𝑇 𝑔 , are therefore introduced to calibrate their logits. The calibrated logits are calculated as 
+
+𝐳 cal = 𝐳 𝑠 
+
+𝑇 𝑠 
+
++ 𝐳 𝑔 
+
+𝑇 𝑔 
+
+. (27) A learnable fusion coefficient is defined as 
+
+𝛼 = 𝜎 (𝑎 ), (28) where 𝑎 is a trainable scalar and 𝜎 (⋅) is the sigmoid function. The sigmoid function restricts 𝛼 to the interval (0 , 1) .The final user prediction logits are obtained by 
+
+𝐳 = (1 − 𝛼 )𝐳 plain + 𝛼 𝐳 cal . (29) The trajectory classification loss is calculated using cross-entropy: 
+
+TUL = − 1
+
+𝐵 
+
+> 𝐵
+
+∑
+
+> 𝑖 =1
+
+log exp( 𝑧 𝑖,𝑦 𝑖 )
+
+∑𝑀 𝑚 =1 exp( 𝑧 𝑖,𝑚 ) , (30) where 𝐵 is the batch size, 𝑦 𝑖 is the ground-truth user label of the 𝑖 -th trajectory, and 𝑧 𝑖,𝑚 is the prediction logit corresponding to candidate user 𝑢 𝑚 .The complete MakeTUL model is trained by jointly optimizing the TUL classification loss and the knowledge graph loss: 
+
+ = TUL + 𝜆 KG KG , (31) where 𝜆 KG controls the contribution of knowledge graph representation learning. Joint optimization allows the multi-relational embeddings, structural prior representations, sequence representations, and user-linking classifier to be learned for the same TUL objective.                            
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 11 of 22 Table 1
+> Statistics of the datasets.
+> Dataset Users Train/Valid/Test POIs Length
+> Foursquare-NYC 700 43,353/11,188/13,972 32,590 [1, 68] 1,080 59,289/15,371/19,184 38,232 [1, 68] Foursquare-TKY 700 53,687/13,768/17,220 37,305 [1, 78] 1,400 89,821/23,156/28,964 51,010 [1, 78] Foursquare-JKT 700 64,442/16,462/20,580 47,041 [1, 70] 1,400 108,453/27,815/34,771 62,680 [1, 70]
+
+5. Experiments 
+
+In this section, we evaluate MakeTUL through comparative experiments and model analysis. For comparative experiments, we first introduce the datasets, evaluation metrics, baselines, and experimental settings, and then compare MakeTUL with existing TUL methods on three real-world datasets. For model analysis, we conduct ablation experiments to examine the contribution of the main components and further investigate the effects of different relations in the multi-relational knowledge graph. Finally, sensitivity analysis is performed to study the influence of key model parameters. 
+
+5.1. Datasets and evaluation metrics 
+
+We conduct experiments on three real-world LBSN check-in datasets, namely Foursquare-NYC Yang, Zhang, Zheng and Yu (2015c), Foursquare-TKY Yang et al. (2015c), and Foursquare-JKT Yang, Zhang, Chen and Qu (2015a); Yang, Zhang and Qu (2015b), which contain user check-in records collected in New York City, Tokyo, and Jakarta, respectively. The check-in records are divided into trajectories using one day as the time interval, and users with fewer than 10 trajectories are removed. For each dataset, 20% of the trajectories are used as the test set, while the remaining 80% are used for model development. We further select 20% of the training portion as the validation set, with the remaining trajectories used for training. The validation set is used for model selection, while the test set is used only for final evaluation. The detailed statistics of the processed datasets are reported in Table 1. Following the commonly used evaluation setting for TUL Zhou et al. (2018); Chen et al. (2022a); Deng et al. (2023); Li et al. (2025), we employ five metrics, including ACC@1, ACC@5, Macro-Precision (Macro-P), Macro-Recall (Macro-R), and Macro-F1. ACC@ 𝑘 measures the proportion of test trajectories whose ground-truth trajectory owners are ranked within the top-𝑘 predicted users, and is calculated as 
+
+ACC@ 𝑘 = # correctly identified trajectories@ 𝑘 
+
+# test trajectories . (32) In our experiments, both ACC@1 and ACC@5 are reported. Macro-P and Macro-R are obtained by averaging the precision and recall over all user classes, respectively, so that each user contributes equally to the evaluation. Macro-F1 summarizes the balance between Macro-P and Macro-R and is calculated as 
+
+Macro -F1 = 2 × Macro -P × Macro -RMacro -P + Macro -R . (33) 
+
+5.2. Baselines 
+
+We compare MakeTUL with the following representative TUL baselines: • TULER Gao et al. (2017) . TULER is an early deep learning framework for the TUL task. It first learns POI embeddings and then applies RNNS, including Long Short-Term Memory (LSTM), Gated Recurrent Unit (GRU), and bidirectional variants, to model sequential POI transitions for trajectory classification. • TULVAE Zhou et al. (2018) . TULVAE introduces a VAE into TUL under a semi-supervised learning framework. It uses stochastic latent variables together with RNN hidden states to capture hierarchical semantics in check-in trajectories and makes use of unlabeled trajectories to alleviate data sparsity.            
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 12 of 22 Table 2
+> Parameter settings of MakeTUL.
+> Parameter Value
+> Model dimension 128 Learning rate 0.001 Batch size 128 Number of hypergraph convolutional layers 2Dropout rate 0.3 Number of negative samples 4KG loss weight 𝜆 KG 1.0
+
+• MainTUL Chen et al. (2022a) . MainTUL is a mutual distillation learning framework designed for sparse check-in trajectories. It employs an RNN encoder to model the input trajectory and a temporal-aware Transformer encoder to capture long-term dependencies from augmented historical trajectories. Knowledge is transferred between the two encoders through mutual distillation. • S2TUL Deng et al. (2023) . S2TUL is a semi-supervised graph-based framework that models both inter-trajectory relations and intra-trajectory sequential information. It constructs trajectory-level graphs based on repeatability, spatial proximity, and spatio-temporal proximity, and applies graph neural networks to learn trajectory-level representations. An LSTM is further used to model the POI sequence within each trajectory. • TULMGAT Li et al. (2025) . TULMGAT constructs check-in-oriented graphs at multiple sampling scales to preserve the spatio-temporal structure of trajectories. A masked multi-head graph attention network is used to update check-in representations, followed by trajectory representation learning for user linking. • ScaleTUL Zhang et al. (2025) . ScaleTUL is designed for large-scale TUL and adopts a spatio-temporal trajectory augmentation strategy together with a dual-stream representation network. The two streams model long-term and short-term mobility patterns, while contrastive learning is used to align trajectory and user representations. • HGTUL Chang et al. (2026) . HGTUL introduces hypergraph learning into TUL to model high-order associa-tions among trajectories. It constructs a trajectory hypergraph to learn structural trajectory representations and combines them with spatio-temporal sequence representations for trajectory owner classification. 
+
+5.3. Experimental settings 
+
+All experiments are conducted on an NVIDIA GPU, and MakeTUL is implemented with PyTorch. Adam is adopted for model optimization with a learning rate of 0.001 and a batch size of 128. The embedding dimension for both entities and relations is set to 128. The trajectory prior structure extraction module uses 2 hypergraph convolutional layers with a dropout rate of 0.3. During knowledge graph learning, 4 negative samples are generated for each positive triple, and the weight of the knowledge graph loss 𝜆 KG is set to 1.0. Training lasts for at most 100 epochs, and early stopping is applied with a patience of 10 epochs. Other parameter settings are summarized in Table 2. 
+
+5.4. Experimental results 
+
+Table 3 reports the performance of MakeTUL and the baseline methods on the three datasets under different user scales. The best result for each metric is highlighted in bold, while the best baseline result is underlined. Overall, MakeTUL achieves the best performance on all five metrics across the six experimental settings. The advantage is observed on Foursquare-NYC, Foursquare-TKY, and Foursquare-JKT, indicating that the model maintains stable performance across datasets with different POI distributions and user scales. Compared with the strongest baseline for each metric, MakeTUL shows consistent gains across the six settings. On Foursquare-NYC with 700 users, the improvements in ACC@1, ACC@5, Macro-P, Macro-R, and Macro-F1 are 4.93%, 0.57%, 5.66%, 7.02%, and 7.34%, respectively. When the user scale increases to 1,080, the corresponding gains become 6.05%, 5.22%, 4.17%, 6.71%, and 6.80%. Similar results are obtained on Foursquare-TKY. The largest gains appear on Foursquare-JKT with 1,400 users, where ACC@1 and Macro-F1 improve by 10.67% and 12.70%. These results show that the advantage of MakeTUL is maintained across different datasets and user scales.   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 13 of 22
+
+Table 3 
+
+Performance comparison with baselines. Dataset Methods ACC@1 ACC@5 Macro-P Macro-R Macro-F1 ACC@1 ACC@5 Macro-P Macro-R Macro-F1                                                                                                                                                                                                                                                                                                                            
+
+> |𝑈 |= 700 |𝑈 |= 1080
+> Foursquare-NYC TULER-GRU 48.64% 55.97% 54.84% 43.08% 44.96% 38.69% 45.60% 42.51% 31.75% 32.69% TULER-LSTM 48.58% 55.74% 54.00% 43.43% 45.42% 39.19% 45.78% 47.40% 33.18% 36.55% BI-TULER 51.38% 58.81% 57.45% 46.79% 49.26% 42.76% 49.01% 50.60% 37.12% 40.14% TULVAE 49.19% 57.56% 57.36% 45.49% 46.09% 42.96% 51.35% 49.42% 38.29% 39.04% MainTUL 56.55% 63.13% 62.82% 53.89% 56.05% 50.69% 58.50% 56.42% 47.54% 49.55% S2TUL 56.58% 63.37% 61.57% 53.33% 54.22% 49.94% 57.08% 53.27% 45.80% 45.86% TULMGAT 36.07% 55.39% 38.55% 33.81% 36.03% 29.19% 46.88% 30.55% 26.53% 28.40% ScaleTUL 61.29% 68.66% 62.03% 59.41% 59.22% 54.64% 62.97% 54.69% 51.74% 51.59% HGTUL 62.90% 73.94% 62.48% 57.93% 57.61% 47.18% 62.40% 41.41% 39.03% 36.10% Ours 67.83% 74.51% 68.48% 66.43% 66.56% 60.69% 68.19% 60.59% 58.45% 58.39%
+> |𝑈 |= 700 |𝑈 |= 1400
+> Foursquare-TKY TULER-GRU 45.87% 59.33% 52.66% 42.76% 44.80% 33.39% 44.84% 40.16% 28.14% 29.69% TULER-LSTM 47.20% 60.76% 53.87% 44.15% 46.35% 34.95% 47.31% 41.37% 29.55% 31.11% BI-TULER 49.12% 63.26% 54.35% 45.95% 47.45% 36.58% 49.56% 41.86% 31.19% 32.40% TULVAE 50.20% 65.33% 55.52% 48.03% 49.22% 39.99% 54.31% 45.65% 35.81% 36.08% MainTUL 59.72% 70.15% 63.30% 57.36% 58.26% 51.24% 62.17% 54.85% 47.51% 48.59% S2TUL 55.88% 68.08% 60.61% 52.44% 53.51% 44.07% 55.91% 45.66% 38.67% 38.44% TULMGAT 45.51% 67.59% 48.49% 42.83% 45.49% 32.31% 53.49% 33.69% 28.61% 30.94% ScaleTUL 63.99% 74.20% 64.19% 62.19% 61.79% 53.58% 64.77% 54.13% 50.20% 50.19% HGTUL 61.00% 77.92% 60.95% 54.07% 52.76% 35.45% 54.69% 24.83% 25.97% 21.03% Ours 68.48% 79.02% 69.19% 66.68% 67.11% 57.72% 68.88% 57.72% 54.18% 54.54%
+> |𝑈 |= 700 |𝑈 |= 1400
+> Foursquare-JKT TULER-GRU 42.57% 53.44% 55.25% 39.67% 42.59% 32.58% 39.86% 52.05% 28.14% 33.05% TULER-LSTM 44.63% 53.61% 57.17% 41.18% 45.37% 33.83% 41.34% 52.00% 29.55% 34.32% BI-TULER 46.43% 55.77% 57.83% 43.04% 46.56% 36.19% 44.27% 52.42% 32.01% 36.12% TULVAE 47.06% 57.56% 57.96% 44.80% 46.58% 39.58% 49.23% 49.56% 36.48% 38.16% MainTUL 50.46% 58.04% 59.80% 48.53% 51.30% 43.49% 50.86% 55.32% 41.41% 44.82% S2TUL 58.39% 66.84% 65.12% 55.72% 57.87% 49.06% 57.73% 55.50% 45.71% 47.16% TULMGAT 31.62% 56.19% 36.36% 29.27% 32.43% 21.36% 41.80% 24.00% 18.84% 21.11% ScaleTUL 54.32% 62.39% 58.55% 53.21% 54.00% 46.22% 54.20% 54.31% 44.48% 46.62% HGTUL 58.96% 72.60% 60.23% 52.57% 52.36% 30.32% 49.69% 22.73% 22.12% 18.11% Ours 67.25% 74.94% 70.09% 65.66% 66.65% 59.73% 68.08% 65.12% 58.17% 59.86%
+
+Increasing the number of candidate users makes the TUL task more difficult. For MakeTUL, ACC@1 decreases from 67.83% to 60.69% on Foursquare-NYC, from 68.48% to 57.72% on Foursquare-TKY, and from 67.25% to 59.73% on Foursquare-JKT. Similar decreases can be observed for most baseline methods. A larger candidate set contains more users with overlapping mobility patterns, which increases the difficulty of distinguishing trajectory owners. Despite this change, MakeTUL remains the best-performing method in all larger-scale settings. The multi-relational knowledge graph and trajectory prior structure provide additional semantic and structural information, which helps reduce the ambiguity caused by similar POI visits. ACC@1 and ACC@5 show different performance patterns. MakeTUL obtains clear improvements in ACC@1 under all settings, indicating better ranking of the correct trajectory owner. The improvement in ACC@5 is smaller on Foursquare-NYC and Foursquare-TKY with 700 users, reaching 0.57% and 1.10%, respectively. HGTUL already obtains high ACC@5 values in these settings, so the remaining improvement space is limited. MakeTUL therefore maintains comparable ACC@5 performance while providing a clearer gain in ACC@1. When the candidate user set becomes larger, its ACC@5 advantage also increases. For example, the gain reaches 10.35% on Foursquare-JKT with 1,400 users. The macro metrics further show that the improvement is not limited to a small number of users. MakeTUL achieves the highest Macro-P, Macro-R, and Macro-F1 in all settings. On Foursquare-JKT with 1,400 users, Macro-R and Macro-F1 increase by 12.46% and 12.70% over the strongest baselines. The multi-relational knowledge graph provides visit-time, POI-category, and transfer information, while the trajectory prior structure extraction module captures POI co-occurrence across trajectories. The trajectory sequence learning module then combines these representations to model the current trajectory. Together with the dual-branch classification layer, these components provide complementary information for trajectory owner classification, which is consistent with the improvements in both ranking and macro-averaged metrics. 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 14 of 22 5.5. Ablation study ACC@1 ACC@5 Macro-P Macro-R Macro-F1 
+
+58 63 68 73 
+
+> Metrics (%)
+> MakeTUL MakeTUL w/o MEKG MakeTUL w/o TPSE MakeTUL w/o TSL MakeTUL w/o DBCL
+
+(a) Foursquare-NYC 700 ACC@1 ACC@5 Macro-P Macro-R Macro-F1 
+
+50 55 60 65 70  
+
+> Metrics (%)
+> MakeTUL MakeTUL w/o MEKG MakeTUL w/o TPSE MakeTUL w/o TSL MakeTUL w/o DBCL
+
+(b) Foursquare-NYC 1080 ACC@1 ACC@5 Macro-P Macro-R Macro-F1 
+
+62 67 72 77 
+
+> Metrics (%)
+> MakeTUL MakeTUL w/o MEKG MakeTUL w/o TPSE MakeTUL w/o TSL MakeTUL w/o DBCL
+
+(c) Foursquare-TKY 700 ACC@1 ACC@5 Macro-P Macro-R Macro-F1 
+
+49 54 59 64 69  
+
+> Metrics (%)
+> MakeTUL MakeTUL w/o MEKG MakeTUL w/o TPSE MakeTUL w/o TSL MakeTUL w/o DBCL
+
+(d) Foursquare-TKY 1400 ACC@1 ACC@5 Macro-P Macro-R Macro-F1 
+
+58 63 68 73 
+
+> Metrics (%)
+> MakeTUL MakeTUL w/o MEKG MakeTUL w/o TPSE MakeTUL w/o TSL MakeTUL w/o DBCL
+
+(e) Foursquare-JKT 700 ACC@1 ACC@5 Macro-P Macro-R Macro-F1 
+
+52 57 62 67  
+
+> Metrics (%)
+> MakeTUL MakeTUL w/o MEKG MakeTUL w/o TPSE MakeTUL w/o TSL MakeTUL w/o DBCL
+
+(f) Foursquare-JKT 1400 
+
+Figure 3: Ablation results of MakeTUL on different datasets and user scales. To examine the contribution of each component in MakeTUL, we conduct ablation experiments on all six experimental settings. Four variants are considered: MakeTUL w/o MEKG removes the Multimodal Embedding Based 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 15 of 22 on Knowledge Graph component; MakeTUL w/o TPSE removes the Trajectory Prior Structure Extraction Module; MakeTUL w/o TSL removes the Trajectory Sequence Learning Module; and MakeTUL w/o DBCL removes the Dual-Branch Classification Layer. The results are shown in Fig. 3. As shown in Fig. 3, removing any major component generally degrades the performance of MakeTUL. The complete model maintains the best overall results across the six settings, although a few individual metrics of some variants remain close to or slightly exceed those of the complete model. This pattern indicates that the four components contribute from different aspects rather than providing redundant information. Among the four variants, removing MEKG causes the most evident performance degradation in most settings. The decreases can be observed not only in ACC@1 and ACC@5 but also in the macro-averaged metrics. Without knowledge graph embedding, POIs, time information, categories, and transfer relations are no longer jointly constrained by the multi-relational structure. Consequently, the trajectory representation loses part of the semantic information that helps distinguish users who visit similar POIs. The consistent degradation across NYC, TKY, and JKT supports the role of multi-relational knowledge in TUL. Removing TPSE also leads to a clear decrease on most metrics. Without the trajectory hypergraph, the model mainly relies on information contained in individual trajectories and cannot fully use POI co-occurrence patterns shared across trajectories. This effect is particularly relevant when different users have overlapping POI visits or when an anonymous trajectory contains limited check-ins. The results therefore show that structural prior knowledge provides useful complementary information to sequence modeling. The effect of TSL is relatively moderate compared with MEKG and TPSE, but removing it still lowers ACC@1, Macro-R, and Macro-F1 in most settings. This suggests that jointly modeling POI, time, category, and transfer representations along the trajectory sequence helps refine the trajectory representation. In several settings, MakeTUL w/o TSL obtains a slightly higher Macro-P than the complete model. However, this improvement is accompanied by lower recall or overall classification performance. Therefore, the sequence learning module mainly contributes to a better balance between precision and recall rather than optimizing a single metric. A similar but smaller decline is observed after removing DBCL. The result shows that the global trajectory representation and the sequence representation provide complementary evidence for user linking. Using only one source of trajectory information limits the final classifier, while combining the two branches produces more stable results across different datasets and user scales. Overall, the ablation results support the combined use of multi-relational embedding, trajectory prior structure, sequence learning, and dual-branch classification in MakeTUL. 
+
+5.6. Analysis of multi-relational knowledge graph 
+
+To examine the contribution of different relations in the multi-relational knowledge graph, we construct three variants of MakeTUL. MakeTUL w/o VTR removes the visit-time relation, MakeTUL w/o PCR removes the POI-category relation, and MakeTUL w/o TSR removes the transfer-speed relation. All other components and experimental settings remain unchanged. The results on the six experimental settings are shown in Fig. 4. As shown in Fig. 4, the complete MakeTUL generally achieves more balanced performance across ACC@1 and the macro-averaged metrics. Removing a single relation changes the results to different degrees, and the effect varies across datasets and user scales. In most settings, removing VTR or AR leads to lower overall performance, indicating that both temporal visiting patterns and POI category semantics provide useful information for trajectory owner classification. The effect of removing TR is more dependent on the dataset. Although several metrics decrease after removing the transfer relation, a few individual results remain comparable to or slightly higher than those of the complete model. These results show that the three relations provide complementary information for TUL. The visit-time relation describes when a POI is visited, which helps distinguish users with similar visited locations but different temporal patterns. The attribute relation introduces POI category semantics and captures differences in users’ functional preferences. The transfer relation describes movement between consecutive POIs and supplements the information provided by individual visits. Although the contribution of each relation varies across datasets, combining the three relation types generally produces more stable performance. This result supports the use of multi-relational knowledge for modeling user mobility patterns in MakeTUL.   
+
+> Z. Chu et al.: Preprint submitted to Elsevier Page 16 of 22
+
+ACC@1 Macro-F1 Macro-R Macro-P 
+
+> MakeTUL MakeTUL w/o VTR MakeTUL w/o PCR MakeTUL w/o TSR
+
+(a) Foursquare-NYC 700 ACC@1 Macro-F1 Macro-R Macro-P  
+
+> MakeTUL MakeTUL w/o VTR MakeTUL w/o PCR MakeTUL w/o TSR
+
+(b) Foursquare-NYC 1080 ACC@1 Macro-F1 Macro-R Macro-P 
+
+> MakeTUL MakeTUL w/o VTR MakeTUL w/o PCR MakeTUL w/o TSR
+
+(c) Foursquare-TKY 700 ACC@1 Macro-F1 Macro-R Macro-P  
+
+> MakeTUL MakeTUL w/o VTR MakeTUL w/o PCR MakeTUL w/o TSR
+
+(d) Foursquare-TKY 1400 ACC@1 Macro-F1 Macro-R Macro-P 
+
+> MakeTUL MakeTUL w/o VTR MakeTUL w/o PCR MakeTUL w/o TSR
+
+(e) Foursquare-JKT 700 ACC@1 Macro-F1 Macro-R Macro-P  
+
+> MakeTUL MakeTUL w/o VTR MakeTUL w/o PCR MakeTUL w/o TSR
+
+(f) Foursquare-JKT 1400 
+
+Figure 4: Effects of different relation types in the multi-relational knowledge graph on different datasets and user scales. 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 17 of 22 32 64 128 256 512 
+
+Dimension 
+
+> 60.0 62.5 65.0 67.5 70.0 72.5 75.0 77.5
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(a) Foursquare-NYC 700 32 64 128 256 512  
+
+> Dimension
+> 52.5 55.0 57.5 60.0 62.5 65.0 67.5 70.0
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(b) Foursquare-NYC 1080 32 64 128 256 512 
+
+Dimension 
+
+> 60 65 70 75 80
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(c) Foursquare-TKY 700 32 64 128 256 512 
+
+Dimension  
+
+> 45 50 55 60 65 70
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(d) Foursquare-TKY 1400 32 64 128 256 512 
+
+> Dimension
+> 60.0 62.5 65.0 67.5 70.0 72.5 75.0 77.5 80.0
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(e) Foursquare-JKT 700 32 64 128 256 512  
+
+> Dimension
+> 52.5 55.0 57.5 60.0 62.5 65.0 67.5 70.0
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(f) Foursquare-JKT 1400 
+
+Figure 5: Sensitivity analysis of the embedding dimension. 
+
+5.7. Sensitivity analysis 
+
+To examine the sensitivity of MakeTUL to key hyperparameters, we vary the embedding dimension, the KG loss weight 𝜆 KG , and the number of negative samples while keeping the other settings unchanged. The embedding dimension is selected from {32 , 64 , 128 , 256 , 512} . As shown in Fig. 5, the performance generally improves as the dimension increases from 32 to 128. Further increasing the dimension to 256 or 512 provides limited gains and may slightly reduce some metrics. A small dimension cannot provide sufficient capacity to represent heterogeneous mobility information, whereas an excessively large dimension introduces additional model complexity without consistent improvement. Considering both performance and computational cost, the embedding dimension is set to 128. 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 18 of 22 0.2 0.6 1.0 1.4 1.8 
+
+KG loss weight    
+
+> 65 66 67 68 69 70
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(a) Foursquare-NYC 700 0.2 0.6 1.0 1.4 1.8 
+
+KG loss weight     
+
+> 57 58 59 60 61 62
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(b) Foursquare-NYC 1080 0.2 0.6 1.0 1.4 1.8 
+
+KG loss weight    
+
+> 65 66 67 68 69 70
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(c) Foursquare-TKY 700 0.2 0.6 1.0 1.4 1.8 
+
+KG loss weight     
+
+> 53 54 55 56 57 58 59
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(d) Foursquare-TKY 1400 0.2 0.6 1.0 1.4 1.8 
+
+KG loss weight    
+
+> 64 65 66 67 68 69 70
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(e) Foursquare-JKT 700 0.2 0.6 1.0 1.4 1.8 
+
+KG loss weight     
+
+> 56 57 58 59 60 61 62 63 64
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(f) Foursquare-JKT 1400 
+
+Figure 6: Sensitivity analysis of the KG loss weight 𝜆 KG .The effect of 𝜆 KG is presented in Fig. 6. We vary its value from 0.2 to 1.8. The performance remains relatively stable across this range on all datasets, although the best value of individual metrics varies slightly among different settings. This result indicates that MakeTUL is not highly sensitive to the weight of the knowledge graph objective. A value of 1.0 provides competitive and stable performance while maintaining a balanced contribution between trajectory classification and knowledge graph representation learning. 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 19 of 22 1 2 3 4 5 6 7 8 9 10 
+
+Number of negative samples    
+
+> 65 66 67 68 69 70
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(a) Foursquare-NYC 700 1 2 3 4 5 6 7 8 9 10 
+
+Number of negative samples     
+
+> 57 58 59 60 61 62
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(b) Foursquare-NYC 1080 1 2 3 4 5 6 7 8 9 10 
+
+Number of negative samples    
+
+> 65 66 67 68 69 70
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(c) Foursquare-TKY 700 1 2 3 4 5 6 7 8 9 10 
+
+Number of negative samples     
+
+> 53 54 55 56 57 58 59
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(d) Foursquare-TKY 1400 1 2 3 4 5 6 7 8 9 10 
+
+Number of negative samples    
+
+> 64 65 66 67 68 69 70
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(e) Foursquare-JKT 700 1 2 3 4 5 6 7 8 9 10 
+
+Number of negative samples     
+
+> 56 57 58 59 60 61 62 63 64
+> Metrics(%)
+> ACC@1 Macro-P Macro-R Macro-F1
+
+(f) Foursquare-JKT 1400 
+
+Figure 7: Sensitivity analysis of the number of negative samples. Figure 7 shows the influence of the number of negative samples, which is varied from 1 to 10. Increasing the number of negative samples does not lead to a consistent improvement. Instead, the metrics fluctuate within a relatively small range after a moderate number of negative samples is used. More negative samples provide additional constraints for knowledge graph learning but also increase the training cost. Based on the overall results, 4 negative samples are used in our experiments as a practical balance between model performance and computational efficiency. 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 20 of 22 6. Conclusion 
+
+This paper proposes MakeTUL, a Multi-Relational Knowledge Graph Enhanced Embedding framework for TUL. MakeTUL constructs a multi-relational knowledge graph to model visit-time, POI-category, and transfer relations, and learns POI and multimodal representations under these relational constraints. A trajectory prior structure extraction module further captures high-order POI co-occurrence patterns across trajectories, while the trajectory sequence learning module integrates structural, temporal, semantic, and transfer information to obtain trajectory representations. The global trajectory representation and sequence representation are finally combined through a dual-branch classification layer for trajectory owner prediction. Experiments on Foursquare-NYC, Foursquare-TKY, and Foursquare-JKT show that MakeTUL consistently outperforms the compared baselines across different user scales and evaluation metrics. The ablation and relation analysis further confirm the contribution of the main components and the complementary roles of different relation types. These results demonstrate that jointly modeling multi-relational semantics, trajectory structure, and sequential mobility information provides an effective approach to trajectory representation learning for TUL. 
+
+References 
+
+Breiman, L., 2001. Random forests. Machine learning 45, 5–32. Chang, F., Zhu, X., Hu, Z., Qin, Y., 2026. Hgtul: A hypergraph-based model for trajectory user linking, in: PRICAI 2025: Trends in Artificial Intelligence, Springer Nature Singapore, Singapore. pp. 314–329. Chen, W., Huang, C., Yu, Y., Jiang, Y., Dong, J., 2024. Trajectory-user linking via hierarchical spatio-temporal attention networks. ACM Transactions on Knowledge Discovery from Data 18, 1–22. Chen, W., Li, S., Huang, C., Yu, Y., Jiang, Y., Dong, J., 2022a. Mutual distillation learning network for trajectory-user linking. arXiv preprint arXiv:2205.03773 . Chen, W., Wan, H., Guo, S., Huang, H., Zheng, S., Li, J., Lin, S., Lin, Y., 2022b. Building and exploiting spatial–temporal knowledge graph for next poi recommendation. Knowledge-Based Systems 258, 109951. Cortes, C., Vapnik, V., 1995. Support-vector networks. Machine learning 20, 273–297. Cui, Y., Sun, H., Zhao, Y., Yin, H., Zheng, K., 2021. Sequential-knowledge-aware next poi recommendation: A meta-learning approach. ACM Transactions on Information Systems (TOIS) 40, 1–22. Deng, L., Sun, H., Zhao, Y., Liu, S., Zheng, K., 2023. S2tul: A semi-supervised framework for trajectory-user linking, in: Proceedings of the sixteenth ACM international conference on web search and data mining, pp. 375–383. Du, Y., Aoki, T., Fujiwara, N., 2025. A review of human mobility: Linking data, models, and real-world applications. Journal of Computational Social Science 8, 90. Gao, Q., Zhang, F., Yao, F., Li, A., Mei, L., Zhou, F., 2020. Adversarial mobility learning for human trajectory classification. IEEE Access 8, 20563–20576. Gao, Q., Zhou, F., Zhang, K., Trajcevski, G., Luo, X., Zhang, F., 2017. Identifying human mobility via trajectory embeddings., in: Ijcai, pp. 1689–1695. Graser, A., Jalali, A., Lampert, J., Weißenfeld, A., Janowicz, K., 2024. Mobilitydl: a review of deep learning from trajectory data. arXiv preprint arXiv:2402.00732 . Jiang, Z., 2018. A survey on spatial prediction methods. IEEE transactions on knowledge and Data Engineering 31, 1645–1664. Jin, F., Hua, W., Xu, J., Zhou, X., 2019. Moving object linking based on historical trace, in: 2019 IEEE 35th international conference on data engineering (ICDE), IEEE. pp. 1058–1069. Keogh, E.J., Pazzani, M.J., 2000. Scaling up dynamic time warping for datamining applications, in: Proceedings of the sixth ACM SIGKDD international conference on Knowledge discovery and data mining, pp. 285–289. Kong, X., Chen, Q., Hou, M., Wang, H., Xia, F., 2023. Mobility trajectory generation: a survey. Artificial Intelligence Review 56, 3057–3098. Li, G., Hung, C.C., Liu, M., Pan, L., Peng, W.C., Chan, S.H.G., 2021. Spatial-temporal similarity for trajectories with location noise and sporadic sampling, in: 2021 IEEE 37th International Conference on Data Engineering (ICDE), IEEE. pp. 1224–1235. Li, Y., Sun, T., Shao, Z., Zhen, Y., Xu, Y., Wang, F., 2025. Trajectory-user linking via multi-scale graph attention network. Pattern Recognition 158, 110978. Lin, Y., Liu, Z., Sun, M., Liu, Y., Zhu, X., 2015. Learning entity and relation embeddings for knowledge graph completion, in: Proceedings of the AAAI conference on artificial intelligence. Miao, C., Wang, J., Yu, H., Zhang, W., Qi, Y., 2020. Trajectory-user linking with attentive recurrent network, in: Proceedings of the 19th international conference on autonomous agents and multiagent systems, pp. 878–886. Mikolov, T., Sutskever, I., Chen, K., Corrado, G.S., Dean, J., 2013. Distributed representations of words and phrases and their compositionality. Advances in neural information processing systems 26. Sang, C.Y., Yang, Y., Zhang, Y.B., Liao, S.G., 2025. A user preference knowledge graph incorporating spatio-temporal transfer features for next poi recommendation: C.-y. sang et al. Applied Intelligence 55, 380. Sang, Y., Xie, Z., Chen, W., Zhao, L., 2023. Tulrn: Trajectory user linking on road networks. World Wide Web 26, 1949–1965. Shahdoosti, H.R., Mirzapour, F., 2017. Spectral–spatial feature extraction using orthogonal linear discriminant analysis for classification of hyperspectral data. European Journal of Remote Sensing 50, 111–124. 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 21 of 22 Yabe, T., Tsubouchi, K., Shimizu, T., Sekimoto, Y., Sezaki, K., Moro, E., Pentland, A., 2024. Yjmob100k: City-scale and longitudinal dataset of anonymized human mobility trajectories. Scientific Data 11, 397. Yang, D., Zhang, D., Chen, L., Qu, B., 2015a. Nationtelescope: Monitoring and visualizing large-scale collective behavior in lbsns. Journal of Network and Computer Applications 55, 170–180. Yang, D., Zhang, D., Qu, B., 2015b. Participatory cultural mapping based on collective behavior in location based social networks. ACM Transactions on Intelligent Systems and Technology In press. Yang, D., Zhang, D., Zheng, V.W., Yu, Z., 2015c. Modeling user activity preference by leveraging user spatial temporal characteristics in lbsns. IEEE Transactions on Systems, Man, and Cybernetics: Systems 45, 129–142. Ying, J.J.C., Lu, E.H.C., Lee, W.C., Weng, T.C., Tseng, V.S., 2010. Mining user similarity from semantic trajectories, in: Proceedings of the 2nd acm sigspatial international workshop on location based social networks, pp. 19–26. Zhang, H., Chen, W., Zhao, X., Qi, J., Jiang, G., Yu, Y., 2025. Scalable trajectory-user linking with dual-stream representation networks, in: Proceedings of the AAAI conference on artificial intelligence, pp. 13224–13232. Zheng, R., Qu, L., Ye, G., Chen, T., Shi, Y., Yin, H., 2025. Deckg: Decentralized collaborative learning with knowledge graph enhancement for poi recommendation. Information Sciences , 122570. Zheng, Y., 2015. Trajectory data mining: an overview. ACM Transactions on Intelligent Systems and Technology (TIST) 6, 1–41. Zhou, F., Chen, S., Wu, J., Cao, C., Zhang, S., 2021a. Trajectory-user linking via graph neural network, in: ICC 2021-IEEE International Conference on Communications, IEEE. pp. 1–6. Zhou, F., Dai, Y., Gao, Q., Wang, P., Zhong, T., 2021b. Self-supervised human mobility learning for next location prediction and trajectory classification. Knowledge-Based Systems 228, 107214. Zhou, F., Gao, Q., Trajcevski, G., Zhang, K., Zhong, T., Zhang, F., 2018. Trajectory-user linking via variational autoencoder., in: Ijcai, pp. 3212– 3218. Zhou, F., Liu, X., Zhang, K., Trajcevski, G., 2020. Toward discriminating and synthesizing motion traces using deep probabilistic generative models. IEEE Transactions on Neural Networks and Learning Systems 32, 2401–2414. Zhou, F., Yin, R., Trajcevski, G., Zhang, K., Wu, J., Khokhar, A., 2021c. Improving human mobility identification with trajectory augmentation. GeoInformatica 25, 453–483. 
+
+Z. Chu et al.: Preprint submitted to Elsevier Page 22 of 22
