@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.10398v1/fig-001.webp",
+      "caption": "Figure 1: ELVAE training and the posterior-anchored generation pilot. (a) Training: the encoder predicts a NIG posterior over latent location and variance, regularized toward a fixed NIG prior. (b) Generation: the pilot uses the NIG-derived 𝑢epi both to rank anchors and to scale a controlled Gaussian perturbation, and a frozen classifier tests whether the intended class survives. The dashed control branch sets 𝜏epi = 0, yielding 𝑧 = 𝛾𝑖 , while retaining 𝑢epi for ranking.",
+      "page": 2,
+      "index": 1,
+      "width": 862,
+      "height": 299
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10398v1/fig-002.webp",
+      "caption": "Table 1: Generation pilot result.",
+      "page": 7,
+      "index": 2,
+      "width": 690,
+      "height": 323
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10398v1/fig-003.webp",
+      "caption": "Figure 2: Visualization of posterior-anchored uncertainty-aware generation. Top row: condition (C), the measured zero-displacement control 𝑧 = 𝛾 with 𝜏epi = 0; the displayed 𝑢epi values remain the NIG-derived uncertainty scores used for ranking. The top-row anchors are at the median within-class 𝑢epi of each class. Middle row: approximately the 10th within-class 𝑢epi percentile. Bottom row: approximately the 90th percentile. Each image reports intended class and frozen-classifier result as 𝑐 → 𝑐, together with its 𝑢epi value; red titles mark generations whose class was lost.",
+      "page": 7,
+      "index": 3,
+      "width": 979,
+      "height": 375
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10398v1/fig-004.webp",
+      "caption": "Figure 4: Generation-attributable failure rate by within-class 𝑢epi decile, condition (I). Only anchors already classified correctly at 𝑧 = 𝛾 are counted, so every failure shown was induced by uncertainty-scaled perturbation. The relative trend is steeper than in Fig. 3, but on a much smaller base rate.",
+      "page": 10,
+      "index": 4,
+      "width": 844,
+      "height": 415
+    }
+  ]
+}

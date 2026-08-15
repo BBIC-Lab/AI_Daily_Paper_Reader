@@ -1,0 +1,5344 @@
+RelShap: Relationally Consistent Shapley Explanations
+Seungeun Lee1, Joao Fonseca1, 2, Julia Stoyanovich1∗
+1 New York University, New York, USA
+2 INESC-ID, Lisbon, Portugal
+Abstract
+Machine learning pipelines commonly flatten relational data
+into single-table representations, discarding structural con-
+straints. Widely used Shapley value-based feature attributions
+then rely on feature independence, evaluating the model on
+combinations that could never arise in the underlying data,
+producing misleading explanations. We propose RelShap,
+a framework that incorporates relational constraints and data
+provenance into Shapley value computation, restricting both
+background data and coalition evaluation to relationally valid
+configurations. The framework is estimator-agnostic and com-
+poses with Kernel SHAP, Monte Carlo, and Leverage SHAP
+without altering their sampling or weighting properties. Func-
+tional dependencies further induce equivalence classes over
+feature coalitions, which RelShap exploits to reduce runtime
+without changing Shapley values; we provide a combinato-
+rial characterization of the expected speedup. Experiments
+across multiple datasets, models, and estimators show that
+RelShap produces explanations that are more faithful to the
+data-generating process, correctly identifying the dominant
+feature in controlled settings where existing methods, includ-
+ing Conditional SHAP and ManifoldShap, do not. Our code
+is available at: https://github.com/duneag2/relshap.
+1
+Introduction
+Most machine learning (ML) pipelines flatten relational data
+into single-table representations for model training (Fey et al.
+2024). Once a predictive model is trained on such a flattened
+table, practitioners routinely seek to understand its predic-
+tions at the level of individual instances. Shapley value-based
+attributions (Shapley et al. 1953; Datta et al. 2016; Lundberg
+and Lee 2017) have become a dominant approach for this
+purpose, assigning each input feature a score based on its
+contribution to the prediction. Notably, relational ML is a
+well-established setting (Robinson et al. 2024; Dwivedi et al.
+2025), yet approaches that train directly on multi-table data
+must ultimately attribute predictions to individual features
+and thus face the same explanation-time flattening.
+In practice, this computation requires two conceptual
+choices: background data selection, which determines how
+feature absence is simulated using reference data, and coali-
+tion selection, which specifies which feature subsets are eval-
+uated. Existing methods instantiate different sides of the
+∗Corresponding author.
+tension between being true to the model and true to the
+data (Chen et al. 2020; Frye et al. 2021; Janzing et al. 2020).
+SHAP (Lundberg and Lee 2017), the most widely used im-
+plementation, stays true to the model by assuming feature
+independence but potentially considers feature combinations
+that never arise in the data. Aas et al. (2021) instead remain
+true to the data by estimating conditional distribution, but
+only as true as the estimate itself, and the estimator’s errors
+propagate directly into the attributions.
+Both premises are problematic on data drawn from a re-
+lational database. The flattening step can discard database-
+level information, such as functional dependencies (FDs)
+that imply that some features are fully determined by others,
+and domain constraints that restrict admissible values. Fea-
+ture independence is violated by these very constraints, and
+conditional distribution estimation, while potentially avoid-
+ing that violation, introduces its own modeling assumptions.
+When attribution methods ignore relational constraints, they
+may evaluate the model on inputs that could never arise from
+the underlying relational data, thereby fundamentally alter-
+ing the resulting feature attributions.
+Core contribution:
+We present RelShap—Relationally
+Consistent Shapley Explanations—the first framework to in-
+tegrate relational database constraints into Shapley value-
+based feature attributions. RelShap changes the admissible
+space of the Shapley explanation itself: instead of relying
+on feature independence assumptions or additional distri-
+butional modeling, it restricts both background data and
+coalitions to relationally valid configurations through con-
+straints derived from the database schema, query, and data.
+Importantly, in controlled settings with known ground truth,
+RelShap correctly identifies the dominant feature where
+Kernel SHAP, Conditional SHAP, and ManifoldShap do not
+(Section 4.1). For instance, in a loan approval scenario (Ex-
+ample 1), the explanation changes substantially depending on
+whether relational constraints are respected (Figure 1). The
+divergence is not a sampling artifact but a consequence of
+which feature combinations the explanation method permits.
+Example 1. Consider two tables, Applicants(a_id,
+age, life_stage, empl) and Transactions(t_id,
+a_id, amount), linked by applicant identifier a_id. Six
+representative applicants and their transactions are shown
+in Tables 1a and 1b. A data analyst issues the query:
+arXiv:2608.11508v1  [cs.LG]  11 Aug 2026
+
+
+SELECT a.a_id, a.age, a.life_stage, a.empl,
+SUM(t.amount) AS total_amt
+FROM
+Applicants a, Transactions t
+WHERE
+a.a_id = t.a_id
+GROUP BY a.a_id, a.age, a.life_stage, a.empl;
+to obtain an applicant-level view, then drops the identifier
+a_id and adds a target loan_approved to yield the ML-
+ready dataset in Table 1c.
+ML practitioners computing explanations typically receive
+only this final flattened representation, with no visibility into
+the upstream structure. Applicant a27 applied for a loan, was
+rejected, and sought an explanation. Kernel SHAP (Lundberg
+and Lee 2017), a widely used method, reports life_stage
+as the top driver of the prediction with a positive score (Fig-
+ure 1a). This attribution, however, is an artifact of relationally
+invalid completions from Kernel SHAP. For instance, fixing
+age = 35 and filling in the rest from applicant a29 yields
+the combination (age = 35, life_stage = older),
+which is impossible under the FD age →life_stage
+(first row of Table 1d).
+RelShap instead operates over a space of relationally
+valid completions, automatically extracting constraints from
+the data’s relational structure. In this example, the data re-
+veals a functional dependency (FD) age →life_stage:
+each age value maps to exactly one life stage. Similarly,
+because the query aggregates all of an applicant’s transac-
+tions into a single row, each applicant identifier determines
+exactly one total_amt. RelShap enforces these con-
+straints during Shapley computation: fixing age = 35 forces
+life_stage = middle (second row of Table 1d); the re-
+maining attributes are unconstrained and filled from a chosen
+background data point (a29). Additionally, RelShap sup-
+ports a provenance-aware mode that traces each row of the
+flattened table back to its source tuples in the original tables.
+Fixing age = 35 narrows the provenance to a27, the sole
+applicant with that age, at which point the schema determines
+empl = self_emp and total_amt = 119 (third row of
+Table 1d). Provenance-based recovery is not always avail-
+able when it does not resolve to a single tuple: age = 63,
+for instance, is shared by a12 and a29. See Appendix A
+for a primer on relational concepts and a detailed descrip-
+tion of how RelShap extracts constraints from the database
+schema, query structure, and data.
+Notably, RelShap computes different Shapley values
+even without approximation. Under both RelShap vari-
+ants, life_stage receives exactly zero attribution (which
+does not necessarily generalize), down from +0.2299 un-
+der Kernel SHAP (Figure 1), because the discovered FD
+age →life_stage makes life_stage redundant
+when age is present in a coalition, once coalitions are pro-
+jected to relationally valid completions (Section 3). Kernel
+SHAP ignores this redundancy and distributes substantial
+attribution to life_stage. The top-ranked feature con-
+sequently changes from life_stage to age. In all three
+cases, feature attribution values are computed exactly, over
+all background points and all coalitions; the divergence is
+not a sampling artifact but a consequence of which feature
+combinations the explanation method permits.
+Our contributions are as follows:
+Table 1: Running example (excerpt)
+(a) Applicants (excerpt)
+a_id age life_stage
+empl
+a12 63
+older
+unemp
+a14 26
+young
+unemp
+a24 54
+middle
+emp
+a25 22
+young
+self_emp
+a27 35
+middle self_emp
+a29 63
+older
+unemp
+(b) Transactions (excerpt)
+t_id
+a_id
+amount
+t62
+a25
+47
+t67
+a27
+43
+t68
+a27
+59
+t69
+a27
+17
+t73
+a29
+50
+...
+(c) Flattened, ML-ready dataset (excerpt): a27 is highlighted.
+age
+life_stage
+empl
+total_amt
+loan_approved
+63
+older
+unemp
+264
+1
+26
+young
+unemp
+94
+0
+54
+middle
+emp
+235
+1
+22
+young
+self_emp
+100
+0
+35
+middle
+self_emp
+119
+0
+63
+older
+unemp
+114
+0
+(d) Completions for age = 35 under increasing relational aware-
+ness. The first row violates the FD age →life_stage.
+age life_stage
+empl
+total_amt
+Kernel SHAP (unaware)
+35
+older
+unemp
+114
+RelShap (FDs only)
+35
+middle
+unemp
+114
+RelShap (FDs + provenance) 35
+middle
+self_emp
+119
+1. RelShap alters both background data and coalition se-
+lection under relational constraints, producing attribu-
+tions that correctly reflect the data-generating structure
+(Section 4.1).
+2. RelShap is agnostic to the choice of background data
+and coalition estimator: it enforces relational validity as
+a plug-in restriction layer while preserving the chosen
+background modeling approach and the base estimator’s
+sampling and weighting scheme.
+3. Computational effects: RelShap achieves orthogonal
+acceleration by avoiding redundant coalition evaluations
+while preserving Shapley values (Prop. 1). We combina-
+torially characterize the resulting speedup factor as a func-
+tion of the coalition estimator and FD structure (Thm. 1).
+4. We evaluate RelShap on 9 datasets across 4 models
+and 3 coalition estimators, empirically validating both the
+semantic effects and the runtime predictions of Thm. 1.
+2
+Preliminaries & Related Work
+Let F be the set of input features, f : R|F | →R a predictive
+model trained on Dtrain, and x ∈Dtest an instance to be
+explained. To explain the prediction f(x), for any coalition
+S ⊆F, xS denotes the projection of x onto S. The Shapley
+value of feature i ∈F is defined as
+ϕi(f) =
+X
+S⊆F \{i}
+|S|!(|F | −|S| −1)!
+|F |!
+ f(xS∪{i}) −f(xS)
+
+.
+(1)
+As discussed in Section 1, computing Eq. (1) in practice re-
+quires two design choices: background data selection, which
+
+
+0.4
+0.2
+0.0
+      35 = age
+     119 = total_amt
+self_emp = empl
+  middle = life_stage
+ age
+ total_amt
+ empl
+ life_stage
++0.2299
++0.1788
++0.0073
+0.1549
+[f(X)]=
+0.2276
+f(x)= 0.0335
+(a) Kernel SHAP.
+0.4
+0.2
+0.0
+  middle = life_stage
+     119 = total_amt
+self_emp = empl
+      35 = age
+ life_stage
+ total_amt
+ empl
+ age
++0.2102
++0.2058
++0
+0.1549
+[f(X)]=
+0.2276
+f(x)= 0.0335
+(b) RelShap (FDs only).
+0.2
+0.0
+  middle = life_stage
+     119 = total_amt
+self_emp = empl
+      35 = age
+ life_stage
+ total_amt
+ empl
+ age
++0.163
++0.109
++0
+0.011
+[f(X)]=
+0.2276
+f(x)= 0.0335
+(c) RelShap (FDs and provenance).
+Figure 1: Kernel SHAP vs. RelShap feature attributions for applicant a27 in Example 1 under an XGBoost classifier.
+determines how features in F \ S are filled in when evalu-
+ating f, and coalition selection, which subsets S ⊆F \ {i}
+are evaluated. Since exhaustive enumeration over reference
+points and over the 2|F |−1 coalitions is infeasible in practice,
+both are typically operationalized via sampling. The two di-
+mensions admit a multiplicity of instantiations (Sundarara-
+jan et al. 2020) and are typically treated as orthogonal (Zern
+et al. 2023; Chen et al. 2020). RelShap operates at the level
+of selection rather than sampling: it restricts the admissible
+background and coalition spaces to relationally valid config-
+urations, so it applies whether the values are then computed
+exactly or approximated by any estimators. Appendices B.1
+and C provide additional details.
+2.1
+Background Data Selection
+Let Pbg(zF \S) denote a background distribution over the
+absent features indexed by F \ S, and B be the number
+of background samples (possibly all reference data points).
+With a completed input ˜x(S, zF \S) ∈R|F |, we define
+f(xS) = EzF \S∼Pbg
+h
+f
+ ˜x(S, zF \S)
+i
+.
+Methods differ in their choice of Pbg. Interventional meth-
+ods (Janzing et al. 2020; Zern et al. 2023), including default
+Kernel SHAP (Lundberg and Lee 2017), treat feature absence
+as an intervention and fill absent features from the empiri-
+cal marginal distribution, which is assumption-light but can
+break feature dependencies. Conditional SHAP (Aas et al.
+2021) instead estimates the distribution of absent features
+given the observed ones, aiming to preserve dependencies
+but potentially introducing estimator error. Causal meth-
+ods (Heskes et al. 2020) intervene through a causal graph
+among the features, and ManifoldShap (Taufiq et al. 2023)
+restricts completions to an estimated data manifold. These
+methods span the true to the model vs. true to the data axis
+discussed in Section 1 (see Appendices B.2, B.3 for details).
+Importantly, RelShap is orthogonal to this axis: rather
+than choosing what distribution to put on the absent features,
+it constrains which configurations the chosen distribution is
+allowed to place mass on under relational constraints. The
+two design dimensions therefore compose rather than con-
+flict: RelShap can be layered on top of any background
+data selection method. By default we use marginal (feature
+independence) as the base when no relational constraints
+are available (Def. 1), to comply with the no-distributional-
+assumptions property (Sundararajan et al. 2020; Janzing et al.
+2020) while removing the structurally infeasible inputs that
+Frye et al. (2021) and Taufiq et al. (2023) warn about.
+2.2
+Coalition Selection
+We draw M coalitions from a coalition distribution Pcoal
+over S ⊆F \ {i} and approximate
+ϕi(f) ≈1
+M
+M
+X
+m=1
+w
+ S(m)
+f(xS(m)∪{i}) −f(xS(m))
+
+.
+Different Shapley value estimators choose different Pcoal
+and importance weight w. Kernel SHAP (Lundberg and Lee
+2017) fits a weighted linear surrogate using the Shapley
+kernel, which concentrates weight on extreme (very small
+or large) coalition sizes. Monte Carlo (MC) estimator sam-
+ples coalitions from the Shapley-weighted distribution, with
+coalition sizes sampled approximately uniformly. Leverage
+SHAP (Musco and Witter 2025) uses leverage score-based
+sampling, sampling the coalition size nearly uniformly and
+then sampling a coalition uniformly within that size. Recent
+variants further improve estimation through residual estima-
+tion (Witter et al. 2025) or Fourier basis reduction (Fumagalli
+et al. 2026a).
+RelShap is estimator-agnostic and provides orthogonal
+acceleration: it preserves any base estimator’s sampling dis-
+tribution, weights, and accuracy guarantees, canonicalizing
+sampled coalitions under relational validity (Def. 2). Wit-
+ter et al. (2026) also uses equivalence classes, but derives
+them from structural causal models (see Appendix H.1 for
+a detailed comparison). Maafa et al. (2018) studies lattice-
+structured coalition spaces to reduce computations, but not
+for ML predictions.
+2.3
+Relational Structure in ML Data
+Many ML datasets originate from relational databases, where
+data is organized into multiple tables linked by keys. Flat-
+tening this structure into a single table for model training
+discards integrity constraints that govern valid data combi-
+nations. A functional dependency (FD) A →B states that
+the value of attributes in A uniquely determines the value
+of B; for instance, in Example 1, age →life_stage
+means each age value maps to exactly one life stage. Domain
+constraints restrict attributes to valid ranges conditioned
+on other attributes (e.g., if region = ‘North America’
+
+
+then currency ∈{‘USD’, ‘CAD’, ‘MXN’}). Denial con-
+straints capture structural prohibitions such as mutual ex-
+clusivity in one-hot encoded features. Standard Shapley es-
+timators are free to violate all of these, evaluating the model
+on feature combinations that could never arise in the data-
+generating process. RelShap systematically prevents this.
+A fuller introduction to relational concepts is in Appendix A.
+3
+The RelShap Framework
+3.1
+Relational Constraints
+RelShap first prepares relational constraints for down-
+stream modules, either directly from relational inputs or from
+flattened-only inputs through normalization (Figure 2). We
+denote a relational schema as S, a query as Q, and the result-
+ing flattened dataset as D. The schema, query, and resulting
+data together induce a collection of relational constraints,
+which we denote by Σ{S,Q,D} = ΣFD∪Σdom∪Σden, where
+ΣFD, Σdom, and Σden are the sets of FDs, domain constraints,
+and denial constraints, respectively. After extracting all re-
+lational constraints, users inspect them and specify which
+types of constraints to include and to what extent; we denote
+the resulting set by Σ. Details are in Appendix D.1.
+Relational schema. ΣS contains schema-declared in-
+tegrity constraints: FDs from primary and unique keys, de-
+pendencies induced by foreign keys (applied when the corre-
+sponding relations are joined in the query), and conditional
+domain constraints (e.g., CHECK clauses), ignoring unary
+type constraints already satisfied by the data.
+Query. We parse Q using SQLGlot (GitHub 2023) to ex-
+tract query-induced FDs and conditional domain rules. ΣQ
+FD
+identifies GROUP BY clauses, window aggregation, top-1
+selection patterns, and self-joins. ΣQ
+dom captures WHERE and
+JOIN predicates.
+Flattened data. RelShap discovers exact minimal FDs
+with bounded left-hand-side size (default 2) and single-
+attribute right-hand sides; multi-attribute right-hand sides
+can be derived via Armstrong’s axioms (Armstrong 1974).
+For any L ⊆F and attribute a /∈L, let D/L denote the parti-
+tion of D induced by equality on L; an FD L →a holds if, for
+all equivalence classes C ∈D/L, |DISTINCTa(C)| ≤1.
+For each discovered FD A →B with |dom(B)| ≤20 (de-
+fault), we derive conditional domain rules (B = s) ⇒φ(A):
+for categorical A, φ(A) is the set of observed values; for con-
+tinuous A, an interval [ℓs, us] estimated from the data. We
+also extract denial constraints by identifying cycles in the FD
+set (e.g., A →B, B →C, C →A) and testing for structural
+patterns common in ML data, such as scaled one-hot encod-
+ings and exclusive-or among binary attributes. By default,
+we use D for constraint discovery and Dtrain as the reference
+distribution (see Appendix D.2).
+3.2
+Background and Coalition Selection
+RelShap incorporates two types of relational constraints:
+global, applied to all test instances, and local, instantiated per
+test instance. ΣFD is global; provenance-aware constraints,
+Σdom, and Σden are applied locally.
+Flattened
+tabular data
+Query
+RDB
+Resulting table
+Constraint
+Extraction
+Quotient mode
+1
+Step 1, 2, 3: change 
+explanations 
+(relational validity)
+Relational Constraints Preparation
+Step 4: saves 
+time only 
+(Shapley values 
+unchanged)
+Relational
+Input
+OR
+Normalization
+4
+2
+Provenance-aware mode
+3
+Integrity constraints mode
+Relational 
+background mode
+RelShap Core
+Figure 2: RelShap workflow. The upper panel extracts re-
+lational constraints; the core applies relational background
+(ΣFD), provenance-aware, and integrity constraints modes,
+which change explanations, and quotient mode, which re-
+duces runtime while leaving Shapley values unchanged.
+Definition 1 (Relationally Consistent Background Distribu-
+tion). Given a feature set F, a coalition S ⊆F, an instance
+x, and a set of relational constraints Σ, we define
+PRel
+bg =
+(
+PMarginal
+bg
+,
+if Σ = ∅,
+bP
+ ZF \S
+ ˜x(S, ZF \S) |= Σ
+
+otherwise.
+Under Def. 1, any coalitions S and S′ are Σ-equivalent,
+i.e., S ∼Σ S′, if they induce the same set of relationally
+valid completions under Σ. Accordingly, [S]Σ denotes the
+equivalence class of S under ∼Σ, and the Σ-coalition space
+CΣ is the quotient of the original coalition space by ∼Σ,
+collapsing coalitions indistinguishable under Σ.
+Definition 2 (Quotient space coalition projection). Given
+CΣ, quotient space coalition projection is a post-sampling
+procedure that maps a coalition S ⊆F \ {i} drawn by any
+sampler to its Σ-equivalence class [S]Σ (i.e., each coalition
+value is replaced by its canonical representative under Σ).
+For example, if Σ contains an FD a →b over {a, b, c},
+then {a} ∼Σ {a, b} and {a, c} ∼Σ {a, b, c}, and hence each
+pair belongs to the same Σ-equivalence class. Under Def. 2,
+once a coalition is evaluated, subsequent samples mapping
+to the same Σ-equivalence class reuse cached results with-
+out additional model calls. Two properties hold, for distinct
+reasons. First, quotient space coalition projection (quotient
+mode) leaves Shapley values unchanged (Prop. 1) because it
+only reuses cached evaluations of equivalent coalitions. Sec-
+ond, the base estimator’s coalition distribution, weighting
+scheme, and accuracy guarantees are preserved because all
+constraints (FDs, provenance, integrity constraints) are ap-
+plied to each sampled coalition before quotient deduplication
+
+
+Algorithm 1: RelShap
+1: Input: Pcoal, Σ, x (instance), M (coalition budget)
+2: Output: canonical coalitions M
+3: Seen ←∅,
+M ←[ ]
+4: for t = 1 to M do
+5:
+sample a raw coalition m ∼Pcoal
+6:
+if relational background mode under ΣFD then
+7:
+m ←CanonicalizeCoal(m)
+8:
+end if
+9:
+if provenance-aware mode then
+10:
+m ←m ∪ProvExpand(m, x, ΣFD)
+11:
+end if
+12:
+if integrity constraints mode then
+13:
+m ←m ∪ICRepair(m, x, Σdom ∪Σden)
+14:
+end if
+15:
+if quotient mode and m ∈Seen then
+16:
+continue
+▷reuse cached evaluation
+17:
+end if
+18:
+Seen ←Seen ∪{m}; M ←M ∪{m}
+19: end for
+20: return M
+(Algorithm 1). Together these provide orthogonal accelera-
+tion under Σ̸ = ∅. See Appendix H.1 for details and proof.
+Proposition 1 (Shapley value invariance under quotient
+space coalition projection). Quotient space coalition projec-
+tion does not change the resulting Shapley value of feature
+i, i.e., using only relational background distribution with or
+without quotient space coalition projection yields identical
+Shapley values, and this holds for all coalition estimators.
+Moreover, whenever ∼Σ is non-trivial, quotient projec-
+tion strictly reduces the coalition space, |CΣ| < 2|F |−1 (see
+Appendix F.2); Section 3.3 quantifies the expected reduction.
+Provenance-aware mode
+Provenance-aware mode incor-
+porates local constraints: identifier-induced FDs (primary
+and foreign keys; they are part of global ΣFD but applied
+instance by instance) no longer explicit in the flattened table
+(e.g., when identifiers are dropped as in Example 1). Given
+a coalition, we check whether an identifier can be inferred
+from the observed features. In strict mode, dependencies
+are applied only when the identifier is uniquely determined;
+in relaxed mode, dependencies are applied to any attribute
+whose value is constant across the narrowed candidate set.
+For instance, in Example 1, observing only the age of a29
+yields candidates {a12, a29}; although the exact identifier
+is ambiguous, life_stage (which may already be de-
+termined by age) and empl take the same value for both
+and can still be used. Provenance-aware mode is applicable
+even when no other relational structure exists within the fea-
+ture tables (e.g., discovered FDs), and when identifiers have
+been dropped during flattening. Standard (non-provenance)
+RelShap is typically sufficient in with-key settings where
+identifiers are retained (e.g., recommender systems).
+3.3
+Algorithm and Runtime Analysis
+Algorithm 1 orchestrates RelShap: it draws M raw coali-
+tions from a base coalition distribution, maps each to its
+canonical representative, expands it with local provenance
+information when available, applies integrity constraints,
+and deduplicates coalitions. CanonicalizeCoal lets Σ-
+equivalent coalitions share one evaluation based on FDClo-
+sure; ProvExpand incorporates identifier-induced depen-
+dencies using prebuilt inverted and row-set indexes, requir-
+ing only identifier-level lookups independent of dataset size,
+rather than full group-by operations; and ICRepair extends
+the coalition with features whose values are forced by domain
+and denial constraints (all subroutines are in Appendix G).
+RelShap first samples coalitions from the base coalition
+distribution and then applies all available relational con-
+straints, reusing cached evaluations when possible and evalu-
+ating new coalitions otherwise. This procedure preserves the
+base sampler’s draws while enforcing relational consistency
+and avoiding redundant evaluations (|M| ≤M).
+Runtime analysis.
+The runtime reduction from quotient
+space coalition projection is the decrease from the sampling
+budget M to the number of distinct projected coalitions |M|.
+Prior works (Demetrovics et al. 1985, 1992) characterize |CΣ|
+for representative FD structures (Appendix H.2), but only un-
+der deterministic coalition evaluation. RelShap also sup-
+ports stochastic sampling from Pcoal, where widely used
+estimators sample with coalition size-dependent probabili-
+ties pk = Pr(|S| = k) (Section 2.2). We therefore decom-
+pose the probability of reaching each class by coalition size
+and derive the expected reduction combinatorially: speedup
+arises when the sampler repeatedly hits the same equivalence
+class, allowing evaluations to be reused.
+Theorem 1 (Expected reduction under quotient mode). Let
+q(C) = PrS∼Pcoal([S]Σ = C) be the probability that a
+sampled coalition maps to Σ-equivalence class C ∈CΣ. If
+the draws are i.i.d., the expected number of distinct classes
+evaluated after projection mode is
+E[KM] =
+X
+C∈CΣ
+ 1 −(1 −q(C))M
+,
+where q(C) = P|F |−1
+k=r(C) pk
+NC(k)
+(
+|F |−1
+k ) is the probability of a
+sampled coalition landing in class C. Hence the normal-
+ized expected runtime speedup factor relative to the baseline
+sampler is RM = 1 −E[KM]/M.
+NC(k) is the number of size-k coalitions whose projec-
+tion belongs to C, and r(C) = min{|S| | [S]Σ = C} is the
+minimum size of any coalition generating C (rank). For the
+FD a →b over {a, b, c} from Section 3.2, quotient mode
+reduces |CΣ| from 23 = 8 to 6. Intuitively, FDs with small
+left-hand sides (LHSs) induce classes with small r(C), so
+many coalitions collapse to the same class, yielding large
+NC(k) at small sizes. The improvement for Kernel SHAP is
+therefore amplified when Σ contains many low-arity depen-
+dencies, since it concentrates mass on extreme coalition sizes
+and FDs with small LHSs are common in practice; Monte
+Carlo and Leverage SHAP spread mass more evenly across k,
+so their improvement tracks the overall magnitude of NC(k).
+We ignore implementation-level costs (e.g., lookup or index-
+ing) and assume i.i.d. draws; sequential samplers may intro-
+duce mild dependence in practice. Appendix H.3 provides a
+proof and Section 4 confirms that observed speedups closely
+match this analysis.
+
+
+4
+Experimental Evaluation
+We evaluate RelShap on 9 datasets: 5 standard ML
+datasets normalized into relational form (Papenbrock et al.
+2017) — Amazon Employee Access (OpenML 2022),
+Churn (OpenML 2017), Churn Modelling (Kaggle 2020),
+German Credit (OpenML 2014), and SpeedDating (OpenML
+2016) — and 4 relational datasets: TPC-H (TPC 2014), UW-
+CSE (Motl et al. 2015; CTU 2003), MovieLens 20M (Kaggle
+2016), and a Synthetic dataset extending Example 1 with do-
+main and denial constraints.
+We train logistic regression, XGBoost (Chen et al. 2016),
+Random Forest (Liaw et al. 2002), and MLP-PLR (Gorish-
+niy et al. 2022), covering linear, tree-based, and neural mod-
+els, and compute explanations with Kernel SHAP, MC, and
+Leverage SHAP (means and standard deviations over three
+seeds) for nexplain = min(200, |Dtest|) instances per dataset,
+using a per-dataset convergence budget Mconv at which Shap-
+ley estimates stabilize (Covert et al. 2020; Yuan et al. 2022).
+Relational constraint extraction is a one-time preprocess-
+ing step reused across all explanations; it completes within
+12 seconds on every dataset except SpeedDating (482.7s)
+and MovieLens 20M (98.9s), where data-driven FD discov-
+ery dominates, and its cost, typically offset by the resulting
+speedups, is excluded from runtime comparisons. Setup de-
+tails are in Appendices I and J.1.
+In summary,
+our experiments show that standard estima-
+tors query impossible worlds constantly; when ground truth
+is known, RelShap is the only method that recovers the
+correct explanation; on real data, the correction is large and
+systematic; and it comes at reduced, not increased, runtime.
+4.1
+Validation with Ground Truth
+We demonstrate that RelShap yields more intuitive expla-
+nations than existing methods in a controlled setting, fol-
+lowing experiments in Taufiq et al. (2023). Building on Ex-
+ample 1, we consider a loan approval scenario restricted
+to two features (age and life_stage), with an FD
+age →life_stage. We define a synthetic predictor
+g(x) = 1{age > 50} + δ r(life_stage) 1{x̸ |= Σ},
+where r(life_stage) ∈{0.3, 0.6, 0.9} assigns an arbi-
+trary constant to each of the three life stages, and δ ranges
+from 0 to 10 in increments of 0.5. Since every data instance
+satisfies Σ, the second perturbation term is inactive during
+training and testing and is triggered only by relationally in-
+valid combinations generated during Shapley computation.
+Thus, predictions on the valid domain depend only on age,
+and a semantically intuitive explanation should assign greater
+importance to age than to life_stage regardless of δ.
+Figure 3 shows how often each feature receives the larger
+absolute attribution as δ increases. All three baselines rank
+age first more often than life_stage; however, Kernel
+SHAP increasingly shifts attribution toward life_stage
+as invalid perturbations grow. Conditional SHAP and Man-
+ifoldShap are less sensitive to increasing δ, but still rank
+life_stage first for a substantial fraction of instances.
+In contrast, RelShap consistently assigns the larger attri-
+bution to age for all δ. This indicates that the explanation
+change from RelShap is not a mere difference; it is an
+0.0
+0.5
+1.0
+Kernel SHAP
+Conditional SHAP
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9 10
+δ
+0.0
+0.5
+1.0
+ManifoldShap
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9 10
+δ
+RelShap (FD: age 
+ life_stage)
+age
+life_stage
+Top attribution frequency
+Figure 3: Comparison of top attribution frequency across
+methods as δ varies; exact Shapley values computed via full
+coalition enumeration.
+improvement with respect to relational validity, achieved by
+eliminating impossible worlds.
+The mechanism behind these differences is instructive.
+We measure violation prevalence: the fraction of coalitions
+violating at least one relational constraint. Kernel SHAP
+fills life_stage from the marginal distribution, indepen-
+dently of age, so 31.8% of its coalitions violate the FD (e.g.,
+age = 35 with life_stage = older); each violation
+activates the perturbation term δ r(life_stage), and the
+resulting spurious attribution to life_stage grows with δ.
+Conditional SHAP, which estimates the conditional distribu-
+tion of life_stage given age, and ManifoldShap, which
+restricts completions to an estimated data manifold, suppress
+most, but not all, violations (4.8% and 5.1%, respectively),
+explaining their partial yet incomplete robustness. RelShap
+enforces the FD exactly: its violation prevalence is 0%, the
+perturbation term never activates, and life_stage re-
+ceives no spurious attribution. Note that violation prevalence
+itself does not depend on δ: increasing δ makes each violation
+more costly, not more frequent, which is why misattribution
+grows with δ while prevalence stays fixed.
+These results generalize beyond two features. We repeat
+the experiment over four features (age, life_stage,
+empl, total_amt), where attribution ordering between a
+particular feature pair is no longer expected to hold in isola-
+tion, and examine how the overall attribution vector and fea-
+ture ranking change as δ increases (Appendix J.3). RelShap
+remains unchanged across all metrics, while all baselines ex-
+hibit increasing attribution and ranking shifts; a setting with
+additional provenance constraints behaves identically (Ap-
+pendix J.3). This shows that eliminating impossible worlds
+makes RelShap insensitive to relationally invalid perturba-
+tions that are never observed during training or testing.
+Beyond the controlled setting, the UW-CSE dataset per-
+mits full background and coalition enumeration. RelShap
+changes the feature ranking even under exact computation,
+showing that the change is not a sampling artifact. Quotient
+mode further reduces runtime while preserving the Shapley
+values exactly, providing an empirical verification of Prop. 1.
+Additional validations on real datasets are in Appendix J.3.
+
+
+Kernel
+MC
+Leverage
+0
+20
+40
+60
+80
+100
+∆Jaccard, RBO > 0 (%)
+Top-3 Jaccard
+1-RBO
+(a) Aggregated by estimators.
+BG
+BG + DCs BG + Prov
+Strict
+BG + Prov
+Relaxed
+All
+0
+20
+40
+60
+80
+100
+∆Jaccard, RBO > 0 (%)
+(b) Aggregated by comparison modes.
+Amazon
+Churn
+Churn Modelling
+German Credit
+MovieLens 20M
+SpeedDating
+Synthetic
+TPC-H
+UW-CSE
+0
+20
+40
+60
+80
+100
+∆Jaccard, RBO > 0 (%)
+(c) Aggregated by datasets.
+Figure 4: Percentage of cases with ∆> 0, sliced by estimators, comparison modes, and datasets. Error bars denote 95% CIs.
+4.2
+Impossible Worlds in Practice
+We compare default estimators against five RelShap con-
+figurations with progressively richer constraints: BG (rela-
+tional background mode); BG + DCs; BG + Prov, Strict/Re-
+laxed (Relaxed subsumes Strict); and All (BG + Prov, Re-
+laxed + DCs). We first quantify how frequently conventional
+Shapley computation is exposed to impossible worlds. Across
+the three estimators, average violation prevalence rises from
+64–74% under BG to 82–93% under BG + Prov, Relaxed
+on datasets without DCs, and from 68–70% under BG to
+72–76% under All (Appendix J.4): invalidity becomes more
+pervasive as richer constraints are incorporated.
+Prevalence alone does not establish that explanations
+change; that also depends on the model’s response in the
+invalid region. We therefore assess how RelShap changes
+Shapley values relative to default estimators, finding shifts
+well beyond random ranking perturbation. For each instance,
+we measure ranking differences using Top-3 Jaccard dis-
+tance and 1 −RBO (rank-biased overlap) (Webber et al.
+2010), capturing the three most influential features and the
+full top-weighted ranking, respectively. Against the Mallows
+null baseline range of Hwang et al. (2026), we define ∆as the
+signed deviation from the range midpoint; ∆> 0 indicates
+a change larger than expected at random, and we report 95%
+confidence intervals (CIs) on the fraction of such cases.
+Figure 4 shows the percentage of cases with ∆> 0. This
+percentage exceeds 50% across most RelShap configura-
+tions, with changes occurring most frequently under MC,
+followed by Leverage SHAP and Kernel SHAP. Dataset-
+level effects are generally larger for constraint-rich datasets—
+reaching nearly 100% for SpeedDating—but are not strictly
+monotonic in the number of constraints (Appendix J). The
+effects are stable across predictive models, confirming that
+RelShap is generally model-agnostic (Appendix J.2). To-
+Mode
+Top-3 Jaccard 1 −RBO ∆Jaccard ∆RBO
+BG
+0.452
+0.190
+0.057
+0.050
+BG + DCs
+0.566
+0.216
+0.168
+0.094
+BG + Prov, Strict
+0.377
+0.142
+−0.023
+0.011
+BG + Prov, Relaxed
+0.415
+0.155
+0.015
+0.024
+All
+0.430
+0.172
+0.036
+0.032
+Table 2: Explanation differences by comparison mode (De-
+fault vs. mode), averaged over datasets, models, and estima-
+tors; standard deviations in Appendix Table 9.
+gether with Section 4.1, these results indicate that the ob-
+served ranking differences reflect meaningful corrections to-
+ward relationally valid explanations.
+Table 2 reports the magnitude of these changes by con-
+figuration: domain and denial constraints yield the largest
+corrections, provenance effects depend on the mode, and
+∆> 0 on average in all but one mode–metric pair. On
+TPC-H, provenance mode replaces the top-3 features almost
+entirely (Top-3 Jaccard 0.91–0.96 under Kernel SHAP and
+MC; Appendix Table 11).
+4.3
+Effectiveness of Running Time Optimization
+Quotient mode (Q) applies the quotient space coalition pro-
+jection of Def. 2 as an orthogonal acceleration on top of
+any configuration (Appendix J.2). Across datasets and mod-
+els, this optimization consistently reduces runtime for MC
+and Leverage SHAP, particularly on computationally costly
+datasets (e.g., Amazon, TPC-H); Kernel SHAP also benefits
+from Q but is more variable, consistent with the estimator-
+dependent analysis in Section 3.3. Added relational pro-
+cessing does not typically impose a runtime penalty, and
+the reduction from Q grows with both background size and
+coalition budget. Finally, observed reductions align with our
+combinatorial analysis: the empirical counterpart of RM in
+Thm. 1 correlates closely with measured reduction (Pearson:
+mean 0.806, median 0.875; Kendall τ: mean 0.741, median
+0.833), reliably predicting when reduction occurs, though its
+magnitude depends on the dataset and sampling strategy.
+5
+Conclusion
+Conventional Shapley value methods treat feature coalitions
+as unrestricted subsets, in effect querying relationally impos-
+sible worlds. RelShap is the first estimator-agnostic frame-
+work to systematically enforce relational consistency. Exten-
+sive experiments show that the resulting explanations differ
+meaningfully from those of unconstrained estimators, and
+that in settings with known ground truth, the difference is
+an improvement. Quotient mode preserves Shapley values
+exactly while provably reducing runtime.
+Limitations.
+Our validation establishes improvement
+with respect to relational validity and synthetic ground truth,
+not human judgment; a user study is important future work.
+RelShap also treats the extracted, user-vetted constraints
+as correct: spurious FDs discovered from small data would
+propagate to explanations. See Appendix L for details.
+
+
+Acknowledgments
+This work was supported by NSF Awards No. 2312930 and
+2326193. This work was supported in part through the NYU
+IT High Performance Computing resources, services, and
+staff expertise.
+References
+Aas, K.; et al. 2021. Explaining individual predictions when
+features are dependent: More accurate approximations to
+Shapley values. Artificial Intelligence, 298: 103502.
+Alizad, A.; and Milani, M. 2025. Relation-Stratified Sam-
+pling for Shapley Values Estimation in Relational Databases.
+arXiv preprint arXiv:2511.22035.
+Armstrong, W. W. 1974.
+Dependency structures of data
+base relationships. In IFIP congress, volume 74, 580–583.
+Geneva, Switzerland.
+Bertossi, L.; Kimelfeld, B.; Livshits, E.; and Monet, M. 2023.
+The Shapley value in database management. ACM Sigmod
+Record, 52(2): 6–17.
+Bischl, B.; Casalicchio, G.; Feurer, M.; Gijsbers, P.; Hutter,
+F.; Lang, M.; Mantovani, R. G.; van Rijn, J. N.; and Van-
+schoren, J. 2021. OpenML Benchmarking Suites. Proceed-
+ings of the NeurIPS 2021 Datasets and Benchmarks Track.
+Chen, H.; Janizek, J. D.; Lundberg, S.; and Lee, S.-I. 2020.
+True to the model or true to the data?
+arXiv preprint
+arXiv:2006.16234.
+Chen, T.; et al. 2016. Xgboost: A scalable tree boosting
+system. In Proceedings of the 22nd acm sigkdd international
+conference on knowledge discovery and data mining, 785–
+794.
+Cheney, J.; et al. 2009. Provenance in Databases: Why, How,
+and Where. Foundations and Trends in Databases, 1(4):
+379–474.
+Covert, I.; et al. 2020. Improving kernelshap: Practical shap-
+ley value estimation via linear regression. arXiv preprint
+arXiv:2012.01536.
+CTU. 2003. UW-CSE. https://relational.fel.cvut.cz/dataset/
+UW-CSE. Last accessed: April 2026.
+Datta, A.; et al. 2016. Algorithmic Transparency via Quanti-
+tative Input Influence: Theory and Experiments with Learn-
+ing Systems. In IEEE Symposium on Security and Privacy,
+SP 2016, San Jose, CA, USA, May 22-26, 2016, 598–617.
+IEEE Computer Society.
+Davidson, S.; Deutch, D.; Frost, N.; Kimelfeld, B.; Koren,
+O.; and Monet, M. 2022. Shapgraph: An holistic view of
+explanations through provenance graphs and shapley val-
+ues. In Proceedings of the 2022 International Conference on
+Management of Data, 2373–2376.
+Demetrovics, J.; et al. 1985. Minimum matrix representation
+of closure operations. Discrete Applied Mathematics, 11(2):
+115–128.
+Demetrovics, J.; et al. 1992.
+Functional dependencies in
+relational databases: A lattice point of view. Discrete Applied
+Mathematics, 40(2): 155–185.
+Deutch, D.; Frost, N.; Kimelfeld, B.; and Monet, M. 2022.
+Computing the shapley value of facts in query answering. In
+Proceedings of the 2022 International Conference on Man-
+agement of Data, 1570–1583.
+Dwivedi, V. P.; Kanatsoulis, C.; Huang, S.; and Leskovec,
+J. 2025. Relational deep learning: Challenges, foundations
+and next-generation architectures.
+In Proceedings of the
+31st ACM SIGKDD Conference on Knowledge Discovery
+and Data Mining V. 2, 5999–6009.
+Fey, M.; Hu, W.; Huang, K.; Lenssen, J. E.; Ranjan, R.;
+Robinson, J.; Ying, R.; You, J.; and Leskovec, J. 2024. Po-
+sition: Relational Deep Learning - Graph Representation
+Learning on Relational Databases. In Proceedings of the
+41st International Conference on Machine Learning, vol-
+ume 235 of Proceedings of Machine Learning Research,
+13592–13607. PMLR.
+Flajolet, P.; et al. 1992. Birthday Paradox, Coupon Collec-
+tors, Caching Algorithms and Self-Organizing Search. Dis-
+crete Applied Mathematics, 39(3): 207–229.
+Frye, C.; de Mijolla, D.; Begley, T.; Cowton, L.; Stanley,
+M.; and Feige, I. 2021. Shapley explainability on the data
+manifold. In International Conference on Learning Repre-
+sentations.
+Fumagalli, F.; Butler, L.; Kang, J. S.; Ramchandran, K.; and
+Witter, R. T. 2026a. An Odd Estimator for Shapley Values.
+arXiv preprint arXiv:2602.01399.
+Fumagalli, F.; et al. 2026b.
+PolySHAP: Extending Ker-
+nelSHAP with Interaction-Informed Polynomial Regression.
+arXiv preprint arXiv:2601.18608.
+GitHub. 2023.
+SQLGlot.
+https://github.com/tobymao/
+sqlglot. Last accessed: April 2026.
+Gorishniy, Y.; et al. 2022. On embeddings for numerical
+features in tabular deep learning. Advances in Neural Infor-
+mation Processing Systems, 35: 24991–25004.
+Green, T. J.; et al. 2007. Provenance semirings. In Proceed-
+ings of the Twenty-Sixth ACM SIGMOD-SIGACT-SIGART
+Symposium on Principles of Database Systems, PODS ’07,
+31–40. New York, NY, USA: Association for Computing
+Machinery. ISBN 9781595936851.
+Heskes, T.; et al. 2020. Causal shapley values: Exploiting
+causal knowledge to explain individual predictions of com-
+plex models.
+Advances in neural information processing
+systems, 33: 4778–4789.
+Huhtala, Y.; Kärkkäinen, J.; Porkka, P.; and Toivonen, H.
+1999. TANE: An Efficient Algorithm for Discovering Func-
+tional and Approximate Dependencies. The Computer Jour-
+nal, 42(2): 100–111.
+Hwang, H.; Lee, S.; Rosenblatt, L.; Whang, S. E.;
+and Stoyanovich, J. 2026.
+Explanation Multiplicity in
+SHAP: Characterization and Assessment.
+arXiv preprint
+arXiv:2601.12654.
+Janzing, D.; et al. 2020. Feature relevance quantification in
+explainable AI: A causal problem. In International Con-
+ference on artificial intelligence and statistics, 2907–2916.
+PMLR.
+
+
+Kaggle. 2016. MovieLens 20M Dataset. https://www.kaggle.
+com/datasets/grouplens/movielens-20m-dataset.
+Last ac-
+cessed: April 2026.
+Kaggle. 2020. Churn Modelling. https://www.kaggle.com/
+datasets/shubh0799/churn-modelling/data.
+Last accessed:
+April 2026.
+Laberge, G.; Aïvodji, U.; Hara, S.; Khomh, F.; et al. 2022.
+Fool shap with stealthily biased sampling. arXiv preprint
+arXiv:2205.15419.
+Liaw, A.; et al. 2002. Classification and regression by ran-
+domForest. R news, 2(3): 18–22.
+Livshits, E.; Bertossi, L.; Kimelfeld, B.; and Sebag, M. 2021.
+The Shapley value of tuples in query answering. Logical
+Methods in Computer Science, 17.
+Lundberg, S. M.; and Lee, S. 2017. A Unified Approach to
+Interpreting Model Predictions. In Guyon, I.; von Luxburg,
+U.; Bengio, S.; Wallach, H. M.; Fergus, R.; Vishwanathan,
+S. V. N.; and Garnett, R., eds., Advances in Neural Informa-
+tion Processing Systems 30: Annual Conference on Neural
+Information Processing Systems 2017, December 4-9, 2017,
+Long Beach, CA, USA, 4765–4774.
+Maafa, K.; et al. 2018. Algorithms for computing the Shapley
+value of cooperative games on lattices. Discrete Applied
+Mathematics, 249: 91–105.
+McElfresh, D.; Khandagale, S.; Valverde, J.; Prasad C, V.;
+Ramakrishnan, G.; Goldblum, M.; and White, C. 2023.
+When do neural nets outperform boosted trees on tabular
+data? Advances in Neural Information Processing Systems,
+36: 76336–76369.
+Motl, J.; et al. 2015. The CTU prague relational learning
+repository. arXiv preprint arXiv:1511.03086.
+Motwani, R.; et al. 1995. Randomized Algorithms. Cam-
+bridge University Press.
+Musco, C.; and Witter, R. T. 2025. Provably Accurate Shap-
+ley Value Estimation via Leverage Score Sampling. In The
+Thirteenth International Conference on Learning Represen-
+tations.
+OpenML. 2014.
+credit-g.
+https://www.openml.org/d/31.
+Last accessed: April 2026.
+OpenML. 2016. SpeedDating. https://www.openml.org/d/
+40536. Last accessed: April 2026.
+OpenML. 2017. Churn. https://www.openml.org/d/40701.
+Last accessed: April 2026.
+OpenML. 2022. Amazon Employee Access. https://www.
+openml.org/d/43900. Last accessed: April 2026.
+Papenbrock, T.; et al. 2015.
+Functional dependency dis-
+covery: An experimental evaluation of seven algorithms.
+PVLDB, 8(10): 1082–1093.
+Papenbrock, T.; et al. 2017. Data-driven Schema Normaliza-
+tion. In EDBT, volume 17, 342–353.
+Robinson, J.; et al. 2024. Relbench: A benchmark for deep
+learning on relational databases. NeurIPS, 37: 21330–21341.
+Rubachev, I.; Kartashev, N.; Gorishniy, Y.; and Babenko,
+A. 2025. Tabred: Analyzing pitfalls and filling the gaps in
+tabular deep learning benchmarks. International Conference
+on Learning Representations.
+Shapley, L. S.; et al. 1953. A value for n-person games.
+Princeton University Press Princeton.
+Sundararajan, M.; et al. 2020. The many Shapley values for
+model explanation. In International conference on machine
+learning, 9269–9278. PMLR.
+Taufiq, M. F.; et al. 2023. Manifold restricted interventional
+shapley values.
+In International Conference on Artificial
+Intelligence and Statistics, 5079–5106. PMLR.
+TPC. 2014. TPC-H. https://www.tpc.org/tpch/. Last ac-
+cessed: April 2026.
+Vanschoren, J.; Van Rijn, J. N.; Bischl, B.; and Torgo, L.
+2014.
+OpenML: networked science in machine learning.
+ACM SIGKDD Explorations Newsletter, 15(2): 49–60.
+Webber, W.; et al. 2010. A similarity measure for indefinite
+rankings. ACM Transactions on Information Systems (TOIS),
+28(4): 1–38.
+Witter, R. T.; Parafita, Á.; Garriga, T.; Muschalik, M.; Fuma-
+galli, F.; Brando, A.; and Rosenblatt, L. 2026. Exactly Com-
+puting do-Shapley Values. arXiv preprint arXiv:2602.07203.
+Witter, R. T.; et al. 2025. Regression-adjusted Monte Carlo
+Estimators for Shapley Values and Probabilistic Values. In
+The Thirty-ninth Annual Conference on Neural Information
+Processing Systems.
+Yuan, H.; et al. 2022. An empirical study of the effect of
+background data size on the stability of SHapley Additive ex-
+Planations (SHAP) for deep learning models. arXiv preprint
+arXiv:2204.11351.
+Zern, A.; et al. 2023. Interventional SHAP values and inter-
+action values for piecewise linear regression trees. In Pro-
+ceedings of the AAAI Conference on Artificial Intelligence,
+volume 37, 11164–11173.
+
+
+A
+Primer on Relational Concepts
+This appendix provides background on relational database
+concepts used throughout the paper, aimed at readers whose
+primary background is in machine learning or explainable
+AI rather than data management.
+A.1
+Relational databases and tables
+A relational database organizes data into a collection of
+tables (also called relations), each with a fixed set of named
+columns (attributes) and a variable set of rows (tuples). For
+example, in Example 1, the database contains two tables:
+Applicants with attributes a_id, age, life_stage,
+empl, and Transactions with attributes t_id, a_id,
+amount.
+Tables are linked through shared attributes. In the exam-
+ple, a_id appears in both tables: it uniquely identifies each
+applicant in Applicants and references the correspond-
+ing applicant in Transactions. One applicant may have
+many transactions (a one-to-many relationship). This multi-
+table structure allows the database to store each applicant’s
+attributes once, avoiding redundancy.
+A.2
+Keys and functional dependencies
+A key is a set of attributes that uniquely identifies each row
+in a table. In Applicants, a_id is the primary key: no
+two rows share the same a_id. A key induces functional
+dependencies (FDs): if a_id uniquely identifies a row, then
+knowing a_id determines all other attributes in that row.
+Formally, we write a_id →age, a_id →life_stage,
+etc.
+FDs are not limited to keys. Any deterministic relationship
+between attributes is an FD. For instance, if every 35-year-old
+in the data has life stage “middle,” every 63-year-old has life
+stage “older,” and so on, then age →life_stage holds.
+This FD can be discovered directly from the data, without any
+schema declaration. FD discovery is a well-studied problem
+in the database community (Huhtala et al. 1999; Papenbrock
+et al. 2015).
+A.3
+Queries and aggregation
+A query retrieves and transforms data from one or more ta-
+bles. The SQL query in Example 1 joins Applicants with
+Transactions (matching rows by a_id), then groups
+the result by applicant and computes the sum of transac-
+tion amounts (SUM(t.amount) AS total_amt). The
+GROUP BY clause produces exactly one output row per ap-
+plicant, which means the grouping attributes (here, a_id)
+uniquely determine the aggregated value. This creates a
+query-induced FD: a_id →total_amt.
+After the query executes, the identifier a_id is typically
+dropped before model training, since identifiers carry no pre-
+dictive signal. However, the FDs that a_id induced remain
+latent in the flattened table.
+A.4
+Integrity constraints beyond FDs
+Relational databases support several kinds of constraints be-
+yond functional dependencies:
+Domain constraints
+restrict the values an attribute can
+take, possibly conditioned on other attributes. For exam-
+ple, if region = ‘North America’ then currency ∈
+{‘USD’, ‘CAD’, ‘MXN’}. These constraints capture real-
+world restrictions that the data must satisfy.
+Denial constraints
+express prohibitions: certain combi-
+nations of attribute values must never co-occur. A com-
+mon example arises with one-hot encoded categorical vari-
+ables. If a categorical attribute gender is encoded as
+three binary columns (gender_male, gender_female,
+gender_nonbinary), then at most one column may
+equal 1 in any row. Standard Shapley estimators can produce
+completions like (1, 1, 0), violating this mutual exclusivity.
+Referential constraints
+(foreign keys) require that a value
+appearing in one table must exist in another. In the exam-
+ple, every a_id in Transactions must correspond to an
+existing a_id in Applicants.
+A.5
+Provenance
+Data provenance tracks where each row in a derived dataset
+came from. When a query joins and aggregates multiple
+source tables to produce a flattened ML-ready table, prove-
+nance records, for each output row, which source tuples con-
+tributed to it. In Example 1, the row with age = 35 in the
+flattened table was derived from applicant a27 and transac-
+tions t67, t68, t69.
+Provenance is useful because it recovers structural infor-
+mation that flattening discards. If we know that a particular
+output row came from a single source applicant, we can ap-
+ply the source table’s constraints (e.g., the schema-level FD
+a_id →empl) to further restrict which feature comple-
+tions are valid during Shapley computation.
+Provenance tracking is a well-studied area in the database
+community (Green et al. 2007; Cheney et al. 2009).
+RelShap uses a lightweight form of provenance that traces
+flattened rows back to their source tuples via identifier-
+induced FDs that are no longer explicit in the feature set
+(Section 3).
+A.6
+What flattening loses
+ML pipelines typically receive only the final flattened table.
+This flattening discards several kinds of structural informa-
+tion:
+• FDs that were enforced by the schema or induced by
+the query (e.g., age →life_stage) become invisi-
+ble; standard Shapley estimators freely generate combi-
+nations like (age = 35, life_stage = older) that
+violate them.
+• Domain constraints such as valid value ranges or con-
+ditional restrictions are no longer enforced.
+• Denial constraints such as one-hot mutual exclusivity
+are not represented in the flat schema.
+• Provenance information linking each row to its source
+tuples is lost when identifiers are dropped.
+RelShap recovers this information, either from the original
+relational schema and query (when available) or by discov-
+ering constraints directly from the data. Section 3 describes
+
+
+the extraction procedure; the three sources of constraints
+(schema-level, query-level, and data-driven) are detailed in
+Section 3.1.
+B
+Details about background data selection
+B.1
+Background data selection methods
+Since f is defined on the full feature space R|F |, the en-
+tries of xS corresponding to j ∈F \ S must be filled in.
+Let Pbg(zF \S) denote a background distribution over the
+absent features indexed by F \ S, let B be the number of
+background samples (possibly all reference data points), and
+z(1)
+F \S, . . . , z(B)
+F \S ∼Pbg. For a coalition S ⊆F, we construct
+a completed input ˜x(S, zF \S) ∈R|F | by
+˜xj(S, zF \S) =
+xj,
+if j ∈S,
+zj,
+if j ∈F \ S,
+and define
+f(xS) = EzF \S∼Pbg
+h
+f
+ ˜x(S, zF \S)
+i
+.
+Methods differ in their choice of Pbg. We describe the four
+most representative instantiations below, and discuss the
+conceptual landscape they span at the end of this section.
+Interventional approach (Janzing et al. 2020; Zern et al.
+2023) treats feature absence as an intervention rather than
+as a conditioning event. Under the standard assumption of
+feature independence, the distribution of the remaining fea-
+tures unchanged, so Pbg reduces to the empirical marginal
+distribution of the training data, PMarginal
+bg
+= πF \S(Dtrain);
+we refer to this construction as the marginal approach
+throughout the paper. Default Kernel SHAP (Lundberg and
+Lee 2017) is its most widely deployed implementation.
+Under this choice, dependencies between observed features
+in x and the imputed features in z are broken: the completed
+input ˜x(S, z) may lie off the data manifold, although it may
+coincidentally fall on it.
+Conditional approach (Aas et al. 2021) sets Pbg to the
+conditional distribution of the absent features given the
+observed ones, estimated from Dtrain via, e.g., a multivariate
+Gaussian assumption, a Gaussian copula, or an empirical
+conditional, PConditional
+bg
+= bP
+ ZF \S | XS = xS
+
+. The
+estimated distribution may not faithfully recover the true
+underlying one and can introduce spurious dependencies, but
+the formulation aims to capture inter-feature dependencies
+and is referred to as observational.
+Causal approach (Heskes et al. 2020) extends the inter-
+ventional formulation by exploiting a known causal graph
+among the features: PCausal
+bg
+= bP
+ ZF \S | do(XS = xS)
+
+,
+where Pearl’s do(·) propagates the intervention through
+the assumed causal mechanisms rather than (as in the
+marginal case) leaving ZF \S unchanged. Two cases arise
+depending on the structure: cycle (bidirectional, similar to
+the conditional approach) and chain (unidirectional).
+On-manifold approach (Taufiq et al. 2023) does not
+specify a probabilistic form for Pbg. Instead, it restricts
+attention to a region of interest Z that approximates the
+geometric data manifold and excludes off-manifold samples:
+PManifold
+bg
+= bP
+ ZF \S | do(XS = xS), X ∈Z
+
+. Member-
+ship in Z is determined by a surrogate manifold classifier
+g (e.g., via kernel density estimation), and off-manifold
+samples are generated through perturbation; the resulting
+explanations may depend on the quality of the classifier.
+ManifoldShap (Taufiq et al. 2023) is the canonical instance.
+B.2
+Perspectives on background data selection
+The four formulations above span the true to the model vs.
+true to the data axis introduced in Section 1: the marginal
+construction (default Kernel SHAP) stays true to the model
+by ignoring inter-feature dependencies, while the condi-
+tional, causal, and on-manifold approaches each attempt, in
+different ways, to stay true to the data by capturing or re-
+specting such dependencies. RelShap is orthogonal to this
+axis: rather than choosing what distribution to put on the ab-
+sent features, it constrains which configurations the chosen
+distribution is allowed to place mass on. Given any base back-
+ground distribution Pbase
+bg
+(marginal, conditional, causal, or
+manifold), RelShap restricts its support to completions that
+satisfy the relational constraints Σ extracted from the schema,
+query, and data (Def. 1). The two design dimensions there-
+fore compose rather than conflict: RelShap can be layered
+on top of any of the four formulations above.
+By default we use the marginal (Kernel SHAP (Lund-
+berg and Lee 2017)) as the base, since it requires no dis-
+tributional assumptions and is widely used; relational re-
+striction then rules out completions that are infeasible un-
+der the schema and query (e.g., age = 35 paired with
+life_stage = older when the FD age →life_stage
+has been identified) without estimating any conditional den-
+sity. This restriction preserves the no-distributional assump-
+tions property advocated by Sundararajan et al. (2020) and
+Janzing et al. (2020) while removing the structural off-
+manifold inputs Frye et al. (2021) warns about. Appendix B.3
+formalizes this on a two-feature linear model.
+B.3
+True to the data vs. True to the model
+Let
+X1 ∼Unif{1, 2, . . . , 8}, X2 = g(X1) =
+X1
+2
+
+.
+with
+E[X1] = 4.5, E[X2] = 2.5.
+Then fix a target point
+x = (x1, x2) = (k, b), b =
+k
+2
+
+.
+Kernel SHAP. Absent features are filled independently
+from their marginal distributions by ignoring dependencies
+present in the data, which follows a true to the model per-
+spective.
+
+
+One-way (unidirectional) FD-aware (X1 →X2). If X1
+is observed, X2 is deterministically recovered via g, follow-
+ing a true to the data viewpoint. If only X2 is observed, we
+assume no information about X1 and fall back to the Ker-
+nel SHAP treatment (true to the model). It aligns with the
+RelShap approach when only the functional dependency is
+known, and also corresponds to the chain case in (Heskes
+et al. 2020).
+Bidirectionally aware (X1 ↔X2). This aligns with the
+cycle case described in (Heskes et al. 2020), reflecting true
+to the data perspective where observing either feature de-
+termines the other. In this example, knowing the function
+g alone is not sufficient, since g is not injective (many-to-
+one), and therefore an inverse function g−1 does not exist.
+The preimage set g−1(x2) = {x1 | g(x1) = x2} indicates
+that observing X2 only reveals a range of possible values for
+X1, rather than its exact value. Therefore, in this setting we
+assume that the dataset is fully known, i.e., the exact pairs
+(X1, X2) are available.
+Since the goal of this example is to illustrate how feature
+dependence affects attribution, we assume a simple linear
+model
+f(x1, x2) = αx1 + βx2,
+where α, β ∈R, and intentionally exclude nonlinear interac-
+tions or the absence of one of the features (i.e., single-feature
+settings discussed in (Heskes et al. 2020)), so that the anal-
+ysis focuses only on the presence of feature dependence. In
+all three cases,
+f∅= E[f(X1, X2)] = αE[X1] + βE[X2] = 4.5α + 2.5β.
+f{1,2} = f(k, b) = αk + βb.
+Kernel SHAP.
+f{1} = E[f(k, X2)] = αk + βE[X2] = αk + 2.5β
+f{2} = E[f(X1, b)] = αE[X1] + βb = 4.5α + βb
+The resulting Shapley values:
+ϕMarginal
+1
+= 1
+2(f{1} −f∅) + 1
+2(f{1,2} −f{2}) = α(k −4.5)
+ϕMarginal
+2
+= 1
+2(f{2} −f∅) + 1
+2(f{1,2} −f{1}) = β(b −2.5)
+X1 →X2.
+If X1 is known, then X2 is determined:
+f{1} = f(k, g(k)) = f(k, b) = αk + βb
+If only X2 is known, X1 cannot be recovered since the
+mapping g is not assumed to be known (otherwise a piecewise
+inverse could be specified). Thus the marginal distribution
+of X1 is used,
+f{2} = E[f(X1, b)] = αE[X1] + βb = 4.5α + βb
+The resulting Shapley values:
+ϕFD
+1
+= 1
+2(f{1} −f∅) + 1
+2(f{1,2} −f{2})
+= 1
+2[(αk+βb)−(4.5α+2.5β)]+1
+2[(αk+βb)−(4.5α+βb)]
+= α(k −4.5) + β
+2 (b −2.5)
+ϕFD
+2
+= 1
+2(f{2} −f∅) + 1
+2(f{1,2} −f{1})
+= 1
+2[(4.5α+βb)−(4.5α+2.5β)]+ 1
+2[(αk+βb)−(αk+βb)]
+= β
+2 (b −2.5)
+Difference from the marginal case.
+ϕFD
+1
+−ϕMarginal
+1
+= β
+2 (b −2.5),
+ϕFD
+2
+−ϕMarginal
+2
+= −β
+2 (b −2.5).
+Thus part of the attribution that would otherwise be as-
+signed to the derived feature X2 is transferred to the root
+feature X1 when the dependency X1 →X2 is respected.
+The exact magnitude of this effect depends on the model co-
+efficient β on X2, and on the deviation of b from its mean
+value E[X2] = 2.5.
+X1 ↔X2.
+f{1} = f{2} = f{1,2} = αk + βb
+The resulting Shapley values:
+ϕ1 = ϕ2 = 1
+2(f{1,2} −f∅) = 1
+2(αk + βb −4.5α −2.5β)
+Discussion.
+The three approaches produce qualitatively different attri-
+butions since they incorporate the dependency structure to
+different extents, even when all other conditions held fixed.
+The marginal approach ignores the relation between the vari-
+ables and treats X1 and X2 as independently manipulable.
+As a result, the Shapley values are allocated according to the
+model coefficients, with only the mean subtracted from each
+feature. For X1 ↔X2 case, the two variables become in-
+formationally indistinguishable, making the Shapley values
+split evenly between the two features. Overall, the resulting
+attributions still depend on the model coefficient, reflecting
+the true to the model perspective. However, by incorporat-
+ing the functional dependency structure (X1 →X2), part
+of the attribution that would otherwise be assigned to the
+derived attribute X2 is transferred to the root attribute X1.
+This reflects a true to the data perspective, where the expla-
+nation respects the dependency structure of the underlying
+data. Importantly, this simplified redistribution arises since
+we considered only two features with a single FD between
+them. As the number of features or FDs increases, the reallo-
+cation is governed by the joint dependency structure, making
+the resulting Shapley value more complex and less directly
+traceable.
+C
+Details about coalition samplers
+In this section, we restate the formulations used in existing
+works using our notation and describe their coalition sam-
+pling procedures based on their code implementations. This
+clarification is necessary for our theoretical development in
+Section 3.3.
+
+
+C.1
+Kernel SHAP
+Kernel SHAP (Lundberg and Lee 2017) estimates Shapley
+values by fitting a weighted linear surrogate whose solution
+coincides with ϕ(f). Each coalition is weighted by the Shap-
+ley kernel,
+wKernel(S) =
+|F| −1
+ |F |
+|S|
+
+|S| (|F| −|S|)
+,
+which depends only on |S| and concentrates weight on ex-
+treme (very small or very large) coalition sizes; coalitions are
+sampled accordingly. A coalition is a subset S ⊆F, equiva-
+lently represented by a binary mask z′ ∈{0, 1}|F | where |F|
+denote the number of features considered in the explanation,
+and let S(z′) = {j ∈F | z′
+j = 1}.
+Coalitions are sampled using a hybrid strategy. First, a
+subset size s ∈{1, . . . , |F|−1} is drawn, excluding the triv-
+ial coalitions corresponding to the empty and full sets. These
+trivial cases are handled separately and computed once since
+there is only one coalition of each type, whereas intermediate
+sizes contain multiple candidates.
+For non-trivial coalitions, Kernel SHAP defines a coalition
+sampling distribution PKernel
+coal
+by first allocating probability
+mass across subset sizes according to
+PKernel
+coal
+(|S| = s) ∝
+1
+s(|F| −s).
+Once a subset size s is determined, a coalition S ⊆F with
+|S| = s is sampled uniformly at random among all subsets
+of that size, i.e.,
+PKernel
+coal
+(S | |S| = s) =
+1
+ |F |
+s
+.
+Consequently, the overall coalition sampling distribution sat-
+isfies
+PKernel
+coal
+(S) ∝
+1
+ |F |
+|S|
+
+|S|(|F| −|S|)
+,
+which matches the size-dependent structure induced by the
+Shapley kernel stated below.
+In practice, when the number of features is sufficiently
+small, Kernel SHAP deterministically enumerates all coali-
+tions of a given size whenever the sampling budget permits.
+Concretely, if the requested number of samples exceeds the
+number of possible non-trivial coalitions (i.e., 2|F | −2), the
+algorithm simply enumerates the entire coalition space in-
+stead of performing random sampling. The randomized sam-
+pling scheme described above is therefore used only when
+the feature dimension is large enough that full enumeration
+becomes infeasible.
+During random sampling with replacement, duplicate
+coalitions may occasionally occur. Although the number
+of possible coalitions grows exponentially with the num-
+ber of features-making such collisions relatively unlikely in
+practice-Kernel SHAP handles them explicitly. When a coali-
+tion that has already been observed is drawn again, the algo-
+rithm does not add a new row to the regression design matrix.
+Instead, it increases the weight associated with the existing
+coalition so that the resulting weighted regression correctly
+reflects the number of times that coalition was sampled.
+Given a coalition budget M, we sample coalitions
+S(1), . . . , S(M) ∼PKernel
+coal
+, Kernel SHAP assigns each coali-
+tion a regression weight determined by the Shapley kernel:
+wKernel
+
+S(m)
+∝π
+ |F|, |S(m)|
+
+,
+where the Shapley kernel is a size-dependent function de-
+fined for nontrivial coalitions (0 < |S(z′)| < |F|) as:
+π(z′) = π
+ |F|, |S(z′)|
+
+=
+|F| −1
+ |F |
+|S(z′)|
+
+|S(z′)| (|F| −|S(z′)|)
+.
+Then Kernel SHAP fits a linear surrogate g(z′) = ϕ0 +
+P
+j∈F ϕjz′
+j by minimizing the weighted squared loss
+min
+ϕ0,{ϕj}j∈F
+M
+X
+m=1
+w
+ S(m) 
+f
+ ˜x(S(m))
+
+−ϕ0−
+X
+j∈F
+ϕjz′(m)
+j
+2
+,
+subject to the two endpoint constraints induced by π(z′) =
+∞:
+g(0) = f(˜x(∅))
+and
+g(1) = f(˜x(F)),
+which are equivalent to ϕ0 = f(˜x(∅)) and P
+j∈F ϕj =
+f(˜x(F)) −f(˜x(∅)). The resulting coefficients {ϕj}j∈F are
+the Kernel SHAP attributions.
+C.2
+Monte Carlo coalition estimator
+Monte Carlo (MC) estimator fixes a feature of interest i ∈
+F and samples coalitions S ⊆F \ {i} from the Shapley-
+weighted distribution
+PMC
+coal(S | i) = |S|!(|F| −|S| −1)!
+|F|!
+,
+wMC(S) = 1.
+Since PMC
+coal matches the coefficients in Eq. (1), the result-
+ing estimator is unbiased for ϕi(f). It is conceptually sim-
+ple but may require many samples to converge. In practice,
+coalition sizes are sampled approximately uniformly. Each
+Monte Carlo draw first samples a pivot (a feature to explain)
+i ∼Unif(F). Conditioned on i, the estimator samples coali-
+tions S ⊆F \ {i} by first sampling a coalition size
+K ∼Unif({0, 1, . . . , |F| −1}),
+and then sampling a subset S uniformly at random among all
+size-K subsets of F \ {i}. This two-stage procedure induces
+a distribution over coalitions S ⊆F \ {i}. For any fixed i
+and coalition S ⊆F \ {i}, the probability that S is sampled
+is
+P(S | i) = P(|S| = k | i) · P(S | |S| = k, i)
+=
+1
+|F| ·
+1
+ |F |−1
+|S|
+ = |S|!(|F| −|S| −1)!
+|F|!
+,
+which exactly matches the Shapley coefficient in Eq. (1).
+Each Monte Carlo draw samples a pivot uniformly, a coali-
+tion size uniformly, and a subset uniformly within that size,
+inducing a Shapley-weighted distribution over coalitions.
+
+
+C.3
+Leverage SHAP
+Leverage SHAP (Musco and Witter 2025) solves the same
+regression formulation as Kernel SHAP but adopts a lever-
+age score-based sampling strategy with provable accuracy
+guarantees. It first selects a coalition size with approximately
+equal probability and then samples a coalition uniformly at
+random among all coalitions of that size, so all sizes appear
+with comparable frequency rather than the extremes being
+overrepresented. The regression weight (the leverage score)
+depends only on |S|. Let Z ∈Rρ×|F | and y ∈Rρ denote
+the full regression system (as in Kernel SHAP) over all coali-
+tions with 0 < |S| < |F| (which brings ρ = 2|F | −2), where
+each row corresponds to a coalition indicator vector. To en-
+force the efficiency constraint, define the projection matrix
+P = I −
+1
+|F |11⊤and consider the unconstrained system
+A = ZP and b = y −Z1 v(1)−v(0)
+|F |
+.
+Leverage SHAP samples coalitions according to a distri-
+bution PLeverage
+coal
+over 0 < |S| < |F|. In this problem, the
+leverage scores admit a closed form: all coalitions of the
+same size share the same score, and the total sampling mass
+is allocated by coalition size. Consequently, the sampling
+design is stratified by coalition size. Let ms denote the num-
+ber of sampled coalitions of size s among the M draws with
+P|F |−1
+s=1
+ms = M for a given budget M. Within each stratum
+corresponding to coalition size s, ms coalitions are sampled
+uniformly without replacement from the
+ |F |
+s
+
+possible coali-
+tions of that size. Then every coalition S with |S| = s has
+the same inclusion probability
+PLeverage
+coal
+(S) = p(S) = m|S|
+ |F |
+|S|
+.
+Given the sampled coalitions S(1), . . . , S(M) generated
+by this stratified sampling design, the estimator solves a
+reweighted least-squares problem with per-sample weight
+wLeverage
+
+S(m)
+∝
+π
+ |S(m)|
+
+PLeverage
+coal
+ S(m),
+where π(·) denotes the Shapley kernel defined in Ap-
+pendix C.1. The estimator then solves
+ˆϕ⊥= arg min
+β
+M
+X
+m=1
+wLeverage
+
+S(m) 
+⟨a(S(m)), β⟩−b(S(m))
+2,
+where a(S) and b(S) denote the corresponding row of A
+and entry of b. Finally, it returns
+ˆϕ = ˆϕ⊥+ v(1) −v(0)
+|F|
+1,
+which satisfies the efficiency constraint by construction. In
+practice, ridge regularization may be added if the subsampled
+normal matrix is ill-conditioned.
+C.4
+Perspectives on coalition selection
+The three estimators above span a design space defined by
+bias, variance, and accuracy guarantees: Kernel SHAP is
+faster but biased toward extreme coalition sizes; MC is un-
+biased but slow to converge; Leverage SHAP equalizes cov-
+erage across sizes and offers provable accuracy guarantees.
+Recent estimators improve this space along orthogonal di-
+rections: Witter et al. (2025) reduce variance via residual
+estimation against a learned surrogate, while PolySHAP (Fu-
+magalli et al. 2026b) and OddSHAP (Fumagalli et al. 2026a)
+use higher-order polynomial regression and Fourier-basis re-
+duction, respectively, to improve accuracy and efficiency.
+RelShap is orthogonal to all of these: rather than in-
+troducing a new sampling distribution or weighting scheme,
+it acts as a plug-in restriction layer that prunes the coalition
+space to relationally valid configurations before any estimator
+is applied (Def. 1). It therefore composes with any of these
+estimators without modifying their sampling distributions,
+weights, and accuracy guarantees, and contributes orthogo-
+nal acceleration by collapsing coalitions that are equivalent
+under the relational constraints (Section 3). The most directly
+comparable approach is that of Witter et al. (2026), which
+likewise reduce the coalition space via equivalence classes,
+but using structural causal models that require explicit causal
+assumptions and intervention semantics; RelShap derives
+its equivalence structure from declared schema constraints
+and observed FDs in the data, with no causal assumption
+required.
+D
+Details about relational constraints
+D.1
+Data-level relational constraints
+Discovered functional dependencies
+For any L ⊆F and
+attribute a /∈L, let D/L denote the partition of D induced
+by equality on L. We say that L →a holds exactly in D if,
+for every equivalence class C ∈D/L, attribute a takes at
+most one distinct value within C:
+∀C ∈D/L,
+DISTINCTa(C)
+ ≤1,
+where DISTINCTa(C) denotes the set of distinct values of
+attribute a within group C.
+We restrict the left-hand side to at most a user-specified
+bound—default 2, except for UW-CSE (3)—and consider
+only single-attribute right-hand sides; multi-attribute right-
+hand sides can be derived via Armstrong’s axioms (Arm-
+strong 1974) during background data selection (Section 3.2).
+We retain only minimal FDs: for a fixed a, if L →a holds
+and there exists L′ ⊂L such that L′ →a also holds, then
+L →a is discarded. FDs discovered at this stage may over-
+lap with those extracted at the schema and query levels; we
+retain all and let the user decide which levels to include.
+Approximate FDs.
+To tolerate limited violations, we ad-
+ditionally support approximate FDs. For a candidate pair
+(L, a), the approximation error is
+err(L →a) =
+
+C ∈D/L
+ DISTINCTa(C)
+ > 1
+	
+|D/L|
+.
+We record L →a as an approximate FD if err(L →a) ≤
+ε, where ε is a user-defined tolerance threshold. While our
+implementation supports approximate FDs, we restrict all
+experiments to exact FDs.
+
+
+Conditional domain rules
+For each discovered FD A →
+B where dom(B) has bounded cardinality (at most a user-
+defined threshold, default 20), we iterate over values s ∈
+dom(B) and construct implications of the form
+(B = s) ⇒φ(A),
+where φ(A) is a domain restriction on A estimated from the
+tuples in D satisfying B = s. Two cases arise:
+• Categorical A. φ(A) restricts A to the set of distinct
+values co-occurring with B = s in the data.
+• Continuous A. φ(A) restricts A to an empirical interval
+[ℓs, us], where ℓs and us are computed either from the
+minimum and maximum values or from user-specified
+lower and upper quantiles to reduce sensitivity to outliers.
+For example, from an FD age →life_stage, sup-
+pose that the observed domain of life_stage in D is
+dom(life_stage) = {young, middle, older}. For
+each s ∈dom(life_stage), we construct
+(life_stage = s) ⇒
+ ℓs ≤age ≤us
+
+,
+where ℓs and us are estimated empirically from tuples in D
+with life_stage = s.
+Denial constraints
+We identify denial constraints via cy-
+cles in the exact FD set. For a set of attributes {A, B, C}, if
+A →B, B →C, and C →A all hold in D, the attributes
+are mutually determined and form a cyclic dependency. For
+each cycle, we test for two characteristic patterns:
+• Scaled one-hot. Each entry takes values in {0, κ} for
+some κ ∈Z>0, and in every tuple at most one column in
+the set is nonzero.
+• n-ary exclusive or (XOR). All entries are in {0, 1}, and
+the sum over the c columns has a fixed parity modulo 2.
+Caveat. A categorical variable could be manually one-hot
+encoded by the user to avoid imposing an artificial ordi-
+nal structure (e.g., encoding categories as 1, 2, 3) on inher-
+ently unordered categories. Suppose that the model is trained
+directly on these columns without integrating the prepro-
+cessing step into a pipeline using ColumnTransformer
+from the scikit-learn package. In this case, Shap-
+ley value computations without background data selection
+in RelShap may produce infeasible inputs, since f refers
+only to the prediction model and does not include the pre-
+processing transformation. For example, under the stan-
+dard Kernel SHAP procedure (Lundberg and Lee 2017),
+if we explain an instance with gender_male
+=
+1
+and consider a female background data point, the com-
+pleted input becomes (gender_male,gender_female,
+gender_nonbinary) = (1, 1, 0), which does not corre-
+spond to any valid gender category. Such combinations
+violate the implicit one-hot constraint but are not prevented
+by conventional SHAP implementations. This motivates re-
+flecting relational constraints, especially denial constraints,
+during background data selection.
+D.2
+On the choice of reference data
+We first clarify that including test data in FD discovery or
+lookup table (LUT) construction does not lead to a data
+leakage. These steps are performed solely during the Shapley
+value computation and are independent of model training.
+Referencing test data in the post-hoc explanation phase does
+not alter the trained model parameters or influence predictive
+performance.
+Second, the choice of reference data itself has negligible
+impact when the training and full data distributions remain
+aligned. Prior work such as Fool SHAP (Laberge et al. 2022)
+shows that SHAP explanations can be substantially distorted
+when the background data is adversarially manipulated or
+heavily skewed. Thus, the key issue is not which reference
+dataset is selected - Dtrain or D - but whether the reference
+distribution exhibits substantial shift from the model’s train-
+ing distribution. In this work, we do not consider significant
+distributional shifts, and thus such choice does not materially
+affect the explanations and is treated as a design choice.
+Existing approaches including Kernel SHAP (Lundberg
+and Lee 2017) and the conditional approach (Aas et al. 2021),
+typically use only Dtrain as the background data. While the
+intention is to respect the training data distribution on which
+the model was fitted, explanations are ultimately evaluated
+on test instances. Consequently, absent features are filled
+using reference data points solely from Dtrain, which may
+introduce unrealistic or distributionally mismatched combi-
+nations, making such replacements semantically ambiguous.
+Table 3 summarizes the four possible combinations of
+these choices and their potential implications, which may or
+may not arise in practice depending on the specific configu-
+ration. In our experiments, we use D for discovery and Dtrain
+for LUT construction by default. We evaluate each combi-
+nation along three properties: Mismatch indicates whether
+the discovered relational constraints may not be realizable
+using values available in the LUT, potentially yielding in-
+valid or undefined instantiations during background or coali-
+tion construction for test data points. It occurs only when
+Discovery ⊈LUT. Hit indicates whether all values required
+to instantiate missing features of a test instance are present in
+the LUT, so that background data points can be constructed
+without failure. In particular, this is guaranteed when the
+LUT is constructed from the full dataset D. Test indicates
+whether test data are used to construct either the discovered
+constraints or the LUT.
+E
+Additional mathematical details
+Definition 3 (Σ-coalition equivalence). Under the relation-
+ally consistent background semantics in Def. 1, we define an
+equivalence relation over coalitions. Given Σ and a feature
+of interest i ∈F, for any coalitions S, S′ ⊆F \ {i}, S and
+S′ are Σ-equivalent, i.e., S ∼Σ S′, if they induce the same
+set of relationally valid completions under Σ. Formally,
+˜x(S, zF \S)
+ ˜x(S, zF \S) |= Σ
+	
+=
+˜x(S′, zF \S′)
+ ˜x(S′, zF \S′) |= Σ
+	
+.
+Definition 4 (Σ-coalition equivalence class). Following
+Def. 3, for any coalition S ⊆F \ {i}, its Σ-equivalence
+class is defined as:
+[S]Σ = {T ⊆F \ {i} | T ∼Σ S}.
+
+
+Table 3: Four possible combinations of discovery data for
+data-driven constraint extraction and lookup table (LUT) for
+background data selection, evaluated in terms of possible
+mismatch, hit (coverage), and the use of test data. ✓indi-
+cates that the corresponding phenomenon may occur, while
+✗denotes that it cannot occur. For mismatch and test, non-
+occurrence is preferable, whereas for hit, occurrence is de-
+sirable.
+Discovery–LUT
+Mismatch
+Hit
+Test
+Dtrain–Dtrain
+✗
+✗
+✗
+Dtrain–D
+✗
+✓
+✓
+D–Dtrain
+✓
+✓
+✓
+D–D
+✗
+✓
+✓
+Definition 5 (Σ-coalition space). Σ-coalition space is the
+quotient space of the original coalition space {S ⊆F \
+{i}} under the equivalence relation ∼Σ, which collapses
+coalitions that are indistinguishable under Σ. Formally,
+CΣ = {S ⊆F \ {i}}
+
+∼Σ= {[S]Σ | S ⊆F \ {i}}.
+As noted in Section 3.2, non-trivial ∼Σ implies |CΣ| <
+2|F |−1 in the deterministic setting, without considering ran-
+domness in coalition sampling; see Appendix F.2 for the
+proof.
+F
+Proofs
+F.1
+Proof of Prop. 1
+Proof. By Def. 3, for any S, S′ ⊆F \ {i} with S ∼Σ S′,
+f(˜x(S, z)) = f(˜x(S′, z′)) for all relationally valid comple-
+tions z, z′ under Σ. Let {C1, . . . , CK} be the partition of
+{S ⊆F \ {i}} induced by ∼Σ. Starting from the Shap-
+ley value definition and grouping coalitions by their Σ-
+equivalence classes, we obtain:
+ϕi =
+K
+X
+k=1
+X
+S∈Ck
+w(S)
+
+f(˜x(S ∪{i}, z)) −f(˜x(S, z))
+
+=
+K
+X
+k=1
+ X
+S∈Ck
+w(S)
+! 
+f(˜x( ˆSk ∪{i}, z)) −f(˜x( ˆSk, z))
+
+,
+where ˆSk is any representative of Ck. Since the original
+Shapley sum can be partitioned according to Σ-equivalence
+classes and the inner expression is identical for all S ∈Ck,
+the above expression coincides with the Shapley computation
+over CΣ.
+F.2
+Proof of Coalition Space Reduction
+Here we prove the claim in Section 3.2 that non-trivial ∼Σ
+implies |CΣ| < 2|F |−1.
+Proof. The original coalition domain {S ⊆F \ {i}} has
+cardinality |{S ⊆F \ {i}}| = 2|F |−1. The Σ-coalition
+space CΣ consists of the ∼Σ-equivalence classes over this
+domain, which form a partition; thus each element of the
+domain belongs to exactly one equivalence class. If ∼Σ is
+Algorithm 2: CanonicalizeCoal
+1: S ←{fj ∈F | mj = 1}
+2: if S in CanonMap then
+3:
+C ←CanonMap[S]
+4: else
+5:
+C ←FDClosure(S)
+▷Appendix Alg. 3
+6:
+CanonMap[S] ←C
+7: end if
+8: Set mj ←1 for all fj ∈C
+9: return m
+non-trivial, then there exist distinct S, S′ ⊆F \{i} such that
+S ∼Σ S′. Hence at least one equivalence class contains at
+least two elements. Since the equivalence classes partition
+the domain, having a block of size at least two implies that
+the number of blocks is strictly smaller than the number of
+elements being partitioned. Therefore, |CΣ| < 2|F |−1.
+G
+Algorithms
+Each coalition mask sampled by the base estimator is canon-
+icalized: it is expanded to its FD-closed representative un-
+der ΣFD, so that Σ-equivalent coalitions map to the same
+canonical mask (Alg. 2). A coalition mask m is a binary
+vector over the features F: mj = 1 marks feature fj as ob-
+served (provided by the base sampler) and mj = 0 marks
+it as unobserved (to be completed from the background
+data points). Alg. 2 maps each mask to its FD-closed form
+by computing FDClosure(S) (Appendix Alg. 3), where
+S = {fj | mj = 1}, and setting to 1 every entry in the
+closure. A memoization cache CanonMap stores computed
+closures, so each distinct input coalition incurs the closure
+computation at most once.
+Algorithm 3: FDClosure: Canonicalizing a coalition under
+the Armstrong’s axioms
+1: Input: coalition feature set S
+2: Output: FD-closed coalition C
+3: C ←S; initialize an empty queue Q
+4: for each FD rule L →r in ΣFD do
+5:
+τL→r ←|L \ C|
+▷# of unsatisfied LHS attributes
+6:
+if τL→r = 0 and r /∈C then
+7:
+C ←C ∪{r}; enqueue r into Q
+8:
+end if
+9: end for
+10: while Q not empty do
+11:
+attrnew ←dequeue from Q
+12:
+for each FD rule L →r with attrnew ∈L do
+13:
+τL→r ←τL→r −1
+14:
+if τL→r = 0 and r /∈C then
+15:
+C ←C ∪{r}; enqueue r into Q
+16:
+end if
+17:
+end for
+18: end while
+19: return C
+In this section, we provide the algorithmic and implemen-
+
+
+tation details. In Alg. 3, for each FD rule L →r, the algo-
+rithm maintains a counter τL→r = |L \ C|, which records
+how many attributes in the left-hand side (LHS) are not yet
+present in the current closure C. When this counter reaches
+zero, the rule is triggered and r is added to C. When a new
+attribute attrnew is added to C, it is enqueued and used to
+update only those FD rules whose LHS contains attrnew,
+by decrementing their counters. This incremental propaga-
+tion avoids repeatedly scanning all FD rules and yields an
+efficient computation of the FD closure. As noted earlier,
+we restrict the right-hand side (RHS) of each FD to be a
+single attribute, while allowing the LHS to include up to a
+user-specified maximum number of attributes (default 2).
+Algorithm 4: BuildHits: Build per-identifier candidate sets
+via inverted index
+1: function BuildHits(D, S, ˆx, τ, mode)
+2:
+hits ←[]
+3:
+for each id ∈D do
+4:
+Kid ←{f ∈S | f determines id}
+5:
+if Kid = ∅then continue
+6:
+end if
+7:
+Cid ←T
+f∈Kid I[id][f][ˆxf]
+▷O(|Kid|)
+8:
+if mode = Strict and 0 < |Cid| ≤τ then
+9:
+append (id, Kid, Cid) to hits
+10:
+else if mode = Relaxed and |Cid| > 0 then
+11:
+Rconst
+id
+←
+features
+constant
+across
+RS[id][Cid]
+12:
+append (id, Kid, Cid, Rconst
+id
+) to hits
+13:
+end if
+14:
+end for
+15:
+return hits
+16: end function
+Algorithm 5: ApplyByIntersection: Multi-identifier joint
+rule application
+1: function
+ApplyByIntersec-
+tion(hits, RS, S, m, ΣFD, τ, mode)
+2:
+P ←T
+(id,...) ∈hits RS[id][Cid]
+▷Alg. 4
+3:
+if P = ∅then return m
+4:
+end if
+5:
+for each (id, Kid, Cid, Rconst
+id
+) ∈hits do
+6:
+for each (L →r) ∈ΣFD involving id with
+L ⊆S do
+7:
+if (mode = Strict and |{id(p) | p ∈P}| ≤
+τ)
+8:
+or (mode = Relaxed and r is constant
+on P) then
+9:
+mr ←1
+10:
+end if
+11:
+end for
+12:
+end for
+13:
+return m
+14: end function
+Alg. 4 resolves candidate entity identifiers for each
+dropped identifier column using a pre-built inverted
+index
+I[id][f][v]
+→
+frozenset of id-values,
+requiring
+O
+ P
+id∈D |Kid|
+
+frozenset intersection operations per
+coalition (covering both single and composite keys on the
+LHS), and avoiding any per-coalition scan or groupby oper-
+ation over the reference data. Alg. 5 handles the case where
+two or more identifiers are simultaneously active. It intersects
+pre-built row-index sets RS (from Alg. 4) across all active
+identifiers to obtain the jointly consistent row set P, and ap-
+plies FD rules whose conclusions are consistent within P.
+After calling BuildHits and ApplyByIntersection, Alg. 6
+applies FD rules per identifier using the updated S, and if
+under Relaxed mode, it additionally activates features that
+are constant across over-threshold entity groups. The result
+for each (mask, instance) pair is cached to avoid recomputa-
+tion across the many coalitions that share the same pattern.
+Alg. 7 only repairs values in the absent feature coordinates
+(mj = 0) so that the constructed inputs satisfy Σdom ∪Σden
+under the chosen repair policy. For numeric constraints, we
+consider the following three repair policies:
+Minimal edit (projection). The value is projected to the
+nearest feasible point within the allowed interval. For exam-
+ple, under
+{life_stage = middle} ⇒18 ≤age ≤64,
+if an instance has life_stage=middle but has age =
+16, and the age attribute is repairable (i.e., mj = 0), the
+value is minimally adjusted to the nearest valid boundary,
+namely age = 18, thereby enforcing the smallest possible
+modification.
+Random feasible resampling. A new value is sampled
+uniformly at random from feasible values observed in the
+lookup table (reference data), subject to satisfying the con-
+straint. In the above example, any value appearing in the
+reference table within the range [18, 64] may be selected.
+Distance-weighted random resampling. A new feasible
+value is sampled from the reference table with probability
+proportional to a distance-based weight, so that values closer
+to the original value are more likely to be selected. In the
+above example, values such as 18 or 19 are more likely than
+distant values such as 60. Let o be the original value and let
+V = {v1, . . . , vK} be the set of feasible values in the lookup
+table. Define dk = |vk −o| and wk =
+1
+1+dk , and sample vk
+with probability Pr[v = vk] =
+wk
+PK
+j=1 wj .
+For categorical constraints including denial constraints,
+there is typically no natural notion of distance. For example,
+under a constraint of the form
+{region = ‘EU’} ⇒currency ∈{EUR, CHF, GBP}
+or
+gender_male, _female, _nonbinary ∈{0, 1},
+gender_male + _female + _nonbinary = 1.
+a feasible category is selected uniformly at random from
+the admissible values observed in the reference data.
+Furthermore, in the implementation, Kernel SHAP inter-
+nally represents coalitions using masks defined only over
+varying features, i.e., features whose values can differ from
+the instance under the background distribution. RelShap fol-
+lows the same convention by first identifying such varying
+
+
+features and operating on the corresponding varying feature
+masks before applying relational canonicalization and refine-
+ment. In addition, throughout RelShap, masks are encoded
+as compact bit masks to support fast canonicalization, mem-
+oization, and lookup.
+H
+Closure system and lattice induced by
+functional dependencies
+H.1
+Closure system
+Remark 1. Importantly, under Armstrong’s axioms (Arm-
+strong 1974), The family of FD-closed sets induced by clΣ
+forms a closure system (i.e., it is closed under arbitrary inter-
+sections), and the set of closed sets ordered by inclusion (⊆)
+forms a lattice. In this lattice, the meet operation corresponds
+to set intersection, and the join operation corresponds to the
+closure of the union of two sets i.e., for any C1, C2 ∈CΣ,
+consider an FD-based closure operator clΣ (equivalent to
+FDClosure in Appendix Alg. 3), then
+C1 ∧C2 = C1 ∩C2,
+C1 ∨C2 = clΣ(C1 ∪C2).
+In particular, clΣ is monotone: for any S, T ⊆F \ {i},
+S ⊆T →clΣ(S) ⊆clΣ(T).
+These setups differentiate RelShap from existing frame-
+works. Witter et al. (Witter et al. 2026) also exploit equiva-
+lence classes and lattice structure, but in a different setting.
+Their equivalence classes arise from causal relationships in
+a structural causal model (SCM), where interventions on
+some variables can render others redundant, not from the
+Armstrong-style functional dependency closure system (i.e.,
+a Moore family) used in RelShap. In addition, Maafa et al.
+(2018) study lattice-structured coalition spaces to reduce
+computations, but not for ML predictions. Importantly, both
+works redefine the coalition space of the cooperative game
+itself, while RelShap operates on the original coalition
+space induced by estimators.
+H.2
+Lattice induced by functional dependencies
+Lemma 1 (Structure of CΣ (Demetrovics et al. 1992,
+Thm. 3.1)). CΣ can be identified with the family of Σ-closed
+sets as:
+CΣ = 2F \{i} \
+[
+L→R∈ΣFD, r∈R\L
+[L, (F \ {i}) \ {r}],
+where [L, (F \ {i}) \ {r}] = { S ⊆F \ {i} | L ⊆S ⊆
+(F \ {i}) \ {r} }.
+Intuitively, for each FD L →R, any set that contains
+L but omits some attribute r ∈R violates the dependency
+and therefore cannot be a closed set. Several representative
+FD patterns for which closed-form expressions or simple
+counting formulas can be derived are given in Demetrovics
+et al. (Demetrovics et al. 1992). These include: single FD;
+unary chains (derived from Prop. 6.1 in (Demetrovics et al.
+1992); Σ = {L1 →L2, L2 →L3, . . . , Lp−1 →Lp});
+disjoint unary chains (multiple unary chains on pairwise
+disjoint attribute sets); and nested left-hand sides (derived
+from Prop. 6.10; Σ = {L1 →r1, L2 →r2, . . . , Lp →
+rp, }, L1 ⊆L2 ⊆· · · ⊆Lp). Here we restrict our analysis
+to the single FD case, and let U denote the coalition universe
+F \{i}. Moreover, following (Demetrovics et al. 1985), when
+Σ decomposes over attribute-disjoint blocks, both |CΣ| and
+NC(k) can be computed by combining the corresponding
+quantities of each block, reducing the counting problem to
+smaller independent components. Specifically, if
+Σ =
+p[
+j=1
+Σj, CΣ ∼=
+p
+Y
+j=1
+CΣj,
+then
+|CΣ| =
+p
+Y
+j=1
+|CΣj|, NC(k) =
+X
+k1+···+kp=k
+p
+Y
+j=1
+N (j)
+Cj (kj),
+where C = (C1, . . . , Cp) with Cj ∈CΣj.
+Proposition 2 (Single FD (Demetrovics et al. 1992, Derived
+from Thm. 3.1)). Suppose Σ = {L →R}, where L, R ⊆U
+and L ∩R = ∅. Then the number of Σ-closed sets is
+|CΣ| = 2|U| −2 |U|−|L| + 2 |U|−|L|−|R|.
+Moreover, for each C ∈CΣ,
+NC(k) =
+
+
+
+
+
+1{k = |C|},
+L ⊈C,
+
+|R|
+k −(|C| −|R|)
+
+,
+L ⊆C,
+where
+ a
+b
+
+= 0 if b < 0 or b > a.
+Proof. A set S ⊆U is Σ-closed iff L ⊆S →R ⊆S. A
+subset violates the dependency if it contains L but omits
+at least one attribute of R. The number of sets contain-
+ing L is 2|U|−|L|, and among them those containing R
+are 2|U|−|L|−|R|. Hence the number of violating sets is
+2|U|−|L| −2|U|−|L|−|R|, and subtracting these from 2|U|
+yields the result.
+If L ⊈C, then no subset of C can trigger the FD, so
+clΣ(S) = S for all S ⊆C, and thus the only generator of
+C is S = C. If L ⊆C, then necessarily R ⊆C since C is
+closed, and clΣ(S) = C holds exactly for S = (C \ R) ∪T
+with T ⊆R, which gives the binomial count.
+H.3
+Proof of Thm. 1
+Proof. For each C ∈CΣ, define the indicator random vari-
+able
+IC = 1{∃m ≤M | [S(m)]Σ = C}.
+Then the number of distinct observed classes is KM =
+P
+C∈CΣ IC. By linearity of expectation,
+E[KM] =
+X
+C∈CΣ
+E[IC] =
+X
+C∈CΣ
+Pr(IC = 1)
+=
+X
+C∈CΣ
+ 1 −(1 −q(C))M
+.
+Conditioning on the coalition size,
+q(C) =
+|F |−1
+X
+k=0
+Pr([S]Σ = C | |S| = k) pk.
+
+
+For every C ∈CΣ, since r(C) is the size of a minimal
+generator of C, we have NC(k) = 0 for all k < r(C). Then
+the support of the sum can be restricted to k ≥r(C),
+q(C) =
+|F |−1
+X
+k=r(C)
+pk
+NC(k)
+ |F |−1
+k
+.
+Since S is drawn uniformly conditional on |S| = k,
+Pr([S]Σ = C | |S| = k) = NC(k)
+ |F |−1
+k
+.
+This is a coupon collector-type proof (Flajolet et al. 1992;
+Motwani et al. 1995).
+Remark 2. Monte Carlo coalition sampling draws coali-
+tions independently, and therefore the samples are i.i.d. Ker-
+nel SHAP involves additional implementation steps including
+handling duplicate coalitions, but the underlying sampling
+procedure draws coalitions independently with replacement,
+and we therefore model the samples as i.i.d. Leverage SHAP
+employs stratified sampling without replacement within each
+coalition-size stratum. Since the coalition space grows ex-
+ponentially with the number of features, the probability of
+sampling the same coalition more than once is negligible
+for practical budgets. We therefore approximate the resulting
+sampling process by an i.i.d. coalition sampling model.
+Remark 3. Considering the Shapley value definition in Sec-
+tion 2, the overall runtime improvement is proportional to
+RM up to constant multiplicative factors. First, Shapley value
+computation requires averaging over background data, yield-
+ing a cost proportional to the number of background points
+used. Second, for Monte Carlo estimator, each marginal con-
+tribution involves both S and S ∪{i}, introducing at most
+a factor of two (which could be smaller in practice due to
+caching or invariant features in the actual computation),
+whereas this does not apply to Kernel SHAP and Leverage
+SHAP since marginal contributions are implicitly accounted
+for within the solver and are not computed via explicit pair-
+wise evaluations.
+H.4
+Estimator-specific expected runtime
+reduction
+Corollary 1 (Monte Carlo coalition estimator). From Sec-
+tion C.2,
+pk =
+1
+|F|, q(C) =
+1
+|F|
+|F |−1
+X
+k=r(C)
+NC(k)
+ |F |−1
+k
+.
+Corollary 2 (Kernel SHAP). From Section C.1,
+pk =
+1
+Z|F |−1
+1
+k(|F| −1 −k),
+for k = 1, . . . , |F| −2 where the normalization factor
+Z|F |−1 =
+1
+|F| −1
+|F |−2
+X
+t=1
+1
+t +
+1
+|F| −1 −t
+
+=
+2
+|F| −1
+|F |−2
+X
+t=1
+1
+t = 2H|F |−2
+|F| −1 .
+and H|F |−2 is the harmonic number.
+Corollary 3 (Leverage SHAP). Let mk denote the number of
+sampled coalitions of size k, with P|F |−1
+k=0
+mk = M. Hence
+pk = mk
+M , q(C) =
+|F |−1
+X
+k=r(C)
+mk
+M
+NC(k)
+ |F |−1
+k
+,
+Interpretation
+Since M is fixed, the degree of runtime re-
+duction is determined by q(C). If many classes C have small
+q(C), new classes tend to appear across samples and few
+repetitions occur, yielding RM ≈0 and little runtime reduc-
+tion. In contrast, if some classes have large q(C), the same
+classes are repeatedly sampled and the projection merges
+these repetitions, increasing RM.
+The probability q(C) is structurally determined by the in-
+teraction between the coalition-size distribution pk and the
+collapse counts NC(k). Here pk describes how frequently
+coalitions of size k are sampled by the estimator, while
+NC(k) counts how many coalitions of size k collapse to
+the same closure class C. Therefore, if pk concentrates prob-
+ability mass on coalition sizes where NC(k) is large, the
+resulting q(C) becomes large and the same classes are re-
+peatedly sampled, leading to greater runtime reduction. Con-
+versely, if pk spreads probability mass broadly across sizes
+or NC(k) remains small across levels, then q(C) stays small
+and new classes continue to appear, resulting in little runtime
+reduction.
+Consider Example 1 with the discovered FD age →
+life_stage over {age, life_stage, empl, total_amt}.
+Without RelShap, the base sampler treats all 24 = 16
+coalitions as distinct. Under quotient-space projection,
+any coalition containing age is expanded to also include
+life_stage, so {age} and {age, life_stage} collapse
+to the same equivalence class, as do {age, empl} and
+{age, life_stage, empl}, and so on. The effective num-
+ber of distinct classes |CΣ| drops from 16 to 12 (see Ap-
+pendix Prop. 2), and any duplicate draw reuses the cached
+evaluation. Thm. 1 generalizes this: q(C) measures how
+likely a sampled coalition is to land in class C, and RM
+quantifies the expected fraction of redundant coalition evalu-
+ations eliminated by quotient projection, as a function of the
+sampler’s size distribution pk and the FD-induced collapse
+counts NC(k).
+The decomposition admits a combinatorial interpretation:
+for each C ∈CΣ, NC(k) counts the number of size-k coali-
+tions whose closure generates C (i.e., size-k generators of C),
+and q(C) aggregates these counts weighted by the sampler’s
+size distribution pk. The collapse counts NC(k) depend on
+the FD structure of ΣFD; representative cases are given in
+Appendix H.2. Intuitively, FDs with small left-hand sides in-
+duce equivalence classes with small rank r(C), so that many
+coalitions collapse to the same class, yielding large NC(k)
+at small sizes. Runtime reduction therefore emerges from the
+interaction between the estimator’s size distribution and the
+FD-induced collapse structure:
+
+
+• Kernel SHAP places larger probability mass on extreme
+(small and large) coalition sizes. Since FDs in practice
+tend to have small left-hand sides, the resulting classes have
+small r(C) and large NC(k) for small k, precisely the sizes
+Kernel SHAP oversamples. The runtime improvement is
+therefore amplified when ΣFD contains many low-arity
+dependencies.
+• Monte Carlo and Leverage SHAP distribute probability
+more uniformly across coalition sizes and do not strongly
+favor any particular k. The runtime improvement depends
+mainly on the overall magnitude of the collapse counts
+NC(k) across all sizes; that is, on how many coalitions
+share the same closure.
+I
+Details of datasets
+For each dataset, we summarize the identifiers that are
+dropped (used in provenance-aware mode), together with a
+high-level dataset overview in Table 4. For the runtime re-
+quired to extract schema-, query-, and data-level relational
+constraints, including the refinement step, over the entire
+dataset (Textract), all datasets complete within 12 seconds ex-
+cept for SpeedDating and MovieLens 20M. In both cases, the
+cost is dominated by data-driven FD extraction—due to the
+large number of features (|F|) in SpeedDating and the large
+number of data points in MovieLens 20M—taking 482.687s
+and 98.922s, respectively. Table 5 lists the correspond-
+ing machine learning benchmark sources (OpenML (Van-
+schoren et al. 2014), OpenML-CC18 (Bischl et al. 2021),
+TabZilla (McElfresh et al. 2023), and TabRed (Rubachev
+et al. 2025)). Entity-relationship diagrams (ERDs) with de-
+tailed queries and the full set of extracted relational con-
+straints are provided in our supplementary material. As ex-
+pected, query execution over the normalized schema pre-
+serves the full content of the original dataset.
+Amazon employee access. This dataset addresses a clas-
+sification task that predicts whether access to a resource is
+approved or denied (ACTION) based on role of employees
+and resource-related information. Since the original data is
+provided as a single flattened table, role (job) types identi-
+fied by ROLE_CODE are separated into a Role table, while
+employee’s resource access request instances are stored in
+an Employee table. Each instance is assigned an artifi-
+cial identifier row_id to enable row-level traceability to the
+original data.
+Churn. This dataset targets a binary classification task that
+predicts customer churn from customer account attributes
+and call usage statistics. We apply a normalization to cre-
+ate Customer, Usage, and Period tables: Customer
+stores customer-level profile information, Period enumer-
+ates call categories (DAY, EVE, NIGHT, INTL), and Usage
+stores per-customer and per-period call usage statistics. In
+the final flattened table, period-specific usage records are
+pivoted into distinct feature columns for each customer (e.g.,
+total_day_minutes, total_eve_calls, total_night_charge), re-
+flecting the underlying normalized structure and the func-
+tional dependencies it induces.
+Churn Modelling. This dataset addresses a binary classi-
+fication task that predicts whether a bank customer leaves
+the bank (Exited) from customer attributes. The pro-
+vided flattened table includes two identifier-like columns,
+RowNumber and CustomerId, which are typically re-
+moved in the downstream machine learning task; however,
+we use them to normalize the data into Customer and
+Profile tables. The Customer table represents customer
+entities and stores basic personal information, while the
+Profile table represents one record per row identified by
+RowNumber, linked to Customer through CustomerId,
+and stores customer financial information.
+German Credit (credit-g). This dataset is designed for
+a binary classification task that predicts whether an ap-
+plicant has a good or bad credit risk based on demo-
+graphic and financial attributes. We apply a semantic nor-
+malization that separates applicant-level attributes into the
+Applicant table and credit application–specific attributes
+into the Application table. Each record is assigned a syn-
+thetic identifier application_id, and Application
+references Applicant through a one-to-one relationship.
+SpeedDating. This dataset is designed for a binary clas-
+sification task that predicts whether two participants ulti-
+mately select each other (whether a match occurs), based on
+participant profile (survey) information and mutual evalua-
+tion data collected from experimental speed dating events.
+Although the original data is provided as a single flattened
+table, the semantics naturally separate participant-level at-
+tributes from encounter-level attributes. Accordingly, we nor-
+malize the data into three tables: Person, Interaction,
+and BucketRule. Table Person stores attributes that
+are fixed for a participant (e.g., preference criteria) Table
+Interaction stores encounter-level attributes observed
+when two participants meet (e.g., ratings of the partner)
+Since the column wave denotes an independent experi-
+mental session, participants can interact only with others
+within the same wave. Therefore, all identifiers and joins
+are performed within wave. The relational structure of this
+dataset inherently induces a self-join on the Person ta-
+ble, since each interaction links two persons, identified by
+self_id and partner_id, within the same entity. Since
+the dataset contains both continuous variables and their dis-
+cretized counterparts (d_*), we construct a BucketRule
+table that records the mapping from each base feature to its
+bucket label. At the query-level, we derive composite fea-
+tures such as age difference and same-race indicators, which
+also induce FDs. Participant–partner identities are recovered
+by enforcing reciprocal consistency within each wave. Rows
+without a unique match are removed, yielding 8,364 rows
+from the original 8,378, with each interaction represented by
+two directed rows.
+TPC-H. We define a binary classification task at the sup-
+plier level that predicts whether a supplier is high risk based
+on operational performance signals derived from transac-
+tional data. A final table used for ML task contains per-
+supplier aggregates summarizing transaction volume, fi-
+nancial performance, delivery behavior, and return behav-
+ior, together with supplier account balance and geographic
+attributes (nation and region). We derive a binary label
+supplier_risk by thresholding the late delivery rate and
+return rate at their 75th percentiles; a supplier is labeled pos-
+
+
+itive if either rate exceeds its threshold.
+UW-CSE. We study a multi-class classification problem
+that predicts a students program phase (inPhase), a com-
+monly studied task on the UW-CSE dataset, using infor-
+mation about advising and course enrollment. We derive a
+student-centric table in which each row summarizes a stu-
+dents academic context via aggregated statistics, such as the
+number of advisors and counts of courses at different lev-
+els, along with the students years in program. The identifier
+p_id is kept only to index instances and is excluded from the
+feature set. The relational design further gives rise to a self-
+join on person, since the advisedBy relation associates
+one person with another person in different roles (student or
+professor).
+MovieLens 20M. This dataset targets a binary classifica-
+tion task that predicts whether a user gives a movie a high
+rating. Since the task is defined over user-movie pairs, the
+final table retains both userId and movieId, and includes
+movie attributes, genre identifiers, and a representative tag
+feature. The specific machine learning task and query are
+defined by the authors.
+Synthetic. This is a synthetic relational dataset con-
+structed by the authors for a binary classification task that
+predicts loan approval as an extension of Example 1. It
+consists of three tables: Applicants, Transactions,
+and Items, and includes FD: age →life_stage as
+well as conditional domain constraints between region
+and currency, designed to evaluate how RelShap incor-
+porates conditional domain knowledge and denial constraints
+(gender). The final learning table is generated by a query
+with transaction-level aggregation (e.g., transaction count
+and total quantity) and top item selection; these operations
+induce FDs, and thus identifiers a_id (applicant) and t_id
+(transaction) are dropped.
+J
+Experiments
+J.1
+Detailed experimental setups
+Hardware and reproducibility. All experiments ran on a
+machine with an Intel Xeon Platinum 8592+ CPU (128 cores,
+512 GB RAM) and an NVIDIA A100 GPU (80 GB VRAM)
+for deep learning models. Implementation details for repro-
+ducibility are in our code repository. Table 6 lists the hy-
+perparameter settings for training predictive models; since
+Shapley values are post-hoc and model-agnostic, we do not
+optimize predictive performance. For all experiments, we
+use three random seeds: 2026, 2027, and 2028. Software ver-
+sions, environment configuration, and full implementation
+details for reproducibility are available in our code reposi-
+tory. Availability and summary of relational constraints per
+dataset are summarized in Tables 7 and 8.
+Convergence protocol. For each dataset we identify a uni-
+fied convergence budget Mconv at which Shapley estimates
+stabilize, using Top-3 Jaccard distance as the convergence
+criterion, after verifying qualitatively similar convergence
+across estimators (Covert et al. 2020; Yuan et al. 2022).
+J.2
+Detailed experimental results
+Semantic effects
+Table 9 summarizes explanation differ-
+ences and their deviations from the randomized null baseline
+across datasets, predictive models, estimators, and compari-
+son modes. Table 10 further provides the per-dataset break-
+down for the comparison modes yielding the largest devia-
+tions from the null baseline.
+Figures 5 and 6 illustrate two complementary regimes.
+UW-CSE is a small database (DB) dataset (|F|=7) where
+we can afford full coalition enumeration (Mconv = 2|F |−1),
+providing an exact comparison; German Credit is a medium-
+scale ML dataset (|F|=20) with sampled coalitions. In both
+cases, several RelShap configurations produce distances
+that exceed the shaded null-baseline region, indicating shifts
+beyond what random perturbation can explain.
+Note that distances do not necessarily increase as more
+constraint types are added: each configuration changes which
+background points are admissible, and the resulting rank-
+ings can move in any direction relative to the default. On
+UW-CSE, for instance, all features are functionally deter-
+mined by the dropped identifier p_id, so provenance-aware
+mode collapses the background to near-deterministic com-
+pletions. In this setting, the resulting explanation differences
+from the default sampler, which draws from the small train-
+ing set (|Dtrain| = 112), remain at or below the null base-
+line. In contrast, on TPC-H, suppkey induces richer cross-
+table structure over a larger pool (|Dtrain| = 8,000), and
+provenance-aware mode produces consistently large positive
+∆values (Appendix Table 11). The complementary metric
+pairing—1−RBO on UW-CSE and Top-3 Jaccard on Ger-
+man Credit—is in Appendix Figures 7 and 8.
+Computational effects
+We measure the relative reduction
+in runtime per explanation sample as (Tref −Ttarget)/Tref ×
+100 (%), where Tref denotes the runtime of the reference
+method (Default or RelShap (BG)) and Ttarget denotes that of
+RelShap (BG/Q). Figure 14 presents runtime reduction ver-
+sus the empirical speedup factor. Figure 7 shows 1 −RBO
+results on the UW-CSE dataset, and Figure 8 shows Top-3
+Jaccard distance on the German Credit dataset, complement-
+ing the main text with the opposite pairing. Figure 9 shows
+pairwise runtime comparisons across all datasets, models,
+and comparison modes. Overall, runtime reduction is ob-
+served in a large fraction of cases, with Monte Carlo and
+Leverage SHAP showing particularly strong gains, where re-
+duction occurs in 91.55% and 84.72% of cases, respectively,
+while Kernel SHAP shows a lower rate of 43.06%. This
+pattern indicates that the benefit of quotient space coalition
+projection in RelShap is estimator-dependent.
+Table 15 summarizes the frequency of runtime reduction
+across datasets. The runtime reduction is consistently ob-
+served for Monte Carlo and Leverage SHAP across most
+datasets, often exceeding 90%. In contrast, Kernel SHAP
+shows higher variability, with little to no reduction on some
+datasets (e.g., German Credit and UW-CSE) but strong im-
+provements on others (e.g., SpeedDating and TPC-H). Build-
+ing on the analysis in Section 3.3, we observe that, in general,
+runtime reduction becomes more pronounced as the total
+number of FDs increases. In particular, for Kernel SHAP,
+
+
+Table 4: ML: flattened datasets with predefined machine learning tasks (relational structure is normalized by the authors).
+DB: relational schemas are given and machine learning tasks are defined by the authors via queries. |F|: # of input features
+excluding the target. Train/test splits: scikit-learn’s train_test_split with an 8:2 ratio. Due to memory constraints, for
+model training, we used 2.5% of the MovieLens 20M training sets. For background data selection, we used 400,000 samples
+for MovieLens 20M, and 2,000 for SpeedDating. Mconv, B: coalition budget and the chosen background size for convergence,
+Textract: runtime (in seconds) taken to extract relational constraints over the entire dataset.
+Type
+Dataset
+|F|
+# data points
+# train
+# test
+Mconv
+B
+Textract(sec)
+ML
+Amazon
+9
+32,769
+26,215
+6,554
+27
+26,215
+7.139
+Churn
+20
+5,000
+4,000
+1,000
+29
+4,000
+6.961
+Churn Modelling
+11
+10,000
+8,000
+2,000
+25
+8,000
+6.028
+German Credit
+20
+1,000
+800
+200
+28
+800
+6.513
+SpeedDating
+121
+8,364
+6,691
+1,673
+29
+2,000
+482.687
+DB
+TPC-H
+22
+10,000
+8,000
+2,000
+28
+8,000
+11.533
+UW-CSE
+7
+140
+112
+28
+26
+112
+6.712
+MovieLens 20M
+5
+20,000,264
+1,600,211
+400,053
+23
+10,000
+98.922
+Synthetic
+11
+3,000
+2,400
+600
+26
+2,400
+7.107
+Table 5: ML benchmark inclusion for the tabular ML datasets used in our experiments.
+Dataset
+OpenML ID
+OpenML-CC18
+TabZilla
+TabRed
+Amazon Employee Access
+43900
+✓
+✓
+Churn
+40701
+✓
+Churn Modeling
+N/A
+✓
+German Credit
+31
+✓
+✓
+✓
+SpeedDating
+40536
+✓
+✓
+Kernel
+MC
+Leverage
+0.00
+0.15
+0.30
+0.45
+0.60
+0.75
+Top-3 Jaccard distance
+BG
+Kernel
+MC
+Leverage
+BG + DCs
+Kernel
+MC
+Leverage
+BG + Prov, Strict
+Kernel
+MC
+Leverage
+BG + Prov, Relaxed
+Kernel
+MC
+Leverage
+All
+Logistic Regression
+Random Forest
+XGBoost
+MLP-PLR
+Null baseline range [0.298, 0.483]
+Figure 5: Top-3 Jaccard distance between default estimators and RelShap configurations on UW-CSE dataset. Values above the
+shaded region indicate that RelShap induces larger changes than expected under the randomized null baseline.
+roughly the benefit tends to emerge only when there is a suf-
+ficiently large number of FDs with |LHS| = 1 (as shown in
+Table 8), which is more evident for Kernel SHAP than for
+the other two estimators.
+Figure 10 provides a more detailed view of the actual
+runtime per test sample across datasets. Table 12 summarizes
+the percentage of cases exhibiting runtime reduction across
+estimators and models. Monte Carlo consistently shows the
+highest reduction rates (95.24% and 85.19%), followed by
+Leverage SHAP, while Kernel SHAP exhibits more moderate
+gains. These results are expected as described in Section 3.3.
+Across models, the variation is relatively small compared
+to differences across estimators, although Random Forest
+and XGBoost exhibit slightly higher reduction rates. This
+pattern indicates that the benefit of quotient space coalition
+projection in RelShap is estimator-dependent.
+Tables 13 and 14 provide a per-mode breakdown. Several
+patterns emerge. First, BG alone already reduces runtime for
+Monte Carlo on several datasets (e.g., Amazon drops from
+16.642 to 0.009 sec per sample, and TPC-H from 2.383 to
+0.366). Adding quotient projection (BG/Q) yields further
+gains, particularly for Kernel SHAP on datasets with rich
+FD structure: on TPC-H, Kernel SHAP drops from 6.527
+(Default) to 1.777 (BG/Q), and on Churn from 24.425 to
+12.094. Second, the benefit is estimator-dependent: Monte
+Carlo and Leverage SHAP show consistent reductions across
+datasets, while Kernel SHAP improves primarily on datasets
+with many FDs having |LHS|=1 (Table 8). On datasets
+with predominantly |LHS|=2 FDs (e.g., German Credit),
+Kernel SHAP shows little or no improvement, and BG/Q
+
+
+Table 6: Hyperparameter settings for each model.
+Model
+Hyperparameter space
+Logistic
+Regression
+regularization parameter ∈[10−4, 102]
+Random
+Forest
+number of trees ∈{300, 500, 800}
+maximum tree depth ∈{None, 6, 10, 16}
+minimum samples per leaf ∈{1, 2, 5}
+feature subsampling
+∈{sqrt, log2, None}
+XGBoost
+number of trees ∈{300, 500, 800}
+maximum tree depth ∈{3, 4, 6, 8}
+learning rate ∈{0.03, 0.05, 0.1}
+row/feature subsampling
+∈{0.7, 0.8, 1.0}
+minimum child weight ∈{1, 3, 5}
+L2 regularization strength
+∈{0.5, 1.0, 2.0}
+MLP-PLR
+embedding dimension ∈{12, 24, 32}
+# of frequencies ∈{8, 16, 32}
+frequency scale ∈[0.01, 0.2]
+hidden layer sizes
+∈{(128), (256), (256, 128), (512, 256)}
+dropout rate ∈{0.0, 0.1, 0.2}
+learning rate ∈{3×10−4, 10−3, 3×10−3}
+weight decay ∈{0, 10−5, 10−4, 10−3}
+Kernel
+MC
+Leverage
+0.00
+0.15
+0.30
+0.45
+BG
+Kernel
+MC
+Leverage
+BG + Prov, Strict
+Kernel
+MC
+Leverage
+0.00
+0.15
+0.30
+0.45
+BG + Prov, Relaxed
+Logistic Regression
+Random Forest
+XGBoost
+Null baseline range:
+  [0.082, 0.142]
+ 
+ 
+MLP-PLR
+ 
+1 - RBO
+Figure 6: 1−RBO between default estimators and RelShap
+configurations on German Credit. Values above the shaded
+region exceed the randomized null baseline. This dataset has
+no domain or denial constraints, so those modes are omitted.
+can even incur slight overhead from the canonicalization
+step without sufficient deduplication to compensate. Third,
+provenance-aware modes (BG/Q + Prov) exhibit dataset-
+dependent behavior: on TPC-H, Monte Carlo benefits sub-
+stantially (0.142 sec/sample under Prov, Strict vs. 0.192 un-
+der BG/Q), while on other datasets the additional provenance
+lookups can offset the gains from deduplication. The full-
+Table 7: RelShap configuration options. Each option can be
+combined with any dataset, model, and coalition estimator.
+Availability depends on the constraint types present in the
+dataset (Table 8). Options above the mid-rule change the
+explanation; the option below it affects only running time.
+Option
+Description
+BG
+Background data filtered to satisfy ΣFD
+(Def. 1).
+DCs
+Domain and denial constraints (Σdom ∪
+Σden) enforced during background filter-
+ing.
+Prov, Strict
+Identifier-induced FDs applied when the
+dropped identifier is uniquely determined
+from the coalition.
+Prov, Relaxed
+Identifier-induced FDs applied when at-
+tribute values are constant across candi-
+date identifiers (subsumes Strict).
+Quotient (Q)
+Coalitions mapped to FD-closed canoni-
+cal form; Σ-equivalent coalitions dedupli-
+cated. Performance optimization, Shap-
+ley values unchanged (Prop. 1).
+Table 8: Summary of relational constraints per dataset. |F|:
+number of features. # FD: total functional dependencies
+(breakdown (|LHS|=1/2)). # DCs: domain and denial con-
+straints (lower/upper bounds counted separately). # Prov:
+FDs associated with provenance-aware mode.
+Dataset
+|F|
+# FD
+# DCs
+# Prov
+Amazon
+9
+4 (4/0)
+0
+9
+Churn
+20
+29 (25/4)
+0
+20
+Churn Modelling
+11
+45 (3/42)
+0
+24
+German Credit
+20
+6 (0/6)
+0
+20
+SpeedDating
+121
+58 (55/3)
+209
+231
+TPC-H
+22
+426 (106/320)
+5
+22
+UW-CSE
+7
+6 (6/0)
+6
+7
+MovieLens 20M
+5
+3 (3/0)
+0
+0
+Synthetic
+11
+19 (2/17)
+9
+29
+featured mode (BG/Q + Prov, Relaxed + DCs), available on
+datasets with all constraint types, shows competitive run-
+times: on TPC-H, Monte Carlo achieves 0.091 sec/sample,
+a 26× reduction over Default. Across models, variation is
+small compared to differences across estimators, confirming
+that the runtime benefit is primarily estimator-driven. It is
+noteworthy that since DCs may introduce additional lookup
+costs and filtering costs, DC and All modes have a probability
+of slowing down the computations, even with or without Q
+mode. Therefore, quotient mode provides runtime benefits,
+but this does not always happen. Q can reduce runtime with
+rich FD structures desirable estimators; otherwise, overhead
+may dominate.
+Scalability
+Figure 11 shows running time per sample as
+the number of background data points (Churn) and coalitions
+(TPC-H) increase. On Churn (Figure 11a), all three methods
+
+
+(a) By dataset
+Dataset
+Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+Amazon
+0.106 ± 0.225
+0.046 ± 0.100
+-0.294 ± 0.225
+-0.129 ± 0.100
+Churn
+0.446 ± 0.283
+0.171 ± 0.109
+0.044 ± 0.283
+0.059 ± 0.109
+Churn Modelling
+0.123 ± 0.256
+0.048 ± 0.104
+-0.277 ± 0.256
+-0.109 ± 0.104
+German Credit
+0.520 ± 0.288
+0.194 ± 0.116
+0.118 ± 0.288
+0.082 ± 0.116
+SpeedDating
+0.804 ± 0.189
+0.245 ± 0.123
+0.403 ± 0.189
+0.213 ± 0.123
+TPC-H
+0.612 ± 0.365
+0.245 ± 0.142
+0.212 ± 0.365
+0.140 ± 0.142
+UW-CSE
+0.263 ± 0.243
+0.121 ± 0.113
+-0.129 ± 0.243
+-0.072 ± 0.113
+MovieLens 20M
+0.479 ± 0.178
+0.265 ± 0.094
+0.129 ± 0.178
+0.050 ± 0.094
+Synthetic
+0.500 ± 0.229
+0.222 ± 0.103
+0.099 ± 0.229
+0.065 ± 0.103
+(b) By predictive model
+Model
+Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+Logistic Regression
+0.425 ± 0.361
+0.168 ± 0.145
+0.028 ± 0.361
+0.033 ± 0.167
+Random Forest
+0.445 ± 0.331
+0.173 ± 0.135
+0.048 ± 0.331
+0.039 ± 0.156
+XGBoost
+0.436 ± 0.337
+0.173 ± 0.135
+0.039 ± 0.336
+0.039 ± 0.158
+MLP-PLR
+0.434 ± 0.335
+0.170 ± 0.134
+0.037 ± 0.335
+0.035 ± 0.156
+(c) By estimator
+Estimator
+Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+Kernel SHAP
+0.301 ± 0.283
+0.101 ± 0.097
+-0.096 ± 0.282
+-0.033 ± 0.124
+Leverage SHAP
+0.518 ± 0.383
+0.214 ± 0.155
+0.121 ± 0.383
+0.079 ± 0.178
+MC
+0.488 ± 0.308
+0.199 ± 0.124
+0.090 ± 0.309
+0.065 ± 0.148
+(d) By comparison mode (Default vs. Mode)
+Mode
+Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+BG
+0.452 ± 0.337
+0.190 ± 0.146
+0.057 ± 0.337
+0.050 ± 0.156
+BG + DCs
+0.566 ± 0.324
+0.216 ± 0.128
+0.168 ± 0.322
+0.094 ± 0.151
+BG + Prov, Strict
+0.377 ± 0.356
+0.142 ± 0.139
+-0.023 ± 0.355
+0.011 ± 0.171
+BG + Prov, Relaxed
+0.415 ± 0.342
+0.155 ± 0.130
+0.015 ± 0.342
+0.024 ± 0.158
+All
+0.430 ± 0.321
+0.172 ± 0.128
+0.036 ± 0.322
+0.032 ± 0.150
+Table 9: Summary of explanation differences (Top-3 Jaccard, 1 −RBO) and deviations from the null baseline (∆), aggregated
+by dataset, predictive model, estimator, and comparison mode.
+Kernel
+MC
+Leverage
+0.00
+0.10
+0.20
+0.30
+1 - RBO
+BG
+Kernel
+MC
+Leverage
+BG + DCs
+Kernel
+MC
+Leverage
+BG + Prov, Strict
+Kernel
+MC
+Leverage
+BG + Prov, Relaxed
+Kernel
+MC
+Leverage
+All
+Logistic Regression
+Random Forest
+XGBoost
+MLP-PLR
+Null baseline range [0.149, 0.235]
+Figure 7: 1−RBO between default estimators and RelShap configurations on UW-CSE dataset. Values above the shaded region
+indicate that RelShap induces larger changes than expected under the randomized null baseline.
+grow with background size, but the gap between Default
+and BG/Q widens as B increases: for Kernel SHAP, BG/Q
+remains roughly flat while Default grows super-linearly; for
+Monte Carlo, BG alone already provides a large reduction
+that BG/Q maintains; for Leverage SHAP, the separation is
+moderate but consistent.
+On TPC-H (Figure 11d), runtime grows with the coalition
+budget M for all methods, but BG/Q maintains a substantial
+
+
+(a) Default vs. BG
+Dataset
+Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+Amazon
+0.265 ± 0.381
+0.119 ± 0.171
+−0.136 ± 0.381
+−0.056 ± 0.171
+Churn
+0.553 ± 0.197
+0.214 ± 0.078
+0.151 ± 0.197
+0.102 ± 0.078
+Churn Modelling
+0.297 ± 0.427
+0.125 ± 0.180
+−0.104 ± 0.427
+−0.033 ± 0.180
+German Credit
+0.391 ± 0.417
+0.161 ± 0.177
+−0.011 ± 0.417
+0.049 ± 0.177
+SpeedDating
+0.644 ± 0.258
+0.190 ± 0.135
+0.243 ± 0.258
+0.158 ± 0.135
+TPC-H
+0.629 ± 0.296
+0.250 ± 0.111
+0.229 ± 0.296
+0.144 ± 0.111
+UW-CSE
+0.335 ± 0.240
+0.162 ± 0.117
+−0.057 ± 0.240
+−0.031 ± 0.117
+MovieLens 20M
+0.479 ± 0.179
+0.265 ± 0.095
+0.129 ± 0.179
+0.050 ± 0.095
+Synthetic
+0.474 ± 0.320
+0.222 ± 0.147
+0.073 ± 0.320
+0.065 ± 0.147
+(b) Default vs. BG + DCs
+Dataset
+Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+SpeedDating
+0.845 ± 0.139
+0.234 ± 0.114
+0.444 ± 0.139
+0.202 ± 0.114
+TPC-H
+0.593 ± 0.308
+0.238 ± 0.113
+0.192 ± 0.308
+0.133 ± 0.113
+UW-CSE
+0.335 ± 0.240
+0.162 ± 0.117
+−0.057 ± 0.240
+−0.031 ± 0.117
+Synthetic
+0.494 ± 0.338
+0.230 ± 0.152
+0.093 ± 0.338
+0.072 ± 0.152
+(c) Default vs. All
+Dataset
+Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+SpeedDating
+0.883 ± 0.122
+0.274 ± 0.118
+0.482 ± 0.122
+0.242 ± 0.118
+TPC-H
+0.622 ± 0.447
+0.247 ± 0.178
+0.222 ± 0.447
+0.142 ± 0.178
+UW-CSE
+0.372 ± 0.270
+0.165 ± 0.123
+−0.020 ± 0.270
+−0.028 ± 0.123
+Synthetic
+0.471 ± 0.185
+0.205 ± 0.074
+0.070 ± 0.185
+0.047 ± 0.074
+Table 10: Dataset-wise explanation differences for Default vs. BG, Default vs. BG + DCs, and Default vs. All. We report
+per-dataset results for the two modes with the largest ∆Jaccard and ∆RBO. Values are mean ± standard deviation; results for
+BG + DCs and All are shown only when applicable.
+gap below Default across the full range for Kernel SHAP and
+Monte Carlo. For Leverage SHAP, the three curves are closer
+together, reflecting the smaller number of collapsible coali-
+tions under this estimator’s sampling distribution. The com-
+plementary pairing in the Appendix confirms these patterns:
+TPC-H vs. background data (Appendix Figure 11b) shows
+the same widening gap, with BG/Q providing the largest
+separation for Kernel SHAP and MC; Churn vs. coalitions
+(Appendix Figure 11c) shows all three curves growing to-
+gether but with BG/Q consistently below Default, and the
+gap widening at larger coalition budgets. Overall, the reduc-
+tion from BG/Q grows with problem size across both axes,
+indicating that RelShap becomes more effective with larger
+data and coalition budgets.
+Additional model–dataset pairs and richer constraint set-
+tings exhibit the same overall scaling behavior, although the
+magnitude of the gain depends on the estimator and the avail-
+able coalition redundancy. On MovieLens 20M dataset with
+MLP-PLR (Figure 12a), BG/Q increasingly separates from
+Default as the background size grows, with particularly large
+reductions for Monte Carlo and Leverage SHAP and a smaller
+but clear reduction for Kernel SHAP. On SpeedDating dataset
+with logistic regression (Figure 12b), all configurations grow
+similarly with the coalition budget, although BG/Q remains
+consistently below Default at larger M. Churn Modelling
+dataset with XGBoost (Figure 13) further shows that richer
+provenance settings preserve the same scaling trends across
+both axes: running times increase with background size and
+coalition budget. This suggests that enriching the relational
+semantics does not fundamentally alter the scalability pro-
+file: runtime is driven primarily by the estimator, evaluation
+budget, and the quotient mode, allowing richer constraint-
+aware explanations to be incorporated without introducing a
+qualitatively different scaling behavior.
+Alignment with combinatorial analysis
+We measure this
+using the empirical counterpart of RM in Thm. 1, ˆRMconv =
+1−1/ ˆSMconv where ˆSMconv =
+1
+nexplain
+P
+nexplain
+1
+B
+PB
+b=1
+Mconv
+Kquot
+b
+and Kquot
+b
+is the number of distinct equivalence classes after
+quotient mode. Figure 14 shows an alignment of real runtime
+reduction and our combinatorial analysis in Thm. 1. This
+confirms that our analysis reliably predicts when reduction
+will occur, although its exact magnitude remains contingent
+on the dataset and sampling strategy.
+Detailed analysis on provenance-aware mode
+TPC-H.
+Schema: As the primary key of the Supplier table,
+suppkey is referenced by Lineitem and Partsupp
+
+
+(a) Default vs. BG + Prov
+Dataset
+Est. Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+TPC-H
+Ker 0.922 / 0.914 0.376 / 0.376 0.522 / 0.514
+0.271 / 0.271
+MC 0.954 / 0.959 0.388 / 0.376 0.553 / 0.558
+0.283 / 0.270
+Lev 0.000 / 0.000 0.000 / 0.000 -0.401 / -0.401 -0.105 / -0.105
+UW-CSE
+Ker 0.018 / 0.202 0.004 / 0.054 -0.374 / -0.190 -0.190 / -0.139
+MC 0.012 / 0.006 0.004 / 0.048 -0.380 / -0.386 -0.189 / -0.145
+Lev 0.021 / 0.382 0.029 / 0.153 -0.371 / -0.010 -0.164 / -0.040
+(b) BG vs. BG + Prov
+Dataset
+Est. Top-3 Jaccard
+1 −RBO
+∆Jaccard
+∆RBO
+TPC-H
+Ker 0.914 / 0.924 0.356 / 0.361 0.513 / 0.523
+0.250 / 0.255
+Lev 0.965 / 0.965 0.369 / 0.369 0.565 / 0.565
+0.263 / 0.263
+MC 0.881 / 0.883 0.316 / 0.310 0.480 / 0.482
+0.211 / 0.205
+UW-CSE
+Ker. 0.018 / 0.202 0.004 / 0.054 -0.374 / -0.190 -0.190 / -0.139
+Lev 0.504 / 0.326 0.233 / 0.223 0.112 / -0.066 0.040 / 0.030
+MC 0.504 / 0.500 0.224 / 0.242 0.112 / 0.108
+0.031 / 0.049
+Table 11: Explanation differences for provenance-aware comparisons on TPC-H and UW-CSE with XGBoost. Each entry is
+reported as Strict / Relaxed mode. Est. denotes Estimator and Ker, MC, and Lev denote Kernel SHAP, Monte Carlo, and Leverage
+SHAP, respectively.
+Kernel
+MC
+Leverage
+0.00
+0.15
+0.30
+0.45
+0.60
+0.75
+0.90
+1.00
+BG
+Kernel
+MC
+Leverage
+BG + Prov, Strict
+Kernel
+MC
+Leverage
+0.00
+0.15
+0.30
+0.45
+0.60
+0.75
+0.90
+1.00
+BG + Prov, Relaxed
+Logistic Regression
+Random Forest
+XGBoost
+Null baseline range:
+  [0.302, 0.504]
+ 
+ 
+MLP-PLR
+ 
+Top-3 Jaccard distance
+Figure 8: Top-3 Jaccard distance between default estimators
+and RelShap configurations on German Credit dataset. Val-
+ues above the shaded region indicate that RelShap induces
+larger changes than expected under the randomized null base-
+line. Note that German Credit dataset does not contain any
+domain or denial constraints and therefore the results are not
+provided.
+tables, and further connected to Orders through join
+paths, inducing supplier-level FDs across related records.
+Query: Grouping on suppkey produces one tuple per sup-
+plier with aggregate statistics (e.g., counts, sums, and aver-
+ages), making suppkey functionally determine all features.
+suppkey is removed in the final ML table and utilized in the
+provenance-aware mode. UW-CSE. Schema: The identifier
+p_id in the Person table propagates through relational
+links such as AdvisedBy and TaughtBy, capturing FDs
+Table 12: Percentage of cases with runtime reduction across
+estimators and models.
+Estimator / Model
+Default vs. BG/Q
+BG vs. BG/Q
+Kernel SHAP
+47.22%
+42.59%
+Monte Carlo
+95.24%
+85.19%
+Leverage SHAP
+81.48%
+84.26%
+Logistic Regression
+69.14%
+64.20%
+Random Forest
+80.25%
+80.25%
+XGBoost
+85.19%
+75.31%
+MLP-PLR
+62.82%
+62.96%
+at the student level. Query: Aggregating over p_id yields
+one tuple per student with relational statistics (e.g., advisor
+counts and course-level features), so all features are func-
+tionally determined by p_id. p_id is finally removed in
+the ML table and used in the provenance-aware mode.
+J.3
+Controlled validation of RelShap
+Validation under synthetic settings
+Expanding on Sec-
+tion 4.1, we consider two additional settings over four
+features—age, life_stage, empl, and total_amt.
+The first enforces only the FD age →life_stage,
+whereas the second additionally incorporates the provenance
+constraints from Example 1. Unlike Section 4.1, attribution
+ordering between a particular feature pair is no longer ex-
+pected to hold in isolation when additional features are intro-
+duced, as their Shapley values now also depend on such newly
+included features. We therefore examine how the overall at-
+tribution vector and feature ranking change as δ increases
+(0 to 10 in increments of 0.5, averaged across three random
+seeds). Figures 15 and 16 report the L1 distance and ranking
+changes as the strength of invalid perturbations increases.
+
+
+0
+5
+10
+15
+20
+25
+45
+65
+85
+Target runtime (sec/sample)
+0
+5
+10
+15
+20
+25
+45
+65
+85
+Reference runtime (sec/sample)
+Kernel SHAP (43.06% improved)
+0
+2
+4
+6
+8
+10
+20
+30
+Target runtime (sec/sample)
+0
+2
+4
+6
+8
+10
+20
+30
+Monte Carlo (91.55% improved)
+0
+2
+4
+6
+8
+16
+Target runtime (sec/sample)
+0
+2
+4
+6
+8
+16
+Leverage SHAP (84.72% improved)
+Dataset
+Model
+Comparison
+Amazon
+Churn
+Churn Modelling
+German Credit
+SpeedDating
+TPC-H
+UW-CSE
+MovieLens 20M
+Synthetic
+Logistic Regression
+Random Forest
+XGBoost
+MLP-PLR
+Default vs. RelShap (BG + Q)
+RelShap (BG) vs. RelShap (BG + Q)
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+0
+0.5
+1
+1.5
+0
+0.5
+1
+1.5
+0
+0.5
+1
+1.5
+0
+0.5
+1
+1.5
+Figure 9: Runtime comparison between the reference method and RelShap (BG/Quotient). Each point corresponds to a
+dataset–model–configuration pair. Points above the diagonal indicate runtime reduction.
+Amazon
+Churn
+Churn Modelling
+German Credit
+MovieLens 20M
+SpeedDating
+Synthetic
+TPC-H
+UW-CSE
+0
+20
+40
+60
+Runtime (sec/sample)
+Default
+BG
+BG/Q
+(a) Kernel SHAP.
+Amazon
+Churn
+Churn Modelling
+German Credit
+MovieLens 20M
+SpeedDating
+Synthetic
+TPC-H
+UW-CSE
+0
+5
+10
+15
+Runtime (sec/sample)
+(b) Monte Carlo.
+Amazon
+Churn
+Churn Modelling
+German Credit
+MovieLens 20M
+SpeedDating
+Synthetic
+TPC-H
+UW-CSE
+0
+2
+4
+6
+8
+Runtime (sec/sample)
+(c) Leverage SHAP.
+Figure 10: Average running time (sec/sample) across datasets under XGBoost; y-axis uses a square root scaling.
+Under the FD-only setting, RelShap remains unchanged
+across all metrics, while all baselines exhibit increasing at-
+tribution and ranking shifts. With provenance constraints,
+RelShap using both FDs and provenance again remains in-
+variant, followed by FD-only RelShap as the most stable
+alternative. These results show that excluding relationally
+impossible states corrects the internal Shapley computation
+and makes RelShap insensitive to relationally invalid per-
+turbations that are never observed during training or testing.
+Validation with real datasets
+Figures 17 and 18 vali-
+date the same behavior on two representative real datasets:
+German Credit, a standard ML dataset with FDs without
+provenance information, and UW-CSE, a relational database
+dataset with both FDs and provenance constraints (Table 8).
+For both datasets, the base predictive model is XGBoost
+with 0.5 ≤r(·) < 1.0. On German Credit, all baselines ex-
+hibit increasing attribution and ranking changes as δ grows,
+whereas FD-only RelShap remains unchanged. On UW-
+CSE, in FD-only setting, RelShap is the only method that
+remains stable even with increasing δ. In FD + Prov setup,
+only RelShap incorporating both FDs and provenance con-
+straint remains unchanged. These results show that sensitiv-
+ity to relationally invalid perturbations is eliminated when
+the corresponding relational structure is incorporated into
+Shapley computation.
+J.4
+Relational invalidity in Shapley computation
+Violation density reports the total number of violations nor-
+malized by the number of coalition–constraint pairs. Ta-
+bles 16 and 17 show that relational invalidity is widespread
+across datasets and estimators, with provenance constraints
+substantially increasing violation prevalence while affecting
+density more moderately; the lower normalized density un-
+der BG + DCs mainly reflects the larger number of coalition–
+constraint pairs rather than fewer violations. Leverage SHAP
+generally yields the highest prevalence and density, whereas
+MC tends to be the lowest. Averaged across datasets, Ta-
+bles 18 and 19 confirm that these estimator-level differences
+are smaller than the increases induced by richer constraints.
+
+
+Table 13: Running time (sec/sample) under XGBoost for datasets without denial constraints (mean over three seeds). These
+datasets do not admit the full-featured configuration (BG/Q + Prov, Relaxed + DCs); see Table 14 for datasets with DCs. When
+provenance is active, quotient projection deduplicates using both global and provenance-induced FDs; however, provenance
+lookups add their own overhead, so BG/Q + Prov is not guaranteed to be faster than BG/Q alone. Dashes (-) indicate inapplicable
+configurations (Table 8). See Appendix Figure 10 for a visual comparison. Here, Ker, MC, and Lev denote Kernel SHAP, Monte
+Carlo, and Leverage SHAP, respectively. Prov, St/Rel denotes Prov, Strict/Relaxed mode.
+Amazon
+Churn
+Churn Modelling
+German Credit
+MovieLens 20M
+Mode
+Ker
+MC
+Lev
+Ker
+MC
+Lev
+Ker
+MC
+Lev
+Ker
+MC
+Lev
+Ker
+MC
+Lev
+Default
+60.389 16.642 8.612 24.425 7.026 8.084 1.523 0.493 0.241 0.793 0.590 0.321 1.362 0.387 0.202
+BG
+51.599
+0.009
+7.584 19.977 3.181 3.616 1.346 0.008 0.369 0.759 0.554 0.327 1.309 0.157 0.264
+BG/Q
+56.624
+0.009
+7.362 12.094 2.494 2.216 1.576 0.006 0.305 1.550 0.485 0.218 1.317 0.082 0.117
+BG + Prov, Strict
+52.411
+0.005
+7.832 22.490 0.865 5.015 1.263 0.004 0.288 0.742 0.220 0.255
+-
+-
+-
+BG/Q + Prov, Strict
+52.725 16.360 8.739 17.261 0.782 7.146 1.292 0.498 0.245 0.913 0.260 0.306
+-
+-
+-
+BG + Prov, Relaxed
+55.019
+0.006
+6.715 21.232 0.706 6.182 1.286 0.004 0.290 0.714 0.114 0.314
+-
+-
+-
+BG/Q + Prov, Relaxed 56.626 16.160 7.703 20.260 0.797 5.771 1.626 0.470 0.262 0.973 0.157 0.342
+-
+-
+-
+Table 14: Running time (sec/sample) under XGBoost for datasets with denial constraints (mean over three seeds). The last row
+shows the full-featured RelShap configuration.
+SpeedDating
+TPC-H
+UW-CSE
+Synthetic
+Mode
+Ker
+MC
+Lev
+Ker
+MC
+Lev
+Ker
+MC
+Lev
+Ker
+MC
+Lev
+Default
+45.985
+12.817
+7.447
+6.527 2.383 1.244 0.062 0.119 0.084 0.505 0.212 0.119
+BG
+45.408
+11.038
+7.098
+6.464 0.366 1.094 0.054 0.115 0.078 0.558 0.160 0.123
+BG/Q
+37.227
+10.068
+5.785
+1.777 0.192 1.138 0.271 0.054 0.048 0.622 0.106 0.082
+BG + DCs
+225.200 64.119 20.932 9.132 0.651 2.658 0.034 0.019 0.015 2.248 0.685 0.628
+BG/Q + DCs
+244.800 73.635 22.820 2.988 0.377 2.364 0.064 0.011 0.012 2.587 0.553 0.333
+BG + Prov, Strict
+38.582
+0.683
+7.530
+7.478 0.315 2.001 0.007 0.012 0.010 0.519 0.063 0.109
+BG/Q + Prov, Strict
+36.976
+1.006
+9.491
+6.167 0.142 1.725 0.066 0.108 0.076 0.483 0.077 0.124
+BG + Prov, Relaxed
+42.115
+0.731
+10.293 6.660 0.171 1.971 0.008 0.010 0.012 0.469 0.073 0.125
+BG/Q + Prov, Relaxed
+40.604
+0.872
+9.032
+7.598 0.182 1.734 0.056 0.072 0.094 0.498 0.083 0.145
+All
+43.558
+3.232
+10.649 9.239 0.297 3.589 0.035 0.014 0.013 2.481 0.442 0.606
+All/Q
+42.117
+4.043
+9.752
+2.682 0.091 1.197 0.474 0.034 0.049 2.521 0.200 0.455
+K
+Shapley Values in Databases
+Shapley values have been studied in the data management
+literature to quantify the contribution of tuples to query an-
+swers (Livshits et al. 2021; Deutch et al. 2022; Davidson
+et al. 2022; Alizad and Milani 2025), and, in databases that
+violate integrity constraints, to the extent of that inconsis-
+tency (Bertossi et al. 2023). In this setting, the players of the
+cooperative game are tuples, the value function is the query
+output on a subset of the database, and an endogenous/exoge-
+nous partition controls which tuples are subject to attribution.
+Work in this line has established the computational complex-
+ity of exact Shapley computation over conjunctive queries
+(CQs) (Livshits et al. 2021), practical algorithms based on
+data provenance and knowledge compilation (Deutch et al.
+2022; Davidson et al. 2022), and relation-aware sampling
+for efficient estimation (Alizad and Milani 2025). Where
+integrity constraints appear, they are themselves the object
+of explanation (i.e., tuples are scored by how much they
+contribute to inconsistency), rather than constraints on the
+coalitional game. Our work is orthogonal: we explain the
+predictions of black-box ML models trained on relational
+data, with features as players, and use relational structure
+as constraints on which coalitions and completions count as
+valid.
+A growing line of database research adapts the Shapley
+value to attribute the contribution of tuples (or facts) to the
+results of queries, and, in a related sub-line, to the extent of a
+database’s inconsistency with respect to integrity constraints.
+Livshits et al. (2021) initiated the formal study: they model
+query evaluation as a cooperative game in which endogenous
+tuples act as players and the query’s truth value (for Boolean
+CQs) or numerical output (for aggregate queries) acts as
+the wealth function. They establish a fundamental complex-
+ity dichotomy—Shapley computation is in polynomial time
+for hierarchical CQs and FP#P-complete otherwise—and
+give an a fully polynomial-time randomized approximation
+scheme (FPRAS) for summation queries via Monte Carlo
+sampling.
+Subsequent work has focused on making these semantics
+practical. Deutch et al. (2022) reduce Shapley computation to
+probabilistic query evaluation and develop an exact algorithm
+based on knowledge compilation of Boolean provenance into
+
+
+20
+21
+22
+23
+24
+25
+0
+5
+10
+15
+20
+Kernel
+20
+21
+22
+23
+24
+25
+# Background data
+MC
+20
+21
+22
+23
+24
+25
+Leverage
+BG = 125 × 2k
+Default
+BG
+BG/Q
+Running time (sec/sample)
+(a) Running time as the number of background data points varies for
+Churn.
+20 21 22 23 24 25 26
+0
+2
+4
+6
+Kernel
+20 21 22 23 24 25 26
+# Background data
+MC
+20 21 22 23 24 25 26
+Leverage
+BG = 125 × 2k
+Default
+BG
+BG/Q
+Running time (sec/sample)
+(b) Running time as the number of background data points varies for
+TPC-H.
+21 22 23 24 25 26 27 28 29
+0
+5
+10
+15
+20
+Kernel
+21 22 23 24 25 26 27 28 29
+# Coalitions
+MC
+21 22 23 24 25 26 27 28 29
+Leverage
+Default
+BG
+BG/Q
+Running time (sec/sample)
+(c) Running time as the number of coalitions varies for Churn.
+21 22 23 24 25 26 27 28
+0
+2
+4
+6
+Kernel
+21 22 23 24 25 26 27 28
+# Coalitions
+MC
+21 22 23 24 25 26 27 28
+Leverage
+Default
+BG
+BG/Q
+Running time (sec/sample)
+(d) Running time as the number of coalitions varies for TPC-H.
+Figure 11: Average running time (sec/sample) as the number of background data points varies up to the per-dataset maximum
+B and the number of coalitions varies up to the convergence budget Mconv in Table 4, for Churn and TPC-H (log scale on the
+x-axis).
+deterministic and decomposable (d-D) circuits, together with
+a faster CNF-Proxy heuristic for ranking; their experiments
+on TPC-H and IMDB demonstrate that provenance-based
+Shapley computation is feasible for a large fraction of real-
+istic queries. Davidson et al. (2022) build ShapGraph that
+pairs the global provenance-graph view of query derivations
+with local Shapley heatmaps over input tuples, letting an-
+alysts navigate between a structural (how) and a quantita-
+tive (how much) account of a given output tuple. Alizad
+and Milani (2025) introduces Relation-Stratified Sampling,
+a sampling strategy that partitions the Shapley subset space
+by the number of tuples drawn from each relation and allo-
+cates samples adaptively, yielding lower-variance estimates
+than generic Monte Carlo and classical stratified sampling
+on TPC-H workloads. Bertossi et al. (2023) study both the
+query-answer and the database-inconsistency applications;
+in the latter, integrity constraints (ICs) are themselves the
+object being explained, and tuples are scored by how much
+their presence contributes to violations of the ICs.
+Table 20 summarizes these efforts along four axes: what
+the Shapley game explains, who the players are, what tech-
+nical contribution is made, and how integrity constraints
+are treated. RelShap departs from all of them along the
+first two axes: the object of explanation is a black-box ML
+model’s prediction on a flattened relational instance, and the
+players are features of that instance rather than tuples of the
+underlying database. This shift is not cosmetic: as Exam-
+ple 1 illustrates and Section 4 quantifies, applying Shapley
+to a flattened instance without accounting for the relational
+structure may produce different explanations.
+Consequently, we use relational structure—schema-level
+FDs, query-induced FDs, discovered FDs, and provenance—
+as structural constraints on the Shapley game itself, rather
+than as an object to be explained or as a purely computational
+device for tractability.
+L
+Limitations
+Human evaluation. Our controlled validation (Section 4.1)
+establishes that RelShap corrects attributions with respect
+to relational validity under known ground truth, and Sec-
+tion 4.2 shows these corrections are large and systematic on
+real data. However, we do not evaluate whether the corrected
+explanations are more useful, trustworthy, or actionable for
+human decision-makers. A user study with practitioners who
+consume Shapley explanations (e.g., in credit or hiring con-
+texts) is important future work.
+Constraint quality. RelShap treats the selected con-
+straint set Σ as correct. Data-driven FDs are exact depen-
+dencies on finite data, so small or unrepresentative samples
+can yield spurious FDs; conversely, meaningful dependen-
+cies that hold only approximately (e.g., with rare exceptions
+or noise) are not discovered by exact FD mining. The user
+
+
+20 21 22 23 24 25 26 27 28 29210211
+0
+5
+10
+Kernel
+20 21 22 23 24 25 26 27 28 29210211
+# Background data
+MC
+20 21 22 23 24 25 26 27 28 29210211
+Leverage
+BG = 100 × 2k
+Default
+BG
+BG/Q
+400,000
+Running time (sec/sample)
+(a) Running time as the number of background data points varies for
+MovieLens-20M with MLP-PLR.
+20 21 22 23 24 25 26 27 28 29
+0
+5
+10
+15
+20
+Kernel
+20 21 22 23 24 25 26 27 28 29
+# Coalitions
+MC
+20 21 22 23 24 25 26 27 28 29
+Leverage
+Default
+BG
+BG/Q
+Running time (sec/sample)
+(b) Running time as the number of coalitions varies for SpeedDating
+with logistic regression.
+Figure 12: Average running time (sec/sample) as the number of background data points and coalitions varies for additional
+model–dataset pairs.
+125
+250
+500 1000 2000 4000 8000
+0.0
+0.5
+1.0
+1.5
+Kernel
+125
+250
+500 1000 2000 4000 8000
+# Background data
+MC
+125
+250
+500 1000 2000 4000 8000
+Leverage
+BG
+BG/Q
+BG+Prov,St
+BG+Prov,St/Q
+BG+Prov,Rel
+BG+Prov,Rel/Q
+Running time (sec/sample)
+(a) Running time as the number of background data points varies for
+Churn Modelling with XGBoost under richer provenance settings.
+20
+21
+22
+23
+24
+25
+0.0
+0.5
+1.0
+1.5
+Kernel
+20
+21
+22
+23
+24
+25
+# Coalitions
+MC
+20
+21
+22
+23
+24
+25
+Leverage
+BG
+BG/Q
+BG+Prov,St
+BG+Prov,St/Q
+BG+Prov,Rel
+BG+Prov,Rel/Q
+Running time (sec/sample)
+(b) Running time as the number of coalitions varies for Churn Mod-
+elling with XGBoost under richer provenance settings.
+Figure 13: Average running time (sec/sample) as the number of background data points and coalitions varies under richer
+provenance settings for Churn Modelling with XGBoost.
+inspection step (Section 3.1) mitigates but does not elimi-
+nate this risk, and extending RelShap to approximate or
+probabilistic constraints is a natural direction.
+Table 15: Percentage of cases showing runtime reduction
+across datasets and estimators, including Default vs. RelShap
+(BG) and RelShap (BG) vs. RelShap (BG/Q). The highest
+value in each dataset (row) is highlighted in bold.
+Dataset
+Kernel
+MC
+Leverage
+Amazon
+33.33%
+75.00%
+50.00%
+Churn
+87.50%
+95.83%
+100.0%
+Churn Modelling
+16.67%
+91.67%
+54.17%
+German Credit
+0.000%
+75.00%
+91.67%
+SpeedDating
+91.67%
+76.19%
+79.17%
+TPC-H
+100.0%
+100.0%
+79.17%
+UW-CSE
+0.000%
+100.0%
+91.67%
+MovieLens 20M
+41.67%
+100.0%
+100.0%
+Synthetic
+33.33%
+95.83%
+100.0%
+
+
+0
+Ker
+0.009
+Lev
+0.992
+MC
+ˆRMconv
+0
+25
+50
+75
+100
+Runtime reduction (%)
+ρ = 0.875
+τ = 0.833
+Amazon Employee Access
+0.013
+MC
+0.048
+Lev
+0.072
+Ker
+ˆRMconv
+0
+6
+12
+18
+ρ = 0.875
+τ = 0.833
+SpeedDating
+0.263
+Lev
+0.849
+Ker
+0.911
+MC
+ˆRMconv
+0
+25
+50
+75
+ρ = 1.000
+τ = 1.000
+TPC-H
+0.031
+Ker
+0.594
+Lev
+0.596
+MC
+ˆRMconv
+0
+20
+40
+60
+80 ρ = 1.000
+τ = 1.000
+UW-CSE
+Logistic Regression
+Random Forest
+XGBoost
+MLP-PLR
+0.369
+Lev
+0.534
+Ker
+0.568
+MC
+ˆRMconv
+0
+20
+40
+60
+Runtime reduction (%)
+ρ = 0.625
+τ = 0.500
+Churn
+0
+Lev
+0.019
+Ker
+0.969
+MC
+ˆRMconv
+0
+25
+50
+75
+100 ρ = 1.000
+τ = 1.000
+Churn Modelling
+0.053
+Ker
+0.094
+MC
+0.303
+Lev
+ˆRMconv
+0
+8
+16
+24
+32 ρ = 0.875
+τ = 0.833
+German Credit
+0.131
+Ker
+0.645
+MC
+0.75
+Lev
+ˆRMconv
+0
+20
+40
+60
+80 ρ = 0.500
+τ = 0.333
+MovieLens20M
+0.328
+Lev
+0.409
+Ker
+0.47
+MC
+ˆRMconv
+0
+15
+30
+45
+60 ρ = 0.500
+τ = 0.333
+Synthetic
+Logistic Regression
+Random Forest
+XGBoost
+MLP-PLR
+Figure 14: Runtime reduction (%) versus the empirical runtime speedup factor ˆRMconv across datasets and models (Default vs.
+RelShap (BG)). Each point corresponds to a configuration at Mconv. Shaded regions indicate variability across seeds. Ker, MC,
+and Lev denote Kernel SHAP, Monte Carlo, and Leverage SHAP.
+0
+2
+4
+6
+8
+10
+δ
+0.00
+0.05
+0.10
+0.15
+0.20
+L1 distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+Top-3 Jaccard distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+1 - RBO
+Kernel SHAP
+Conditional SHAP
+ManifoldShap
+RelShap (FD-only)
+Figure 15: Attribution and ranking changes under the FD age →life_stage as the strength δ of relationally invalid
+perturbations increases.
+
+
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+L1 distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+Top-3 Jaccard distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+1 - RBO
+Kernel SHAP
+Conditional SHAP
+ManifoldShap
+RelShap (FD-only)
+RelShap (FD + Prov)
+Figure 16: Attribution and ranking changes when incorporating both the FD age →life_stage and the provenance
+constraints from Example 1.
+0
+2
+4
+6
+8
+10
+δ
+0.00
+0.05
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+L1 distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+Top-3 Jaccard distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+1 - RBO
+Kernel SHAP
+Conditional SHAP
+ManifoldShap
+RelShap (FD-only)
+Figure 17: Attribution and ranking changes on German Credit as the influence of δ increases.
+
+
+0
+2
+4
+6
+8
+10
+δ
+0.00
+0.01
+0.02
+0.03
+L1 distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+Top-3 Jaccard distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+1 - RBO
+Kernel SHAP
+Conditional SHAP
+ManifoldShap
+RelShap (FD-only)
+(a) FD-only setting.
+0
+2
+4
+6
+8
+10
+δ
+0.00
+0.05
+0.10
+0.15
+L1 distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+Top-3 Jaccard distance
+0
+2
+4
+6
+8
+10
+δ
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+1 - RBO
+Kernel SHAP
+Conditional SHAP
+ManifoldShap
+RelShap (FD-only)
+RelShap (FD + Prov)
+(b) FD + Prov setting.
+Figure 18: Attribution and ranking changes on UW-CSE as the influence of δ increases.
+
+
+Table 16: Relational invalidity on datasets without DCs. Each cell reports averaged violation prevalence (top) and violation
+density (bottom) over three random seeds, in percentage.
+Dataset
+Estimator
+BG
+BG + Prov, Strict BG + Prov, Relaxed
+Amazon
+Kernel
+55.956
+36.598
+77.762
+34.501
+89.359
+34.843
+MC
+51.350
+33.666
+70.210
+31.938
+80.147
+32.649
+Leverage
+55.095
+34.508
+77.959
+33.249
+90.317
+33.966
+Churn
+Kernel
+96.120
+23.642
+96.122
+28.683
+96.125
+28.627
+MC
+93.466
+28.188
+93.467
+32.365
+93.469
+32.320
+Leverage
+97.721
+29.560
+97.722
+33.377
+97.724
+33.313
+Churn Modelling
+Kernel
+90.240
+17.321
+90.479
+20.537
+90.481
+20.320
+MC
+84.992
+17.725
+85.160
+20.963
+85.162
+20.762
+Leverage
+95.187
+20.313
+95.394
+23.556
+95.395
+23.278
+German Credit
+Kernel
+18.910
+4.395
+71.969
+16.562
+77.132
+16.284
+MC
+20.469
+4.787
+75.195
+18.096
+79.719
+17.827
+Leverage
+21.617
+4.967
+78.244
+18.567
+83.176
+18.266
+MovieLens 20M
+Kernel
+87.748
+47.969
+87.748
+47.969
+87.748
+47.969
+MC
+71.621
+39.704
+71.621
+39.704
+71.621
+39.704
+Leverage
+99.081
+47.589
+99.081
+47.589
+99.081
+47.589
+
+
+Table 17: Relational invalidity on datasets with DCs. Each cell reports averaged violation prevalence (top) and violation density
+(bottom) over three random seeds, in percentage. All denotes BG + DCs + Prov, Relaxed.
+Dataset
+Estimator
+BG
+BG + DCs BG + Prov, Strict BG + Prov, Relaxed
+All
+SpeedDating
+Kernel
+88.509
+12.219
+88.509
+3.164
+91.294
+17.524
+91.695
+17.611
+91.695
+10.530
+MC
+97.889
+20.037
+97.889
+5.188
+98.270
+23.743
+98.336
+23.764
+98.336
+14.976
+Leverage
+97.889
+20.037
+97.889
+5.188
+98.270
+23.743
+98.336
+23.764
+98.336
+14.976
+TPC-H
+Kernel
+98.704
+16.320
+98.704
+16.183
+98.705
+17.664
+98.706
+17.669
+98.706
+17.523
+MC
+94.816
+19.906
+94.816
+19.742
+94.816
+21.100
+94.816
+21.102
+94.816
+20.932
+Leverage
+99.999
+19.332
+99.999
+19.170
+99.999
+20.682
+100.000
+20.684
+100.000
+20.515
+UW-CSE
+Kernel
+5.806
+1.632
+6.675
+1.585
+7.243
+1.829
+10.244
+1.770
+10.819
+1.730
+MC
+4.654
+1.287
+5.601
+1.267
+5.824
+1.435
+8.293
+1.434
+9.038
+1.413
+Leverage
+5.445
+1.535
+6.316
+1.494
+6.844
+1.722
+9.955
+1.684
+10.553
+1.648
+Synthetic
+Kernel
+80.475
+14.203
+80.475
+12.374
+91.892
+20.661
+91.919
+20.466
+91.919
+18.487
+MC
+75.607
+14.660
+75.607
+12.772
+86.302
+21.381
+86.322
+21.189
+86.322
+19.154
+Leverage
+77.742
+15.004
+77.742
+12.982
+94.370
+22.649
+94.390
+22.362
+94.390
+20.167
+
+
+Algorithm 6: ProvExpand: Dropped-identifier based local
+mask expansion
+1: Input: mask m; instance x; dropped identifiers D; FD
+set ΣFD (|LHS| ≤2); inverted index I; row-sets RS;
+threshold τ; mode ∈{Strict, Relaxed}
+2: Output: expanded mask m
+3: if (m, x) ∈cache then return cache[(m, x)]
+4: end if
+5: S ←{fj | mj = 1}
+6: ˆx ←Canonicalize(x)
+▷ˆx cached per instance
+// Stage 1: build per-identifier candidate sets via inverted
+index
+7: hits ←BuildHits(D, S, ˆx, τ, mode)
+// Stage 2: multi-identifier row intersection
+8: if |hits| ≥2 then
+9:
+m
+←
+ApplyByIntersection(hits, RS, S, m,
+ΣFD, τ, mode)
+10:
+S ←{fj | mj = 1}
+11: end if
+// Stage 3: per-identifier rule application (using updated
+S)
+12: for each id ∈D with 0 < |Cid| ≤τ do
+13:
+for each (L →r) ∈ΣFD involving id with L ⊆S
+do
+14:
+mr ←1
+15:
+end for
+16: end for
+17: S ←{fj | mj = 1}
+// Stage 4: Over-threshold identifiers (mode = Relaxed
+only)
+18: if mode = Relaxed then
+19:
+for each id ∈D do
+20:
+Kid ←{f ∈S | f determines id}
+21:
+Cid ←T
+f∈Kid I[id][f][ˆxf]
+22:
+if |Cid| > τ then
+23:
+Rconst
+id
+←
+features
+constant
+across
+RS[id][Cid]
+24:
+for each (L →r) ∈ΣFD involving id with
+L ⊆S, r ∈Rconst
+id
+do
+25:
+mr ←1
+26:
+end for
+27:
+end if
+28:
+end for
+29: end if
+30: cache[(m, x)] ←m
+31: return m
+Algorithm 7: ICRepair: Repairing input data points under
+integrity constraints (domain and denial constraints)
+1: for each input data point x do
+2:
+xfixed ←{xj | mj = 1}
+▷fixed (do not modify)
+3:
+xrepair ←{xj | mj = 0}
+▷repairable
+4:
+for each rule (ℓ⇒r) ∈Σdom do
+5:
+if xrepair satisfies ℓbut violates r then
+6:
+modify xrepair to satisfy r
+▷
+policy-dependent
+7:
+end if
+8:
+end for
+9:
+for each ψ ∈Σden do
+10:
+if xrepair violates ψ then
+11:
+modify only xrepair to satisfy ψ
+12:
+end if
+13:
+end for
+14: end for
+15: return x
+Table 18: Estimator-level relational invalidity averaged
+across datasets without DCs. Each cell reports averaged vi-
+olation prevalence (top) and violation density (bottom), in
+percentage.
+Estimator
+BG
+BG + Prov, Strict BG + Prov, Relaxed
+Kernel
+69.795
+25.985
+84.816
+29.650
+88.169
+29.609
+MC
+64.379
+24.814
+79.131
+28.613
+82.024
+28.652
+Leverage
+73.740
+27.388
+89.680
+31.268
+93.139
+31.282
+
+
+Table 19: Estimator-level relational invalidity averaged across datasets with DCs. Each cell reports averaged violation prevalence
+(top) and violation density (bottom), in percentage. All denotes BG + DCs + Prov, Relaxed.
+Estimator
+BG
+BG + DCs BG + Prov, Strict BG + Prov, Relaxed
+All
+Kernel
+68.373
+11.094
+68.591
+8.327
+72.284
+14.420
+73.141
+14.379
+73.285
+12.068
+MC
+68.242
+13.972
+68.478
+9.742
+71.303
+16.915
+71.942
+16.872
+72.128
+14.119
+Leverage
+70.269
+13.977
+70.486
+9.709
+74.871
+17.199
+75.670
+17.124
+75.820
+14.326
+Table 20: Shapley-value approaches in database (DB) research. All prior work uses DB tuples/facts as players and explains a
+property of the DB (query answer or inconsistency w.r.t. integrity constraints). RelShap instead explains ML model predictions
+on flattened relational data, with features as players, and uses relational structure as a constraint on the coalitional game.
+Work
+Object explained
+Players
+Key technical contribution
+Role of ICs
+Livshits
+et
+al.
+(Livshits
+et al. 2021)
+Query
+answer
+(Boolean / aggre-
+gate CQ)
+Endogenous
+tu-
+ples
+Complexity dichotomy (hierarchical
+CQs in polynomial time, else FP#P-
+complete); FPRAS for summation via
+MC
+Not part of the setup
+Deutch
+et
+al. (Deutch et al.
+2022)
+Query answer
+Endogenous
+tu-
+ples
+Reduction to probabilistic QE; knowl-
+edge compilation of provenance into
+d-D circuits; CNF-Proxy heuristic
+Not part of the setup
+ShapGraph (David-
+son et al. 2022)
+Query answer (per
+output tuple)
+Input tuples
+Interactive system pairing provenance
+graphs with Shapley heatmaps (built
+on ProvSQL)
+Not part of the setup
+Alizad (Alizad and
+Milani 2025)
+Query answer
+Endogenous
+tu-
+ples
+Relation-Stratified Sampling (RSS)
+and adaptive variant (ARSS) with
+lower-variance estimates on TPC-H
+Not part of the setup
+Bertossi
+et
+al.
+(Bertossi
+et al. 2023)
+Query answer and
+DB inconsistency
+Endogenous
+tu-
+ples
+Survey; covers tuple contribution to
+inconsistency w.r.t. ICs as a second
+Shapley application in data manage-
+ment
+Object of explanation
+(tuples scored by contri-
+bution to IC violations)
+RelShap (ours)
+ML-model predic-
+tion on a flattened
+relational instance
+Features
+Relationally consistent background
+and coalition selection, grounded in
+schema/query/discovered FDs and
+provenance; Shapley invariance and
+runtime-reduction results
+Structural constraint
+on
+the
+coalitional
+game

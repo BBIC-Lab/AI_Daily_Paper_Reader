@@ -1,0 +1,238 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-007.webp",
+      "caption": "Table 1: Running example (excerpt)",
+      "page": 2,
+      "index": 7,
+      "width": 499,
+      "height": 588
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-020.webp",
+      "caption": "Figure 2: RelShap workflow. The upper panel extracts relational constraints; the core applies relational background (ΣFD), provenance-aware, and integrity constraints modes, which change explanations, and quotient mode, which reduces runtime while leaving Shapley values unchanged.",
+      "page": 4,
+      "index": 20,
+      "width": 488,
+      "height": 448
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-001.webp",
+      "caption": "Figure 3: Comparison of top attribution frequency across methods as δ varies; exact Shapley values computed via full coalition enumeration.",
+      "page": 6,
+      "index": 1,
+      "width": 495,
+      "height": 287
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-008.webp",
+      "caption": "Figure 4: Percentage of cases with ∆ > 0, sliced by estimators, comparison modes, and datasets. Error bars denote 95% CIs.",
+      "page": 7,
+      "index": 8,
+      "width": 1048,
+      "height": 207
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-010.webp",
+      "caption": "Table 4: ML: flattened datasets with predefined machine learning tasks (relational structure is normalized by the authors). DB: relational schemas are given and machine learning tasks are defined by the authors via queries. |F |: # of input features excluding the target. Train/test splits: scikit-learn’s train_test_split with an 8:2 ratio. Due to memory constraints, for model training, we used 2.5% of the MovieLens 20M training sets. For background data selection, we used 400,000 samples for MovieLens 20M, and 2,000 for SpeedDating. Mconv, B: coalition budget and the chosen background size for convergence, Textract: runtime (in seconds) taken to extract relational constraints over the entire dataset.",
+      "page": 22,
+      "index": 10,
+      "width": 922,
+      "height": 271
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-011.webp",
+      "caption": "Figure 5: Top-3 Jaccard distance between default estimators and RelShap configurations on UW-CSE dataset. Values above the shaded region indicate that RelShap induces larger changes than expected under the randomized null baseline.",
+      "page": 22,
+      "index": 11,
+      "width": 1047,
+      "height": 211
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-016.webp",
+      "caption": "Table 6: Hyperparameter settings for each model.",
+      "page": 23,
+      "index": 16,
+      "width": 468,
+      "height": 579
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-017.webp",
+      "caption": "Figure 6: 1−RBO between default estimators andRelShap configurations on German Credit. Values above the shaded region exceed the randomized null baseline. This dataset has no domain or denial constraints, so those modes are omitted.",
+      "page": 23,
+      "index": 17,
+      "width": 495,
+      "height": 355
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-015.webp",
+      "caption": "Table 7:RelShap configuration options. Each option can be combined with any dataset, model, and coalition estimator. Availability depends on the constraint types present in the dataset (Table 8). Options above the mid-rule change the explanation; the option below it affects only running time.",
+      "page": 23,
+      "index": 15,
+      "width": 510,
+      "height": 400
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-026.webp",
+      "caption": "Figure 7: 1−RBO between default estimators and RelShap configurations on UW-CSE dataset. Values above the shaded region indicate that RelShap induces larger changes than expected under the randomized null baseline.",
+      "page": 24,
+      "index": 26,
+      "width": 1047,
+      "height": 210
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-025.webp",
+      "caption": "Table 9: Summary of explanation differences (Top-3 Jaccard, 1− RBO) and deviations from the null baseline (∆), aggregated by dataset, predictive model, estimator, and comparison mode.",
+      "page": 24,
+      "index": 25,
+      "width": 760,
+      "height": 823
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-002.webp",
+      "caption": "Table 10: Dataset-wise explanation differences for Default vs. BG, Default vs. BG + DCs, and Default vs. All. We report per-dataset results for the two modes with the largest ∆Jaccard and ∆RBO. Values are mean ± standard deviation; results for BG + DCs and All are shown only when applicable.",
+      "page": 25,
+      "index": 2,
+      "width": 764,
+      "height": 640
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-004.webp",
+      "caption": "Figure 8: Top-3 Jaccard distance between default estimators and RelShap configurations on German Credit dataset. Values above the shaded region indicate that RelShap induces larger changes than expected under the randomized null baseline. Note that German Credit dataset does not contain any domain or denial constraints and therefore the results are not provided.",
+      "page": 26,
+      "index": 4,
+      "width": 495,
+      "height": 355
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-003.webp",
+      "caption": "Table 11: Explanation differences for provenance-aware comparisons on TPC-H and UW-CSE with XGBoost. Each entry is reported as Strict / Relaxed mode. Est. denotes Estimator and Ker, MC, and Lev denote Kernel SHAP, Monte Carlo, and Leverage SHAP, respectively.",
+      "page": 26,
+      "index": 3,
+      "width": 556,
+      "height": 429
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-023.webp",
+      "caption": "Figure 9: Runtime comparison between the reference method and RelShap (BG/Quotient). Each point corresponds to a dataset–model–configuration pair. Points above the diagonal indicate runtime reduction.",
+      "page": 27,
+      "index": 23,
+      "width": 1044,
+      "height": 480
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-024.webp",
+      "caption": "Figure 10: Average running time (sec/sample) across datasets under XGBoost; y-axis uses a square root scaling.",
+      "page": 27,
+      "index": 24,
+      "width": 1051,
+      "height": 223
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-018.webp",
+      "caption": "Table 13: Running time (sec/sample) under XGBoost for datasets without denial constraints (mean over three seeds). These datasets do not admit the full-featured configuration (BG/Q + Prov, Relaxed + DCs); see Table 14 for datasets with DCs. When provenance is active, quotient projection deduplicates using both global and provenance-induced FDs; however, provenance lookups add their own overhead, so BG/Q + Prov is not guaranteed to be faster than BG/Q alone. Dashes (-) indicate inapplicable configurations (Table 8). See Appendix Figure 10 for a visual comparison. Here, Ker, MC, and Lev denote Kernel SHAP, Monte Carlo, and Leverage SHAP, respectively. Prov, St/Rel denotes Prov, Strict/Relaxed mode.",
+      "page": 28,
+      "index": 18,
+      "width": 1032,
+      "height": 223
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-019.webp",
+      "caption": "Table 14: Running time (sec/sample) under XGBoost for datasets with denial constraints (mean over three seeds). The last row shows the full-featured RelShap configuration.",
+      "page": 28,
+      "index": 19,
+      "width": 952,
+      "height": 349
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-009.webp",
+      "caption": "Figure 11: Average running time (sec/sample) as the number of background data points varies up to the per-dataset maximum B and the number of coalitions varies up to the convergence budget Mconv in Table 4, for Churn and TPC-H (log scale on the x-axis).",
+      "page": 29,
+      "index": 9,
+      "width": 1052,
+      "height": 616
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-005.webp",
+      "caption": "Figure 12: Average running time (sec/sample) as the number of background data points and coalitions varies for additional model–dataset pairs.",
+      "page": 30,
+      "index": 5,
+      "width": 1052,
+      "height": 308
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-006.webp",
+      "caption": "Figure 13: Average running time (sec/sample) as the number of background data points and coalitions varies under richer provenance settings for Churn Modelling with XGBoost.",
+      "page": 30,
+      "index": 6,
+      "width": 1052,
+      "height": 304
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-029.webp",
+      "caption": "Figure 14: Runtime reduction (%) versus the empirical runtime speedup factor R̂Mconv across datasets and models (Default vs. RelShap (BG)). Each point corresponds to a configuration at Mconv. Shaded regions indicate variability across seeds. Ker, MC, and Lev denote Kernel SHAP, Monte Carlo, and Leverage SHAP.",
+      "page": 31,
+      "index": 29,
+      "width": 1042,
+      "height": 624
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-028.webp",
+      "caption": "Figure 15: Attribution and ranking changes under the FD age → life_stage as the strength δ of relationally invalid perturbations increases.",
+      "page": 31,
+      "index": 28,
+      "width": 1046,
+      "height": 303
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-021.webp",
+      "caption": "Figure 16: Attribution and ranking changes when incorporating both the FD age → life_stage and the provenance constraints from Example 1.",
+      "page": 32,
+      "index": 21,
+      "width": 1046,
+      "height": 307
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-022.webp",
+      "caption": "Figure 17: Attribution and ranking changes on German Credit as the influence of δ increases.",
+      "page": 32,
+      "index": 22,
+      "width": 1046,
+      "height": 304
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-013.webp",
+      "caption": "Figure 18: Attribution and ranking changes on UW-CSE as the influence of δ increases.",
+      "page": 33,
+      "index": 13,
+      "width": 1046,
+      "height": 707
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-012.webp",
+      "caption": "Table 16: Relational invalidity on datasets without DCs. Each cell reports averaged violation prevalence (top) and violation density (bottom) over three random seeds, in percentage.",
+      "page": 34,
+      "index": 12,
+      "width": 598,
+      "height": 815
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-014.webp",
+      "caption": "Table 17: Relational invalidity on datasets with DCs. Each cell reports averaged violation prevalence (top) and violation density (bottom) over three random seeds, in percentage. All denotes BG + DCs + Prov, Relaxed.",
+      "page": 35,
+      "index": 14,
+      "width": 732,
+      "height": 660
+    },
+    {
+      "url": "assets/figures/arxiv/2608.11508v1/fig-027.webp",
+      "caption": "Table 20: Shapley-value approaches in database (DB) research. All prior work uses DB tuples/facts as players and explains a property of the DB (query answer or inconsistency w.r.t. integrity constraints). RelShap instead explains ML model predictions on flattened relational data, with features as players, and uses relational structure as a constraint on the coalitional game.",
+      "page": 37,
+      "index": 27,
+      "width": 986,
+      "height": 529
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.10484v1/fig-003.webp",
+      "caption": "Figure 1: Verbs describe both motion dynamics and action goal. Six BridgeV2 verbs with their characteristic motion profile (trajectory shape, axis, gripper timing) and one example episode each (instruction, 3D end-effector trajectory, first/last frames). Profiles are derived from action trajectories of the verb, using pre-defined formulas. Recipe in (Appendix B).",
+      "page": 2,
+      "index": 3,
+      "width": 950,
+      "height": 448
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10484v1/fig-007.webp",
+      "caption": "Figure 2: SALT: semantically aligned action tokenization for VLAs. Left: a reconstruction-only VQ-VAE tokenizer encodes an 8-step, 7-DoF action chunk with a residual-VQ encoder and is trained on reconstruction alone. Middle (SALT): the same architecture adds a generative alignment pressure: the quantized latents of all chunks in an episode are fed, with a describe prompt, to a frozen VLM that must generate the episode’s instruction, and the LM cross-entropy shapes the encoder and codebook through the straight-through quantizer. Right: during VLA training, the VLM backbone predicts action-token IDs from vision and language (action cross-entropy), and the frozen tokenizer codebook and decoder turn predicted IDs into executable actions.",
+      "page": 4,
+      "index": 7,
+      "width": 835,
+      "height": 650
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10484v1/fig-004.webp",
+      "caption": "Figure 4: Per-code verb distributions, first residual group. For each tokenizer we show its 30 most verb-selective units — highest maxv P (verb | code) among codes/tokens used in ≥100 training chunks — as rows sorted by dominant verb; each cell is P (verb | code) by counting. Sharp verb-selective rows emerge for SALT across many verbs, including rare ones (flip 98%, turn 74%, pour, topple); the selective units of VQ-VAE (middle) and FAST (right) are confined to the most frequent verbs (put, sweep), with the remainder diffuse.",
+      "page": 7,
+      "index": 4,
+      "width": 950,
+      "height": 296
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10484v1/fig-005.webp",
+      "caption": "Figure 5: The same action chunks under three tokenizations. For SALT’s flip- and turn-dedicated codes, the verb composition of (top bar) the SALT code, (middle) the single VQ-VAE cell that receives almost all of the same chunks, and (bottom) the FAST BPE token receiving the largest share of their token occurrences. SALT dedicates a symbol; VQ-VAE lumps the chunks into a generic mixed cell; FAST distributes them across generic tokens with no dominant home. The front share of SALT’s turn code comes entirely from the instruction “lever vertical to front” — the same lever-turning action worded without “turn” — so the code unites this paraphrase with turn: the alignment tracks meaning, not surface wording.",
+      "page": 7,
+      "index": 5,
+      "width": 950,
+      "height": 220
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10484v1/fig-001.webp",
+      "caption": "Figure 6: Distribution of the 17 verb classes in BridgeV2 (episodes with ≥30 training examples). The two dominant verbs (move, put) comprise 65% of episodes; the long tail spans 15 additional verbs.",
+      "page": 11,
+      "index": 1,
+      "width": 458,
+      "height": 331
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10484v1/fig-006.webp",
+      "caption": "Figure 7: P (verb | code) by counting: majority-vote lookup accuracy on held-out episodes (seen code combinations). Top row: top-1 accuracy; bottom row: macro accuracy over classes with ≥10 validation episodes. Left: each residual group alone; right: cumulative group prefixes. SALT exceeds VQ-VAE at every group and prefix; FAST references dotted, chance dashed.",
+      "page": 14,
+      "index": 6,
+      "width": 873,
+      "height": 798
+    },
+    {
+      "url": "assets/figures/arxiv/2608.10484v1/fig-002.webp",
+      "caption": "Table 6: Per-verb MI contribution (bits, pooled across 5 CV folds). π log2 π is the entropy contribution from the class prior.",
+      "page": 15,
+      "index": 2,
+      "width": 456,
+      "height": 313
+    }
+  ]
+}

@@ -1,0 +1,413 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-15T19:48:18.439850+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 50,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 79,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 9,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 4,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2608.10647v1",
+      "source": "arxiv",
+      "title": "ProtoGIB-Workload: Learning Workload-Specific Neural Topology Prototypes across Subjects",
+      "abstract": "Reliable electroencephalography (EEG)-based mental workload recognition is crucial for adaptive human-centered systems, yet practical deployment requires models to generalize to users unseen during training. Although functional connectivity graphs are widely adopted to capture workload-related neural interactions, they inherently entangle task-relevant structures with subject-specific physiological traits and sample-level noise. This entanglement often leads models to learn structural shortcuts, severely degrading cross-subject generalization. To address this, we propose ProtoGIB-Workload, a novel framework that explicitly regularizes and aligns graph structures for subject-independent workload recognition. Our approach introduces a Stochastic Graph Information Bottleneck (SGIB) to compress dense correlation priors into compact, task-relevant subgraphs, filtering out input-related redundancy. Crucially, to prevent the retention of subject-specific spurious edges, we propose a Class-Conditional Topology Stabilizer (CTS). Leveraging the fixed electrode coordinates of EEG data, CTS operates directly on graph-generation probabilities to encourage consistent edge-generation statistics across different subjects sharing the same workload class. Extensive experiments on two public EEG workload datasets and one in-house EEG cognitive load dataset of air traffic controllers under strict leave-one-subject-out (LOSO) protocols demonstrate that ProtoGIB-Workload significantly outperforms state-of-the-art temporal and graph-based baselines, improving the cross-subject Macro-F1 score by an average of 5.15% (up to 6.34%). Further analyses confirm that our method successfully extracts stable, cross-subject consistent neural connectivity patterns.",
+      "authors": [
+        "Yuzhe Zhang",
+        "Yixi Zhang",
+        "Shengdian Jiang",
+        "Chengxi Xie",
+        "Jihong Wang",
+        "Huan Liu",
+        "Man Yao",
+        "Minnan Luo",
+        "Chao Shen"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC"
+      ],
+      "published": "2026-08-11T08:31:31+00:00",
+      "link": "https://arxiv.org/pdf/2608.10647v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes cross-subject graph prototype alignment for EEG workload recognition, directly addressing BCI transfer learning.",
+      "llm_evidence_cn": "提出跨被试图原型对齐用于EEG工作负荷识别，直接解决BCI迁移学习。",
+      "llm_evidence": "提出跨被试图原型对齐用于EEG工作负荷识别，直接解决BCI迁移学习。",
+      "canonical_evidence": "提出跨被试图原型对齐用于EEG工作负荷识别，直接解决BCI迁移学习。",
+      "llm_tldr_en": "ProtoGIB-Workload regularizes and aligns neural topology prototypes across subjects for subject-independent EEG workload recognition.",
+      "llm_tldr_cn": "ProtoGIB-Workload 通过跨被试正则化和对齐神经拓扑原型，实现与被试无关的EEG工作负荷识别。",
+      "llm_tldr": "ProtoGIB-Workload 通过跨被试正则化和对齐神经拓扑原型，实现与被试无关的EEG工作负荷识别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11508v1",
+      "source": "arxiv",
+      "title": "RelShap: Relationally Consistent Shapley Explanations",
+      "abstract": "Machine learning pipelines commonly flatten relational data into single-table representations, discarding structural constraints. Widely used Shapley value-based feature attributions then rely on feature independence, evaluating the model on combinations that could never arise in the underlying data, producing misleading explanations. We propose RelShap, a framework that incorporates relational constraints and data provenance into Shapley value computation, restricting both background data and coalition evaluation to relationally valid configurations. The framework is estimator-agnostic and composes with Kernel SHAP, Monte Carlo, and Leverage SHAP without altering their sampling or weighting properties. Functional dependencies further induce equivalence classes over feature coalitions, which RelShap exploits to reduce runtime without changing Shapley values; we provide a combinatorial characterization of the expected speedup. Experiments across multiple datasets, models, and estimators show that RelShap produces explanations that are more faithful to the data-generating process, correctly identifying the dominant feature in controlled settings where existing methods, including Conditional SHAP and ManifoldShap, do not. Our code is available at: https://github.com/duneag2/relshap.",
+      "authors": [
+        "Seungeun Lee",
+        "Joao Fonseca",
+        "Julia Stoyanovich"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-11T23:45:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.11508v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Computes feature importance via Shapley values with relational constraints",
+      "llm_evidence_cn": "通过Shapley值计算特征重要性并考虑关系约束",
+      "llm_evidence": "通过Shapley值计算特征重要性并考虑关系约束",
+      "canonical_evidence": "通过Shapley值计算特征重要性并考虑关系约束",
+      "llm_tldr_en": "Introduces RelShap for relationally consistent Shapley explanations of feature importance.",
+      "llm_tldr_cn": "提出RelShap，用于关系一致性Shapley特征重要性解释。",
+      "llm_tldr": "提出RelShap，用于关系一致性Shapley特征重要性解释。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11801v1",
+      "source": "arxiv",
+      "title": "JAPE: Joint Anomaly Prediction and Intrinsic Explanation in Multivariate Time Series",
+      "abstract": "Multivariate time-series anomaly prediction aims to identify whether and when anomalies will occur over a future horizon from historical observations. Existing methods primarily characterize anomalies as deviations in future numerical values, which may overlook subtle dependency changes induced by weak anomaly precursors and provide no native variable-level explanation together with the alert. To bridge these gaps, we propose JAPE, a Joint Anomaly Prediction and Explanation framework that lifts anomaly prediction from numerical-deviation modeling to dependency-structure modeling. JAPE is the first anomaly prediction framework to explicitly model evolving dependency structures for both point-wise alerting and native variable-level explanation. Specifically, JAPE (i) proposes a Decoupled Spatio-Temporal Representation (DSTR) backbone that decouples temporal and spatial modeling and captures lag-aware dependencies via learnable lag aggregation, thereby perceiving structural precursors before numerical deviations emerge; (ii) designs a dual-view alerting mechanism that fuses numerical forecasts with evolving dependency graphs for point-wise anomaly prediction, capturing structural evidence even under subtle numerical deviations; and (iii) presents Native Predictive Explanation (NPE), which directly reuses the predicted dependency graphs to rank variables by structural deviations without additional models or training. Extensive experiments on five real-world benchmarks across three prediction horizons demonstrate that JAPE improves average F1 and AUC-PR by 19.7% and 41.3%, respectively, while improving explainability with 26.6% gain in MRR.",
+      "authors": [
+        "Yian Wei",
+        "Yuanyuan Yao",
+        "Lu Chen",
+        "Xiangmin Zhou",
+        "Tianyi Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-12T08:44:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.11801v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Multivariate time series anomaly prediction with dependency structure modeling",
+      "llm_evidence_cn": "多元时间序列异常预测与依赖结构建模",
+      "llm_evidence": "多元时间序列异常预测与依赖结构建模",
+      "canonical_evidence": "多元时间序列异常预测与依赖结构建模",
+      "llm_tldr_en": "Proposes JAPE framework for anomaly prediction in multivariate time series via evolving dependency structures with variable-level explanations.",
+      "llm_tldr_cn": "提出JAPE框架，通过演化依赖结构进行多元时间序列异常预测并提供变量级解释。",
+      "llm_tldr": "提出JAPE框架，通过演化依赖结构进行多元时间序列异常预测并提供变量级解释。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11805v1",
+      "source": "arxiv",
+      "title": "Hybrid Gated Attention",
+      "abstract": "Gated attention is an effective approach to mitigate attention sinks and enhance the representational capacity of attention. To further extend its effectiveness-efficiency Pareto frontier, we propose a Hybrid Gated Attention (HyGA) framework that contains three types of gating strategies. Specifically, these gates leverage diverse information from multiple stages of attention, and collaboratively build element-wise/head-wise gating from multiple perspectives, capturing intra-head and cross-head information interactions. Through our hybrid gating components, HyGA could provide multi-source modulation signals, enabling more comprehensive control over information flow and improving the representational capacity of attention. We also introduce low-rank matrix decomposition and learnable attention sink to further enhance training efficiency and stability. In experiments, we evaluate HyGA on widely-used benchmarks based on different backbones. The experimental results show that our HyGA comprehensively improves both training loss and various downstream performances compared with Gated attention. HyGA has also been verified to achieve the best performance at different computation costs, with comprehensive model analyses for better understanding. The proposed HyGA sheds light on a more effective, efficient, and stable attention mechanism.",
+      "authors": [
+        "Zekun Zhou",
+        "Ruobing Xie",
+        "Lanrui Wang",
+        "Weixuan Sun"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-08-12T08:46:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.11805v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes hybrid gated attention, an attention variant that computes and modulates importance weights over inputs.",
+      "llm_evidence_cn": "提出混合门控注意力，一种计算并调制输入重要性权重的注意力变体。",
+      "llm_evidence": "提出混合门控注意力，一种计算并调制输入重要性权重的注意力变体。",
+      "canonical_evidence": "提出混合门控注意力，一种计算并调制输入重要性权重的注意力变体。",
+      "llm_tldr_en": "HyGA improves attention representational capacity via multi-source gating strategies.",
+      "llm_tldr_cn": "混合门控注意力通过多源门控策略提升注意力表示能力。",
+      "llm_tldr": "混合门控注意力通过多源门控策略提升注意力表示能力。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11846v1",
+      "source": "arxiv",
+      "title": "From Overlooked to Explored: Recovering Item Relations via Mixture of Perspectives for Sequential Recommendation",
+      "abstract": "Capturing user preference from a user's interaction sequence is the central challenge of Sequential Recommendation (SR). This preference intuitively emerges from inter-item relations: each item transition reflects a preference embedded in the relations between items, making the faithful capture of these relations essential for accurate recommendation. For this reason, self-attention is dominant in sequential recommendation for its ability to compute pairwise item interactions, yet our empirical analysis reveals that it consistently suffers from similarity bias across various types of transformer-based SR models: dot-product attention scores disproportionately favor similar items, systematically overlooking heterogeneous relations with meaningful preference signals and directly limiting recommendation performance. To address this, we propose PRISM (Perspective-based Relational Insight Synthesis Module), a module that re-examines item relations from multiple perspectives. PRISM employs K Perspective Lenses to calibrate attention from distinct viewpoints, combining an Affinity View that refines homogeneous relations and a Contrast View that exposes heterogeneous ones suppressed by similarity bias, enabling the model to capture the full spectrum of user preferences. Extensive experiments on seven real-world benchmarks demonstrate that PRISM consistently outperforms state-of-the-art baselines. Our code is available at https://github.com/327aem/PRISM/.",
+      "authors": [
+        "Junyoung Kim",
+        "Wonbin Kweon",
+        "Woojoo Kim",
+        "Jaehyung Lim",
+        "Dongha Kim",
+        "Hwanjo Yu"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-08-12T09:39:04+00:00",
+      "link": "https://arxiv.org/pdf/2608.11846v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "sequential recommendation models user interaction sequences to predict next items",
+      "llm_evidence_cn": "序列推荐建模用户交互序列以预测下一项目",
+      "llm_evidence": "序列推荐建模用户交互序列以预测下一项目",
+      "canonical_evidence": "序列推荐建模用户交互序列以预测下一项目",
+      "llm_tldr_en": "Addresses similarity bias in self-attention for sequential recommendation by recovering heterogeneous item relations.",
+      "llm_tldr_cn": "通过恢复异质项目关系来解决序列推荐中自注意力的相似性偏差。",
+      "llm_tldr": "通过恢复异质项目关系来解决序列推荐中自注意力的相似性偏差。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.10240v1",
+      "source": "arxiv",
+      "title": "Sequential Modality Dropout for Robust Multi-Modal Sequential Recommendation",
+      "abstract": "Multi-modal sequential recommenders assume every item carries every modality, but real product catalogs often miss images or text, and a model trained on complete data loses much of its recommendation accuracy when a modality is unavailable at serving time. We propose Sequential Modality Dropout (SMD): during training, each modality stream (image and text) is independently erased with probability p for an entire user interaction history, so the model learns to predict the next item without relying on any single modality. We measure robustness by retention, the fraction of a model's full-modality accuracy (HR@10) that survives when a modality is removed at test time. Across four backbones (MM-SASRec, IISAN, MISSRec, and fMRLRec) on four Amazon domains, SMD raises text retention by 1.0 to 3.2x at essentially no cost to full-modality accuracy; under an extreme 95% per-item missing rate, it retains 61% of HR@10 versus 22% without (a 2.8x improvement). An optional cross-modal reconstruction loss further lifts retention from 90% to 98% on a simple additive backbone under severe text missingness. SMD is a four-line, architecture-agnostic change that makes multi-modal sequential recommenders robust to the missing modalities they actually encounter in deployment.",
+      "authors": [
+        "Guanqun Yang",
+        "Wenlong Zhang"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.LG",
+        "cs.MM"
+      ],
+      "published": "2026-08-10T21:18:25+00:00",
+      "link": "https://arxiv.org/pdf/2608.10240v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Sequential Modality Dropout predicts next item in multi-modal sequential recommendation, addressing sequential data prediction over time",
+      "llm_evidence_cn": "顺序模态丢弃方法在多模态序列推荐中预测下一个物品，处理随时间变化的序列数据预测",
+      "llm_evidence": "顺序模态丢弃方法在多模态序列推荐中预测下一个物品，处理随时间变化的序列数据预测",
+      "canonical_evidence": "顺序模态丢弃方法在多模态序列推荐中预测下一个物品，处理随时间变化的序列数据预测",
+      "llm_tldr_en": "Proposes Sequential Modality Dropout to make multi-modal sequential recommenders robust to missing modalities",
+      "llm_tldr_cn": "提出顺序模态丢弃方法，使多模态序列推荐器在模态缺失时保持鲁棒",
+      "llm_tldr": "提出顺序模态丢弃方法，使多模态序列推荐器在模态缺失时保持鲁棒",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.10198v1",
+      "source": "arxiv",
+      "title": "Post-Hoc Sparse Coding of Latent Communication Between Vision-Language Model Agents",
+      "abstract": "Latent-space communication allows heterogeneous vision-language model agents to exchange continuous representations without serializing visual and reasoning states into text. Vision Wormhole realizes this approach by translating visual features into a universal latent representation that can be consumed by another model, but every message is transported as a dense tensor of the same size regardless of its content. A fixed-capacity dense tensor therefore need not have a fixed effective information density: some messages may use only a small fraction of the available representational degrees of freedom. This observation suggests that the communication channel may be substantially compressible. We study its redundancy by fitting a post-hoc sparse autoencoder to frozen Vision Wormhole activations and measuring reconstruction, downstream utility, feature reuse, and token-level interventions across nine reasoning benchmarks. Relative to the original float32 transport, a uint16-index/float16-value sparse payload with k=4 active coefficients per token reduces the transmitted bytes by 128x. In a single-run evaluation, the seven-task non-AIME mean accuracy changes from 49.85% to 49.77%. The fitted 4096-element dictionary uses only 50 features, and task-level active sets have a mean pairwise Jaccard similarity of 0.906. These measurements establish strong post-hoc compressibility relative to the original transport, but do not yet isolate the incremental contribution of sparse coding from position selection, reduced precision, low-rank structure, or SAE optimization effects. The results motivate matched-payload comparisons and communication mechanisms whose payload adapts to the information used by each message.",
+      "authors": [
+        "Di Wu",
+        "Xiaohui Zhu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-10T20:16:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.10198v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Post-hoc sparse coding compresses dense latent representations",
+      "llm_evidence_cn": "事后稀疏编码压缩稠密潜在表征",
+      "llm_evidence": "事后稀疏编码压缩稠密潜在表征",
+      "canonical_evidence": "事后稀疏编码压缩稠密潜在表征",
+      "llm_tldr_en": "This paper studies redundancy in latent communication and compresses dense message tensors via sparse coding.",
+      "llm_tldr_cn": "通过事后稀疏编码压缩视觉-语言模型智能体间潜空间的稠密通信表征。",
+      "llm_tldr": "通过事后稀疏编码压缩视觉-语言模型智能体间潜空间的稠密通信表征。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.10398v1",
+      "source": "arxiv",
+      "title": "ELVAE: Evidential Learning-Based Variational Autoencoder for Uncertainty-Aware Generation",
+      "abstract": "Variational autoencoders generate samples from probabilistic latent representations but do not distinguish uncertainty about the latent location from variability around it. We formulate ELVAE, an evidential learning-based VAE in which each latent coordinate is governed by an input-dependent normal-inverse-gamma posterior. This hierarchy yields an explicit latent-location uncertainty that can be used during generation, not merely reported after inference: low-uncertainty anchors support more reliable synthetic samples, while high-uncertainty anchors can be deliberately exploited for stress testing. The objective is an exact evidence lower bound, and we show that direct regularization of the full hierarchy is required, since the marginalized latent law alone cannot identify the uncertainty decomposition. In an MNIST generation pilot with a frozen external classifier, this uncertainty clearly stratified the semantic reliability of generated digits. A zero-displacement control revealed that most of the effect reflects how reliably an anchor can be re-generated, while a smaller but distinct component is attributable to uncertainty-scaled perturbation itself. The effect holds only under within-class uncertainty ranking, and its magnitude varies across seeds. These findings support the learned latent-location uncertainty as a practical control variable for uncertainty-aware generation, separating anchor reliability from perturbation-induced failure.",
+      "authors": [
+        "Ge Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-11T02:45:59+00:00",
+      "link": "https://arxiv.org/pdf/2608.10398v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "VAE-based representation learning from raw data with evidential uncertainty",
+      "llm_evidence_cn": "基于VAE的原始数据表示学习，具有证据不确定性",
+      "llm_evidence": "基于VAE的原始数据表示学习，具有证据不确定性",
+      "canonical_evidence": "基于VAE的原始数据表示学习，具有证据不确定性",
+      "llm_tldr_en": "Introduces ELVAE, a variational autoencoder with evidential learning that models latent location uncertainty to improve generation reliability.",
+      "llm_tldr_cn": "提出ELVAE，一种带有证据学习的变分自编码器，建模潜在位置不确定性以提升生成可靠性。",
+      "llm_tldr": "提出ELVAE，一种带有证据学习的变分自编码器，建模潜在位置不确定性以提升生成可靠性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.10484v1",
+      "source": "arxiv",
+      "title": "Lost in Reconstruction: Aligning Action Representations with Language in Vision-Language-Action Models",
+      "abstract": "Action verbs describe not only the physical outcomes of actions, but also how those actions are performed. Yet action representations in vision-language-action models (VLAs) are typically optimized for reconstruction under L1/L2 losses in raw action space, where numerical proximity need not reflect linguistically meaningful distinctions. On BridgeV2, we show that action trajectories contain verb-grounding information beyond visual state changes, and that reconstruction-only discrete tokenization systematically erodes this information. To address this problem, we introduce SALT, a Semantically ALigned action Tokenizer that augments a VQ-VAE-style tokenizer with an auxiliary objective requiring a frozen vision-language model to recover the episode instruction from quantized action latents. Policies trained with SALT achieve 71.9% average success in SimplerEnv, compared with 42.7% for a reconstruction-only VQ-VAE tokenizer and 31.2% for FAST. SALT also develops verb-specialized codes while maintaining reconstruction fidelity. These results show that robot action trajectories provide a source of language grounding and that preserving this structure in action representations can substantially improve language-conditioned control.",
+      "authors": [
+        "Li Wenjie",
+        "Yash Jangir",
+        "Ignacy Stepka",
+        "Yash Agarwal",
+        "Marion Kipsang",
+        "Yonatan Bisk"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-08-11T04:57:17+00:00",
+      "link": "https://arxiv.org/pdf/2608.10484v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Action tokenizer converting continuous outputs into discrete sequences",
+      "llm_evidence_cn": "将连续动作输出转为离散序列的动作分词器",
+      "llm_evidence": "将连续动作输出转为离散序列的动作分词器",
+      "canonical_evidence": "将连续动作输出转为离散序列的动作分词器",
+      "llm_tldr_en": "SALT aligns action tokens with language to preserve verb-grounding information in vision-language-action models.",
+      "llm_tldr_cn": "SALT通过语言对齐动作词元，保留视觉-语言-动作模型中的动词接地信息。",
+      "llm_tldr": "SALT通过语言对齐动作词元，保留视觉-语言-动作模型中的动词接地信息。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.10537v1",
+      "source": "arxiv",
+      "title": "Measuring Semantic Abstractness of SAE Features via Nonlocality",
+      "abstract": "Sparse autoencoders (SAEs) have helped uncover mechanistic explanations for LLM behaviours such as reasoning, jailbreaking etc., via understanding the corresponding task-relevant and causally effective features. To evaluate such mechanistic explanations, downstream studies must distinguish surface lexical features from genuinely high-level ones. However, neither an autointerp-based semantic description nor causal steering utility fully resolves the abstraction level of a feature. To this end, we introduce \\emph{Feature Nonlocality} (FNL), defined as the entropy of the normalized per-position influence on an SAE feature's activation. We report that FNL correlates with existing LLM-based proxy metrics of feature semantic abstractness, and successfully distinguishes context-dependent reasoning features from token-driven ones, correctly assigning the higher FNL to the contextual feature in $73$--$84\\%$ of randomly drawn pairs that consist of one contextual and one token-level feature.   We demonstrate two downstream applications. We audit SAE-based features used for jailbreak mitigation and find surprisingly that most effective features are positional features with low FNL rather than genuinely recognizing harmful intents.   We report that steering high-FNL features in DeepSeek-R1-Distill-Llama-8B improves MATH-500 accuracy by $4.6$ points over the unsteered model and outperforms steering low-FNL features, though the gains are model-specific. We conclude that FNL provides an LLM-independent, label-free, correlational witness of the abstraction level of an SAE feature, with applications in evaluating mechanistic explanations as well as selecting features for downstream interventions.",
+      "authors": [
+        "Chuqiao Lin",
+        "Shivaji Sondhi",
+        "Xiao-Liang Qi"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-08-11T06:19:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.10537v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Feature Nonlocality computes per-position influence entropy, a form of feature importance weights",
+      "llm_evidence_cn": "特征非局部性计算逐位置影响熵，是一种特征重要性权重",
+      "llm_evidence": "特征非局部性计算逐位置影响熵，是一种特征重要性权重",
+      "canonical_evidence": "特征非局部性计算逐位置影响熵，是一种特征重要性权重",
+      "llm_tldr_en": "Introduces Feature Nonlocality, an entropy-based metric for semantic abstractness of SAE features",
+      "llm_tldr_cn": "提出基于熵的特征非局部性度量，用于衡量 SAE 特征的语义抽象程度",
+      "llm_tldr": "提出基于熵的特征非局部性度量，用于衡量 SAE 特征的语义抽象程度",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
