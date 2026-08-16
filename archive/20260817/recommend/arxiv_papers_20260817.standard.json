@@ -1,0 +1,413 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-16T19:44:51.063178+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 26,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 50,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 6,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 1,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2608.11742v1",
+      "source": "arxiv",
+      "title": "Ripple-Pivot Search: Active Parallel Decoding for Diffusion Large Language Models",
+      "abstract": "Diffusion Large Language Models (dLLMs) have emerged as a competitive alternative to autoregressive language models, offering the potential for substantially faster inference through parallel decoding. Existing parallel decoding schedulers typically commit positions only after they meet a per-position criterion, overlooking how early commitments may benefit subsequent decoding. We identify a ripple effect in dLLM decoding: proactively committing a mid-entropy pivot position can induce a pronounced reduction in uncertainty across the remaining masked positions. This uncertainty reduction allows subsequent steps to unmask more tokens in parallel, thereby accelerating the overall decoding process. To exploit the ripple effect, we propose Ripple-Pivot Search (RPS), a novel training-free decoding method that seeks mid-entropy positions as promising candidate pivots (where to decode), and determines their token assignment that yields the greatest downstream benefit via lookahead evaluation (what to decode). Across 3 dLLMs and 4 reasoning and code-generation benchmarks, RPS achieves 4-10$\\times$ wall-clock speedup over the standard decoder while preserving generation quality, and improves accuracy over the previous lookahead baseline by up to 5.49% while delivering higher throughput in most settings. When integrated with KV caching, RPS further achieves up to 18$\\times$ wall-clock speedup over the standard decoder.",
+      "authors": [
+        "Yushi Ye",
+        "Xu Chen",
+        "Haoyun Jiang",
+        "Jinsong Lan",
+        "Haihong Tang",
+        "Bo Han",
+        "Ivor Tsang",
+        "Yanfeng Wang",
+        "Bo Zheng",
+        "Jiangchao Yao"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-08-12T07:32:29+00:00",
+      "link": "https://arxiv.org/pdf/2608.11742v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "parallel decoding algorithms convert model outputs into sequences",
+      "llm_evidence_cn": "并行解码算法将模型输出转化为序列",
+      "llm_evidence": "并行解码算法将模型输出转化为序列",
+      "canonical_evidence": "并行解码算法将模型输出转化为序列",
+      "llm_tldr_en": "Introduces Ripple-Pivot Search for active parallel decoding in diffusion LLMs, exploiting ripple effects to accelerate sequence generation.",
+      "llm_tldr_cn": "提出Ripple-Pivot搜索以在扩散大模型中主动并行解码，利用涟漪效应加速序列生成。",
+      "llm_tldr": "提出Ripple-Pivot搜索以在扩散大模型中主动并行解码，利用涟漪效应加速序列生成。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.13048v1",
+      "source": "arxiv",
+      "title": "DMDIntel: Interpreting Large Language Models via Dynamic Mode Decomposition",
+      "abstract": "In this work, we introduce DMDIntel which uses dynamic mode decomposition (DMD) to make the predictions made by LLMs in a classification task interpretable. It develops an input attribution pipeline, that first decomposes the hidden states of an LLM into prominent patterns, also known as modes, and then associates ranks to the input tokens based on the projection values on those modes. Rigorous experiments across three datasets and three model families consistently show that the ranked attribution of input tokens obtained using DMDIntel by far outperforms state-of-the-art techniques such as principal component analysis, integrated gradients and SHAP.",
+      "authors": [
+        "Amogh Joshi",
+        "Animesh Mukherjee",
+        "Sergey Utyuzhnikov"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-13T10:13:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.13048v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "computes input token importance via dynamic mode decomposition",
+      "llm_evidence_cn": "通过动态模式分解计算输入词元的重要性",
+      "llm_evidence": "通过动态模式分解计算输入词元的重要性",
+      "canonical_evidence": "通过动态模式分解计算输入词元的重要性",
+      "llm_tldr_en": "DMDIntel uses dynamic mode decomposition to rank input feature attributions for LLM classification.",
+      "llm_tldr_cn": "DMDIntel 利用动态模式分解对 LLM 分类的输入特征进行归因排序。",
+      "llm_tldr": "DMDIntel 利用动态模式分解对 LLM 分类的输入特征进行归因排序。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.13072v1",
+      "source": "arxiv",
+      "title": "EEG-PRIME: Prototype-Aligned Representation Learning with Multi-Level Conditioning for EEG Decoding",
+      "abstract": "Electroencephalography (EEG) decoding models often generalize poorly across datasets and subjects due to domain shifts in acquisition protocols and individual neurophysiology. We propose EEG-PRIME, a two-stage EEG foundation model for cross-dataset multi-task decoding. EEG-PRIME combines masked pretraining with prototype-aligned instruction tuning to enable instruction-aware and subject-invariant decoding across diverse BCI paradigms. During pretraining, an EEG encoder learns transferable representations through masked reconstruction with frequency-cutoff spectral augmentation. During instruction tuning, EEG-PRIME incorporates task-semantic, dataset-specific, and subject-invariant conditioning. The resulting conditioning signal modulates the Q-Former through Layer-wise Query Modulation, while frozen text embeddings of class labels serve as prototypes for cosine-similarity-based prediction across heterogeneous label spaces. Experiments on sixteen datasets covering motor imagery, emotion recognition, ADHD detection, covert speech, and mental workload show consistent improvements over state-of-the-art baselines and prior EEG foundation models under cross-subject settings. On two additional held-out datasets, EEG-PRIME achieves balanced accuracy comparable to within-session calibration models without target-domain optimization, calibration, or linear probing, demonstrating promising zero-shot transfer capability.",
+      "authors": [
+        "Shuailei Zhang",
+        "Muyun Jiang",
+        "Wei Zhang",
+        "Jinbo Chen",
+        "Zhiwei Guo",
+        "Yong Li",
+        "Yi Ding",
+        "Cuntai Guan"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-13T10:35:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.13072v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "EEG foundation model for cross-dataset, subject-invariant BCI decoding using masked pretraining and instruction tuning",
+      "llm_evidence_cn": "用于跨数据集、受试者不变的BCI解码的EEG基础模型，采用掩码预训练和指令微调",
+      "llm_evidence": "用于跨数据集、受试者不变的BCI解码的EEG基础模型，采用掩码预训练和指令微调",
+      "canonical_evidence": "用于跨数据集、受试者不变的BCI解码的EEG基础模型，采用掩码预训练和指令微调",
+      "llm_tldr_en": "Proposes EEG-PRIME, a two-stage EEG foundation model enabling cross-dataset multi-task BCI decoding.",
+      "llm_tldr_cn": "提出EEG-PRIME两阶段EEG基础模型，实现跨数据集多任务BCI解码。",
+      "llm_tldr": "提出EEG-PRIME两阶段EEG基础模型，实现跨数据集多任务BCI解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "transfer learning for brain computer interfaces",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.13352v1",
+      "source": "arxiv",
+      "title": "Recursive Multiple Change Point Detection of Nonstationary Time Series: Instability Tests, Estimation and Confidence Intervals",
+      "abstract": "We develop bootstrap-assisted robust binary segmentation (BARBS), a recursive binary segmentation method for multiple change point detection under general nonstationary temporal dynamics. A novel Gaussian multiplier bootstrap for the CUSUM statistics is proposed, offering robustness to complex dependence structures. Through meticulous calibration of the critical values at each stage of the recursion, BARBS ensures control of the Type I error under the null hypothesis of no change points. When change points are present, BARBS identifies the correct number of changes with a prespecified probability, and the resulting change point location estimators attain the same uniform consistency rate as classical binary segmentation. Building on this, we introduce second-stage refined estimators that achieve the optimal individual localization rate, and establish their asymptotic distributions and nearly optimal uniform localization rates under both fixed and vanishing jump magnitudes. Extensive numerical experiments across various settings confirm the robustness and superior performance of BARBS relative to existing approaches. To illustrate the practical relevance of the proposed methodology, we analyze U.S. inflation data, yielding change points that align with several documented macroeconomic episodes.",
+      "authors": [
+        "Leheng Cai",
+        "Zhou Zhou"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME"
+      ],
+      "published": "2026-08-13T15:18:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.13352v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multiple change point detection in nonstationary time series",
+      "llm_evidence_cn": "非平稳时间序列的多重变点检测",
+      "llm_evidence": "非平稳时间序列的多重变点检测",
+      "canonical_evidence": "非平稳时间序列的多重变点检测",
+      "llm_tldr_en": "Proposes BARBS, a recursive binary segmentation method with bootstrap calibration for change point detection in time series.",
+      "llm_tldr_cn": "提出BARBS，一种基于自举校准的递归二分分割方法，用于时间序列变点检测。",
+      "llm_tldr": "提出BARBS，一种基于自举校准的递归二分分割方法，用于时间序列变点检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11441v1",
+      "source": "arxiv",
+      "title": "DonorRank: Donor Language Selection for Low-Resource Cross-Lingual Speech Recognition",
+      "abstract": "Low-resource automatic speech recognition (ASR) commonly relies on cross-lingual transfer, where models are adapted from higher-resource donor languages. However, selecting donors remains challenging for spontaneous speech from under-resourced language communities, due to linguistic variation, evolving orthographic conventions, and uneven resource availability. We present DonorRank, a learning-to-rank framework for predicting effective donor languages for zero-shot ASR. We evaluate DonorRank on two multilingual speech corpora of Indic and African language families. It accurately predicts donor language rankings and improves donor selection over common heuristics based on genetic similarity or high-resource languages. Beyond improving transfer, we show how DonorRank is a general framework for analyzing donor language selection itself. Our analyses show that the composition of the donor set determines which linguistic cues are useful in predicting successful transfer. We also identify transfer patterns that provide practical guidance for multilingual ASR in low-resource settings.",
+      "authors": [
+        "Akriti Dhasmana",
+        "Aarohi Srivastava",
+        "David Chiang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-08-11T21:16:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.11441v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Cross-lingual transfer with donor language selection for low-resource ASR.",
+      "llm_evidence_cn": "面向低资源语音识别、通过供体语言选择进行跨语言迁移。",
+      "llm_evidence": "面向低资源语音识别、通过供体语言选择进行跨语言迁移。",
+      "canonical_evidence": "面向低资源语音识别、通过供体语言选择进行跨语言迁移。",
+      "llm_tldr_en": "Proposes a learning-to-rank framework to select donor languages for zero-shot cross-lingual ASR.",
+      "llm_tldr_cn": "提出学习排序框架，为零样本跨语言语音识别选择供体语言。",
+      "llm_tldr": "提出学习排序框架，为零样本跨语言语音识别选择供体语言。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.11567v1",
+      "source": "arxiv",
+      "title": "Sparse and robust geometric twin support vector machine via asymmetric RoBoSS loss function",
+      "abstract": "In real-world scenarios, the training data usually contains redundant features, label noise and feature noise, which provide severe challenges for the efficiency of machine learning methods. Since standard support vector machine (SVM) adopts $l_2$-norm penalty and hinge loss function, it lacks the ability of selecting significant features and is sensitive to noise. To address these issues, this paper proposes a novel asymmetric, robust, bounded, sparse and smooth (aR) loss function for $l_1$-norm penalized geometric twin SVM (aRSGTSVM) to handle classification and regression tasks. The $l_1$-norm penalty can achieve the feature selection. The proposed aR loss function can not only effectively mitigate the impact of label noise, but also significantly enhance the stability to resampling noise, i.e., the zero-mean feature noise around the boundary hyperplanes. Furthermore, a statistical analysis of the robustness of aRSGTSVM was also conducted using the influence function. Since aRSGTSVM involves nonconvex and nonsmooth optimization, we develop a fast and stable proximal gradient descent based solving algorithm. Compared with related state-of-the-art methods, experimental results demonstrate the superiority of the proposed aRSGTSVM on both synthetic and UCI datasets. Furthermore, we apply aRSGTSVM to index tracking tasks, where results for tracking the different indices in the China stock market show that it can achieve satisfactory performance.",
+      "authors": [
+        "Kai Qi",
+        "Xinji Huang",
+        "Hongchun Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-12T02:19:03+00:00",
+      "link": "https://arxiv.org/pdf/2608.11567v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "l1-norm penalized twin SVM selects significant features and computes sparse feature weights",
+      "llm_evidence_cn": "l1范数惩罚孪生SVM选择重要特征并计算稀疏特征权重",
+      "llm_evidence": "l1范数惩罚孪生SVM选择重要特征并计算稀疏特征权重",
+      "canonical_evidence": "l1范数惩罚孪生SVM选择重要特征并计算稀疏特征权重",
+      "llm_tldr_en": "Proposes a sparse and robust twin SVM with asymmetric loss for classification and regression with feature selection.",
+      "llm_tldr_cn": "提出带非对称损失的稀疏鲁棒孪生SVM，用于分类回归和特征选择。",
+      "llm_tldr": "提出带非对称损失的稀疏鲁棒孪生SVM，用于分类回归和特征选择。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.11870v1",
+      "source": "arxiv",
+      "title": "Enhancing Visual Domain Robustness in Behaviour Cloning via Saliency-Guided Augmentation",
+      "abstract": "In vision-based behavior cloning (BC), conventional image augmentations such as Random Crop and Color Jitter often fall short under substantial visual domain shifts, including changes in shadows, distractors, and backgrounds. Superimposition-based augmentations, which blend in-domain and out-of-domain images, have shown promise for improving generalization in computer vision, but their suitability for BC remains uncertain because task-critical semantics, spatiotemporal relationships, and agent-target interactions must be preserved. To address this, we introduce RoboSaGA, a Saliency-Guided Augmentation method within the superimposition family tailored for vision-based BC. RoboSaGA dynamically adjusts augmentation intensity at the pixel level using policy-driven saliency, enabling aggressive augmentation in task-irrelevant regions while preserving task-critical information. It integrates seamlessly into existing architectures without requiring structural modifications or additional learning objectives. Experiments in both simulated and real-world settings show that RoboSaGA preserves in-domain performance while substantially improving robustness to visual domain shifts, including distractor and background changes, as well as lighting and shadow variations. Code is available at https://github.com/Zheyu-Zhuang/RoboSaGA.",
+      "authors": [
+        "Zheyu Zhuang",
+        "Ruiyu Wang",
+        "Nils Ingelhag",
+        "Ville Kyrki",
+        "Danica Kragic"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-12T09:55:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.11870v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "saliency-guided augmentation computes input feature importance for robust behavior cloning",
+      "llm_evidence_cn": "显著图引导增强计算输入特征重要性以提升鲁棒性",
+      "llm_evidence": "显著图引导增强计算输入特征重要性以提升鲁棒性",
+      "canonical_evidence": "显著图引导增强计算输入特征重要性以提升鲁棒性",
+      "llm_tldr_en": "Introduces RoboSaGA, saliency-guided augmentation to improve visual domain robustness in behavior cloning.",
+      "llm_tldr_cn": "提出RoboSaGA，用显著图引导增强提升视觉行为克隆的域鲁棒性。",
+      "llm_tldr": "提出RoboSaGA，用显著图引导增强提升视觉行为克隆的域鲁棒性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods that compute importance weights for input features",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.11701v1",
+      "source": "arxiv",
+      "title": "Consolidator: Learning Persistent Routed Memory Across Context Boundaries",
+      "abstract": "Copying short-term memory (STM) into a slower store can preserve state across a context boundary, but persistence alone does not ensure that the retained state influences subsequent memory access. We test this distinction in a Phasor Memory Network (PMNet) using Consolidator, a shared slot-local operator that transforms routed STM before accumulating it into long-term memory (LTM), without replaying the source tokens. After each consolidation, the KV cache and STM are cleared. The retained LTM can still be read and is also fed into the hierarchical router, thereby conditioning which explicit-memory slots subsequent inputs access. We evaluate this mechanism on a two-segment modulo-10 mapping task in which the second segment updates the mapping at the same memory address. Following a second consolidation and reset, a held-out query must recover the updated mapping from LTM. The backbone and memory interface are frozen, leaving only 12.35K Consolidator parameters trainable (0.041\\% of a 29.95M model). Across five paired runs from the same STM-pretraining checkpoint, direct LTM routing raises updated-mapping recall from $44.38\\pm1.94\\%$ to $87.02\\pm1.76\\%$ ($+42.64\\pm1.10$ percentage points), while immediate STM recall remains 89.90\\% in both conditions; both train separate Consolidators and retain the same LTM read paths. Learned consolidation outperforms forced identity accumulation by $21.40\\pm1.91$ percentage points without routing and $68.70\\pm1.76$ with routing. Thus, on this task, consolidated LTM serves as both retrievable content and an access state that shapes subsequent slot selection.",
+      "authors": [
+        "Sungwoo Goo",
+        "Hwi-yeol Yun",
+        "Sangkeun Jung"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-12T06:26:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.11701v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Presents a memory consolidation mechanism for sequence prediction across context boundaries.",
+      "llm_evidence_cn": "提出跨上下文边界的记忆巩固机制，用于序列预测。",
+      "llm_evidence": "提出跨上下文边界的记忆巩固机制，用于序列预测。",
+      "canonical_evidence": "提出跨上下文边界的记忆巩固机制，用于序列预测。",
+      "llm_tldr_en": "A memory network with persistent routed memory that improves sequence prediction after context changes.",
+      "llm_tldr_cn": "一种具有持久路由记忆的记忆网络，能在上下文变化后改进序列预测。",
+      "llm_tldr": "一种具有持久路由记忆的记忆网络，能在上下文变化后改进序列预测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.11704v1",
+      "source": "arxiv",
+      "title": "Robust and Efficient Noisy-Label Time-Series Classification via Dynamic Time Warping Based Granular Ball Computing",
+      "abstract": "Dynamic Time Warping (DTW)-based Nearest-Neighbor (NN) classifiers are effective for time-series classification but are vulnerable to mislabeled training samples and require numerous DTW computations during inference. We propose DTW-based Granular Ball Computing (DTW-GBC), which organizes temporally similar training samples into granular balls and performs classification at the granule level. We further develop two granular-ball construction strategies for DTW-GBC. Experiments on four benchmark datasets with symmetric label noise show that the two DTW-GBC variants generally mitigate the performance degradation caused by label noise while requiring substantially fewer comparisons than DTW-based 1-NN during inference. These findings suggest that DTW-GBC provides a favorable balance between classification robustness and inference efficiency.",
+      "authors": [
+        "Ziqiang Li",
+        "Yun Liu",
+        "Gouhei Tanaka"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-12T06:29:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.11704v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Presents a time-series classification method using DTW and granular ball computing",
+      "llm_evidence_cn": "提出一种基于动态时间规整和粒度球计算的时间序列分类方法",
+      "llm_evidence": "提出一种基于动态时间规整和粒度球计算的时间序列分类方法",
+      "canonical_evidence": "提出一种基于动态时间规整和粒度球计算的时间序列分类方法",
+      "llm_tldr_en": "Proposes a robust and efficient DTW-based granular ball computing method for time-series classification under label noise.",
+      "llm_tldr_cn": "提出一种在标签噪声下基于DTW的粒度球计算方法，实现稳健高效的时间序列分类。",
+      "llm_tldr": "提出一种在标签噪声下基于DTW的粒度球计算方法，实现稳健高效的时间序列分类。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.11758v1",
+      "source": "arxiv",
+      "title": "AWARe: Mitigating Catastrophic Forgetting via Activation-Weighted Adaptive REtention",
+      "abstract": "Multimodal Large Language Models (MLLMs) exhibit strong generalization and reasoning abilities due to large-scale multimodal pre-training. However, fine-tuning these models on downstream tasks often leads to catastrophic forgetting, where newly learned task-specific knowledge degrades previously acquired capabilities. This issue arises because gradient updates for new tasks overwrite parameters critical to prior knowledge, limiting the practical deployment of MLLMs. To address this challenge, we propose Activation-Weighted Adaptive REtention (AWARe), a fine-tuning method that mitigates catastrophic forgetting by dynamically controlling parameter updates based on activation patterns. AWARe assigns activation-based importance scores to parameters, selectively freezing those essential for preserving prior capabilities while allowing less important parameters to adapt to new tasks. Importantly, AWARe operates without modifying model architectures, ensuring compatibility with existing inference engines. Extensive experiments demonstrate that AWARe effectively preserves upstream capabilities while achieving superior downstream performance compared to existing methods. Code is available at https://github.com/kaln27/AWARe.",
+      "authors": [
+        "Juncheng Liao",
+        "Jinfan Lv",
+        "Guoming Wang",
+        "Jupeng Zheng",
+        "Ling Xiao",
+        "Siliang Tang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-08-12T07:55:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.11758v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "fine-tunes pretrained multimodal LLMs on downstream tasks while preserving prior knowledge via activation-weighted importance",
+      "llm_evidence_cn": "通过激活加权重要性在微调预训练多模态大模型时保留已有知识",
+      "llm_evidence": "通过激活加权重要性在微调预训练多模态大模型时保留已有知识",
+      "canonical_evidence": "通过激活加权重要性在微调预训练多模态大模型时保留已有知识",
+      "llm_tldr_en": "AWARe reduces catastrophic forgetting during MLLM fine-tuning by weighting parameter updates based on activation patterns.",
+      "llm_tldr_cn": "AWARe根据激活模式加权参数更新，在微调多模态大模型时缓解灾难性遗忘。",
+      "llm_tldr": "AWARe根据激活模式加权参数更新，在微调多模态大模型时缓解灾难性遗忘。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

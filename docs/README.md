@@ -1,6 +1,6 @@
 ## 最新日报
-- 最新运行日期：2026-08-16
-- 运行时间：2026-08-16 03:56:43 北京时间
+- 最新运行日期：2026-08-17
+- 运行时间：2026-08-17 03:51:08 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
@@ -8,42 +8,42 @@
 
 ### 今日简报（AI）
 - 今日共生成 10 篇推荐（精读 5 篇，速读 5 篇）
-- 精读：《ProtoGIB-Workload: Learning Workload-Specific Neural Topology Prototypes across Subjects》（9.0/10）, 《RelShap: Relationally Consistent Shapley Explanations》（9.0/10）
-- 速读：《Sequential Modality Dropout for Robust Multi-Modal Sequential Recommendation》（8.0/10）, 《ELVAE: Evidential Learning-Based Variational Autoencoder for Uncertainty-Aware Generation》（8.0/10）, 《Lost in Reconstruction: Aligning Action Representations with Language in Vision-Language-Action Models》（8.0/10）
+- 精读：《Ripple-Pivot Search: Active Parallel Decoding for Diffusion Large Language Models》（9.0/10）, 《DMDIntel: Interpreting Large Language Models via Dynamic Mode Decomposition》（9.0/10）
+- 速读：《Sparse and robust geometric twin support vector machine via asymmetric RoBoSS loss function》（8.0/10）, 《Consolidator: Learning Persistent Routed Memory Across Context Boundaries》（8.0/10）, 《Robust and Efficient Noisy-Label Time-Series Classification via Dynamic Time Warping Based Granular Ball Computing》（8.0/10）
 - 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
-- 详情：[/202608/16/README](/202608/16/README)
+- 详情：[/202608/17/README](/202608/17/README)
 
 ### 精读区论文标签
-1. [ProtoGIB-Workload: Learning Workload-Specific Neural Topology Prototypes across Subjects](/202608/16/2608.10647v1-protogib-workload-learning-workload-specific-neural-topology-prototypes-across-subjects)  
+1. [Ripple-Pivot Search: Active Parallel Decoding for Diffusion Large Language Models](/202608/17/2608.11742v1-ripple-pivot-search-active-parallel-decoding-for-diffusion-large-language-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：提出跨被试图原型对齐用于EEG工作负荷识别，直接解决BCI迁移学习。
-2. [RelShap: Relationally Consistent Shapley Explanations](/202608/16/2608.11508v1-relshap-relationally-consistent-shapley-explanations)  
+   evidence：并行解码算法将模型输出转化为序列
+2. [DMDIntel: Interpreting Large Language Models via Dynamic Mode Decomposition](/202608/17/2608.13048v1-dmdintel-interpreting-large-language-models-via-dynamic-mode-decomposition)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过Shapley值计算特征重要性并考虑关系约束
-3. [JAPE: Joint Anomaly Prediction and Intrinsic Explanation in Multivariate Time Series](/202608/16/2608.11801v1-jape-joint-anomaly-prediction-and-intrinsic-explanation-in-multivariate-time-series)  
+   evidence：通过动态模式分解计算输入词元的重要性
+3. [EEG-PRIME: Prototype-Aligned Representation Learning with Multi-Level Conditioning for EEG Decoding](/202608/17/2608.13072v1-eeg-prime-prototype-aligned-representation-learning-with-multi-level-conditioning-for-eeg-decoding)  
    标签：评分：9.0/10、query:ndai
-   evidence：多元时间序列异常预测与依赖结构建模
-4. [Hybrid Gated Attention](/202608/16/2608.11805v1-hybrid-gated-attention)  
+   evidence：用于跨数据集、受试者不变的BCI解码的EEG基础模型，采用掩码预训练和指令微调
+4. [Recursive Multiple Change Point Detection of Nonstationary Time Series: Instability Tests, Estimation and Confidence Intervals](/202608/17/2608.13352v1-recursive-multiple-change-point-detection-of-nonstationary-time-series-instability-tests-estimation-and-confidence-intervals)  
    标签：评分：9.0/10、query:ndai
-   evidence：提出混合门控注意力，一种计算并调制输入重要性权重的注意力变体。
-5. [From Overlooked to Explored: Recovering Item Relations via Mixture of Perspectives for Sequential Recommendation](/202608/16/2608.11846v1-from-overlooked-to-explored-recovering-item-relations-via-mixture-of-perspectives-for-sequential-recommendation)  
-   标签：评分：9.0/10、query:ndai
-   evidence：序列推荐建模用户交互序列以预测下一项目
+   evidence：非平稳时间序列的多重变点检测
+5. [DonorRank: Donor Language Selection for Low-Resource Cross-Lingual Speech Recognition](/202608/17/2608.11441v1-donorrank-donor-language-selection-for-low-resource-cross-lingual-speech-recognition)  
+   标签：评分：8.0/10、query:ndai
+   evidence：面向低资源语音识别、通过供体语言选择进行跨语言迁移。
 
 ### 速读区论文标签
-1. [Sequential Modality Dropout for Robust Multi-Modal Sequential Recommendation](/202608/16/2608.10240v1-sequential-modality-dropout-for-robust-multi-modal-sequential-recommendation)  
+1. [Sparse and robust geometric twin support vector machine via asymmetric RoBoSS loss function](/202608/17/2608.11567v1-sparse-and-robust-geometric-twin-support-vector-machine-via-asymmetric-roboss-loss-function)  
    标签：评分：8.0/10、query:ndai
-   evidence：顺序模态丢弃方法在多模态序列推荐中预测下一个物品，处理随时间变化的序列数据预测
-2. [ELVAE: Evidential Learning-Based Variational Autoencoder for Uncertainty-Aware Generation](/202608/16/2608.10398v1-elvae-evidential-learning-based-variational-autoencoder-for-uncertainty-aware-generation)  
+   evidence：l1范数惩罚孪生SVM选择重要特征并计算稀疏特征权重
+2. [Consolidator: Learning Persistent Routed Memory Across Context Boundaries](/202608/17/2608.11701v1-consolidator-learning-persistent-routed-memory-across-context-boundaries)  
    标签：评分：8.0/10、query:ndai
-   evidence：基于VAE的原始数据表示学习，具有证据不确定性
-3. [Lost in Reconstruction: Aligning Action Representations with Language in Vision-Language-Action Models](/202608/16/2608.10484v1-lost-in-reconstruction-aligning-action-representations-with-language-in-vision-language-action-models)  
+   evidence：提出跨上下文边界的记忆巩固机制，用于序列预测。
+3. [Robust and Efficient Noisy-Label Time-Series Classification via Dynamic Time Warping Based Granular Ball Computing](/202608/17/2608.11704v1-robust-and-efficient-noisy-label-time-series-classification-via-dynamic-time-warping-based-granular-ball-computing)  
    标签：评分：8.0/10、query:ndai
-   evidence：将连续动作输出转为离散序列的动作分词器
-4. [Measuring Semantic Abstractness of SAE Features via Nonlocality](/202608/16/2608.10537v1-measuring-semantic-abstractness-of-sae-features-via-nonlocality)  
+   evidence：提出一种基于动态时间规整和粒度球计算的时间序列分类方法
+4. [AWARe: Mitigating Catastrophic Forgetting via Activation-Weighted Adaptive REtention](/202608/17/2608.11758v1-aware-mitigating-catastrophic-forgetting-via-activation-weighted-adaptive-retention)  
    标签：评分：8.0/10、query:ndai
-   evidence：特征非局部性计算逐位置影响熵，是一种特征重要性权重
-5. [Post-Hoc Sparse Coding of Latent Communication Between Vision-Language Model Agents](/202608/16/2608.10198v1-post-hoc-sparse-coding-of-latent-communication-between-vision-language-model-agents)  
+   evidence：通过激活加权重要性在微调预训练多模态大模型时保留已有知识
+5. [Enhancing Visual Domain Robustness in Behaviour Cloning via Saliency-Guided Augmentation](/202608/17/2608.11870v1-enhancing-visual-domain-robustness-in-behaviour-cloning-via-saliency-guided-augmentation)  
    标签：评分：7.0/10、query:ndai
-   evidence：事后稀疏编码压缩稠密潜在表征
+   evidence：显著图引导增强计算输入特征重要性以提升鲁棒性
 
