@@ -1,0 +1,206 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-001.webp",
+      "caption": "Figure 1: Cost vs. performance across 36 models on MTEB(LLM). The frontier contains the leading embedding models and Gemini 3.1 Pro, which extends it by 0.4 points at 1,431× the cost of a comparable embedding.",
+      "page": 1,
+      "index": 1,
+      "width": 997,
+      "height": 958
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-002.webp",
+      "caption": "Table 1: Model overview and per-category results. All ten LLMs and the ten highest-scoring embedding models. Scores are category means on a 0–100 scale; Overall is their mean. Cost is one MTEB(LLM) pass using API rates for LLMs and H100 throughput at $2.49/hr for embeddings (§3.3). Bold = best shown; full results are in Appendix B.2.",
+      "page": 6,
+      "index": 2,
+      "width": 830,
+      "height": 523
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-008.webp",
+      "caption": "Figure 2: Cost vs. performance by task category. Each panel plots score (0–100) against cost per benchmark pass (log scale) for all 36 models; the line is the Pareto frontier over all models and the star marks the best LLM in that category. Pro extends the retrieval frontier; embedding models define the frontiers for classification, clustering, STS, and pair classification.",
+      "page": 7,
+      "index": 8,
+      "width": 814,
+      "height": 207
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-012.webp",
+      "caption": "Figure 5: How many documents each architecture reads jointly with the query. Top: the pipeline. Bottom: its attention mask, drawn over the same N documents at the same scale in every panel so the four are directly comparable. Each row is a token and each column a token it may read. The red region is what one forward pass reads jointly with the query; it cannot be computed before the query arrives, so cost grows with it.",
+      "page": 10,
+      "index": 12,
+      "width": 826,
+      "height": 515
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-019.webp",
+      "caption": "Table 3: Complete model listing with mean (macro) scores across 37 MTEB(LLM) tasks, total benchmark costs, and references. LLM costs reflect actual API usage; embedding costs from H100 throughput benchmarking ($2.49/hr).",
+      "page": 19,
+      "index": 19,
+      "width": 826,
+      "height": 942
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-025.webp",
+      "caption": "Table 5: Complete per-category results for all 36 complete models, ranked by overall (macro) score. Bold = best in column.",
+      "page": 20,
+      "index": 25,
+      "width": 794,
+      "height": 762
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-005.webp",
+      "caption": "Table 6: Per-task scores for representative models across all 37 MTEB(LLM) tasks. Bold = best in row (incl. best embedding). Metric per category in italics.",
+      "page": 21,
+      "index": 5,
+      "width": 825,
+      "height": 652
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-009.webp",
+      "caption": "Table 7: Per-task scores: Classification (Accuracy).",
+      "page": 22,
+      "index": 9,
+      "width": 825,
+      "height": 558
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-010.webp",
+      "caption": "Table 8: Per-task scores: STS (Spearman ρ).",
+      "page": 22,
+      "index": 10,
+      "width": 825,
+      "height": 642
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-017.webp",
+      "caption": "Table 9: Per-task scores: Clustering (V-measure).",
+      "page": 23,
+      "index": 17,
+      "width": 825,
+      "height": 675
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-024.webp",
+      "caption": "Table 10: Per-task scores: Pair Classification (AP / Accuracy).",
+      "page": 24,
+      "index": 24,
+      "width": 588,
+      "height": 809
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-003.webp",
+      "caption": "Table 11: Per-task scores: Retrieval (Recall@1).",
+      "page": 25,
+      "index": 3,
+      "width": 822,
+      "height": 809
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-004.webp",
+      "caption": "Table 12: MTEB(LLM) task suite (37 tasks). N = held-out test samples (summed over languages for multilingual tasks); Q = queries, C = corpus documents. Multilingual tasks are evaluated per language and averaged. Held-out subsets (seed 42) derived from MTEB and MMTEB tasks (Muennighoff et al., 2023; Enevoldsen et al., 2025), hosted at mteb/llm-eval-*. Token counts: Table 13.",
+      "page": 26,
+      "index": 4,
+      "width": 827,
+      "height": 915
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-023.webp",
+      "caption": "Table 13: Token budget per task (GPT-4o tokenizer; raw text). Actual counts vary by ±15–40% across model vocabularies. *Train split is the kNN reference corpus processed only by embedding models; LLMs process only the test split. Corpus-in-context formatting adds ∼20 tokens per document for LLM retrieval.",
+      "page": 27,
+      "index": 23,
+      "width": 826,
+      "height": 1105
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-018.webp",
+      "caption": "Table 14: Reduced-thinking ablation (Gemini 3 Flash with reasoning_effort=low vs. default) on the MTEB(LLM) retrieval tasks. Think ↓ = reduction in thinking tokens vs. default. Reducing thinking by 54–94% improves all six retrieval scores in this ablation.",
+      "page": 28,
+      "index": 18,
+      "width": 826,
+      "height": 263
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-007.webp",
+      "caption": "Figure 7: Same-hardware inference throughput. Two open-weight LLMs and seven representative embedding models (118M–14B) served on one H100 (tokens/second, log scale); the full 26-model embedding throughput is in Table 18. Even the slowest embedding runs ∼2.5× faster than the fastest LLM; the fastest runs ∼736× faster.",
+      "page": 30,
+      "index": 7,
+      "width": 826,
+      "height": 595
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-006.webp",
+      "caption": "Figure 8: Capability profiles across five task categories. Gemini 3.1 Pro (red), Qwen3.627B (amber), and Octen-8B (blue). The LLMs lead on retrieval, while Octen-8B leads on classification and remains competitive across categories.",
+      "page": 30,
+      "index": 6,
+      "width": 690,
+      "height": 372
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-021.webp",
+      "caption": "Figure 10: Overall rankings. Pro (77.6) narrowly leads Octen-8B (77.2); the difference lies within statistical noise (p = 0.85). Flash-Lite (64.5) ranks near the bottom.",
+      "page": 32,
+      "index": 21,
+      "width": 770,
+      "height": 259
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-020.webp",
+      "caption": "Figures 10–15 rank all 36 evaluated models overall and within each of the five MTEB task categories. They show category-dependent performance: LLMs lead on retrieval, embedding models lead on classification, and the two paradigms are statistically indistinguishable on clustering, STS, and pair classification. Flash-Lite ranks near the bottom in every category, below the reasoning-capable Gemini models.",
+      "page": 32,
+      "index": 20,
+      "width": 819,
+      "height": 368
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-013.webp",
+      "caption": "Figure 12: Clustering rankings. Statistical tie; SFR-2 (66.7) edges Pro (66.6). Flash-Lite scores 21.7.",
+      "page": 33,
+      "index": 13,
+      "width": 819,
+      "height": 318
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-015.webp",
+      "caption": "Figure 13: STS rankings. Qwen3-E-4B (88.8) and Pro (88.5) are essentially tied; no significant paradigm difference (p = 0.74).",
+      "page": 33,
+      "index": 15,
+      "width": 816,
+      "height": 317
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-014.webp",
+      "caption": "Figure 14: Pair Classification rankings. KaLM-12B (87.1) outperforms Pro (83.2).",
+      "page": 33,
+      "index": 14,
+      "width": 819,
+      "height": 318
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-011.webp",
+      "caption": "Figure 15: Retrieval rankings. Pro leads the best embedding (64.5 vs. 56.0) and ranks first on five of six tasks.",
+      "page": 34,
+      "index": 11,
+      "width": 819,
+      "height": 318
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-016.webp",
+      "caption": "Table 16: Retrieve-then-rerank matrix. Average nDCG@10 for first-stage retrievers crossed with cross-encoder and LLM listwise (†) rerankers over 7 BRIGHT and 5 BEIR tasks. Bold = best per row. An LLM reranker improves Qwen3-E-8B on BRIGHT (22.3→35.1); on BEIR, the embedding alone scores highest (63.1).",
+      "page": 35,
+      "index": 16,
+      "width": 827,
+      "height": 351
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12875v1/fig-022.webp",
+      "caption": "Table 18: Embedding throughput on a single NVIDIA H100 80GB (median tokens/s over the benchmark), per-MTok cost at $2.49/hr spot, and mean (macro) MTEB(LLM) score.",
+      "page": 41,
+      "index": 22,
+      "width": 536,
+      "height": 588
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.12724v1/fig-001.webp",
+      "caption": "Figure 1: Comparison of our proposed semi-supervised in-context learning (ICL) against vanilla ICL.",
+      "page": 2,
+      "index": 1,
+      "width": 452,
+      "height": 332
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12724v1/fig-005.webp",
+      "caption": "Figure 2: Overview of MAG. Stage 1 (top): We generate textual descriptions of all images using the MLLM, construct a textual relationship graph, identify high-relevance unlabeled samples, and pseudo-label them. Stage 2 (bottom): We construct visual and textual graphs over the expanded candidate pool and perform query-conditioned relevance propagation in both modalities to select demonstrations for each query.",
+      "page": 4,
+      "index": 5,
+      "width": 826,
+      "height": 411
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12724v1/fig-002.webp",
+      "caption": "Table 1: Main results on multi-modal benchmarks under label-scarce settings with Gemini-2.0-Flash (mean accuracy ± standard dev % across 3 runs).",
+      "page": 7,
+      "index": 2,
+      "width": 833,
+      "height": 353
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12724v1/fig-004.webp",
+      "caption": "Table 2: Ablation study. We evaluate the contribution of (1) relevance-guided pseudo-labeling (MAPLE vs. Random vs. None), (2) graph-based propagation (Graph vs. TopK vs. Random), and (3) multi-modal representations (with/without images and descriptions).",
+      "page": 8,
+      "index": 4,
+      "width": 722,
+      "height": 268
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12724v1/fig-008.webp",
+      "caption": "Figure 3: Sensitivity analysis across three datasets (EmoSet, Emotion6, MMStar). Performance is stable across wide ranges of α, β, knn, pool size, and label rate, with clear optimal configurations: α ≈ 0.9, knn = 5, β = 0.5, pool size of 60, label rate of 25%, and 10 demonstrations.",
+      "page": 9,
+      "index": 8,
+      "width": 823,
+      "height": 266
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12724v1/fig-007.webp",
+      "caption": "Figure 5: Visualization of the full MAG method across EmoSet, GQA, MMStar, and OCR tasks.",
+      "page": 17,
+      "index": 7,
+      "width": 756,
+      "height": 827
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12724v1/fig-003.webp",
+      "caption": "Figure 6: MAG with random Stage 1 pseudo-label selection (vs. relevance-guided). Random selection leads to weaker semantic alignment and less accurate predictions.",
+      "page": 18,
+      "index": 3,
+      "width": 809,
+      "height": 1005
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12724v1/fig-006.webp",
+      "caption": "Figure 7: MAG with random Stage 2 demonstration selection (vs. graph-based). Random selection introduces noisy demonstrations, harming reasoning and OCR tasks.",
+      "page": 19,
+      "index": 6,
+      "width": 797,
+      "height": 1010
+    }
+  ]
+}

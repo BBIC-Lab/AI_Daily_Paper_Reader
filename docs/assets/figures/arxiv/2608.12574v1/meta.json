@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-005.webp",
+      "caption": "Figure 1: (a) Compilation time vs. enum cardinality (Qwen3-8B, log-log scale). Dotted lines mark documented provider limits (Gemini ∼120, Anthropic ∼200, OpenAI 1,000). The trie is flat at 30–67ms; XGrammar crosses the trie at K≈300 and reaches 2.7s at K=100K. (b) End-to-end vLLM throughput (log scale). The 29× gap at B=256 combines 7× per-step algorithmic advantage with integration-path savings from precomputed masks (Section 5).",
+      "page": 3,
+      "index": 5,
+      "width": 864,
+      "height": 289
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-007.webp",
+      "caption": "Figure 2: The BPE-trie alignment problem. A character-level trie encodes three enum values with shared prefix structure. BPE tokens (colored brackets) span multiple trie edges: medic traverses 5 character nodes from the root. At each node, we precompute the set of valid BPE tokens (right), enabling precomputed mask lookups at decode time.",
+      "page": 4,
+      "index": 7,
+      "width": 718,
+      "height": 187
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-001.webp",
+      "caption": "Table 1: Complexity comparison between FSM and trie automaton. Concrete values use K = 2,000, Lmax = 30, |Σ| = 256, V = 32,000, ℓ = 4.",
+      "page": 6,
+      "index": 1,
+      "width": 772,
+      "height": 210
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-004.webp",
+      "caption": "Table 6: Accuracy (%) and validity (%) on four public classification benchmarks (TREC (Li & Roth, 2002), MASSIVE (FitzGerald et al., 2022), Banking77 (Casanueva et al., 2020), and CLINC150 (Larson et al., 2019); details in Appendix C.2; 5 runs, mean±std, greedy). Prompts identical within each pair; trie is the only difference. Trie guarantees 100% validity. Full results (6 models) in Appendix Table 7.",
+      "page": 10,
+      "index": 4,
+      "width": 644,
+      "height": 293
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-006.webp",
+      "caption": "Table 7: Accuracy (%) and validity (%) results across all three additional models (5 runs, mean±std, greedy decoding). Extends Table 6 with three additional models. Bold: best accuracy per row; italic: second best.",
+      "page": 13,
+      "index": 6,
+      "width": 776,
+      "height": 383
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-008.webp",
+      "caption": "Table 8: End-to-end latency (seconds) for enum generation by cardinality K. Timeout threshold is 60s.",
+      "page": 16,
+      "index": 8,
+      "width": 776,
+      "height": 206
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-009.webp",
+      "caption": "Table 9: Schema compliance (%) for different approaches. Constrained methods achieve 100% by design.",
+      "page": 16,
+      "index": 9,
+      "width": 776,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-002.webp",
+      "caption": "Table 14: Prefix sharing ratio r = |T (E)|/Nchars for benchmark enum sets. Lower r indicates more prefix sharing and greater trie compression.",
+      "page": 25,
+      "index": 2,
+      "width": 656,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12574v1/fig-003.webp",
+      "caption": "Table 17: Compilation speedup of character-position masks vs. xgrammar regex for fixedformat strings. Values are × faster (median over 10 runs). xgrammar compilation time is constant per format regardless of format complexity (88ms–1.2s depending on vocabulary size).",
+      "page": 29,
+      "index": 3,
+      "width": 627,
+      "height": 193
+    }
+  ]
+}

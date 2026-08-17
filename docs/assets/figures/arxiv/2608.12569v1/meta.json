@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.12569v1/fig-001.webp",
+      "caption": "Figure 1 | TTT-Embed keeps ranking rewards as a reusable learned vector in the embedding space. A query is encoded once by the frozen encoder, the learned vector 𝒗𝑔 is added to the returned query vector. The vector 𝒗𝑔 is the only updated quantity. An external reward model scores the retrieved candidates; the induced teacher distribution 𝑝T is the target that 𝒗𝑔 is trained to match with the student distribution 𝑝S read off the embeddings. The sharing scope 𝑔 determines how broadly each 𝒗𝑔 is reused, and is the only degree of freedom that changes between our three variants. Nothing inside the embedding system is modified.",
+      "page": 2,
+      "index": 1,
+      "width": 451,
+      "height": 294
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12569v1/fig-002.webp",
+      "caption": "Figure 2 | TTT-Embed improves retrieval, and the optimal scope changes with the budget. Panel (a) reports the performance gain over raw retrieval across different normalized budgets, averaged over five embedding models. The background shading indicates the best sharing scope for each sampled budget regime. Panel (b) details these results for each individual embedding model. The dotted line marks full query coverage at depth 10. At this threshold, task-wise TTT-Embed improves raw retrieval by 6.36 nDCG@10 points and outperforms cost-matched direct reranking by 3.15 points. Rewards are from Qwen3-Reranker-4B.",
+      "page": 7,
+      "index": 2,
+      "width": 977,
+      "height": 475
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12569v1/fig-005.webp",
+      "caption": "Table 6 | Evaluation-set size for each MTEB retrieval task. “HN” abbreviates the HardNegatives revision. The final row is the pooled count; reported performance nevertheless averages the 15 tasks equally.",
+      "page": 16,
+      "index": 5,
+      "width": 331,
+      "height": 374
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12569v1/fig-004.webp",
+      "caption": "Table 8 | Complete matched-budget recovery comparison. Scores are nDCG@10 ×100. Panel (a) evaluates embedding-only retrieval before testtime feedback. Panel (b) freezes SKILLRET-SFT0.6B and gives every method the same 𝑏 = 10 Reranker-4B feedback pairs; gains are relative to its 45.42 MTEB score.",
+      "page": 17,
+      "index": 4,
+      "width": 477,
+      "height": 265
+    },
+    {
+      "url": "assets/figures/arxiv/2608.12569v1/fig-003.webp",
+      "caption": "Figure 5 | Transfer of shared feedback for each embedding model. Red and blue curves evaluate task-wise and global-wise states only on held-out queries, using a paired raw-query baseline on the same shrinking set. Purple curves learn a global-wise 𝒗𝑔 from 14 tasks and evaluate it on the held-out fifteenth task. All curves use Reranker-4B feedback and the fixed dose 𝛼(𝑛) = 𝑛/(𝑛 + 1).",
+      "page": 18,
+      "index": 3,
+      "width": 915,
+      "height": 190
+    }
+  ]
+}

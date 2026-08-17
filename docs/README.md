@@ -1,6 +1,6 @@
 ## 最新日报
-- 最新运行日期：2026-08-17
-- 运行时间：2026-08-17 03:51:08 北京时间
+- 最新运行日期：2026-08-18
+- 运行时间：2026-08-18 03:52:06 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
@@ -8,42 +8,42 @@
 
 ### 今日简报（AI）
 - 今日共生成 10 篇推荐（精读 5 篇，速读 5 篇）
-- 精读：《Ripple-Pivot Search: Active Parallel Decoding for Diffusion Large Language Models》（9.0/10）, 《DMDIntel: Interpreting Large Language Models via Dynamic Mode Decomposition》（9.0/10）
-- 速读：《Sparse and robust geometric twin support vector machine via asymmetric RoBoSS loss function》（8.0/10）, 《Consolidator: Learning Persistent Routed Memory Across Context Boundaries》（8.0/10）, 《Robust and Efficient Noisy-Label Time-Series Classification via Dynamic Time Warping Based Granular Ball Computing》（8.0/10）
+- 精读：《Trie Automata for Constrained Decoding over Large Finite Sets》（9.0/10）, 《Dual-Manifold Geometry Guided Representation Learning: Adaptive Coupling between Kernel and Data Spaces》（9.0/10）
+- 速读：《MAG: MAnifold Guided Semi-Supervised Multi-modal In-Context Learning》（8.0/10）, 《ReconSpan: Reconstruction-Guided Adaptive Latent Tokenization》（8.0/10）, 《The Embedder's Dilemma: LLMs Are Better, but at What Cost?》（8.0/10）
 - 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
-- 详情：[/202608/17/README](/202608/17/README)
+- 详情：[/202608/18/README](/202608/18/README)
 
 ### 精读区论文标签
-1. [Ripple-Pivot Search: Active Parallel Decoding for Diffusion Large Language Models](/202608/17/2608.11742v1-ripple-pivot-search-active-parallel-decoding-for-diffusion-large-language-models)  
+1. [Trie Automata for Constrained Decoding over Large Finite Sets](/202608/18/2608.12574v1-trie-automata-for-constrained-decoding-over-large-finite-sets)  
    标签：评分：9.0/10、query:ndai
-   evidence：并行解码算法将模型输出转化为序列
-2. [DMDIntel: Interpreting Large Language Models via Dynamic Mode Decomposition](/202608/17/2608.13048v1-dmdintel-interpreting-large-language-models-via-dynamic-mode-decomposition)  
+   evidence：将模型输出转换为有效序列的受约束解码算法
+2. [Dual-Manifold Geometry Guided Representation Learning: Adaptive Coupling between Kernel and Data Spaces](/202608/18/2608.12737v1-dual-manifold-geometry-guided-representation-learning-adaptive-coupling-between-kernel-and-data-spaces)  
    标签：评分：9.0/10、query:ndai
-   evidence：通过动态模式分解计算输入词元的重要性
-3. [EEG-PRIME: Prototype-Aligned Representation Learning with Multi-Level Conditioning for EEG Decoding](/202608/17/2608.13072v1-eeg-prime-prototype-aligned-representation-learning-with-multi-level-conditioning-for-eeg-decoding)  
+   evidence：提出核引导特征变换以增强深度表示学习
+3. [EEG-PRISM: Physiologically-Grounded Interpretability of Predictions by EEG Foundation Models](/202608/18/2608.13676v1-eeg-prism-physiologically-grounded-interpretability-of-predictions-by-eeg-foundation-models)  
    标签：评分：9.0/10、query:ndai
-   evidence：用于跨数据集、受试者不变的BCI解码的EEG基础模型，采用掩码预训练和指令微调
-4. [Recursive Multiple Change Point Detection of Nonstationary Time Series: Instability Tests, Estimation and Confidence Intervals](/202608/17/2608.13352v1-recursive-multiple-change-point-detection-of-nonstationary-time-series-instability-tests-estimation-and-confidence-intervals)  
+   evidence：计算EEG特征的归因分数并将其映射到生理学领域
+4. [Geometric Filtering of LLM-Generated Samples for Few-Shot Text Classification](/202608/18/2608.13866v1-geometric-filtering-of-llm-generated-samples-for-few-shot-text-classification)  
    标签：评分：9.0/10、query:ndai
-   evidence：非平稳时间序列的多重变点检测
-5. [DonorRank: Donor Language Selection for Low-Resource Cross-Lingual Speech Recognition](/202608/17/2608.11441v1-donorrank-donor-language-selection-for-low-resource-cross-lingual-speech-recognition)  
-   标签：评分：8.0/10、query:ndai
-   evidence：面向低资源语音识别、通过供体语言选择进行跨语言迁移。
+   evidence：利用几何过滤和加权LLM生成样本来进行少样本文本分类，应对有限标注数据
+5. [Model-agnostic Retrieval-Augmented Extended Forecasting for time series](/202608/18/2608.14054v1-model-agnostic-retrieval-augmented-extended-forecasting-for-time-series)  
+   标签：评分：9.0/10、query:ndai
+   evidence：使用预训练模型的时间序列预测；序列数据预测
 
 ### 速读区论文标签
-1. [Sparse and robust geometric twin support vector machine via asymmetric RoBoSS loss function](/202608/17/2608.11567v1-sparse-and-robust-geometric-twin-support-vector-machine-via-asymmetric-roboss-loss-function)  
+1. [MAG: MAnifold Guided Semi-Supervised Multi-modal In-Context Learning](/202608/18/2608.12724v1-mag-manifold-guided-semi-supervised-multi-modal-in-context-learning)  
    标签：评分：8.0/10、query:ndai
-   evidence：l1范数惩罚孪生SVM选择重要特征并计算稀疏特征权重
-2. [Consolidator: Learning Persistent Routed Memory Across Context Boundaries](/202608/17/2608.11701v1-consolidator-learning-persistent-routed-memory-across-context-boundaries)  
+   evidence：利用少量标签数据通过半监督上下文学习进行任务适配
+2. [ReconSpan: Reconstruction-Guided Adaptive Latent Tokenization](/202608/18/2608.12756v1-reconspan-reconstruction-guided-adaptive-latent-tokenization)  
    标签：评分：8.0/10、query:ndai
-   evidence：提出跨上下文边界的记忆巩固机制，用于序列预测。
-3. [Robust and Efficient Noisy-Label Time-Series Classification via Dynamic Time Warping Based Granular Ball Computing](/202608/17/2608.11704v1-robust-and-efficient-noisy-label-time-series-classification-via-dynamic-time-warping-based-granular-ball-computing)  
+   evidence：通过自适应潜在分词学习紧凑表示
+3. [The Embedder's Dilemma: LLMs Are Better, but at What Cost?](/202608/18/2608.12875v1-the-embedders-dilemma-llms-are-better-but-at-what-cost)  
    标签：评分：8.0/10、query:ndai
-   evidence：提出一种基于动态时间规整和粒度球计算的时间序列分类方法
-4. [AWARe: Mitigating Catastrophic Forgetting via Activation-Weighted Adaptive REtention](/202608/17/2608.11758v1-aware-mitigating-catastrophic-forgetting-via-activation-weighted-adaptive-retention)  
+   evidence：系统比较LLM与嵌入模型在下游任务上的表现，指导利用预训练模型
+4. [GEM: A Generative Embedding Model Bridging Reasoning and Retrieval](/202608/18/2608.13200v2-gem-a-generative-embedding-model-bridging-reasoning-and-retrieval)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过激活加权重要性在微调预训练多模态大模型时保留已有知识
-5. [Enhancing Visual Domain Robustness in Behaviour Cloning via Saliency-Guided Augmentation](/202608/17/2608.11870v1-enhancing-visual-domain-robustness-in-behaviour-cloning-via-saliency-guided-augmentation)  
+   evidence：生成式嵌入模型，对查询进行推理并附加嵌入标记，学习用于检索的有意义表示
+5. [Test-Time Optimization of Query Embeddings with Ranking Aware Reward Maximization](/202608/18/2608.12569v1-test-time-optimization-of-query-embeddings-with-ranking-aware-reward-maximization)  
    标签：评分：7.0/10、query:ndai
-   evidence：显著图引导增强计算输入特征重要性以提升鲁棒性
+   evidence：使用排名奖励和冻结编码器对查询嵌入进行测试时优化，学习紧凑向量表示
 
