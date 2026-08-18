@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-009.webp",
+      "caption": "Figure 2: Overview of GALA. Stage 1 contrastively aligns a LoRA-adapted text encoder and time-series encoder into a shared space, with a generation-aware auxiliary loss keeping the text embedding sufficient to synthesize its fragment. Stage 2 freezes the aligned text encoder and trains a flow-matching generator on its embedding.",
+      "page": 4,
+      "index": 9,
+      "width": 1004,
+      "height": 369
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-001.webp",
+      "caption": "Table 1: Comparison with existing text-to-time-series generation methods on TSFragment-600K across four domains and three lengths (L ∈ {24, 48, 96}). Each entry is the mean over 3 independent sampling seeds. Per-cell standard deviations are omitted for space and are uniformly small: the largest of all 216 is 0.0165 (DiffuSETS, FID on ETTh1s-96), the largest of GALA’s 36 is 0.0033, and 98% are below 0.01. Significance test is deferred to Technical Supplement. Bold and underline mark the best and second-best per column, ties broken by the unrounded means. Avg. Rank is the mean rank over that length’s 12 columns.",
+      "page": 6,
+      "index": 1,
+      "width": 1017,
+      "height": 652
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-007.webp",
+      "caption": "Figure 4: Aligner design sweep on ETTh1s-48: finetuning method (FT-Full / FT-Head / LoRA) against the auxiliary-loss weight λdw ∈ {0, 1, 2, 4, 8} (xaxis, evenly spaced). Markers are the mean over 3 sampling seeds and bars the sample std; LoRA /λdw=1 is our default.",
+      "page": 8,
+      "index": 7,
+      "width": 460,
+      "height": 414
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-008.webp",
+      "caption": "Figure 5: Alignment-side ablation on ETTh1s-48: LoRA-tuning the text tower only, the series tower only, or both (our default) in Stage 1, each frozen and scored with the identical Stage-2 generator. Markers are the mean over 3 sampling seeds; bars are the sample std.",
+      "page": 8,
+      "index": 8,
+      "width": 460,
+      "height": 329
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-012.webp",
+      "caption": "Table 4: Probing how much textual information the encoded series feature retains, averaged over the four datasets at length 48; bold marks the best per row. Aligned is our cross-modally aligned feature; the pretrained Chronos-2 (Ansari et al., 2025) variant uses the same global z-score normalization, differing only in alignment; TSLM (Trabelsi et al., 2025) is a further encoder baseline.",
+      "page": 9,
+      "index": 12,
+      "width": 490,
+      "height": 352
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-006.webp",
+      "caption": "Table 5: Stage-1 alignment hyperparameters. In the fine-tuning-method ablation, FT-Full uses learning rate 1× 10−5; all other settings are unchanged.",
+      "page": 14,
+      "index": 6,
+      "width": 585,
+      "height": 715
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-003.webp",
+      "caption": "Table 6: Stage-2 generator hyperparameters.",
+      "page": 15,
+      "index": 3,
+      "width": 567,
+      "height": 752
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-002.webp",
+      "caption": "Table 9: Settings shared by all five baselines and by GALA. Checkpoint selection and the metric embedder follow the protocol in the Evaluation Protocol section, so no method is scored in its own embedding space.",
+      "page": 15,
+      "index": 2,
+      "width": 488,
+      "height": 313
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-011.webp",
+      "caption": "Table 12: T2S baseline hyperparameters (stage 2). The stage-1 LA-VAE is in Table 15.",
+      "page": 17,
+      "index": 11,
+      "width": 490,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-010.webp",
+      "caption": "Table 13: DiffuSETS baseline hyperparameters (stage 2). The stage-1 VAE is in Table 15.",
+      "page": 17,
+      "index": 10,
+      "width": 490,
+      "height": 346
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-013.webp",
+      "caption": "Table 17: Sample standard deviation over the 3 sampling seeds for every cell of Table 1 in the main paper. All values are ×10−3, so an entry of 3.4 means 0.0034. The largest entry in the whole table is 16.5 (0.0165; DiffuSETS, FID on ETTh1s-96) and the largest for GALA is 3.3 (0.0033).",
+      "page": 20,
+      "index": 13,
+      "width": 783,
+      "height": 646
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-005.webp",
+      "caption": "Figure 6: Morphological diversity at L = 48. (a) Cumulative PCA explained variance of the z-normalized fragments; markers sit where each source reaches 90% (dashed line). Traffic saturates after two components while the others need eight to eleven. (b, c) The six KMeans centroid shapes of Traffic and of ETTh1s on identical axes: Traffic’s clusters are one daily template at six different phases, whereas ETTh1s’s are distinct morphologies.",
+      "page": 21,
+      "index": 5,
+      "width": 987,
+      "height": 256
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13741v2/fig-004.webp",
+      "caption": "Table 18: Shape diversity of the four sources, measured on 2000 per-series z-normalized fragments per configuration. PCA2 is the share of shape variance in the first two principal components, PC90 the number of components reaching 90%, and eff. the participation ratio of the spectrum. Traffic (bold) needs the fewest dimensions at every length, i.e. it contains the fewest distinct shapes.",
+      "page": 21,
+      "index": 4,
+      "width": 659,
+      "height": 194
+    }
+  ]
+}

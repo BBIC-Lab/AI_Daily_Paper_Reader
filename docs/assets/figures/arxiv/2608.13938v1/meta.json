@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-004.webp",
+      "caption": "Figure 1: Framework comparison and encoding speed. (a) Representative weight-space video approaches store instance-specific information in optimized, generated, or modulated decoder parameters, whereas CoANeRV stores video-specific information in compact tokens and reconstructs pixels with a shared coordinate-conditioned decoder. (b) CoANeRV enables feed-forward token inference, while the decoder-only variant freezes the shared decoder and optimizes only video tokens to isolate the cost of per-video token fitting.",
+      "page": 2,
+      "index": 4,
+      "width": 818,
+      "height": 249
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-010.webp",
+      "caption": "Figure 2: CoANeRV framework. CoANeRV encodes each video through convolutional patch tokenization and a six-layer token former, shown as the “Transformer Encoder Block” in the schematic, and reconstructs pixels by querying the resulting compact video tokens with continuous spatiotemporal coordinates. The decoder is shared across videos, so video-specificity is stored in token space rather than decoder weight space.",
+      "page": 4,
+      "index": 10,
+      "width": 812,
+      "height": 293
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-005.webp",
+      "caption": "Table 1: CoANeRV vs. feed-forward INR baselines. ‘F’ denotes the number of frames. “INR size” reports the size of the reconstruction network, while #θ̂′ reports the video-specific representation size: generated video-specific weights for prior methods and video tokens for CoANeRV. For each frame setting, we report two CoANeRV rows: a 20-epoch checkpoint to highlight convergence speed, and the full 150-epoch result for final accuracy. Training time is measured in GPU hours.",
+      "page": 7,
+      "index": 5,
+      "width": 818,
+      "height": 260
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-008.webp",
+      "caption": "Table 2: Comparison with video-adapted ANR. ANR-V extends ANR Zhang et al. [2024] from spatial queries (x, y) to video queries (x, y, t) using localized attention layers. CoANeRV uses temperature-modulated cross-attention with block-wise coordinate querying. Both methods are compared under matched token lengths and video-specific representation sizes. Memory is the recorded peak GPU footprint for one minibatch and is reported in GB, using 1GB = 1024MiB throughout the paper.",
+      "page": 8,
+      "index": 8,
+      "width": 810,
+      "height": 229
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-009.webp",
+      "caption": "Figure 3: Qualitative comparison. Visualizations for feed-forward INR methods: TransINR Chen and Wang [2022] (top row), GINR Kim et al. [2023] (second row), FastNeRV Chen et al. [2024] (third row), and CoANeRV (bottom row, ours). CoANeRV reconstructs finer details and cleaner structures. Best viewed digitally and zoomed in.",
+      "page": 8,
+      "index": 9,
+      "width": 748,
+      "height": 371
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-014.webp",
+      "caption": "Table 5: Technical positioning relative to closely related token-conditioned neural fields. “Not evaluated” describes the scope of the cited paper and does not assert that the method could not be extended.",
+      "page": 16,
+      "index": 14,
+      "width": 801,
+      "height": 232
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-006.webp",
+      "caption": "Figure 5: Encoding time comparison between CoANeRV and gradient-based NeRV optimization.",
+      "page": 18,
+      "index": 6,
+      "width": 664,
+      "height": 281
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-007.webp",
+      "caption": "Table 7: Standalone token optimization analysis under the 8-frame setting. For CoANeRV, the decoder is frozen and only randomly initialized video tokens are optimized for each test video. Time denotes per-video optimization time.",
+      "page": 18,
+      "index": 7,
+      "width": 798,
+      "height": 256
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-013.webp",
+      "caption": "Figure 7: Attention Weight Distribution with Different Temperature Parameters. Distribution of attention weights when querying spatiotemporal coordinates through video tokens before training. Red curve (τ = 0.4) shows a sharper distribution over tokens, while blue curve (τ = 1.0) exhibits smoother and more dispersed attention weights.",
+      "page": 20,
+      "index": 13,
+      "width": 482,
+      "height": 335
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-003.webp",
+      "caption": "Figure 8: RGB vs. YUV distributions. RGB channels occupy the full normalized range, whereas the YUV chrominance channels are strongly concentrated around 0.5.",
+      "page": 21,
+      "index": 3,
+      "width": 814,
+      "height": 467
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-012.webp",
+      "caption": "Figure 12: Cross-domain qualitative comparison. Ground truth (top), FastNeRV (second row), ANR-V (third row), and CoANeRV (bottom).",
+      "page": 24,
+      "index": 12,
+      "width": 812,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-001.webp",
+      "caption": "Table 12: CoANeRV vs. ANR-V with different resolutions. CoANeRV achieves better quality with much lower memory and training cost. Memory is the recorded peak GPU footprint for one minibatch in GB, using 1GB = 1024MiB.",
+      "page": 25,
+      "index": 1,
+      "width": 812,
+      "height": 227
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-002.webp",
+      "caption": "Table 13: Ablation study on token quantization. Decoder weights remain in 32-bit floating point.",
+      "page": 26,
+      "index": 2,
+      "width": 598,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2608.13938v1/fig-011.webp",
+      "caption": "Table 14: Complete Hyperparameter Settings",
+      "page": 27,
+      "index": 11,
+      "width": 820,
+      "height": 874
+    }
+  ]
+}
