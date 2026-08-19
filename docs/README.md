@@ -1,6 +1,6 @@
 ## 最新日报
-- 最新运行日期：2026-08-19
-- 运行时间：2026-08-19 04:28:20 北京时间
+- 最新运行日期：2026-08-20
+- 运行时间：2026-08-20 04:09:42 北京时间
 - 运行状态：成功
 - 本次总论文数：10
 - 精读区：5
@@ -8,42 +8,42 @@
 
 ### 今日简报（AI）
 - 今日共生成 10 篇推荐（精读 5 篇，速读 5 篇）
-- 精读：《Multi-Feature Riemannian Hypergraph for Online Test-Time Adaptation of Motor Imagery Brain-Computer Interface》（10.0/10）, 《Sequence prediction under a lying oracle》（9.0/10）
-- 速读：《CAST: Closed-form Analytic Semantic Transfer for Zero-Shot Classifier Extension》（8.0/10）, 《Trajectory Dynamics in Self-Supervised Learning Latent Space for Audio Deepfake Detection》（8.0/10）, 《Change-Point Detection for Heterogeneous High-Dimensional Functional Time Series》（8.0/10）
+- 精读：《Contrastive Learning with Variational Regularization for Multi-Session EEG-to-Speech Decoding》（10.0/10）, 《SpIn-ViT: Designing a Sparsity-Induced Vision Transformer That Is Mechanistically Interpretable》（9.0/10）
+- 速读：《M-LINKX: Multiview Graph Learning for Brain Cognitive Disease Detection》（8.0/10）, 《Frequency and Edge-Guided Segment Anything Model for Remote Sensing Image Semantic Segmentation》（8.0/10）, 《RecurrentGPT: Expressive Depth through Recurrent Modulation in Transformers》（8.0/10）
 - 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
-- 详情：[/202608/19/README](/202608/19/README)
+- 详情：[/202608/20/README](/202608/20/README)
 
 ### 精读区论文标签
-1. [Multi-Feature Riemannian Hypergraph for Online Test-Time Adaptation of Motor Imagery Brain-Computer Interface](/202608/19/2608.16134v1-multi-feature-riemannian-hypergraph-for-online-test-time-adaptation-of-motor-imagery-brain-computer-interface)  
+1. [Contrastive Learning with Variational Regularization for Multi-Session EEG-to-Speech Decoding](/202608/20/2608.16360v1-contrastive-learning-with-variational-regularization-for-multi-session-eeg-to-speech-decoding)  
    标签：评分：10.0/10、query:ndai
-   evidence：通过黎曼超图实现运动想象脑机接口的在线测试时适应和跨天迁移
-2. [Sequence prediction under a lying oracle](/202608/19/2608.14102v1-sequence-prediction-under-a-lying-oracle)  
+   evidence：脑电到语音解码直接从头神经信号重建语音。
+2. [SpIn-ViT: Designing a Sparsity-Induced Vision Transformer That Is Mechanistically Interpretable](/202608/20/2608.14922v1-spin-vit-designing-a-sparsity-induced-vision-transformer-that-is-mechanistically-interpretable)  
    标签：评分：9.0/10、query:ndai
-   evidence：带遗憾界的序列预测
-3. [MINT: A Universal Zero-Shot Predictor for Transaction Data](/202608/19/2608.14198v1-mint-a-universal-zero-shot-predictor-for-transaction-data)  
+   evidence：联合训练预训练ViT和稀疏自编码器，从原始图像数据学习稀疏可解释的块表示
+3. [DINO4DSTEM: A self-supervised framework for structural discovery in 4D-STEM](/202608/20/2608.15098v1-dino4dstem-a-self-supervised-framework-for-structural-discovery-in-4d-stem)  
    标签：评分：9.0/10、query:ndai
-   evidence：分析顺序金融交易数据，利用上下文嵌入实现对新型下游任务的零样本预测
-4. [Change Point Detection and Localization in High-Dimensional Time Series](/202608/19/2608.14344v1-change-point-detection-and-localization-in-high-dimensional-time-series)  
+   evidence：自监督框架直接从原始4D-STEM数据学习结构状态
+4. [From "What-If" to "What-Is": Counterfactual Thinking-Inspired Semantic Alignment for Visual Brain Decoding](/202608/20/2608.15163v1-from-what-if-to-what-is-counterfactual-thinking-inspired-semantic-alignment-for-visual-brain-decoding)  
    标签：评分：9.0/10、query:ndai
-   evidence：高维时间序列的变点检测与定位
-5. [Mind the Long Tail: Understanding the Difficulty of Delay Detection in Business Processes](/202608/19/2608.14367v1-mind-the-long-tail-understanding-the-difficulty-of-delay-detection-in-business-processes)  
+   evidence：fMRI 解码到视觉语义，符合将神经信号解码为输出
+5. [QSMP: finding representative time series subsequences through Quick Shift+Matrix Profile](/202608/20/2608.15492v1-qsmp-finding-representative-time-series-subsequences-through-quick-shiftmatrix-profile)  
    标签：评分：9.0/10、query:ndai
-   evidence：从历史事件日志预测剩余时间，属于时序预测方法
+   evidence：基于密度的时间序列子序列聚类以发现代表性波形
 
 ### 速读区论文标签
-1. [CAST: Closed-form Analytic Semantic Transfer for Zero-Shot Classifier Extension](/202608/19/2608.13751v1-cast-closed-form-analytic-semantic-transfer-for-zero-shot-classifier-extension)  
+1. [M-LINKX: Multiview Graph Learning for Brain Cognitive Disease Detection](/202608/20/2608.14847v1-m-linkx-multiview-graph-learning-for-brain-cognitive-disease-detection)  
    标签：评分：8.0/10、query:ndai
-   evidence：通过语义迁移在无目标标注数据下将分类器扩展到新类别
-2. [Trajectory Dynamics in Self-Supervised Learning Latent Space for Audio Deepfake Detection](/202608/19/2608.13817v1-trajectory-dynamics-in-self-supervised-learning-latent-space-for-audio-deepfake-detection)  
+   evidence：脑疾病检测中EEG序列建模
+2. [Frequency and Edge-Guided Segment Anything Model for Remote Sensing Image Semantic Segmentation](/202608/20/2608.15054v1-frequency-and-edge-guided-segment-anything-model-for-remote-sensing-image-semantic-segmentation)  
    标签：评分：8.0/10、query:ndai
-   evidence：在自监督潜在轨迹上使用因果LSTM进行下一帧预测以建模时序序列
-3. [Change-Point Detection for Heterogeneous High-Dimensional Functional Time Series](/202608/19/2608.13880v1-change-point-detection-for-heterogeneous-high-dimensional-functional-time-series)  
+   evidence：利用频率与边缘引导对预训练SAM进行适配以用于遥感分割，将基础模型知识迁移到新领域。
+3. [RecurrentGPT: Expressive Depth through Recurrent Modulation in Transformers](/202608/20/2608.15062v2-recurrentgpt-expressive-depth-through-recurrent-modulation-in-transformers)  
    标签：评分：8.0/10、query:ndai
-   evidence：面向高维函数型时间序列的变点检测，直接分析时序数据
-4. [CoANeRV: Coordinate-Aware Token-Space Neural Video Representation](/202608/19/2608.13938v1-coanerv-coordinate-aware-token-space-neural-video-representation)  
+   evidence：循环Transformer通过共享核心随时间迭代，实现高效序列建模
+4. [Stress-Testing DANTE under Detector Domain Shift: a Representation-Coherent Reanalysis of LIGO O4a](/202608/20/2608.15166v2-stress-testing-dante-under-detector-domain-shift-a-representation-coherent-reanalysis-of-ligo-o4a)  
    标签：评分：8.0/10、query:ndai
-   evidence：单次前馈生成紧凑视频令牌；基于令牌条件神经场的原始视频表征学习
-5. [GALA: Generation-Aware Cross-Modal Alignment for Text-to-Time-Series Synthesis](/202608/19/2608.13741v2-gala-generation-aware-cross-modal-alignment-for-text-to-time-series-synthesis)  
+   evidence：利用冻结DINOv2嵌入和探测器特定阈值进行域自适应瞬态检测
+5. [EgoTac: In-the-wild Tactile Prediction from Egocentric Vision](/202608/20/2608.15060v1-egotac-in-the-wild-tactile-prediction-from-egocentric-vision)  
    标签：评分：7.0/10、query:ndai
-   evidence：通过对比学习将预训练文本编码器与时间序列基础模型对齐到共享嵌入，用于条件生成
+   evidence：从原始视频预测连续触觉信号，可迁移到神经解码
 

@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.15098v1/fig-004.webp",
+      "caption": "Figure 1. A label-free self-supervised classifier for 4D-STEM. A 4D-STEM scan records one nanobeam diffraction pattern at each probe position. Each pattern is shown to the network as two augmented views, which a student",
+      "page": 3,
+      "index": 4,
+      "width": 902,
+      "height": 510
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15098v1/fig-006.webp",
+      "caption": "Figure 2. Validation against an independent expert segmentation (NaPHI). Rows: SAM (reference), rotationinvariant polar-theta-shift NMF, and DINO4DSTEM. Column 1 shows the oriented line domain: SAM as a blue overlay on the virtual HAADF image (a), and NMF (d) and DINO4DSTEM (g) as full class maps with the line cluster forced to the same blue and the remaining classes in distinct colours. Columns 2 and 3 show the class-averaged diffraction of the line and non-line regions. All three methods recover the line domain (spatial intersection-overunion against SAM of 0.77 for NMF and 0.74 for DINO4DSTEM; because the line is a diffuse azimuthal feature, spatial overlap rather than a radial-profile correlation is the meaningful measure). DINO4DSTEM additionally resolves finer, physically distinct sub-domains, namely thickness variation and a measurement-induced interface, analysed per class in Figure S7, with the full set of NMF classes and their average diffraction in Figure S8 and the line/rest interface domain in Figure S9.",
+      "page": 5,
+      "index": 6,
+      "width": 896,
+      "height": 906
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15098v1/fig-001.webp",
+      "caption": "Figure 3. Overview of the indomethacin crystallization experiment and 4D-STEM acquisition. a) Physical vapor deposition of indomethacin. The solid drug is sublimed from a resistively heated crucible in vacuum and condenses onto a lacy carbon-coated gold TEM grid suspended above the source, forming an amorphous film approximately 150 nm thick; the deposition rate is monitored by a quartz-crystal microbalance (QCM) and held at 0.2 Å s⁻¹. b) Ex-situ crystallization. The as-deposited amorphous film is annealed on a digital hotplate at 70 °C under a nitrogen atmosphere, driving the transformation from a featureless amorphous film to crystalline needles (inset); the partially crystallized films that arrest along this pathway are the subject of the present analysis. c) Energy-filtered 4D-STEM acquisition. A focused nanobeam is rastered across the film, and a full nanobeam diffraction pattern is recorded at every probe position, producing a four-dimensional dataset of tens of thousands of weak, low-dose patterns fed into DINO4DSTEM for label-free classification.",
+      "page": 6,
+      "index": 1,
+      "width": 718,
+      "height": 392
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15098v1/fig-002.webp",
+      "caption": "Figure 4. Clustering of the indomethacin fields of view. Each row is one region and each column one method. a–e) interface region: virtual HAADF with the 4D-STEM scan region outlined (a), the DINO4DSTEM class map (b), and polar NMF clustered by k-means (c), agglomerative (d) and Gaussian-mixture (e). f–j) needle region and k– o) magnified interface, in the same column order. Colors are arbitrary cluster labels. DINO4DSTEM, with the same settings throughout, returns one consistent map per region (b, g, l), whereas NMF, with parameters optimized for this sample, gives a different partition per algorithm. Agreement between NMF and DINO4DSTEM is low and algorithm-dependent (adjusted Rand index 0.05 to 0.27; 0 is chance-level and 1 an exact match), and the three NMF clusterings agree among themselves only at 0.15 to 0.69. Two further NMF clusterings (HDBSCAN and fuzzyc-means) and the per-algorithm comparison are in Figure S10.",
+      "page": 7,
+      "index": 2,
+      "width": 902,
+      "height": 554
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15098v1/fig-005.webp",
+      "caption": "Figure 5. Grain-resolved diffraction of the indomethacin nanodomains. a) DINO4DSTEM class map of the needle field, coloured as in Figure 4, with three representative domains outlined and numbered 1 to 3 (scale bar, 1 µm). b–d) Grain-average diffraction of domains 1 to 3, ordered left to right by increasing crystalline order; the reflections index to α-indomethacin viewed close to the [100] zone axis, with representative hkl indices labelled. e) DINO4DSTEM class map of the interface field, with three representative domains outlined and numbered 1 to 3 (scale bar, 500 nm). f–h) Grain-average diffraction of those domains, ordered by increasing crystalline order; the patterns remain more diffuse, consistent with the less crystallized interface. Reciprocal scale bars in all diffraction panels, 2 nm⁻¹.",
+      "page": 9,
+      "index": 5,
+      "width": 902,
+      "height": 475
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15098v1/fig-003.webp",
+      "caption": "Figure 6. Emergent DINO4DSTEM classes form a single crystallinity axis. For each indomethacin region (rows: interface, needles, magnified interface): column 1, the DINO4DSTEM class map (coloured by class identity, as in Figure 5); columns 2 to 4, the three rotation-invariant descriptors (azimuthal spottiness, two-dimensional Bragg excess B, radial peak-to-halo ratio) shown as spatial maps (top; dark to bright is amorphous to crystalline) and as per-class distributions (bottom; each box is one class, classes ordered along the crystallinity axis, the annotated eta-squared is the fraction of the descriptor variance explained by the class label). The descriptors rise monotonically from class to class and peak along the needle morphology, identifying the classes as steps on a single amorphous-to-crystalline axis. The three descriptors agree on this ordering and on which classes are the most crystalline; they differ only in the ranking within that top group, where the fully crystalline classes are separated by the character of their order rather than its amount. Controls confirming that the descriptors are meaningful only after clustering are presented in Figure S20.",
+      "page": 10,
+      "index": 3,
+      "width": 902,
+      "height": 841
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-003.webp",
+      "caption": "Figure 1: Training SpIn-ViT. ViT patch embeddings are encoded into a sparse latent space, reconstructed through an SAE decoder, and aligned with CLS-token predictions using reconstruction, sparsity, and alignment losses.",
+      "page": 2,
+      "index": 3,
+      "width": 1054,
+      "height": 358
+    },
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-005.webp",
+      "caption": "Figure 2: Interpretability analysis performed after training. (a) Reference images for a given neuron (e.g., Neuron 50) are selected by ranking [CLS] token activations from the trained TopK SAE encoder. (b) Patch-token activations for that neuron are then used to localize the specific image regions responsible for the activation. (c) Neuron activations across images are binarized into tabular data, over which FOLD-SE-M creates neurosymbolic rules for explainability of the TopK SAE encoder.",
+      "page": 3,
+      "index": 5,
+      "width": 1052,
+      "height": 198
+    },
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-008.webp",
+      "caption": "Table 1: Classification accuracy (%) across nine benchmark datasets (mean ± std). Best results per dataset are highlighted in bold.",
+      "page": 5,
+      "index": 8,
+      "width": 1006,
+      "height": 265
+    },
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-009.webp",
+      "caption": "Figure 3: Insertion and Deletion Plots of each model for average of all datasets",
+      "page": 5,
+      "index": 9,
+      "width": 1054,
+      "height": 360
+    },
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-001.webp",
+      "caption": "Table 2: AI interpretability evaluations across nine image classification benchmarks (normalized to a 1–5 scale where 1.00 = 0.0 mIoU and 5.00 = 1.0 mIoU).",
+      "page": 6,
+      "index": 1,
+      "width": 1018,
+      "height": 288
+    },
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-004.webp",
+      "caption": "Table 4: Accuracy (%) and number of active rules (± standard deviation) across nine image classification benchmarks.",
+      "page": 7,
+      "index": 4,
+      "width": 1054,
+      "height": 251
+    },
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-002.webp",
+      "caption": "Figure 4: Insertion plots for all nine benchmark datasets. For each dataset, pixels are progressively inserted into a blank baseline image in order of attribution ranking (most salient first, per each model’s attribution map), and classification accuracy is plotted as a function of the percentage of pixels inserted. Higher curves and larger AUC indicate more faithful attributions.",
+      "page": 11,
+      "index": 2,
+      "width": 1052,
+      "height": 750
+    },
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-007.webp",
+      "caption": "Figure 5: Deletion plots for all nine benchmark datasets. For each dataset, pixels are progressively removed from the original image in order of attribution ranking (most salient first, per each model’s attribution map), and classification accuracy is plotted as a function of the percentage of pixels deleted. Steeper drops and lower AUC indicate more faithful attributions.",
+      "page": 12,
+      "index": 7,
+      "width": 1052,
+      "height": 754
+    },
+    {
+      "url": "assets/figures/arxiv/2608.14922v1/fig-006.webp",
+      "caption": "Figure 6: Examples of correspondence between sparse patch-level neuron activations and extracted symbolic rules. (a) Soft patch segmentations induced by individual neurons across example images. (b) FOLD-SE-M rules for the corresponding datasets, where each predicate maps to one of the visualized neurons.",
+      "page": 13,
+      "index": 6,
+      "width": 1052,
+      "height": 592
+    }
+  ]
+}

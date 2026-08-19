@@ -1,0 +1,142 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-007.webp",
+      "caption": "Figure 1: RecurrentGPT overview. (a) A Gated Recurrent Unit (GRU) reuses the same weight matrices at every sequence position—recurrence over the sequence dimension. (b) A standard transformer stacks L independent layers, each with unique weights, applied once to the full sequence. (c) RECURRENTGPT introduces recurrence over the depth dimension, applying each recurrence to the full sequence",
+      "page": 3,
+      "index": 7,
+      "width": 744,
+      "height": 322
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-016.webp",
+      "caption": "Figure 2: RECURRENTGPT architecture (2+5×8+2 layout). Top: Two prelude blocks (gray) encode a fixed context representation h(pre) that is held constant across all recurrence steps. Five shared blocks (blue) are applied R = 8 times recurrently; h(pre) conditions the projection and gate at each step. Two coda blocks (green) project to logits. Bottom: Zoom-in of a single recurrence step r: the current state h(r−1) is projected together with h(pre) via Wproj, processed by the shared blocks to produce proposal o(r), and blended back via the elementwise gate g(r) ∈ [0, 1]T×d.",
+      "page": 5,
+      "index": 16,
+      "width": 809,
+      "height": 386
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-009.webp",
+      "caption": "Table 2: Downstream task evaluation (large scale). Zero-shot accuracy on standard benchmarks using lm-eval-harness. ↑ higher is better; deltas relative to GPT-2 Large. Orange: best isoFLOPS result; blue: best isoPARAMS result. The isoPARAMS model outperforms the dense baseline on average by +2.10 points; the isoFLOPS model matches GPT-2 Large at only 37% of its parameter count.",
+      "page": 8,
+      "index": 9,
+      "width": 890,
+      "height": 608
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-001.webp",
+      "caption": "Figure 5: Component ablation on RECURRENTGPT-small (20,000 steps). Each bar adds one component to the one on its left. The dashed line is the dense 12-layer baseline at 3.157, trained identically; only the full model falls below it. The 2,000-step counterpart on the medium configuration is in Appendix B.2.",
+      "page": 11,
+      "index": 1,
+      "width": 451,
+      "height": 375
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-017.webp",
+      "caption": "Table 5: Training configurations. p: prelude blocks; b: shared blocks; R: recurrence steps; c: coda blocks; d: embedding dimension; h: attention heads. Batch tokens = batch size × gradient accumulation × sequence length × num GPUs. All runs use AdamW (β1 = 0.9, β2 = 0.95), weight decay 0.1, gradient clip 1.0, bfloat16 mixed precision, cosine LR schedule.",
+      "page": 16,
+      "index": 17,
+      "width": 909,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-011.webp",
+      "caption": "Table 8: Design properties of recurrent-depth methods, with small-scale isoFLOPS results for reference. Training times are wall-clock for the small configuration at 20,000 steps on identical hardware, and are not comparable against the dense column: the dense baseline was trained with torch.compile enabled, whereas every recurrent method including our own ran with compilation disabled, which did not work on our hardware. The dense column is therefore optimistic; the recurrent columns remain comparable to one another.",
+      "page": 17,
+      "index": 11,
+      "width": 794,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-010.webp",
+      "caption": "Figure 8: Per-token gate activation ḡ (r) t across recurrence steps. Each row of cells corresponds to one recurrence step (columns = token positions). Colour encodes ḡ(r)t ∈ [0.70, 1.00]: bright yellowgreen = write-heavy (gate open, block output substantially absorbed); dark purple = copy-heavy (hidden state passed through unchanged). Token labels are shown below each step column. The per-step mean (annotated top-right of each panel) rises from step 2 onward, reflecting the write-tocopy transition identified in Figure 10(b). Structurally informative tokens (content words, operators) consistently receive lower gate values than function words and punctuation across all steps.",
+      "page": 19,
+      "index": 10,
+      "width": 816,
+      "height": 255
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-015.webp",
+      "caption": "Figure 9: Loss convergence across recurrence steps. (a) Validation loss at each recurrence step r for the trained 1+5×6+5 model. The “Gate=1” baseline (loss 5.26, green dashed) equals the prelude-only output, confirming that selective writing is essential: a fully open gate discards every block proposal, leaving the hidden state unchanged across all six steps. The “Gate=0” baseline (loss 12.03) confirms that recurrence is essential, not a skip connection. Extended inference at R ∈ {8, 10, 12} does not improve beyond R = 6 (2.69, 2.72, and 2.74 respectively), indicating representational convergence. (b) KL divergence of each step’s output distribution to the final-step distribution; 95% of the residual uncertainty is resolved within four recurrence steps.",
+      "page": 20,
+      "index": 15,
+      "width": 809,
+      "height": 282
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-005.webp",
+      "caption": "Figure 10: Gate statistics across recurrence steps. (a) Gate mean and standard deviation. (b) Fraction of copy-saturated (g > 0.95) and write-saturated (g < 0.05, scaled ×1000) dimensions per step. Copy-saturation grows steadily while write-saturation stays negligible. (c) Effective gate openness (applied/proposal L2 ratio), declining monotonically—early steps write substantially, late steps refine conservatively.",
+      "page": 21,
+      "index": 5,
+      "width": 807,
+      "height": 229
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-004.webp",
+      "caption": "Figure 11: Update dynamics across recurrence steps. (a) L2 norms of the block’s raw proposal (near-constant, ≈ 94) and the gate-applied update (declining 17.6 → 6.5); the divergence is caused entirely by gate closure. (b) Cosine similarity between successive representations. (c) Local step gain estimate, peaking at step 2 and declining thereafter.",
+      "page": 21,
+      "index": 4,
+      "width": 813,
+      "height": 229
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-006.webp",
+      "caption": "Figure 12: CKA representational geometry. (a) Within-model CKA; the sharp discontinuity between steps 1–2 and steps 3–6 (dashed lines) reveals a two-phase structure. (b) Cross-model CKA against GPT-2 Large; early steps map to shallow baseline layers, all later steps peak at layer ≈ 11.",
+      "page": 22,
+      "index": 6,
+      "width": 812,
+      "height": 293
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-008.webp",
+      "caption": "Figure 13: Token difficulty routing. (a) Total improvement over six steps vs. initial difficulty decile (R2 = 0.998); recurrence implicitly allocates more work to uncertain tokens. (b) Per-step loss curves for selected deciles.",
+      "page": 23,
+      "index": 8,
+      "width": 809,
+      "height": 302
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-014.webp",
+      "caption": "Figure 14: Effective rank and fixed-point convergence. (a) Effective rank grows with depth; the late-delta subspace rank (dashed) is higher than the representation itself. (b) Fixed-point convergence (orange) declines monotonically; ∆h cosine similarity (blue) increases—both consistent with convergent refinement.",
+      "page": 24,
+      "index": 14,
+      "width": 802,
+      "height": 306
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-013.webp",
+      "caption": "Figure 15: Gate attribution across recurrence steps. (a) Fraction of gate logit variance from current state x (blue) vs. frozen anchor h (orange); the crossover from rough parity at step 1 to 74%/26% at step 6 is explained by growing divergence between x(r) and h. (b) Token-level x-dominance and x/h sign-agreement fractions. (c) Gate weight singular value spectra; the 44% gap in leading singular values (9.87 vs 6.85) is the structural origin of the state’s eventual dominance.",
+      "page": 24,
+      "index": 13,
+      "width": 813,
+      "height": 268
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-002.webp",
+      "caption": "Figure 16: Recurrent projection weight analysis. (a) Singular value spectra of Wx and Wh; both are nearly full-rank. (b) Cumulative energy; both halves reach 90% at similar dimensionalities. (c) Frobenius norms of all four weight halves; the state half (Wx) consistently outweighs the anchor half (Wh) in both modules.",
+      "page": 25,
+      "index": 2,
+      "width": 810,
+      "height": 298
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-003.webp",
+      "caption": "Figure 17: Attention entropy across recurrence steps. (a) Full 6× 100 entropy heatmap; white lines separate blocks. ⋆: Block 0 Head 14 (previous-token specialist, entropy 0.30). △: Block 0 Head 4 (broadcast head, entropy 4.87). Head roles are highly stable. (b) Mean entropy (blue) and diagonal mass (orange) per step; non-monotone entropy profile mirrors the two-phase CKA structure. (c) Head type classification across all 100 heads.",
+      "page": 26,
+      "index": 3,
+      "width": 813,
+      "height": 360
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15062v2/fig-012.webp",
+      "caption": "Figure 18: Token frequency class breakdown. (a) Per-step loss by BPE frequency band; rare tokens maintain persistently higher loss throughout. (b) Per-step relative improvement (L(r−1) − L(r))/L(r−1) per frequency class; the first recurrence step alone resolves 47% of byte/punctuation loss vs. 23% for rare tokens—easy tokens converge fastest, hard tokens accumulate improvements gradually. (c) Initial loss vs. total improvement; the two axes are near-orthogonal, consistent with dual completion/narrowing roles.",
+      "page": 27,
+      "index": 12,
+      "width": 810,
+      "height": 279
+    }
+  ]
+}

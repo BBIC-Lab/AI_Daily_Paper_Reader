@@ -1,0 +1,408 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-19T20:00:49.891933+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 67,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 105,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 13,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 8,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 14
+  },
+  "deep_dive": [
+    {
+      "id": "2608.16360v1",
+      "source": "arxiv",
+      "title": "Contrastive Learning with Variational Regularization for Multi-Session EEG-to-Speech Decoding",
+      "abstract": "Reconstructing heard speech from non-invasive electroencephalography (EEG) is challenging due to a low signal-to-noise ratio (SNR) and inter-session variability. While trial averaging improves the SNR, it is difficult to apply to continuous speech. We instead use repeated EEG responses to the same stimulus across different sessions as positive pairs for contrastive learning, and introduce variational regularization that, combined with this contrastive objective, keeps the encoder representation space broad. Experiments on a Japanese EEG dataset show that combining the session-invariant strategy with variational regularization improves the character error rate (CER) while maintaining mel-spectrogram reconstruction fidelity. Session probing confirms that the encoder representations achieve session-invariance.",
+      "authors": [
+        "Tomoaki Mizuno",
+        "Toru Nakashika"
+      ],
+      "primary_category": "eess.AS",
+      "categories": [
+        "eess.AS",
+        "cs.SD",
+        "eess.SP"
+      ],
+      "published": "2026-08-17T10:11:11+00:00",
+      "link": "https://arxiv.org/pdf/2608.16360v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "EEG-to-speech decoding directly reconstructs heard speech from neural signals.",
+      "llm_evidence_cn": "脑电到语音解码直接从头神经信号重建语音。",
+      "llm_evidence": "脑电到语音解码直接从头神经信号重建语音。",
+      "canonical_evidence": "脑电到语音解码直接从头神经信号重建语音。",
+      "llm_tldr_en": "Uses contrastive learning with variational regularization to improve multi-session EEG-to-speech decoding.",
+      "llm_tldr_cn": "利用对比学习和变分正则化改进多会话脑电解码语音。",
+      "llm_tldr": "利用对比学习和变分正则化改进多会话脑电解码语音。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.14922v1",
+      "source": "arxiv",
+      "title": "SpIn-ViT: Designing a Sparsity-Induced Vision Transformer That Is Mechanistically Interpretable",
+      "abstract": "Mechanistic interpretability has recently expanded to Vision Transformers (ViTs), with Sparse Autoencoders (SAEs) increasingly used as post-hoc tools to decompose internal representations into sparse and more interpretable features. However, because post-hoc SAEs are trained on frozen representations after the ViT has already been optimized, their latent features are not directly aligned with the downstream classification objective. We introduce SpIn-ViT, a framework that jointly trains a pretrained ViT and a modified SAE end-to-end, directly aligning sparse patch-level representations with image classification. SpIn-ViT learns semantically coherent neuron activations that localize meaningful image regions while maintaining competitive predictive performance. We evaluate SpIn-ViT across nine image-classification benchmarks using classification accuracy, quantitative interpretability metrics, AI-based and Human evaluations. Compared with the previous state-of-the-art post-hoc SAE method, SpIn-ViT achieves 8.84% higher average classification accuracy, an AI-based interpretability score nearly four times as high, and a human-evaluation score more than twice as high. We further extract interpretable rule-sets using the SAE neurons to create neurosymbolic models which achieve 5.97% higher average classification accuracy while requiring a 58.8\\% smaller rule-set than the neurosymbolic models created from the SOTA post-hoc SAE method.",
+      "authors": [
+        "Philip H. Lee",
+        "Parth Padalkar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-14T22:19:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.14922v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "jointly trains pretrained ViT with SAE to learn sparse interpretable patch representations from raw image data",
+      "llm_evidence_cn": "联合训练预训练ViT和稀疏自编码器，从原始图像数据学习稀疏可解释的块表示",
+      "llm_evidence": "联合训练预训练ViT和稀疏自编码器，从原始图像数据学习稀疏可解释的块表示",
+      "canonical_evidence": "联合训练预训练ViT和稀疏自编码器，从原始图像数据学习稀疏可解释的块表示",
+      "llm_tldr_en": "Proposes SpIn-ViT, a framework that jointly trains a pretrained ViT and a modified SAE to learn sparse, classification-aligned representations for mechanistic interpretability.",
+      "llm_tldr_cn": "提出SpIn-ViT，联合训练预训练ViT和稀疏自编码器，学习与分类对齐的稀疏可解释表示。",
+      "llm_tldr": "提出SpIn-ViT，联合训练预训练ViT和稀疏自编码器，学习与分类对齐的稀疏可解释表示。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15098v1",
+      "source": "arxiv",
+      "title": "DINO4DSTEM: A self-supervised framework for structural discovery in 4D-STEM",
+      "abstract": "Nanodiffraction using 4D-STEM has become a key technique for quantitative nanoscale structural mapping in materials research, yet interpreting its high-dimensional datasets in structurally complex materials remains a major bottleneck. Existing analysis workflows typically rely on structural models, manual annotation, predefined classes, or sample-specific heuristics, limiting their ability to characterize heterogeneous complex materials. Here, we introduce DINO4DSTEM, a self-supervised machine learning framework that automatically discovers structurally meaningful states directly from raw diffraction data. Without structural models, manual labels, a predefined number of classes, or system-specific parameter tuning, the framework learns representations that organize diffraction patterns by their intrinsic structural similarities, transforming large collections of low-dose measurements into quantitative nanoscale structure maps. Across diverse datasets, DINO4DSTEM consistently identifies the dominant structural degrees of freedom, providing segmentation without human supervision. We applied the framework to the crystallization of indomethacin, a beam-sensitive, multidomain pharmaceutical system, revealing that crystallinity emerges from a partially ordered precursor and spans a continuous spectrum of structural order. The discovered nanoscale structural states are mapped to reveal the evolution of order across the specimen quantitatively. By replacing task-specific analysis with general self-supervised representation learning, DINO4DSTEM provides a broadly applicable framework for quantitative nanoscale structural mapping in complex materials, enabling the discovery of emergent structural organization in heterogeneous, beam-sensitive systems.",
+      "authors": [
+        "Daniel Khaykelson",
+        "Lothar Houben",
+        "Boris Rybtchinski"
+      ],
+      "primary_category": "cond-mat.mtrl-sci",
+      "categories": [
+        "cond-mat.mtrl-sci",
+        "physics.app-ph"
+      ],
+      "published": "2026-08-15T07:48:04+00:00",
+      "link": "https://arxiv.org/pdf/2608.15098v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised framework learning structural states directly from raw 4D-STEM data",
+      "llm_evidence_cn": "自监督框架直接从原始4D-STEM数据学习结构状态",
+      "llm_evidence": "自监督框架直接从原始4D-STEM数据学习结构状态",
+      "canonical_evidence": "自监督框架直接从原始4D-STEM数据学习结构状态",
+      "llm_tldr_en": "Introduces a self-supervised framework that discovers structurally meaningful states directly from raw 4D-STEM data without labels.",
+      "llm_tldr_cn": "提出一个自监督框架，无需标签直接从原始4D-STEM数据中发现结构上有意义的态。",
+      "llm_tldr": "提出一个自监督框架，无需标签直接从原始4D-STEM数据中发现结构上有意义的态。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15163v1",
+      "source": "arxiv",
+      "title": "From \"What-If\" to \"What-Is\": Counterfactual Thinking-Inspired Semantic Alignment for Visual Brain Decoding",
+      "abstract": "Visual brain decoding reconstructs visual content perceived by a person from neural measurements such as fMRI, providing a computational approach to studying how visual information is represented in the brain. Recent multimodal representations and diffusion priors have improved reconstruction realism. However, visually plausible reconstructions may contain incorrect objects, attributes, or relations because a strong generative prior can complete content not sufficiently specified by the decoded representation. Conventional reconstruction metrics mainly assess the final image and may therefore obscure such semantic errors. We propose ConceptAlign, a counterfactual semantic alignment framework for visual brain decoding. ConceptAlign pools decoded visual tokens and projects them into a frozen text-embedding space, aligning the representation with the ground-truth caption while separating it from scene-preserving near-miss alternatives. Generated offline by an LLM, these alternatives modify one critical object, attribute, or relation while retaining the scene. A margin-based objective learns fine-grained semantic boundaries between the observed stimulus and plausible but incorrect interpretations without requiring LLM calls during inference. We introduce a systematic three-level semantic evaluation framework covering foundational discriminability, counterfactual description discrimination, and representational geometry. Experiments on the Natural Scenes Dataset show that ConceptAlign improves reconstruction measures, counterfactual semantic discrimination, and representational alignment over the MindEye2 backbone. Matched negative-source ablations, independent LLM and human-written alternatives, and human evaluation support the effectiveness and robustness of the supervision, with favorable patterns in fine-grained conflicts, limited-data decoding, and cross-subject structure.",
+      "authors": [
+        "Kaitao Yan",
+        "Chi Liu",
+        "Congcong Zhu",
+        "Huajie Chen",
+        "Gengshen Wu",
+        "Minghao Wang",
+        "Xiaotong Han",
+        "Tianqing Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.HC"
+      ],
+      "published": "2026-08-15T10:40:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.15163v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "fMRI decoding to visual semantics aligns with decoding neural signals into outputs",
+      "llm_evidence_cn": "fMRI 解码到视觉语义，符合将神经信号解码为输出",
+      "llm_evidence": "fMRI 解码到视觉语义，符合将神经信号解码为输出",
+      "canonical_evidence": "fMRI 解码到视觉语义，符合将神经信号解码为输出",
+      "llm_tldr_en": "ConceptAlign improves visual brain decoding via counterfactual semantic alignment.",
+      "llm_tldr_cn": "ConceptAlign 通过反事实语义对齐改进视觉脑解码。",
+      "llm_tldr": "ConceptAlign 通过反事实语义对齐改进视觉脑解码。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "decoding neural signals into language or actions",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15492v1",
+      "source": "arxiv",
+      "title": "QSMP: finding representative time series subsequences through Quick Shift+Matrix Profile",
+      "abstract": "Finding representative waveforms in long time series has scientific and practical value in many domains, as it enables summarization and visualization of large time series datasets, and downstream tasks like classification and forecasting. We present here QSMP, a method to find representative waveforms in long time series through a density-guided clustering of time series subsequences. Our method makes a novel connection between Quick Shift, a mode-seeking algorithm, and the Matrix Profile, a time series similarity-search data structure, to adapt Quick Shift to the clustering of subsequences in long time series, with a space complexity that is superior to the state-of-the-art method. Our experiments on synthetic and real datasets show that QSMP can be a valuable tool to summarize and visualize long time series by finding representative waveforms.",
+      "authors": [
+        "Carlos H. Mendoza-Cardenas",
+        "Rogers F. Silva",
+        "Austin J. Brockmeier"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-16T02:45:25+00:00",
+      "link": "https://arxiv.org/pdf/2608.15492v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "density-guided clustering of time series subsequences to find representative waveforms",
+      "llm_evidence_cn": "基于密度的时间序列子序列聚类以发现代表性波形",
+      "llm_evidence": "基于密度的时间序列子序列聚类以发现代表性波形",
+      "canonical_evidence": "基于密度的时间序列子序列聚类以发现代表性波形",
+      "llm_tldr_en": "Presents QSMP, a method combining Quick Shift and Matrix Profile to find representative time series subsequences.",
+      "llm_tldr_cn": "提出QSMP方法，结合Quick Shift和Matrix Profile发现时间序列代表性子序列。",
+      "llm_tldr": "提出QSMP方法，结合Quick Shift和Matrix Profile发现时间序列代表性子序列。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.14847v1",
+      "source": "arxiv",
+      "title": "M-LINKX: Multiview Graph Learning for Brain Cognitive Disease Detection",
+      "abstract": "Electroencephalogram (EEG) is a non-invasive and relatively low-cost procedure that measures brain electricity for the detection of cognitive diseases. EEG-based classification of dementia-related conditions, including Alzheimer's disease (AD), mild cognitive impairment (MCI), and frontotemporal dementia (FTD), remains challenging because EEG signals are noisy, non-stationary, and vary across subjects. Segment-based learning provides a practical way to model long EEG recordings by converting them into fixed-length inputs. For each segment, discriminative information may be explored by using signals within each channel (i.e. electrode), as well as interactions between EEG channels. In this paper, we propose M-LINKX, a multi-view graph learning framework for EEG-based dementia classification. For each segment, we extract channel-level node features and construct multiple functional-connectivity (FC) graph views, where each view is defined by a specific combination of connectivity metric, frequency band, and topology filter, respectively. Instead of relying on message passing over the constructed graphs, M-LINKX follows a simple design in modeling node features and adjacency-based connectivity representations. The graph-view representations are fused using global trainable view weights, and subject-level prediction is obtained by averaging segment-level probabilities. Experiments on two three-class EEG datasets with different diagnostic groups, CAUEEG (HC/MCI/Dementia) and AHEAP (HC/AD/FTD), show that M-LINKX achieves the best subject-level performance under the main experimental settings. Our study suggests that multi-view functional connectivity can improve EEG-based dementia classification when integrated with an appropriate graph-learning architecture. Code and data are available at https://github.com/anphantt/MLINKX.",
+      "authors": [
+        "An Phan",
+        "Yufei Jin",
+        "Xingquan Zhu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-14T19:39:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.14847v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sequence modeling on EEG segments for brain disease detection",
+      "llm_evidence_cn": "脑疾病检测中EEG序列建模",
+      "llm_evidence": "脑疾病检测中EEG序列建模",
+      "canonical_evidence": "脑疾病检测中EEG序列建模",
+      "llm_tldr_en": "Proposes M-LINKX, a multi-view graph learning framework that models EEG channel interactions for cognitive disease detection.",
+      "llm_tldr_cn": "提出M-LINKX多视图图学习框架，建模EEG通道交互进行认知疾病检测。",
+      "llm_tldr": "提出M-LINKX多视图图学习框架，建模EEG通道交互进行认知疾病检测。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.15060v1",
+      "source": "arxiv",
+      "title": "EgoTac: In-the-wild Tactile Prediction from Egocentric Vision",
+      "abstract": "Touch is fundamental to dexterous manipulation, yet most egocentric human data increasingly used for robot learning lacks tactile information. Directly collecting large-scale tactile data is challenging due to sensor limitations, while human video data is abundant, contact-rich, and easily scalable. This motivates a natural question: can tactile signals be inferred purely from vision? To address this, we introduce EgoTac, a generalizable model that predicts rich tactile information directly from egocentric human videos. EgoTac is trained on a unified corpus of over 5.7M image-tactile pairs, covering both continuous force measurements and binary contacts. By learning from this diverse dataset, EgoTac captures nuanced touch dynamics across varied interactions. Experiments demonstrate strong performance: in-domain prediction achieves an average force error below 0.06N. On out-of-domain contact prediction benchmarks, EgoTac consistently outperforms the state-of-the-art contact estimator. It also captures the rise and fall patterns of real tactile data and enables zero-shot predictions on unconstrained real-world videos. Scaling analyses further reveal that both data diversity and volume improve performance steadily. Overall, EgoTac provides a scalable pathway to extract tactile priors from egocentric human videos, enabling broadly applicable tactile-aware robot learning.",
+      "authors": [
+        "Wenkang Zhang",
+        "Chengbo Yuan",
+        "Zicheng Zhang",
+        "Zhengxue Cheng",
+        "Yang Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-08-15T06:18:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.15060v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "sense-to-sense prediction from raw video to continuous tactile signals, transferable to neural decoding",
+      "llm_evidence_cn": "从原始视频预测连续触觉信号，可迁移到神经解码",
+      "llm_evidence": "从原始视频预测连续触觉信号，可迁移到神经解码",
+      "canonical_evidence": "从原始视频预测连续触觉信号，可迁移到神经解码",
+      "llm_tldr_en": "EgoTac predicts tactile signals from egocentric video using a large image-tactile corpus, enabling vision-based touch sensing.",
+      "llm_tldr_cn": "EgoTac利用大规模图像-触觉对从第一视角视频预测触觉信号，实现基于视觉的触觉感知。",
+      "llm_tldr": "EgoTac利用大规模图像-触觉对从第一视角视频预测触觉信号，实现基于视觉的触觉感知。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.15054v1",
+      "source": "arxiv",
+      "title": "Frequency and Edge-Guided Segment Anything Model for Remote Sensing Image Semantic Segmentation",
+      "abstract": "Remote sensing image semantic segmentation (RSISS) has attracted significant attention due to the growing demand for fine-grained land cover information. The Segment Anything Model (SAM), proposed as a foundation vision model, offers strong segmentation performance and generalization capabilities for RSISS tasks. However, existing SAM-based approaches face two limitations: (1) Insufficient adaptation of SAM's features to the diverse characteristics of land cover types. (2) Semantic ambiguity at object boundaries, which hinders accurate delineation. To address these limitations, we propose Frequency and Edge-guided SAM (FE-SAM), a scalable and efficient framework for RSISS. Specifically, we introduce a Frequency-Modulated Adapter (FMA) that adaptively decomposes and modulates frequency-domain features based on the input data. It selectively enhances informative high- and low-frequency components corresponding to different land cover types. Furthermore, to improve SAM's ability to capture fine-grained details, we design EGRefiner, which integrates multi-scale edge-enhanced information extracted from the input image. Extensive experiments on three benchmark datasets demonstrate that FE-SAM outperforms state-of-the-art methods. The source codes are available at: https://github.com/oucailab/FE-SAM.",
+      "authors": [
+        "Feng Gao",
+        "Zizhe Pan",
+        "Haoting Wang",
+        "Ruzhuang Hua",
+        "Jingchao Cao",
+        "Junyu Dong",
+        "Qian Du"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-15T05:55:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.15054v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Adapts the pretrained Segment Anything Model to remote sensing segmentation with frequency and edge guidance, transferring foundation model knowledge to a new domain.",
+      "llm_evidence_cn": "利用频率与边缘引导对预训练SAM进行适配以用于遥感分割，将基础模型知识迁移到新领域。",
+      "llm_evidence": "利用频率与边缘引导对预训练SAM进行适配以用于遥感分割，将基础模型知识迁移到新领域。",
+      "canonical_evidence": "利用频率与边缘引导对预训练SAM进行适配以用于遥感分割，将基础模型知识迁移到新领域。",
+      "llm_tldr_en": "FE-SAM adapts SAM for remote sensing semantic segmentation using frequency-modulated adapters and edge guidance.",
+      "llm_tldr_cn": "FE-SAM通过频率调制适配器和边缘引导，使SAM适用于遥感语义分割。",
+      "llm_tldr": "FE-SAM通过频率调制适配器和边缘引导，使SAM适用于遥感语义分割。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.15062v2",
+      "source": "arxiv",
+      "title": "RecurrentGPT: Expressive Depth through Recurrent Modulation in Transformers",
+      "abstract": "Scaling transformer language models creates an inherent tension between expressivity and memory efficiency. While unique weights across layers preserve functional specialization---from input-grounding to abstract refinement---they incur a substantial memory footprint. Conversely, standard depth-sharing enforces uniform transformations that collapse representational diversity and degrade modeling quality. We introduce RecurrentGPT, a recurrent depth transformer where fixed-depth prelude and coda blocks bracket a single shared core iterated R times. Inspired by gated recurrent neural networks, we employ a lightweight projection and an elementwise update gate---conditioned on the hidden state, the fixed prelude output, and noise resampled at every step---to modulate the recurrent update. This allows the model to specialize the input to the same few layers across recurrences, rather than requiring many unique layers to achieve functional diversity. Under an isoFLOPS constraint, a 3-layer RecurrentGPT matches the accuracy of a 12-layer GPT-2 Small baseline with similar training and inference FLOPs, and leads MoR and heavy-tail depth sampling in all nine scale-by-budget cells; at medium and large scale it approaches dense quality at the standard token budget and overtakes it at medium scale once that budget is doubled. Under an isoPARAMS constraint, deeper recurrence achieves a 2.76 validation loss versus 2.84 for a non-recurrent counterpart at matched parameter and data budget. Our results demonstrate that adaptive depth reuse is a principled strategy for trading parameters for quality: at large scale, 63% fewer parameters and 59% less peak decoding memory for a 10% increase in compiled generation latency.",
+      "authors": [
+        "Amr Hegazy",
+        "Amr Alanwar",
+        "Mostafa Elhoushi"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-08-15T06:22:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.15062v2",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "recurrent transformer with a shared core iterated over time for efficient sequence modeling",
+      "llm_evidence_cn": "循环Transformer通过共享核心随时间迭代，实现高效序列建模",
+      "llm_evidence": "循环Transformer通过共享核心随时间迭代，实现高效序列建模",
+      "canonical_evidence": "循环Transformer通过共享核心随时间迭代，实现高效序列建模",
+      "llm_tldr_en": "RecurrentGPT introduces a recurrent depth transformer that improves sequence modeling capacity and memory efficiency.",
+      "llm_tldr_cn": "RecurrentGPT提出循环深度Transformer，在提升序列建模能力的同时保持内存效率。",
+      "llm_tldr": "RecurrentGPT提出循环深度Transformer，在提升序列建模能力的同时保持内存效率。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.15166v2",
+      "source": "arxiv",
+      "title": "Stress-Testing DANTE under Detector Domain Shift: a Representation-Coherent Reanalysis of LIGO O4a",
+      "abstract": "This sixth version of the Domain-Adaptive Network for Transient Evaluation (DANTE) preprint stress-tests an unsupervised transient-noise pipeline under representation mismatch and observing-run adaptation. We reanalyse 10,429 detector-time strain candidates from 42 LIGO O4a sessions using frozen DINOv2 patch embeddings and a Top-k multiple-instance score. Candidate and native-background Q-transforms share Q in [4,64], and detector-specific thresholds are calibrated from 5,000 run-native windows by temporal-block bootstrap. The coherent analysis yields 6,365 ROBUST, 1,275 AMBIGUOUS, and 2,789 BACKGROUND statistical dispositions; 4,676 of 10,372 paired historical dispositions differ from the cross-representation v5 analysis. Direct controls resolve an O3b-O4a score shift and reduction after native adaptation for H1, but not L1, while known-glitch separation is detector- and morphology-dependent. Replicated studies quantify population-dependent sensitivity to background draw, clustering seed, dictionary size, and whitening, demonstrate native-index absorption, and identify conditional low-Q blindness. A conservative H1-L1 max-shift screen yields 13/8,806 values above threshold, but its on-source values and pooled per-event null maxima are not exchangeable. The primary two-null PEM endpoint shows no resolved ROBUST-BACKGROUND enrichment (p=1.000), and two catalogue overlaps are consistent with a circular-shift coverage proxy (p=0.651). Simulation-only compact-binary controls show detector- and distance-dependent disagreement between novelty, native disposition, and physical coincidence. We withdraw the v5 discovery, rate-limit, catalogue-recall, and survey-wide stability interpretations. The supported result is a measured set of failure modes and validity conditions for unsupervised detector characterization, not a new glitch class or an astrophysical search.",
+      "authors": [
+        "Luca Cirfeta"
+      ],
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "gr-qc"
+      ],
+      "published": "2026-08-15T11:04:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.15166v2",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Domain-adaptive transient detection using frozen DINOv2 embeddings and detector-specific thresholds",
+      "llm_evidence_cn": "利用冻结DINOv2嵌入和探测器特定阈值进行域自适应瞬态检测",
+      "llm_evidence": "利用冻结DINOv2嵌入和探测器特定阈值进行域自适应瞬态检测",
+      "canonical_evidence": "利用冻结DINOv2嵌入和探测器特定阈值进行域自适应瞬态检测",
+      "llm_tldr_en": "DANTE stress-tests domain adaptation for LIGO transient detection, using frozen embeddings and adaptive thresholds.",
+      "llm_tldr_cn": "DANTE通过冻结嵌入和自适应阈值，对引力波瞬态检测进行域自适应压力测试。",
+      "llm_tldr": "DANTE通过冻结嵌入和自适应阈值，对引力波瞬态检测进行域自适应压力测试。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
