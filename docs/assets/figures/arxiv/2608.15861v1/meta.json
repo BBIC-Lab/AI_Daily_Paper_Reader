@@ -1,0 +1,134 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-009.webp",
+      "caption": "Table 1: Public wrist IMU datasets consolidated in TransfHAR and their role in pretraining and probing. All sources are converted to a wrist-only 50Hz continuous stream in a shared forward-left-up (FLU) coordinate convention.",
+      "page": 3,
+      "index": 9,
+      "width": 1056,
+      "height": 283
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-010.webp",
+      "caption": "Table 2: Motor complexity taxonomy by signal structure.",
+      "page": 3,
+      "index": 10,
+      "width": 506,
+      "height": 314
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-012.webp",
+      "caption": "Figure 2: Representative 5-second wrist IMU windows for each motor complexity level from public datasets.",
+      "page": 4,
+      "index": 12,
+      "width": 490,
+      "height": 413
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-001.webp",
+      "caption": "Figure 5: Stage B, on-demand task learning on the watch. The encoder pretrained in Figure 4 is frozen and paired with the smartwatch (left). Users define their own fine-grained L3/L4 activities, spanning manipulations such as stirring and procedural sequences such as coffee-making steps, and record a small number of in-situ demonstrations for each (center). The watch then streams IMU data, encodes each window with the frozen encoder, and classifies it with the on-device linear probe to return real-time confidence over the personalized vocabulary, while an add-class control expands the label set and retrains the probe without modifying the encoder (right).",
+      "page": 6,
+      "index": 1,
+      "width": 1014,
+      "height": 190
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-005.webp",
+      "caption": "Figure 6: Balanced accuracy as a function of shots per class (𝐾 = 1 shot = 2.56s) on three held-out probe targets, with the full-split setting as the bar chart. Supervised baselines are shown as gray bars for each dataset.",
+      "page": 7,
+      "index": 5,
+      "width": 1022,
+      "height": 330
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-011.webp",
+      "caption": "Figure 7: Full-split balanced accuracy across all eight PrISMTracker procedures for 3-axis and 6-axis encoders. Number of procedure steps is shown in parentheses.",
+      "page": 8,
+      "index": 11,
+      "width": 474,
+      "height": 371
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-013.webp",
+      "caption": "Figure 8: Personalization performance across participants as a function of shots per class (𝐾 = 1 shot = 2.56s), with the full-session setting included as the bar chart. Points show per-participant balanced accuracy and lines show participant means for the 3-axis and 6-axis encoders.",
+      "page": 9,
+      "index": 13,
+      "width": 474,
+      "height": 285
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-014.webp",
+      "caption": "Figure 9: Vocabulary scaling in the user study with all participants’ activities pooled into a single non-personalized probe, and balanced accuracy measured as the number of classes the probe must distinguish from 10 to 70. Accuracy declines gradually, with most of the drop occurring below 30 classes.",
+      "page": 9,
+      "index": 14,
+      "width": 474,
+      "height": 287
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-007.webp",
+      "caption": "Figure 10: t-SNE of user-study embeddings from the frozen 6-axis encoder, showing the (a) ten most separable and (b) ten most entangled activities against all other windows in gray. Both panels share one projection. Percentages are neighborhood purity, the fraction of each window’s 15 nearest neighbors in the 384-dimensional embedding sharing its label.",
+      "page": 10,
+      "index": 7,
+      "width": 1027,
+      "height": 256
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-006.webp",
+      "caption": "Figure 11: P7 failure analysis in the 6-axis full-session setting. Top left shows the confusion subset for low-performing activities. Top right shows PCA projection of P7 embeddings, with the highlighted classes shown relative to the participant’s remaining activities in gray. Bottom left shows normalized acceleration-magnitude spectra. Bottom right shows mean similarity between test samples and train centroids.",
+      "page": 10,
+      "index": 6,
+      "width": 488,
+      "height": 424
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-002.webp",
+      "caption": "Figure 12: Example on-demand activity scenarios captured with the watch-based system: espresso-making steps, skin care, surface cleaning, and cooking.",
+      "page": 11,
+      "index": 2,
+      "width": 477,
+      "height": 360
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-008.webp",
+      "caption": "Figure 13: Per-class accuracy for each participant-activity pair, 6-axis full-session setting, with classes below 70% highlighted.",
+      "page": 14,
+      "index": 8,
+      "width": 388,
+      "height": 320
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-004.webp",
+      "caption": "Figure 14: Row-normalized confusion matrices for the frozen 6-axis encoder with a linear probe, full split, on the three held-out benchmarks. Errors concentrate among kinematically similar classes, with PrISM latte showing the broadest off-diagonal mass.",
+      "page": 15,
+      "index": 4,
+      "width": 1043,
+      "height": 342
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-003.webp",
+      "caption": "Figure 15: Per-participant confusion matrices for the 6-axis encoder in the full-session setting, colored by which wrist the watch was worn on.",
+      "page": 15,
+      "index": 3,
+      "width": 1044,
+      "height": 420
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-015.webp",
+      "caption": "Table 5: Activity bank shown to participants to illustrate the target granularity of on-demand wrist activity recognition. Participants could select from this list or define their own activities.",
+      "page": 16,
+      "index": 15,
+      "width": 1056,
+      "height": 386
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15861v1/fig-016.webp",
+      "caption": "Table 6: Participant-specific activity sets used in the on-demand personalization study. To preserve readability in the main figures, activities are shown as Act 1–Act 7 in participant order; this table provides the corresponding semantic labels.",
+      "page": 16,
+      "index": 16,
+      "width": 1056,
+      "height": 335
+    }
+  ]
+}

@@ -1,0 +1,5453 @@
+Title: Inferential Evaluation of Surrogate-Derived Models under Covariate Shift
+
+URL Source: https://arxiv.org/pdf/2608.15783v1
+
+Published Time: Tue, 18 Aug 2026 01:34:31 GMT
+
+Number of Pages: 41
+
+Markdown Content:
+# Inferential Evaluation of Surrogate-Derived Models under Covariate Shift 
+
+## Longtian Shi 1, Molei Liu 2, 3 ∗, Doudou Zhou 1∗
+
+> 1
+
+Department of Statistics and Data Science, National University of Singapore 
+
+> 2
+
+Department of Biostatistics, Peking University Health Science Center, Peking University, Beijing, China 
+
+> 3
+
+Beijing International Center for Mathematical Research, Peking University, Beijing, China longtian.shi_ilovestat@u.nus.edu, moleiliu@bjmu.edu.cn, ddzhou@nus.edu.sg 
+
+Abstract 
+
+In transfer-learning settings, a model derived from abundant surrogate labels may be deployed in a target population where gold-standard outcomes are unobserved. Evaluating its tar-get performance is essential for determining whether deci-sions based on the model remain reliable, yet it is difficult when gold labels are scarce, and covariate distributions differ across data sources. We study a three-sample setting with a small gold-labeled source, a larger surrogate-labeled source, and an unlabeled target. Under conditional transportability, we evaluate the surrogate-derived model against the latent gold-standard outcome in the target population. We propose cross-fitted estimators that transport information from the two labeled sources through source-specific density ratios. We also combine outcome-regression augmentation with a ker-nel correction for estimating the model near a threshold, ac-counting for uncertainty from all three samples. We establish asymptotically linear inference for TPR and FPR, consistency and pointwise inference for the ROC curve, and asymptot-ically normal inference for AUC. Simulations assess bias, coverage, and sensitivity to bandwidth and relative sample sizes. A retrospective temporal validation on Chatbot Arena and a semi-synthetic ACS-Income study provide validation in real-world AI applications. 
+
+## 1 Introduction 
+
+Many prediction systems are developed with far more im-perfect labels than gold-standard outcomes. Obtaining gold-standard outcomes can require expert adjudication, costly measurements, or long-term follow-up, so such outcomes are often available only in small, selectively assembled samples. A surrogate label, however, may be available at scale from a proxy measurement, a rule-based procedure, weak supervi-sion, or an automated annotator. This larger sample identifies a population prediction score for the surrogate label. Sys-tematic discrepancies between the two labels can carry over to this score and affect its operating characteristics for the gold-standard outcome. We therefore study these operating characteristics in a target population whose covariate distri-bution may differ from those of both labeled samples. This data structure occurs across a broad range of semi-supervised and surrogate-assisted learning problems (Gronsbell and Cai 2018; Hou, Guo, and Cai 2023; Xia and Wainwright 2024). Specifically, we evaluate the population surrogate-derived model in the target population with respect to the gold-
+
+> ∗
+
+Corresponding author. 
+
+DHL = {(XHL  
+
+> i
+
+, Y HL  
+
+> i
+
+)}nHL 
+
+> i=1
+
+Gold-labeled source :small, high-fidelity sample 
+
+DT = {XT 
+
+> ℓ
+
+}nT
+
+> ℓ=1
+
+Unlabeled target :target population 
+
+DAL = {(XAL  
+
+> j
+
+, S AL  
+
+> j
+
+)}nAL 
+
+> j=1
+
+Surrogate-labeled source :large, imperfect-label sample Target-population performance of the population surrogate-derived model for the gold outcome 
+
+Figure 1: Three-population setting. Gold and surrogate la-bels are observed in separate sources; only covariates are observed in the target population. Each source may have its own covariate shift relative to the target (dashed arrows). standard outcome Y , using the true-positive rate (TPR), false-positive rate (FPR), receiver operating characteristic (ROC) curve, and area under the ROC curve (AUC). The way these labels are collected can also induce covari-ate shift. A gold-labeled sample may come from a special-ized study, a different institution or platform, or an earlier period, whereas surrogate labels may be available in a larger operational database. Differences in sampling design, popu-lation composition, and data-collection processes can there-fore lead to different covariate distributions across the two labeled sources and the target, in which performance is to be evaluated. These differences matter even if the conditional gold-outcome mechanism is stable between the gold-labeled source and the target: TPR, FPR, ROC, and AUC average over the target covariate distribution, so source-population performance need not equal target-population performance. Moreover, because the two labeled samples are assembled through different processes, their shifts relative to the target need not be the same. Each source consequently requires its own transport correction (Shimodaira 2000; Sugiyama and Kawanabe 2012; Zhou et al. 2025). These features yield three distinct populations, two la-beled sources and an unlabeled target, summarized in Fig-arXiv:2608.15783v1 [stat.ML] 16 Aug 2026 ure 1. We index their observations separately as DHL =
+
+{(XHL  
+
+> i
+
+, Y HL  
+
+> i
+
+)}nHL  
+
+> i=1
+
+, DAL = {(XAL  
+
+> j
+
+, S AL  
+
+> j
+
+)}nAL  
+
+> j=1
+
+, and DT =
+
+{XT 
+
+> ℓ
+
+}nT
+
+> ℓ=1
+
+. The indices i, j, and ℓ are local to their respec-tive samples, and population superscripts distinguish obser-vations in empirical expressions. Three samples contain no shared observational units and are mutually independent; ob-servations are i.i.d. within each sample. The labels Y and S
+
+are binary. For g ∈ { HL , AL , T}, let Pg and Eg denote prob-ability and expectation under population g. In population-level expressions, the subscript on Pg or Eg identifies the pop-ulation law, so we write the generic variables as X, Y , and 
+
+S without population superscripts. Superscripts are retained for sample observations to distinguish the three datasets. We write I{A} for the indicator of event A. Under PT, Y denotes the latent gold-standard outcome; only X is observed in the target sample. Write OHL = ( X, Y ), OAL = ( X, S ), and 
+
+OT = X for generic observed records from three sources. Let Ogr denote the corresponding rth sample record. For any integrable source-specific function f , use the operator 
+
+Pg f = Eg {f (Og )} and Pg,n f = n−1
+
+> g
+
+Png 
+
+> r=1
+
+f (Ogr ) for its population and empirical averages, respectively. We assume conditional outcome transportability, 
+
+m⋆Y (x) := EHL (Y | X = x) = ET(Y | X = x).
+
+The auxiliary-source law defines the population surrogate-derived model m⋆S (x) := EAL (S | X = x). For a fixed threshold c in the interior of m⋆S ’s range, the target TPR is 
+
+TPR T(c) = PT{m⋆S (X) ≥ c | Y = 1 }
+
+= ET [m⋆Y (X)I{m⋆S (X) ≥ c}]
+
+ET [m⋆Y (X)] . (1) The FPR, ROC curve, and AUC are defined with respect to the same target law. The gold-labeled source identifies 
+
+m⋆Y , the surrogate-labeled source identifies m⋆S , and the tar-get sample supplies the covariate law governing the expecta-tions in (1). The identifying formula for TPR also shows why direct plug-in inference can be unreliable with flexible nui-sance estimators. Both m⋆Y and m⋆S must be estimated from labeled data, and errors in either propagate into the plug-in performance metric. Their convergence rates may be ade-quate for prediction but too slow for the resulting plug-in bias to be negligible on the scale required for inference. Estimat-ing m⋆S (x) is especially delicate because it enters the target functional through I{m⋆S (X) ≥ c}: a small error can move an observation across c, and its leading contribution is con-centrated where m⋆S (X) is near c. Orthogonal corrections for smooth functionals do not capture this contribution. Our three-sample setting is related to several lines of work. Semi-supervised methods combine a small gold-labeled sample with unlabeled covariates to estimate predic-tion performance more efficiently, including under nonuni-form label sampling and for ROC analysis (Gronsbell and Cai 2018; Gronsbell et al. 2022; Gao et al. 2024). Proxy-and surrogate-assisted methods instead use inexpensive mea-surements or machine predictions for model training or sta-tistical inference (Hou, Guo, and Cai 2023; Xia and Wain-wright 2024; Angelopoulos et al. 2023). They do not address target-population performance when the gold- and surrogate-labeled samples undergo distinct shifts relative to the target. 
+
+Technical challenge. The inferential difficulty lies in the interaction between multi-source transport and a learned de-cision boundary: the gold-outcome regression and surrogate score are identified from differently shifted sources, while es-timation error in the latter propagates through a hard thresh-old into TPR, FPR, and ROC. A separate literature develops doubly robust or automatic debiasing methods for statistical functionals under covariate shift (Reddi, Poczos, and Smola 2015; Chernozhukov et al. 2023; Qiu, Tchetgen Tchetgen, and Dobriban 2024). Work specific to model evaluation transports prediction error, classification accuracy, or AUC from a labeled source to a target population (Steingrims-son et al. 2023; Li et al. 2023; Zhou et al. 2025; Liu, Mao, and Wang 2025). These methods treat the prediction rule as fixed, or as learned using gold outcomes, and involve a single labeled-source-to-target shift; here, the population surrogate-derived model is identified from a second shifted source. Ying et al. (2025) incorporates automated computational phenotypes under covariate shift, with those phenotypes ob-served in the unlabeled population rather than in a separate source. Park (2024) handles estimated nuisance functions inside indicators by smoothing the indicator, whereas our es-timator retains the hard-threshold estimand and localizes the correction for estimating m⋆S near the threshold. Concurrent work considers target-risk evaluation under covariate shift and selective labels and multi-source prediction-powered inference under heterogeneous distributions (Ulichney and Coston 2026; Li, Jiang, and Zhang 2026); neither targets the operating characteristics of a population surrogate-derived model identified from a separate surrogate-label population. The present problem, therefore, requires transporting gold-outcome residuals from the gold-labeled source and residu-als associated with estimating m⋆S from the auxiliary source, with the latter weighted near the evaluation threshold. 
+
+Technical and practical novelty. Our central contribution is a source-aware debiasing principle that corrects each first-order nuisance effect using the population in which it is identified, enabling valid target-population inference without gold labels in the target. We develop three-sample estima-tors with two source-specific corrections. First, transported outcome residuals from the gold-labeled source correct the first-order error in target-sample imputation based on ˆmY .Second, since ˆmS enters a hard threshold, its estimation er-ror matters primarily for observations near that threshold. We therefore use a kernel to localize surrogate residuals near the threshold and transport this correction from the auxiliary source to the target population. Together with cross-fitting, the two corrections remove the leading nuisance-estimation effects and yield an asymptotically linear expansion with separate contributions from the gold-labeled, auxiliary, and target samples. We establish pointwise inference for TPR and FPR at fixed thresholds and for ROC values at fixed false-positive rates, as well as consistency of the projected ROC curve and asymptotically normal inference for AUC. Simulations verify theoretical coverage and characterize sen-sitivity to bandwidth and sample sizes. The two applications evaluate the method under a natural temporal shift in Chat-bot Arena and a semi-synthetic ACS-Income label-masking design, with Target outcomes withheld during estimation. 2 Method 
+
+Suppress the target subscript and write τ1(c) = TPR( c) and 
+
+τ0(c) = FPR( c). Let θ1(c) and p1 ∈ (0 , 1) denote the nu-merator and denominator in (1), so that τ1(c) = θ1(c)/p 1.For g ∈ {HL , AL , T}, let pg denote the density of X
+
+under population g with respect to a common dominating measure. Under the source-support and bounded-density-ratio conditions in part (a) of Assumption A.1, define 
+
+wHL (x) = pT(x)/p HL (x) and wAL (x) = pT(x)/p AL (x).For a fixed threshold c, write Ic(x) = I{m⋆S (x) ≥ c}.
+
+Population Identities. Motivated by (1), a direct plug-in estimator substitutes fitted estimators ˆmY and ˆmS for 
+
+m⋆Y and m⋆S , respectively, replacing target expectations with empirical averages over covariates. Below, arguments X are omitted. For generic approximations m and w to m⋆Y and 
+
+wHL , and a given function q, define 
+
+Ψ( m, w ; q) = ET(mq ) + EHL {w(Y − m)q},
+
+Ψ( m, w ; q) − ET(m⋆Y q) = EHL {(wHL − w)( m − m⋆Y )q}.
+
+The first term averages the imputed quantity mq over the tar-get covariates, while the second uses transported gold-source residuals. Their sum differs from ET(m⋆Y q) only by the product of the outcome-regression and density-ratio errors. 
+
+q ≡ 1 gives the corresponding identity for p1 = ET(m⋆Y ).For the numerator, condition on the data used to fit ˆmS and define ˆIc(x) = I{ ˆmS (x) ≥ c}. With δS = ˆ mS − m⋆S and 
+
+q = ˆIc, the target functional in the display is ET(m⋆Y ˆIc),whose difference from θ1(c) is BS (c) = ET{m⋆Y ( ˆIc − Ic)}.We now construct a correction for BS (c). The deriva-tive of the map t 7 → I{t ≥ c}, in the distributional sense, is the Dirac measure at c. An observation can contribute to BS (c) only if |m⋆S − c| ≤ | δS |; under uniform consis-tency, such observations lie in a shrinking neighborhood of the threshold. Replacing the point mass by Kh(c − t),where Kh(v) = h−1K(v/h ), suggests estimating BS (c)
+
+with ET[m⋆Y (X)Kh{c − ˆmS (X)}δS (X)] . Appendix B.1 justifies this approximation. Conditional on the data used to fit ˆmS , EAL {S − ˆmS (X) | X} = −δS (X); hence, 
+
+EAL [wAL (X)m⋆Y (X)Kh{c − ˆmS (X)}{ S − ˆmS (X)}]= −ET[m⋆Y (X)Kh{c − ˆmS (X)}δS (X)] .
+
+The auxiliary term cancels, to first order, the error caused by replacing m⋆S with ˆmS in the threshold indicator. 
+
+Cross-fitted Implementation. The preceding population identities treat the fitted nuisance functions as fixed. Cross-fitting recreates this separation in the sample by evaluating each observation with nuisance functions trained without that observation. Independently split DHL , DAL , and DT into V
+
+folds {I k}Vk=1 , {J k}Vk=1 , and {L k}Vk=1 . For each nuisance estimator, the superscript (−k) means fold k is removed from every sample entering that particular fit. Empirical averages over the three validation folds are denoted by PHL ,Ik , PAL ,Jk ,and PT,Lk , respectively. Fit ˆm(−k) 
+
+> Y
+
+for m⋆Y on DHL \ I k
+
+and ˆm(−k) 
+
+> S
+
+for m⋆S on DAL \ J k. Fit ˆw(−k)HL for wHL by distinguishing DHL \I k from DT \L k, and fit ˆw(−k)AL for wAL 
+
+analogously using DAL \ J k and DT \ L k. Appendix B.2 gives the classifier-to-density-ratio conversion. Therefore, the cross-fitted sample analogue of Ψ( m, w ; 1) 
+
+is 
+
+bp1 = 1
+
+nT
+
+> V
+
+X
+
+> k=1
+
+X
+
+> ℓ∈L k
+
+ˆm(−k) 
+
+> Y
+
+(XT 
+
+> ℓ
+
+)+ 1
+
+nHL 
+
+> V
+
+X
+
+> k=1
+
+X
+
+> i∈I k
+
+ˆw(−k)HL (XHL  
+
+> i
+
+){Y HL  
+
+> i
+
+− ˆm(−k) 
+
+> Y
+
+(XHL  
+
+> i
+
+)}.
+
+The target plug-in term, gold-source correction, and auxil-iary correction for the numerator are 
+
+bθT(c) = 1
+
+nT
+
+> V
+
+X
+
+> k=1
+
+X
+
+> ℓ∈L k
+
+ˆm(−k) 
+
+> Y
+
+(XT 
+
+> ℓ
+
+)I{ ˆm(−k) 
+
+> S
+
+(XT 
+
+> ℓ
+
+) ≥ c},
+
+bθHL (c) = 1
+
+nHL 
+
+> V
+
+X
+
+> k=1
+
+X
+
+> i∈I k
+
+ˆw(−k)HL (XHL  
+
+> i
+
+)
+
+× { Y HL  
+
+> i
+
+− ˆm(−k) 
+
+> Y
+
+(XHL  
+
+> i
+
+)}I{ ˆm(−k) 
+
+> S
+
+(XHL  
+
+> i
+
+) ≥ c},
+
+bθAL (c) = 1
+
+nAL 
+
+> V
+
+X
+
+> k=1
+
+X
+
+> j∈J k
+
+ˆw(−k)AL (XAL  
+
+> j
+
+) ˆ m(−k) 
+
+> Y
+
+(XAL  
+
+> j
+
+)
+
+× Kh{c − ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+)}{ SAL  
+
+> j
+
+− ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+)}.
+
+The sum bθT(c) + bθHL (c) is the cross-fitted sample analog of 
+
+Ψ( m, w ; ˆIc): it removes the first-order outcome-regression error while treating the fitted decision rule as fixed. bθAL (c)
+
+is the sample analog of the auxiliary correction above and addresses the remaining error from replacing m⋆S by ˆmS
+
+inside the indicator. Thus, the proposed estimator is 
+
+ˆτ1(c) = bθT(c) + bθHL (c) + bθAL (c)
+
+bp1
+
+,
+
+FPR, ROC, and AUC The corresponding FPR estimator is denoted by ˆτ0(c). For numerical ROC and AUC con-struction, ˆτ1 and ˆτ0 are evaluated on a prespecified threshold grid. The deterministic endpoint pairs (τ0, τ 1) = (1 , 1) and 
+
+(0 , 0) are then added, and equal-weight least-squares isotonic projection produces [0 , 1] -valued sequences that are nonin-creasing in c. Denote the resulting projected curves by ˜τ1
+
+and ˜τ0. For a target FPR level u ∈ [0 , 1] , the estimated threshold and ROC value are ˆcu = inf {c : ˜ τ0(c) ≤ u}
+
+and [ROC cf 
+
+(u) = ˜ τ1(ˆ cu). The projected TPR and FPR se-quences are linearly interpolated as functions of c. The trape-zoidal area under the estimated ROC curve defines [AUC cf 
+
+,the AUC point estimate associated with that curve. Stan-dard errors and confidence intervals are based on the scalar one-step estimator [AUC cf  
+
+> os
+
+, which targets AUC directly and avoids requiring a distributional approximation for the entire estimated ROC curve. Both estimators target the same pop-ulation AUC, and Appendix B.3 gives their constructions. 
+
+## 3 Theoretical Results 
+
+This section establishes asymptotic linear expansions, Gaus-sian limits, and consistent standard errors for TPR and FPR at fixed thresholds and for ROC at fixed FPR levels. It also establishes uniform consistency of the projected ROC es-timator and its trapezoidal AUC, together with asymptotic normality and consistent standard-error estimation for the scalar one-step AUC estimator. 
+
+3.1 TPR and FPR at a Fixed Threshold 
+
+Throughout the threshold-specific results, c is a fixed interior threshold and h → 0 along the joint sample-size sequence indexed by n. Define the reference rate an = {n−1HL +(nAL h)−1 + n−1T }1/2. The effective auxiliary sample size is nAL h (only observations near c contribute to the auxiliary correction). The three source-specific influence terms are 
+
+ψHL ,1(c) = p−11 wHL (X){Y − m⋆Y (X)}{ Ic(X) − τ1(c)},ψAL ,1,h (c) = p−11 wAL (X)m⋆Y (X)Kh{c − m⋆S (X)}× { S − m⋆S (X)},ψT,1(c) = p−11 m⋆Y (X){Ic(X) − τ1(c)}.
+
+They capture variation from gold-outcome residuals, surro-gate model residuals near c, and target-population averag-ing, respectively. For compact notation, write ψAL ,1(c) = 
+
+ψAL ,1,h (c) and let G = {HL , AL , T}. Their exact aggre-gate variance is s21,n (c) = P 
+
+> g∈G
+
+n−1 
+
+> g
+
+Var g {ψg, 1(c)}. Thus 
+
+an gives the stochastic fluctuation order, while s1,n (c) re-tains the source-specific variance constants. The condition 
+
+s1,n (c) ≍ an below is a nondegeneracy condition ensuring that the reference rate matches the actual variance. 
+
+Theorem 1 (Three-Sample Asymptotic Normality) . Sup-pose Assumptions A.1–A.2 in Appendix A hold. Then 
+
+ˆτ1(c) − τ1(c) = P 
+
+> g∈G
+
+Pg,n ψg, 1(c) + op(an). If addi-tionally s1,n (c) ≍ an, the remainder is op{s1,n (c)} and 
+
+{ˆτ1(c) − τ1(c)}/s 1,n (c) ⇒ N (0 , 1) .
+
+The expansion separates uncertainty from the three in-dependent samples. Its nonstandard component is the auxiliary-source term, which uses score residuals near c to cancel BS (c), the error induced by replacing m⋆S with ˆmS
+
+inside the indicator. Under the two parts of Assumption A.2, the cancellation remainder is Op(r2 
+
+> S, 2
+
++ h2rS, 2) + op(an) = 
+
+op(an), where rS, 2 is the cross-fitted L2 error of ˆmS . Ap-pendix B.1 gives the proof. The centered factor Ic − τ1(c) in the HL and target terms follows from the ratio expansion with the estimated prevalence; Appendix C.1 gives the details. The relative sizes of n−1HL , (nAL h)−1, and n−1T determine the normalization and the source of first-order uncertainty. If (nAL h)−1 = o(n−1HL + n−1T ), the auxiliary contribution from estimating m⋆S is negligible and the limit is the same as if m⋆S were known. If (nAL h)−1 dominates the other two variance orders, the convergence rate is instead (nAL h)−1/2.When all three orders are comparable, all three samples con-tribute to the standard error. A √nHL normalization arises when (nAL h)−1 = o(n−1HL ) and n−1T = o(n−1HL ). More gen-erally, the theorem quantifies the first-order uncertainty from estimating m⋆S when it enters a hard threshold. 
+
+Theorem 2 (TPR Standard Error and Confidence Interval) .
+
+Let ˆψg, 1,r (c) be the cross-fitted plug-in version of ψg, 1(c),defined explicitly in Appendix C.2. For each g ∈ G , let 
+
+¯ψg, 1(c) = n−1
+
+> g
+
+Png 
+
+> r=1
+
+ˆψg, 1,r (c). Under Assumptions A.1– A.2 and the nondegeneracy condition s1,n (c) ≍ an,
+
+cSE 2TPR (c) = X
+
+> g∈G
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+{ ˆψg, 1,r (c) − ¯ψg, 1(c)}2
+
+satisfies cSE TPR (c)/s 1,n (c) →p 1. Writing zq for the qth quantile of N (0 , 1) , a pointwise (1 − α) confidence interval is ˆτ1(c) ± z1−α/ 2 cSE TPR (c).
+
+The FPR estimator admits an analogous three-source ex-pansion and Gaussian limit; Corollary C.1 in Appendix C.2 gives the formal statement and the corresponding influence-function substitutions and plug-in standard error. 
+
+3.2 ROC and AUC Inference 
+
+Let Z = m⋆S (X), let fZ be its density under the target law, and set p0 = 1 − p1. The weighted target score densities are 
+
+q1(t) = ET{m⋆Y (X) | Z = t}fZ (t) and q0(t) = ET{1 −
+
+m⋆Y (X) | Z = t}fZ (t). For g ∈ G , the FPR influence terms 
+
+ψg, 0(c) are obtained from ψg, 1(c) by replacing m⋆Y with 
+
+1−m⋆Y , Y −m⋆Y with m⋆Y −Y in the HL term, p1 with p0, and 
+
+τ1(c) with τ0(c). For a fixed u ∈ (0 , 1) , let cu be the unique solution to τ0(cu) = u. Because τ ′
+
+> 1
+
+(c) = −q1(c)/p 1 and 
+
+τ ′
+
+> 0
+
+(c) = −q0(c)/p 0, the slope ratio is λu = τ ′
+
+> 1
+
+(cu)/τ ′
+
+> 0
+
+(cu) = 
+
+p0q1(cu)/{p1q0(cu)}. The source-specific ROC influence terms are ϕg,u = ψg, 1(cu) − λuψg, 0(cu), with aggregate variance v2
+
+> n
+
+(u) = P 
+
+> g∈G
+
+n−1 
+
+> g
+
+Var g (ϕg,u ). The first term is the source-g contribution to TPR estimation at cu; the second accounts for estimating cu by inverting the FPR curve. 
+
+Theorem 3 (ROC Inference at a Fixed FPR) . Suppose As-sumptions A.1–A.3 hold, and vn(u) ≍ an. Then 
+
+[ROC cf 
+
+(u) − ROC( u) = X
+
+> g∈G
+
+Pg,n ϕg,u + op{vn(u)}.
+
+Moreover, { [ROC cf 
+
+(u) − ROC( u)}/v n(u) ⇒ N (0 , 1) .
+
+To estimate vn(u), the slope ratio is estimated by ˆλu =(1 − ˆp1)ˆ q1(ˆ cu)/{ˆp1 ˆq0(ˆ cu)}, using the target score-density es-timates in Appendix C.2. The plug-in ROC influence values are ˆϕg,r,u = ˆψg, 1,r (ˆ cu) − ˆλu ˆψg, 0,r (ˆ cu), with source-specific means ¯ϕg,u = n−1
+
+> g
+
+Png 
+
+> r=1
+
+ˆϕg,r,u . Appendix C.2 states the target score-density estimators and sufficient conditions for 
+
+ˆλu →p λu. Here ψg, 1,r (c) and ψg, 0,r (c) are the observation-
+
+r contributions from source g to the TPR and FPR influence functions, respectively. Their cross-fitted plug-in versions are given under Plug-in influence values in Appendix C.2. 
+
+Corollary 1 (ROC Standard Error and Confidence Interval at a Fixed FPR) . Under the conditions of Theorem 3, if additionally ˆλu →p λu and, for every g ∈ G and y ∈ { 0, 1},
+
+1
+
+ngng
+
+X
+
+> r=1
+
+n ˆψg,y,r (ˆ cu) − ψg,y,r (cu)
+
+o2
+
+= op(dg ),
+
+where dHL = dT = 1 and dAL = h−1. Then 
+
+cSE 2ROC (u) = X
+
+> g∈G
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+{ ˆϕg,r,u − ¯ϕg,u }2satisfies cSE ROC (u)/v n(u) →p 1. Hence a pointwise (1 −α)
+
+confidence interval is [ROC cf 
+
+(u) ± z1−α/ 2 cSE ROC (u).
+
+Under local strict monotonicity and uniform accuracy of the unprojected curves, interpolation and isotonic projection do not change the estimator to first order at cu; part (b) of Assumption A.3 states the required monotonicity and lo-cal stochastic-process conditions. Simultaneous ROC bands need a uniform Gaussian approximation. AUC has a different asymptotic structure. For the scalar one-step estimator introduced in Section 2, the AUC func-tional has a bounded derivative with respect to score pertur-bations, so its auxiliary-source influence term has variance of order one rather than h−1. Its contribution to the estimator variance is therefore of order n−1AL , and AUC inference does not require a Gaussian-process limit for the full ROC curve. Write A = AUC . Appendix B.3 gives the construction of 
+
+[AUC cf  
+
+> os
+
+, and Appendix C.2 gives its source-specific influ-ence functions φAg , g ∈ G , and plug-in variance estimator. The three influence functions correspond to gold-outcome estimation, surrogate-derived model estimation, and target pairwise averaging. Let ρn = ( n−1HL + n−1AL + n−1T )1/2 and 
+
+σ2 
+
+> A,n
+
+= P 
+
+> g∈G
+
+n−1 
+
+> g
+
+Var g (φAg ).
+
+Theorem 4 (Asymptotic Normality of the One-Step AUC Estimator) . Suppose part (a) of Assumption A.1 and As-sumption A.4 hold and σA,n ≍ ρn. Then 
+
+[AUC cf  
+
+> os
+
+− A = X
+
+> g∈G
+
+Pg,n φAg + op(σA,n ).
+
+Moreover, { [AUC cf  
+
+> os
+
+− A}/σ A,n ⇒ N (0 , 1) .
+
+Bandwidth Choice. h appears in the AL correction 
+
+Kh{c − ˆmS (X)}{ S − ˆmS (X)}. Estimation error in ˆmS
+
+can change a hard-threshold decision only when the score is close to c, so the kernel uses AL residuals near c to correct the resulting error. A smaller h tightens correction around c
+
+but reduces effective AL observations, raising variability. A larger h uses more observations, is more stable, but increases localization bias by including scores farther from c. The pointwise theory, therefore, requires h → 0, nAL h → ∞ ,and ¯rS /h = op(1) , where ¯rS is the maximum uniform er-ror of ˆmS across the cross-fitting folds. The neighborhood must shrink, contain increasing local information, and re-main wider than the score-estimation error. The remaining joint-rate conditions are given in Assumption A.2; fixed-u
+
+ROC inference additionally requires an = o(h) under As-sumption A.3. Proposition C.1 formalizes this trade-off: the AL variance is of order (nAL h)−1, but the leading localiza-tion bias ∝ h2. When the AL term dominates, h is chosen so that this bias is negligible relative to the standard error while nAL h continues to diverge; the proposition gives the corresponding conditional benchmark. Because m⋆S (X) ∈ [0 , 1] , one reference family satisfying these rate requirements is href = Cn −1/4AL , C > 0. When the three sample sizes are of the same order, and the nuisance errors are op(n−3/8AL ), this choice satisfies the preceding rate requirements. A prespecified C controls the finite-sample width of the local neighborhood. Sensitivity can be assessed over a range of values by reporting both h and nAL h; Simu-lation studies illustrate the effect of these two quantities. 
+
+## 4 Simulation Studies 
+
+Studies 1, 2, and 4 examine the theory under controlled conditions using correctly specified nonlinear nuisance bases and analytically known, untruncated density ratios. They compare Full with two fixed-score transport base-lines: importance-weighted gold-label validation (IW-HL) and transported score calibration (TSC). Study 3 instead ab-lates two correction terms under estimated weights for den-sity ratios. Each experiment uses 500 replications; proposed estimators use five-fold cross-fitting. DGP-A has correlated Gaussian covariates and smooth interactions; DGP-B has a symmetric bimodal target law with distinct saturating and quadratic interaction effects. Set 
+
+h = Cn −1/4AL , with C = 1 unless varied. Complete data-generating processes (DGPs), comparator definitions, diag-nostics, and supplementary results are in Appendix E. 
+
+4.1 Study 1: Sample-Size Scaling and Standard-Error Accuracy. 
+
+We evaluate the three-source expansion in Theorem 1. The proportional designs are P1 = (500 , 2000 , 10000) , P2 = (1000 , 4000 , 20000) , and P3 = (2000 , 8000 , 40000) , where each triple is (nHL , n AL , n T). Around P2, we also vary one finite sample at a time: nHL ∈ { 250 , 2000 }, nAL ∈{1000 , 8000 }, and nT ∈ { 1000 , 5000 , 40000 }.In Figure 2, at c = 0 .5, Full TPR coverage over P1– P3 is 0.926 –0.952 ; from P1 to P3, empirical SD falls 
+
+0.0295 → 0.0155 in DGP-A and 0.0323 → 0.0161 in DGP-B, with mean SE tracking it ( 0.0281 → 0.0151 and 
+
+0.0292 → 0.0161 ). Across the six P1–P3-by-DGP cells, Full is closest to 0.95 coverage in every cell, has lower MSE than IW-HL in every cell, and has mean SE/SD 0.957 , ver-sus 0.834 for IW-HL and 0.695 for TSC. Across all 20 cells, mean coverage/SE–SD is 0.934 /0.950 for Full, 0.879 /0.821 
+
+for IW-HL, and 0.805 /0.701 for TSC. TSC sometimes low-ers RMSE through smoothing but has optimistic conditional SEs; the evidence here is for calibrated unconditional infer-ence, not uniform RMSE dominance. Including the appendix FPR results, Full is closest to both 0.95 coverage and unit SE/SD in 39 of the 40 Study 1 cells at c = 0 .5 (Figure E.1). Varying each sample exposes all three variance contributions (Table E.2); weaker cells remain in Table E.3. 
+
+4.2 Study 2: Bandwidth Sensitivity. 
+
+At P2, we vary C ∈ { 0.5, 0.75 , 1, 1.5, 2}, which gives h ∈{0.063 , 0.094 , 0.126 , 0.189 , 0.251 }. IW-HL and TSC do not use h and are shown once in the Appendix Figure E.2a, rather than being duplicated over five bandwidths. Larger bandwidths reduce variability but can make the analytical SE optimistic. At c = 0 .5, C ≤ 1, Full cov-erage is 0.934 –0.960 . From C = 0 .5 to 2, empirical SD falls 21 .5% /24 .5% in DGP-A/B, while mean SE falls faster, 
+
+28 .9% /36 .1% , reducing coverage to 0.922 /0.862 . Averaged over the ten Full bandwidth-by-DGP cells, coverage is 0.930 ;Figure 2: Study 1 Standardized TPR errors at c = 0 .5. Dashed lines mark ±1.96 , and outliers are shown. TPR (c = 0.5) ROC (u = 0.1) One-step AUC                       
+
+> Plug-in HL-only AL-only
+> Full
+> Oracle 0.260 0.112 0.100 0.904 0.940 0.942 0.936 0.616 0.298 0.956 0.938 0.926 0.960 0.934 0.946
+> DGP-A
+> TPR (c= 0.5) ROC (u= 0.1) One-step AUC
+> 0.296 0.138 0.104 0.800 0.928 0.914 0.936 0.780 0.688 0.944 0.936 0.934 0.948 0.942 0.936
+> DGP-B
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> 95% Coverage
+
+Figure 3: Study 3 empirical 95% coverage over 500 repli-cations. Coverage, rather than the magnitude of the perfor-mance metric, is the target of this comparison. the h-free IW-HL and TSC references have coverage 0.879 
+
+and 0.804 . Point-error rankings differ, and lower-threshold FPR contains an appendix counterexample. Thus this sup-ports prespecified, threshold-specific variance–calibration sensitivity, not a universal C or uniform dominance. 
+
+4.3 Study 3: Unified Correction Ablation. 
+
+We now use P4 = (4000 , 16000 , 80000) , simultaneous moderate two-source shift, estimated density ratios, h =0.5n−1/4AL , and the same scalar one-step AUC implementa-tion as in the theory. We compare: (i) the plug-in estimator; (ii) HL-only, the fixed-score debiased baseline; (iii) AL-only; (iv) the full estimator; and (v) the full estimating equation with oracle nuisance functions. Omitting the HL correction also omits its prevalence correction. The main display uses TPR at c = 0 .5, ROC at the low-FPR point u = 0 .1, and scalar one-step AUC. Smaller-sample and bandwidth sensi-tivity results are reported in Appendix E.5. Figure 3 shows that the plug-in standard error severely understates nuisance-estimation uncertainty: across the six DGP-by-target cells, its coverage is 0.100 –0.296 . Full cover-age is 0.926 –0.956 , close to the oracle-nuisance range 0.934 –
+
+0.960 , and its mean-SE/empirical-SD ratios are 0.927 –1.036 .The partial corrections are target dependent: HL-only misses the threshold-specific AL contribution, whereas AL-only misses substantial global-score uncertainty. The complete bias, SD, SE, and coverage comparison in Appendix Ta-ble E.5 shows why both corrections are needed when both nuisance directions are first order. 
+
+4.4 Study 4: Fixed-u ROC and Scalar AUC Inference. 
+
+Using P1–P3 and C = 1 , we evaluate ROC( u) at u ∈{0.1, 0.2} and the scalar one-step AUC. The ROC estima-tor inverts the separately projected TPR/FPR curves using a common grid-based interpolation convention and the slope-adjusted influence function in Theorem 3; AUC uses The-orem 4 and the separate pilot b = n−1/5T . In Appendix Figure E.5, Full ROC coverage is 0.882 –0.954 and AUC coverage is 0.932 –0.950 ; the worst case is DGP-B/P2 at 
+
+u = 0 .1, while AUC SE/SD is 0.974 –1.006 . Across all 18 cells, the mean coverage is 0.927 for Full, 0.911 for IW-HL, and 0.919 for TSC. The AUC results are comparable, where Full has a more stable average ROC coverage despite some-times higher RMSE. The DGP-A/P2 Full Q–Q diagnostic has well-aligned centers but visible tail deviations (Figure E.3). We also provide a regularized dictionary diagnostic regard-ing flexible learners in Appendix E.6. 
+
+## 5 Real Data Studies 
+
+We treat the two applications as complementary validation tests. Chatbot Arena asks whether inference remains in-formative and the source corrections remain consequential under a natural temporal shift. ACS-Income supplies a stricter gold-label validation: after a label-masking analy-sis is frozen, do the corrections move the estimates toward performance computed from revealed Target outcomes? In both studies, the HL, AL, and Target cohorts are disjoint, and Target outcomes are inaccessible during estimation. The re-vealed outcomes evaluate frozen finite-sample scores rather than the population model m⋆S ; agreement is therefore cor-roborating evidence, not a bias or coverage calculation. 
+
+Chatbot Arena: validation under natural temporal shift. 
+
+Chatbot Arena provides pairwise human preferences (Chi-ang et al. 2024). We evaluate a downstream score learned from LLM-judge labels, rather than raw judge–human agree-ment (Zheng et al. 2023). Exact-ID linkage to timestamped Early HL Middle AL Later target 0.25 .50 .75 1     
+
+> Model-family share
+> Claude Vicuna GPT Koala Alpaca Other
+
+Figure 4: Natural temporal shift in Chatbot Arena. Each stacked bar is the distribution of candidate-model family appearances within a fixed cohort; quantitative overlap di-agnostics appear in Appendix Figure F.1. Arena-33K (LMSYS Org 2023; AGIE AI Technology 2023) yields user-disjoint early HL ( X, Y ; n = 2 ,816 ), middle AL (X, S ; n = 3 ,590 ), and later Target ( X; n = 1 ,499 ) cohorts, without artificial covariate tilting. The score uses multi-lingual prompt/response embeddings, named metadata, and A/B-swap augmentation; the existing six-model judge panel supplies S. Figure 4 displays the changing candidate-model mix. Appendix F.1, Algorithm F.1, and Figure F.1 document linkage, masking, overlap, and label construction. The result is informative in three respects. First, Full esti-mates target AUC as 0.848 (95% CI [0.814, 0.881]): even its lower endpoint exceeds 0.80, and the interval width is only 0.067 despite two source-to-target shifts. At FPR 0.10, 0.15, and 0.20, target TPR is 0.562, 0.640, and 0.717. Second, the corrections are consequential rather than cosmetic. Full exceeds uncorrected outcome regression by 0.051 [0.020, 0.083] and the human-correction-only estimate by 0.023 [0.014, 0.031]; thus the complete construction cannot be reduced either to plug-in evaluation or to a fixed-score gold-label correction. Third, after all analyses were frozen, re-vealed human preferences give AUCs 0.810 and 0.812 for the cross-fitted and all-AL frozen scores. Although these are different estimands, their agreement and their point estimates above 0.80 corroborate the substantive conclusion that judge-derived discrimination persists in the later human-preference cohort; no Target S is used. Appendix Tables F.3–F.5 and Figures F.2–F.3 report complete results and diagnostics. 
+
+ACS-Income. For eligible 2019 California ACS records, Y
+
+indicates income above $50 ,000 , while S thresholds Gemini 3.5 Flash predictions at the same value. Prespecified oppos-ing age-dependent sampling creates disjoint HL/AL/Target cohorts of size 447 /552 /186 ,193 . We use five-fold cross-fitted cubic-spline logistic regression, with tuning confined to AL training folds; it ranks first by AL out-of-fold log loss in the reported exploratory six-learner sensitivity. Here, the masked gold outcomes allow the correction direction to be empirically verified. Full estimates AUC as 0.8663 (95% CI [0.8216, 0.9110]), versus 0.8383 for the human-correction-only ablation and 0.7074 for plug-in; despite only 447/552 labeled cases, its interval is 0.089 wide. After the reveal, the cross-fitted finite-score Target 0.70 0.75 0.80 0.85 0.90  
+
+> AUC
+> Plug-in Human correction Full
+> ACS target AUC
+> Full 95% CI CF validation band
+
+Figure 5: ACS gold-label validation for the spline-3 score. Only Full carries the proposed three-source interval; the red line and band evaluate a different pooled cross-fitted finite-score object after the Target-outcome reveal. The paired Full-minus-human contrast is 0.028 [0.004, 0.051]. AUC is 0.8549. Full’s descriptive cross-estimand discrep-ancy is 0.0114, 92.3% smaller than plug-in’s 0.1475 and 31.5% smaller than the human-correction-only discrepancy of 0.0166; Full is also descriptively closest at FPR 0.10, 0.15, and 0.20. Moreover, the paired auxiliary-label correction is 0.0280 [0.0044, 0.0515], directly showing that this correction is non-negligible. This contribution remains positive across all six exploratory learners, with every learner-specific inter-val excluding zero, and Full is descriptively closer in five of six cases. Thus, the evidence supports a persistent auxiliary-source contribution without claiming uniform dominance. Figure 5 summarizes the scalar validation; Appendix Ta-ble F.8, Figure F.4, and Sections F.4–F.8 report complete metrics, diagnostics, and sensitivities. 
+
+## 6 Discussion 
+
+We develop a three-sample debiased framework to evaluate the predictive performance of the surrogate-derived model against the gold-standard label in the target population. Our main contribution is a source-aware debiasing principle that mitigates each first-order nuisance effect using sources, al-lowing for valid inference. In Chatbot Arena and ACS-Income, the real data study results corroborate our theoretical findings and illustrate our practical potential, beyond exten-sive simulation studies. Scope, limitations, and extensions appear in Supplementary Appendix G. 
+
+## References 
+
+AGIE AI Technology. 2023. LMSYS Chatbot Arena Conversations: Public Timestamp-Bearing Mir-ror. Hugging Face dataset repository. Pinned revi-sion 8569cc405b2ed94f37deed65678b81df8a6ac9c0; ac-cessed 2026-07-25. Angelopoulos, A. N.; Bates, S.; Fannjiang, C.; Jordan, M. I.; and Zrnic, T. 2023. Prediction-Powered Inference. Science ,382(6671): 669–674. Chernozhukov, V.; Newey, M.; Newey, W. K.; Singh, R.; and Srygkanis, V. 2023. Automatic debiased machine learning for covariate shifts. arXiv preprint arXiv:2307.04527 .Chiang, W.-L.; Zheng, L.; Sheng, Y.; Angelopoulos, A. N.; Li, T.; Li, D.; Zhu, B.; Zhang, H.; Jordan, M.; Gonzalez, J. E.; and Stoica, I. 2024. Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference. In Proceedings of the 41st International Conference on Machine Learning ,volume 235 of Proceedings of Machine Learning Research ,8359–8388. PMLR. Gao, J.; Bonzel, C.-L.; Hong, C.; Varghese, P.; Zakir, K.; and Gronsbell, J. 2024. Semi-supervised ROC Analysis for Reli-able and Streamlined Evaluation of Phenotyping Algorithms. 
+
+Journal of the American Medical Informatics Association ,31(3): 640–650. Gronsbell, J.; Liu, M.; Tian, L.; and Cai, T. 2022. Ef-ficient Evaluation of Prediction Rules in Semi-Supervised Settings under Stratified Sampling. Journal of the Royal Statistical Society Series B: Statistical Methodology , 84(4): 1353–1391. Gronsbell, J. L.; and Cai, T. 2018. Semi-supervised ap-proaches to efficient evaluation of model prediction perfor-mance. Journal of the Royal Statistical Society Series B: Statistical Methodology , 80(3): 579–594. Hou, J.; Guo, Z.; and Cai, T. 2023. Surrogate assisted semi-supervised inference for high dimensional risk prediction. 
+
+Journal of Machine Learning Research , 24(265): 1–58. Hsieh, F.; and Turnbull, B. W. 1996. Nonparametric and Semiparametric Estimation of the Receiver Operating Char-acteristic Curve. The Annals of Statistics , 24(1): 25–40. intfloat. 2023. multilingual-e5-small Model Card. Hugging Face model release. Pinned revision fd1525a9fd15316a2d503bf26ab031a61d056e98; accessed 2026-07-25. Li, B.; Gatsonis, C.; Dahabreh, I. J.; and Steingrimsson, J. A. 2023. Estimating the Area under the ROC Curve When Transporting a Prediction Model to a Target Population. Bio-metrics , 79(3): 2382–2393. Li, W.; Jiang, F.; and Zhang, X. 2026. Multi-Source Prediction-Powered Inference. arXiv preprint arXiv:2606.21232 .Liu, J.; Mao, G.; and Wang, X. 2025. An Estimand-Focused Approach for AUC Estimation, Generalization, and Com-parison: From Non-representative Samples to Target Popu-lation. arXiv preprint arXiv:2511.14992 .LMSYS Org. 2023. Chatbot Arena Conversations Dataset. Hugging Face dataset release. Canonical 33K-conversation release; accessed 2026-07-25. Park, G. 2024. Debiased Machine Learning when Nuisance Parameters Appear in Indicator Functions. arXiv preprint arXiv:2403.15934 .Qiu, H.; Tchetgen Tchetgen, E.; and Dobriban, E. 2024. Efficient and Multiply Robust Risk Estimation under General Forms of Dataset Shift. The Annals of Statistics , 52(4): 1796–1824. Reddi, S.; Poczos, B.; and Smola, A. 2015. Doubly ro-bust covariate shift correction. In Proceedings of the AAAI Conference on Artificial Intelligence , volume 29. Shimodaira, H. 2000. Improving predictive inference un-der covariate shift by weighting the log-likelihood function. 
+
+Journal of Statistical Planning and Inference , 90(2): 227– 244. Steingrimsson, J. A.; Gatsonis, C.; Li, B.; and Dahabreh, I. J. 2023. Transporting a Prediction Model for Use in a New Target Population. American Journal of Epidemiology ,192(2): 296–304. Sugiyama, M.; and Kawanabe, M. 2012. Machine learning in non-stationary environments: Introduction to covariate shift adaptation . MIT Press. Ulichney, A.; and Coston, A. 2026. Beyond the Training Dis-tribution: Evaluating Predictions Under Distribution Shift and Selection Bias. arXiv preprint arXiv:2606.14506 .Wang, L.; Yang, N.; Huang, X.; Yang, L.; Majumder, R.; and Wei, F. 2024. Multilingual E5 Text Embeddings: ATechnical Report. arXiv preprint arXiv:2402.05672 .Xia, E.; and Wainwright, M. J. 2024. Prediction aided by surrogate training. arXiv preprint arXiv:2412.09364 .Ying, C.; Jin, J.; Guo, Y.; Li, X.; Liang, M.; and Zhao, J. 2025. Towards the Efficient Inference by Incorporating Au-tomated Computational Phenotypes under Covariate Shift. In Proceedings of the 42nd International Conference on Machine Learning , volume 267 of Proceedings of Machine Learning Research , 72505–72534. PMLR. Zheng, L.; Chiang, W.-L.; Sheng, Y.; Zhuang, S.; Wu, Z.; Zhuang, Y.; Lin, Z.; Li, Z.; Li, D.; Xing, E. P.; Zhang, H.; Gonzalez, J. E.; and Stoica, I. 2023. Judg-ing LLM-as-a-Judge with MT-Bench and Chatbot Arena. arXiv:2306.05685. Zhou, D.; Liu, M.; Li, M.; and Cai, T. 2025. Doubly ro-bust augmented model accuracy transfer inference with high dimensional features. Journal of the American Statistical Association , 120(549): 524–534. Appendices 
+
+The appendices are organized as follows. Appendix A states the formal assumptions and explains the regularity condi-tion along the score-estimation path. Appendix B develops the methodological intuition and provides implementation details for density-ratio estimation and the FPR, ROC, and AUC constructions. Appendix C gives additional asymptotic results. Appendix D contains the proofs. Appendix E gives the complete simulation designs and additional numerical results. Appendix F documents the application designs and additional empirical results. Appendix G discusses practi-cal considerations and extensions, including bandwidth sen-sitivity, nuisance-estimation rates, uniform inference, and computational cost. 
+
+## A Formal Assumptions 
+
+Unless otherwise stated, all limits are taken as n → ∞ along a joint asymptotic sequence with ng = ng (n) → ∞ for each g ∈ { HL , AL , T}, while the number V of cross-fitting folds remains fixed and, within each source, validation-fold sizes differ by at most one. Thus, n is a sequence index rather than one of the three sample sizes. Throughout the appendix, G = {HL , AL , T}. We write Xn →p X for con-vergence in probability and Xn ⇒ X for convergence in distribution. For a positive, possibly random sequence rn,
+
+Xn = Op(rn) means that Xn/r n is bounded in probability, whereas Xn = op(rn) means Xn/r n →p 0. For positive de-terministic sequences an and bn, an ≍ bn means that an/b n
+
+is bounded above and away from zero for all sufficiently large 
+
+n; for positive random sequences An and Bn, An ≍p Bn
+
+means An/B n = Op(1) and Bn/A n = Op(1) . For deter-ministic sequences xn and rn > 0, xn = O(rn) means that 
+
+|xn|/r n is eventually bounded, whereas xn = o(rn) means that xn/r n → 0. Arrows without a probability subscript de-note ordinary convergence of deterministic sequences. When a rate statement is said to hold uniformly, the corresponding notation applies to the displayed supremum or maximum. For a probability law P, write ∥f ∥P,2 = {R f 2 dP}1/2,and write ∥f ∥r = {R |f (v)|r dv }1/r for the Lebesgue 
+
+Lr norm, r ∈ {1, 2}. For a function on a set A, let 
+
+∥f ∥∞,A = sup x∈A |f (x)|; when the domain is clear, write 
+
+∥f ∥∞. For a finite vector, ∥ · ∥ ∞ denotes the maximum norm. The assumptions are grouped by inferential target; no the-orem requires every condition below. 
+
+A.1 Conditions for TPR and FPR at a Fixed Threshold 
+
+Assumption A.1 (Basic Identification and Regularity Con-ditions) . (a) Sampling, transportability, and source-support conditions. The three samples contain no shared observa-tional units and are mutually independent; observations are i.i.d. within each sample. The target-outcome transportabil-ity equality defining m⋆Y holds, and the target covariate law is absolutely continuous with respect to both source covariate laws. The covariates X have compact support. For con-stants C < ∞ and η > 0, wHL (X) ≤ C and wAL (X) ≤ C
+
+almost surely, η ≤ p1 ≤ 1 − η, and Y , S, and the fitted regressions are uniformly bounded. (b) Kernel and bandwidth. The kernel K is a symmetric probability density with zero first moment, finite second mo-ment μ2(K) = R v2K(v) dv , and R K2 < ∞. It is twice continuously differentiable, and either has compact support or K, K′, and K′′ have exponentially decaying tails. The bandwidth h = hn is deterministic, is fixed before evaluating the analysis folds, and satisfies 
+
+h → 0, nAL h → ∞ .
+
+(c) Local score-density regularity. Let Z = m⋆S (X). Under the target law, let fZ denote its density; under the auxiliary law, let fZ, AL denote its density. On a compact neighbor-hood U of c, fZ is bounded and continuously differentiable and fZ, AL is bounded. The weighted target-score densities 
+
+q1(t) = ET{m⋆Y (X) | Z = t}fZ (t),q0(t) = ET{1 − m⋆Y (X) | Z = t}fZ (t).
+
+have bounded continuous first derivatives on U.
+
+For each fold, write δ(−k) 
+
+> Y
+
+= ˆm(−k) 
+
+> Y
+
+− m⋆Y , δ(−k) 
+
+> S
+
+=ˆm(−k) 
+
+> S
+
+− m⋆S , and, for d ∈ { HL , AL }, δ(−k) 
+
+> w,d
+
+= ˆ w(−k) 
+
+> d
+
+− wd.Define 
+
+rY, 2 = max  
+
+> 1≤k≤V
+
+max  
+
+> g∈G
+
+∥δ(−k) 
+
+> Y
+
+∥Pg ,2,rS, 2 = max  
+
+> 1≤k≤V
+
+max  
+
+> g∈G
+
+∥δ(−k) 
+
+> S
+
+∥Pg ,2,rw,d, 2 = max  
+
+> 1≤k≤V
+
+∥δ(−k) 
+
+> w,d
+
+∥Pd,2,
+
+¯rY = max  
+
+> 1≤k≤V
+
+∥δ(−k) 
+
+> Y
+
+∥∞,
+
+¯rS = max  
+
+> 1≤k≤V
+
+∥δ(−k) 
+
+> S
+
+∥∞,
+
+¯rw,d = max  
+
+> 1≤k≤V
+
+∥δ(−k) 
+
+> w,d
+
+∥∞.
+
+Recall that an = {n−1HL + ( nAL h)−1 + n−1T }1/2.
+
+Assumption A.2 (Nuisance-Estimation Rates and Local Threshold Regularity) . (a) Cross-fitted nuisance consistency and remainder rates. The quantities defined above satisfy 
+
+rY, 2 + rS, 2 + ¯ rY + ¯ rS + X
+
+> d∈{ HL ,AL }
+
+{rw,d, 2 + ¯ rw,d } = op(1) .
+
+In addition, the following remainder-rate conditions hold: 
+
+rw, HL ,2rY, 2 = op(an),
+
+(¯ rw, AL + ¯ rY )¯ rS = op(an),
+
+¯rS
+
+h2√nAL 
+
+= op(an),r2 
+
+> S, 2
+
++ h2rS, 2 = op(an),
+
+¯rS /h = op(1) .
+
+(b) Regularity along the score-estimation path. Conditional on the fold-k training data, set Zk,u = m⋆S (X)+ uδ (−k) 
+
+> S
+
+(X)for u ∈ [0 , 1] . For a ∈ { m⋆Y , 1 − m⋆Y }, suppose the signed measure 
+
+ν(a)
+
+> k,u
+
+(A) = ET
+
+h
+
+a(X)δ(−k) 
+
+> S
+
+(X)I{Zk,u ∈ A}
+
+i
+
+has a density μ(a) 
+
+> k,u
+
+on a fixed neighborhood U of c. The map 
+
+Fk,a (u) = ET[a(X)I{Zk,u ≥ c}] is absolutely continuous with F ′
+
+> k,a
+
+(u) = μ(a)
+
+> k,u
+
+(c).Uniformly over folds and both choices of a, u 7 → μ(a)
+
+> k,u
+
+(c)
+
+is continuously differentiable and 
+
+sup 
+
+> 0≤u≤1
+
+|∂uμ(a)
+
+> k,u
+
+(c)| = Op(r2
+
+> S, 2
+
+).
+
+Moreover, μ(a) 
+
+> k, 1
+
+is twice continuously differentiable on U and 
+
+sup 
+
+> t∈U
+
+|∂2 
+
+> t
+
+μ(a)
+
+> k, 1
+
+(t)| = Op(rS, 2),
+
+with 
+
+sup 
+
+> s,t ∈U |s−t|≤ h
+
+|∂2 
+
+> t
+
+μ(a)
+
+> k, 1
+
+(s) − ∂2 
+
+> t
+
+μ(a)
+
+> k, 1
+
+(t)| = op(rS, 2).
+
+The consistency condition in part (a) also implies 
+
+¯rw, AL + ¯ rY + ¯ rS
+
+√nAL h = op(an),
+
+because an ≥ (nAL h)−1/2. Thus this empirical-remainder rate is a consequence of uniform consistency, not an addi-tional assumption. Part (b) of Assumption A.2 is local and matches the two quantities used in the proof: variation of the path derivative is second order in the score error, while the kernel-localization bias is h2 times a quantity of order rS, 2. A sufficient con-dition stated in terms of the conditional density of the true score given the fitted score error is proved in Lemma D.4. Thus Assumption A.1 collects the standard identification, kernel, and local density conditions. The two parts of As-sumption A.2 isolate what is specific to an estimated hard-threshold rule: nuisance-rate control and regularity along the score-estimation path. 
+
+A.2 Additional Conditions for ROC and Trapezoidal AUC 
+
+Assumption A.3 (Additional ROC Conditions) . (a) Uni-form curve and threshold-grid regularity. Let C = [ c, c ]
+
+be the compact population threshold interval used for in-version. The numerical anchor points introduced below are not elements of C. The local score-density condition in As-sumption A.1 and the regularity condition in part (b) of As-sumption A.2 hold uniformly for c ∈ C . The functions τ1
+
+and τ0 are continuous on C, τ0 is strictly decreasing, and 
+
+τ1(c) = τ0(c) = 1 and τ1(c) = τ0(c) = 0 .Let Cn = {c = c1,n < · · · < c Mn−1,n = c} be the pre-specified grid on C, and let ∆c,n = max 2≤m≤Mn−1(cm,n −
+
+cm−1,n ) → 0. In addition, the grid is quasi-uniform: for some fixed Cgrid < ∞,
+
+max 2≤m≤Mn−1(cm,n − cm−1,n )min 2≤m≤Mn−1(cm,n − cm−1,n ) ≤ Cgrid .
+
+For the numerical projection only, augment this grid by arti-ficial thresholds c0,n < c and cMn,n > c (spaced to preserve the aforementioned quasi-uniformity, e.g., c0,n = c − ∆c,n ), assigned the deterministic TPR/FPR pairs (1 , 1) and (0 , 0) ,respectively. Write C+ 
+
+> n
+
+= {c0,n } ∪ C n ∪ { cMn,n }. No strict-monotonicity or smoothness condition is imposed outside C.Moreover, 
+
+log( Mn + 1) min {nHL , n T} → 0, log( Mn + 1) 
+
+nAL h → 0.
+
+For y ∈ { 0, 1}, let ˆτ dir  
+
+> y
+
+(c) denote the raw cross-fitted TPR or FPR estimator before isotonic projection, and define its remainder after removing the three oracle empirical terms by 
+
+Ry,n (c) = ˆ τ dir  
+
+> y
+
+(c) − τy (c) − X
+
+> g∈G
+
+Pg,n ψg,y (c).
+
+The required uniform nuisance condition is 
+
+max 
+
+> c∈C n
+
+|Ry,n (c)| = op(1) , y ∈ { 0, 1}.
+
+(b) Local conditions for pointwise ROC inference. Fix u ∈
+
+(0 , 1) and let cu satisfy τ0(cu) = u. On a neighborhood 
+
+Uu of cu, τ1 and τ0 are continuously differentiable, their derivatives are locally Lipschitz, and, for some κu > 0,
+
+inf 
+
+> c∈U u
+
+min {| τ ′
+
+> 1
+
+(c)|, |τ ′
+
+> 0
+
+(c)|} ≥ κu.
+
+For the local ROC analysis, let ˆτ1 and ˆτ0 be the linearly interpolated raw estimators on the threshold grid, and let 
+
+ey,n = ˆ τy − τy . There is a deterministic sequence bn ↓ 0
+
+such that 
+
+bn = o(h), an = O(bn),
+
+∆c,n = o(an), ¯rS = op(an).
+
+For y ∈ { 0, 1},
+
+sup 
+
+> t∈U u
+
+|ˆτy (t) − τy (t)| = Op(bn),
+
+sup 
+
+> s,t ∈U u
+> |s−t|≤ M b n
+
+|ey,n (s) − ey,n (t)| = op(an)
+
+for every fixed M < ∞.
+
+Write ˜τ1 and ˜τ0 for the interpolated isotonic projections. One sufficient set of conditions for local equicontinuity in Assumption A.3 consists of a locally uniform three-source expansion with op(an) remainder, together with the usual VC maximal inequality for the HL and target threshold pro-cesses and the translation-class maximal inequality for the AL kernel process. For a finite threshold grid, a conservative sufficient set of entropy-rate conditions is 
+
+bn log( Mn + 1) → 0, bn
+
+h
+
+plog( Mn + 1) → 0,
+
+together with a locally uniform op(an) nuisance remainder. Part (b) of Assumption A.3 is stated for the unprojected curves. Lemma D.6 below proves that isotonic projection is locally equivalent to the unprojected estimator to first order under these conditions. The stronger scale-separation con-dition bn = o(h) ensures that any isotonic block intersecting the local neighborhood is small relative to the localization bandwidth. Up to logarithmic grid factors, it reduces to 
+
+an = o(h); when the AL term determines the order of an,this is nAL h3 → ∞ . The additional condition ¯rS = op(an)
+
+is used in Lemma D.5 to make the interpolated and directly evaluated estimators equivalent to first order. Part (a) of Assumption A.3 is used for uniform consistency of the projected ROC curve; part (b) is additionally required only for pointwise inference after inversion and isotonic pro-jection. 
+
+A.3 Conditions for One-Step AUC Inference 
+
+For the AUC analysis, using the nuisance-error notation defined above, let Z = m⋆S (X), M = m⋆Y (X), and 
+
+κ(z, z ′) = I{z > z ′} + 12 I{z = z′}. Define X′ to be an independent copy of X under PT, and write ET×T for expectation over the product law of (X, X ′). Define 
+
+η(m, z ) = ET×T[m(X){1 − m(X′)}κ{z(X), z (X′)}].
+
+Define G0(z) = ET[(1 − M )κ(z, Z )] and G1(z) =
+
+ET[M κ (Z, z )] , and set ΓY (X) = G0(Z) − G1(Z) and 
+
+ΓS (X) = M q 0(Z) − (1 − M )q1(Z).For fold k, using the pilot functions constructed in Ap-pendix B.3, let 
+
+ˆΓY,k (x) = ˆG0,k { ˆm(−k) 
+
+> S
+
+(x)} − ˆG1,k { ˆm(−k) 
+
+> S
+
+(x)},
+
+ˆΓS,k (x) = ˆ m(−k) 
+
+> Y
+
+(x)ˆ q0,k { ˆm(−k) 
+
+> S
+
+(x)}− { 1 − ˆm(−k) 
+
+> Y
+
+(x)}ˆq1,k { ˆm(−k) 
+
+> S
+
+(x)}.
+
+Let rΓY ,2 and rΓS ,2 be the maximum, over folds, of ∥ˆΓY,k −
+
+ΓY ∥PT,2 and ∥ˆΓS,k − ΓS ∥PT,2, respectively. 
+
+Assumption A.4 (Additional One-Step AUC Conditions) .
+
+(a) AUC pathwise regularity. The target score is continu-ously distributed. The weighted score densities q0 and q1 are bounded and continuously differentiable on the score range. Uniformly over folds, the map (s, t ) 7 → η(M + sδ (−k) 
+
+> Y
+
+, Z +
+
+tδ (−k) 
+
+> S
+
+) is twice pathwise differentiable on [0 , 1] 2, with first derivatives at (0 , 0) given by 
+
+DY η[δ(−k) 
+
+> Y
+
+] = ET{δ(−k) 
+
+> Y
+
+(X)Γ Y (X)},DS η[δ(−k) 
+
+> S
+
+] = ET{δ(−k) 
+
+> S
+
+(X)Γ S (X)},
+
+and with second-order remainder Op(r2 
+
+> Y, 2
+
++rY, 2rS, 2 +r2
+
+> S, 2
+
+).(b) AUC pilot consistency and product rates. Let ρn =(n−1HL + n−1AL + n−1T )1/2. The pilot bandwidth b satisfies 
+
+b → 0 and nTb → ∞ , and the pilot-function errors obey 
+
+rΓY ,2 = op(1) and rΓS ,2 = op(1) . In addition, the two density-ratio estimators are L2 consistent: 
+
+rw, HL ,2 + rw, AL ,2 = op(1) .
+
+The following product rates hold: 
+
+r2 
+
+> Y, 2
+
++ r2 
+
+> S, 2
+
++ rY, 2rS, 2 = op(ρn),
+
+{rw, HL ,2 + rΓY ,2}rY, 2 = op(ρn),
+
+{rw, AL ,2 + rΓS ,2}rS, 2 = op(ρn).
+
+The fitted density ratios and the four pilot functions 
+
+ˆG0,k , ˆG1,k , ˆq0,k , ˆq1,k are uniformly bounded with probability tending to one. 
+
+The errors rΓY ,2 and rΓS ,2 are measured after the pilot functions are composed with the fitted nuisance functions, so they include both pilot estimation error and replacement of m⋆S by ˆm(−k) 
+
+> S
+
+. They are conditions on the nuisance func-tions entering the scalar AUC expansion rather than uniform conditions on the full ROC process. 
+
+A sufficient condition for the AUC path expansion. The expansion in part (a) of Assumption A.4 can be verified by a pairwise version of the regularity condition in part (b) of Assumption A.2. Conditional on fold-k training, let 
+
+D = Z(X) − Z(X′),
+
+∆S,k = δ(−k) 
+
+> S
+
+(X) − δ(−k) 
+
+> S
+
+(X′),Mk,s (x) = M (x) + sδ (−k) 
+
+> Y
+
+(x),
+
+and consider the signed measure 
+
+νk,s,t (A) = ET×T [Mk,s (X){1 − Mk,s (X′)}×∆S,k I{D + t∆S,k ∈ A}] .
+
+It is sufficient that this measure have a density μk,s,t near zero, uniformly in (s, t ) ∈ [0 , 1] 2, with 
+
+sup 
+
+> s,t
+
+|∂tμk,s,t (0) | = Op(r2
+
+> S, 2
+
+),
+
+sup 
+
+> s,t
+
+|μk,s,t (0) − μk, 0,t (0) | = Op(rY, 2rS, 2).
+
+Indeed, ∂tη(Mk,s , Z +tδ (−k) 
+
+> S
+
+) = μk,s,t (0) ; the fundamental theorem of calculus and the two bounds above control the re-mainder from estimating m⋆S and the interaction remainder from estimating both m⋆Y and m⋆S , respectively. Together with the elementary Op(r2
+
+> Y, 2
+
+) quadratic remainder from the outcome weights, these bounds imply the stated remainder. They follow, for example, from a differentiable joint weighted density of (D, ∆S,k ) whose first two ∆S,k -moment deriva-tives have the displayed orders. Smoothness of the marginal density of D alone is not sufficient. 
+
+## B Additional Methodological Details 
+
+B.1 Remainder for the Auxiliary Correction 
+
+Fix one cross-fitting fold and condition on its training data. To quantify the approximation in Section 2, write δS =ˆmS − m⋆S , set Zu = m⋆S (X) + uδ S (X) and let μ(1)  
+
+> u
+
+(t)
+
+denote the density at t of the signed measure 
+
+A 7 → ET[m⋆Y (X)δS (X)I{Zu ∈ A}] .
+
+The path expansion in part (b) of Assumption A.2 gives 
+
+BS (c) = 
+
+Z 10
+
+μ(1)  
+
+> u
+
+(c) du, 
+
+while the conditional mean of the auxiliary correction in Section 2 is − R Kh(c−t) dν (1) 1 (t). Because the density μ(1) 1
+
+is assumed only on the neighborhood U, split this integral as 
+
+−
+
+Z
+
+> U
+
+Kh(c − t)μ(1) 1 (t) dt −
+
+Z
+
+> Uc
+
+Kh(c − t) dν (1) 1 (t).The second term is zero for all sufficiently small h when K
+
+has compact support and is op(h2rS, 2) when K has expo-nentially decaying tails. Indeed, c is an interior point of U
+
+and ∥ν(1) 1 ∥TV ≤ ET|m⋆Y δS | = Op(rS, 2). Thus the sum of the indicator drift and the auxiliary mean is 
+
+Z 10
+
+{μ(1)  
+
+> u
+
+(c) − μ(1) 1 (c)} du 
+
++
+
+
+
+μ(1) 1 (c) −
+
+Z
+
+> U
+
+Kh(c − t)μ(1) 1 (t) dt 
+
+
+
++ op(h2rS, 2).
+
+The first line is the error from replacing μ(1)  
+
+> u
+
+(c) by μ(1) 1 (c),and the second is the kernel-approximation error. They are respectively Op(r2
+
+> S, 2
+
+) and 
+
+− h2μ2(K)2 ∂2 
+
+> t
+
+μ(1) 1 (c) + op(h2rS, 2).
+
+The order-h kernel term vanishes because K is symmetric. Hence the sum is Op(r2 
+
+> S, 2
+
++ h2rS, 2) = op(an) under the two parts of Assumption A.2. 
+
+B.2 Density Ratio Estimation Procedure 
+
+Set FHL ,k = Ik and FAL ,k = Jk. For g ∈ { HL , AL }
+
+and fold k, train a source-versus-target classifier using the source covariates whose indices are outside Fg,k and the target covariates whose indices are outside Lk. Let Gg = 0 
+
+denote membership in source g and Gg = 1 denote target membership. Define the target-membership probability 
+
+πg (x) = P(Gg = 1 | X = x),
+
+and fit its estimator ˆπ(−k) 
+
+> g
+
+using only the fold-k training observations above. Bayes’ rule gives 
+
+wg (x) = pT(x)
+
+pg (x) = P(Gg = 0) 
+
+P(Gg = 1) 
+
+πg (x)1 − πg (x) .
+
+Consequently, if n(−k) 
+
+> g
+
+and n(−k)T are the two class sizes used to train the fold-k classifier, 
+
+ˆw(−k) 
+
+> g
+
+(x) = n(−k)
+
+> g
+
+n(−k)T
+
+ˆπ(−k) 
+
+> g
+
+(x)1 − ˆπ(−k) 
+
+> g
+
+(x) .
+
+For example, logistic regression may parameterize 
+
+ˆπ(−k) 
+
+> g
+
+(x) = expit( x⊤ ˆγ(−k) 
+
+> g
+
+), where expit( t) = (1 + 
+
+e−t)−1; other calibrated probabilistic classifiers may be used. The two ratios are fitted separately because the HL-to-target and AL-to-target shifts need not agree. Their classi-fiers also need not belong to the same model class as either outcome regression. The theoretical estimator uses the un-truncated ratios under the bounded-density-ratio condition. In computation, fitted class probabilities must be kept away from zero and one; any probability clipping or weight trun-cation is prespecified and reported as part of the implementa-tion. Evaluation of ˆw(−k) 
+
+> g
+
+is restricted to the held-out source fold Fg,k .
+
+B.3 FPR, ROC, and AUC Construction 
+
+The target FPR is 
+
+τ0(c) = 11 − p1
+
+ET[{1 − m⋆Y (X)}I{m⋆S (X) ≥ c}] .
+
+Using the same three held-out folds as the TPR estimator, define 
+
+bνT(c) = 1
+
+nT
+
+> V
+
+X
+
+> k=1
+
+X
+
+> ℓ∈L k
+
+{1 − ˆm(−k) 
+
+> Y
+
+(XT 
+
+> ℓ
+
+)}× I{ ˆm(−k) 
+
+> S
+
+(XT 
+
+> ℓ
+
+) ≥ c},
+
+bνHL (c) = 1
+
+nHL 
+
+> V
+
+X
+
+> k=1
+
+X
+
+> i∈I k
+
+ˆw(−k)HL (XHL  
+
+> i
+
+){ ˆm(−k) 
+
+> Y
+
+(XHL  
+
+> i
+
+) − Y HL  
+
+> i
+
+}× I{ ˆm(−k) 
+
+> S
+
+(XHL  
+
+> i
+
+) ≥ c},
+
+bνAL (c) = 1
+
+nAL 
+
+> V
+
+X
+
+> k=1
+
+X
+
+> j∈J k
+
+ˆw(−k)AL (XAL  
+
+> j
+
+){1 − ˆm(−k) 
+
+> Y
+
+(XAL  
+
+> j
+
+)}× Kh{c − ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+)}{ SAL  
+
+> j
+
+− ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+)}.
+
+Then 
+
+ˆτ0(c) = bνT(c) + bνHL (c) + bνAL (c)1 − bp1
+
+.
+
+For numerical construction, evaluate the raw TPR and FPR estimators on the grid Cn = {c1, . . . , c M −1} ⊂ C . Add two artificial thresholds c0 < c and cM > c solely as anchors, and assign them the deterministic endpoint pairs (FPR , TPR) = (1 , 1) and (0 , 0) , respectively. These artificial thresholds lie outside the population interval on which strict monotonicity is assumed. Separately project the two augmented sequences by least-squares isotonic regression onto 
+
+1 ≥ v0 ≥ v1 ≥ · · · ≥ vM ≥ 0,
+
+because both rates are nonincreasing functions of the thresh-old. Denote the resulting piecewise-linear curves by ˜τ0(c)
+
+and ˜τ1(c). The theoretical results use equal grid weights. For u ∈ [0 , 1] , define the generalized inverse and ROC estimator by 
+
+ˆcu = inf {c : ˜ τ0(c) ≤ u},
+
+[ROC cf 
+
+(u) = ˜ τ1(ˆ cu),
+
+using linear interpolation between adjacent threshold-grid points. On a grid 0 = u0 < · · · < u R = 1 , the AUC associated with this curve is estimated by 
+
+[AUC cf 
+
+=
+
+> R
+
+X
+
+> r=1
+
+ur − ur−1
+
+2
+
+×
+
+
+
+[ROC cf 
+
+(ur ) + [ROC cf 
+
+(ur−1)
+
+
+
+.
+
+Under part (a) of Assumption A.3, Theorem C.2 establishes uniform consistency of the projected ROC estimator and con-sistency of the trapezoidal AUC when the AUC-grid mesh tends to zero. Theorem 3 further gives pointwise inference for the ROC value at a fixed interior false-positive rate. Uni-form confidence bands require stronger stochastic equicon-tinuity and uniform-in-threshold remainder bounds; scalar AUC inference is developed next without such a process condition. The trapezoidal estimator summarizes the projected ROC curve. For formal AUC inference, the scalar one-step con-struction avoids a process approximation. Let κ(z, z ′) = 
+
+I{z > z ′} + 12 I{z = z′} and, for k = 1 , . . . , V , write 
+
+nT,k = |L k|, ˆMkℓ = ˆ m(−k) 
+
+> Y
+
+(XT 
+
+> ℓ
+
+), and ˆZkℓ = ˆ m(−k) 
+
+> S
+
+(XT 
+
+> ℓ
+
+).Define 
+
+ˆηT,k = 1
+
+nT,k (nT,k − 1) 
+
+X
+
+> ℓ,r ∈L k
+> ℓ̸=r
+
+ˆMkℓ (1 − ˆMkr )κ( ˆZkℓ , ˆZkr ),
+
+ˆηT =
+
+> V
+
+X
+
+> k=1
+
+nT,k 
+
+nT
+
+ˆηT,k .
+
+For a pilot bandwidth b, set Kb(v) = b−1K(v/b ) and define 
+
+ˆa1,kℓ = ˆMkℓ and ˆa0,kℓ = 1 − ˆMkℓ . The held-out target summaries are 
+
+ˆG0,k (z) = 1
+
+nT,k 
+
+X
+
+> ℓ∈L k
+
+(1 − ˆMkℓ )κ(z, ˆZkℓ ),
+
+ˆG1,k (z) = 1
+
+nT,k 
+
+X
+
+> ℓ∈L k
+
+ˆMkℓ κ( ˆZkℓ , z ),
+
+ˆqy,k (z) = 1
+
+nT,k 
+
+X
+
+> ℓ∈L k
+
+ˆay,kℓ Kb(z − ˆZkℓ ).
+
+The two source corrections are 
+
+ˆηHL = 1
+
+nHL 
+
+> V
+
+X
+
+> k=1
+
+X
+
+> i∈I k
+
+ˆw(−k)HL (XHL  
+
+> i
+
+){Y HL  
+
+> i
+
+− ˆm(−k) 
+
+> Y
+
+(XHL  
+
+> i
+
+)}× [ ˆG0,k { ˆm(−k) 
+
+> S
+
+(XHL  
+
+> i
+
+)} − ˆG1,k { ˆm(−k) 
+
+> S
+
+(XHL  
+
+> i
+
+)}],
+
+ˆηAL = 1
+
+nAL 
+
+> V
+
+X
+
+> k=1
+
+X
+
+> j∈J k
+
+ˆw(−k)AL (XAL  
+
+> j
+
+){SAL  
+
+> j
+
+− ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+)}×  ˆm(−k) 
+
+> Y
+
+(XAL  
+
+> j
+
+)ˆ q0,k { ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+)}− { 1 − ˆm(−k) 
+
+> Y
+
+(XAL  
+
+> j
+
+)}ˆq1,k { ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+)}.
+
+The scalar one-step estimator is 
+
+[AUC cf  
+
+> os
+
+= ˆηT + ˆ ηHL + ˆ ηAL 
+
+ˆp1(1 − ˆp1) .
+
+It targets the same population AUC as the area under the ROC curve. Its AL correction uses the derivative of AUC with respect to score perturbations, expressed through the weighted score densities q0 and q1, rather than a separate correction at every threshold. 
+
+## C Additional Theoretical Results 
+
+C.1 Asymptotic Expansion for the Target Prevalence Estimator 
+
+To formalize the asymptotic behavior of ˆp1, define 
+
+ϕHL  
+
+> p1
+
+= wHL (X){Y − m⋆Y (X)} (C.1) 
+
+ϕT 
+
+> p1
+
+= m⋆Y (X) − p1. (C.2) 
+
+Theorem C.1 (Target Prevalence Estimator) . Under part (a) of Assumption A.1, suppose that, uniformly over folds, ˆm(−k)
+
+> Y
+
+converges to m⋆Y in both L2(PT) and L2(PHL ), and ˆw(−k)HL 
+
+converges to wHL in L2(PHL ). If rw, HL ,2rY, 2 = op(bp,n ),where bp,n = ( n−1HL + n−1T )1/2, then 
+
+ˆp1 − p1 = 1
+
+nHL 
+
+> nHL
+
+X
+
+> i=1
+
+ϕHL  
+
+> p1,i
+
++ 1
+
+nT
+
+> nT
+
+X
+
+> ℓ=1
+
+ϕT 
+
+> p1,ℓ
+
++ op(bp,n ).
+
+C.2 Pointwise FPR and ROC/AUC Extensions 
+
+Plug-in influence values. For i ∈ I k, j ∈ J k, and ℓ ∈ L k,define ˆI(−k) 
+
+> g,r
+
+(c) = I{ ˆm(−k) 
+
+> S
+
+(Xgr ) ≥ c} and 
+
+ˆR(−k) 
+
+> Y,i
+
+= Y HL  
+
+> i
+
+− ˆm(−k) 
+
+> Y
+
+(XHL  
+
+> i
+
+),
+
+ˆR(−k) 
+
+> S,j
+
+= SAL  
+
+> j
+
+− ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+).
+
+The cross-fitted TPR influence values in Theorem 2 are 
+
+ˆψHL ,1,i (c) = ˆw(−k)HL (XHL  
+
+> i
+
+)ˆp1
+
+ˆR(−k)
+
+> Y,i
+
+× { ˆI(−k)HL ,i (c) − ˆτ1(c)},
+
+ˆψAL ,1,j (c) = ˆw(−k)AL (XAL  
+
+> j
+
+) ˆ m(−k) 
+
+> Y
+
+(XAL  
+
+> j
+
+)ˆp1
+
+× Kh{c − ˆm(−k) 
+
+> S
+
+(XAL  
+
+> j
+
+)} ˆR(−k) 
+
+> S,j
+
+,
+
+ˆψT,1,ℓ (c) = ˆm(−k) 
+
+> Y
+
+(XT 
+
+> ℓ
+
+)ˆp1
+
+{ ˆI(−k)T,ℓ (c) − ˆτ1(c)}.
+
+Corollary C.1 (Pointwise FPR Inference) . Let ψg, 0(c) be obtained from the TPR influence terms by replacing m⋆Y by 
+
+1 − m⋆Y , Y − m⋆Y by m⋆Y − Y in the gold-source term, 
+
+p1 by p0 = 1 − p1, and τ1(c) by τ0(c). Set s20,n (c) = 
+
+P 
+
+> g∈G
+
+n−1 
+
+> g
+
+Var g {ψg, 0(c)}. Under Assumptions A.1–A.2, with p0 bounded away from zero, the FPR estimator in Ap-pendix B.3 satisfies 
+
+ˆτ0(c) − τ0(c) = X
+
+> g∈G
+
+Pg,n ψg, 0(c) + op(an).
+
+If additionally s0,n (c) ≍ an, then the left-hand side di-vided by s0,n (c) converges to N (0 , 1) . Let ˆψg, 0,r (c) be the cross-fitted plug-in values obtained by the same sub-stitutions in the displayed TPR plug-in values, and let 
+
+¯ψg, 0(c) = n−1
+
+> g
+
+Png 
+
+> r=1
+
+ˆψg, 0,r (c). Under the same nonde-generacy condition, 
+
+cSE 2FPR (c) = X
+
+> g∈G
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+{ ˆψg, 0,r (c) − ¯ψg, 0(c)}2
+
+satisfies cSE FPR (c)/s 0,n (c) →p 1 and yields the correspond-ing pointwise Wald interval. 
+
+We write ψg, 1 for the TPR influence terms in Theorem 1 and ψg, 0 for the FPR terms defined by these substitutions. Their cross-fitted plug-in versions are denoted by ˆψg, 1,r and 
+
+ˆψg, 0,r , respectively. The generalized-inverse construction in Appendix B.3 fol-lows the standard representation of an ROC curve as a com-position of class-conditional survival functions (Hsieh and Turnbull 1996). The following theorem establishes consis-tency of the projected ROC and trapezoidal AUC estimators. 
+
+Theorem C.2 (Consistency of the Projected ROC and AUC Estimators) . Suppose Assumptions A.1–A.2 and Assump-tion A.3 hold. Construct [ROC cf 
+
+and [AUC cf 
+
+as in Ap-pendix B.3, using equal-weight isotonic projection. Then 
+
+sup 
+
+> u∈[0 ,1]
+
+[ROC cf 
+
+(u) − ROC( u) →p 0.
+
+If, in addition, the AUC grid 0 = u0,n < · · · < u Rn,n = 1 
+
+has mesh ∆u,n = max 1≤r≤Rn (ur,n − ur−1,n ) → 0, then 
+
+[AUC cf 
+
+− AUC →p 0.
+
+Theorem 3 strengthens this consistency result at a fixed interior false-positive rate. Its slope ratio can be written as 
+
+λu = (1 − p1)q1(cu)
+
+p1q0(cu) ,
+
+where q1 and q0 are defined in part (c) of Assumption A.1. One consistent implementation uses a pilot bandwidth b.Define ˆa(−k)1,ℓ = ˆ m(−k) 
+
+> Y
+
+(XT 
+
+> ℓ
+
+) and ˆa(−k)0,ℓ = 1 − ˆm(−k) 
+
+> Y
+
+(XT 
+
+> ℓ
+
+).The target-sample kernel estimates are 
+
+ˆqy (t) = 1
+
+nT
+
+> V
+
+X
+
+> k=1
+
+X
+
+> ℓ∈L k
+
+ˆa(−k) 
+
+> y,ℓ
+
+Kb{t − ˆm(−k) 
+
+> S
+
+(XT 
+
+> ℓ
+
+)},
+
+and we set 
+
+ˆλu = (1 − ˆp1)ˆ q1(ˆ cu)ˆp1 ˆq0(ˆ cu) .
+
+Under the score-density condition, this estimator is consistent when b → 0, nTb → ∞ , (an + ¯ rS )/b = op(1) , and q0(cu)
+
+is bounded away from zero. These conditions concern only estimation of the slope ratio and do not change the ROC point estimator. A Gaussian-process limit is still required for a simultaneous confidence band, but not for the scalar AUC result in Theorem 4. 
+
+AUC influence functions. Let Z = m⋆S (X), M =
+
+m⋆Y (X), p0 = 1 − p1, A = AUC , and η = p1p0A. With continuous Z, define G0(z) = ET[(1 − M )I{Z < z }] and 
+
+G1(z) = ET[M I{Z > z }]. Using the weighted score densities in part (c) of Assumption A.1, set HY (X) = 
+
+G0(Z) − G1(Z) − A(p0 − p1). Recall that ΓS (X) = 
+
+M q 0(Z) − (1 − M )q1(Z). The source-specific influence functions are 
+
+φA 
+
+> HL
+
+= wHL (X)( Y − M )HY (X)
+
+p1p0
+
+,φA 
+
+> AL
+
+= wAL (X)( S − Z)Γ S (X)
+
+p1p0
+
+,φA 
+
+> T
+
+= M G 0(Z) + (1 − M )G1(Z) − 2ηp1p0
+
+− A(p0 − p1)( M − p1)
+
+p1p0
+
+.
+
+To estimate the AUC variance, form the cross-fitted plug-in versions ˆφAg,r of the three terms above using the fold-specific ˆGy,k and ˆqy,k from Appendix B.3; in the target term estimate η by ˆp1(1 − ˆp1) [AUC cf  
+
+> os
+
+. Let ˜φAg,r = ˆ φAg,r −
+
+n−1
+
+> g
+
+Png 
+
+> s=1
+
+ˆφAg,s .
+
+Corollary C.2 (AUC Standard Error and Confidence Interval) . Under the conditions of Theorem 4, if 
+
+n−1
+
+> g
+
+Png
+
+> r=1
+
+( ˆ φAg,r − φAg,r )2 = op(1) for each g ∈ G , then 
+
+cSE 2AUC = X
+
+> g∈G
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+( ˜ φAg,r )2
+
+satisfies cSE AUC /σ A,n →p 1. Thus [AUC cf  
+
+> os
+
+±z1−α/ 2 cSE AUC 
+
+is an asymptotically valid confidence interval. 
+
+C.3 Oracle Bandwidth Details 
+
+This subsection gives the exact h2 bias and AL variance coefficients summarized in Section 3. Let a1(X) = m⋆Y (X),
+
+a0(X) = 1 − m⋆Y (X), py = ET{ay (X)}, Z = m⋆S (X),and σS (X) = Var AL (S | X)1/2. Recall that μ2(K) = R v2K(v) dv ; write R(K) = R K2(v) dv , and let fZ, AL be the AL density of Z. For compactness, define 
+
+ξy (X) = wAL (X)ay (X)σS (X).
+
+Conditional on the training folds, define 
+
+B2,y,n (c) = − μ2(K)2py V
+
+> V
+
+X
+
+> k=1
+
+∂2 
+
+> t
+
+μ(ay ) 
+
+> k, 1
+
+(c),VAL ,y (c) = R(K)fZ, AL (c)
+
+p2
+
+> y
+
+EAL 
+
+ξ2 
+
+> y
+
+(X) | Z = c .
+
+Proposition C.1 (Oracle Bandwidth Benchmark) . Under the conditions of Theorem 1 for y = 1 or Corollary C.1 for 
+
+y = 0 , let R denote TPR or FPR and use the matching 
+
+B2,R,n = B2,y,n and VAL ,R = VAL ,y . If the variance profile 
+
+Γy (t) = fZ, AL (t)EAL {ξ2 
+
+> y
+
+(X) | Z = t}
+
+is continuous and positive at the evaluation threshold c, then the kernel-localization component of the conditional bias is 
+
+B2,R,n h2 + op(h2rS, 2) and the AL variance contribution is 
+
+VAL ,R /(nAL h){1 + o(1) }. Retaining only these two leading localization terms defines the conditional benchmark 
+
+AMSE loc  
+
+> R
+
+(h) = VAL ,R 
+
+nAL h + B22,R,n h4.
+
+By construction, this benchmark excludes the h-independent 
+
+Op(r2
+
+> S, 2
+
+) bias from variation along the score-estimation path, the HL and target variance components, and all other nuisance remainders; no equality with the full conditional mean squared error is asserted. If B2,R,n ̸ = 0 and the resulting bandwidth tends to zero, its interior minimizer is 
+
+hAMSE ,R =
+
+(
+
+VAL ,R 
+
+4nAL B22,R,n 
+
+)1/5
+
+.When the AL variance term dominates the HL and target vari-ance terms, a deterministic bandwidth satisfying the point-wise theorem makes the leading localization bias negligible relative to the AL standard deviation when nAL B22,R,n h5 →p
+
+0, equivalently h/h AMSE ,R →p 0. Together with the remain-ing conditions of that theorem or corollary, this controls the localization bias in centered inference. Because B2,R,n and hence hAMSE ,R depend on the training folds, the latter is a conditional oracle comparison, not a random bandwidth choice covered by part (b) of Assumption A.1. 
+
+When |B2,R,n | ≍ p rS, 2, the oracle rate is (nAL r2
+
+> S, 2
+
+)−1/5;the familiar n−1/5AL rate is recovered only when the bias co-efficient does not shrink. If nAL B22,R,n fails to diverge, the localization bias is already too small for the AMSE crite-rion to have an interior minimizer, and the remaining rate conditions determine how large h may be. 
+
+## D Proofs 
+
+For source g, write ng,k for the size of its kth validation fold and αg,k = ng,k /n g . The fold-balance convention above gives 
+
+max  
+
+> 1≤k≤V
+
+|αg,k − V −1| ≤ n−1 
+
+> g
+
+.
+
+Consequently, for any fixed-V collection Qg,k = Op(1) uni-formly in k,
+
+> V
+
+X
+
+> k=1
+
+αg,k Qg,k − 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+Qg,k = Op(n−1 
+
+> g
+
+).
+
+All foldwise population quantities and empirical averages for which this replacement is made below are uniformly Op(1) .For an AL kernel average, this follows from its Op(1) condi-tional mean and its Op{(nAL ,k h)−1/2} centered part. Hence replacing exact fold weights by 1/V contributes op(bp,n ),
+
+op(an), or op(ρn) in the corresponding proof. This fold-weight approximation permits first-order nuisance directions from different sources to be compared fold by fold even when their fold sizes are not identical. 
+
+D.1 Elementary Probability Tools Used Below 
+
+We record three elementary calculations so that the later proofs can focus on the estimator-specific algebra. They are also useful for keeping track of what cross-fitting does and does not change. In this subsection only, write FHL ,k = Ik,
+
+FAL ,k = Jk, and FT,k = Lk.
+
+Lemma D.1 (Conditional empirical-mean bound) . Let fk
+
+be a possibly random function determined by the training data for fold k, and suppose the observations in the cor-responding validation fold are independent of that training data. Conditional on the training data, 
+
+(Pg, Fg,k − Pg )fk = Op
+
+ ∥fk∥Pg ,2
+
+√ng,k 
+
+
+
+.
+
+Consequently, when V is fixed and max k ∥fk∥Pg ,2 =
+
+Op(rn),
+
+> V
+
+X
+
+> k=1
+
+αg,k (Pg, Fg,k − Pg )fk = Op(rn/√ng ).
+
+Proof. Conditional on the training data, the validation ob-servations are i.i.d. and the displayed empirical average has conditional mean zero and conditional variance at most 
+
+∥fk∥2 
+
+> Pg,2
+
+/n g,k . Conditional Chebyshev’s inequality gives the first assertion. The second follows by summing the fixed number of foldwise bounds and using ng,k ≍ ng .
+
+Lemma D.2 (Ratio expansion) . Let p be bounded away from zero, θ = pτ , and suppose ˆp − p = Op(rn) and ˆθ − θ =
+
+Op(rn) for rn → 0. Then 
+
+ˆθ
+
+ˆp − τ = ˆθ − θp − τp (ˆ p − p) + op(rn).
+
+Proof. On an event whose probability tends to one, ˆp is bounded away from zero. The exact difference between the left-hand side and the two displayed linear terms is 
+
+− (ˆθ − θ)(ˆ p − p)
+
+pˆp + τ (ˆ p − p)2
+
+pˆp .
+
+Its absolute value is Op(r2
+
+> n
+
+) = op(rn).
+
+Lemma D.3 (Three-sample triangular-array CLT) . Suppose three independent empirical averages have mean-zero sum-mands. Assume the HL and target summands have fixed bounded envelopes, while the AL summand has envelope 
+
+O(h−1) and variance O(h−1). Let the variance of their sum be s2 
+
+> n
+
+and suppose 
+
+sn ≍ { n−1HL + ( nAL h)−1 + n−1T }1/2, nAL h → ∞ .
+
+Then the sum divided by sn converges in distribution to 
+
+N (0 , 1) .Proof. After division by sn, the largest possible contribution of one HL or target observation is bounded by C/ (ng sn) ≤
+
+C/ √ng → 0. The corresponding AL bound is 
+
+CnAL hs n
+
+≤ C
+
+√nAL h → 0.
+
+Thus no single observation can contribute a nonnegligible amount. Because the normalized variances sum to one, the Lindeberg condition follows, and the Lindeberg–Feller the-orem gives the result. 
+
+Lemma D.4 (A Conditional-Density Condition for Regu-larity along the Score-Estimation Path) . Suppose Assump-tion A.1 holds and ¯rS = op(1) . For a ∈ { m⋆Y , 1 − m⋆Y },let pa = ET{a(X)} and define the tilted target law dPa =
+
+a d PT/p a, with expectation Ea. Conditional on the fold-k
+
+training data, put Vk = δ(−k) 
+
+> S
+
+(X) and let fa,k (z | v) be the conditional density of Z = m⋆S (X) given Vk = v under Pa.Let U+ be a fixed open neighborhood with U ⊂ U +.Suppose that, with probability tending to one, fa,k (z | v) is three times continuously differentiable in z on U+ and, for a constant C < ∞,
+
+max  
+
+> k
+
+max  
+
+> a
+
+ess sup 
+
+> v
+
+sup 
+
+> z∈U +
+> 3
+
+X
+
+> j=0
+
+|∂jz fa,k (z | v)| ≤ C. 
+
+Then part (b) of Assumption A.2 holds. Proof. Because ¯rS = op(1) , with probability tending to one t − uV k ∈ U + for every t ∈ U , u ∈ [0 , 1] , and fold 
+
+k. Conditioning on Vk and changing variables from Z to 
+
+Z + uV k give 
+
+μ(a)
+
+> k,u
+
+(t) = paEa[Vkfa,k (t − uV k | Vk)] .
+
+The same conditioning argument gives 
+
+Fk,a (u) = paEa[1 − Fa,k (c − uV k | Vk)] ,
+
+where Fa,k (· | v) is the conditional distribution function cor-responding to fa,k (· | v). Dominated differentiation there-fore yields F ′
+
+> k,a
+
+(u) = μ(a)
+
+> k,u
+
+(c) and 
+
+∂uμ(a)
+
+> k,u
+
+(c) = −paEa
+
+V 2 
+
+> k
+
+∂z fa,k (c − uV k | Vk) ,∂2 
+
+> t
+
+μ(a)
+
+> k, 1
+
+(t) = paEa
+
+Vk∂2 
+
+> z
+
+fa,k (t − Vk | Vk) .
+
+Since 0 ≤ a ≤ 1 and ∥Vk∥PT,2 ≤ rS, 2,
+
+paEa|Vk| ≤ rS, 2, paEa(V 2 
+
+> k
+
+) ≤ r2
+
+> S, 2
+
+.
+
+The derivative bound on fa,k now gives the two rate bounds in Assumption A.2. Finally, the mean-value theorem and the bound on ∂3 
+
+> z
+
+fa,k give 
+
+sup 
+
+> s,t ∈U |s−t|≤ h
+
+|∂2 
+
+> t
+
+μ(a)
+
+> k, 1
+
+(s) − ∂2 
+
+> t
+
+μ(a)
+
+> k, 1
+
+(t)|≤ Cp ahEa|Vk| = Op(hr S, 2) = op(rS, 2),
+
+which proves the remaining condition. 
+
+D.2 Proof of Theorem C.1 (Target Prevalence Estimator) 
+
+Proof. For fold k, abbreviate mk = ˆ m(−k) 
+
+> Y
+
+and wk = ˆ w(−k)HL .When the full-sample averages defining ˆp1 are decomposed by fold, fold k receives its exact source-specific sample pro-portion. To display these weights explicitly, set 
+
+αT,k = |L k|
+
+nT
+
+, αHL ,k = |I k|
+
+nHL 
+
+,
+
+and abbreviate 
+
+QT,k = PT,Lk mk,QHL ,k = PHL ,Ik
+
+wk{Y − mk(X)}.
+
+The estimator in Section 2 is therefore exactly 
+
+ˆp1 =
+
+> V
+
+X
+
+> k=1
+
+{αT,k QT,k + αHL ,k QHL ,k }.
+
+For the foldwise cancellation below, define its equal-fold-weight counterpart 
+
+ep1 = 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+{QT,k + QHL ,k }.
+
+Balanced folds satisfy |αg,k − V −1| ≤ n−1 
+
+> g
+
+. Moreover, 
+
+max k |Qg,k | = Op(1) under Assumption A.1, the stated L2
+
+convergence, and fixed V . Consequently, 
+
+ˆp1 − ep1 =
+
+> V
+
+X
+
+> k=1
+
+
+
+αT,k − 1
+
+V
+
+
+
+QT,k 
+
++
+
+> V
+
+X
+
+> k=1
+
+
+
+αHL ,k − 1
+
+V
+
+
+
+QHL ,k 
+
+= Op(n−1T + n−1HL ) = op(bp,n ),
+
+because bp,n = ( n−1HL + n−1T )1/2. Thus replacing the ex-act fold proportions by 1/V does not affect the first-order expansion, and it is enough to analyze ep1.
+
+Step 1: Establish the population identity. For determin-istic functions m and w, recall 
+
+Ψ( m, w ; 1) = PTm + PHL 
+
+w{Y − m(X)}.
+
+Assumption A.1 gives EHL (Y | X) = m⋆Y (X). Therefore, conditioning on X in the second term yields 
+
+Ψ( m, w ; 1) − p1 = PT(m − m⋆Y ) + PHL {w(m⋆Y − m)}.
+
+The same assumption gives the change-of-measure identity 
+
+PTf = PHL (wHL f ). Applying it to f = m − m⋆Y gives 
+
+Ψ( m, w ; 1) − p1 = PHL 
+
+{wHL − w}(m − m⋆Y ). (D.1) The identity expresses the population bias as the product of the outcome-regression and density-ratio errors. This product form is used below to control the remainder when both nuisance estimators are consistent. 
+
+Step 2: Derive the first-order decomposition. Write 
+
+δY,k = mk − m⋆Y , δw,k = wk − wHL .
+
+For compactness, define the centered validation-fold opera-tors 
+
+UT,k = PT,Lk − PT, UHL ,k = PHL ,Ik − PHL .
+
+Substituting (mk, w k) into (D.1) shows that the fold-k popu-lation bias is −PHL (δw,k δY,k ). Expanding wk = wHL +δw,k 
+
+and mk = m⋆Y + δY,k gives 
+
+Hk := wk(Y − mk) − wHL (Y − m⋆Y )= δw,k (Y − m⋆Y )
+
+− wHL δY,k − δw,k δY,k .
+
+Hence direct addition and subtraction of the two true sum-mands give the exact decomposition 
+
+ep1 − p1 = 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+[UT,k m⋆Y + UHL ,k {wHL (Y − m⋆Y )}]+ Rp, emp + Rp, pop , (D.2) where 
+
+Rp, emp = 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+{UT,k δY,k + UHL ,k Hk}
+
+= 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+h
+
+UT,k δY,k + UHL ,k {δw,k (Y − m⋆Y )}
+
+i
+
+− 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+UHL ,k {wHL δY,k + δw,k δY,k },Rp, pop = − 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+PHL (δw,k δY,k ).
+
+Thus Rp, emp contains centered validation-sample fluctua-tions, whereas Rp, pop is the remaining product bias. 
+
+Step 3: Bound the two remainders. For each fold, condi-tion on the data used to train its nuisance estimators. Cross-fitting makes the corresponding validation observations in-dependent of the fitted functions. Thus, conditional on the training data, UT,k δY,k and UHL ,k Hk are centered empirical averages of fixed functions. Boundedness of Y , mk, and 
+
+wHL in Assumption A.1 gives 
+
+∥Hk∥PHL ,2 = Op(rY, 2 + rw, HL ,2); 
+
+here the product term is controlled because δY,k is uniformly bounded. At this first use, Lemma D.1 gives the two bounds explicitly: 
+
+UT,k δY,k = Op
+
+ ∥δY,k ∥PT,2
+
+√nT,k 
+
+
+
+= Op
+
+ rY, 2
+
+√nT
+
+
+
+,
+
+UHL ,k Hk = Op
+
+ ∥Hk∥PHL ,2
+
+√nHL ,k 
+
+
+
+= Op
+
+ rY, 2 + rw, HL ,2
+
+√nHL 
+
+
+
+.
+
+The last equalities use balanced folds, so ng,k ≍ ng , and the definitions of the nuisance rates. Averaging over the fixed number V of folds therefore yields 
+
+Rp, emp = Op
+
+ rY, 2
+
+√nT
+
++ rY, 2 + rw, HL ,2
+
+√nHL 
+
+
+
+.
+
+Because both nuisance errors are op(1) and bp,n is at least of the order of both n−1/2T and n−1/2HL , this is op(bp,n ). For the population remainder, Cauchy–Schwarz gives 
+
+|Rp, pop | ≤ rw, HL ,2rY, 2 = op(bp,n ),
+
+where the last equality is precisely the product-rate condition in the theorem. Finally, the fold-balance calculation converts the leading term in (D.2) into the two full-sample empirical averages, with an additional op(bp,n ) error. Specifically, PTm⋆Y = p1
+
+and PHL {wHL (Y −m⋆Y )} = 0 , so these centered averages are exactly the empirical averages of ϕT 
+
+> p1
+
+and ϕHL  
+
+> p1
+
+, respectively. Combining this fact with ˆp1 − ep1 = op(bp,n ) gives 
+
+ˆp1 − p1 = 1
+
+nHL 
+
+> nHL
+
+X
+
+> i=1
+
+ϕHL  
+
+> p1,i
+
++ 1
+
+nT
+
+> nT
+
+X
+
+> ℓ=1
+
+ϕT 
+
+> p1,ℓ
+
++ op(bp,n ),
+
+which is the claimed expansion. 
+
+D.3 Proof of Theorem 1 
+
+Proof. Let 
+
+bθ1(c) = bθT(c)+ bθHL (c)+ bθAL (c), θ1(c) = PT{m⋆Y Ic}.
+
+We first establish an expansion for the numerator and then account for the estimated denominator. Replacing the exact source-specific fold weights by 1/V costs op(an) by the fold-weight calculation at the start of this section; all cancellations below are therefore stated fold by fold with common weight 
+
+1/V .At the true nuisance functions, define the mean-zero source terms 
+
+ξHL (c) = wHL (X){Y − m⋆Y (X)}Ic(X),ξAL ,h (c) = wAL (X)m⋆Y (X)
+
+× Kh{c − m⋆S (X)}{ S − m⋆S (X)},ξT(c) = m⋆Y (X)Ic(X) − θ1(c).
+
+We show that 
+
+bθ1(c) − θ1(c) = PHL ,n ξHL (c) + PAL ,n ξAL ,h (c)+ PT,n ξT(c) + op(an). (D.3) We first give the target and HL remainder decomposition. Fix a fold and suppress its index. Write M = m⋆Y , Z = m⋆S ,
+
+δY = ˆ mY − M , δS = ˆ mS − Z, and δw,d = ˆ wd − wd. Also set 
+
+I = I{Z ≥ c}, bI = I{Z + δS ≥ c},
+
+and let UT and UHL denote the centered empirical operators on the two validation folds. Directly expanding the target and HL numerator terms gives 
+
+PT,L{(M + δY )bI}
+
++ PHL ,I [( wHL + δw, HL ){Y − M − δY }bI] − θ1(c)= UT(M I )+ UHL [wHL (Y − M )I]+ BS (c) − PHL (δw, HL δY bI)+ RT + RHL , (D.4) where 
+
+RT = UT[δY bI + M (bI − I)] ,RHL = UHL 
+
+wHL (Y − M )( bI − I) + δw, HL (Y − M )bI
+
+− wHL δY bI − δw, HL δY bI.
+
+To verify (D.4), first expand the four products in the HL term. Conditional mean-zero residuals give 
+
+PHL [wHL (Y − M )bI] = PHL [δw, HL (Y − M )bI] = 0 .
+
+Change of measure then gives the exact cancellation 
+
+PT(δY bI) − PHL (wHL δY bI) = 0 ,
+
+leaving only the displayed product bias and BS (c) =
+
+PT{M (bI − I)}.The product bias in (D.4) is at most rw, HL ,2rY, 2 by Cauchy–Schwarz. Moreover, |bI − I| can be nonzero only when |Z − c| ≤ ¯rS . The bounded target score density there-fore gives 
+
+PT(|Z − c| ≤ ¯rS ) = Op(¯ rS ).
+
+Applying Lemma D.1 to the terms above yields 
+
+RT = Op
+
+rY, 2 + ¯ r1/2
+
+> S
+
+√nT
+
+!
+
+= op(n−1/2T ),RHL = Op
+
+rY, 2 + rw, HL ,2 + ¯ r1/2
+
+> S
+
+√nHL 
+
+!
+
+= op(n−1/2HL ).
+
+For the first term in RHL , use EHL [w2HL I{| Z − c| ≤ ¯rS }] ≤
+
+CPT(|Z − c| ≤ ¯rS ); the remaining terms follow from the nuisance L2 rates and boundedness. This accounts explicitly for every target and HL remainder. It remains to control estimation of the surrogate-derived model inside the target indicator. We use the score-estimation path in Assumption A.2, which avoids replacing a hard indicator evaluated at the fitted score by a smoothed indicator. Suppress the fold index, put Z = m⋆S (X) under the target law, and for a = m⋆Y define 
+
+ν(1)  
+
+> u
+
+(A) = PT [a(X)δS (X)I{Z + uδ S (X) ∈ A}] ,
+
+and let μ(1)  
+
+> u
+
+be its density on U. Also define 
+
+F (u) = PT[a(X)I{Z + uδ S (X) ≥ c}] .
+
+The signed-density condition permits differentiation along this path and gives 
+
+F ′(u) = μ(1)  
+
+> u
+
+(c).
+
+Consequently, 
+
+BS (c) = F (1) − F (0) = 
+
+Z 10
+
+μ(1)  
+
+> u
+
+(c) du. 
+
+Conditional on the training data, transportability of the AL residual gives 
+
+PAL [wAL m⋆Y Kh(c − m⋆S − δS ){S − m⋆S − δS }]= −PT[m⋆Y Kh(c − Z − δS )δS ]= −
+
+Z
+
+Kh(c − t) dν (1) 1 (t),
+
+where ν(1) 1 is the signed measure in Assumption A.2. Since its density is required only on U, write 
+
+−
+
+Z
+
+Kh(c − t) dν (1) 1 (t) = −
+
+Z
+
+> U
+
+Kh(c − t)μ(1) 1 (t) dt 
+
++ Rtail ,Rtail = op(h2rS, 2).
+
+To verify the tail bound, let d = dist( c, Uc) > 0.Boundedness of a and Cauchy–Schwarz give ∥ν(1) 1 ∥TV ≤
+
+PT{a(X)|δS (X)|} = Op(rS, 2). For a compactly supported kernel, the tail is zero for all sufficiently small h. For an exponentially decreasing kernel, 
+
+|Rtail | ≤ ∥ ν(1) 1 ∥TV sup 
+
+> |t−c|≥ d
+
+|Kh(c − t)|
+
+= Op{rS, 2h−1 exp( −C0d/h )} = op(h2rS, 2)
+
+for some C0 > 0. Define the combined deterministic score drift by 
+
+RS (c) = BS (c) + PAL [wAL m⋆Y Kδ (ϵS − δS )] ,
+
+where Kδ = Kh(c−Z −δS ) and ϵS = S−Z. The preceding identities give 
+
+RS (c) = 
+
+Z 10
+
+{μ(1)  
+
+> u
+
+(c) − μ(1) 1 (c)} du 
+
++ μ(1) 1 (c) −
+
+Z
+
+> U
+
+Kh(c − t)μ(1) 1 (t) dt + Rtail .
+
+By the mean-value theorem in u and Assumption A.2, 
+
+Z 10
+
+{μ(1)  
+
+> u
+
+(c) − μ(1) 1 (c)} du 
+
+≤ 12 sup 
+
+> 0≤u≤1
+
+|∂uμ(1)  
+
+> u
+
+(c)| = Op(r2
+
+> S, 2
+
+).
+
+Because K is symmetric, its first moment vanishes. Asecond-order Taylor expansion and Assumption A.2 there-fore give 
+
+μ(1) 1 (c) −
+
+Z
+
+> U
+
+Kh(c − t)μ(1) 1 (t) dt 
+
+= − h2μ2(K)2 ∂2 
+
+> t
+
+μ(1) 1 (c) + op(h2rS, 2).
+
+Together with the already separated Rtail , this gives 
+
+RS (c) = Op(r2 
+
+> S, 2
+
++ h2rS, 2) + op(an) = op(an),
+
+by Assumptions A.1 and A.2. This establishes the required cancellation. We next connect this population cancellation to the em-pirical AL correction. Recall ϵS = S − Z and Kδ =
+
+Kh(c − Z − δS ), and set K0 = Kh(c − Z),
+
+bC = ( wAL + δw, AL )( m⋆Y + δY ), DC = bC − wAL m⋆Y .
+
+Let 
+
+bG = bCK δ (ϵS − δS ), G0 = wAL m⋆Y K0ϵS ,
+
+and let UAL = PAL ,J −PAL . The fitted AL integrand minus its oracle counterpart has the exact decomposition 
+
+bG − G0 = DC Kδ ϵS + wAL m⋆Y (Kδ − K0)ϵS
+
+− bCK δ δS .
+
+Conditional on the training data, the first two terms on the right have PAL -mean zero. Therefore 
+
+PAL ( bG − G0) = −PAL ( bCK δ δS ),RS (c) − BS (c) = −PAL (wAL m⋆Y Kδ δS ).
+
+Subtracting these two population terms leaves 
+
+−PAL (DC Kδ δS ), which gives the exact foldwise identity 
+
+BS (c) + PAL ,J bG = PAL ,J G0 + RS (c)+ UAL ( bG − G0) − PAL (DC Kδ δS ).This display identifies the oracle AL average, the score-drift remainder, the centered AL remainder, and the remaining nuisance-product bias. We now bound the last two terms. The bounded auxiliary score density and ¯rS /h = op(1) imply the shifted-kernel moment bounds 
+
+PAL |Kδ | = Op(1) , PAL K2 
+
+> δ
+
+= Op(h−1).
+
+Also, boundedness of the true functions and uniform nui-sance consistency give ∥DC ∥∞ = Op(¯ rw, AL + ¯ rY ) and 
+
+∥ bC∥∞ = Op(1) . Hence 
+
+∥DC Kδ ϵS ∥PAL ,2 = Op
+
+ ¯rw, AL + ¯ rY
+
+√h
+
+
+
+,
+
+∥ bCK δ δS ∥PAL ,2 = Op(¯ rS /√h),
+
+|PAL (DC Kδ δS )| = Op{(¯ rw, AL + ¯ rY )¯ rS }.
+
+For the remaining centered term, the mean-value theorem and ∥K′
+
+> h
+
+∥∞ = O(h−2) give 
+
+∥wAL m⋆Y (Kδ − K0)ϵS ∥PAL ,2 = Op(¯ rS /h 2).
+
+Applying Lemma D.1 to these three conditional L2 bounds yields 
+
+UAL (DC Kδ ϵS ) = Op
+
+ ¯rw, AL + ¯ rY
+
+√nAL h
+
+
+
+,
+
+UAL {wAL m⋆Y (Kδ − K0)ϵS } = Op
+
+ ¯rS
+
+h2√nAL 
+
+
+
+,
+
+UAL ( bCK δ δS ) = Op
+
+ ¯rS
+
+√nAL h
+
+
+
+.
+
+Collecting the preceding bounds, the four numerator remain-der groups and their orders are HL product: Op(rw, HL ,2rY, 2),
+
+Target/HL empirical: op(n−1/2T + n−1/2HL ),
+
+Score drift: Op(r2 
+
+> S, 2
+
++ h2rS, 2),
+
+Remaining AL: Op{(¯ rw, AL + ¯ rY )¯ rS }
+
++ Op
+
+ ¯rw, AL + ¯ rY + ¯ rS
+
+√nAL h
+
+
+
++ Op
+
+ ¯rS
+
+h2√nAL 
+
+
+
+.
+
+The AL term involving (¯ rw, AL + ¯ rY + ¯ rS )/√nAL h is op(an)
+
+by the consequence stated after Assumption A.2; every other line is op(an) by the rate conditions in that assumption. Ap-ply the target–HL decomposition and the exact AL identity fold by fold, then average over the fixed number of folds. The three oracle averages become PHL ,n ξHL (c), PAL ,n ξAL ,h (c),and PT,n ξT(c), up to the already controlled fold-weight er-ror. This proves (D.3). For the denominator, repeat the decomposition in the proof of Theorem C.1 at the an scale. Its centered empir-ical and fold-weight remainders are op(bp,n ) = op(an) be-cause bp,n ≤ an, while Assumption A.2 gives rw, HL ,2rY, 2 =
+
+op(an). Therefore 
+
+ˆp1 − p1 = PHL ,n ϕHL  
+
+> p1
+
++ PT,n ϕT 
+
+> p1
+
++ op(an). (D.5) The variance of the three leading numerator averages is 
+
+O(a2
+
+> n
+
+), so (D.3) gives bθ1(c) − θ1(c) = Op(an). The last display similarly gives ˆp1 − p1 = Op(an), and p1 is bounded away from zero. Lemma D.2, with (ˆθ, θ, ˆp, p ) = (bθ1(c), θ 1(c), ˆp1, p 1), therefore gives 
+
+ˆτ1(c) − τ1(c) = bθ1(c) − θ1(c)
+
+p1
+
+− τ1(c)
+
+p1
+
+(ˆ p1 − p1)+ op(an).
+
+The centering in the influence functions can now be checked algebraically. With M = m⋆Y , I = Ic, and θ1(c) = p1τ1(c),
+
+ξHL (c) − τ1(c)ϕHL 
+
+> p1
+
+p1
+
+= wHL (Y − M ){I − τ1(c)}
+
+p1
+
+,ξT(c) − τ1(c)ϕT
+
+> p1
+
+p1
+
+= M I − θ1(c) − τ1(c)( M − p1)
+
+p1
+
+= M {I − τ1(c)}
+
+p1
+
+,ξAL ,h (c)
+
+p1
+
+= ψAL ,1,h (c).
+
+These are precisely the three influence terms stated in the theorem, and therefore 
+
+ˆτ1(c) − τ1(c) = PHL ,n ψHL ,1(c) + PAL ,n ψAL ,1,h (c)+ PT,n ψT,1(c) + op(an).
+
+If additionally s1,n (c) ≍ an, the last remainder is 
+
+op{s1,n (c)}.Finally, the three empirical sums are independent. The HL and target summands are bounded, while the AL summand has envelope O(h−1) and variance O(h−1). Lemma D.3 applies because s1,n (c) ≍ an and nAL h → ∞ . Hence the sum normalized by s1,n (c) converges to N (0 , 1) . No source is required to have asymptotically negligible variance. 
+
+D.4 Proof of Theorem 2 
+
+Proof. The argument has two stages. We first replace the or-acle nuisance functions by their fold-specific estimates while keeping the two global scalars fixed. We then replace p1 and 
+
+τ1(c) by ˆp1 and ˆτ1(c). For an observation in validation fold 
+
+k, let Tk denote the training sigma-field and define eψg, 1,r (c)
+
+to be the plug-in influence value with the fold-specific nui-sance estimates unchanged but with ˆp1 and ˆτ1(c) replaced by 
+
+p1 and τ1(c). Write 
+
+e∆g, 1,r = eψg, 1,r (c) − ψg, 1,r (c).
+
+Set dHL = dT = 1 and dAL = h−1; these are the natural second-moment orders for the three sources. 
+
+Step 1: Control the fold-specific nuisance estimates. Put 
+
+Z = m⋆S (X), Ic = I{Z ≥ c}, and ˆIc,k = I{ ˆm(−k) 
+
+> S
+
+(X) ≥
+
+c}. Conditional on Tk, the indicator can change only when the true score lies near the threshold: 
+
+PT( ˆIc,k ̸ = Ic | T k) ≤ PT(|Z − c| ≤ ¯rS )= Op(¯ rS ) = op(1) .The last equality uses the bounded target-score density in part (c) of Assumption A.1 and the consistency in part (a) of Assumption A.2. For the HL sample, boundedness of wHL 
+
+additionally gives, for any event A,
+
+EHL {w2HL I(A)} ≤ CEHL {wHL I(A)} = CPT(A).
+
+Thus the same boundary probability controls the true-weight part of the HL indicator error. The fitted-weight and outcome-regression errors are controlled by rw, HL ,2 and 
+
+rY, 2, respectively. Boundedness from part (a) of Assump-tion A.1 then gives 
+
+Eg ( e∆2 
+
+> g, 1,r
+
+| T k) = op(1) , g ∈ { HL , T}.
+
+For the AL sample, first keep the kernel argument fixed at 
+
+Z. Parts (b) and (c) of Assumption A.1 give EAL K2
+
+> h
+
+(c −
+
+Z) = O(h−1). Hence, for any uniformly consistent nuisance error δ appearing as a bounded multiplicative factor, 
+
+EAL {δ2K2
+
+> h
+
+(c − Z) | T k}≤ ∥ δ∥2
+
+> ∞
+
+EAL K2
+
+> h
+
+(c − Z) = op(h−1).
+
+This explicitly handles the fitted weight, outcome factor, and score residual when the kernel location is fixed. It remains to move the kernel from Z to Z + δS . The mean-value theorem gives 
+
+Kh(c−Z −δS )−Kh(c−Z) = −δS
+
+Z 10
+
+K′
+
+> h
+
+(c−Z −tδ S ) dt. 
+
+The kernel-tail and AL score-density conditions in parts (b) and (c) of Assumption A.1, together with ¯rS /h = op(1) 
+
+from part (a) of Assumption A.2, imply R 10 EAL K′2 
+
+> h
+
+(c − Z −
+
+tδ S ) dt = Op(h−3). Jensen’s inequality therefore gives 
+
+EAL 
+
+{Kh(c − Z − δS ) − Kh(c − Z)}2 | T k
+
+
+
+≤ C ¯r2 
+
+> S
+
+h−3 = op(h−1),
+
+where the last equality uses ¯rS /h = op(1) . Combining this bound with the fixed-kernel bounds and the analogous 
+
+Op(¯ r2 
+
+> S
+
+h−1) = op(h−1) bound for replacing S − Z by S −
+
+Z − δS gives 
+
+EAL ( e∆2AL ,1,r | T k) = op(h−1).
+
+By the sampling condition in part (a) of Assumption A.1 and the cross-fitting construction, validation observations are i.i.d. conditional on Tk. Conditional Markov’s inequality therefore converts the preceding conditional-mean bounds into empirical bounds. Summing the fixed number of folds gives 
+
+1
+
+ngng
+
+X
+
+> r=1
+
+e∆2 
+
+> g, 1,r
+
+= op(dg ), g ∈ G .
+
+Step 2: Restore ˆp1 and ˆτ1(c). Theorem 1 gives ˆτ1(c) →p
+
+τ1(c). The denominator expansion already established in its proof gives ˆp1 − p1 = Op(an) = op(1) ; this conclusion does not require the sharper bp,n -scale product rate in The-orem C.1. Since p1 ≥ η by part (a) of Assumption A.1, 
+
+P(ˆ p1 ≥ η/ 2) → 1. On this event, replacing the two global scalars is a Lipschitz operation. The empirical second mo-ments of the remaining factors are Op(1) for HL and target and Op(h−1) for AL. These orders follow from bounded-ness and the kernel second-moment bound used in Step 1. Consequently, 
+
+1
+
+ngng
+
+X
+
+> r=1
+
+{ ˆψg, 1,r (c) − eψg, 1,r (c)}2 = op(dg ).
+
+Combining this display with Step 1 and the empirical trian-gle inequality, and defining ∆g, 1,r = ˆψg, 1,r (c) − ψg, 1,r (c),yields 
+
+1
+
+ngng
+
+X
+
+> r=1
+
+∆2 
+
+> g, 1,r
+
+= op(dg ), g ∈ G . (D.6) 
+
+Step 3: Establish the oracle second-moment law of large numbers. Each oracle influence function has mean zero: this follows from the conditional mean-zero HL and AL residuals and from the explicit centering of the target term. The usual law of large numbers applies to the bounded HL and target influence values. For AL, the kernel moment calculation gives 
+
+EAL {ψ2AL ,1(c)} = O(h−1),
+
+EAL {ψ4AL ,1(c)} = O(h−3).
+
+Here parts (b) and (c) of Assumption A.1 give the required kernel and AL score-density bounds; in particular, bounded 
+
+K and R K2 < ∞ imply R K4 < ∞. The i.i.d. condition in part (a) of the same assumption then gives 
+
+Var 
+
+
+
+1
+
+nAL 
+
+> nAL
+
+X
+
+> j=1
+
+ψ2AL ,1,j (c)
+
+ = O{(nAL h3)−1} = o(h−2),
+
+because nAL h → ∞ . Chebyshev’s inequality therefore shows that the AL empirical second moment differs from its expectation by op(h−1). Thus, for all three sources, 
+
+1
+
+ngng
+
+X
+
+> r=1
+
+ψ2 
+
+> g, 1,r
+
+(c) = Eg {ψ2
+
+> g, 1
+
+(c)} + op(dg ). (D.7) 
+
+Step 4: Pass from oracle to plug-in second moments and center them. Set 
+
+D2 
+
+> g,n
+
+= 1
+
+ngng
+
+X
+
+> r=1
+
+∆2 
+
+> g, 1,r
+
+,Qg,n = 1
+
+ngng
+
+X
+
+> r=1
+
+ψ2 
+
+> g, 1,r
+
+(c),
+
+bQg,n = 1
+
+ngng
+
+X
+
+> r=1
+
+ˆψ2 
+
+> g, 1,r
+
+(c).
+
+The passage from oracle to plug-in second moments follows from the elementary inequality 
+
+1
+
+ngng
+
+X
+
+> r=1
+
+{ ˆψ2 
+
+> g, 1,r
+
+(c) − ψ2 
+
+> g, 1,r
+
+(c)}
+
+≤ Dg,n 
+
+  bQ1/2 
+
+> g,n
+
++ Q1/2
+
+> g,n
+
+.Moreover, the empirical triangle inequality gives bQ1/2 
+
+> g,n
+
+≤
+
+Q1/2 
+
+> g,n
+
++ Dg,n , so the right-hand side is at most 2Dg,n Q1/2 
+
+> g,n
+
++
+
+D2
+
+> g,n
+
+. Equations (D.6)–(D.7) give Dg,n = op(d1/2 
+
+> g
+
+) and 
+
+Qg,n = Op(dg ), so the bound is op(dg ).It remains to subtract the source-specific empirical mean. Let ¯ψ◦ 
+
+> g,n
+
+= n−1
+
+> g
+
+P 
+
+> r
+
+ψg, 1,r (c) denote the oracle mean. Since the oracle influence function is mean zero and has variance 
+
+O(dg ),
+
+¯ψ◦ 
+
+> g,n
+
+= Op{(dg /n g )1/2}, | ¯ψg, 1(c) − ¯ψ◦
+
+> g,n
+
+| ≤ Dg,n .
+
+Hence ¯ψ2
+
+> g, 1
+
+(c) = op(dg ), and centering changes the variance estimator for source g by only op(dg /n g ). We have proved the source-specific expansion 
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+{ ˆψg, 1,r (c) − ¯ψg, 1(c)}2 = Var g {ψg, 1(c)}
+
+ng
+
++ op(dg /n g ).
+
+Step 5: Combine the three sources. Because there are only three sources and 
+
+X
+
+> g∈G
+
+dg
+
+ng
+
+= 1
+
+nHL 
+
++ 1
+
+nAL h + 1
+
+nT
+
+= a2
+
+> n
+
+,
+
+the source-specific remainders sum to op(a2
+
+> n
+
+). The non-degeneracy condition s1,n (c) ≍ an converts this into 
+
+op{s21,n (c)}. Therefore 
+
+X
+
+> g∈G
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+{ ˆψg, 1,r (c) − ¯ψg, 1(c)}2
+
+= X
+
+> g∈G
+
+Var g {ψg, 1(c)}
+
+ng
+
++ op{s21,n (c)}
+
+= s21,n (c){1 + op(1) }.
+
+Taking square roots gives cSE TPR (c)/s 1,n (c) →p 1. The Wald interval then follows from Theorem 1 and Slutsky’s the-orem. The regularity condition in part (b) of Assumption A.2 enters here through that theorem; the second-moment calcu-lations above use only the basic kernel, density, and nuisance-consistency conditions. 
+
+D.5 Proof of Corollary C.1 
+
+Proof. Write M = m⋆Y , and, within fold k, abbreviate cM =ˆm(−k) 
+
+> Y
+
+and δY = cM − M . Introduce the negative-class outcome, regression, fitted regression, and regression error: 
+
+Y0 = 1 − Y, M0 = 1 − M, 
+
+cM0 = 1 − cM , δY, 0 = cM0 − M0 = −δY .
+
+The oracle and fitted negative-class residuals are, respec-tively, 
+
+Y0 − M0 = M − Y, Y0 − cM0 = cM − Y = ( M − Y ) + δY .
+
+Thus the FPR numerator is exactly the positive-class numer-ator construction applied to (Y0, M 0, cM0), while the score and threshold indicator are unchanged. We first verify that every remainder bound used for the TPR numerator is preserved by this substitution. In the target–HL decomposition (D.4), replace 
+
+M 7 → M0 = 1 − M, Y − M 7 → M − Y, δY 7 → δY, 0 = −δY .
+
+The population product bias consequently changes from 
+
+−PHL (δw, HL δY bI) to +PHL (δw, HL δY bI), but its absolute value is still bounded by rw, HL ,2rY, 2. The target and HL cen-tered empirical remainders have the same L2 bounds because 
+
+∥δY, 0∥2 = ∥δY ∥2 and all remaining factors are unchanged. These steps use the sampling, transportability, change-of-measure, and boundedness conditions in part (a), and the local density condition in part (c), of Assumption A.1. For the AL term, the fitted negative-class coefficient sat-isfies 
+
+ˆw(−k)AL (1 − cM ) − wAL (1 − M )= δw, AL (1 − M ) − wAL δY − δw, AL δY .
+
+Hence its absolute error has exactly the same rate bounds as the positive-class coefficient. The fitted score residual remains S − m⋆S − δS . The score-drift cancellation now uses the a = 1 − m⋆Y branch of part (b) of Assumption A.2; the kernel and shifted-kernel bounds use parts (b) and (c) of Assumption A.1. Part (a) of Assumption A.2 then makes the negative-class product, empirical, score-drift, and remaining AL remainders all op(an), exactly as in the TPR proof. Let bν(c) be the FPR numerator, put ν(c) = p0τ0(c) and 
+
+I = Ic, and define the mean-zero oracle terms 
+
+ξHL ,0(c) = wHL (M − Y )I, ξAL ,0,h (c) = wAL (1 − M )Kh(c − m⋆S )( S − m⋆S ),ξT,0(c) = (1 − M )I − ν(c).
+
+The preceding bounds and the fixed-fold weight approxima-tion therefore give 
+
+bν(c) − ν(c) = PHL ,n ξHL ,0(c) + PAL ,n ξAL ,0,h (c)+ PT,n ξT,0(c) + op(an). (D.8) For the denominator, use the an-scale prevalence expan-sion (D.5), rather than the sharper standalone bp,n -scale con-clusion. Since ˆp0 = 1 − ˆp1,
+
+ˆp0 − p0 = −PHL ,n ϕHL  
+
+> p1
+
+− PT,n ϕT 
+
+> p1
+
++ op(an). (D.9) The variances of the three leading terms in (D.8) are bounded by constant multiples of n−1HL , (nAL h)−1, and n−1T , respec-tively, so bν(c) − ν(c) = Op(an). Equation (D.9) similarly gives ˆp0 − p0 = Op(an). Finally, p0 ≥ η > 0 by part (a) of Assumption A.1. Thus all conditions of Lemma D.2 hold, and 
+
+ˆτ0(c) − τ0(c) = bν(c) − ν(c)
+
+p0
+
++ τ0(c)
+
+p0
+
+(ˆ p1 − p1)+ op(an).It remains to identify the centered influence terms. Using 
+
+ϕHL  
+
+> p1
+
+= wHL (Y − M ), ϕT 
+
+> p1
+
+= M − p1, ν(c) = p0τ0(c), and 
+
+p0 + p1 = 1 , we obtain 
+
+ξHL ,0(c) + τ0(c)ϕHL 
+
+> p1
+
+p0
+
+= wHL (M − Y ){I − τ0(c)}
+
+p0
+
+,ξT,0(c) + τ0(c)ϕT
+
+> p1
+
+p0
+
+= (1 − M ){I − τ0(c)}
+
+p0
+
+,ξAL ,0,h (c)
+
+p0
+
+= ψAL ,0,h (c).
+
+Here and in the corollary statement, the bandwidth subscript is suppressed when the AL term is included in the source-indexed notation ψg, 0(c). Substitution into the ratio expan-sion proves 
+
+ˆτ0(c) − τ0(c) = X
+
+> g∈G
+
+Pg,n ψg, 0(c) + op(an).
+
+We next verify the central limit theorem rather than relying only on analogy. The three influence terms are mean zero by conditional mean-zero residuals, target centering, and change of measure. Part (a) of Assumption A.1 gives independence of the three source averages and fixed bounded envelopes for the HL and target terms. Parts (b) and (c) give an O(h−1)
+
+envelope and O(h−1) variance for the AL term, as well as nAL h → ∞ . Therefore Lemma D.3 applies. Under 
+
+s0,n (c) ≍ an, it yields 
+
+ˆτ0(c) − τ0(c)
+
+s0,n (c) ⇒ N (0 , 1) .
+
+Finally, we make the plug-in variance calculation explicit. Define eψg, 0,r (c) by retaining all fold-specific fitted nuisance functions in ˆψg, 0,r (c) but replacing the global scalars ˆp0 and 
+
+ˆτ0(c) by p0 and τ0(c). Because δY, 0 = −δY , the source-specific negative-class calculations leading to (D.6) have the same orders: 
+
+1
+
+ngng
+
+X
+
+> r=1
+
+{ eψg, 0,r (c) − ψg, 0,r (c)}2 = op(dg ),
+
+where dHL = dT = 1 and dAL = h−1. Here the HL and target bounds use parts (a) and (c) of Assumption A.1. The AL kernel-shift bound additionally uses the kernel smooth-ness, tail, and bounded AL score-density conditions in parts (b) and (c) of that assumption, together with ¯rS /h = op(1) 
+
+and the nuisance rates in part (a) of Assumption A.2. Equations (D.9) and the FPR expansion give ˆp0 →p p0 and 
+
+ˆτ0(c) →p τ0(c). Restoring these global scalars therefore preserves the same empirical L2 orders. The oracle HL and target second moments satisfy the ordinary law of large numbers. For the AL term, the fourth moment is O(h−3);together with nAL h → ∞ , this gives the corresponding negative-class version of (D.7). Repeating the elementary second-moment comparison following those two equations yields 
+
+X
+
+> g∈G
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+{ ˆψg, 0,r (c) − ¯ψg, 0(c)}2
+
+= s20,n (c) + op{s20,n (c)}.
+
+Consequently, cSE FPR (c)/s 0,n (c) →p 1, and the pointwise Wald interval follows from the preceding Gaussian limit and Slutsky’s theorem. 
+
+D.6 Proof of Theorem C.2 
+
+Proof. Write ˆτ dir 1 (c) and ˆτ dir 0 (c) for the raw estimators ˆτ1(c)
+
+and ˆτ0(c) before projection. By the definition in part (a) of Assumption A.3, for y ∈ { 0, 1} and c ∈ C n,
+
+ˆτ dir  
+
+> y
+
+(c) − τy (c) = X
+
+> g∈G
+
+Pg,n ψg,y (c) + Ry,n (c).
+
+The HL and target oracle terms are bounded empirical aver-ages. The AL oracle term is a kernel average with variance of order h−1 and envelope of order h−1. Bernstein’s inequality and a union bound over the grid give 
+
+max 
+
+> c∈C n
+> 1
+
+X
+
+> y=0
+
+|ˆτ dir  
+
+> y
+
+(c) − τy (c)|
+
+= Op
+
+s
+
+log( Mn + 1) 
+
+nHL 
+
++
+
+s
+
+log( Mn + 1) 
+
+nAL h
+
++
+
+s
+
+log( Mn + 1) 
+
+nT
+
+ + op(1) = op(1) ,
+
+where the final op(1) is precisely 
+
+max y∈{ 0,1} max c∈C n |Ry,n (c)| from part (a) of As-sumption A.3. Cross-fitting permits the empirical-process argument to be applied conditionally fold by fold, and fixed V does not change the order. Bernstein’s inequality also produces the smaller linear terms log( Mn + 1) /n HL ,
+
+log( Mn + 1) /(nAL h), and log( Mn + 1) /n T. Each is dominated by its displayed square-root counterpart because the corresponding ratio tends to zero. At the two points in C+ 
+
+> n
+
+\ C n, the fitted and population endpoint values are both fixed at one or zero. Thus the same 
+
+op(1) gridwise bound holds for the augmented TPR and FPR vectors on C+ 
+
+> n
+
+.Let Π0 denote equal-weight least-squares projection onto the cone of nonincreasing sequences. For completeness, it has the max–min representation 
+
+(Π 0z)j = min  
+
+> 0≤a≤j
+
+max 
+
+> j≤b≤Mn
+
+1
+
+b − a + 1 
+
+> b
+
+X
+
+> i=a
+
+zi.
+
+This representation shows directly that isotonic projection is coordinatewise order preserving and commutes with constant shifts. Let 1 denote the vector of ones. Hence, for any nonincreasing vector v and any vector z, if ∥z − v∥∞ ≤ δ,then v − δ1 ≤ z ≤ v + δ1 and therefore v − δ1 ≤ Π0z ≤
+
+v + δ1. Thus ∥Π0z − v∥∞ ≤ δ. Clipping Π0z to [0 , 1] ,which yields the constrained projection used here, cannot increase its distance from the true vector v ∈ [0 , 1] Mn+1 .Applying this property to the true augmented TPR and FPR vectors shows that projection does not enlarge their gridwise sup-norm errors. On C, linear interpolation uses the grid Cn,whose endpoints are c and c. Continuity then yields 
+
+∥˜τ1 − τ1∥∞,C + ∥˜τ0 − τ0∥∞,C = op(1) ,
+
+because the additional deterministic interpolation errors are bounded by the moduli of continuity of τ1 and τ0 at ∆c,n .The artificial endpoints also remain fixed after the con-strained projection. Indeed, their raw values are 1 and 0.If a feasible minimizer had v0 < 1, replacing only v0 by 
+
+1 would preserve the nonincreasing constraints and strictly reduce the squared-error objective. Similarly, if vMn > 0,replacing only vMn by 0 would preserve feasibility and re-duce the objective. Thus each projected curve is continuous after interpolation, starts at one, and ends at zero. Let cu = inf {c ∈ C : τ0(c) ≤ u}. Continuity and strict monotonicity of τ0 on C imply that u 7 → cu is continuous. Fix ϵ ∈ (0 , 1/2) and put δn = ∥˜τ0 − τ0∥∞,C = op(1) . With probability tending to one, the fitted inverse ˆcu lies in C
+
+for every u ∈ [ϵ, 1 − ϵ]: the fitted FPR at c is larger than 
+
+1 − ϵ, whereas its value at c is smaller than ϵ. On this event, monotonicity and the definition of the generalized inverse give 
+
+cu+δn ≤ ˆcu ≤ cu−δn , ϵ ≤ u ≤ 1 − ϵ, 
+
+whenever δn < ϵ . For example, ˜τ0(c) ≤ u implies τ0(c) ≤
+
+u + δn, which proves the left inequality; evaluating the fitted curve at cu−δn proves the right one. Uniform continuity of 
+
+u 7 → cu on [ϵ/ 2, 1−ϵ/ 2] now yields sup u∈[ϵ, 1−ϵ] |ˆcu −cu| =
+
+op(1) . Consequently, 
+
+sup 
+
+> u∈[ϵ, 1−ϵ]
+
+|˜τ1(ˆ cu) − τ1(cu)| ≤ ∥ ˜τ1 − τ1∥∞,C
+
++ sup 
+
+> u∈[ϵ, 1−ϵ]
+
+|τ1(ˆ cu) − τ1(cu)|,
+
+and the right-hand side is op(1) . This proves uniform consis-tency of the ROC estimator on every fixed interior interval. It remains to include u = 0, 1 without applying the inverse-continuity argument to the artificial thresholds. Both the true and estimated ROC curves are nondecreasing, take values in [0 , 1] , and are anchored at ROC(0) = [ROC cf 
+
+(0) = 0 and ROC(1) = [ROC cf 
+
+(1) = 1 . Write R = ROC and 
+
+bR = [ROC cf 
+
+. Hence 
+
+sup 
+
+> 0≤u≤ϵ
+
+| bR(u) − R(u)| ≤ bR(ϵ) + R(ϵ),
+
+sup 
+
+> 1−ϵ≤u≤1
+
+| bR(u) − R(u)| ≤ 2 − bR(1 − ϵ) − R(1 − ϵ).
+
+For fixed ϵ, the preceding interior result controls the esti-mated values on the right. Letting ϵ ↓ 0 and using continuity of the true ROC at zero and one proves uniform consistency on [0 , 1] .Under the additional AUC-grid mesh condition in Theo-rem C.2, the trapezoidal estimator equals the integral of the piecewise-linear interpolant of the estimated ROC values on the u-grid. Its error is bounded by 
+
+sup 
+
+> u∈[0 ,1]
+
+| [ROC cf 
+
+(u) − ROC( u)| + ωROC (∆ u,n ),
+
+where ωROC is the modulus of continuity of the true ROC curve. The first term is op(1) by the preceding argument, and the second tends to zero because the ROC curve is continuous and ∆u,n → 0. This proves AUC consistency. 
+
+D.7 Auxiliary Lemmas for Pointwise ROC Inference 
+
+Lemma D.5 (Asymptotic Equivalence of Direct and Inter-polated Estimators) . For y ∈ { 0, 1}, let ˆτ dir  
+
+> y
+
+(c) denote the direct cross-fitted TPR or FPR estimator evaluated at the fixed threshold c, and let ˆτy (c) be the linear interpolant of its values on Cn. Under Assumptions A.1–A.3, for the fixed population threshold cu,
+
+max  
+
+> y∈{ 0,1}
+
+ˆτy (cu) − ˆτ dir  
+
+> y
+
+(cu) = op(an).
+
+Consequently, the fixed-threshold expansions in Theorem 1 and Corollary C.1 also hold for the interpolated raw estima-tors at cu.Proof. Let cL,n ≤ cu ≤ cR,n be the two adjacent grid points and let Ln denote linear interpolation between them: for a threshold-indexed function f ,
+
+(Lnf )( cu) = ωnf (cL,n ) + (1 − ωn)f (cR,n ),ωn = cR,n − cu
+
+cR,n − cL,n 
+
+.
+
+If cu itself is a grid point, the interpolation difference is zero and the result is immediate; below we consider the nontrivial case cL,n < c u < c R,n . Put ∆n = cR,n − cL,n ≤ ∆c,n 
+
+and qn = ∆ c,n + ¯ rS = op(an). The denominator of each direct estimator does not depend on c and is bounded away from zero with probability tending to one, so it suffices to compare the three numerator terms. The three interpolation differences have the following or-ders: 
+
+T : Op{qn + ( qn/n T)1/2},
+
+HL : Op{¯rY qn + rw, HL ,2rY, 2 + ( qn/n HL )1/2}
+
++ Op{rw, HL ,2/√nHL },
+
+AL : Op{∆c,n /pnAL h3 + ¯ rS ∆c,n /h }.
+
+Each row is op(an) under part (b) of Assumption A.3 and the pointwise rate conditions. We now derive them one source at a time. For any score value z, define dn(z) = ( Ln[c 7 → I{z ≥
+
+c}])( cu) − I{z ≥ cu}. Then 
+
+|dn(z)| ≤ I{| z − cu| ≤ ∆c,n }.
+
+With z = ˆ m(−k) 
+
+> S
+
+(X), the event on the right is contained in 
+
+{| m⋆S (X) − cu| ≤ qn}. The locally bounded target score density therefore makes its target probability Op(qn). For the target numerator, boundedness and conditional variance calculation give interpolation error 
+
+Op
+
+
+
+qn + pqn/n T
+
+
+
+= op(an).For the HL numerator, decompose the fitted weight and residual around wHL and Y − m⋆Y . The true-weight resid-ual part has conditional mean zero, and change of measure bounds its conditional variance by Op(qn/n HL ). The con-ditional mean involving δY is Op(¯ rY qn), while the fitted-weight terms are bounded by Op(rw, HL ,2rY, 2) in mean and 
+
+Op(rw, HL ,2/√nHL ) after centering. Hence the HL inter-polation error is also op(an). The same argument applies to the negative-class numerator, with only the residual sign changed. It remains to control the AL kernel term. Conditional on fold-k training, write Tk for the corresponding training sigma-field and ˆZ = ˆ m(−k) 
+
+> S
+
+(X), and define 
+
+Dk,h (X) = ( Ln[c 7 → Kh(c − ˆZ)])( cu) − Kh(cu − ˆZ).
+
+The mean-value theorem, the bounded AL density of Z =
+
+m⋆S (X), the kernel-tail conditions, and ¯rS /h = op(1) imply 
+
+EAL {| Dk,h (X)| | T k} = Op(∆ c,n /h ),
+
+EAL {D2
+
+> k,h
+
+(X) | T k} = Op(∆ 2
+
+> c,n
+
+/h 3).
+
+Indeed, these follow by integrating the first derivative of the translated kernel; ∥K′
+
+> h
+
+∥1 = O(h−1) and ∥K′
+
+> h
+
+∥22 = O(h−3).Split the fitted score residual as S− ˆZ = ( S−Z)−δ(−k) 
+
+> S
+
+(X).The first component has conditional mean zero, whereas the second is uniformly bounded by ¯rS . Because the remaining fitted factors are uniformly bounded with probability tending to one, the AL interpolation error is 
+
+Op
+
+ ∆c,n 
+
+√nAL h3 + ¯rS ∆c,n 
+
+h
+
+
+
+= op(an).
+
+For the first term, use an ≥ (nAL h)−1/2 and ∆c,n /h = o(1) ;for the second, use ∆c,n = o(an) and ¯rS /h = op(1) . Com-bining the three sources and the fixed number of folds proves the first claim. The consequence follows by applying the two fixed-threshold expansions at the nonrandom threshold 
+
+cu and then using the proved op(an) difference. 
+
+Lemma D.6 (Local Asymptotic Equivalence after Isotonic Projection) . Let f be nonincreasing on the full grid and con-tinuously differentiable and strictly decreasing on a neigh-borhood U of an interior point c0, with inf t∈U |f ′(t)| > 0.Let zn be a linearly interpolated raw estimator on an ordered quasi-uniform grid in a fixed compact interval, and let ˜zn be its equal-weight nonincreasing isotonic projection, followed by clipping to [0 , 1] . Suppose the grid mesh is o(an) and, for deterministic an = O(bn) → 0,
+
+sup 
+
+> t∈U
+
+|zn(t) − f (t)| = Op(bn),
+
+sup 
+
+> s,t ∈U |s−t|≤ M b n
+
+|en(s) − en(t)| = op(an)
+
+for every fixed M , where en = zn − f . If zn is uniformly consistent on the full grid and f (c0) ∈ (0 , 1) , then, for every fixed M ,
+
+sup 
+
+> |t−c0|≤ M a n
+
+{˜zn(t) − f (t)}− { zn(c0) − f (c0)} = op(an).
+
+Proof. The proof has three steps. First, the block charac-terization of isotonic regression converts a uniform error in the unprojected curve into a bound on the width of a pooled block. Second, strict decrease of f prevents a block touching 
+
+c0 from extending outside the local neighborhood. Third, local equicontinuity shrinks the relevant blocks from order 
+
+bn to op(an).
+
+Step 1: Relate block width to error in the unpro-jected curve. Write the grid as x0,n < · · · < x Nn,n ,set yi = zn(xi,n ), and first ignore clipping and interpola-tion. Every maximal constant block [L, R ] of the equal-weight nonincreasing isotonic fit has fitted value ¯yL:R =(R − L + 1) −1 PRi=L yi. The KKT conditions imply that, for every L ≤ q < R ,
+
+¯yL:q ≤ ¯yq+1: R. (D.10) Indeed, summing the isotonic normal equations over the pre-fix gives ¯yL:q ≤ ¯yL:R, and summing them over the suffix gives ¯yq+1: R ≥ ¯yL:R.We record the consequence of (D.10) used twice below. Suppose a block lies in a region on which 
+
+f (s) − f (t) ≥ κ(t − s), s < t, 
+
+and write yi = f (xi,n ) + ri on that block, with max i |ri| ≤ 
+
+ϵn. Split the block into two halves by number of grid points; for a singleton block the asserted width bound is immediate. Quasi-uniformity supplies a constant cq > 0, independent of the block and n, such that the difference between the mean grid locations in the right and left halves is at least 
+
+cq(xR,n − xL,n ). Averaging the strict-slope inequality over all left–right pairs and using (D.10) yields 
+
+0 ≥ ¯yL:q − ¯yq+1: R ≥ κc q(xR,n − xL,n ) − 2ϵn.
+
+Consequently, 
+
+xR,n − xL,n ≤ 2ϵn
+
+κc q
+
+. (D.11) 
+
+Step 2: Localize every block that can affect c0. We next verify that the relevant blocks lie in the strict-slope neighbor-hood. Choose δ > 0 such that U0 = [ c0 − 2δ, c 0 + 2 δ] ⊂ U .For all large n, M a n < δ/ 4. Suppose a block intersecting 
+
+{| t−c0| ≤ M a n} exits through the right endpoint of U0, and split it at a grid point xq,n = c0 +δ+O(∆ c,n ). For every pre-fix index i ≤ q, monotonicity gives f (xi,n ) ≥ f (xq,n ). By quasi-uniformity and compactness of the full grid, a fixed positive fraction, say cδ , of the suffix grid points lies in 
+
+[c0 + 3 δ/ 2, c 0 + 2 δ]. On those points the strict-slope in-equality gives 
+
+f (xi,n ) ≤ f (xq,n ) − κδ/ 3
+
+for all sufficiently large n, while monotonicity gives 
+
+f (xi,n ) ≤ f (xq,n ) on the rest of the suffix. Hence 
+
+¯fL:q − ¯fq+1: R ≥ cδ κδ/ 3 > 0.
+
+The full-grid op(1) error preserves this sign with probability tending to one, contradicting (D.10). Splitting at c0 − δ +
+
+O(∆ c,n ) gives the identical contradiction for a block exiting through the left endpoint. Thus every block intersecting the local set is contained in U0 with probability tending to one. Fix ε > 0 and choose B < ∞ so that sup U |zn −f | ≤ Bb n
+
+with limiting probability at least 1 − ε. On the preceding localization event, (D.11) with ϵn = Bb n shows, uniformly over all blocks intersecting {| t − c0| ≤ M a n}, that their diameters are O(bn). Because an = O(bn), all their grid points therefore lie in {| t − c0| ≤ Cb n} for a fixed C.
+
+Step 3: Use local equicontinuity inside the localized blocks. Now set vn(t) = f (t) + en(c0) and 
+
+ϵ◦ 
+
+> n
+
+= sup 
+
+> |t−c0|≤ Cb n
+
+|zn(t) − vn(t)|.
+
+The local modulus assumption gives ϵ◦ 
+
+> n
+
+= op(an). Reapply (D.11) on each relevant block, now with the nonincreasing sequence vn in place of f and ϵn = ϵ◦
+
+> n
+
+. The diameter of every such block is op(an), uniformly. Since its fitted value is its raw block average and f ′ is bounded on U0,
+
+|¯yL:R − vn(xj,n )| ≤ ϵ◦ 
+
+> n
+
++ sup 
+
+> i∈[L,R ]
+
+|vn(xi,n ) − vn(xj,n )|
+
+= op(an)
+
+for every j ∈ [L, R ] with |xj,n − c0| ≤ M a n, uniformly over those grid points. Thus the desired conclusion holds at the grid points. Linear interpolation adds O(∆ c,n ) = o(an) because f ′ is locally bounded. Clipping is inactive on this neighborhood with probability tending to one because f (c0) ∈ (0 , 1) and 
+
+en(c0) = op(1) . Since ε was arbitrary, the result follows. 
+
+D.8 Proof of Theorem 3 and Corollary 1 
+
+Proof. Theorem C.2 and the strict monotonicity of τ0 give 
+
+ˆcu →p cu. We first sharpen this to the scale an. Lemma D.5 and the joint fixed-threshold TPR/FPR expansions give, for 
+
+y ∈ { 0, 1},
+
+ˆτy (cu) − τy (cu) = X
+
+> g∈G
+
+Pg,n ψg,y (cu) + op(an). (D.12) Applying Lemma D.6 to the raw TPR and FPR curves gives, for y ∈ { 0, 1} and every fixed M ,
+
+sup 
+
+> |t−cu|≤ M a n
+
+{˜τy (t) − τy (t)}− { ˆτy (cu) − τy (cu)} = op(an).
+
+(D.13) For either sign, (D.13) and a Taylor expansion give 
+
+˜τ0(cu ± M a n) − u = ˆ τ0(cu) − τ0(cu)
+
+± M a nτ ′
+
+> 0
+
+(cu) + op(an)+ o(M a n).
+
+Equation (D.12) implies ˆτ0(cu) − τ0(cu) = Op(an). Be-cause τ ′
+
+> 0
+
+(cu) < 0 and is bounded away from zero, this brack-eting can be checked directly. Given ε > 0, choose Cε < ∞
+
+such that 
+
+P{| ˆτ0(cu) − τ0(cu)| ≤ Cεan} ≥ 1 − ε
+
+for all sufficiently large n. Let κ = |τ ′
+
+> 0
+
+(cu)| and choose 
+
+M > 2Cε/κ . For this fixed M , the Taylor remainder is smaller than M κa n/2 for all sufficiently large n. Hence, on the displayed event, 
+
+˜τ0(cu − M a n) > u, ˜τ0(cu + M a n) < u. 
+
+Monotonicity then places ˆcu between these two thresholds and gives 
+
+lim   
+
+> M→∞
+
+lim sup 
+
+> n
+
+P(|ˆcu − cu| > M a n) = 0 ,
+
+which is precisely ˆcu − cu = Op(an).The projected curve is continuous after linear interpola-tion and runs from one to zero, so its generalized inverse satisfies ˜τ0(ˆ cu) = u; allowing for a grid convention without interpolation would change this by only O(∆ c,n ) = o(an).Since ˆcu − cu = Op(an), we may apply (D.13) at the ran-dom point ˆcu: first restrict to {| ˆcu − cu| ≤ M a n}, apply the uniform statement for fixed M , and then let M → ∞ .Expanding τ0 at cu therefore gives the explicit equation 
+
+0 = ˆ τ0(cu) − τ0(cu) + τ ′
+
+> 0
+
+(cu)(ˆ cu − cu) + op(an).
+
+Solving it gives the Bahadur representation 
+
+ˆcu − cu = − ˆτ0(cu) − τ0(cu)
+
+τ ′
+
+> 0
+
+(cu) + op(an).
+
+The same proved local equivalence for TPR now gives 
+
+[ROC cf 
+
+(u) − ROC( u) = ˆ τ1(cu) − τ1(cu)
+
+− τ ′
+
+> 1
+
+(cu)
+
+τ ′
+
+> 0
+
+(cu) {ˆτ0(cu) − τ0(cu)}
+
++ op(an).
+
+Substituting (D.12) into the last display gives 
+
+X
+
+> g∈G
+
+Pg,n {ψg, 1(cu) − λuψg, 0(cu)} + op(an).
+
+The three source sums are independent. The HL and target summands are bounded, while the AL linear combination has envelope O(h−1) and second moment O(h−1). Lemma D.3, now normalized by vn(u), applies because vn(u) ≍ an. This proves the stated Gaussian limit. For the plug-in standard-error result, write ˆϕg,r,u − ϕg,r,u 
+
+as the sum of the two plug-in errors in ˆψg, 1,r and ˆψg, 0,r 
+
+and the additional term (ˆλu − λu) ˆψg, 0,r . Consistency of 
+
+ˆλu, the source-specific L2 condition in Corollary 1, and 
+
+n−1
+
+> g
+
+P 
+
+> r
+
+ˆψ2 
+
+> g, 0,r
+
+= Op(dg ) give 
+
+1
+
+ngng
+
+X
+
+> r=1
+
+( ˆϕg,r,u − ϕg,r,u )2 = op(dg ).
+
+The same second-moment comparison used in the proof of Theorem 2 then gives 
+
+X
+
+> g∈G
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+{ ˆϕg,r,u − ¯ϕg,u }2 = X
+
+> g∈G
+
+Var g (ϕg,u )
+
+ng
+
++ op{v2
+
+> n
+
+(u)}.
+
+The standard-error consistency and Wald interval follow by Slutsky’s theorem. D.9 Proof of Proposition C.1 
+
+Proof. Consider first class y ∈ { 0, 1} at threshold c. The second-order expansion in the proof of Theorem 1, applied with a = ay and divided by py , gives for fold k
+
+− h2μ2(K)2py
+
+∂2 
+
+> t
+
+μ(ay ) 
+
+> k, 1
+
+(c) + op(h2rS, 2).
+
+The fold weights and derivative terms satisfy 
+
+max  
+
+> k
+
+|αAL ,k − V −1| ≤ n−1AL ,
+
+max  
+
+> k
+
+|∂2 
+
+> t
+
+μ(ay ) 
+
+> k, 1
+
+(c)| = Op(rS, 2).
+
+Therefore, replacing the exact fold weights by 1/V changes this h2-weighted average by Op(h2rS, 2/n AL ) = op(h2rS, 2).Hence the weighted average is B2,y,n (c)h2 + op(h2rS, 2).The error from variation along the score-estimation path is 
+
+Op(r2
+
+> S, 2
+
+) and does not depend on h.For the variance, the AL influence term for class y is 
+
+ψAL ,y,h (c) = p−1 
+
+> y
+
+wAL (X)ay (X)Kh(c − Z){S − Z}.
+
+Let 
+
+Γy (t) = fZ, AL (t)EAL 
+
+w2AL (X)a2 
+
+> y
+
+(X)σ2 
+
+> S
+
+(X) | Z = t .
+
+Because EAL (S − Z | X) = 0 , a change of variables gives 
+
+h Var AL {ψAL ,y,h (c)} = p−2
+
+> y
+
+Z
+
+K2(v)Γ y (c − hv ) dv 
+
+−→ p−2 
+
+> y
+
+R(K)Γ y (c) = VAL ,y (c).
+
+The convergence follows from continuity of the variance profile at c and the kernel-tail conditions. Thus the AL contribution to the variance of the sample average is 
+
+VAL ,y (c)/(nAL h){1 + o(1) }.Retaining the localization bias and the AL variance contri-bution just derived gives the two-term conditional benchmark 
+
+VAL ,R /(nAL h) + B22,R,n h4. This is a definition of the two-term benchmark, not an expansion of the full conditional mean squared error. Differentiating with respect to h gives the unique interior solution h5 = VAL ,R /(4 nAL B22,R,n ). Fi-nally, when the AL variance term dominates the HL and target variance terms, the ratio of squared localization bias to AL variance is 
+
+B22,R,n h4
+
+VAL ,R /(nAL h) = nAL B22,R,n h5
+
+VAL ,R 
+
+.
+
+This ratio vanishes exactly when h/h AMSE ,R →p 0, com-pleting the proof. 
+
+D.10 Proof of Theorem 4 and Corollary C.2 
+
+Proof. The proof has four steps. We first expand the tar-get pairwise plug-in. We then show that the HL and AL source corrections cancel the first-order outcome and score directions. Third, we expand the prevalence denominator. Finally, we combine the three source averages and apply a triangular-array CLT. Recall that 
+
+η = ET×T[M (X){1 − M (X′)}κ{Z(X), Z (X′)}]= p1p0A. 
+
+The last equality follows by conditioning on (X, X ′): M (X)
+
+and 1 − M (X′) are the conditional probabilities that the first record is a case and the second is a control. Because Z is continuous, ties have probability zero. 
+
+Step 1: Compute the two path derivatives. For an out-come direction δY , direct expansion of the two outcome weights gives 
+
+η(M + sδ Y , Z ) − η(M, Z )= s ET[δY {G0(Z) − G1(Z)}]
+
+− s2ET×T[δY (X)δY (X′)κ{Z(X), Z (X′)}].
+
+Indeed, the first linear term is obtained by conditioning on 
+
+X, whereas in the second one we interchange X and X′ and condition on the renamed first argument. The quadratic term is bounded in absolute value by s2∥δY ∥2
+
+> PT,2
+
+. In particular, 
+
+DY η[δY ] = ET[δY {G0(Z) − G1(Z)}].
+
+For a score direction, set 
+
+W = M (X){1 − M (X′)},D = Z(X) − Z(X′),
+
+∆ = δS (X) − δS (X′).
+
+Part (a) of Assumption A.4 directly assumes the resulting score derivative. To see why it has the displayed form, consider the sufficient signed-density condition stated after that assumption. Under that condition, the signed measure 
+
+B 7 → E(W ∆I{D + t∆ ∈ B}) has a density μt near zero. Differentiating the ordering probability gives 
+
+ddt η(M, Z + tδ S ) = μt(0) .
+
+At t = 0 , integrate the δS (X) part of ∆ over X′ and the 
+
+−δS (X′) part over X, interchanging the two record labels in the second calculation. This yields 
+
+μ0(0) = ET[δS M q 0(Z)] − ET[δS (1 − M )q1(Z)] = ET[δS {M q 0(Z) − (1 − M )q1(Z)}].
+
+Thus 
+
+DS η[δS ] = ET[δS {M q 0(Z) − (1 − M )q1(Z)}],
+
+and the signs of the two score-density terms follow from the two components of ∆. The second-order remainder is 
+
+op(ρn) by the two parts of Assumption A.4. We now keep the fold indices explicit. Put Mk = ˆ m(−k) 
+
+> Y
+
+,
+
+Zk = ˆm(−k) 
+
+> S
+
+, and ηk = η(Mk, Z k). Also write δY,k =
+
+Mk − M , δS,k = Zk − Z, and δw,g,k = ˆw(−k) 
+
+> g
+
+− wg for 
+
+g ∈ { HL , AL }. Define the population summaries evaluated at the fitted nuisance functions 
+
+G◦
+
+> 0,k
+
+(z) = ET[{1 − Mk(X)}κ{z, Z k(X)}],G◦
+
+> 1,k
+
+(z) = ET[Mk(X)κ{Zk(X), z }],
+
+and the mean-zero first projection 
+
+γk(X) = Mk(X)G◦
+
+> 0,k
+
+{Zk(X)}
+
++ {1 − Mk(X)}G◦
+
+> 1,k
+
+{Zk(X)} − 2ηk.Let 
+
+hk(x, x ′) = Mk(x){1 − Mk(x′)}κ{Zk(x), Z k(x′)},
+
+¯hk(x, x ′) = {hk(x, x ′) + hk(x′, x )}/2.
+
+Although hk is ordered and need not be symmetric, the estimator sums over both orders of each pair. Therefore 
+
+ˆηT,k =
+
+nT,k 
+
+2
+
+−1 X
+
+> ℓ,r ∈L k
+> ℓ<r
+
+¯hk(Xℓ, X r ).
+
+Let T Ak be the sigma-field generated by all observations used to train Mk and Zk; it excludes the target validation fold Lk.Conditional on T Ak , define 
+
+h1,k (x) = ET{¯hk(x, X ′)} − ηk.
+
+Direct conditioning shows that 2h1,k (x) = γk(x). If 
+
+h2,k (x, x ′) = ¯hk(x, x ′) − ηk − h1,k (x) − h1,k (x′),
+
+then h2,k is degenerate, meaning that its conditional expec-tation given either argument is zero. Hoeffding’s identity is consequently 
+
+ˆηT,k − ηk = PT,Lk γk + RU,k ,RU,k =
+
+nT,k 
+
+2
+
+−1 X
+
+> ℓ,r ∈L k
+> ℓ<r
+
+h2,k (Xℓ, X r ).
+
+Because the kernel is uniformly bounded, degeneracy gives 
+
+E(R2 
+
+> U,k
+
+| T Ak ) = 2E(h22,k | T Ak )
+
+nT,k (nT,k − 1) = O(n−2T,k ).
+
+To verify convergence of the fitted ordering kernel, for every 
+
+ϵ > 0,
+
+PT×T[κ{Zk(X), Z k(X′)}̸ = κ{Z(X), Z (X′)}]
+
+≤ P(|Z − Z′| ≤ 2ϵ) + 2 P(|Zk − Z| > ϵ ) = op(1) 
+
+first along the joint sample-size sequence and then as ϵ ↓ 0.The last step uses nuisance consistency and P(Z = Z′) = 0 .Boundedness then gives convergence in ∥ · ∥ PT×PT,2. Mul-tiplication by the bounded outcome weights and ∥Mk −
+
+M ∥PT,2 = op(1) show that the fitted pairwise kernel con-verges to its population counterpart in the same L2 space. Conditional expectation is an L2 contraction, so both of its first projections converge in ∥ · ∥ PT,2; its expectation ηk also converges to η. Hence ∥γk − γ∥PT,2 = op(1) , where 
+
+γ(X) = M G 0(Z) + (1 − M )G1(Z) − 2η. 
+
+Both γk and γ have target mean zero. Lemma D.1 therefore gives 
+
+> V
+
+X
+
+> k=1
+
+αT,k (PT,Lk − PT)( γk − γ) = op(n−1/2T ).
+
+Also, the fixed number of degenerate remainders RU,k con-tributes Op(n−1T ) = op(n−1/2T ). Cross-fitting and the Ho-effding identity therefore yield 
+
+ˆηT − 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+ηk = PT,n γ + op(n−1/2T )= PT,n γ + op(ρn).
+
+(D.14) The fold-weight reduction at the start of this section justifies the common 1/V weights in this display and in the two source expansions below; its error is Op(max g n−1 
+
+> g
+
+) = op(ρn).
+
+Step 2: Expand the two source corrections. We first make the conditional independence explicit. For the HL correction, let AHL ,k contain the data used to fit Mk, Zk,and ˆw(−k)HL , together with the target fold Lk used to construct 
+
+ˆΓY,k . By construction, this sigma-field contains no record in Ik; observations from the other two samples are also independent of Ik. Thus the held-out HL records are i.i.d. and independent of AHL ,k . The analogous sigma-field for the AL correction excludes Jk. Dependence among different training folds does not affect the rates because V is fixed and each remainder bound is established fold by fold before summing. For the gold source, define 
+
+AHL ,k = ˆ w(−k)HL (Y − Mk)ˆΓY,k ,A0HL = wHL (Y − M )Γ Y .
+
+Since PHL A0HL = 0 , exact addition and subtraction gives 
+
+PHL ,Ik AHL ,k = PHL ,Ik A0HL 
+
++ ( PHL ,Ik − PHL )( AHL ,k − A0HL )+ PHL AHL ,k .
+
+Boundedness and change of measure give 
+
+∥AHL ,k −A0HL ∥PHL ,2 = Op(rw, HL ,2+rY, 2+rΓY ,2) = op(1) .
+
+Lemma D.1 makes the centered middle term op(n−1/2HL ).For the final population expectation, conditional mean-zero residuals and change of measure give, line by line, 
+
+PHL AHL ,k = −PT(δY,k ˆΓY,k ) − PHL (δw, HL ,k δY,k ˆΓY,k )= −DY η[δY,k ] − PT[δY,k (ˆΓY,k − ΓY )] 
+
+− PHL (δw, HL ,k δY,k ˆΓY,k ).
+
+Cauchy–Schwarz bounds the last two terms by Op[{rΓY ,2 +
+
+rw, HL ,2}rY, 2]. Averaging the fixed number of folds conse-quently gives 
+
+ˆηHL = PHL ,n [wHL (Y − M )Γ Y ]
+
+− 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+DY η[δY,k ] + RHL ,n ,
+
+|RHL ,n | = Op[{rΓY ,2 + rw, HL ,2}rY, 2] + op(ρn)= op(ρn).
+
+(D.15) For the auxiliary source, set 
+
+AAL ,k = ˆ w(−k)AL (S − Zk)ˆΓS,k ,A0AL = wAL (S − Z)Γ S .
+
+The same add-and-subtract identity and Lemma D.1 control the centered empirical difference, because 
+
+∥AAL ,k −A0AL ∥PAL ,2 = Op(rw, AL ,2+rS, 2+rΓS ,2) = op(1) .Since EAL (S − Zk | X) = −δS,k , its population term is 
+
+PAL AAL ,k = −DS η[δS,k ] − PT[δS,k (ˆΓS,k − ΓS )] 
+
+− PAL (δw, AL ,k δS,k ˆΓS,k ).
+
+Cauchy–Schwarz now gives the remainder Op[{rΓS ,2 +
+
+rw, AL ,2}rS, 2], and therefore 
+
+ˆηAL = PAL ,n [wAL (S − Z)Γ S ]
+
+− 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+DS η[δS,k ] + RAL ,n ,
+
+|RAL ,n | = Op[{rΓS ,2 + rw, AL ,2}rS, 2] + op(ρn)= op(ρn).
+
+(D.16) The error measures rΓY ,2 and rΓS ,2 include the target pilot randomness, the evaluation of Gy and qy at Zk, and estima-tion of M within the two gradients. Thus no pilot term is left unaccounted for in (D.15)–(D.16). 
+
+Step 3: Cancel the nuisance directions and expand the denominator. The foldwise path expansion in Assump-tion A.4 gives 
+
+1
+
+V
+
+> V
+
+X
+
+> k=1
+
+(ηk −η) = 1
+
+V
+
+> V
+
+X
+
+> k=1
+
+{DY η[δY,k ]+ DS η[δS,k ]}+op(ρn).
+
+Write ˆη = ˆ ηT + ˆ ηHL + ˆ ηAL . Combining this display with (D.14)–(D.16) cancels both first-order nuisance directions. Recalling that ΓY = HY + A(p0 − p1), we first obtain the numerator expansion 
+
+ˆη − η = PHL ,n [wHL (Y − M )
+
+× { G0(Z) − G1(Z)}]+ PAL ,n [wAL (S − Z)Γ S ]+ PT,n [M G 0(Z) + (1 − M )G1(Z)
+
+− 2η]+ op(ρn).
+
+For completeness, repeat the augmented prevalence de-composition at the ρn scale. Its centered cross-fitted empir-ical remainder has conditional standard deviation bounded by constants times 
+
+rY, 2
+
+√nT
+
++ rY, 2 + rw, HL ,2
+
+√nHL 
+
+= op(ρn),
+
+because both nuisance errors are op(1) . Its population re-mainder is bounded by rw, HL ,2rY, 2 = op(ρn) under part (b) of Assumption A.4. Therefore, without invoking the sharper 
+
+bp,n -scale conclusion of Theorem C.1, 
+
+ˆp1 − p1 = PHL ,n [wHL (Y − M )] + PT,n (M − p1) + op(ρn).
+
+To make the final ratio step explicit, put 
+
+d = p1p0, ˆd = ˆ p1(1 − ˆp1),
+
+∆p = ˆ p1 − p1, ∆η = ˆ η − η. 
+
+Then ˆd − d = ( p0 − p1)∆ p − ∆2
+
+> p
+
+and the following identity is exact: 
+
+ˆη
+
+ˆd − ηd = ∆η
+
+d − η( ˆd − d)
+
+d2
+
+− ∆η ( ˆd − d)
+
+d ˆd + η( ˆd − d)2
+
+d2 ˆd .
+
+The numerator and prevalence expansions show that ∆η =
+
+Op(ρn) and ∆p = Op(ρn). Since d is bounded away from zero, the last two displayed terms and the contribution of ∆2
+
+> p
+
+are Op(ρ2
+
+> n
+
+) = op(ρn). Retaining the linear terms gives the following three source-specific expressions: 
+
+wHL (Y − M )
+
+p1p0
+
+{ΓY − A(p0 − p1)} = φA
+
+> HL
+
+,wAL (S − Z)Γ S
+
+p1p0
+
+= φA
+
+> AL
+
+,γ − A(p0 − p1)( M − p1)
+
+p1p0
+
+= φA 
+
+> T
+
+.
+
+Therefore 
+
+[AUC cf  
+
+> os
+
+− A = X
+
+> g∈G
+
+Pg,n φAg + op(ρn).
+
+Step 4: Prove the CLT and plug-in variance consistency. 
+
+The three leading averages are independent. Moreover, the boundedness and density-ratio conditions, together with bounded q0 and q1, give a common finite envelope C for all three φAg . For an observation from source g, its normalized contribution is therefore bounded by 
+
+Cng σA,n 
+
+≤ C′
+
+ng ρn
+
+≤ C′
+
+√ng
+
+→ 0,
+
+where the second inequality uses σA,n ≍ ρn and the third uses ρn ≥ n−1/2 
+
+> g
+
+. The normalized variances sum to one by the definition of σA,n . Hence the Lindeberg condition holds and the Lindeberg–Feller theorem gives the stated Gaussian limit. For the plug-in variance result, let eg,r = ˆφAg,r − φAg,r ,and write bars for source-specific empirical means. Center-ing is an empirical L2 contraction, so the assumed source-specific convergence gives Pg,n (eg −¯eg )2 = op(1) . Cauchy– Schwarz then yields 
+
+Pg,n ( ˆ φAg − ¯ˆφAg )2 − Pg,n (φAg − ¯φAg )2
+
+≤ 2{Pg,n (φAg − ¯φAg )2}1/2{Pg,n (eg − ¯eg )2}1/2
+
++ Pg,n (eg − ¯eg )2 = op(1) ,
+
+because the oracle influence functions are bounded. The ordinary law of large numbers gives Pg,n (φAg − ¯φAg )2 =Var g (φAg ) + op(1) . Multiplying the preceding comparison by n−1 
+
+> g
+
+and summing the fixed three sources gives an error 
+
+op(ρ2
+
+> n
+
+) = op(σ2
+
+> A,n
+
+). Therefore 
+
+X
+
+> g∈G
+
+1
+
+n2
+
+> gng
+
+X
+
+> r=1
+
+( ˜ φAg,r )2 = X
+
+> g∈G
+
+Var g (φAg )
+
+ng
+
++ op(σ2
+
+> A,n
+
+).
+
+Variance consistency and the Wald interval follow from Slut-sky’s theorem. Scope of the proof. The TPR and FPR arguments are pointwise in c, and the ROC argument adds only local stochastic equicontinuity around the crossing cu. It does not establish the global process approximation needed for a uniform ROC band. The AUC result instead uses a scalar pairwise expansion and therefore does not imply simultane-ous validity over the ROC curve. The centered Wald results for TPR, FPR, and pointwise ROC require the remainder con-ditions in Assumption A.2; the one-step AUC result instead uses Assumption A.4. For the threshold-based results, the condition h2rS, 2 = op(an) ensures that localization bias is negligible on the inference scale. The bandwidth sensitivity analysis examines the corresponding finite-sample behavior. 
+
+## E Additional Simulation Details and Results 
+
+E.1 Data-Generating Processes 
+
+All target covariates have dimension d = 20 . For DGP-A, 
+
+X ∼ N (0 , ΣA), (Σ A)jk = 0 .2|j−k|,
+
+and 
+
+ηAY (X) = 0 .10 + 0 .70 X1 + 0 .45 sin( X2)+ 0 .30 X3X4 + 0 .20( X25 − 1) ,ηAS (X) = −0.05 + 1 .00 X1 + 0 .30 sin( X2)+ 0 .45 X3X4 + 0 .12( X25 − 1) .
+
+DGP-B represents a heterogeneous target population: 
+
+X = Bμ + ε, ε ∼ N (0 , ΣB ),
+
+Pr( B = 1) = Pr( B = −1) = 12 ,
+
+where 
+
+μ = (0 .9, −0.7, 0.6, 0, 0, −0.5, 0, . . . , 0) ⊤.
+
+The diagonal entries of ΣB are 0.65 ; (Σ B )2r−1,2r =(Σ B )2r, 2r−1 = −0.12 for r = 1 , . . . , 10 ; all other off-diagonal entries are zero. Its response surfaces are 
+
+ηBY (X) = −0.20 + 0 .85 tanh(1 .2X1) − 0.50 X2
+
++ 0 .40( X23 − 1.01) + 0 .30 sin( X4X5),ηBS (X) = −0.50 + 0 .55 tanh(1 .2X1) − 0.15 X2
+
++ 0 .65( X23 − 1.01) − 0.35 sin( X4X5)+ 0 .30 tanh( X6).
+
+For q ∈ { A, B }, m⋆Y (x) = expit {ηqY (x)} and m⋆S (x) = expit {ηqS (x)}. We draw Y | X ∼ Bernoulli {m⋆Y (X)} in HL and S | X ∼ Bernoulli {m⋆S (X)} in AL. Note that while our asymptotic theory assumes compactly supported covari-ates for uniform rate control (Assumption A.2), the use of unbounded Gaussian covariates here serves as an intentional stress test of the estimators’ empirical robustness. 
+
+Additional DGP-D diagnostic. The regularized quadratic-dictionary diagnostic uses a separate 20-dimensional sparse quadratic design: 
+
+X ∼ N (0 , ΣD ), (Σ D )jk = 0 .3|j−k|.
+
+Its outcome and surrogate mechanisms are 
+
+ηDY (X) = 0 .10 + 0 .65 X1 − 0.45 X2 + 0 .30 X3X4
+
++ 0 .22( X25 − 1) ,ηDS (X) = −0.10 + 0 .95 X1 − 0.30 X2 + 0 .48 X3X4
+
++ 0 .18( X25 − 1) + 0 .20 X6.
+
+We set 
+
+m⋆Y (x) = expit {ηDY (x)}, m⋆S (x) = expit {ηDS (x)},
+
+and generate the corresponding Bernoulli gold and surrogate labels. 
+
+E.2 Controlled and Moderate Source Shifts 
+
+Studies 1, 2, and 4 use a controlled bounded-overlap design. Source covariates are selected from the target law with 
+
+πHL (x) = 0 .35 + 0 .30 expit {aHL (x)},πAL (x) = 0 .40 + 0 .20 expit {aAL (x)}.
+
+For DGP-A, 
+
+aHL = 0 .45 X1 − 0.30 X2 + 0 .20 X6,aAL = −0.40 X1 + 0 .25 X3 − 0.20 X7,
+
+whereas for DGP-B, 
+
+aHL = 0 .35 X1 + 0 .25 X3 − 0.20 X7,aAL = −0.30 X2 + 0 .25 X4 + 0 .20 X8.
+
+Central symmetry gives ET{πg (X)} = 1 /2, so the exact untruncated ratio is wg (x) = {2πg (x)}−1.Study 3 uses a stronger bounded log-density-ratio tilt: 
+
+pg (x)
+
+pT(x) = exp {γ⊤ 
+
+> g
+
+zg (x)}
+
+Zg
+
+,wg (x) = Zg exp {− γ⊤ 
+
+> g
+
+zg (x)},
+
+where 
+
+zHL (x) = (tanh X1, tanh X2, tanh X6)⊤,zAL (x) = (tanh X1, tanh X3, tanh X7)⊤,γHL = (0 .810 , −0.675 , 0.585) ⊤,γAL = ( −0.765 , 0.630 , −0.540) ⊤,
+
+and Zg = ET[exp {γ⊤ 
+
+> g
+
+zg (X)}]. This construction is bounded because every coordinate of zg is in [−1, 1] . For all non-oracle Study 3 estimators, wHL and wAL are estimated separately in each cross-fitting training fold. With target membership coded as one, the classifier probability ˆπg (x) is converted by 
+
+ˆwg (x) = n(−v)
+
+> g
+
+n(−v)T
+
+ˆπ(−v) 
+
+> g
+
+(x)1 − ˆπ(−v) 
+
+> g
+
+(x) .
+
+The logistic domain models use zg , for which the log density ratio is correctly specified. A numerical probability guard at 
+
+10 −6 was included but never activated; no realized weight was truncated. The oracle normalizers Zg are evaluated by Table E.1: Study 3 cross-fitted density-ratio diagnostics, av-eraged over 500 replications. ESS is (P 
+
+> i
+
+wi)2/ P 
+
+> i
+
+w2 
+
+> i
+
+.                         
+
+> DGP Source Domain AUC Mean wt. Mean max. ESS DGP-A HL 0.689 1.002 7.800 2462 DGP-A AL 0.688 1.001 7.759 9913 DGP-B HL 0.713 1.000 8.814 2096 DGP-B AL 0.659 1.000 6.563 11447
+
+the same 10 6-draw population Monte Carlo calculation used for the truths, yielding a high-accuracy numerical oracle. The DGP-D diagnostic uses the same bounded-overlap selection form, with 
+
+aHL (x) = 0 .40 X1 − 0.30 X6 + 0 .20 X7,aAL (x) = −0.35 X1 + 0 .25 X8 − 0.20 X9.
+
+Central symmetry again gives ET{πg (X)} = 1 /2, so the exact untruncated density ratio is wg (x) = {2πg (x)}−1.
+
+E.3 Implementation and Monte Carlo Algorithm 
+
+The correctly specified nuisance learner is logistic regression on the exact DGP-specific nonlinear basis. The sensitivity analysis instead uses histogram gradient boosting with 50 it-erations, at most 10 leaves, and minimum leaf size 35. Point-wise targets use c ∈ { 0.2, 0.5}. ROC uses u ∈ { 0.1, 0.2}, a 199-point threshold grid, separate isotonic projections, and a common grid-based linear interpolation convention. This finite-grid convention approximates the generalized inverse and is applied identically to Full, IW-HL, and TSC. The scalar one-step AUC uses the half-tie pairwise rule and the density pilot b = n−1/5T . Population truths are computed from 10 6 independent target draws. 
+
+Fixed-score transported-validation comparators. For Studies 1, 2, and 4, let bZ(x) = bmAL  
+
+> S
+
+(x), where the same correctly specified score learner is fit once on the complete independent AL sample. IW-HL uses the exact controlled-design HL weight and the Hájek ratios 
+
+[TPR IW (c) = PHL [wHL Y I{ bZ ≥ c}]
+
+PHL (wHL Y ) ,
+
+[FPR IW (c) = PHL [wHL (1 − Y )I{ bZ ≥ c}]
+
+PHL {wHL (1 − Y )} .
+
+Its ROC is formed from the transported weighted empirical curve, and its AUC is the corresponding half-tie weighted Mann–Whitney functional. TSC uses the cubic Legendre score basis 
+
+b3(z) = 
+
+
+
+1, t, 3t2 − 12 , 5t3 − 3t
+
+2
+
+⊤
+
+, t = 2 z − 1.
+
+It fits rβ (z) = expit {β⊤b3(z)} by HL-weighted logistic likelihood and standardizes the fitted calibration over the target scores; for example, 
+
+[TPR TSC (c) = PT[rbβ ( bZ)I{ bZ ≥ c}]
+
+PT[rbβ ( bZ)] ,
+
+Algorithm E.1 Three-sample Monte Carlo experiment 
+
+Require: DGP, design, C, R = 500 , and V = 5 folds 1: Set h = Cn −1/4AL ; compute population truths 2: for r = 1 , . . . , R do 
+
+3: Draw the target, HL, and AL samples and split each into V
+
+folds 4: for v = 1 , . . . , V do 
+
+5: Fit mY , m S and exact or estimated density ratios 6: Form held-out nuisance predictions and weights 7: end for 
+
+8: Compute Full TPR, FPR, ROC, AUC, and influence-function SEs 9: if Study 1, 2, or 4 then 
+
+10: Fit the score on complete AL; evaluate IW-HL and TSC with their conditional SEs 11: else if Study 3 then 
+
+12: Evaluate plug-in, HL-only, AL-only, Full, and oracle variants 13: end if 
+
+14: end for 
+
+15: Report bias, empirical SD, mean SE, SE/SD, and 95% coverage 
+
+Table E.2: Study 1 TPR empirical SD/mean analytical SE at 
+
+c = 0 .5 for the proposed Full estimator. Non-proportional designs change one P2 sample size at a time. 
+
+Design DGP-A DGP-B P1 0.0295/0.0281 0.0323/0.0292 P2 0.0208/0.0205 0.0233/0.0216 P3 0.0155/0.0151 0.0161/0.0161 HL 0.25k 0.0354/0.0343 0.0333/0.0328 HL 2k 0.0188/0.0175 0.0214/0.0194 AL 1k 0.0304/0.0271 0.0385/0.0301 AL 8k 0.0195/0.0186 0.0186/0.0188 T 1k 0.0259/0.0251 0.0299/0.0279 T 5k 0.0219/0.0213 0.0236/0.0226 T 40k 0.0206/0.0204 0.0216/0.0214 
+
+with 1 − rbβ replacing rbβ for FPR. ROC and AUC use the corresponding target-standardized pairwise functionals. IW-HL uses its transported empirical influence function; TSC combines the weighted calibration M -estimation influence function with the target empirical influence function. Both standard errors condition on bZ and therefore omit AL score-learning variability. This is a valid fixed-score analysis but is not unconditional inference for the population surrogate-derived model m⋆S , which is the estimand of the proposed method. Using the complete AL sample rather than folds gives both comparators their strongest natural fixed-score implementation. For the additional DGP-D diagnostic, all 20 raw covariates are expanded into the complete degree-two dictionary con-taining 20 linear terms, 20 squared terms, and 190 pairwise products. Thus, the learner receives 230 candidate terms but is not supplied with the true active terms or their variable indices. Within each training fold, these features are stan-dardized and separately fit to the HL outcome and AL sur-rogate labels using elastic-net logistic regression with fixed Figure E.1: Study 1 standardized FPR errors at c = 0 .5. Full is the proposed estimator; IW-HL is importance-weighted gold-label validation; TSC is transported score calibration. Colors distinguish DGPs. HL, AL, and T denote the gold-labeled, surrogate-labeled, and target samples; dashed lines mark ±1.96 , and outliers are shown.  
+
+> (a) TPR (b) FPR
+
+Figure E.2: Study 2 standardized errors at c = 0 .5. The five Full groups vary C; the h-free IW-HL and TSC references are shown once. Colors distinguish DGPs, hatches distinguish methods, dashed lines mark ±1.96 , and outliers are shown. 
+
+C = 0 .05 , ℓ1 ratio 0.5, the SAGA solver, tolerance 10 −3, and at most 750 iterations. No internal cross-validation or data-driven hyperparameter tuning is performed. The diagnostic uses 4 × P2 = (4000 , 16000 , 80000) , exact controlled-shift density ratios, five-fold cross-fitting, and h = n−1/4AL .
+
+E.4 Coverage and Standard-Error Summary 
+
+The table separates the main theory-focused experiments from stress tests. The histogram-gradient-boosting (HGB) learner has materially poorer finite-sample calibration: cov-erage is 0.288 –0.622 at c = 0 .2, 0.770 –0.886 at c = 0 .5,
+
+0.764 –0.906 for ROC, and 0.788 –0.922 for AUC. This pat-tern is consistent with nuisance errors not yet being neg-ligible at the inference scale. It neither validates arbitrary machine learning nor shows that flexible learners necessarily fail; it demonstrates that inference depends materially on the nuisance-rate conditions. Table E.4 makes the distinction between point accuracy and reported-SE behavior explicit. Full has the most stable coverage in Study 1, while TSC can trade lower RMSE for optimistic conditional SEs. The comparison is not uniformly favorable: for FPR at c = 0 .2, C = 2 , Full versus IW-HL coverage is 0.814 versus 0.864 in DGP-A and 0.580 ver-sus 0.676 in DGP-B. This reinforces the bandwidth warning rather than being hidden by an average. In the difficult DGP-A/HL 0.25k cell at c = 0 .2, three of 500 IW-HL replications have a degenerate zero conditional TPR SE because every empirical positive lies above the threshold; coverage uses all 500 replications, while studentized summaries use the 497 nondegenerate values. 
+
+E.5 Unified Study 3 Numerical Results 
+
+Table E.5 reports the confirmed P4 Study 3 comparison at 
+
+c = 0 .5, u = 0 .1, and for scalar AUC. Each cell reports, in order, bias in percentage points, empirical SD, mean SE, and coverage. Because the original P2 run showed finite-sample ROC undercoverage, we conducted an exploratory 100-replication screen. The first stage crossed P2, P2.5, and P3 with C ∈ { 0.75 , 1, 1.25 }, c ∈ { 0.4, 0.5, 0.6}, and 
+
+u ∈ { 0.10 , 0.15 , 0.20 }. A second 100-replication stage evaluated P4 at c = 0.5, with C ∈ {0.5, 1.5, 2} and 
+
+u ∈ { 0.10 , 0.15 , 0.20 , 0.25 }. Before inspecting a new Monte Carlo stream, we fixed P4, C = 0 .5, c = 0 .5, and u = 0 .1,Table E.3: Empirical coverage and SE/SD of the proposed Full construction over 500 replications. Study 3 rows select the Full ablation member; HGB rows use the same estimator with histogram-gradient-boosting nuisances. “Worst” gives the configuration attaining minimum coverage.                                                                                                                               
+
+> Study Target Coordinate Coverage range SE/SD range Worst Study 1 TPR c= 0 .2.896–.944 .826–1.029 B/AL 1k (.896) Study 1 FPR c= 0 .2.662–.930 .496–.916 B/AL 1k (.662) Study 1 TPR c= 0 .5.872–.952 .782–1.014 B/AL 1k (.872) Study 1 FPR c= 0 .5.914–.960 .883–1.022 A/AL 1k (.914) Study 2 TPR c= 0 .2.904–.946 .876–1.007 B/ C= 2 (.904) Study 2 FPR c= 0 .2.580–.928 .434–.952 B/ C= 2 (.580) Study 2 TPR c= 0 .5.862–.960 .798–.991 B/ C= 2 (.862) Study 2 FPR c= 0 .5.906–.940 .858–.981 A/ C= 2 (.906) Study 3 Full TPR c= 0 .5.944–.956 .958–1.036 B (.944) Study 3 Full FPR c= 0 .5.950–.950 .987–1.017 A/B (.950) Study 3 Full ROC u= 0 .1.936–.938 .951–.963 B (.936) Study 3 Full AUC scalar .926–.934 .927–1.014 A (.926) Study 4 ROC u= 0 .1,0.2.882–.954 .817–1.001 B/P2/ u=.1(.882) Study 4 AUC scalar .932–.950 .974–1.006 A/P2 (.932) HGB TPR/FPR c= 0 .2.288–.622 .429–.882 A/FPR (.288) HGB TPR/FPR c= 0 .5.770–.886 .758–.898 B/FPR (.770) HGB ROC u= 0 .1,0.2.764–.906 .749–.878 B/ u=.2(.764) HGB AUC scalar .788–.922 .927–.930 B (.788)
+
+then ran an independent 500-replication confirmation with a disjoint base seed. This was a post-hoc screen followed by independent confirmation, not a preregistered design. All 93 screening candidates and the independent run are retained in the result files; the confirmation, rather than a screening maximum, is shown. For reference, the original P2, C = 1 
+
+Full coverages for TPR/ROC/AUC were 0.934/0.936/0.942 in DGP-A and 0.930/0.904/0.952 in DGP-B. The plug-in estimator’s principal failure is severe standard-error underestimation rather than large point-estimation bias. Full has SE/SD between 0.927 and 1.036 across the six main-display cells, whereas the omitted corrections produce target-specific failures. In particular, AL-only misses most uncertainty for global ROC/AUC, while HL-only is weakest for DGP-B TPR. The oracle-nuisance comparison shows that the remaining finite-sample error is similar to that obtained when nuisance functions are known. 
+
+E.6 Regularized Quadratic-Dictionary Diagnostic 
+
+The additional diagnostic uses DGP-D at 4 × P2 with the regularized quadratic-dictionary learner specified above. Be-cause the complete degree-two dictionary contains the true DGP-D mechanisms, this is a correctly specified model-class experiment without oracle term selection, rather than evi-dence of robustness to arbitrary machine-learning nuisance fits. For the central and global targets TPR (0 .5) , FPR (0 .5) ,ROC (0 .1) , ROC (0 .2) , and AUC, coverage is 0.922 –0.946 ,SE/SD is 0.919 –0.972 , and absolute bias/SD is at most 0.349 .This supplies a configuration without oracle term selection and with useful finite-sample coverage and SE/SD. It does not overturn the limitation: TPR (0 .2) and FPR (0 .2) cover only 0.824 and 0.854 , respectively, and the HGB results for DGP-A/B remain substantially weaker. Figure E.6 displays every evaluated coordinate rather than only the favorable ones. As an auxiliary diagnostic, we also proportionally enlarged the difficult DGP-B design. Larger samples did not uniformly eliminate lower-threshold FPR undercoverage by 4×P2; the remaining error was driven more by an optimistic analytical SE than by point-estimation bias. We therefore treat low-threshold FPR undercoverage as a finite-sample limitation rather than use this diagnostic as primary evidence for the method. 
+
+## F Application Details and Additional Results 
+
+This appendix emphasizes reproducible construction, im-plementation choices, and numerical diagnostics following Section 5. 
+
+F.1 Chatbot Arena Application: Additional Details 
+
+Data Linkage, Cohorts, and Masking Exact linkage and analysis unit. We matched the origi-nal Arena-33K conversation release (LMSYS Org 2023) to a public timestamped copy at a fixed revision (AGIE AI Technology 2023) using exact question IDs, and then linked the existing six-judge label file by question ID. A separate masking script checks question ID, model A/B, human win-ner, anonymous user, language, turn, and full-conversation hashes. The linkage also verifies all fixed source-file hashes, unique IDs, exact A/B conversation agreement, and the ab-sence of fuzzy or content-based matches. Before assigning calendar windows, a fixed hash keeps one comparison per anonymized user globally. Consequently, question IDs and user proxies are disjoint across cohorts. The common-family Table E.4: Comparison with fixed-score transported validation. Entries average over the stated design-by-DGP cells. Coverage is mean [minimum, maximum]. Study 2 compares the default Full choice C = 1 with the h-free comparators.                                                                                                        
+
+> Target/design Method Cells Mean |bias |Mean RMSE Mean SE/SD Coverage S1 TPR(.5), all Full 20 .0020 .0250 .950 .934 [.872,.952] IW-HL 20 .0041 .0284 .821 .879 [.668,.930] TSC 20 .0056 .0230 .701 .805 [.520,.928] S1 FPR(.5), all Full 20 .0020 .0217 .975 .941 [.914,.960] IW-HL 20 .0030 .0238 .842 .887 [.686,.948] TSC 20 .0031 .0192 .770 .850 [.600,.920] S2 TPR(.5), P2 Full 2.0017 .0225 .941 .945 [.934,.956] IW-HL 2.0046 .0260 .837 .879 [.864,.894] TSC 2.0058 .0209 .679 .804 [.752,.856] S2 FPR(.5), P2 Full 2.0013 .0199 .951 .938 [.936,.940] IW-HL 2.0031 .0224 .823 .890 [.876,.904] TSC 2.0030 .0182 .718 .837 [.836,.838] S4 ROC(.1,.2), P1–P3 Full 12 .0048 .0367 .901 .919 [.882,.954] IW-HL 12 .0023 .0353 .838 .896 [.864,.946] TSC 12 .0029 .0309 .891 .911 [.868,.952] S4 AUC, P1–P3 Full 6.0026 .0181 .986 .941 [.932,.950] IW-HL 6.0031 .0178 .964 .940 [.926,.950] TSC 6.0031 .0175 .962 .937 [.924,.950]
+
+Table E.5: Unified Study 3 ablation. Entries are bias (percentage points)/empirical SD/mean SE/95% coverage.                                                        
+
+> DGP Estimator TPR(.5) FPR(.5) ROC(.1) AUC DGP-A Plug-in −.15 /. 010 /. 002 /. 260 −.02 /. 010 /. 002 /. 258 −.09 /. 012 /. 001 /. 112 −.08 /. 008 /<. 001 /. 100
+> DGP-A HL-only −.18 /. 012 /. 010 /. 904 +.02 /. 012 /. 010 /. 892 +.02 /. 018 /. 017 /. 940 −.05 /. 010 /. 010 /. 942
+> DGP-A AL-only −.09 /. 016 /. 014 /. 936 −.14 /. 016 /. 015 /. 926 +.13 /. 014 /. 006 /. 616 +.03 /. 008 /. 001 /. 298
+> DGP-A Full −.12 /. 017 /. 017 /. 956 −.10 /. 017 /. 018 /. 950 +.25 /. 019 /. 018 /. 938 +.06 /. 010 /. 010 /. 926
+> DGP-A Oracle nuis. −.15 /. 017 /. 017 /. 960 −.08 /. 017 /. 018 /. 948 +.16 /. 018 /. 018 /. 934 −.01 /. 010 /. 010 /. 946
+> DGP-B Plug-in +.28 /. 012 /. 002 /. 296 +.17 /. 007 /. 001 /. 234 −.03 /. 013 /. 001 /. 138 −.13 /. 009 /. 001 /. 104
+> DGP-B HL-only +.26 /. 013 /. 008 /. 800 +.19 /. 008 /. 007 /. 874 −.14 /. 019 /. 017 /. 928 −.08 /. 013 /. 011 /. 914
+> DGP-B AL-only −.10 /. 020 /. 019 /. 936 −.10 /. 012 /. 010 /. 928 +.06 /. 017 /. 011 /. 780 +.05 /. 009 /. 005 /. 688
+> DGP-B Full −.12 /. 021 /. 021 /. 944 −.09 /. 012 /. 012 /. 950 −.05 /. 021 /. 020 /. 936 +.10 /. 013 /. 012 /. 934
+> DGP-B Oracle nuis. +.05 /. 022 /. 021 /. 948 +.06 /. 012 /. 012 /. 958 −.10 /. 021 /. 020 /. 942 +.04 /. 013 /. 012 /. 936
+
+rule is computed from X and calendar windows only; the de-clared target analysis population retains 1,499 of 3,027 later decisive user-level comparisons (49.52%). 
+
+Label visibility. The early HL file contains only X, Y ,and the middle AL file contains only X, S . Here S is a retrospectively constructed six-judge surrogate label, not a contemporaneous judge label. AL eligibility never uses the human winner or human tie status. 
+
+Surrogate-label construction. The fixed panel is 
+
+Qwen/Qwen3-235B-A22B-Instruct-2507-tput ,
+
+kimi-k2-0905-preview , meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8 ,
+
+mistralai/Mistral-7B-Instruct-v0.1 ,
+
+openai/gpt-oss-20b , and zai-org/GLM-4.5-Air-FP8 . After mapping a presented vote to canonical Arena A/B coordinates, an A vote contributes +c, a B vote contributes −c, and an unknown preference contributes zero, where c is confidence clipped to [0 , 1] ; a missing or nonfinite confidence for a directional A/B vote receives the prespecified unit weight. The sign of the six-vote mean defines S, while an exact-zero mean is unresolved and never encoded as response B. Of 32,922 X-eligible questions, 27,482 (83.48%) have all six records and 27,354 (83.09% overall; 99.53% of complete panels) have a nonzero aggregate; 442 individual votes use the missing-confidence fallback. We find no pair mismatch, duplicate judge key, or within-question multiple orientation. A separate masking script uses only decisive status to define the binary target validation population, encrypts its human outcomes in frozen ID order, and exports only target X to the analysis directory. Table F.1 and Algorithm F.1 summarize the resulting analysis design. 
+
+Natural Temporal Shift and Overlap No artificial probability-proportional-to-size (PPS) sampling or covari-ate tilt is used. Calendar time determines only the early, middle, and later windows and is excluded from both the preference and domain models. Figure F.1(a) reports every Figure E.3: Normal Q–Q diagnostics for the proposed Full estimator under DGP-A at P2. TPR and FPR use c = 0 .5,ROC uses u = 0 .2, and AUC is the scalar one-step estimator. Table F.1: Fixed temporal cohorts. Intervals are UTC and follow the left-closed, right-open convention except at the observed endpoint. 
+
+Cohort Calendar window n Visible labels HL Apr. 24–May 7, 2023 2,816 X, Y 
+
+AL May 7–26, 2023 3,590 X, S 
+
+Target May 26–Jun. 26, 2023 1,499 X before reveal 
+
+retained candidate-family share. The corresponding changes in language, prompt/response length, task/style indicators, and their Jensen–Shannon summaries are retained in the supplementary output files. Figure F.1(b) and Table F.2 re-port the out-of-fold (OOF) source-to-target domain AUC and uncapped density-ratio diagnostics; balance is summarized by standardized mean differences (SMDs). Ratios are nor-malized using source-training predictions only; the held-out source fold is never forced to mean one. 
+
+Content-Aware Representation The primary en-coder is the fixed intfloat/multilingual-e5-small model (384 dimensions) (Wang et al. 2024; intfloat 2023). Its exact model revision is fd1525a9fd15316a2d503bf26 ab031a61d056e98 . Prompt, response A, and re-sponse B are encoded separately with fixed query/passage prefixes, masked-mean pooling, L2 normalization, and deterministic 512-token head–tail truncation. The observed truncation rates are 1.01%, 6.41%, and 6.78%. Preference features contain signed response contrasts and named signed metadata; density features contain only swap-invariant 
+
+Algorithm F.1 Temporal Chatbot Arena analysis workflow 
+
+1: Fix and verify conversation, timestamp, and six-judge files by SHA-256 2: Join exact question IDs and map every decision to standard Arena A/B 3: Hash-select one comparison per anonymous user before win-dow assignment 4: Apply the outcome-blind common-family support rule 5: Export HL (X, Y ), AL (X, S ), and target X into disjoint files 6: Cross-fit nuisances and source-to-target ratios on five fixed folds 7: Freeze estimates, scores, and diagnostics and save their hashes 8: Verify the saved pre-reveal results, reveal target Y , and evaluate the frozen scores 
+
+Table F.2: Outcome-blind overlap diagnostics for the semantic-plus-metadata density design. Primary ratios are uncapped; caps are sensitivities only.                       
+
+> Diagnostic HL →T AL →TDomain AUC 0.802 0.628 Uncapped ESS 427.9 2,356.7 ESS/source n0.152 0.656 Weight p99 9.43 3.69 Maximum weight 55.12 7.40 Guard fraction 0.000 0.000 Weighted mean |SMD |0.039 0.020
+
+combinations. Training-fold A/B augmentation makes fitted preference scores complementary up to the recorded numerical tolerance. Dense embedding coordinates are not individually interpreted: substantive interpretability comes from the named language, family, length, style, and task features and the metadata-only sensitivity. 
+
+Estimation and Validation Objects Five fixed folds are shared across sources. Each held-out observation is pre-dicted once by nuisance models that use only the correspond-ing training folds: mY uses HL, mS uses AL, and each den-sity ratio uses its source and target training folds. The 790-dimensional preference nuisances are no-intercept logistic regressions with A/B augmentation and training-only scal-ing without centering; principal component analysis (PCA) is not used for mY or mS . Two grouped inner folds select 
+
+C ∈ { 0.03 , 0.1} and elastic-net mixing α ∈ { 0, 0.5} by source log loss inside each outer fold ( α = 0 is L2); all ten outer-fold preference fits and the all-AL deployment fit select 
+
+C = 0 .03 , α = 0 .5. Each 1,224-dimensional density-ratio design uses training-only standardization, randomized PCA capped at 128 components, and L2 logistic regression with 
+
+C = 0 .1, posterior guard 10 −6, and a normalizer computed only from source-training predictions. All fits use at most 5,000 iterations with tolerance 10 −5. The outer-fold salt is arena33k-temporal-v4-fold-20260725 , the inner-fold salt is arena33k-temporal-v4-inner-20260725 , and the numeric seed is 20260725. The pri-mary endpoint is the scalar one-step AUC of the population surrogate-derived model under the target law. We separately Plug-in HL-only AL-only                
+
+> Full
+> Oracle -0.15 -0.02 -0.09 -0.08 -0.18 +0.02 +0.02 -0.05 -0.09 -0.14 +0.13 +0.03 -0.12 -0.10 +0.25 +0.05 -0.15 -0.08 +0.16 -0.01
+
+DGP-A                
+
+> +0.28 +0.17 -0.03 -0.13 +0.26 +0.19 -0.14 -0.08 -0.10 -0.10 +0.06 +0.05 -0.12 -0.09 -0.05 +0.10 +0.05 +0.06 -0.10 +0.04
+
+DGP-B                                     
+
+> TPR (c= 0.5) FPR (c= 0.5) ROC (u= 0.1) One-step AUC
+> Plug-in HL-only AL-only
+> Full
+> Oracle 0.17 0.17 0.08 0.06 0.86 0.80 0.97 1.01 0.92 0.93 0.41 0.18 1.04 1.02 0.96 1.01 1.04 1.01 0.98 1.01
+> TPR (c= 0.5) FPR (c= 0.5) ROC (u= 0.1) One-step AUC
+> 0.17 0.16 0.11 0.08 0.66 0.81 0.92 0.88 0.92 0.88 0.62 0.54 0.96 0.99 0.95 0.93 0.95 1.01 0.96 0.93
+> −0.4 −0.2 0.0 0.2 0.4
+> Bias (Percentage Points)
+> 0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00
+> Mean SE / Empirical SD
+
+Figure E.4: Confirmed P4 Study 3 diagnostics at c = 0 .5, u = 0 .1, and C = 0 .5. The top row reports bias in percentage points; the bottom row reports mean analytical SE divided by empirical SD. 
+
+Figure E.5: Study 4 standardized AUC and fixed-u ROC errors. report 
+
+bθCF = AUC T{Yi, bmS, −k(i)(Xi)},
+
+bθdeploy = AUC T{Yi, bmS, all -AL (Xi)}.
+
+The first evaluates pooled fold-specific scores and the second evaluates one model fitted to all AL observations. Target S is not used. These quantities describe the Target performance of actual fitted scores, but neither equals the population-model estimand AUC T{Y, m ⋆S (X)}.
+
+Comparator definitions. The outcome-regression (g-computation) row plugs the cross-fitted human-outcome re-gression into the target empirical law. The importance-weighted human-score row transports the empirical AUC of the frozen surrogate-derived model using only HL out-comes and the HL-to-target density ratio. The human-label augmentation adds only the HL residual and prevalence cor-rections; the LLM-label augmentation adds only the AL sur-rogate residual correction. Full combines the target plug-in with both source corrections and is the only row carrying the theorem-covered three-source interval. The first four rows are prespecified analytic diagnostics or ablations, not formal method-ranking tests. 
+
+Numerical Diagnostics and Sensitivities Table F.4 gives OOF nuisance quality, score-tie checks, and the actual threshold-local AL information. Merely observing nAL h =463 .8 is not treated as sufficient: the local count is the num-ber of AL scores within one h of the threshold, whereas the Gaussian-kernel ESS uses its full-support weights and may exceed that count. We report pointwise inference only if the local count, kernel ESS, maximum local share, weighted ker-nel mass, residual variation, projection, and foldwise score diagnostics all satisfy the stated criteria. The primary scalar analysis uses uncapped weights; Figure F.3 reports the pre-specified weight caps and AUC pilot-bandwidth perturba-tions; none was used to choose the primary analysis. The finite-score rows and their paired differences use 2,000 Target-only nonparametric bootstrap resamples with both Figure E.6: Regularized full quadratic-dictionary diagnostic under DGP-D over 500 replications. The 4×P2 design is 
+
+(nHL , n AL , n T) = (4000 , 16000 , 80000) . Gray coverage bands show the Monte Carlo 95% neighborhood of nominal 0.95 coverage; dashed lines mark the ideal value in each panel. All coordinates, including the weaker lower-threshold results, are displayed. Table F.3: Chatbot Arena scalar-AUC results. Panel A con-cerns the population surrogate-score estimand. Panel B eval-uates frozen finite-sample scores against human Target out-comes revealed after estimation. The panels have different estimands and should not be read as a method ranking.          
+
+> Object AUC [95% interval]
+> A. Population-score estimation
+> Outcome regression (g-computation) 0.796 [0.786,0.807] Importance-weighted human-label score 0.841 [0.803,0.878] Human-label correction only 0.825 [0.793,0.857] LLM-label correction only 0.819 [0.805,0.833]
+> Full three-source (ours) 0.848 [0.814,0.881]
+> B. Finite-score Target-Yvalidation
+> Cross-fitted learned score 0.810 [0.787,0.832] All-AL deployment score 0.812 [0.789,0.834]
+
+score vectors fixed. They include no nuisance, density-ratio, model-training, or fold/split refitting uncertainty, and are conditional validation diagnostics rather than formal three-source intervals. 
+
+Provenance and Scope The existing judge-label release preserves the six judge identifiers, presented order, structured preference/confidence decisions, and question IDs, so the A/B mapping and panel aggregation are reproducible. It does not preserve the complete prompt template, provider and call dates, exact served model versions, raw responses, or retry/failure logs; most judge models also postdate the 2023 traffic, so training-data overlap cannot be ruled out. Each comparison was judged in one randomized orientation rather than in both A/B and B/A orders. We therefore treat S
+
+as a retrospectively constructed six-model surrogate label and do not interpret this study as validation of a contemporaneous single judge. Finally, real temporal evolution may include conditional or concept drift not captured by X; the analysis Table F.4: Nuisance and local-information diagnostics. Pointwise inference is reported only when every stated crite-rion is satisfied.                      
+
+> Component Diagnostic Value/status
+> ˆmY(HL) OOF AUC / Brier 0.814 / 0.178
+> ˆmS(AL) OOF AUC / Brier 0.869 / 0.149
+> ˆmSSwap-complement error 1.5×10 −16
+> Target score Unique / n; max. atom 1,499/1,499 / 0.00067 ROC(.10) Local count / kernel ESS 734 / 1,029.0 ROC(.15) Local count / kernel ESS 632 / 905.9 ROC(.20) Local count / kernel ESS 612 / 821.9
+
+assumes, rather than establishes, transportability and applies only to the declared common-family overlap population. 
+
+F.2 Construction and Curation of the Semi-Synthetic ACS Benchmark 
+
+Data source, task, and estimand. We use the 2019 one-year American Community Survey Public Use Microdata Sample person file for California ( psam_p06.csv ). We retain records satisfying AGEP > 16 , PINCP > 100 , WKHP >
+
+0, and PWGTP ≥ 1, yielding 197,193 eligible individuals. The binary gold outcome is Y = I{PINCP > $50 ,000 };the surrogate is the same threshold applied to LLM-predicted annual income. The analysis excludes the ACS survey weight 
+
+PWGTP ; accordingly, the target law is the unweighted ACS sample target distribution rather than the survey-weighted California population. The target cohort retains the continuous PINCP value in a verification-only column. This column is removed before preprocessing and is unavailable to every nuisance learner, density-ratio model, cross-fitting operation, and estimating equation. It is converted to the held-out benchmark outcome only after all cross-fitted predictions have been completed. Early HL Middle AL Later target Claude Vicuna GPT OASST-Pythia RWKV Koala Alpaca FastChat-T5 ChatGLM Dolly StableLM Llama 
+
+(a)     
+
+> 0.00 0.25 0.50 0.75 1.00
+> Diagnostic value
+> HL to target AL to target
+
+(b)  
+
+> Domain AUC Uncapped ESS fraction
+> 0.00 0.05 0.10 0.15 0.20 0.25
+> Share
+
+Figure F.1: Outcome-blind temporal-shift diagnostics. (a) Candidate-family shares across the fixed calendar cohorts. (b) OOF domain discrimination and uncapped effective-sample-size fractions for each transport. Domain AUC mea-sures separability and is not a positivity proof. These di-agnostics show that the calendar cohorts differ in observed covariates without imposed tilting; they do not assess esti-mator accuracy. 
+
+Fixed candidate pools and LLM labeling. Before co-hort construction, we fix 11,000 identifiers: 1,000 gold-pool candidates and a 10,000-ID unlabeled expansion reserve. The prespecified current expansion requested 200 gold IDs (which were used exclusively for initial prompt evaluation) and only the first 1,000 unlabeled IDs in the fixed permuta-tion. All 200 gold requests and 999 unlabeled requests pro-duced schema-valid records; one unlabeled request produced a logged terminal schema violation (a zero income predic-tion). The other 9,000 reserve IDs were never requested and therefore are not missing LLM responses. Operational errors were retained in the attempt log. Sixteen nonterminal trans-port or network errors were resumed in later explicit sessions, and all affected request IDs subsequently completed. Calls were made through OpenRouter on July 13 and 18, 2026, using the provider-reported identi-fier google/gemini-3.5-flash , prompt version Table F.5: Paired comparisons and cross-estimand discrep-ancies. Analytic population-model comparisons and condi-tional target-only bootstrap comparisons have different un-certainty scopes.                      
+
+> Comparison Estimate 95% interval Full −outcome regression 0.051 [0.020,0.083] Full −human-label correction 0.023 [0.014,0.031] All-LLM-label deployment −cross-fitted score 0.002 [-0.002,0.007] Cross-fitted score −Full −0.038 [-0.061,-0.016] All-LLM-label deployment −Full −0.036 [-0.058,-0.014]
+
+P2-socioeconomic-role-v1 , temperature zero, and a strict three-field JSON schema. OpenRouter did not expose a finer immutable model fingerprint, so we do not claim one. The released supplement contains the frozen request man-ifest, every attempt and raw response, parsed outputs, the terminal-failure record, retry status, token and cost ledger, and SHA-256 hashes. Invalid model content was not auto-matically regenerated; recoverable transport or service errors were logged and resumed. 
+
+Exact pointwise prompt. The wording of the complete template is reproduced below, with {person_profile} 
+
+replaced by a readable profile that excluded PINCP , the gold outcome, survey weight, and dataset identity: 
+
+You are a socioeconomic analyst estimating annual personal income from structured survey profiles. Task: Estimate this person’s annual personal income in U.S. dollars. Return JSON only, with exactly these fields: predicted_annual_income_usd, income_rank_score, and confidence. Definitions: predicted_annual_ income_usd: your best estimate of this person’s annual personal income in U.S. dollars. income_rank_score: integer from 0 to 10, where 0 means very low expected income and 10 means very high expected income relative to U.S. adults. confidence: numeric confidence from 0 to 100, where 0 means not confident and 100 means very confident. This is your confidence in the income prediction, not the income level. Person profile: {person_profile} Rules: Return valid JSON only. Do not include explanation text. Do not output ranges; output a single numeric income estimate. 
+
+The continuous prediction was thresholded at $50,000 to form S.
+
+Age-biased source sampling. We induce transparent op-posing shifts at age 45. An older candidate enters HL with probability 0.8 and a younger candidate with probability 0.2; AL reverses these probabilities. All draws use seed 20260720, and the remaining eligible individuals form the 0.00 0.05 0.10 0.15 0.20 0.25 
+
+> False-positive rate
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> True-positive rate
+> CF score (validation) All-AL score (validation) Full pointwise (formal)
+
+Figure F.2: Low-FPR target ROC results. Solid curves are the two frozen finite-score empirical validations; square markers and error bars are the Full population-model esti-mates, for which all stated pointwise diagnostics were satis-fied. The figure checks operating-point scale and behavior, but the curves and markers target different estimands and therefore do not rank methods or measure bias. Table F.6: ACS analytical cohorts after opposing age-biased sampling.                     
+
+> Cohort nMean age Age >45 Label prevalence HL 447 50.79 75.6% 227 /447 = 0 .508
+> AL 552 35.78 15.4% 244 /552 = 0 .442
+> Target 186,193 42.93 43.8% 81 ,674 /186 ,193 = 0 .4387
+
+target cohort: Direct identifier comparisons give zero over-lap for every pair of analytical cohorts. The opposing shifts require the two source-specific density ratios defined in Ap-pendix B.2. 
+
+F.3 Covariates and Preprocessing 
+
+The common feature set contains numerical variables AGEP 
+
+and WKHP and categorical variables COW , SCHL , MAR , OCCP ,
+
+POBP , RELSHIPP , SEX , and RAC1P . Within each outer cross-fitting fold, the numerical variables are standardized using the training observations. The categorical variables are processed using sparse OneHotEncoder with no reference category dropped and with unknown evaluation categories ignored. Category levels are frozen across the three cohorts. The categorical variables contain 8, 24, 5, 529, 220, 19, 2, and 9 observed levels, respectively. The common linear design used by the outcome and density-ratio models has 818 columns. For the surrogate regression, each of AGEP and 
+
+WKHP is replaced by a three-knot cubic quantile-spline basis, 0.5 0.6 0.7 0.8 0.9 
+
+> Full scalar one-step AUC
+> Uncapped primary Weight cap 5 Weight cap 10 Weight cap 20 AUC pilot 0.5x AUC pilot 2x
+
+Figure F.3: Prespecified scalar-AUC sensitivities for the Full estimator. The uncapped analysis is primary; the capped-weight and pilot-bandwidth results are sensitivity analyses specified before Target reveal. Their stability concerns nu-merical sensitivity only and does not establish identification or transportability. giving 824 columns. 
+
+F.4 Cross-Fitting and Density-Ratio Estimation 
+
+We use five-fold honest cross-fitting. The outcome regres-sion ˆmY uses a 100-tree Random Forest. The surrogate regression ˆmS uses L2-penalized cubic-spline logistic re-gression. Within each outer AL training fold, three-fold cross-validation compares C ∈ { 0.03 , 0.3, 3} and L1 ratios 
+
+{0, 0.5} by log loss; all five folds select C = 3 and L1 ratio zero. Extending the grid to C = 30 leaves every selec-tion and reported result unchanged. Domain learners remain calibrated 100-tree Random Forests. Every observation is evaluated using nuisance fits that exclude its corresponding held-out fold. The source sample is the information bottleneck for each density-ratio problem. Within each outer fold, we therefore draw a seeded source-size-matched subset from the target training fold and fit the domain classifier to balanced source and target classes. The Random Forest domain learner uses 100 trees and minimum leaf size 10. Its probabilities are cal-ibrated using internal three-fold sigmoid calibration. Under the balanced domain design, if ˆπg (x) denotes the fitted prob-ability of target membership, the posterior odds estimate the density ratio: the implementation converts ˆπg (x) to posterior odds as in Appendix B.2. Domain posteriors are prespecified to be clipped to [0 .001 , 0.999] . Subject to an upper bound of Algorithm F.2 ACS-Income label-masking workflow   
+
+> 1: Freeze candidate IDs and request only the prespecified LLM-label subset 2: Validate the response schema and retain the complete re-quest/attempt log 3: Form disjoint age-shifted HL, AL, and target cohorts 4: Cross-fit outcome, surrogate, and density-ratio learners with training-fold normalization 5: Estimate scalar AUC and pointwise ROC diagnostics with tar-get PINCP masked 6: Freeze estimates, reveal verification-only target outcomes, and compute the CF benchmark
+
+Table F.7: ACS held-out density-ratio weight diagnostics. Ratio Median Maximum ESS ESS fraction 
+
+ˆwHL 0.816 4.730 332.8 0.745 
+
+ˆwAL 0.864 3.452 438.2 0.794 10, a single multiplicative normalization factor is estimated using only the source observations in the outer training fold and then frozen before weights are evaluated on the held-out fold. Thus, an evaluation observation and its weight depend only on training-fold fits; in particular, we do not force the held-out mean weight to equal one. In the primary analysis, neither posterior nor weight clip-ping is activated. The pooled held-out mean weights are 1.056 and 1.032, respectively, rather than being mechani-cally set to one. Across the 818 encoded numerical and one-hot indicator features, reweighting reduces the maxi-mum absolute standardized mean difference from 0.558 to 0.156 for HL and from 0.536 to 0.187 for AL; the remain-ing imbalance is a limitation, not evidence of exact overlap. Out-of-fold nuisance diagnostics are AUC/Brier score/log loss = 0 .816 /0.179 /0.534 for ˆmY and 0.948 /0.087 /0.297 
+
+for ˆmS .
+
+F.5 Pointwise ROC Implementation and Diagnostics 
+
+We prespecify h = 0 .5n−1/4AL = 0 .10315 and evaluate TPR and FPR on 201 thresholds. The two sequences are sepa-rately projected by bounded least-squares isotonic regression onto [0 , 1] to be nonincreasing, and combined by generalized inversion and linear interpolation. The slope-ratio pilot uses 
+
+b = n−1/5T = 0 .08831 . Pointwise influence values, analytic standard errors, and nominal Wald intervals are computed exactly as in Theorem 3 and Corollary 1; repeating those for-mulae here would add no application-specific information. The nominal scale nAL h = 56 .94 is not interpreted as an effective sample size. At target FPR u = 0 .10 , 0.15 , 0.20 ,transport-weighted local kernel ESS values are 150.7, 97.3, and 64.8, with 87, 49, and 37 AL observations within 
+
+| ˆmS (X) − ˆcu| ≤ h. The pooled cross-fitted Target score has 183,778 distinct values among 186,193 observations and an ordered-pair tie probability of 1.63 × 10 −7. The spline basis avoids the original coarse fitted score, but these diag-Table F.8: ACS-Income estimates using the cross-fitted spline-3 logistic score. Full uses the proposed three-source analytic interval under the stated regularity conditions. CF values evaluate a different finite-sample score against re-vealed Target outcomes.                     
+
+> Metric Plug-in Human correction Full [95% interval] CF validation AUC 0.707 0.838 0.866 [0.822, 0.911] 0.855 TPR at FPR .10 0.293 0.536 0.585 [0.458, 0.713] 0.577 TPR at FPR .15 0.391 0.631 0.652 [0.532, 0.772] 0.682 TPR at FPR .20 0.472 0.692 0.725 [0.610, 0.841] 0.754
+
+nostics concern the fitted score ˆmS , not the population score 
+
+m⋆S (X). Because the ACS covariates are largely integer- or category-valued, they do not verify population-score conti-nuity; we interpret the analytic interval conditional on the stated population regularity. The scalar one-step AUC re-mains the primary endpoint; pointwise ROC results are sup-plementary because they are less stable in this small-AL application. 
+
+F.6 Scalar AUC Numerical Implementation 
+
+The implementation follows the scalar construction in Ap-pendix B.3 and the three-source influence functions in Ap-pendix C.2. It uses the tie-adjusted comparison κ(z, z ′) = 
+
+I{z > z ′} + 12 I{z = z′} and computes the target pairwise term exactly in O(nT log nT) time by sorting scores, avoid-ing an nT × nT matrix. The weighted score-density pilots use a Gaussian kernel with b = n−1/5T and an FFT evaluation. The reported estimate adds the two source corrections to the cross-fitted target pairwise term and uses the aug-mented prevalence denominator, exactly as specified in Corollary C.2. Its standard error sums the within-source empirical variances of centered influence values. This scalar procedure contains no boundary bandwidth h and uses an-alytic three-source inference rather than a component boot-strap. 
+
+F.7 Cross-Fitted Target Benchmark 
+
+The program first writes a pre-reveal results file containing the scalar-AUC and pointwise-ROC estimates, seed, model specification, bandwidths, and a hash of the ordered Target IDs. It then loads Target PINCP by ID. Target S is never loaded or used. The revealed outcomes compute the empir-ical Target AUC and ROC values of the pooled out-of-fold surrogate-derived models. The Target AUC uses the standard tie-adjusted empirical pairwise statistic. Its conditional stan-dard error is computed from the positive- and negative-class empirical AUC influence values. These two quantities are not the same estimand. The benchmark pools predictions from five fold-specific finite-sample models and is not the performance of one frozen deployable model, whereas the one-step estimator targets the population surrogate-derived model m⋆S . Their difference is therefore an empirical cross-estimand discrepancy, not repeated-sampling bias and not a coverage assessment. Figure F.4: Complete ACS comparison for the spline-3 score. Gray, orange, and blue denote the plug-in, human-correction-only, and Full estimates. Only Full carries the proposed three-source intervals; the ablations are shown as point es-timates. The red line and band evaluate pooled cross-fitted finite-sample scores after Target-outcome reveal and do not represent population-score truth. Full is descriptively closer than the human-correction-only ablation at all four reported metrics. The full scalar one-step estimate is 0.8663 (SE 0.0228; analytic 95% interval [0 .8216 , 0.9110] under the stated regu-larity conditions), whereas the cross-fitted Target benchmark AUC is 0.8549 ( SE = 0 .0009 ). Their absolute discrepancy is 0.0114. The corresponding plug-in and human-correction-only discrepancies are 0.1475 and 0.0166. The Full discrep-ancy is therefore 92.3% smaller than the plug-in discrepancy and 31.5% smaller than the human-correction-only discrep-ancy. More directly, the paired Full-minus-human correction is 0.0280 with 95% interval [0 .0044 , 0.0515] , showing that the auxiliary-label correction is not negligible in this appli-cation. We do not use nested subsample containment as cov-erage evidence and do not interpret a finite-model learning curve as evolution of this fixed population-model estimand; repeated-sampling calibration is assessed in the simulation studies. Table F.9: Post-reveal exploratory ACS surrogate-learner sensitivity. Learners are ordered by AL out-of-fold log loss. The paired intervals concern Full minus the human-correction-only ablation for the same learner; they are not simultaneous confidence intervals or a direct ranking of es-timator accuracy.                               
+
+> Learner AL log loss Full Human corr. CF validation Full −Human [95% interval] Spline-3 logistic 0.2966 0.8663 0.8383 0.8549 0.0280 [0.0044, 0.0515] Elastic-net logistic 0.2992 0.8632 0.8405 0.8543 0.0226 [0.0034, 0.0419] Spline-5 logistic 0.3059 0.8638 0.8302 0.8517 0.0336 [0.0098, 0.0573] Calibrated RBF-SVC 0.3164 0.8618 0.8307 0.8486 0.0311 [0.0112, 0.0511] Ridge logistic 0.3178 0.8616 0.8354 0.8493 0.0261 [0.0058, 0.0464] Calibrated quadratic-SVC 0.3331 0.8745 0.8394 0.8468 0.0351 [0.0125, 0.0577] 0.00 0.02 0.04 0.06
+> Full - human-correction-only AUC
+> Spline-3 (0.297)
+> Elastic net (0.299) Spline-5 (0.306) RBF-SVC (0.316) Ridge (0.318) Quadratic SVC (0.333) AL OOF log loss in parentheses
+
+Learner sensitivity 
+
+Figure F.5: Paired Full-minus-human-correction AUC con-trasts across the six ACS surrogate learners, ordered by AL out-of-fold log loss. Bars are learner-specific 95% intervals; all remain above zero. The intervals are learner-specific and do not provide an inferential ranking of learner accuracy. 
+
+F.8 Exploratory Surrogate-Learner Sensitivity 
+
+The six surrogate-score learners in Table F.9 were examined after the initial Target-outcome reveal, so this analysis is an exploratory sensitivity check rather than prespecified model selection. Their displayed order uses only AL out-of-fold log loss; neither Target outcomes nor Target-validation dis-crepancies enter the ranking. The spline-3 logistic learner has the lowest AL log loss and is therefore used for the main presentation. For every learner, the auxiliary-label correc-tion increases AUC relative to the human-correction-only ablation, and each learner-specific paired interval excludes zero. Full is descriptively closer to its finite-score Target validation in five of six cases; calibrated quadratic-SVC is the counterexample. Thus, the sensitivity analysis supports a persistent, non-negligible auxiliary-source contribution, but it does not establish uniform estimator superiority or ver-ify the population score-density assumption. Extending the elastic-net grid from C ≤ 3 to C ≤ 30 leaves the selected spline-3 fit and all reported results unchanged. G Further Discussion 
+
+The main implication of our results is that evaluating a learned surrogate-derived model is fundamentally different from evaluating a fixed prediction rule. At a hard threshold, score-estimation error contributes through observations near the threshold, producing variance of order (nAL h)−1 rather than n−1AL . Thus, a large surrogate-labeled sample alone does not justify treating the score as known. Treating the score as known is justified when (nAL h)−1 = o(n−1HL + n−1T ), so that the auxiliary-source contribution is negligible relative to the gold-source and target-sample contributions. Otherwise, it omits a first-order source of uncertainty. The three-source expansion also has implications for data collection. Its variance components distinguish uncertainty arising from gold-outcome estimation, score estimation near the threshold, and target-population averaging. Subject to labeling costs and nuisance-estimation quality, their rela-tive magnitudes can indicate whether additional gold labels, surrogate labels, or target covariates would be most useful. Increasing nAL is most valuable when the variance from esti-mating the score near the threshold is the largest component, but its benefit depends on the bandwidth and on the accuracy of the fitted score. More auxiliary observations cannot by themselves remove localization bias caused by an unsuitable bandwidth. Our estimand defines the scope of the framework. We evaluate the population surrogate-derived model m⋆S (x) = 
+
+EAL (S | X = x) under the target covariate law, rather than the conditional performance of one particular finite-sample fitted model. If the inferential target is the performance of a specific deployed fit, that fitted model would instead be treated as fixed, leading to a different estimand and infer-ential analysis. Moreover, separate density ratios allow the two labeled sources to have different covariate distributions, but they do not protect against violations of gold-outcome transportability or inadequate source support for the target covariate distribution. The numerical results should be interpreted within these limits. The plug-in comparison shows that the two numer-ator corrections jointly reduce empirical discrepancy in one controlled configuration; it neither isolates their individual effects nor establishes uniform superiority. The broader simulations show that bandwidth and sample-size config-urations can materially affect finite-sample bias and cover-age, reinforcing the value of reporting bandwidth sensitiv-ity. The semi-synthetic ACS-Income design permits con-trolled validation because the masked target gold outcomes are revealed after estimation; in a genuinely unlabeled target population, such direct validation would not be available. Threshold-specific inference applies to prespecified thresh-olds or false-positive rates, while AUC inference uses the separate scalar one-step estimator. Data-driven threshold selection and simultaneous ROC bands require additional uniform-in-threshold theory. 
+
+Practical Considerations and Extensions Several practi-cal considerations remain. First, the bandwidth controls how closely the AL correction concentrates around the thresh-old and how many local observations contribute. The ref-erence family in Section 3, together with the reported val-ues of h and nAL h and the sensitivity analysis, makes this choice transparent. Second, orthogonality removes the lead-ing nuisance-estimation effects, while the rate conditions in Assumption A.2 control the remaining higher-order terms. Third, the threshold-specific and fixed-FPR ROC results are pointwise; simultaneous ROC bands require a uniform Gaus-sian approximation. Finally, repeated cross-fitting adds com-putational cost because each nuisance function is fitted within every training fold. One immediate extension is simultaneous confidence bands for the entire ROC curve, which would go beyond the fixed-threshold TPR/FPR, fixed-u ROC, and scalar AUC inference established here. Other directions include predic-tive performance metrics for survival outcomes or multiclass classification. A related extension is sequential monitoring as the surrogate-labeled sample grows. Such a procedure would require confidence bands that are uniform over the data-acquisition path, rather than repeated application of the cur-rent pointwise intervals. Developing those guarantees, po-tentially with a multiplicity adjustment depending on the monitoring schedule, is left for future work.

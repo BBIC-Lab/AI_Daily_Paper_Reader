@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-001.webp",
+      "caption": "Figure 1: Overview of the MBP architecture. An input byte sequence is first processed by the model, and the MBP head uses the LCA mask (Figure 2) to predict multiple future bytes in parallel from a single head. Colored bands denote learned segment boundaries. See Appendix A for a detailed description of several parts in this figure.",
+      "page": 1,
+      "index": 1,
+      "width": 397,
+      "height": 384
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-005.webp",
+      "caption": "Figure 2: The Latent Causal Attention (LCA) mask. Each row corresponds to a query byte and each column to a key byte. A query at position i in segment si may attend to itself, to earlier positions within its own segment, and to all bytes in the immediately preceding segment si−1. Attention to later positions in the same segment and to segments further in the past is masked out. Colored bands denote segment boundaries and match those in Figure 1. This mask preserves autoregressive causality at the segment level while enabling all bytes in a group to be predicted in parallel from a single decoder head.",
+      "page": 3,
+      "index": 5,
+      "width": 396,
+      "height": 396
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-002.webp",
+      "caption": "Figure 3: Performance vs. throughput across four downstream tasks. Metrics are instruction-loose accuracy on IfEval, F1 on CoQA, ROUGE on CNN/DailyMail, and COMET on Spanish–English translation. LCA (⋆) lies on the frontier for three of four tasks on the Pareto front, which represents the method with the best tradeoff.",
+      "page": 6,
+      "index": 2,
+      "width": 937,
+      "height": 258
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-003.webp",
+      "caption": "Figure 4: Ablation on the acceptance threshold, averaged across DailySum, es-en, and fr-en. Each star marks LCA evaluated at a different value of τ . Lowering τ admits more speculative tokens, increasing throughput and acceptance rate.",
+      "page": 7,
+      "index": 3,
+      "width": 445,
+      "height": 294
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-004.webp",
+      "caption": "Figure 5: Performance vs. Candidates (n at τ = 0.75.) Marker color encodes throughput (darker = faster; full values in Table 3). COMET scores (es-en, fr-en) scaled ×100.",
+      "page": 7,
+      "index": 4,
+      "width": 447,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-006.webp",
+      "caption": "Figure 6: Throughput vs. candidates n under speculative decoding acceptance. Solid lines show LCA throughput growing monotonically with n on all three tasks while downstream performance is maintained (Table 4 in Appendix B).",
+      "page": 8,
+      "index": 6,
+      "width": 447,
+      "height": 292
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-007.webp",
+      "caption": "Figure 7: Distribution of accepted speculative bytes over 100 decoding steps. LCA accepts a mean of 3.05 of the 6 speculative candidates per step, and 15% of steps accept the full window, indicating that LCA’s multi-byte predictions are frequently coherent across an entire segment rather than accepted one byte at a time.",
+      "page": 8,
+      "index": 7,
+      "width": 446,
+      "height": 298
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-009.webp",
+      "caption": "Figure 8: Throughput vs. performance across four inference strategies. We compare LCA’s next-byte head only, LCA’s self-verified multi-byte prediction, LCA with FxT verifying the MBP head, and the FxT baseline. External verification with FxT lets LCA match or exceed FxT’s performance while running 1.4-1.7× faster across all three tasks. See acceptance rate in Table 5 of Appendix B.",
+      "page": 9,
+      "index": 9,
+      "width": 936,
+      "height": 313
+    },
+    {
+      "url": "assets/figures/arxiv/2608.15454v1/fig-008.webp",
+      "caption": "Figure 9: Performance vs. throughput on French– English translation. LCA (⋆) lies on the Pareto front.",
+      "page": 12,
+      "index": 8,
+      "width": 445,
+      "height": 316
+    }
+  ]
+}

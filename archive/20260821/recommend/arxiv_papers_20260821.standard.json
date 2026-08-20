@@ -1,0 +1,419 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-20T20:22:05.727770+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 59,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 96,
+    "quick_skim_target": 11,
+    "quick_selected": 5,
+    "deep_selected_before_profile_limit": 17,
+    "quick_selected_before_profile_limit": 11,
+    "profile_daily_limits": {
+      "NDAI": {
+        "deep": 5,
+        "quick": 5
+      }
+    },
+    "profile_limit_dropped_by_tag": {
+      "NDAI": {
+        "deep": 12,
+        "quick": 6
+      }
+    },
+    "profile_limit_dropped": 18
+  },
+  "deep_dive": [
+    {
+      "id": "2608.16569v1",
+      "source": "arxiv",
+      "title": "Learning Generalizable Reconstruction of High-Dimensional Neural Dynamics",
+      "abstract": "Accurate reconstruction of long-duration neural recordings is challenging because local field potentials (LFPs) are high-resolution, multichannel, transient, and variable across subjects. We present PCA-DMD, a scalable operator-theoretic framework that segments LFP recordings into overlapping windows, projects them into a compact PCA space, learns linear Koopman evolution in the latent space, and reconstructs continuous signals through inverse projection and overlap-add aggregation. On 200,000-sample hippocampal recordings, PCA-DMD outperformed Classical DMD, SpDMD, MrDMD, and HODMD, achieving KLD=0.0761 and HD=0.0847. In all-pair cross-subject zero-shot generalization at 300,000 samples, correlations were 0.9504-0.9800, with HD=0.0010-0.0072 and KLD=0.0005-0.0022, without target-subject fine-tuning. Out-of-sample temporal prediction showed close one-step agreement on temporally held-out LFP segments across the unseen interval and multiple channels. Scalability analysis from 400,000 to 900,000 samples showed stable zero-shot reconstruction, with mean correlation remaining about 0.965-0.968 while computational cost increased predictably. External validation on an independent 93-channel Allen Neuropixels recording yielded mean and median channel-wise correlations of 0.7427 and 0.7990, respectively. Koopman spectral and mode analyses revealed dominant eigenvalues concentrated near the unit circle. PCA-DMD therefore provides an interpretable, generalizable, and computationally scalable framework for reconstructing high-dimensional neural dynamics.",
+      "authors": [
+        "Anima Kujur",
+        "Zahra Monfared"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-17T13:35:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.16569v1",
+      "tags": [
+        "query:NDAI"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Reconstructs high-dimensional neural dynamics using compact PCA and Koopman operator sequence evolution",
+      "llm_evidence_cn": "利用紧凑PCA和Koopman算子序列演化重建高维神经动态",
+      "llm_evidence": "利用紧凑PCA和Koopman算子序列演化重建高维神经动态",
+      "canonical_evidence": "利用紧凑PCA和Koopman算子序列演化重建高维神经动态",
+      "llm_tldr_en": "PCA-DMD learns compact latent representations of LFP recordings and reconstructs long-duration neural dynamics with strong zero-shot cross-subject generalization",
+      "llm_tldr_cn": "PCA-DMD学习LFP记录的紧凑潜在表示并重建长时间神经动态，具有强跨被试零样本泛化能力",
+      "llm_tldr": "PCA-DMD学习LFP记录的紧凑潜在表示并重建长时间神经动态，具有强跨被试零样本泛化能力",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "sequence modeling for neural data",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15488v1",
+      "source": "arxiv",
+      "title": "A Network-driven Framework for Public Event Forecasting via Dynamic Interaction Network Evolution",
+      "abstract": "Effective public event forecasting is essential for intelligent service systems, enabling proactive risk management, adaptive resource allocation, and timely decision-making. In many real-world scenarios, the evolution of public events is driven by dynamic interactions among participants. Motivated by this observation, this paper proposes auto-ibDLM, a network-driven deep learning framework that represents events as dynamic interaction networks and predicts public event evolution through participant growth forecasting. The proposed framework adopts a hybrid representation learning strategy that first represents network evolution using network science-informed structural metrics and subsequently transforms the resulting structural feature vectors into compact and robust latent representations through an auto-learning layer. A GRU-based temporal forecasting module is then employed to capture temporal dependencies and predict future participant growth. Extensive experiments on 13 real-world public event datasets and two publicly available dynamic network datasets demonstrate that auto-ibDLM consistently outperforms representative state-of-the-art methods in both forecasting accuracy and generalization capability, achieving over 97% accuracy in public event forecasting. Comprehensive experimental analyses further validate the effectiveness of the proposed hybrid representation learning strategy and demonstrate its representation-level interpretability. These results indicate that auto-ibDLM provides an effective and practical solution for intelligent public event forecasting.",
+      "authors": [
+        "Jie Wei",
+        "Yue Liu",
+        "Xiaochuan Tang",
+        "Biao Cai",
+        "Xiangtao Li",
+        "Yanmei Hu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-16T02:32:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.15488v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "forecasts public event evolution over time via dynamic interaction network and representation learning",
+      "llm_evidence_cn": "通过动态交互网络与表示学习预测公共事件随时间演变",
+      "llm_evidence": "通过动态交互网络与表示学习预测公共事件随时间演变",
+      "canonical_evidence": "通过动态交互网络与表示学习预测公共事件随时间演变",
+      "llm_tldr_en": "Proposes auto-ibDLM, a network-driven deep learning framework that predicts public event evolution by modeling dynamic interaction networks and participant growth.",
+      "llm_tldr_cn": "提出一种网络驱动框架，通过建模动态交互网络和参与者增长预测公共事件演变。",
+      "llm_tldr": "提出一种网络驱动框架，通过建模动态交互网络和参与者增长预测公共事件演变。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15783v1",
+      "source": "arxiv",
+      "title": "Inferential Evaluation of Surrogate-Derived Models under Covariate Shift",
+      "abstract": "In transfer-learning settings, a model derived from abundant surrogate labels may be deployed in a target population where gold-standard outcomes are unobserved. Evaluating its target performance is essential for determining whether decisions based on the model remain reliable, yet it is difficult when gold labels are scarce, and covariate distributions differ across data sources. We study a three-sample setting with a small gold-labeled source, a larger surrogate-labeled source, and an unlabeled target. Under conditional transportability, we evaluate the surrogate-derived model against the latent gold-standard outcome in the target population. We propose cross-fitted estimators that transport information from the two labeled sources through source-specific density ratios. We also combine outcome-regression augmentation with a kernel correction for estimating the model near a threshold, accounting for uncertainty from all three samples. We establish asymptotically linear inference for TPR and FPR, consistency and pointwise inference for the ROC curve, and asymptotically normal inference for AUC. Simulations assess bias, coverage, and sensitivity to bandwidth and relative sample sizes. A retrospective temporal validation on Chatbot Arena and a semi-synthetic ACS-Income study provide validation in real-world AI applications.",
+      "authors": [
+        "Longtian Shi",
+        "Molei Liu",
+        "Doudou Zhou"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "stat.AP",
+        "stat.ME"
+      ],
+      "published": "2026-08-16T15:05:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.15783v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Evaluates models transferred to a new target domain under covariate shift with scarce gold labels",
+      "llm_evidence_cn": "在协变量偏移且金标签稀缺时评估模型在新目标域的迁移表现",
+      "llm_evidence": "在协变量偏移且金标签稀缺时评估模型在新目标域的迁移表现",
+      "canonical_evidence": "在协变量偏移且金标签稀缺时评估模型在新目标域的迁移表现",
+      "llm_tldr_en": "Proposes cross-fitted estimators to evaluate surrogate-derived models in a target population when gold labels are scarce.",
+      "llm_tldr_cn": "提出交叉拟合估计器，在金标签稀缺时评估替代模型在目标人群中的表现。",
+      "llm_tldr": "提出交叉拟合估计器，在金标签稀缺时评估替代模型在目标人群中的表现。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15851v1",
+      "source": "arxiv",
+      "title": "Dense Expands, Sparse Anchors: Channel-Asymmetric Query Expansion for Hybrid Retrieval",
+      "abstract": "LLM-based query expansion improves retrieval by generating document-like passages. In hybrid retrieval, however, most evaluations fuse fixed top-$L$ dense and sparse rankings. Because the cutoff controls both which cross-channel contributions enter fusion and how much of each ranking is accessed, gains measured at one $L$ can change or reverse at another. We separate these effects by evaluating retrieval effectiveness under complete-list fusion and recording the policy-specific per-channel replay stopping depths at which its ordered top-$K$ is certified. We then introduce DESA (Dense Expansion and Sparse Anchoring), a channel-asymmetric query expansion method. An LLM generates complementary reference passages; orthogonal residual expansion adds their new semantic directions to the dense query, while score-product anchoring incorporates their lexical cues into sparse retrieval without broadening the original query's lexical support. Across seven BEIR datasets, DESA improves nDCG@10 and Recall@20 over the unexpanded query by 3.82% and 2.38%, while reducing dense and sparse access depths by 36.90% and 36.56%. With equal dataset weighting, 63.31% of queries become shallower in both channels. However, both depths increase with Contriever on Touché-2020. These results support channel-specific integration of generated passages and joint evaluation of retrieval effectiveness and access depth.",
+      "authors": [
+        "Chunran Zhang"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.CL"
+      ],
+      "published": "2026-08-16T16:43:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.15851v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Leverages LLM pretrained knowledge for query expansion in hybrid retrieval",
+      "llm_evidence_cn": "利用预训练语言模型知识进行查询扩展以改进混合检索",
+      "llm_evidence": "利用预训练语言模型知识进行查询扩展以改进混合检索",
+      "canonical_evidence": "利用预训练语言模型知识进行查询扩展以改进混合检索",
+      "llm_tldr_en": "Proposes DESA, a channel-asymmetric query expansion method using LLM to generate complementary passages for hybrid retrieval.",
+      "llm_tldr_cn": "提出DESA，一种通道不对称查询扩展方法，利用LLM生成补充段落以改进混合检索。",
+      "llm_tldr": "提出DESA，一种通道不对称查询扩展方法，利用LLM生成补充段落以改进混合检索。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.15861v1",
+      "source": "arxiv",
+      "title": "TransfHAR: Self-Supervised Wrist Representations for On-Demand Activity Recognition",
+      "abstract": "Fine-grained wrist activity recognition can support applications such as procedural step guidance and context-aware assistance, yet acquiring labeled data for every new task, user, and activity granularity remains a bottleneck. We present TransfHAR, a self-supervised wrist IMU framework for on-demand, fine-grained activity recognition by learning transferable motion priors from global, unlabeled activities. We show that self-supervised pretraining on coarse wrist IMU activities (e.g., sitting, walking, exercise) learns motion structure rich enough to transfer to fine-grained manipulative, gestural, and procedural activities (e.g., snapping, stirring, waving) that are absent from pretraining. We implement TransfHAR as a real-time smartwatch application that lets users define and expand their own activity set for personalized recognition from only a few demonstrations. Across three offline cross-dataset evaluations, TransfHAR matches or exceeds fully supervised baselines that use complete label sets with equal or additional sensor channels, by 6.2 balanced-accuracy points on average. In an in-lab study with 10 participants each performing seven novel wrist activities, TransfHAR reaches 86.7% balanced accuracy across participants with five examples per class and 90.4% when updated from a single one-minute recording per class. These results indicate that broad self-supervised wrist pretraining provides an effective foundation for on-demand fine-grained activity recognition.",
+      "authors": [
+        "Aidan Bradshaw",
+        "Riku Arakawa",
+        "Xin Liu",
+        "Karan Ahuja"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-16T17:09:18+00:00",
+      "link": "https://arxiv.org/pdf/2608.15861v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised pretraining on unlabeled activities transfers to new fine-grained tasks with limited labels",
+      "llm_evidence_cn": "在未标注活动上自监督预训练，迁移到标签有限的新细粒度任务",
+      "llm_evidence": "在未标注活动上自监督预训练，迁移到标签有限的新细粒度任务",
+      "canonical_evidence": "在未标注活动上自监督预训练，迁移到标签有限的新细粒度任务",
+      "llm_tldr_en": "Presents TransfHAR, a self-supervised framework that learns transferable motion representations from coarse wrist activities and adapts to fine-grained activity recognition with limited labels.",
+      "llm_tldr_cn": "提出TransfHAR，从粗粒度腕部活动学习可迁移表示，适应标签有限的细粒度活动识别。",
+      "llm_tldr": "提出TransfHAR，从粗粒度腕部活动学习可迁移表示，适应标签有限的细粒度活动识别。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "techniques for adapting models to new domains with limited labeled data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.15454v1",
+      "source": "arxiv",
+      "title": "Dynamic Multi-Byte Prediction With Hierarchical Language Models",
+      "abstract": "Byte-level hierarchical language models (LMs) have recently emerged as a robust alternative to their popular counterparts that use subword tokenization. However, generating one byte at a time remains a bottleneck for inference speed. To address this, we introduce multi-byte prediction (MBP), which generates multiple bytes in parallel, speeding up inference with minimal performance impact and no additional parameters. MBP builds on the popular multi-token prediction (MTP) paradigm with two crucial innovations. First, we introduce a variable-length prediction window that aligns with the latent tokens, or segments, of a hierarchical LM. Second, we implement a novel attention-masking scheme that enables parallel byte prediction without violating causality. We show that multi-byte prediction strikes a Pareto-optimal trade-off across multiple generative tasks, instruction following, question answering, summarization, and machine translation, achieving the best trade-off between performance and inference throughput.",
+      "authors": [
+        "Abraham Toluwase Owodunni",
+        "Chibuzor Okocha",
+        "Christan Grant",
+        "Tomasz Limisiewicz",
+        "Sachin Kumar"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-16T00:11:11+00:00",
+      "link": "https://arxiv.org/pdf/2608.15454v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "parallel algorithm to convert model predictions into byte sequences",
+      "llm_evidence_cn": "将模型预测并行转换为字节序列的算法",
+      "llm_evidence": "将模型预测并行转换为字节序列的算法",
+      "canonical_evidence": "将模型预测并行转换为字节序列的算法",
+      "llm_tldr_en": "Multi-byte prediction generates multiple bytes in parallel from hierarchical LMs, speeding inference with minimal quality loss.",
+      "llm_tldr_cn": "提出多字节预测，从层级语言模型并行生成多个字节，加速推理且质量损失小。",
+      "llm_tldr": "提出多字节预测，从层级语言模型并行生成多个字节，加速推理且质量损失小。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "algorithms for converting model outputs into sequences",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.15412v1",
+      "source": "arxiv",
+      "title": "Invariant Pretraining for Robust Code Representations",
+      "abstract": "Encoder-based code representation models remain widely deployed for discriminative tasks such as clone detection and code classification, where their small size and low inference cost are decisive. Their robustness, however, is fragile: under invariant programs, semantically equivalent code written in different syntactic forms, learned representations degrade substantially even though program behavior is unchanged. We present an empirical study of this robustness gap across four encoder baselines, two downstream tasks, and four datasets, together with a minimal code-only continued pretraining recipe that closes much of it. Our method, invariant pretraining (InvPT), applies semantic-preserving transformations to the corpus and combines masked language modeling with multi-positive supervised contrastive learning that treats all augmentations of the same source function as positives, mixing self-contrast pairs (same code, different masks) with invariant-contrast pairs (transformed code) for positives of varying difficulty. Unlike prior contrastive code encoders, InvPT does not require paired natural-language data. Across our evaluation, InvPT improves robustness on transformed test sets by up to 11 percentage points on clone detection and 19 on code classification while matching or improving standard accuracy, and our ablations isolate multi-positive invariant contrast as the main source of the gains. Our aim is not a new objective but a careful measurement of where encoder robustness breaks and how far a simple, code-only recipe can recover it.",
+      "authors": [
+        "Yifeng He",
+        "Yundi Xu",
+        "Christopher Castro Gaw Gonzalo",
+        "Zili Wang",
+        "Hao Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.SE"
+      ],
+      "published": "2026-08-15T21:01:43+00:00",
+      "link": "https://arxiv.org/pdf/2608.15412v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Continued pretraining with semantic-preserving transformations for robust code representations",
+      "llm_evidence_cn": "通过保持语义的变换进行持续预训练以增强代码表示鲁棒性",
+      "llm_evidence": "通过保持语义的变换进行持续预训练以增强代码表示鲁棒性",
+      "canonical_evidence": "通过保持语义的变换进行持续预训练以增强代码表示鲁棒性",
+      "llm_tldr_en": "Invariant pretraining improves robustness of code representations for downstream discriminative tasks.",
+      "llm_tldr_cn": "不变预训练提高代码表示对下游判别任务的鲁棒性。",
+      "llm_tldr": "不变预训练提高代码表示对下游判别任务的鲁棒性。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "leveraging knowledge from pretrained models for downstream tasks",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.15632v1",
+      "source": "arxiv",
+      "title": "Sparse Prototype Code Underlies Classification and Prediction Across Modalities",
+      "abstract": "Neural representations have become a central tool for studying the internal mechanisms of modern AI models, yet their complex high-dimensional structure makes them difficult to interpret. We show that classification tasks give rise to a universal representational geometry, shared across state-of-the-art models in vision, audio, and language processing. The key structure is that within-class variability is not random in representation space. Instead, its classifier-relevant component has strong and structured correlations with the class's own centroid and with the centroids of its competing classes. Building on this observation, we derive an analytical mean-field theory governed mainly by the variability along true-class and rival-class centroid coordinates, together with a global renormalization of the class radius that compensates for the non-Gaussian statistics of real representations. The theory accurately predicts classification accuracy across architectures and modalities. The relevant geometric quantities improve systematically with model scale, mirroring the observed gains in accuracy. A striking feature of the theory is its sparsity: accurate prediction requires only a small set of centroid coordinates associated with the true class and its strongest rivals - connecting our framework to sparse-feature extraction approaches such as sparse autoencoders. Together, these results provide a parsimonious predictive theory of neural representations and suggest that classification in deep networks is governed by a sparse, centroid-aligned structure embedded within the full high-dimensional representation space.",
+      "authors": [
+        "Yehonatan Avidan",
+        "Daniel D. Lee",
+        "Haim Sompolinsky"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cond-mat.dis-nn",
+        "cs.AI",
+        "stat.ML"
+      ],
+      "published": "2026-08-16T08:53:21+00:00",
+      "link": "https://arxiv.org/pdf/2608.15632v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sparse prototype code reveals compact representation geometry shared across modalities",
+      "llm_evidence_cn": "稀疏原型码揭示了跨模态共享的紧凑表征几何结构",
+      "llm_evidence": "稀疏原型码揭示了跨模态共享的紧凑表征几何结构",
+      "canonical_evidence": "稀疏原型码揭示了跨模态共享的紧凑表征几何结构",
+      "llm_tldr_en": "Shows classification tasks yield universal sparse prototype code in representation space, enabling compact and interpretable cross-modal representations.",
+      "llm_tldr_cn": "表明分类任务产生通用的稀疏原型码，形成紧凑且可解释的跨模态表征。",
+      "llm_tldr": "表明分类任务产生通用的稀疏原型码，形成紧凑且可解释的跨模态表征。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.15657v1",
+      "source": "arxiv",
+      "title": "A Responsible Artificial Intelligence Framework for Groundwater Modeling",
+      "abstract": "The rapid development and widespread application of artificial intelligence (AI) have sparked intense discussions on how to deploy responsible AI systems in a manner aligned with human values and ethical standards. Compared to fields like healthcare, energy, or finance, the application of AI in groundwater is relatively limited, and research on responsible AI is even more scarce. Taking the middle reaches of the Heihe River Basin as the study area, this paper proposes six Responsible AI principles: transparency, technical robustness, privacy governance, fairness, accountability, and sustainability. LSTM and Transformer time-series models are developed using multi-source hydrometeorological data, and validated via post-hoc interpretability, Monte Carlo simulation, and scenario analysis. The results show that Transformer outperforms LSTM in accuracy, robustness, and interpretability, demonstrating the operability and practical value of Responsible AI principles in groundwater prediction to support sustainable water management under climate change and human activities.",
+      "authors": [
+        "Chong Chen",
+        "Yulu Zhang",
+        "Qingxi Guo",
+        "Yihan Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-16T09:59:45+00:00",
+      "link": "https://arxiv.org/pdf/2608.15657v1",
+      "tags": [
+        "keyword:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses LSTM and Transformer time-series models for sequential groundwater data prediction and post-hoc interpretability",
+      "llm_evidence_cn": "使用LSTM和Transformer时序模型预测地下水数据，并做事后可解释性分析",
+      "llm_evidence": "使用LSTM和Transformer时序模型预测地下水数据，并做事后可解释性分析",
+      "canonical_evidence": "使用LSTM和Transformer时序模型预测地下水数据，并做事后可解释性分析",
+      "llm_tldr_en": "A responsible AI framework applying LSTM and Transformer for groundwater forecasting with interpretability.",
+      "llm_tldr_cn": "提出负责任的AI框架，用LSTM和Transformer预测地下水并解释结果。",
+      "llm_tldr": "提出负责任的AI框架，用LSTM和Transformer预测地下水并解释结果。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "methods for analyzing and predicting sequential data over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.15698v1",
+      "source": "arxiv",
+      "title": "ConceptFormer: Learning Adaptive Latent Concepts for Query-Document Alignment in Visual Document Retrieval",
+      "abstract": "Visual document retrieval is a critical component of multimodal retrieval-augmented generation, aiming to identify query-relevant pages from document collections where evidence is distributed across text, layout, charts, and visual structures. Recent efforts toward finer-grained supervision primarily rely on textual descriptions or localized visual regions as evidence proxies. However, such supervision signals may either overlook complex visual structures or provide incomplete and inaccurate representations of the underlying evidence. To address these limitations, we propose ConceptFormer, a latent concept representation learning framework for visual document retrieval. ConceptFormer models query-relevant evidence as continuous, query-conditioned latent concepts that explicitly bridge localized visual evidence and semantic relevance, without requiring either textual intermediate representations or direct reliance on raw visual annotations. During training, ConceptFormer employs a strong vision-language model to dynamically determine the number of latent concept tokens and uses these concepts as an intermediate representation to bridge the semantic gap between queries and documents, thereby guiding the learning of the embedding space. Experiments on diverse visual document retrieval benchmarks demonstrate that ConceptFormer achieves 16.7\\% and 22.1\\% relative improvements in average NDCG@10 over the strongest visual retrieval baseline and the strongest OCR-based text retrieval baseline, respectively. Further analysis reveals that latent concepts effectively connect localized visual evidence with semantic relevance, enabling the retriever to capture both fine-grained textual cues and complex document-level visual structures while preserving strong retrieval alignment. Codes and data are available at https://github.com/Neuir/ConceptFormer.",
+      "authors": [
+        "Peng Chunyi",
+        "Xu Zhipeng",
+        "Yan Yukun",
+        "Liu Zhenghao",
+        "Yu Shi",
+        "Mei Sen",
+        "Sun Yubo",
+        "Zhang Yongheng",
+        "Zhou Jie",
+        "Gu Yu",
+        "Yu Ge",
+        "Sun Maosong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.IR"
+      ],
+      "published": "2026-08-16T12:07:12+00:00",
+      "link": "https://arxiv.org/pdf/2608.15698v1",
+      "tags": [
+        "keyword:NDAI",
+        "query:NDAI"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "latent concept representation learning from raw visual documents for retrieval",
+      "llm_evidence_cn": "从原始视觉文档中学习潜在概念表示用于检索",
+      "llm_evidence": "从原始视觉文档中学习潜在概念表示用于检索",
+      "canonical_evidence": "从原始视觉文档中学习潜在概念表示用于检索",
+      "llm_tldr_en": "Introduces ConceptFormer to learn adaptive latent concepts for query-document alignment, improving visual document retrieval.",
+      "llm_tldr_cn": "提出ConceptFormer学习自适应潜在概念以对齐查询-文档，提升视觉文档检索。",
+      "llm_tldr": "提出ConceptFormer学习自适应潜在概念以对齐查询-文档，提升视觉文档检索。",
+      "llm_tags": [
+        "query:ndai"
+      ],
+      "matched_query_tag": "query:ndai",
+      "matched_query_text": "learning compact and meaningful representations from raw data",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
